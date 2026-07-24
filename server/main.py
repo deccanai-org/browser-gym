@@ -435,18 +435,30 @@ async def category_page(
 
 
 @app.get("/deals", response_class=HTMLResponse)
-async def deals_page(request: Request):
-    """Today's deals page — highlights the discounted items."""
+async def deals_page(request: Request, cat: str = ""):
+    """Today's deals page — highlights discounted items.
+
+    ``cat`` (optional) filters to a stable product.category. Chip links in
+    ``deals.html`` pass ``?cat=electronics|audio|books|clothing``; previously
+    the handler ignored the query so category chips were cosmetic only and
+    the deal set appeared to "lose" category membership when navigating.
+    Prices shown are the durable ``base_price`` (seed-fixed) — decorative
+    fake markdowns were removed because they re-rendered a different number
+    than the product detail / cart pages.
+    """
     s = _state()
     # Pick lower-priced, high-rated items as the "deals" set.
     deals = sorted(
         [p for p in s.products.values() if p.stock > 0],
         key=lambda p: (-p.rating, p.base_price),
-    )[:12]
-    log_action(s, "view_deals")
+    )
+    if cat:
+        deals = [p for p in deals if p.category == cat]
+    deals = deals[:12]
+    log_action(s, "view_deals", category=cat or None)
     return templates.TemplateResponse(
         request, "deals.html",
-        _ctx(request, deals=deals),
+        _ctx(request, deals=deals, deals_cat=cat or ""),
     )
 
 

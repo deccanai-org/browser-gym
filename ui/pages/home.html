@@ -141,14 +141,14 @@
         <a href="/product/{{ p.id }}" data-test-id="rail-card-{{ p.id }}"
            class="product-card bg-white rounded-lg shadow-sm p-3 block w-56 relative">
           <span class="product-badge bg-red-600 text-white" data-test-id="badge-deal-{{ p.id }}">
-            -{{ 15 + (loop.index * 3) }}%
+            Deal
           </span>
           <div class="text-5xl text-center my-3">{{ p.image_emoji }}</div>
-          <div class="text-xs text-slate-500">{{ p.brand }}</div>
+          <div class="text-xs text-slate-500">{{ p.brand }} · <span class="capitalize">{{ p.category }}</span></div>
           <div class="font-semibold text-sm line-clamp-1">{{ p.name }}</div>
           <div class="mt-1 flex items-baseline gap-2">
-            <span class="font-bold text-emerald-700">${{ '%.2f'|format(p.base_price * 0.85) }}</span>
-            <span class="price-was">${{ '%.2f'|format(p.base_price) }}</span>
+            {# Durable seed-fixed base_price — must match product detail / cart #}
+            <span class="font-bold text-emerald-700">${{ '%.2f'|format(p.base_price) }}</span>
           </div>
         </a>
       {% endfor %}

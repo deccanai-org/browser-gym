@@ -23,21 +23,22 @@
   </div>
 </section>
 
-<!-- Deal categories chips -->
+<!-- Deal categories chips — honor ?cat= so membership is stable -->
+{% set active_cat = deals_cat or '' %}
 <div class="flex gap-2 mb-6 overflow-x-auto" data-test-id="deal-categories">
   <a href="/deals" data-test-id="chip-all-deals"
-     class="px-4 py-1.5 bg-red-600 text-white rounded-full text-sm font-semibold whitespace-nowrap">All Deals</a>
+     class="px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap {% if not active_cat %}bg-red-600 text-white{% else %}bg-white border border-slate-300 hover:bg-slate-50{% endif %}">All Deals</a>
   <a href="/deals?cat=electronics" data-test-id="chip-electronics"
-     class="px-4 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 rounded-full text-sm whitespace-nowrap">💻 Electronics</a>
+     class="px-4 py-1.5 rounded-full text-sm whitespace-nowrap {% if active_cat == 'electronics' %}bg-red-600 text-white font-semibold{% else %}bg-white border border-slate-300 hover:bg-slate-50{% endif %}">💻 Electronics</a>
   <a href="/deals?cat=audio" data-test-id="chip-audio"
-     class="px-4 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 rounded-full text-sm whitespace-nowrap">🎧 Audio</a>
+     class="px-4 py-1.5 rounded-full text-sm whitespace-nowrap {% if active_cat == 'audio' %}bg-red-600 text-white font-semibold{% else %}bg-white border border-slate-300 hover:bg-slate-50{% endif %}">🎧 Audio</a>
   <a href="/deals?cat=books" data-test-id="chip-books"
-     class="px-4 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 rounded-full text-sm whitespace-nowrap">📚 Books</a>
+     class="px-4 py-1.5 rounded-full text-sm whitespace-nowrap {% if active_cat == 'books' %}bg-red-600 text-white font-semibold{% else %}bg-white border border-slate-300 hover:bg-slate-50{% endif %}">📚 Books</a>
   <a href="/deals?cat=clothing" data-test-id="chip-clothing"
-     class="px-4 py-1.5 bg-white border border-slate-300 hover:bg-slate-50 rounded-full text-sm whitespace-nowrap">👕 Clothing</a>
+     class="px-4 py-1.5 rounded-full text-sm whitespace-nowrap {% if active_cat == 'clothing' %}bg-red-600 text-white font-semibold{% else %}bg-white border border-slate-300 hover:bg-slate-50{% endif %}">👕 Clothing</a>
 </div>
 
-<!-- Featured deal -->
+<!-- Featured deal — price is durable base_price (matches product/cart) -->
 {% if deals %}
 {% set top = deals[0] %}
 <section data-test-id="featured-deal"
@@ -45,14 +46,12 @@
   <div class="text-9xl text-center">{{ top.image_emoji }}</div>
   <div>
     <span class="inline-block bg-red-600 text-white px-3 py-1 text-xs font-bold uppercase rounded mb-2" data-test-id="lbl-featured-deal-tag">
-      ⚡ Lightning Deal · -30%
+      ⚡ Lightning Deal
     </span>
     <h2 class="text-2xl font-bold mb-1" data-test-id="lbl-featured-deal-name">{{ top.name }}</h2>
-    <div class="text-sm text-slate-500 mb-3">{{ top.brand }}</div>
+    <div class="text-sm text-slate-500 mb-3">{{ top.brand }} · <span class="capitalize">{{ top.category }}</span></div>
     <div class="flex items-baseline gap-3 mb-4">
-      <span class="text-3xl font-bold text-red-600" data-test-id="lbl-featured-deal-price">${{ '%.2f'|format(top.base_price * 0.7) }}</span>
-      <span class="price-was text-xl">${{ '%.2f'|format(top.base_price) }}</span>
-      <span class="price-save text-sm">Save ${{ '%.2f'|format(top.base_price * 0.3) }}</span>
+      <span class="text-3xl font-bold text-red-600" data-test-id="lbl-featured-deal-price">${{ '%.2f'|format(top.base_price) }}</span>
     </div>
     <a href="/product/{{ top.id }}" data-test-id="btn-featured-deal-view"
        class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded font-bold inline-block">
@@ -62,20 +61,18 @@
 </section>
 {% endif %}
 
-<!-- All deals grid -->
+<!-- All deals grid — same durable base_price + stable category label -->
 <section data-test-id="grid-all-deals" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
   {% for p in deals[1:] %}
-    {% set discount = 15 + (loop.index * 4) % 25 %}
     <a href="/product/{{ p.id }}" data-test-id="card-deal-{{ p.id }}"
        class="product-card bg-white rounded-lg shadow-sm p-4 block relative">
-      <span class="product-badge bg-red-600 text-white" data-test-id="badge-discount-{{ p.id }}">-{{ discount }}%</span>
+      <span class="product-badge bg-red-600 text-white" data-test-id="badge-deal-{{ p.id }}">Deal</span>
       <div class="text-6xl text-center my-3">{{ p.image_emoji }}</div>
-      <div class="text-xs text-slate-500 uppercase">{{ p.brand }}</div>
+      <div class="text-xs text-slate-500 uppercase">{{ p.brand }} · <span class="capitalize">{{ p.category }}</span></div>
       <div class="font-semibold text-sm line-clamp-2 min-h-[40px]">{{ p.name }}</div>
       <div class="mt-1 star-rating text-sm">{{ '★' * (p.rating|round|int) }} <span class="text-xs text-slate-500">({{ p.review_count }})</span></div>
       <div class="mt-2 flex items-baseline gap-2">
-        <span class="text-lg font-bold text-red-600">${{ '%.2f'|format(p.base_price * (100 - discount) / 100) }}</span>
-        <span class="price-was">${{ '%.2f'|format(p.base_price) }}</span>
+        <span class="text-lg font-bold text-red-600">${{ '%.2f'|format(p.base_price) }}</span>
       </div>
     </a>
   {% endfor %}
