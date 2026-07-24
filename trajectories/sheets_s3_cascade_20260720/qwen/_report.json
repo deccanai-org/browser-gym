@@ -1,0 +1,37 @@
+{
+  "task_id": "M386/writeback_if_complete",
+  "model": "qwen/qwen3-vl-235b-a22b-instruct",
+  "ui_variant": "normal",
+  "total_runs": 1,
+  "successes": 0,
+  "failures": 1,
+  "failure_rate": 1.0,
+  "clusters": [
+    {
+      "failure_mode_signature": "missed:s3_writeback_if_then_mail",
+      "signature_key": "missed:s3_writeback_if_then_mail|miss=s3_writeback_if_then_mail|gap=",
+      "count": 1,
+      "rate": 1.0,
+      "significant": false,
+      "dominant_failure_class": "unclassified_failure",
+      "failure_class_breakdown": {
+        "unclassified_failure": 1
+      },
+      "missed_required": [
+        "s3_writeback_if_then_mail"
+      ],
+      "app_path": [
+        "shop",
+        "mail"
+      ],
+      "fact_gap": [],
+      "representative": {
+        "episode_id": "bbe5840d",
+        "seed": 2,
+        "plateau_step": 0,
+        "n_steps": 22
+      }
+    }
+  ],
+  "generated_at": "2026-07-20 16:24:41"
+}

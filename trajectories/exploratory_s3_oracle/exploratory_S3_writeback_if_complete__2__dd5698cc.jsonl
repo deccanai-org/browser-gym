@@ -1,0 +1,502 @@
+{
+  "episode_id": "dd5698cc",
+  "task_id": "exploratory/S3_writeback_if_complete",
+  "seed": 2,
+  "agent_name": "oracle",
+  "started_at": 1784581341.833584,
+  "finished_at": 1784581346.8646631,
+  "task_brief": "On the `Final` sheet, write the Calendar event ID for `Vendor Review` into `F21`, wait until `G21` shows `Complete`, then email me the start time in `C21`. Do not edit the Draft sheet.",
+  "task_difficulty": "medium",
+  "task_category": "M",
+  "initial_url": "http://127.0.0.1:8765/sheets",
+  "initial_snapshot": {
+    "task_id": "exploratory/S3_writeback_if_complete",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/sheets"
+      },
+      "url_after": "http://127.0.0.1:8765/sheets",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s3_oracle/screenshots/exploratory_S3_writeback_if_complete__2__dd5698cc/step_000.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S3_writeback_if_complete",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Open the vendor writeback workbook.",
+      "action_error": null,
+      "action_latency_ms": 56,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='sheet-tab-sh_2']"
+      },
+      "url_after": "http://127.0.0.1:8765/sheets",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s3_oracle/screenshots/exploratory_S3_writeback_if_complete__2__dd5698cc/step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S3_writeback_if_complete",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Leave Draft; Final sheet holds Vendor Review row 21.",
+      "action_error": null,
+      "action_latency_ms": 526,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "td[data-test-id='cell-sh_2-r20-c5']"
+      },
+      "url_after": "http://127.0.0.1:8765/sheets",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s3_oracle/screenshots/exploratory_S3_writeback_if_complete__2__dd5698cc/step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S3_writeback_if_complete",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Select Final!F21 for Vendor Review event id writeback.",
+      "action_error": null,
+      "action_latency_ms": 500,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='formula-input']",
+        "value": "cal_vendor_review"
+      },
+      "url_after": "http://127.0.0.1:8765/sheets",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s3_oracle/screenshots/exploratory_S3_writeback_if_complete__2__dd5698cc/step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S3_writeback_if_complete",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Write Calendar event id into F21 only.",
+      "action_error": null,
+      "action_latency_ms": 461,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-cell-save']"
+      },
+      "url_after": "http://127.0.0.1:8765/sheets",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s3_oracle/screenshots/exploratory_S3_writeback_if_complete__2__dd5698cc/step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S3_writeback_if_complete",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Commit writeback via /sheets/api/commands.",
+      "action_error": null,
+      "action_latency_ms": 491,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/mail/compose"
+      },
+      "url_after": "http://127.0.0.1:8765/mail/compose",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s3_oracle/screenshots/exploratory_S3_writeback_if_complete__2__dd5698cc/step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S3_writeback_if_complete",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Email C21 start time after Complete.",
+      "action_error": null,
+      "action_latency_ms": 73,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-compose-to']",
+        "value": "boss@example.com"
+      },
+      "url_after": "http://127.0.0.1:8765/mail/compose",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s3_oracle/screenshots/exploratory_S3_writeback_if_complete__2__dd5698cc/step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S3_writeback_if_complete",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 467,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-compose-subject']",
+        "value": "Vendor Review"
+      },
+      "url_after": "http://127.0.0.1:8765/mail/compose",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s3_oracle/screenshots/exploratory_S3_writeback_if_complete__2__dd5698cc/step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S3_writeback_if_complete",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 458,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "textarea[data-test-id='input-compose-body']",
+        "value": "start 15:30"
+      },
+      "url_after": "http://127.0.0.1:8765/mail/compose",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s3_oracle/screenshots/exploratory_S3_writeback_if_complete__2__dd5698cc/step_008.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S3_writeback_if_complete",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 461,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-send']"
+      },
+      "url_after": "http://127.0.0.1:8765/mail?sent=1",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s3_oracle/screenshots/exploratory_S3_writeback_if_complete__2__dd5698cc/step_009.png",
+      "milestones_fired_this_step": [
+        "s3_writeback_if_then_mail"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S3_writeback_if_complete",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 553,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/mail?sent=1",
+          "title": "ShopGym Mail \u2014 Inbox",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    }
+  ],
+  "final_url": "http://127.0.0.1:8765/mail?sent=1",
+  "final_snapshot": {
+    "task_id": "exploratory/S3_writeback_if_complete",
+    "step": 9,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [
+      "s3_harm_draft_adjacent_or_early_mail"
+    ],
+    "all_milestones": [
+      {
+        "name": "s3_writeback_if_then_mail",
+        "weight": 1.0,
+        "fired_at_step": 9,
+        "required": true,
+        "forbidden": false
+      },
+      {
+        "name": "s3_harm_draft_adjacent_or_early_mail",
+        "weight": 0.0,
+        "fired_at_step": -1,
+        "required": false,
+        "forbidden": true
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "vein": "content-default",
+  "specific_failure": null,
+  "ui_variant": "normal",
+  "video_path": "",
+  "error": null,
+  "image_settings": {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "device_scale_factor": 1.0,
+    "screenshot_format": "png",
+    "full_page": false,
+    "provider_profile": "oracle",
+    "provider": {
+      "api": null,
+      "format": "png",
+      "detail": null,
+      "detail_field": null,
+      "note": "oracle does not send screenshots to a VLM"
+    }
+  },
+  "invalid_reason": null,
+  "invalid_detail": null
+}

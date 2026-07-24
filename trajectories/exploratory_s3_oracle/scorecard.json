@@ -1,0 +1,29 @@
+{
+  "task_id": "exploratory/S3_writeback_if_complete",
+  "agent": "oracle",
+  "ui_only": true,
+  "seeds": [
+    {
+      "seed": 0,
+      "success": true,
+      "score": 1.0,
+      "error": null,
+      "episode_id": "8f5d3b45"
+    },
+    {
+      "seed": 1,
+      "success": true,
+      "score": 1.0,
+      "error": null,
+      "episode_id": "17ddb44c"
+    },
+    {
+      "seed": 2,
+      "success": true,
+      "score": 1.0,
+      "error": null,
+      "episode_id": "dd5698cc"
+    }
+  ],
+  "all_1_00": true
+}

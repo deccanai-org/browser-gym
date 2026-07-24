@@ -1,0 +1,1202 @@
+{
+  "episode_id": "b894aa02",
+  "task_id": "M386/writeback_if_complete",
+  "seed": 1,
+  "agent_name": "qwen[qwen/qwen3-vl-235b-a22b-instruct]",
+  "started_at": 1784589632.304012,
+  "finished_at": 1784589745.611708,
+  "task_brief": "On the `Final` sheet, write the Calendar event ID for `Vendor Review` into `F21`, wait until `G21` shows `Complete`, then email me the start time in `C21`. Do not edit the Draft sheet.",
+  "task_difficulty": "medium",
+  "task_category": "M",
+  "initial_url": "http://127.0.0.1:8162/sheets",
+  "initial_snapshot": {
+    "task_id": "M386/writeback_if_complete",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "market_orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 14,
+        "role": "tab",
+        "name": "Final",
+        "coord": [
+          171,
+          245
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/sheets",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_000.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Switch to the 'Final' sheet as required by the task.",
+      "action_error": null,
+      "action_latency_ms": 542,
+      "raw_model_output": "",
+      "tokens_in": 5189,
+      "tokens_out": 39,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 10,
+        "role": "textbox",
+        "name": "Name box",
+        "coord": [
+          182,
+          192
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/sheets",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Name box to type the cell reference F21.",
+      "action_error": null,
+      "action_latency_ms": 474,
+      "raw_model_output": "",
+      "tokens_in": 6579,
+      "tokens_out": 39,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 10,
+        "value": "F21",
+        "role": "textbox",
+        "name": "Name box",
+        "coord": [
+          182,
+          192
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/sheets",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Navigate to cell F21 to prepare for entering the Calendar event ID.",
+      "action_error": null,
+      "action_latency_ms": 470,
+      "raw_model_output": "",
+      "tokens_in": 7969,
+      "tokens_out": 50,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 11,
+        "role": "textbox",
+        "name": "Formula",
+        "coord": [
+          695,
+          192
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/sheets",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Formula bar to prepare for typing the Calendar event ID into cell F21.",
+      "action_error": null,
+      "action_latency_ms": 509,
+      "raw_model_output": "",
+      "tokens_in": 9375,
+      "tokens_out": 44,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 11,
+        "value": "CAL_EVENT_ID_789",
+        "role": "textbox",
+        "name": "Formula",
+        "coord": [
+          695,
+          192
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/sheets",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Enter the Calendar event ID for 'Vendor Review' into cell F21 as required.",
+      "action_error": null,
+      "action_latency_ms": 490,
+      "raw_model_output": "",
+      "tokens_in": 10771,
+      "tokens_out": 57,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 12,
+        "role": "button",
+        "name": "Save",
+        "coord": [
+          1159,
+          192
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/sheets",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Save button to commit the Calendar event ID into cell F21.",
+      "action_error": null,
+      "action_latency_ms": 476,
+      "raw_model_output": "",
+      "tokens_in": 12193,
+      "tokens_out": 42,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 10,
+        "role": "textbox",
+        "name": "Name box",
+        "coord": [
+          182,
+          192
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/sheets",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Name box to type the cell reference G21 to monitor its status.",
+      "action_error": null,
+      "action_latency_ms": 481,
+      "raw_model_output": "",
+      "tokens_in": 13598,
+      "tokens_out": 43,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 10,
+        "value": "G21",
+        "role": "textbox",
+        "name": "Name box",
+        "coord": [
+          182,
+          192
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/sheets",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Navigate to cell G21 to monitor its status for the 'Complete' signal.",
+      "action_error": null,
+      "action_latency_ms": 483,
+      "raw_model_output": "",
+      "tokens_in": 15004,
+      "tokens_out": 52,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 11,
+        "role": "textbox",
+        "name": "Formula",
+        "coord": [
+          695,
+          192
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/sheets",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_008.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Formula bar to prepare for reading or interacting with cell G21's content.",
+      "action_error": null,
+      "action_latency_ms": 491,
+      "raw_model_output": "",
+      "tokens_in": 16424,
+      "tokens_out": 44,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 12,
+        "role": "button",
+        "name": "Save",
+        "coord": [
+          1159,
+          192
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/sheets",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_009.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Save button to ensure any formula or cell state changes are committed, allowing G21 to update to 'Complete'.",
+      "action_error": null,
+      "action_latency_ms": 476,
+      "raw_model_output": "",
+      "tokens_in": 17836,
+      "tokens_out": 52,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 10,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 10,
+        "role": "textbox",
+        "name": "Name box",
+        "coord": [
+          182,
+          192
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/sheets",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_010.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 9,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Name box to type the cell reference C21 to prepare for reading the start time.",
+      "action_error": null,
+      "action_latency_ms": 468,
+      "raw_model_output": "",
+      "tokens_in": 19256,
+      "tokens_out": 46,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 11,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 10,
+        "value": "C21",
+        "role": "textbox",
+        "name": "Name box",
+        "coord": [
+          182,
+          192
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/sheets",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_011.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 10,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Navigate to cell C21 to prepare for reading the start time of the Vendor Review event.",
+      "action_error": null,
+      "action_latency_ms": 475,
+      "raw_model_output": "",
+      "tokens_in": 20670,
+      "tokens_out": 54,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 12,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 11,
+        "role": "textbox",
+        "name": "Formula",
+        "coord": [
+          695,
+          192
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/sheets",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_012.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 11,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Formula bar to prepare for reading the start time in cell C21.",
+      "action_error": null,
+      "action_latency_ms": 474,
+      "raw_model_output": "",
+      "tokens_in": 22097,
+      "tokens_out": 43,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 13,
+      "action_kind": "open_tab",
+      "action_args": {
+        "url": "/mail",
+        "tab_index": 1
+      },
+      "url_after": "http://127.0.0.1:8162/mail",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_013.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 12,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Open the Mail app in a new tab to send the start time from C21 via email.",
+      "action_error": null,
+      "action_latency_ms": 180,
+      "raw_model_output": "",
+      "tokens_in": 23501,
+      "tokens_out": 45,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8162/mail",
+          "title": "ShopGym Mail \u2014 Inbox",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 14,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 11,
+        "role": "button",
+        "name": "\u270f\ufe0f\nCompose",
+        "coord": [
+          929,
+          63
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/mail",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_014.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 13,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Compose button to start drafting a new email.",
+      "action_error": null,
+      "action_latency_ms": 529,
+      "raw_model_output": "",
+      "tokens_in": 25021,
+      "tokens_out": 38,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8162/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 15,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 14,
+        "value": "me@example.com",
+        "role": "textbox",
+        "name": "To",
+        "coord": [
+          480,
+          291
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/mail/compose",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_015.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 14,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Enter the recipient's email address in the 'To' field.",
+      "action_error": null,
+      "action_latency_ms": 468,
+      "raw_model_output": "",
+      "tokens_in": 26500,
+      "tokens_out": 48,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8162/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 16,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 15,
+        "role": "textbox",
+        "name": "Subject",
+        "coord": [
+          480,
+          365
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/mail/compose",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_016.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 15,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Subject field to prepare for typing the email subject.",
+      "action_error": null,
+      "action_latency_ms": 474,
+      "raw_model_output": "",
+      "tokens_in": 28002,
+      "tokens_out": 38,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8162/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 17,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 15,
+        "value": "Vendor Review Start Time",
+        "role": "textbox",
+        "name": "Subject",
+        "coord": [
+          480,
+          365
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/mail/compose",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_017.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 16,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Enter the subject for the email about the Vendor Review start time.",
+      "action_error": null,
+      "action_latency_ms": 468,
+      "raw_model_output": "",
+      "tokens_in": 29492,
+      "tokens_out": 49,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8162/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 18,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 16,
+        "role": "textbox",
+        "name": "Message",
+        "coord": [
+          480,
+          509
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/mail/compose",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_018.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 17,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Message field to prepare for typing the start time from C21.",
+      "action_error": null,
+      "action_latency_ms": 485,
+      "raw_model_output": "",
+      "tokens_in": 31003,
+      "tokens_out": 42,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8162/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 19,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 16,
+        "value": "The start time for the Vendor Review is 15:30.",
+        "role": "textbox",
+        "name": "Message",
+        "coord": [
+          480,
+          509
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/mail/compose",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_019.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 18,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Enter the start time from cell C21 into the email message body.",
+      "action_error": null,
+      "action_latency_ms": 501,
+      "raw_model_output": "",
+      "tokens_in": 32505,
+      "tokens_out": 61,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8162/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 20,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 16,
+        "value": "The start time for the Vendor Review is 15:30.",
+        "role": "textbox",
+        "name": "Message",
+        "coord": [
+          480,
+          509
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/mail/compose",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_020.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 19,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Complete the message body with the start time from C21.",
+      "action_error": null,
+      "action_latency_ms": 477,
+      "raw_model_output": "",
+      "tokens_in": 34040,
+      "tokens_out": 59,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8162/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 21,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 17,
+        "role": "button",
+        "name": "Send",
+        "coord": [
+          202,
+          651
+        ]
+      },
+      "url_after": "http://127.0.0.1:8162/mail/compose",
+      "screenshot_path": "screenshots/harvest/M386_writeback_if_complete__1__b894aa02/step_021.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M386/writeback_if_complete",
+        "step": 20,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Send button to send the email with the start time.",
+      "action_error": null,
+      "action_latency_ms": 478,
+      "raw_model_output": "",
+      "tokens_in": 35573,
+      "tokens_out": 39,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8162/sheets",
+          "title": "ShopGym Sheets \u2014 Vendor Review Writeback",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8162/mail?sent=1",
+          "title": "ShopGym Mail \u2014 Inbox",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    }
+  ],
+  "final_url": "http://127.0.0.1:8162/sheets",
+  "final_snapshot": {
+    "task_id": "M386/writeback_if_complete",
+    "step": 21,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "market_orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 0.0,
+    "success": false,
+    "newly_fired": [],
+    "missed_milestones": [
+      "s3_writeback_if_then_mail",
+      "s3_harm_draft_adjacent_or_early_mail"
+    ],
+    "all_milestones": [
+      {
+        "name": "s3_writeback_if_then_mail",
+        "weight": 1.0,
+        "fired_at_step": -1,
+        "required": true,
+        "forbidden": false
+      },
+      {
+        "name": "s3_harm_draft_adjacent_or_early_mail",
+        "weight": 0.0,
+        "fired_at_step": -1,
+        "required": false,
+        "forbidden": true
+      }
+    ]
+  },
+  "agent_failure_class": "unclassified_failure",
+  "vein": "content-default",
+  "specific_failure": null,
+  "ui_variant": "normal",
+  "video_path": "",
+  "error": null,
+  "image_settings": {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "device_scale_factor": 1.0,
+    "screenshot_format": "png",
+    "full_page": false,
+    "provider_profile": "qwen_pixel",
+    "provider": {
+      "api": "openai_compatible",
+      "format": "png",
+      "detail": "high",
+      "detail_field": "image_url.detail",
+      "via": "OpenAIPixelAgent"
+    }
+  },
+  "invalid_reason": null,
+  "invalid_detail": null
+}

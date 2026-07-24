@@ -1,0 +1,29 @@
+{
+  "task_id": "exploratory/S2_cross_sheet_qty_authority",
+  "agent": "oracle",
+  "ui_only": true,
+  "seeds": [
+    {
+      "seed": 0,
+      "success": true,
+      "score": 1.0,
+      "error": null,
+      "episode_id": "01a58bfa"
+    },
+    {
+      "seed": 1,
+      "success": true,
+      "score": 1.0,
+      "error": null,
+      "episode_id": "7e1629f7"
+    },
+    {
+      "seed": 2,
+      "success": true,
+      "score": 1.0,
+      "error": null,
+      "episode_id": "67422ad6"
+    }
+  ],
+  "all_1_00": true
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "M384/active_tab_sum_gate",
+  "model": "qwen/qwen3-vl-235b-a22b-instruct",
+  "ui_variant": "normal",
+  "total_runs": 1,
+  "successes": 0,
+  "failures": 1,
+  "failure_rate": 1.0,
+  "clusters": [
+    {
+      "failure_mode_signature": "missed:s1_sum_gate_order_and_email",
+      "signature_key": "missed:s1_sum_gate_order_and_email|miss=s1_sum_gate_order_and_email|gap=",
+      "count": 1,
+      "rate": 1.0,
+      "significant": false,
+      "dominant_failure_class": "never_reached_checkout",
+      "failure_class_breakdown": {
+        "never_reached_checkout": 1
+      },
+      "missed_required": [
+        "s1_sum_gate_order_and_email"
+      ],
+      "app_path": [
+        "shop"
+      ],
+      "fact_gap": [],
+      "representative": {
+        "episode_id": "14bb57b0",
+        "seed": 2,
+        "plateau_step": 0,
+        "n_steps": 31
+      }
+    }
+  ],
+  "generated_at": "2026-07-20 14:29:14"
+}

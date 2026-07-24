@@ -1,0 +1,42 @@
+{
+  "episode_id": "11dce5d0",
+  "task_id": "exploratory/S1_active_tab_sum_gate",
+  "seed": 0,
+  "agent_name": "oracle",
+  "started_at": 1784580766.8374221,
+  "finished_at": 1784580766.837433,
+  "task_brief": "",
+  "task_difficulty": "",
+  "task_category": "",
+  "initial_url": "",
+  "initial_snapshot": {},
+  "steps": [],
+  "final_url": "",
+  "final_snapshot": {},
+  "verifier_result": {},
+  "agent_failure_class": null,
+  "vein": null,
+  "specific_failure": null,
+  "ui_variant": "normal",
+  "video_path": "",
+  "error": "ConnectError: All connection attempts failed",
+  "image_settings": {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "device_scale_factor": 1.0,
+    "screenshot_format": "png",
+    "full_page": false,
+    "provider_profile": "oracle",
+    "provider": {
+      "api": null,
+      "format": "png",
+      "detail": null,
+      "detail_field": null,
+      "note": "oracle does not send screenshots to a VLM"
+    }
+  },
+  "invalid_reason": "invalid_reset",
+  "invalid_detail": "ConnectError: All connection attempts failed"
+}

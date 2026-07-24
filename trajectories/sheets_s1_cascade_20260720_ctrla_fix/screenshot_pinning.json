@@ -1,0 +1,134 @@
+{
+  "status": "PINNED",
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "device_scale_factor": 1.0,
+  "screenshot_format": "png",
+  "full_page": false,
+  "provider_profiles": {
+    "openai_pixel": {
+      "api": "openai",
+      "format": "png",
+      "detail": "high",
+      "detail_field": "image_url.detail / input_image.detail"
+    },
+    "openai_coord": {
+      "api": "openai",
+      "format": "png",
+      "detail": "high",
+      "detail_field": "image_url.detail"
+    },
+    "qwen_pixel": {
+      "api": "openai_compatible",
+      "format": "png",
+      "detail": "high",
+      "detail_field": "image_url.detail",
+      "via": "OpenAIPixelAgent"
+    },
+    "anthropic_pixel": {
+      "api": "anthropic_messages",
+      "format": "png",
+      "detail": null,
+      "detail_field": null,
+      "note": "Anthropic Messages API has no image detail knob"
+    },
+    "anthropic_coord": {
+      "api": "anthropic_messages",
+      "format": "png",
+      "detail": null,
+      "detail_field": null,
+      "note": "Anthropic Messages API has no image detail knob"
+    },
+    "oracle": {
+      "api": null,
+      "format": "png",
+      "detail": null,
+      "detail_field": null,
+      "note": "oracle does not send screenshots to a VLM"
+    },
+    "dom": {
+      "api": null,
+      "format": "png",
+      "detail": null,
+      "detail_field": null,
+      "note": "DOM agents record screenshots but act on JSON, not pixels"
+    }
+  },
+  "tier_image_settings": {
+    "qwen": {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "device_scale_factor": 1.0,
+      "screenshot_format": "png",
+      "full_page": false,
+      "provider_profile": "qwen_pixel",
+      "provider": {
+        "api": "openai_compatible",
+        "format": "png",
+        "detail": "high",
+        "detail_field": "image_url.detail",
+        "via": "OpenAIPixelAgent"
+      }
+    },
+    "gpt-5.1": {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "device_scale_factor": 1.0,
+      "screenshot_format": "png",
+      "full_page": false,
+      "provider_profile": "openai_pixel",
+      "provider": {
+        "api": "openai",
+        "format": "png",
+        "detail": "high",
+        "detail_field": "image_url.detail / input_image.detail"
+      }
+    },
+    "gpt-5.5": {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "device_scale_factor": 1.0,
+      "screenshot_format": "png",
+      "full_page": false,
+      "provider_profile": "openai_pixel",
+      "provider": {
+        "api": "openai",
+        "format": "png",
+        "detail": "high",
+        "detail_field": "image_url.detail / input_image.detail"
+      }
+    },
+    "sonnet": {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "device_scale_factor": 1.0,
+      "screenshot_format": "png",
+      "full_page": false,
+      "provider_profile": "anthropic_pixel",
+      "provider": {
+        "api": "anthropic_messages",
+        "format": "png",
+        "detail": null,
+        "detail_field": null,
+        "note": "Anthropic Messages API has no image detail knob"
+      }
+    }
+  },
+  "trajectory_fields": [
+    "image_settings",
+    "steps[].screenshot_width",
+    "steps[].screenshot_height",
+    "steps[].device_pixel_ratio"
+  ],
+  "note": "Capture geometry is pinned in open_browser. Provider detail is asymmetric: OpenAI/Qwen request detail=high; Anthropic Messages has no detail knob \u2014 recorded, not claimed equivalent."
+}

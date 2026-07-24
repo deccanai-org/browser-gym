@@ -1,0 +1,11 @@
+{
+  "task_id": "M384/active_tab_sum_gate",
+  "model": "qwen/qwen3-vl-235b-a22b-instruct",
+  "ui_variant": "normal",
+  "total_runs": 1,
+  "successes": 1,
+  "failures": 0,
+  "failure_rate": 0.0,
+  "clusters": [],
+  "generated_at": "2026-07-20 15:52:09"
+}

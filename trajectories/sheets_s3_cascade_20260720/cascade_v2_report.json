@@ -1,0 +1,19 @@
+{
+  "halted_on_budget": false,
+  "cap": 80.0,
+  "records": {
+    "M386/writeback_if_complete": {
+      "qwen": {
+        "breaks": 0,
+        "n": 3,
+        "inconclusive": 0
+      },
+      "gpt-5.1": null,
+      "gpt-5.5": null,
+      "sonnet": null,
+      "stopped_at_tier": "qwen",
+      "reached_sonnet": false,
+      "inconclusive_seeds": {}
+    }
+  }
+}

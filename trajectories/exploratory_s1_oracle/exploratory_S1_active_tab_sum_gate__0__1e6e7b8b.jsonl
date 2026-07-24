@@ -1,0 +1,1117 @@
+{
+  "episode_id": "1e6e7b8b",
+  "task_id": "exploratory/S1_active_tab_sum_gate",
+  "seed": 0,
+  "agent_name": "oracle",
+  "started_at": 1784580840.6589718,
+  "finished_at": 1784580851.48614,
+  "task_brief": "On the `Approved Lines` sheet, set the line quantities so `Total Kits` (`B10`, formula `=SUM(B5:B8)`) equals **6**. Then order exactly that many `Launch Kit` units from ValueMart. Do not use the Draft sheet or any cached total. Email me the order number and the Total Kits value after recalculation.",
+  "task_difficulty": "medium",
+  "task_category": "M",
+  "initial_url": "http://127.0.0.1:8765/sheets",
+  "initial_snapshot": {
+    "task_id": "exploratory/S1_active_tab_sum_gate",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/sheets"
+      },
+      "url_after": "http://127.0.0.1:8765/sheets",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_000.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Open the kit-order workbook.",
+      "action_error": null,
+      "action_latency_ms": 53,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='sheet-tab-sh_2']"
+      },
+      "url_after": "http://127.0.0.1:8765/sheets",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Leave Draft; Approved Lines is the SUM authority.",
+      "action_error": null,
+      "action_latency_ms": 527,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "td[data-test-id='cell-sh_2-r5-c1']"
+      },
+      "url_after": "http://127.0.0.1:8765/sheets",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Select Midline qty B6.",
+      "action_error": null,
+      "action_latency_ms": 528,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='formula-input']",
+        "value": "2"
+      },
+      "url_after": "http://127.0.0.1:8765/sheets",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Set Midline to 2 so Total Kits becomes 6.",
+      "action_error": null,
+      "action_latency_ms": 463,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-cell-save']"
+      },
+      "url_after": "http://127.0.0.1:8765/sheets",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Commit the cell edit via /sheets/api/commands.",
+      "action_error": null,
+      "action_latency_ms": 496,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/market/product/vm_launch_kit"
+      },
+      "url_after": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Order Launch Kit qty matching Total Kits.",
+      "action_error": null,
+      "action_latency_ms": 82,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='market-btn-add-to-cart']"
+      },
+      "url_after": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 581,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/market/product/vm_launch_kit"
+      },
+      "url_after": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 38,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='market-btn-add-to-cart']"
+      },
+      "url_after": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_008.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 578,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/market/product/vm_launch_kit"
+      },
+      "url_after": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_009.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 38,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 10,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='market-btn-add-to-cart']"
+      },
+      "url_after": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_010.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 9,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 581,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 11,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/market/product/vm_launch_kit"
+      },
+      "url_after": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_011.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 10,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 36,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 12,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='market-btn-add-to-cart']"
+      },
+      "url_after": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_012.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 11,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 565,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 13,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/market/product/vm_launch_kit"
+      },
+      "url_after": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_013.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 12,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 37,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 14,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='market-btn-add-to-cart']"
+      },
+      "url_after": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_014.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 13,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 579,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 15,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/market/product/vm_launch_kit"
+      },
+      "url_after": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_015.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 14,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 36,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 16,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='market-btn-add-to-cart']"
+      },
+      "url_after": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_016.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 15,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 582,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 17,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/market/product/vm_launch_kit"
+      },
+      "url_after": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_017.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 16,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 36,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 18,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/market/cart"
+      },
+      "url_after": "http://127.0.0.1:8765/market/cart",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_018.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 17,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Place the ValueMart order.",
+      "action_error": null,
+      "action_latency_ms": 40,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/cart",
+          "title": "ValueMart \u2014 Cart",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 19,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='market-btn-place-order']"
+      },
+      "url_after": "http://127.0.0.1:8765/market/order/VM-2201",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_019.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 18,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 580,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/market/order/VM-2201",
+          "title": "ValueMart \u2014 Order VM-2201",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 20,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/mail/compose"
+      },
+      "url_after": "http://127.0.0.1:8765/mail/compose",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_020.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 19,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Email order id + Total Kits.",
+      "action_error": null,
+      "action_latency_ms": 38,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 21,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-compose-to']",
+        "value": "boss@example.com"
+      },
+      "url_after": "http://127.0.0.1:8765/mail/compose",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_021.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 20,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 468,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 22,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "input[data-test-id='input-compose-subject']",
+        "value": "Kit order"
+      },
+      "url_after": "http://127.0.0.1:8765/mail/compose",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_022.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 21,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 463,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 23,
+      "action_kind": "fill",
+      "action_args": {
+        "selector": "textarea[data-test-id='input-compose-body']",
+        "value": "order VM-2201 Total Kits 6"
+      },
+      "url_after": "http://127.0.0.1:8765/mail/compose",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_023.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 22,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 462,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 24,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='btn-send']"
+      },
+      "url_after": "http://127.0.0.1:8765/mail?sent=1",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/exploratory_s1_oracle/screenshots/exploratory_S1_active_tab_sum_gate__0__1e6e7b8b/step_024.png",
+      "milestones_fired_this_step": [
+        "s1_sum_gate_order_and_email"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "exploratory/S1_active_tab_sum_gate",
+        "step": 23,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 576,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8765/mail?sent=1",
+          "title": "ShopGym Mail \u2014 Inbox",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    }
+  ],
+  "final_url": "http://127.0.0.1:8765/mail?sent=1",
+  "final_snapshot": {
+    "task_id": "exploratory/S1_active_tab_sum_gate",
+    "step": 24,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [
+      "s1_harm_wrong_qty_or_decoy"
+    ],
+    "all_milestones": [
+      {
+        "name": "s1_sum_gate_order_and_email",
+        "weight": 1.0,
+        "fired_at_step": 24,
+        "required": true,
+        "forbidden": false
+      },
+      {
+        "name": "s1_harm_wrong_qty_or_decoy",
+        "weight": 0.0,
+        "fired_at_step": -1,
+        "required": false,
+        "forbidden": true
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "vein": "content-default",
+  "specific_failure": null,
+  "ui_variant": "normal",
+  "video_path": "",
+  "error": null,
+  "image_settings": {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "device_scale_factor": 1.0,
+    "screenshot_format": "png",
+    "full_page": false,
+    "provider_profile": "oracle",
+    "provider": {
+      "api": null,
+      "format": "png",
+      "detail": null,
+      "detail_field": null,
+      "note": "oracle does not send screenshots to a VLM"
+    }
+  },
+  "invalid_reason": null,
+  "invalid_detail": null
+}

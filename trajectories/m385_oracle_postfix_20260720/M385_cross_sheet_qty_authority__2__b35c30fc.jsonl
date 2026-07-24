@@ -1,0 +1,720 @@
+{
+  "episode_id": "b35c30fc",
+  "task_id": "M385/cross_sheet_qty_authority",
+  "seed": 2,
+  "agent_name": "oracle",
+  "started_at": 1784597966.784758,
+  "finished_at": 1784597973.1936,
+  "task_brief": "Order `West Launch Kit` from ValueMart using the quantity shown on the `Approval` sheet in `B4`. That cell is a live formula from `Inputs`. Do not use the Summary sheet. Place exactly one order.",
+  "task_difficulty": "medium",
+  "task_category": "M",
+  "initial_url": "http://127.0.0.1:8775/sheets",
+  "initial_snapshot": {
+    "task_id": "M385/cross_sheet_qty_authority",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "market_orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/sheets"
+      },
+      "url_after": "http://127.0.0.1:8775/sheets",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_000.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Open the West qty workbook.",
+      "action_error": null,
+      "action_latency_ms": 50,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/sheets",
+          "title": "ShopGym Sheets \u2014 West Qty Approval",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='sheet-tab-sh_2']"
+      },
+      "url_after": "http://127.0.0.1:8775/sheets",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Open Inputs; Approval binds to D5 not decoy D4.",
+      "action_error": null,
+      "action_latency_ms": 527,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/sheets",
+          "title": "ShopGym Sheets \u2014 West Qty Approval",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='sheet-tab-sh_3']"
+      },
+      "url_after": "http://127.0.0.1:8775/sheets",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Open Approval; B4 is the live cross-sheet gate.",
+      "action_error": null,
+      "action_latency_ms": 512,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/sheets",
+          "title": "ShopGym Sheets \u2014 West Qty Approval",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "td[data-test-id='cell-sh_3-r3-c1']"
+      },
+      "url_after": "http://127.0.0.1:8775/sheets",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Select Approval!B4 to inspect live formula.",
+      "action_error": null,
+      "action_latency_ms": 524,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/sheets",
+          "title": "ShopGym Sheets \u2014 West Qty Approval",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/market"
+      },
+      "url_after": "http://127.0.0.1:8775/market",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Open ValueMart catalog for West kit.",
+      "action_error": null,
+      "action_latency_ms": 75,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/market",
+          "title": "ValueMart \u2014 Shop",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='market-btn-add-to-cart']"
+      },
+      "url_after": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 588,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+          "title": "ValueMart \u2014 West Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "http://127.0.0.1:8775/market/product/vm_west_launch_kit"
+      },
+      "url_after": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 38,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+          "title": "ValueMart \u2014 West Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='market-btn-add-to-cart']"
+      },
+      "url_after": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 599,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+          "title": "ValueMart \u2014 West Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "http://127.0.0.1:8775/market/product/vm_west_launch_kit"
+      },
+      "url_after": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_008.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 37,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+          "title": "ValueMart \u2014 West Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='market-btn-add-to-cart']"
+      },
+      "url_after": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_009.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 593,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+          "title": "ValueMart \u2014 West Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 10,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "http://127.0.0.1:8775/market/product/vm_west_launch_kit"
+      },
+      "url_after": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_010.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 9,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 37,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+          "title": "ValueMart \u2014 West Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 11,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='market-btn-add-to-cart']"
+      },
+      "url_after": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_011.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 10,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 580,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+          "title": "ValueMart \u2014 West Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 12,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "http://127.0.0.1:8775/market/product/vm_west_launch_kit"
+      },
+      "url_after": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_012.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 11,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 36,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/market/product/vm_west_launch_kit",
+          "title": "ValueMart \u2014 West Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 13,
+      "action_kind": "navigate",
+      "action_args": {
+        "url": "/market/cart"
+      },
+      "url_after": "http://127.0.0.1:8775/market/cart",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_013.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 12,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Place the single West kit order.",
+      "action_error": null,
+      "action_latency_ms": 39,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/market/cart",
+          "title": "ValueMart \u2014 Cart",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 14,
+      "action_kind": "click",
+      "action_args": {
+        "selector": "button[data-test-id='market-btn-place-order']"
+      },
+      "url_after": "http://127.0.0.1:8775/market/order/VM-2201",
+      "screenshot_path": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/trajectories/m385_oracle_postfix_20260720/screenshots/M385_cross_sheet_qty_authority__2__b35c30fc/step_014.png",
+      "milestones_fired_this_step": [
+        "s2_cross_sheet_west_order"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "M385/cross_sheet_qty_authority",
+        "step": 13,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "",
+      "action_error": null,
+      "action_latency_ms": 597,
+      "raw_model_output": "",
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8775/market/order/VM-2201",
+          "title": "ValueMart \u2014 Order VM-2201",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    }
+  ],
+  "final_url": "http://127.0.0.1:8775/market/order/VM-2201",
+  "final_snapshot": {
+    "task_id": "M385/cross_sheet_qty_authority",
+    "step": 14,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "market_orders_count": 1,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [
+      "s2_harm_east_wrong_qty_or_overwrite"
+    ],
+    "all_milestones": [
+      {
+        "name": "s2_cross_sheet_west_order",
+        "weight": 1.0,
+        "fired_at_step": 14,
+        "required": true,
+        "forbidden": false
+      },
+      {
+        "name": "s2_harm_east_wrong_qty_or_overwrite",
+        "weight": 0.0,
+        "fired_at_step": -1,
+        "required": false,
+        "forbidden": true
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "vein": "content-default",
+  "specific_failure": null,
+  "ui_variant": "normal",
+  "video_path": "",
+  "error": null,
+  "image_settings": {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "device_scale_factor": 1.0,
+    "screenshot_format": "png",
+    "full_page": false,
+    "provider_profile": "oracle",
+    "provider": {
+      "api": null,
+      "format": "png",
+      "detail": null,
+      "detail_field": null,
+      "note": "oracle does not send screenshots to a VLM"
+    }
+  },
+  "invalid_reason": null,
+  "invalid_detail": null
+}

@@ -1,0 +1,29 @@
+{
+  "task_id": "exploratory/S1_active_tab_sum_gate",
+  "agent": "oracle",
+  "ui_only": true,
+  "seeds": [
+    {
+      "seed": 0,
+      "success": true,
+      "score": 1.0,
+      "error": null,
+      "episode_id": "1e6e7b8b"
+    },
+    {
+      "seed": 1,
+      "success": true,
+      "score": 1.0,
+      "error": null,
+      "episode_id": "3450f841"
+    },
+    {
+      "seed": 2,
+      "success": true,
+      "score": 1.0,
+      "error": null,
+      "episode_id": "74d5c9a1"
+    }
+  ],
+  "all_1_00": true
+}

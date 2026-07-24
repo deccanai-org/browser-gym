@@ -1,0 +1,42 @@
+{
+  "episode_id": "2658593e",
+  "task_id": "exploratory/S2_cross_sheet_qty_authority",
+  "seed": 1,
+  "agent_name": "oracle",
+  "started_at": 1784581280.5398662,
+  "finished_at": 1784581280.53987,
+  "task_brief": "",
+  "task_difficulty": "",
+  "task_category": "",
+  "initial_url": "",
+  "initial_snapshot": {},
+  "steps": [],
+  "final_url": "",
+  "final_snapshot": {},
+  "verifier_result": {},
+  "agent_failure_class": null,
+  "vein": null,
+  "specific_failure": null,
+  "ui_variant": "normal",
+  "video_path": "",
+  "error": "RuntimeError: HARNESS_TOKEN is not configured",
+  "image_settings": {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "device_scale_factor": 1.0,
+    "screenshot_format": "png",
+    "full_page": false,
+    "provider_profile": "oracle",
+    "provider": {
+      "api": null,
+      "format": "png",
+      "detail": null,
+      "detail_field": null,
+      "note": "oracle does not send screenshots to a VLM"
+    }
+  },
+  "invalid_reason": "invalid_reset",
+  "invalid_detail": "RuntimeError: HARNESS_TOKEN is not configured"
+}

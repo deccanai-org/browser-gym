@@ -1,0 +1,1453 @@
+{
+  "episode_id": "5e1f3a02",
+  "task_id": "M384/active_tab_sum_gate",
+  "seed": 2,
+  "agent_name": "qwen[qwen/qwen3-vl-235b-a22b-instruct]",
+  "started_at": 1784587618.585762,
+  "finished_at": 1784587929.5403452,
+  "task_brief": "On the `Approved Lines` sheet, set the line quantities so `Total Kits` (`B10`, formula `=SUM(B5:B8)`) equals **6**. Then order exactly that many `Launch Kit` units from ValueMart. Do not use the Draft sheet or any cached total. Email me the order number and the Total Kits value after recalculation.",
+  "task_difficulty": "medium",
+  "task_category": "M",
+  "initial_url": "http://127.0.0.1:8150/sheets",
+  "initial_snapshot": {
+    "task_id": "M384/active_tab_sum_gate",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "market_orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 14,
+        "role": "tab",
+        "name": "Approved Lines",
+        "coord": [
+          206,
+          268
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/sheets",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_000.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Switch to the Approved Lines sheet to begin setting line quantities.",
+      "action_error": null,
+      "action_latency_ms": 573,
+      "raw_model_output": "## Plan\n1. [next] Switch to the \u201cApproved Lines\u201d sheet by clicking its tab (mark 14).\n2. [later] Adjust quantities in cells B5\u2013B8 so that B10 (Total Kits) equals 6.\n3. [later] Navigate to ValueMart (mark 4) and order exactly 6 Launch Kit units.\n4. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n5. [done] None yet.\n\n## What I see now\nThe current sheet is \u201cDraft\u201d (tab 13 is active). The \u201cApproved Lines\u201d tab (mark 14) is visible and needs to be selected. The grid shows draft quantities (B5=3, B6=2, B7=2, B8=1) and a cached total of 8 in B10 \u2014 which we must ignore. We must switch to the Approved Lines sheet to set the real quantities.\n\n## Next action\n",
+      "tokens_in": 5232,
+      "tokens_out": 250,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 10,
+        "role": "textbox",
+        "name": "Name box",
+        "coord": [
+          182,
+          215
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/sheets",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Name box to type B6 and select the Midline quantity cell.",
+      "action_error": null,
+      "action_latency_ms": 493,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [next] Click cell B6 (Midline qty, currently 1) to select it for editing.\n3. [later] Change B6 to 2 so that B10 = 2 (Base) + 2 (Midline) + 1 (Add-on) + 1 (Spare) = 6.\n4. [later] Navigate to ValueMart (mark 4) and order 6 Launch Kit units.\n5. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nWe are on the \u201cApproved Lines\u201d sheet. Current quantities: B5=2 (Base), B6=1 (Midline), B7=1 (Add-on), B8=1 (Spare). Total Kits (B10) currently shows 5. To reach 6, we need to increase one of the quantities by 1. The note in B11 suggests raising Midline (B6) if needed \u2014 so we\u2019ll change B6 from 1 to 2.\n\n## Next action\n\n",
+      "tokens_in": 6866,
+      "tokens_out": 296,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 10,
+        "value": "B6",
+        "role": "textbox",
+        "name": "Name box",
+        "coord": [
+          182,
+          215
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/sheets",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Select cell B6 to edit the Midline quantity.",
+      "action_error": null,
+      "action_latency_ms": 476,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [next] Type \u201cB6\u201d into the Name box (mark 10) to select the Midline quantity cell.\n3. [later] Change B6 to 2 so that B10 = 2 (Base) + 2 (Midline) + 1 (Add-on) + 1 (Spare) = 6.\n4. [later] Navigate to ValueMart (mark 4) and order 6 Launch Kit units.\n5. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe Name box (mark 10) is focused and ready for input. We need to type \u201cB6\u201d to select the Midline quantity cell so we can edit it.\n\n## Next action\n\n",
+      "tokens_in": 8546,
+      "tokens_out": 237,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 11,
+        "role": "textbox",
+        "name": "Formula",
+        "coord": [
+          695,
+          215
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/sheets",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Formula bar to focus it for typing the new value.",
+      "action_error": null,
+      "action_latency_ms": 503,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Typed \u201cB6\u201d into the Name box to select the Midline quantity cell.\n3. [next] Click the Formula bar (mark 11) to focus it and prepare to type \u201c2\u201d.\n4. [later] Change B6 to 2 so that B10 = 2 (Base) + 2 (Midline) + 1 (Add-on) + 1 (Spare) = 6.\n5. [later] Navigate to ValueMart (mark 4) and order 6 Launch Kit units.\n6. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe Name box (mark 10) shows \u201cB6\u201d, meaning cell B6 is selected. The Formula bar (mark 11) is visible and ready to receive input. We need to type \u201c2\u201d into the Formula bar to update the Midline quantity.\n\n## Next action\n\n\n",
+      "tokens_in": 10171,
+      "tokens_out": 270,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 11,
+        "value": "2",
+        "role": "textbox",
+        "name": "Formula",
+        "coord": [
+          695,
+          215
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/sheets",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Set the Midline quantity (B6) to 2 to make Total Kits equal 6.",
+      "action_error": null,
+      "action_latency_ms": 471,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [next] Type \u201c2\u201d into the Formula bar to set Midline quantity to 2.\n5. [later] Verify B10 recalculates to 6.\n6. [later] Navigate to ValueMart (mark 4) and order 6 Launch Kit units.\n7. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe Formula bar (mark 11) is focused and currently displays \u201c1\u201d (the current value of B6). We need to overwrite it with \u201c2\u201d to increase the Midline quantity and make Total Kits equal 6.\n\n## Next action\n\n\n",
+      "tokens_in": 11830,
+      "tokens_out": 264,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "key_press",
+      "action_args": {
+        "key": "Enter"
+      },
+      "url_after": "http://127.0.0.1:8150/sheets",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Commit the value in the Formula bar to cell B6 and trigger recalculation of Total Kits (B10).",
+      "action_error": null,
+      "action_latency_ms": 10,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but the cell still shows 1 and B10 still shows 5, meaning the change hasn\u2019t been committed.\n5. [next] Press Enter to commit the value \u201c2\u201d into cell B6 and trigger recalculation of B10.\n6. [later] Verify B10 now equals 6.\n7. [later] Navigate to ValueMart (mark 4) and order 6 Launch Kit units.\n8. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe Formula bar (mark 11) shows \u201c12\u201d \u2014 likely because we typed \u201c2\u201d while the cell still contained \u201c1\u201d, so it became \u201c12\u201d. The cell B6 still displays \u201c1\u201d, and B10 still shows \u201c5\u201d. We need to press Enter to commit the intended value and force recalculation.\n\n## Next action\n\n\n",
+      "tokens_in": 13486,
+      "tokens_out": 324,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 11,
+        "role": "textbox",
+        "name": "Formula",
+        "coord": [
+          695,
+          215
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/sheets",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Formula bar to focus it for overwriting the incorrect value '12' with '2'.",
+      "action_error": null,
+      "action_latency_ms": 523,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [next] Click the Formula bar (mark 11) again to select the text and overwrite it with \u201c2\u201d.\n6. [later] Press Enter to commit the correct value and recalculate B10 to 6.\n7. [later] Navigate to ValueMart (mark 4) and order 6 Launch Kit units.\n8. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nCell B6 currently contains \u201c12\u201d (incorrect), and B10 shows \u201c16\u201d (incorrect). We need to fix B6 to be \u201c2\u201d so that B10 recalculates to 6. The Formula bar (mark 11) still shows \u201c12\u201d \u2014 we\u2019ll click it to focus and overwrite with \u201c2\u201d.\n\n## Next action\n\n\n\n",
+      "tokens_in": 15200,
+      "tokens_out": 332,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "key_press",
+      "action_args": {
+        "key": "Control+a"
+      },
+      "url_after": "http://127.0.0.1:8150/sheets",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_007.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Select all text in the Formula bar to prepare for overwriting with the correct value.",
+      "action_error": null,
+      "action_latency_ms": 19,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [done] Clicked the Formula bar again to focus it for correction.\n6. [next] Press Control+A to select all text in the Formula bar, then Backspace to delete it, then type \u201c2\u201d.\n7. [later] Press Enter to commit the value and recalculate B10 to 6.\n8. [later] Navigate to ValueMart (mark 4) and order 6 Launch Kit units.\n9. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe Formula bar (mark 11) is focused and shows \u201c12\u201d. We need to overwrite it completely with \u201c2\u201d to fix the Midline quantity and make B10 equal 6.\n\n## Next action\n\n\n\n",
+      "tokens_in": 16922,
+      "tokens_out": 311,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 8,
+      "action_kind": "key_press",
+      "action_args": {
+        "key": "Backspace"
+      },
+      "url_after": "http://127.0.0.1:8150/sheets",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_008.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 7,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Delete the selected text '12' in the Formula bar.",
+      "action_error": null,
+      "action_latency_ms": 12,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [done] Clicked the Formula bar again to focus it for correction.\n6. [done] Pressed Control+A to select all text in the Formula bar.\n7. [next] Press Backspace to delete the selected \u201c12\u201d, then type \u201c2\u201d.\n8. [later] Press Enter to commit the value and recalculate B10 to 6.\n9. [later] Navigate to ValueMart (mark 4) and order 6 Launch Kit units.\n10. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe Formula bar (mark 11) is focused and all text (\u201c12\u201d) is selected. We need to delete it and type \u201c2\u201d to correct the Midline quantity.\n\n## Next action\n\n\n\n\n",
+      "tokens_in": 18623,
+      "tokens_out": 314,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 9,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 11,
+        "value": "2",
+        "role": "textbox",
+        "name": "Formula",
+        "coord": [
+          695,
+          215
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/sheets",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_009.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 8,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Set the Midline quantity (B6) to 2 to make Total Kits equal 6.",
+      "action_error": null,
+      "action_latency_ms": 468,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [done] Clicked the Formula bar again to focus it for correction.\n6. [done] Pressed Control+A to select all text in the Formula bar.\n7. [done] Pressed Backspace to delete the selected \u201c12\u201d.\n8. [next] Type \u201c2\u201d into the Formula bar to set the correct Midline quantity.\n9. [later] Press Enter to commit the value and recalculate B10 to 6.\n10. [later] Navigate to ValueMart (mark 4) and order 6 Launch Kit units.\n11. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe Formula bar (mark 11) is focused and empty after deleting \u201c12\u201d. We need to type \u201c2\u201d to set the correct value for cell B6.\n\n## Next action\n\n\n\n\n\n",
+      "tokens_in": 20321,
+      "tokens_out": 345,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 10,
+      "action_kind": "key_press",
+      "action_args": {
+        "key": "Enter"
+      },
+      "url_after": "http://127.0.0.1:8150/sheets",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_010.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 9,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Commit the value '2' into cell B6 and trigger recalculation of Total Kits (B10).",
+      "action_error": null,
+      "action_latency_ms": 22,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [done] Clicked the Formula bar again to focus it for correction.\n6. [done] Pressed Control+A to select all text in the Formula bar.\n7. [done] Pressed Backspace to delete the selected \u201c12\u201d.\n8. [done] Typed \u201c2\u201d into the Formula bar to set the correct Midline quantity.\n9. [next] Press Enter to commit the value and recalculate B10 to 6.\n10. [later] Navigate to ValueMart (mark 4) and order 6 Launch Kit units.\n11. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe Formula bar (mark 11) shows \u201c2\u201d, but cell B6 still displays \u201c12\u201d and B10 still shows \u201c16\u201d. We need to press Enter to commit the value and trigger recalculation.\n\n## Next action\n\n\n\n\n\n\n",
+      "tokens_in": 22057,
+      "tokens_out": 351,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 11,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 12,
+        "role": "button",
+        "name": "Save",
+        "coord": [
+          1159,
+          215
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/sheets",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_011.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 10,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the Save button to persist the changes to the Approved Lines sheet.",
+      "action_error": null,
+      "action_latency_ms": 482,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [done] Clicked the Formula bar again to focus it for correction.\n6. [done] Pressed Control+A to select all text in the Formula bar.\n7. [done] Pressed Backspace to delete the selected \u201c12\u201d.\n8. [done] Typed \u201c2\u201d into the Formula bar to set the correct Midline quantity.\n9. [done] Pressed Enter to commit the value \u2014 B6 now shows 2 and B10 now shows 6, as required.\n10. [next] Click the \u201cSave\u201d button (mark 12) to persist the changes.\n11. [later] Navigate to ValueMart (mark 4) and order 6 Launch Kit units.\n12. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nCell B6 now correctly shows \u201c2\u201d, and B10 now correctly shows \u201c6\u201d \u2014 the Total Kits target is achieved. The next step is to save this change before proceeding to ValueMart.\n\n## Next action\n\n\n\n\n\n\n\n",
+      "tokens_in": 23797,
+      "tokens_out": 370,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/sheets",
+          "title": "ShopGym Sheets \u2014 Kit Order Workbook",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 12,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 4,
+        "role": "link",
+        "name": "ValueMart",
+        "coord": [
+          400,
+          16
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/sheets",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_012.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 11,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Navigate to ValueMart to order 6 Launch Kit units.",
+      "action_error": null,
+      "action_latency_ms": 476,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [done] Clicked the Formula bar again to focus it for correction.\n6. [done] Pressed Control+A to select all text in the Formula bar.\n7. [done] Pressed Backspace to delete the selected \u201c12\u201d.\n8. [done] Typed \u201c2\u201d into the Formula bar to set the correct Midline quantity.\n9. [done] Pressed Enter to commit the value \u2014 B6 now shows 2 and B10 now shows 6, as required.\n10. [done] Clicked the \u201cSave\u201d button (mark 12) to persist the changes.\n11. [next] Click the \u201cValueMart\u201d link (mark 4) to navigate to the ValueMart store.\n12. [later] Search for \u201cLaunch Kit\u201d and add 6 units to the cart.\n13. [later] Complete the checkout and obtain the order number.\n14. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe Approved Lines sheet is saved with B10 = 6. The next step is to navigate to ValueMart to place the order for 6 Launch Kit units. The \u201cValueMart\u201d link is visible in the top navigation bar (mark 4).\n\n## Next action\n\n\n\n\n\n\n\n",
+      "tokens_in": 25556,
+      "tokens_out": 418,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market",
+          "title": "ValueMart \u2014 Shop",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 13,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 31,
+        "role": "button",
+        "name": "Add +",
+        "coord": [
+          1083,
+          776
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/market",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_013.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 12,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the 'Add +' button for the Launch Kit to add one unit to the cart.",
+      "action_error": null,
+      "action_latency_ms": 468,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [done] Clicked the Formula bar again to focus it for correction.\n6. [done] Pressed Control+A to select all text in the Formula bar.\n7. [done] Pressed Backspace to delete the selected \u201c12\u201d.\n8. [done] Typed \u201c2\u201d into the Formula bar to set the correct Midline quantity.\n9. [done] Pressed Enter to commit the value \u2014 B6 now shows 2 and B10 now shows 6, as required.\n10. [done] Clicked the \u201cSave\u201d button (mark 12) to persist the changes.\n11. [done] Clicked the \u201cValueMart\u201d link (mark 4) to navigate to the ValueMart store.\n12. [next] Click the \u201cAdd +\u201d button for the \u201cLaunch Kit\u201d (mark 31) to add one unit to the cart.\n13. [later] Repeat adding until 6 units are in the cart.\n14. [later] Proceed to checkout and obtain the order number.\n15. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nWe are on the ValueMart homepage. The \u201cLaunch Kit\u201d product is visible at the bottom of the grid, with an \u201cAdd +\u201d button (mark 31) next to it. We need to add 6 units to the cart.\n\n## Next action\n\n\n\n\n\n\n\n\n",
+      "tokens_in": 27522,
+      "tokens_out": 454,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 14,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 13,
+        "role": "button",
+        "name": "Add to cart",
+        "coord": [
+          310,
+          504
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/market/product/vm_launch_kit",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_014.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 13,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the 'Add to cart' button to add a second Launch Kit unit to the cart.",
+      "action_error": null,
+      "action_latency_ms": 470,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [done] Clicked the Formula bar again to focus it for correction.\n6. [done] Pressed Control+A to select all text in the Formula bar.\n7. [done] Pressed Backspace to delete the selected \u201c12\u201d.\n8. [done] Typed \u201c2\u201d into the Formula bar to set the correct Midline quantity.\n9. [done] Pressed Enter to commit the value \u2014 B6 now shows 2 and B10 now shows 6, as required.\n10. [done] Clicked the \u201cSave\u201d button (mark 12) to persist the changes.\n11. [done] Clicked the \u201cValueMart\u201d link (mark 4) to navigate to the ValueMart store.\n12. [done] Clicked the \u201cAdd +\u201d button for the \u201cLaunch Kit\u201d (mark 31) to add one unit to the cart.\n13. [next] Click the \u201cAdd to cart\u201d button (mark 13) again to add a second unit.\n14. [later] Repeat until 6 units are in the cart.\n15. [later] Proceed to checkout and obtain the order number.\n16. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nWe are on the Launch Kit product page. The cart icon (mark 9) shows 1 item. The \u201cAdd to cart\u201d button (mark 13) is visible and can be clicked to add another unit. We need to click it 5 more times to reach 6 units.\n\n## Next action\n\n\n\n\n\n\n\n\n\n\n",
+      "tokens_in": 29355,
+      "tokens_out": 492,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 15,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 13,
+        "role": "button",
+        "name": "Add to cart",
+        "coord": [
+          310,
+          504
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/market/product/vm_launch_kit",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_015.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 14,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the 'Add to cart' button to add a third Launch Kit unit to the cart.",
+      "action_error": null,
+      "action_latency_ms": 494,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [done] Clicked the Formula bar again to focus it for correction.\n6. [done] Pressed Control+A to select all text in the Formula bar.\n7. [done] Pressed Backspace to delete the selected \u201c12\u201d.\n8. [done] Typed \u201c2\u201d into the Formula bar to set the correct Midline quantity.\n9. [done] Pressed Enter to commit the value \u2014 B6 now shows 2 and B10 now shows 6, as required.\n10. [done] Clicked the \u201cSave\u201d button (mark 12) to persist the changes.\n11. [done] Clicked the \u201cValueMart\u201d link (mark 4) to navigate to the ValueMart store.\n12. [done] Clicked the \u201cAdd +\u201d button for the \u201cLaunch Kit\u201d (mark 31) to add one unit to the cart.\n13. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a second unit.\n14. [next] Click the \u201cAdd to cart\u201d button (mark 13) again to add a third unit.\n15. [later] Repeat until 6 units are in the cart.\n16. [later] Proceed to checkout and obtain the order number.\n17. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe cart icon (mark 9) shows 2 items. The \u201cAdd to cart\u201d button (mark 13) is visible and can be clicked to add another unit. We need to click it 4 more times to reach 6 units.\n\n## Next action\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "tokens_in": 31238,
+      "tokens_out": 511,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 16,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 13,
+        "role": "button",
+        "name": "Add to cart",
+        "coord": [
+          310,
+          504
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/market/product/vm_launch_kit",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_016.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 15,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the 'Add to cart' button to add a fourth Launch Kit unit to the cart.",
+      "action_error": null,
+      "action_latency_ms": 473,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [done] Clicked the Formula bar again to focus it for correction.\n6. [done] Pressed Control+A to select all text in the Formula bar.\n7. [done] Pressed Backspace to delete the selected \u201c12\u201d.\n8. [done] Typed \u201c2\u201d into the Formula bar to set the correct Midline quantity.\n9. [done] Pressed Enter to commit the value \u2014 B6 now shows 2 and B10 now shows 6, as required.\n10. [done] Clicked the \u201cSave\u201d button (mark 12) to persist the changes.\n11. [done] Clicked the \u201cValueMart\u201d link (mark 4) to navigate to the ValueMart store.\n12. [done] Clicked the \u201cAdd +\u201d button for the \u201cLaunch Kit\u201d (mark 31) to add one unit to the cart.\n13. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a second unit.\n14. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a third unit.\n15. [next] Click the \u201cAdd to cart\u201d button (mark 13) again to add a fourth unit.\n16. [later] Repeat until 6 units are in the cart.\n17. [later] Proceed to checkout and obtain the order number.\n18. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe cart icon (mark 9) shows 3 items. The \u201cAdd to cart\u201d button (mark 13) is visible and can be clicked to add another unit. We need to click it 3 more times to reach 6 units.\n\n## Next action\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "tokens_in": 33139,
+      "tokens_out": 538,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 17,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 13,
+        "role": "button",
+        "name": "Add to cart",
+        "coord": [
+          310,
+          504
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/market/product/vm_launch_kit",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_017.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 16,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the 'Add to cart' button to add a fifth Launch Kit unit to the cart.",
+      "action_error": null,
+      "action_latency_ms": 473,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [done] Clicked the Formula bar again to focus it for correction.\n6. [done] Pressed Control+A to select all text in the Formula bar.\n7. [done] Pressed Backspace to delete the selected \u201c12\u201d.\n8. [done] Typed \u201c2\u201d into the Formula bar to set the correct Midline quantity.\n9. [done] Pressed Enter to commit the value \u2014 B6 now shows 2 and B10 now shows 6, as required.\n10. [done] Clicked the \u201cSave\u201d button (mark 12) to persist the changes.\n11. [done] Clicked the \u201cValueMart\u201d link (mark 4) to navigate to the ValueMart store.\n12. [done] Clicked the \u201cAdd +\u201d button for the \u201cLaunch Kit\u201d (mark 31) to add one unit to the cart.\n13. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a second unit.\n14. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a third unit.\n15. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a fourth unit.\n16. [next] Click the \u201cAdd to cart\u201d button (mark 13) again to add a fifth unit.\n17. [later] Click it one more time to add a sixth unit.\n18. [later] Proceed to checkout and obtain the order number.\n19. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe cart icon (mark 9) shows 4 items. The \u201cAdd to cart\u201d button (mark 13) is visible and can be clicked to add another unit. We need to click it 2 more times to reach 6 units.\n\n## Next action\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "tokens_in": 35067,
+      "tokens_out": 566,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 18,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 13,
+        "role": "button",
+        "name": "Add to cart",
+        "coord": [
+          310,
+          504
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/market/product/vm_launch_kit",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_018.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 17,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the 'Add to cart' button to add the sixth and final Launch Kit unit to the cart.",
+      "action_error": null,
+      "action_latency_ms": 467,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [done] Clicked the Formula bar again to focus it for correction.\n6. [done] Pressed Control+A to select all text in the Formula bar.\n7. [done] Pressed Backspace to delete the selected \u201c12\u201d.\n8. [done] Typed \u201c2\u201d into the Formula bar to set the correct Midline quantity.\n9. [done] Pressed Enter to commit the value \u2014 B6 now shows 2 and B10 now shows 6, as required.\n10. [done] Clicked the \u201cSave\u201d button (mark 12) to persist the changes.\n11. [done] Clicked the \u201cValueMart\u201d link (mark 4) to navigate to the ValueMart store.\n12. [done] Clicked the \u201cAdd +\u201d button for the \u201cLaunch Kit\u201d (mark 31) to add one unit to the cart.\n13. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a second unit.\n14. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a third unit.\n15. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a fourth unit.\n16. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a fifth unit.\n17. [next] Click the \u201cAdd to cart\u201d button (mark 13) again to add a sixth unit.\n18. [later] Proceed to checkout and obtain the order number.\n19. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe cart icon (mark 9) shows 5 items. The \u201cAdd to cart\u201d button (mark 13) is visible and can be clicked to add the final unit. After this, we\u2019ll have 6 units in the cart, matching the Total Kits value.\n\n## Next action\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "tokens_in": 37024,
+      "tokens_out": 583,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/product/vm_launch_kit",
+          "title": "ValueMart \u2014 Launch Kit",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 19,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 9,
+        "role": "button",
+        "name": "\ud83d\uded2\nCart\n6",
+        "coord": [
+          1079,
+          68
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/market/product/vm_launch_kit",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_019.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 18,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the cart icon to view the cart and proceed to checkout.",
+      "action_error": null,
+      "action_latency_ms": 477,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [done] Clicked the Formula bar again to focus it for correction.\n6. [done] Pressed Control+A to select all text in the Formula bar.\n7. [done] Pressed Backspace to delete the selected \u201c12\u201d.\n8. [done] Typed \u201c2\u201d into the Formula bar to set the correct Midline quantity.\n9. [done] Pressed Enter to commit the value \u2014 B6 now shows 2 and B10 now shows 6, as required.\n10. [done] Clicked the \u201cSave\u201d button (mark 12) to persist the changes.\n11. [done] Clicked the \u201cValueMart\u201d link (mark 4) to navigate to the ValueMart store.\n12. [done] Clicked the \u201cAdd +\u201d button for the \u201cLaunch Kit\u201d (mark 31) to add one unit to the cart.\n13. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a second unit.\n14. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a third unit.\n15. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a fourth unit.\n16. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a fifth unit.\n17. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a sixth unit.\n18. [next] Click the cart icon (mark 9) to view the cart and proceed to checkout.\n19. [later] Complete the checkout and obtain the order number.\n20. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe cart icon (mark 9) shows 6 items \u2014 we have successfully added the required 6 Launch Kit units. The next step is to view the cart and proceed to checkout to obtain the order number.\n\n## Next action\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "tokens_in": 38997,
+      "tokens_out": 584,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/cart",
+          "title": "ValueMart \u2014 Cart",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 20,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 16,
+        "role": "button",
+        "name": "Place order",
+        "coord": [
+          892,
+          515
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/market/cart",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_020.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 19,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the 'Place order' button to complete the purchase and obtain the order number.",
+      "action_error": null,
+      "action_latency_ms": 525,
+      "raw_model_output": "## Plan\n1. [done] Switched to \u201cApproved Lines\u201d sheet (mark 14).\n2. [done] Selected cell B6 by typing \u201cB6\u201d into the Name box (mark 10).\n3. [done] Clicked the Formula bar (mark 11) to focus it.\n4. [done] Typed \u201c2\u201d into the Formula bar \u2014 but accidentally left \u201c12\u201d in the cell, making B10 = 16.\n5. [done] Clicked the Formula bar again to focus it for correction.\n6. [done] Pressed Control+A to select all text in the Formula bar.\n7. [done] Pressed Backspace to delete the selected \u201c12\u201d.\n8. [done] Typed \u201c2\u201d into the Formula bar to set the correct Midline quantity.\n9. [done] Pressed Enter to commit the value \u2014 B6 now shows 2 and B10 now shows 6, as required.\n10. [done] Clicked the \u201cSave\u201d button (mark 12) to persist the changes.\n11. [done] Clicked the \u201cValueMart\u201d link (mark 4) to navigate to the ValueMart store.\n12. [done] Clicked the \u201cAdd +\u201d button for the \u201cLaunch Kit\u201d (mark 31) to add one unit to the cart.\n13. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a second unit.\n14. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a third unit.\n15. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a fourth unit.\n16. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a fifth unit.\n17. [done] Clicked the \u201cAdd to cart\u201d button (mark 13) to add a sixth unit.\n18. [done] Clicked the cart icon (mark 9) to view the cart.\n19. [next] Click the \u201cPlace order\u201d button (mark 16) to complete the purchase and obtain the order number.\n20. [later] Email the order number and the recalculated Total Kits value (from B10) to the user.\n\n## What I see now\nThe cart page shows 6 Launch Kit units with a total of $119.94. The \u201cPlace order\u201d button (mark 16) is visible and ready to be clicked to complete the purchase.\n\n## Next action\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "tokens_in": 40987,
+      "tokens_out": 602,
+      "facts_visible_or_created": {},
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/order/VM-2201",
+          "title": "ValueMart \u2014 Order VM-2201",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 21,
+      "action_kind": "open_tab",
+      "action_args": {
+        "url": "/mail",
+        "tab_index": 1
+      },
+      "url_after": "http://127.0.0.1:8150/mail",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_021.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 20,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Open the Mail app in a new tab to read the confirmation email and verify the order number and total.",
+      "action_error": null,
+      "action_latency_ms": 373,
+      "raw_model_output": "",
+      "tokens_in": 42968,
+      "tokens_out": 46,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/order/VM-2201",
+          "title": "ValueMart \u2014 Order VM-2201",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8150/mail",
+          "title": "ShopGym Mail \u2014 Inbox",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 22,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 14,
+        "role": "link",
+        "name": "orders@valuemart.com\nYour ValueMart order VM-2201 is confirmed\nORDERS\nnow",
+        "coord": [
+          640,
+          281
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/mail",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_022.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 21,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the email from orders@valuemart.com to open the confirmation and verify the order number and total.",
+      "action_error": null,
+      "action_latency_ms": 546,
+      "raw_model_output": "",
+      "tokens_in": 44535,
+      "tokens_out": 48,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/order/VM-2201",
+          "title": "ValueMart \u2014 Order VM-2201",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8150/mail/message/em_4",
+          "title": "ShopGym Mail \u2014 Your ValueMart order VM-2201 is confirmed",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 23,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 11,
+        "role": "button",
+        "name": "\u270f\ufe0f\nCompose",
+        "coord": [
+          929,
+          63
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/mail/message/em_4",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_023.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 22,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the 'Compose' button to start drafting an email with the order number and Total Kits value.",
+      "action_error": null,
+      "action_latency_ms": 489,
+      "raw_model_output": "",
+      "tokens_in": 46049,
+      "tokens_out": 46,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/order/VM-2201",
+          "title": "ValueMart \u2014 Order VM-2201",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8150/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 24,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 14,
+        "value": "user@example.com",
+        "role": "textbox",
+        "name": "To",
+        "coord": [
+          480,
+          314
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/mail/compose",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_024.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 23,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Enter the recipient's email address in the 'To' field.",
+      "action_error": null,
+      "action_latency_ms": 496,
+      "raw_model_output": "",
+      "tokens_in": 47577,
+      "tokens_out": 48,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/order/VM-2201",
+          "title": "ValueMart \u2014 Order VM-2201",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8150/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 25,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 15,
+        "value": "Order Confirmation and Total Kits Value",
+        "role": "textbox",
+        "name": "Subject",
+        "coord": [
+          480,
+          388
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/mail/compose",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_025.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 24,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Enter the subject line for the email.",
+      "action_error": null,
+      "action_latency_ms": 502,
+      "raw_model_output": "",
+      "tokens_in": 49112,
+      "tokens_out": 46,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/order/VM-2201",
+          "title": "ValueMart \u2014 Order VM-2201",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8150/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 26,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 16,
+        "value": "Dear User,\n\nYour order has been successfully placed. Here are the details:\n\n- Order Number: VM-2201\n- Total Kits Value (from Approved Lines sheet): 6\n\nThank you for your order.\n\nBest regards,\nShopGym Team",
+        "role": "textbox",
+        "name": "Message",
+        "coord": [
+          480,
+          532
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/mail/compose",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_026.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 25,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Enter the message body with the order number and Total Kits value.",
+      "action_error": null,
+      "action_latency_ms": 549,
+      "raw_model_output": "",
+      "tokens_in": 50655,
+      "tokens_out": 105,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/order/VM-2201",
+          "title": "ValueMart \u2014 Order VM-2201",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8150/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 27,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 17,
+        "role": "button",
+        "name": "Send",
+        "coord": [
+          202,
+          674
+        ]
+      },
+      "url_after": "http://127.0.0.1:8150/mail/compose",
+      "screenshot_path": "screenshots/harvest/M384_active_tab_sum_gate__2__5e1f3a02/step_027.png",
+      "milestones_fired_this_step": [
+        "s1_sum_gate_order_and_email"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "M384/active_tab_sum_gate",
+        "step": 26,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click the 'Send' button to send the email with the order number and Total Kits value.",
+      "action_error": null,
+      "action_latency_ms": 477,
+      "raw_model_output": "",
+      "tokens_in": 52270,
+      "tokens_out": 45,
+      "facts_visible_or_created": {},
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8150/market/order/VM-2201",
+          "title": "ValueMart \u2014 Order VM-2201",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8150/mail?sent=1",
+          "title": "ShopGym Mail \u2014 Inbox",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    }
+  ],
+  "final_url": "http://127.0.0.1:8150/market/order/VM-2201",
+  "final_snapshot": {
+    "task_id": "M384/active_tab_sum_gate",
+    "step": 27,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "market_orders_count": 1,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [
+      "s1_harm_wrong_qty_or_decoy"
+    ],
+    "all_milestones": [
+      {
+        "name": "s1_sum_gate_order_and_email",
+        "weight": 1.0,
+        "fired_at_step": 27,
+        "required": true,
+        "forbidden": false
+      },
+      {
+        "name": "s1_harm_wrong_qty_or_decoy",
+        "weight": 0.0,
+        "fired_at_step": -1,
+        "required": false,
+        "forbidden": true
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "vein": "content-default",
+  "specific_failure": null,
+  "ui_variant": "normal",
+  "video_path": "",
+  "error": null,
+  "image_settings": {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "device_scale_factor": 1.0,
+    "screenshot_format": "png",
+    "full_page": false,
+    "provider_profile": "qwen_pixel",
+    "provider": {
+      "api": "openai_compatible",
+      "format": "png",
+      "detail": "high",
+      "detail_field": "image_url.detail",
+      "via": "OpenAIPixelAgent"
+    }
+  },
+  "invalid_reason": null,
+  "invalid_detail": null
+}
