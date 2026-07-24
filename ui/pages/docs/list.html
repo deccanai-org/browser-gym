@@ -1,0 +1,38 @@
+{% extends "docs/_docs_layout.html" %}
+{% block title %}{% if folder == 'trash' %}Trash{% else %}Docs{% endif %}{% endblock %}
+{% block content %}
+
+<div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+  <div class="px-4 py-3 border-b border-slate-200 flex items-center justify-between">
+    <h1 class="font-bold text-lg" data-test-id="docs-list-title">
+      {% if folder == 'trash' %}Trash{% else %}Documents{% endif %}
+    </h1>
+    <span class="text-sm text-slate-500" data-test-id="docs-count">{{ documents|length }} items</span>
+  </div>
+
+  {% if documents %}
+  <ul role="list" data-test-id="docs-list" class="divide-y divide-slate-100">
+    {% for d in documents %}
+    <li role="listitem">
+      <a href="/docs/{{ d.id }}" data-test-id="doc-item-{{ d.id }}"
+         class="flex items-center gap-3 px-4 py-3 hover:bg-slate-50">
+        {% if d.starred %}
+        <span class="text-amber-500" aria-label="Starred" data-test-id="doc-starred-{{ d.id }}">★</span>
+        {% else %}
+        <span class="text-slate-300" aria-hidden="true">☆</span>
+        {% endif %}
+        <span class="flex-1 truncate font-medium text-slate-900"
+              data-test-id="doc-title-{{ d.id }}">{{ d.title }}</span>
+        <span class="text-xs text-slate-400 w-20 text-right shrink-0">{{ d.updated_label }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="px-4 py-16 text-center text-slate-500" data-test-id="docs-empty">
+    {% if folder == 'trash' %}Trash is empty.{% else %}No documents yet.{% endif %}
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

@@ -12821,6 +12821,30 @@ from server.final_implicit_wave import (
 BRIEFS.update(_FINAL_IMPLICIT_BRIEFS)
 START_PATHS.update(_FINAL_IMPLICIT_START_URLS)
 TASKS.update(_FINAL_IMPLICIT_TASKS)
+from server.sheets_s1_task import (
+    BRIEFS as _SHEETS_S1_BRIEFS,
+    START_URLS as _SHEETS_S1_START_URLS,
+    TASK_FACTORIES as _SHEETS_S1_TASKS,
+)
+from server.sheets_s2_task import (
+    BRIEFS as _SHEETS_S2_BRIEFS,
+    START_URLS as _SHEETS_S2_START_URLS,
+    TASK_FACTORIES as _SHEETS_S2_TASKS,
+)
+from server.sheets_s3_task import (
+    BRIEFS as _SHEETS_S3_BRIEFS,
+    START_URLS as _SHEETS_S3_START_URLS,
+    TASK_FACTORIES as _SHEETS_S3_TASKS,
+)
+BRIEFS.update(_SHEETS_S1_BRIEFS)
+START_PATHS.update(_SHEETS_S1_START_URLS)
+TASKS.update(_SHEETS_S1_TASKS)
+BRIEFS.update(_SHEETS_S2_BRIEFS)
+START_PATHS.update(_SHEETS_S2_START_URLS)
+TASKS.update(_SHEETS_S2_TASKS)
+BRIEFS.update(_SHEETS_S3_BRIEFS)
+START_PATHS.update(_SHEETS_S3_START_URLS)
+TASKS.update(_SHEETS_S3_TASKS)
 
 
 def make_task(task_id: str, seed: int) -> "GymState | WorldState":

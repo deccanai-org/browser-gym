@@ -1,0 +1,29 @@
+{% extends "coupons/_coupons_layout.html" %}
+{% block title %}Wallet{% endblock %}
+{% block content %}
+
+<h1 class="text-2xl font-bold mb-4" data-test-id="coupons-wallet-title">Your wallet</h1>
+
+<ul role="list" data-test-id="coupons-wallet-list" class="space-y-3">
+  {% for offer, clipped in items %}
+  <li role="listitem" data-test-id="wallet-item-{{ offer.id }}"
+      class="bg-white rounded-lg border border-slate-200 shadow-sm px-4 py-3 flex items-center gap-3">
+    <div class="flex-1 min-w-0">
+      <a href="/coupons/{{ offer.id }}" class="font-semibold hover:underline">{{ offer.title }}</a>
+      <p class="text-xs text-slate-500 mt-0.5">
+        Code <code class="font-mono" data-test-id="lbl-coupon-code-{{ offer.id }}">{{ offer.code }}</code>
+        · {{ offer.merchant }}
+        {% if clipped.used %}<span data-test-id="wallet-used-{{ offer.id }}">· used</span>{% endif %}
+      </p>
+    </div>
+    <form action="/coupons/{{ offer.id }}/unclip" method="post">
+      <button type="submit" data-test-id="btn-unclip-{{ offer.id }}"
+              class="text-sm px-3 py-1.5 rounded border border-slate-200">Remove</button>
+    </form>
+  </li>
+  {% else %}
+  <li class="text-slate-500" data-test-id="wallet-empty">Wallet is empty. Clip an offer from Browse.</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

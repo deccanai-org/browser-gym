@@ -1,0 +1,31 @@
+{% extends "docs/_docs_layout.html" %}
+{% block title %}Edit {{ doc.title }}{% endblock %}
+{% block content %}
+
+<form action="/docs/{{ doc.id }}/update" method="post"
+      class="bg-white rounded-lg border border-slate-200 shadow-sm max-w-2xl"
+      data-test-id="form-edit-doc">
+  <div class="px-5 py-3 border-b border-slate-200 font-bold">Edit document</div>
+  <div class="px-5 py-4 space-y-3">
+    <label class="block">
+      <span class="text-xs text-slate-500">Title</span>
+      <input name="title" required value="{{ doc.title }}"
+             data-test-id="input-doc-title" aria-label="Title"
+             class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-teal-500" />
+    </label>
+    <label class="block">
+      <span class="text-xs text-slate-500">Body</span>
+      <textarea name="body" rows="12"
+                data-test-id="input-doc-body" aria-label="Body"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-teal-500">{{ doc.body }}</textarea>
+    </label>
+  </div>
+  <div class="px-5 py-3 border-t border-slate-200 flex gap-2 items-center">
+    <button type="submit" data-test-id="btn-save-doc"
+            class="bg-teal-600 hover:bg-teal-500 text-white px-5 py-2 rounded-md text-sm font-semibold">Save</button>
+    <a href="/docs/{{ doc.id }}" data-test-id="btn-cancel-edit-doc"
+       class="px-5 py-2 text-sm text-slate-500 hover:text-slate-700">Cancel</a>
+  </div>
+</form>
+
+{% endblock %}

@@ -436,7 +436,7 @@ add_table(
     [
         ["POST /_harness/reset", "Run task factory, create fresh GymState, return task brief"],
         ["GET /_harness/state", "Dump full GymState as JSON (debug only)"],
-        ["GET /_harness/snapshot", "Compact snapshot (cart_count, orders_count, ...)"],
+        ["GET /_harness/snapshot", "Compact snapshot (cart_item_count, orders_count=Shop, market_orders_count=ValueMart, ...)"],
         ["POST /_harness/verify", "Run all milestone checks, return score + newly_fired"],
         ["GET /_harness/tasks", "List of available task IDs"],
     ],

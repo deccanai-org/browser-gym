@@ -14046,6 +14046,12 @@ from server.wave_structural_implicit import suite_factories as _structural_impli
 SUITE_FACTORIES.update(_structural_implicit_suite_factories())
 from server.final_implicit_wave import suite_factories as _final_implicit_suite_factories
 SUITE_FACTORIES.update(_final_implicit_suite_factories())
+from server.sheets_s1_task import suite_factories as _sheets_s1_suite_factories
+SUITE_FACTORIES.update(_sheets_s1_suite_factories())
+from server.sheets_s2_task import suite_factories as _sheets_s2_suite_factories
+SUITE_FACTORIES.update(_sheets_s2_suite_factories())
+from server.sheets_s3_task import suite_factories as _sheets_s3_suite_factories
+SUITE_FACTORIES.update(_sheets_s3_suite_factories())
 
 
 def build_suite(task_id: str) -> TaskSuite:

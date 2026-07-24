@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ShopGym Sheets — {{ snapshot.workbook.title if snapshot.workbook else 'Workbook' }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+  {# TODO: replace CDN Tailwind on this page with local bundle + CSP when
+     vendored Univer assets land under /static/sheets (PHASE_E Gate 0/Phase 2). #}
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col antialiased">
+
+  {% include "_appbar.html" %}
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4 flex-wrap">
+      <a href="/sheets" class="flex items-center gap-2" data-test-id="sheets-logo">
+        <span class="text-2xl" aria-hidden="true">📊</span>
+        <span class="font-extrabold text-xl tracking-tight">Shop<span class="text-emerald-600">Sheets</span></span>
+      </a>
+      <span class="text-sm text-slate-600" data-test-id="sheets-workbook-title">
+        {{ snapshot.workbook.title if snapshot.workbook else 'No workbook' }}
+      </span>
+      <span class="flex-1"></span>
+      <span class="text-xs font-mono text-slate-500" data-test-id="revision">
+        rev {{ snapshot.revision }}
+      </span>
+      <span class="text-xs font-mono text-slate-500" data-test-id="recalc-status">
+        {{ snapshot.workbook.calculation_status if snapshot.workbook else 'n/a' }}
+      </span>
+    </div>
+  </header>
+
+  {% include "_taskbanner.html" %}
+
+  <main class="max-w-6xl mx-auto px-4 py-4 flex-1 w-full flex flex-col gap-3">
+    {# Formula bar — agent-operable cell edit (scaffold until Univer owns editing). #}
+    <div class="flex items-center gap-2 bg-white border border-slate-200 rounded px-3 py-2">
+      <label class="text-xs text-slate-500 shrink-0" for="name-box">Name</label>
+      <input id="name-box" data-test-id="name-box" aria-label="Name box"
+             class="w-24 border border-slate-300 rounded px-2 py-1 text-sm font-mono" value="A1" />
+      <span class="text-slate-300">|</span>
+      <div data-test-id="formula-bar" class="flex-1 flex items-center gap-2">
+        <span class="text-xs text-slate-500">fx</span>
+        <input data-test-id="formula-input" aria-label="Formula"
+               class="flex-1 border border-slate-300 rounded px-2 py-1 text-sm font-mono"
+               placeholder="Select a cell" />
+        <button type="button" data-test-id="btn-cell-save"
+                class="shrink-0 px-3 py-1 text-sm font-semibold rounded bg-emerald-600 text-white hover:bg-emerald-500">
+          Save
+        </button>
+      </div>
+    </div>
+
+    {# Sheet tabs #}
+    <div role="tablist" aria-label="Sheets" class="flex items-center gap-1 flex-wrap">
+      {% if snapshot.workbook %}
+        {% for sid in snapshot.workbook.sheet_order %}
+          {% set sh = snapshot.workbook.sheets[sid] %}
+          <button type="button" role="tab"
+                  data-test-id="sheet-tab-{{ sid }}"
+                  data-sheet-id="{{ sid }}"
+                  aria-selected="{{ 'true' if sid == snapshot.workbook.active_sheet_id else 'false' }}"
+                  class="px-3 py-1.5 text-sm rounded border {% if sid == snapshot.workbook.active_sheet_id %}bg-emerald-600 text-white border-emerald-600{% else %}bg-white border-slate-200{% endif %}">
+            {{ sh.name }}
+          </button>
+          <button type="button" data-test-id="sheet-context-{{ sid }}"
+                  class="sr-only">Context {{ sh.name }}</button>
+        {% endfor %}
+      {% endif %}
+      <button type="button" data-test-id="sheet-add"
+              class="px-2 py-1.5 text-sm border border-dashed border-slate-300 rounded text-slate-500">＋</button>
+    </div>
+
+    {#
+      Univer mount point. Fingerprinted local assets will load into #univer-root.
+      Until Gate 0 vendors Univer, render a deterministic HTML grid from /api/a11y
+      so selectors and server state remain exercisable. Grid sized so S3 cells
+      (e.g. F21) stay on-screen without scroll paging.
+    #}
+    <div id="univer-root"
+         data-test-id="sheets-workbook"
+         data-active-sheet-id="{{ a11y.active_sheet_id or '' }}"
+         data-grid-rows="{{ grid_rows }}"
+         data-grid-cols="{{ grid_cols }}"
+         class="bg-white border border-slate-200 rounded overflow-auto min-h-[360px] max-h-[70vh]"
+         data-univer-deferred="true">
+      <p class="text-xs text-amber-800 bg-amber-50 border-b border-amber-100 px-3 py-2"
+         data-test-id="sheets-univer-todo">
+        Univer OSS assets deferred — scaffold grid below. See ui/static/sheets/README.md.
+      </p>
+      <table class="text-xs border-collapse w-full" role="grid" aria-label="Worksheet"
+             data-test-id="sheets-grid">
+        <thead>
+          <tr>
+            <th class="bg-slate-100 border border-slate-200 w-10 sticky left-0 z-10"></th>
+            {% for c in range(0, grid_cols) %}
+            <th class="bg-slate-100 border border-slate-200 px-2 py-1 font-mono"
+                data-test-id="column-header-{{ a11y.active_sheet_id }}-{{ c }}">
+              {{ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[c] }}
+            </th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in range(0, grid_rows) %}
+          <tr>
+            <th class="bg-slate-100 border border-slate-200 px-2 py-1 font-mono sticky left-0 z-10"
+                data-test-id="row-header-{{ a11y.active_sheet_id }}-{{ r }}">{{ r + 1 }}</th>
+            {% for c in range(0, grid_cols) %}
+              {% set cell = grid[r][c] %}
+              <td role="gridcell"
+                  tabindex="0"
+                  aria-rowindex="{{ r + 1 }}"
+                  aria-colindex="{{ c + 1 }}"
+                  data-test-id="cell-{{ a11y.active_sheet_id }}-r{{ r }}-c{{ c }}"
+                  data-sheet-id="{{ a11y.active_sheet_id }}"
+                  data-row="{{ r }}"
+                  data-col="{{ c }}"
+                  data-input="{{ cell.input if cell.input is not none else '' }}"
+                  data-display="{{ cell.display }}"
+                  class="border border-slate-200 px-2 py-1 min-w-[4rem] h-8 font-mono cursor-cell hover:bg-emerald-50 focus:outline focus:outline-2 focus:outline-emerald-500"
+                  title="{{ cell.input if cell.input is not none else '' }}">{{ cell.display }}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  {# Scaffold toast — standalone (this page does not mount Alpine toasts). #}
+  <div id="sheets-toast" data-test-id="sheets-toast" role="status" aria-live="polite"
+       class="hidden fixed bottom-4 right-4 z-50 max-w-sm px-4 py-3 rounded shadow-lg text-white text-sm bg-red-600">
+  </div>
+
+  <footer class="bg-slate-900 text-slate-400 mt-8 text-xs">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <span>© 2026 ShopGym Sheets — server model live; Univer UI deferred.</span>
+      <a href="/" class="hover:text-white" data-test-id="sheets-footer-shop">← Back to Shop</a>
+    </div>
+  </footer>
+
+  <script>
+    // Scaffold client: sheet tabs + click-to-edit cells via /sheets/api/commands.
+    (function () {
+      const root = document.querySelector('[data-test-id="sheets-workbook"]');
+      const formulaInput = document.querySelector('[data-test-id="formula-input"]');
+      const nameBox = document.querySelector('[data-test-id="name-box"]');
+      const saveBtn = document.querySelector('[data-test-id="btn-cell-save"]');
+      const revEl = document.querySelector('[data-test-id="revision"]');
+      const statusEl = document.querySelector('[data-test-id="recalc-status"]');
+      const toastEl = document.querySelector('[data-test-id="sheets-toast"]');
+      let selected = null;
+      let revision = parseInt((revEl && revEl.textContent || '0').replace(/\D/g, ''), 10) || 0;
+      let idem = 0;
+      let toastTimer = null;
+
+      function colLetter(c) {
+        return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.charAt(c) || String(c);
+      }
+
+      function a1(row, col) {
+        return colLetter(col) + String(row + 1);
+      }
+
+      function showToast(body, kind) {
+        if (!toastEl) return;
+        toastEl.textContent = body;
+        toastEl.classList.remove('hidden', 'bg-red-600', 'bg-emerald-600', 'bg-slate-800');
+        toastEl.classList.add(kind === 'success' ? 'bg-emerald-600'
+          : (kind === 'error' ? 'bg-red-600' : 'bg-slate-800'));
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toastEl.classList.add('hidden');
+          toastEl.textContent = '';
+        }, 3500);
+      }
+
+      function setRevision(n) {
+        revision = n;
+        if (revEl) revEl.textContent = 'rev ' + n;
+      }
+
+      /** Parse A1 / trailing A1 from messy Name-box values (e.g. "A1B6" → B6). */
+      function parseA1(raw) {
+        const s = String(raw || '').trim().toUpperCase();
+        const matches = s.match(/[A-Z]+\d+/g);
+        if (!matches || !matches.length) return null;
+        const ref = matches[matches.length - 1];
+        const m = ref.match(/^([A-Z]+)(\d+)$/);
+        if (!m) return null;
+        let col = 0;
+        for (let i = 0; i < m[1].length; i++) {
+          col = col * 26 + (m[1].charCodeAt(i) - 64);
+        }
+        col -= 1;
+        const row = parseInt(m[2], 10) - 1;
+        if (row < 0 || col < 0) return null;
+        return { row, col, ref };
+      }
+
+      function selectCell(td, opts) {
+        const focusFormula = !opts || opts.focusFormula !== false;
+        if (selected) selected.classList.remove('bg-emerald-100', 'ring-2', 'ring-emerald-500');
+        selected = td;
+        if (!td) return;
+        td.classList.add('bg-emerald-100', 'ring-2', 'ring-emerald-500');
+        const row = parseInt(td.getAttribute('data-row'), 10);
+        const col = parseInt(td.getAttribute('data-col'), 10);
+        if (nameBox) nameBox.value = a1(row, col);
+        if (formulaInput) {
+          const raw = td.getAttribute('data-input');
+          formulaInput.value = (raw !== null && raw !== '') ? raw : (td.getAttribute('data-display') || '');
+          if (focusFormula) {
+            formulaInput.focus();
+            formulaInput.select();
+          }
+        }
+      }
+
+      /** Select a grid cell from Name-box text; sets ``selected`` for Save. */
+      function selectByA1(raw, opts) {
+        const parsed = parseA1(raw);
+        if (!parsed || !root) return false;
+        const sid = root.getAttribute('data-active-sheet-id');
+        const td = root.querySelector(
+          'td[role="gridcell"][data-sheet-id="' + sid + '"]'
+          + '[data-row="' + parsed.row + '"][data-col="' + parsed.col + '"]'
+        );
+        if (!td) {
+          showToast('Unknown cell: ' + String(raw || '').trim(), 'error');
+          return false;
+        }
+        selectCell(td, opts);
+        return true;
+      }
+
+      function applyWorkbook(wb) {
+        if (!wb || !root) return;
+        const sid = wb.active_sheet_id || root.getAttribute('data-active-sheet-id');
+        const sheet = (wb.sheets || {})[sid];
+        if (!sheet) return;
+        const cells = sheet.cells || {};
+        root.querySelectorAll('td[role="gridcell"]').forEach(td => {
+          const r = td.getAttribute('data-row');
+          const c = td.getAttribute('data-col');
+          const key = r + ',' + c;
+          const cell = cells[key];
+          const display = cell ? (cell.display || '') : '';
+          const input = cell && cell.input != null ? String(cell.input) : '';
+          td.textContent = display;
+          td.setAttribute('data-display', display);
+          td.setAttribute('data-input', input);
+          td.title = input;
+        });
+        if (statusEl) statusEl.textContent = wb.calculation_status || 'clean';
+      }
+
+      async function postCommand(command_type, payload) {
+        idem += 1;
+        const key = 'ui-' + Date.now() + '-' + idem;
+        const res = await fetch('/sheets/api/commands', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            command_type,
+            payload,
+            base_revision: revision,
+            idempotency_key: key,
+          }),
+        });
+        const data = await res.json();
+        if (data && typeof data.revision === 'number') setRevision(data.revision);
+        return { ok: res.ok && data.ok, data };
+      }
+
+      async function saveCell() {
+        if (!formulaInput) return;
+        // Name-box path: resolve selection without a prior grid click.
+        if (!selected && nameBox && String(nameBox.value || '').trim()) {
+          selectByA1(nameBox.value, { focusFormula: false });
+        }
+        if (!selected) {
+          showToast('Select a cell before saving', 'error');
+          if (root) root.setAttribute('data-last-save', 'noop');
+          return;
+        }
+        const sheetId = selected.getAttribute('data-sheet-id');
+        const row = parseInt(selected.getAttribute('data-row'), 10);
+        const col = parseInt(selected.getAttribute('data-col'), 10);
+        const raw = formulaInput.value;
+        // Prefer number when the whole input looks numeric.
+        let input = raw;
+        if (raw !== '' && !raw.startsWith('=') && /^-?\d+(\.\d+)?$/.test(raw.trim())) {
+          input = Number(raw.trim());
+        }
+        const { ok, data } = await postCommand('set_cell', {
+          sheet_id: sheetId,
+          row,
+          col,
+          input,
+        });
+        if (!ok) {
+          console.warn('set_cell failed', data);
+          showToast('Save failed', 'error');
+          if (root) root.setAttribute('data-last-save', 'error');
+          // Soft recovery: refresh workbook snapshot so UI matches server.
+          try {
+            const snap = await (await fetch('/sheets/api/workbook')).json();
+            if (typeof snap.revision === 'number') setRevision(snap.revision);
+            if (snap.workbook) applyWorkbook(snap.workbook);
+          } catch (e) { /* ignore */ }
+          return;
+        }
+        if (data.workbook) applyWorkbook(data.workbook);
+        // Keep selection; refresh formula bar from saved cell.
+        selectCell(selected, { focusFormula: false });
+        if (root) root.setAttribute('data-last-save', 'ok');
+      }
+
+      if (root) {
+        root.addEventListener('click', (ev) => {
+          const td = ev.target.closest('td[role="gridcell"]');
+          if (td && root.contains(td)) selectCell(td);
+        });
+        root.addEventListener('dblclick', (ev) => {
+          const td = ev.target.closest('td[role="gridcell"]');
+          if (td && root.contains(td)) {
+            selectCell(td);
+            if (formulaInput) formulaInput.focus();
+          }
+        });
+      }
+
+      if (nameBox) {
+        nameBox.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Enter') {
+            ev.preventDefault();
+            if (selectByA1(nameBox.value)) {
+              if (formulaInput) formulaInput.focus();
+            }
+          }
+        });
+        nameBox.addEventListener('blur', () => {
+          const v = String(nameBox.value || '').trim();
+          if (v) selectByA1(v, { focusFormula: false });
+        });
+      }
+
+      if (saveBtn) saveBtn.addEventListener('click', () => {
+        if (root) root.setAttribute('data-last-save', 'pending');
+        saveCell();
+      });
+      if (formulaInput) {
+        formulaInput.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Enter') {
+            ev.preventDefault();
+            saveCell();
+          }
+        });
+      }
+
+      const tabs = document.querySelectorAll('[data-test-id^="sheet-tab-"]');
+      tabs.forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const sheetId = btn.getAttribute('data-sheet-id');
+          await postCommand('set_active_sheet', { sheet_id: sheetId });
+          location.reload();
+        });
+      });
+      const addBtn = document.querySelector('[data-test-id="sheet-add"]');
+      if (addBtn) {
+        addBtn.addEventListener('click', async () => {
+          await postCommand('add_sheet', {});
+          location.reload();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

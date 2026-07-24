@@ -1,0 +1,30 @@
+{% extends "coupons/_coupons_layout.html" %}
+{% block title %}Browse{% endblock %}
+{% block content %}
+
+<h1 class="text-2xl font-bold mb-4" data-test-id="coupons-browse-title">Available offers</h1>
+
+<ul role="list" data-test-id="coupons-offer-list" class="space-y-3">
+  {% for o in offers %}
+  <li role="listitem" data-test-id="coupon-offer-{{ o.id }}"
+      class="bg-white rounded-lg border border-slate-200 shadow-sm px-4 py-3 flex items-center gap-3">
+    <div class="flex-1 min-w-0">
+      <a href="/coupons/{{ o.id }}" class="font-semibold text-slate-900 hover:underline"
+         data-test-id="coupon-title-{{ o.id }}">{{ o.title }}</a>
+      <p class="text-xs text-slate-500 mt-0.5">
+        <span data-test-id="coupon-discount-{{ o.id }}">{{ o.discount_label }}</span>
+        · merchant <span data-test-id="coupon-merchant-{{ o.id }}">{{ o.merchant }}</span>
+        {% if o.expired %}<span class="text-rose-600 font-semibold" data-test-id="coupon-expired-{{ o.id }}">· expired</span>{% endif %}
+      </p>
+    </div>
+    <form action="/coupons/{{ o.id }}/clip" method="post">
+      <button type="submit" data-test-id="btn-clip-{{ o.id }}"
+              class="bg-rose-600 hover:bg-rose-500 text-white px-3 py-1.5 rounded text-sm font-semibold">Clip</button>
+    </form>
+  </li>
+  {% else %}
+  <li class="text-slate-500" data-test-id="coupons-empty">No offers available.</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

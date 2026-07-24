@@ -92,7 +92,12 @@ Original-24 accounting: 9 DROP + 15 BUILD = 24; **0 remaining**.
 | **M379–M381** | built | Structural/implicit final wave |
 | **M382** | dropped / reserved history | Audit artifacts retained; absent from live registries; never reuse |
 | **M383** | built, defended | Final implicit recipient-authorization task; Qwen 0/3 BREAK |
+| **M384** | built (Sheets pilot S1) | `active_tab_sum_gate` — SUM-gate → ValueMart ×6; distinct from paper M375–M378 |
+| **M385** | built (Sheets pilot S2) | `cross_sheet_qty_authority` — Approval `=Inputs!D5` → West×4; distinct from paper M375–M378 |
+| **M386** | built (Sheets pilot S3) | `writeback_if_complete` — Final!F21 IF writeback → mail C21; distinct from paper M375–M378 |
 
 Sources: `STRUCTURAL_IMPLICIT_WAVE_BUILD_STATUS_2026-07-14.md`,
 `FINAL_IMPLICIT_DESIGN_GATE_2026-07-14.md`, and
 `FINAL_PRE_REPORT_BASELINE_2026-07-14.md`.
+S1–S3 registration: `server/sheets_s1_task.py`, `server/sheets_s2_task.py`,
+`server/sheets_s3_task.py` (2026-07-20).

@@ -1,0 +1,50 @@
+{% extends "coupons/_coupons_layout.html" %}
+{% block title %}{{ offer.title }}{% endblock %}
+{% block content %}
+
+<article class="bg-white rounded-lg border border-slate-200 shadow-sm max-w-2xl" data-test-id="coupon-detail">
+  <div class="px-5 py-4 border-b border-slate-200">
+    <h1 class="text-2xl font-bold" data-test-id="coupon-detail-title">{{ offer.title }}</h1>
+    <p class="text-sm text-slate-500 mt-1">{{ offer.description }}</p>
+  </div>
+  <div class="px-5 py-4 space-y-2 text-sm">
+    <p>Code:
+      <code class="font-mono text-base bg-slate-100 px-2 py-0.5 rounded"
+            data-test-id="lbl-coupon-code-{{ offer.id }}">{{ offer.code }}</code>
+    </p>
+    <p>Discount: <span data-test-id="coupon-detail-discount">{{ offer.discount_label }}</span></p>
+    <p>Merchant label:
+      <span data-test-id="coupon-detail-merchant">{{ offer.merchant }}</span>
+      <span class="text-xs text-slate-400">(informational — not enforced at checkout)</span>
+    </p>
+    <p>Expires: {{ offer.expires_on }}
+      {% if offer.expired %}<span class="text-rose-600 font-semibold"> (expired)</span>{% endif %}
+    </p>
+    {% if offer.min_spend is not none %}
+    <p>Min spend: ${{ '%.2f'|format(offer.min_spend) }}</p>
+    {% endif %}
+    {% if clipped %}
+    <p class="text-emerald-700" data-test-id="coupon-clipped-badge">In wallet{% if clipped.used %} · marked used{% endif %}</p>
+    {% endif %}
+  </div>
+  <div class="px-5 py-3 border-t border-slate-200 flex gap-2">
+    {% if not clipped %}
+    <form action="/coupons/{{ offer.id }}/clip" method="post">
+      <button type="submit" data-test-id="btn-clip-{{ offer.id }}"
+              class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded text-sm font-semibold">Clip to wallet</button>
+    </form>
+    {% else %}
+    <form action="/coupons/{{ offer.id }}/unclip" method="post">
+      <button type="submit" data-test-id="btn-unclip-{{ offer.id }}"
+              class="border border-slate-300 px-4 py-2 rounded text-sm">Unclip</button>
+    </form>
+    <form action="/coupons/{{ offer.id }}/mark-used" method="post">
+      <button type="submit" data-test-id="btn-mark-used-{{ offer.id }}"
+              class="border border-slate-300 px-4 py-2 rounded text-sm">Mark used</button>
+    </form>
+    {% endif %}
+    <a href="/coupons" data-test-id="btn-back-coupons" class="px-4 py-2 text-sm text-slate-500">← Browse</a>
+  </div>
+</article>
+
+{% endblock %}

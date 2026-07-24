@@ -39,6 +39,21 @@
        class="px-3 py-2 inline-flex items-center gap-1 {% if _active == 'calendar' %}bg-indigo-700 text-white font-semibold{% else %}hover:bg-indigo-800{% endif %}">
       <span aria-hidden="true">📅</span> Calendar
     </a>
+    <a href="/docs" data-test-id="appbar-docs" aria-label="Docs"
+       {% if _active == 'docs' %}aria-current="page"{% endif %}
+       class="px-3 py-2 inline-flex items-center gap-1 {% if _active == 'docs' %}bg-indigo-700 text-white font-semibold{% else %}hover:bg-indigo-800{% endif %}">
+      <span aria-hidden="true">📄</span> Docs
+    </a>
+    <a href="/coupons" data-test-id="appbar-coupons" aria-label="Coupons"
+       {% if _active == 'coupons' %}aria-current="page"{% endif %}
+       class="px-3 py-2 inline-flex items-center gap-1 {% if _active == 'coupons' %}bg-indigo-700 text-white font-semibold{% else %}hover:bg-indigo-800{% endif %}">
+      <span aria-hidden="true">🏷️</span> Coupons
+    </a>
+    <a href="/sheets" data-test-id="appbar-sheets" aria-label="Sheets"
+       {% if _active == 'sheets' %}aria-current="page"{% endif %}
+       class="px-3 py-2 inline-flex items-center gap-1 {% if _active == 'sheets' %}bg-indigo-700 text-white font-semibold{% else %}hover:bg-indigo-800{% endif %}">
+      <span aria-hidden="true">📊</span> Sheets
+    </a>
   </div>
 </nav>
 {# Named UI perturbations for this episode (no-op when ui_variant == normal). #}

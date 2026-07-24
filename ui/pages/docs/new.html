@@ -1,0 +1,31 @@
+{% extends "docs/_docs_layout.html" %}
+{% block title %}New document{% endblock %}
+{% block content %}
+
+<form action="/docs/create" method="post"
+      class="bg-white rounded-lg border border-slate-200 shadow-sm max-w-2xl"
+      data-test-id="form-new-doc">
+  <div class="px-5 py-3 border-b border-slate-200 font-bold">New document</div>
+  <div class="px-5 py-4 space-y-3">
+    <label class="block">
+      <span class="text-xs text-slate-500">Title</span>
+      <input name="title" required
+             data-test-id="input-doc-title" aria-label="Title"
+             class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-teal-500" />
+    </label>
+    <label class="block">
+      <span class="text-xs text-slate-500">Body</span>
+      <textarea name="body" rows="10"
+                data-test-id="input-doc-body" aria-label="Body"
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-teal-500"></textarea>
+    </label>
+  </div>
+  <div class="px-5 py-3 border-t border-slate-200 flex gap-2 items-center">
+    <button type="submit" data-test-id="btn-create-doc"
+            class="bg-teal-600 hover:bg-teal-500 text-white px-5 py-2 rounded-md text-sm font-semibold">Create</button>
+    <a href="/docs" data-test-id="btn-cancel-new-doc"
+       class="px-5 py-2 text-sm text-slate-500 hover:text-slate-700">Cancel</a>
+  </div>
+</form>
+
+{% endblock %}

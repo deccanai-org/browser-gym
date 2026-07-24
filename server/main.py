@@ -76,6 +76,13 @@ from server.apps.calendar.state import make_calendarstate
 from server.apps.calendar import routes as calendar_routes
 from server.apps.market.state import make_marketstate
 from server.apps.market import routes as market_routes
+from server.apps.docs.state import make_docsstate
+from server.apps.docs import routes as docs_routes
+from server.apps.sheets.exploratory import task_hook as sheets_exploratory
+from server.apps.coupons.state import make_couponsstate
+from server.apps.coupons import routes as coupons_routes
+from server.apps.sheets.state import make_sheetsstate
+from server.apps.sheets import routes as sheets_routes
 from server.apps import wiring as apps_wiring
 from server.apps import shop_hooks
 from server.apps import bus
@@ -94,6 +101,10 @@ app = FastAPI(
         "drive a real Chromium browser through a multi-page e-commerce "
         "site; a per-step milestone verifier grades progress."
     ),
+    # Move Swagger off /docs so the Docs app owns that prefix.
+    docs_url="/_dev/openapi",
+    redoc_url="/_dev/redoc",
+    openapi_url="/_dev/openapi.json",
 )
 app.mount("/static", StaticFiles(directory=UI_DIR / "static"), name="static")
 templates = Jinja2Templates(directory=UI_DIR / "pages")
@@ -193,24 +204,48 @@ def _state() -> GymState:
 
 
 def _reset_inline(task_id: str, seed: int, ui: str = "normal") -> None:
-    built = make_task(task_id, seed)
-    # Cross-app (category M) factories return a fully-built WorldState;
-    # single-app factories return a GymState we wrap with default stores.
-    if isinstance(built, WorldState):
-        world = built
-        if world.mail is None:
-            world.mail = make_mailstate(seed)
-        if world.food is None:
-            world.food = make_foodstate(seed)
-        if world.calendar is None:
-            world.calendar = make_calendarstate(seed)
-        if world.market is None:
-            world.market = make_marketstate(seed)
+    # Exploratory Sheets pilots (S1–S3) — not in TASKS; see task_hook.py.
+    if sheets_exploratory.is_exploratory_task(task_id):
+        world = sheets_exploratory.make_exploratory_task(task_id, seed)
+        suite = sheets_exploratory.build_exploratory_suite(task_id)
     else:
-        world = WorldState(
-            shop=built, mail=make_mailstate(seed), food=make_foodstate(seed),
-            calendar=make_calendarstate(seed), market=make_marketstate(seed),
-        )
+        built = make_task(task_id, seed)
+        # Cross-app (category M) factories return a fully-built WorldState;
+        # single-app factories return a GymState we wrap with default stores.
+        if isinstance(built, WorldState):
+            world = built
+            if world.mail is None:
+                world.mail = make_mailstate(seed)
+            if world.food is None:
+                world.food = make_foodstate(seed)
+            if world.calendar is None:
+                world.calendar = make_calendarstate(seed)
+            if world.market is None:
+                world.market = make_marketstate(seed)
+            if world.docs is None:
+                world.docs = make_docsstate(seed)
+            if world.coupons is None:
+                world.coupons = make_couponsstate(seed)
+            if world.sheets is None:
+                world.sheets = make_sheetsstate(seed)
+        else:
+            world = WorldState(
+                shop=built, mail=make_mailstate(seed), food=make_foodstate(seed),
+                calendar=make_calendarstate(seed), market=make_marketstate(seed),
+                docs=make_docsstate(seed), coupons=make_couponsstate(seed),
+                sheets=make_sheetsstate(seed),
+            )
+        suite = verifiers.build_suite(task_id)
+    if world.docs is None:
+        world.docs = make_docsstate(seed)
+    if world.coupons is None:
+        world.coupons = make_couponsstate(seed)
+    if world.sheets is None:
+        world.sheets = make_sheetsstate(seed)
+    if world.food is None:
+        world.food = make_foodstate(seed)
+    if world.calendar is None:
+        world.calendar = make_calendarstate(seed)
     shop = world.shop
     # ``current`` IS ``world.shop`` (same object), so shop routes (which use
     # ``_state()``) and the world stay in sync automatically.
@@ -218,7 +253,7 @@ def _reset_inline(task_id: str, seed: int, ui: str = "normal") -> None:
     SESSION.initial = copy.deepcopy(shop)
     SESSION.world = world
     SESSION.initial_world = copy.deepcopy(world)
-    SESSION.suite = verifiers.build_suite(task_id)
+    SESSION.suite = suite
     SESSION.ui_variant = ui or "normal"
 
 
@@ -981,16 +1016,22 @@ def harness_tasks() -> dict[str, list[str]]:
 
 @app.post("/_harness/reset")
 def harness_reset(req: HarnessResetRequest) -> dict[str, Any]:
-    if req.task_id not in TASKS:
+    if req.task_id not in TASKS and not sheets_exploratory.is_exploratory_task(
+        req.task_id,
+    ):
         raise HTTPException(404, "unknown task")
     _reset_inline(req.task_id, req.seed, ui=req.ui)
     s = _state()
+    if sheets_exploratory.is_exploratory_task(s.task_id):
+        start = sheets_exploratory.exploratory_start_path(s.task_id)
+    else:
+        start = START_PATHS.get(s.task_id, "/")
     return {"ok": True, "task_id": s.task_id, "seed": s.seed,
             "task_brief": s.task_brief,
             "task_category": s.task_category,
             "task_difficulty": s.task_difficulty,
             "ui_variant": SESSION.ui_variant,
-            "start_path": START_PATHS.get(s.task_id, "/"),
+            "start_path": start,
             "current_user_id": s.current_user_id}
 
 
@@ -1011,13 +1052,25 @@ def harness_world() -> dict[str, Any]:
 
 @app.get("/_harness/snapshot")
 def harness_snapshot() -> dict[str, Any]:
-    """Lightweight snapshot: cart count, orders count, current user, etc."""
+    """Lightweight per-step snapshot for traj forensics (URL-agnostic counts).
+
+    Field names (keep Shop vs Market distinct — do not conflate):
+      - ``orders_count``: Shop (GymState) orders only.
+      - ``cart_item_count``: Shop cart line qty sum.
+      - ``market_orders_count``: ValueMart / Market store orders (0 if no market).
+      - ``returns_count`` / ``subscriptions_count`` / ``applied_promo``: Shop-only.
+    """
     s = _state()
+    market_orders_count = 0
+    w = SESSION.world
+    if w is not None and getattr(w, "market", None) is not None:
+        market_orders_count = len(w.market.orders or {})
     return {
         "task_id": s.task_id, "step": s.step, "finished": s.finished,
         "current_user_id": s.current_user_id,
         "cart_item_count": sum(i.quantity for i in s.cart.items),
         "orders_count": len(s.orders),
+        "market_orders_count": market_orders_count,
         "returns_count": len(s.returns),
         "subscriptions_count": len(s.subscriptions),
         "applied_promo": s.cart.applied_promo,
@@ -1120,6 +1173,21 @@ market_routes.configure(
     templates=templates, get_world=_world, build_ctx=_ctx, flash=flash,
 )
 app.include_router(market_routes.router)
+
+docs_routes.configure(
+    templates=templates, get_world=_world, build_ctx=_ctx, flash=flash,
+)
+app.include_router(docs_routes.router)
+
+coupons_routes.configure(
+    templates=templates, get_world=_world, build_ctx=_ctx, flash=flash,
+)
+app.include_router(coupons_routes.router)
+
+sheets_routes.configure(
+    templates=templates, get_world=_world, build_ctx=_ctx, flash=flash,
+)
+app.include_router(sheets_routes.router)
 
 # Cross-app event subscribers (FoodOrderPlaced -> mail receipt; the shop
 # order-confirmation subscriber is registered too, ready for commit 4).

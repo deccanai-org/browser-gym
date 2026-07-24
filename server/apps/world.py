@@ -3,9 +3,9 @@
 The shop's "database" IS the existing :class:`server.state.GymState`. It is
 *wrapped* here, NOT renamed or modified, so every existing single-app task,
 verifier, oracle and test keeps working untouched. Each NEW app owns its
-own isolated store (``mail`` / ``food`` / ``calendar``); the only channel
-for cross-app effects is the append-only event log in
-:mod:`server.apps.bus`.
+own isolated store (``mail`` / ``food`` / ``calendar`` / ``market`` /
+``docs`` / ``coupons`` / ``sheets``); the only channel for cross-app effects
+is the append-only event log in :mod:`server.apps.bus`.
 
 Episode metadata (``task_id`` / ``seed`` / ``step`` / ``finished``)
 delegates to the shop store, which is always present. That means the
@@ -24,11 +24,14 @@ from server.state import GymState
 from server.apps.bus import WorldEvent
 from server.apps.scheduler import ScheduleState
 
-if TYPE_CHECKING:                      # Phase-2 stores; not imported at runtime
+if TYPE_CHECKING:                      # Phase-2+ stores; not imported at runtime
     from server.apps.mail.state import MailState
     from server.apps.food.state import FoodState
     from server.apps.calendar.state import CalendarState
     from server.apps.market.state import MarketState
+    from server.apps.docs.state import DocsState
+    from server.apps.coupons.state import CouponsState
+    from server.apps.sheets.state import SheetsState
 
 
 @dataclass
@@ -40,6 +43,9 @@ class WorldState:
     food: Optional["FoodState"] = None
     calendar: Optional["CalendarState"] = None
     market: Optional["MarketState"] = None               # 2nd e-commerce store (ValueMart)
+    docs: Optional["DocsState"] = None
+    coupons: Optional["CouponsState"] = None
+    sheets: Optional["SheetsState"] = None
     events: list[WorldEvent] = field(default_factory=list)   # append-only
     # Deterministic async event injector — scheduled future cross-app effects
     # (emails/price-changes/notifications) that fire on the step clock, not on
@@ -81,6 +87,11 @@ class WorldState:
                 self.calendar.to_json() if self.calendar is not None else None
             ),
             "market": self.market.to_json() if self.market is not None else None,
+            "docs": self.docs.to_json() if self.docs is not None else None,
+            "coupons": (
+                self.coupons.to_json() if self.coupons is not None else None
+            ),
+            "sheets": self.sheets.to_json() if self.sheets is not None else None,
             "events": [asdict(e) for e in self.events],
             "schedule": self.schedule.to_json(),
         }
