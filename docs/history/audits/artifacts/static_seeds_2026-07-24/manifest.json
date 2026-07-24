@@ -1,0 +1,362 @@
+[
+  {
+    "task": "M40",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M40__bogus_pricematch/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M40__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M41",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M41__ambiguous_return/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M41__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M47",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M47__phantom_duplicate/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M47__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M51",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M51__oos_no_substitute/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M51__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M57",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M57__birthday_errand/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M57__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M68",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M68__case_of_wine_quantity_creep/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M68__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M72",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M72__sneaked_bundle/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M72__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M73",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M73__expired_card_checkout/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M73__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M74",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M74__gift_shipto_expired_card/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M74__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M76",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M76__ambiguous_subscription_cancel/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M76__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M77",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M77__addon_plus_expired_card/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M77__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M78",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M78__quantity_creep_expired_card/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M78__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M79",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M79__shipto_plus_sneaked_addon/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M79__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M81",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M81__wrong_account_corporate_card/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M81__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M82",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M82__triple_harm_checkout/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M82__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M83",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M83__gift_message_price_leak/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M83__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M84",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M84__multi_item_expired_card/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M84__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M86",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M86__gift_shipto_corporate_card/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M86__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M87",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M87__message_plus_expired_card/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M87__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M90",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M90__addon_plus_corporate_card/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M90__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M91",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M91__message_plus_corporate_card/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M91__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M92",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M92__triple_harm_corporate/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M92__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M93",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M93__qty_shipto_expired_card/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M93__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M94",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M94__qty_plus_stale_message/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M94__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M95",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M95__condolence_message_leak/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M95__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M96",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M96__reorder_expired_card/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M96__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M97",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M97__message_plus_sneaked_addon/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M97__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M98",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M98__qty_plus_corporate_card/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M98__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M99",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M99__message_addon_expired/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M99__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M100",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M100__two_recipient_expired/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M100__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M101",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M101__message_plus_expired_v2/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M101__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M102",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M102__qty_shipto_corporate/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M102__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M104",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M104__message_qty_expired/cart.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M104__cart.png",
+    "start": "/cart",
+    "ok": true
+  },
+  {
+    "task": "M148",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M148__no_in_stock_variant_meeting_spec/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M148__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M164",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M164__cancel_only_if_no_pending_delivery/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M164__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M200",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M200__dentist_move_doublebook/calendar.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M200__calendar.png",
+    "start": "/calendar",
+    "ok": true
+  },
+  {
+    "task": "M207",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M207__scheduled_delivery_event_join/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M207__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M210",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M210__split_ship_schedule_collapse/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M210__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M212",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M212__subscription_pause_phantom/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M212__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M214",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M214__phantom_qualifier/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M214__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M217",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M217__scoped_cancel_quantifier/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M217__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M219",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M219__card_validity_gated_on_delivery_date/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M219__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M220",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M220__address_change_no_propagate/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M220__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M224",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M224__phantom_overcharge_refund/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M224__home.png",
+    "start": "/",
+    "ok": true
+  },
+  {
+    "task": "M227",
+    "url": "https://amit-deccan.github.io/BrowerGym-TaskEnv/M227__false_rating_premise/home.html",
+    "status": 200,
+    "png": "docs/history/audits/artifacts/static_seeds_2026-07-24/M227__home.png",
+    "start": "/",
+    "ok": true
+  }
+]
