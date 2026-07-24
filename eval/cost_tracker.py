@@ -51,10 +51,12 @@ _DEFAULT_RATES_PER_M = {
     # fast-mode = 2x ($10/$50), inference_geo=US = 1.1x, prompt-caching = up to -90%.
     # Billed as its OWN tier so Opus is never silently mibilled as sonnet ($3/$15).
     "opus":        {"in": 5.00, "out": 25.00},
+    # Gemini 3.1 Pro list (≤200k context): $2 / $12 per MTok (CURRENT_WORK §G).
+    "gemini":      {"in": 2.00, "out": 12.00},
 }
 _ENV = {"qwen": "QWEN", "gpt-5.1": "GPT51", "gpt-5.5": "GPT55",
         "gpt-5.6-sol": "GPT56SOL", "hy3": "HY3", "hy3-free": "HY3FREE",
-        "sonnet": "SONNET", "opus": "OPUS"}
+        "sonnet": "SONNET", "opus": "OPUS", "gemini": "GEMINI"}
 
 
 def rates_per_token():
@@ -94,6 +96,8 @@ def _tier_from_agent(agent_name):
     produced it), NOT from its directory. Layout-independent — works for flat
     single-run dirs AND sharded parallel dirs. Returns None if unrecognized."""
     a = (agent_name or "").lower()
+    if "gemini" in a:
+        return "gemini"
     if "qwen" in a:
         return "qwen"
     if "tencent/hy3:free" in a:

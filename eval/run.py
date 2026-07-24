@@ -93,6 +93,9 @@ def _agent_name(agent_kind: str, llm_model: str | None) -> str:
         return f"openai_coord[{llm_model or 'gpt-4o-mini'}]"
     if agent_kind == "qwen":
         return f"qwen[{llm_model or 'qwen-vl-plus'}]"
+    if agent_kind == "gemini":
+        from agents.gemini_pixel_agent import default_gemini_model
+        return f"gemini[{llm_model or default_gemini_model()}]"
     return f"llm[{llm_model or 'default'}]"
 
 
@@ -284,6 +287,11 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
             # SoM + multi-tab + async. Needs QWEN_BASE_URL + QWEN_API_KEY.
             from agents.qwen_agent import QwenAgent
             agent = QwenAgent(model=llm_model)
+            await agent.run(bctx, task_brief=reset["task_brief"])
+        elif agent_kind == "gemini":
+            # Gemini 3.1 Pro via OpenAI-compatible endpoint (AI Studio / Vertex).
+            from agents.gemini_pixel_agent import GeminiPixelAgent
+            agent = GeminiPixelAgent(model=llm_model)
             await agent.run(bctx, task_brief=reset["task_brief"])
         else:
             from agents.llm_agent import LLMBrowserAgent

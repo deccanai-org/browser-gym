@@ -1,0 +1,4727 @@
+[
+  {
+    "task_index": 0,
+    "task_id": "A1/buy_wireless_mouse",
+    "seed": 0
+  },
+  {
+    "task_index": 1,
+    "task_id": "A1/buy_wireless_mouse",
+    "seed": 1
+  },
+  {
+    "task_index": 2,
+    "task_id": "A1/buy_wireless_mouse",
+    "seed": 2
+  },
+  {
+    "task_index": 3,
+    "task_id": "A2/filter_laptop",
+    "seed": 0
+  },
+  {
+    "task_index": 4,
+    "task_id": "A2/filter_laptop",
+    "seed": 1
+  },
+  {
+    "task_index": 5,
+    "task_id": "A2/filter_laptop",
+    "seed": 2
+  },
+  {
+    "task_index": 6,
+    "task_id": "A3/configure_bundle",
+    "seed": 0
+  },
+  {
+    "task_index": 7,
+    "task_id": "A3/configure_bundle",
+    "seed": 1
+  },
+  {
+    "task_index": 8,
+    "task_id": "A3/configure_bundle",
+    "seed": 2
+  },
+  {
+    "task_index": 9,
+    "task_id": "A4/home_office_bundle",
+    "seed": 0
+  },
+  {
+    "task_index": 10,
+    "task_id": "A4/home_office_bundle",
+    "seed": 1
+  },
+  {
+    "task_index": 11,
+    "task_id": "A4/home_office_bundle",
+    "seed": 2
+  },
+  {
+    "task_index": 12,
+    "task_id": "B1/add_address",
+    "seed": 0
+  },
+  {
+    "task_index": 13,
+    "task_id": "B1/add_address",
+    "seed": 1
+  },
+  {
+    "task_index": 14,
+    "task_id": "B1/add_address",
+    "seed": 2
+  },
+  {
+    "task_index": 15,
+    "task_id": "B2/track_and_return",
+    "seed": 0
+  },
+  {
+    "task_index": 16,
+    "task_id": "B2/track_and_return",
+    "seed": 1
+  },
+  {
+    "task_index": 17,
+    "task_id": "B2/track_and_return",
+    "seed": 2
+  },
+  {
+    "task_index": 18,
+    "task_id": "B3/account_overhaul",
+    "seed": 0
+  },
+  {
+    "task_index": 19,
+    "task_id": "B3/account_overhaul",
+    "seed": 1
+  },
+  {
+    "task_index": 20,
+    "task_id": "B3/account_overhaul",
+    "seed": 2
+  },
+  {
+    "task_index": 21,
+    "task_id": "B4/subscription_juggle",
+    "seed": 0
+  },
+  {
+    "task_index": 22,
+    "task_id": "B4/subscription_juggle",
+    "seed": 1
+  },
+  {
+    "task_index": 23,
+    "task_id": "B4/subscription_juggle",
+    "seed": 2
+  },
+  {
+    "task_index": 24,
+    "task_id": "C1/promo_partial",
+    "seed": 0
+  },
+  {
+    "task_index": 25,
+    "task_id": "C1/promo_partial",
+    "seed": 1
+  },
+  {
+    "task_index": 26,
+    "task_id": "C1/promo_partial",
+    "seed": 2
+  },
+  {
+    "task_index": 27,
+    "task_id": "C2/split_shipping_gift",
+    "seed": 0
+  },
+  {
+    "task_index": 28,
+    "task_id": "C2/split_shipping_gift",
+    "seed": 1
+  },
+  {
+    "task_index": 29,
+    "task_id": "C2/split_shipping_gift",
+    "seed": 2
+  },
+  {
+    "task_index": 30,
+    "task_id": "C3/subscription_loyalty",
+    "seed": 0
+  },
+  {
+    "task_index": 31,
+    "task_id": "C3/subscription_loyalty",
+    "seed": 1
+  },
+  {
+    "task_index": 32,
+    "task_id": "C3/subscription_loyalty",
+    "seed": 2
+  },
+  {
+    "task_index": 33,
+    "task_id": "C4/mega_checkout",
+    "seed": 0
+  },
+  {
+    "task_index": 34,
+    "task_id": "C4/mega_checkout",
+    "seed": 1
+  },
+  {
+    "task_index": 35,
+    "task_id": "C4/mega_checkout",
+    "seed": 2
+  },
+  {
+    "task_index": 36,
+    "task_id": "D1/browse_audio_no_search",
+    "seed": 0
+  },
+  {
+    "task_index": 37,
+    "task_id": "D1/browse_audio_no_search",
+    "seed": 1
+  },
+  {
+    "task_index": 38,
+    "task_id": "D1/browse_audio_no_search",
+    "seed": 2
+  },
+  {
+    "task_index": 39,
+    "task_id": "D2/drill_electronics_keyboards",
+    "seed": 0
+  },
+  {
+    "task_index": 40,
+    "task_id": "D2/drill_electronics_keyboards",
+    "seed": 1
+  },
+  {
+    "task_index": 41,
+    "task_id": "D2/drill_electronics_keyboards",
+    "seed": 2
+  },
+  {
+    "task_index": 42,
+    "task_id": "M10/dinner_source_conflict",
+    "seed": 0
+  },
+  {
+    "task_index": 43,
+    "task_id": "M10/dinner_source_conflict",
+    "seed": 1
+  },
+  {
+    "task_index": 44,
+    "task_id": "M10/dinner_source_conflict",
+    "seed": 2
+  },
+  {
+    "task_index": 45,
+    "task_id": "M100/two_recipient_expired",
+    "seed": 0
+  },
+  {
+    "task_index": 46,
+    "task_id": "M100/two_recipient_expired",
+    "seed": 1
+  },
+  {
+    "task_index": 47,
+    "task_id": "M100/two_recipient_expired",
+    "seed": 2
+  },
+  {
+    "task_index": 48,
+    "task_id": "M101/message_plus_expired_v2",
+    "seed": 0
+  },
+  {
+    "task_index": 49,
+    "task_id": "M101/message_plus_expired_v2",
+    "seed": 1
+  },
+  {
+    "task_index": 50,
+    "task_id": "M101/message_plus_expired_v2",
+    "seed": 2
+  },
+  {
+    "task_index": 51,
+    "task_id": "M102/qty_shipto_corporate",
+    "seed": 0
+  },
+  {
+    "task_index": 52,
+    "task_id": "M102/qty_shipto_corporate",
+    "seed": 1
+  },
+  {
+    "task_index": 53,
+    "task_id": "M102/qty_shipto_corporate",
+    "seed": 2
+  },
+  {
+    "task_index": 54,
+    "task_id": "M103/mixed_basket_expired",
+    "seed": 0
+  },
+  {
+    "task_index": 55,
+    "task_id": "M103/mixed_basket_expired",
+    "seed": 1
+  },
+  {
+    "task_index": 56,
+    "task_id": "M103/mixed_basket_expired",
+    "seed": 2
+  },
+  {
+    "task_index": 57,
+    "task_id": "M104/message_qty_expired",
+    "seed": 0
+  },
+  {
+    "task_index": 58,
+    "task_id": "M104/message_qty_expired",
+    "seed": 1
+  },
+  {
+    "task_index": 59,
+    "task_id": "M104/message_qty_expired",
+    "seed": 2
+  },
+  {
+    "task_index": 60,
+    "task_id": "M105/false_double_charge",
+    "seed": 0
+  },
+  {
+    "task_index": 61,
+    "task_id": "M105/false_double_charge",
+    "seed": 1
+  },
+  {
+    "task_index": 62,
+    "task_id": "M105/false_double_charge",
+    "seed": 2
+  },
+  {
+    "task_index": 63,
+    "task_id": "M106/false_price_adjustment",
+    "seed": 0
+  },
+  {
+    "task_index": 64,
+    "task_id": "M106/false_price_adjustment",
+    "seed": 1
+  },
+  {
+    "task_index": 65,
+    "task_id": "M106/false_price_adjustment",
+    "seed": 2
+  },
+  {
+    "task_index": 66,
+    "task_id": "M107/false_warranty_never_bought",
+    "seed": 0
+  },
+  {
+    "task_index": 67,
+    "task_id": "M107/false_warranty_never_bought",
+    "seed": 1
+  },
+  {
+    "task_index": 68,
+    "task_id": "M107/false_warranty_never_bought",
+    "seed": 2
+  },
+  {
+    "task_index": 69,
+    "task_id": "M108/false_cancel_shipped",
+    "seed": 0
+  },
+  {
+    "task_index": 70,
+    "task_id": "M108/false_cancel_shipped",
+    "seed": 1
+  },
+  {
+    "task_index": 71,
+    "task_id": "M108/false_cancel_shipped",
+    "seed": 2
+  },
+  {
+    "task_index": 72,
+    "task_id": "M109/false_phantom_return",
+    "seed": 0
+  },
+  {
+    "task_index": 73,
+    "task_id": "M109/false_phantom_return",
+    "seed": 1
+  },
+  {
+    "task_index": 74,
+    "task_id": "M109/false_phantom_return",
+    "seed": 2
+  },
+  {
+    "task_index": 75,
+    "task_id": "M11/cancel_unshipped_over_100",
+    "seed": 0
+  },
+  {
+    "task_index": 76,
+    "task_id": "M11/cancel_unshipped_over_100",
+    "seed": 1
+  },
+  {
+    "task_index": 77,
+    "task_id": "M11/cancel_unshipped_over_100",
+    "seed": 2
+  },
+  {
+    "task_index": 78,
+    "task_id": "M110/ambiguous_return_v2",
+    "seed": 0
+  },
+  {
+    "task_index": 79,
+    "task_id": "M110/ambiguous_return_v2",
+    "seed": 1
+  },
+  {
+    "task_index": 80,
+    "task_id": "M110/ambiguous_return_v2",
+    "seed": 2
+  },
+  {
+    "task_index": 81,
+    "task_id": "M111/false_premise_masks_expired_card",
+    "seed": 0
+  },
+  {
+    "task_index": 82,
+    "task_id": "M111/false_premise_masks_expired_card",
+    "seed": 1
+  },
+  {
+    "task_index": 83,
+    "task_id": "M111/false_premise_masks_expired_card",
+    "seed": 2
+  },
+  {
+    "task_index": 84,
+    "task_id": "M112/warranty_premise_masks_dead_card_sub",
+    "seed": 0
+  },
+  {
+    "task_index": 85,
+    "task_id": "M112/warranty_premise_masks_dead_card_sub",
+    "seed": 1
+  },
+  {
+    "task_index": 86,
+    "task_id": "M112/warranty_premise_masks_dead_card_sub",
+    "seed": 2
+  },
+  {
+    "task_index": 87,
+    "task_id": "M113/swapped_gift_messages_correct_shipto",
+    "seed": 0
+  },
+  {
+    "task_index": 88,
+    "task_id": "M113/swapped_gift_messages_correct_shipto",
+    "seed": 1
+  },
+  {
+    "task_index": 89,
+    "task_id": "M113/swapped_gift_messages_correct_shipto",
+    "seed": 2
+  },
+  {
+    "task_index": 90,
+    "task_id": "M114/expired_card_masked_by_account_chore",
+    "seed": 0
+  },
+  {
+    "task_index": 91,
+    "task_id": "M114/expired_card_masked_by_account_chore",
+    "seed": 1
+  },
+  {
+    "task_index": 92,
+    "task_id": "M114/expired_card_masked_by_account_chore",
+    "seed": 2
+  },
+  {
+    "task_index": 93,
+    "task_id": "M115/wrong_item_warranty_then_reorder_dead_card",
+    "seed": 0
+  },
+  {
+    "task_index": 94,
+    "task_id": "M115/wrong_item_warranty_then_reorder_dead_card",
+    "seed": 1
+  },
+  {
+    "task_index": 95,
+    "task_id": "M115/wrong_item_warranty_then_reorder_dead_card",
+    "seed": 2
+  },
+  {
+    "task_index": 96,
+    "task_id": "M116/inbox_says_cancelled_live_says_active",
+    "seed": 0
+  },
+  {
+    "task_index": 97,
+    "task_id": "M116/inbox_says_cancelled_live_says_active",
+    "seed": 1
+  },
+  {
+    "task_index": 98,
+    "task_id": "M116/inbox_says_cancelled_live_says_active",
+    "seed": 2
+  },
+  {
+    "task_index": 99,
+    "task_id": "M117/ambiguous_default_card_two_new",
+    "seed": 0
+  },
+  {
+    "task_index": 100,
+    "task_id": "M117/ambiguous_default_card_two_new",
+    "seed": 1
+  },
+  {
+    "task_index": 101,
+    "task_id": "M117/ambiguous_default_card_two_new",
+    "seed": 2
+  },
+  {
+    "task_index": 102,
+    "task_id": "M118/ambiguous_gift_recipient_two_sisters",
+    "seed": 0
+  },
+  {
+    "task_index": 103,
+    "task_id": "M118/ambiguous_gift_recipient_two_sisters",
+    "seed": 1
+  },
+  {
+    "task_index": 104,
+    "task_id": "M118/ambiguous_gift_recipient_two_sisters",
+    "seed": 2
+  },
+  {
+    "task_index": 105,
+    "task_id": "M119/stale_old_address_recipient_moved",
+    "seed": 0
+  },
+  {
+    "task_index": 106,
+    "task_id": "M119/stale_old_address_recipient_moved",
+    "seed": 1
+  },
+  {
+    "task_index": 107,
+    "task_id": "M119/stale_old_address_recipient_moved",
+    "seed": 2
+  },
+  {
+    "task_index": 108,
+    "task_id": "M12/bulk_add_dense_grid",
+    "seed": 0
+  },
+  {
+    "task_index": 109,
+    "task_id": "M12/bulk_add_dense_grid",
+    "seed": 1
+  },
+  {
+    "task_index": 110,
+    "task_id": "M12/bulk_add_dense_grid",
+    "seed": 2
+  },
+  {
+    "task_index": 111,
+    "task_id": "M120/inert_move_meeting_partial_success",
+    "seed": 0
+  },
+  {
+    "task_index": 112,
+    "task_id": "M120/inert_move_meeting_partial_success",
+    "seed": 1
+  },
+  {
+    "task_index": 113,
+    "task_id": "M120/inert_move_meeting_partial_success",
+    "seed": 2
+  },
+  {
+    "task_index": 114,
+    "task_id": "M121/delivery_day_two_outputs",
+    "seed": 0
+  },
+  {
+    "task_index": 115,
+    "task_id": "M121/delivery_day_two_outputs",
+    "seed": 1
+  },
+  {
+    "task_index": 116,
+    "task_id": "M121/delivery_day_two_outputs",
+    "seed": 2
+  },
+  {
+    "task_index": 117,
+    "task_id": "M122/flight_delay_dinner_reschedule",
+    "seed": 0
+  },
+  {
+    "task_index": 118,
+    "task_id": "M122/flight_delay_dinner_reschedule",
+    "seed": 1
+  },
+  {
+    "task_index": 119,
+    "task_id": "M122/flight_delay_dinner_reschedule",
+    "seed": 2
+  },
+  {
+    "task_index": 120,
+    "task_id": "M123/promo_silently_rejected",
+    "seed": 0
+  },
+  {
+    "task_index": 121,
+    "task_id": "M123/promo_silently_rejected",
+    "seed": 1
+  },
+  {
+    "task_index": 122,
+    "task_id": "M123/promo_silently_rejected",
+    "seed": 2
+  },
+  {
+    "task_index": 123,
+    "task_id": "M124/expired_promo_not_rechecked",
+    "seed": 0
+  },
+  {
+    "task_index": 124,
+    "task_id": "M124/expired_promo_not_rechecked",
+    "seed": 1
+  },
+  {
+    "task_index": 125,
+    "task_id": "M124/expired_promo_not_rechecked",
+    "seed": 2
+  },
+  {
+    "task_index": 126,
+    "task_id": "M125/promo_min_purchase_silent",
+    "seed": 0
+  },
+  {
+    "task_index": 127,
+    "task_id": "M125/promo_min_purchase_silent",
+    "seed": 1
+  },
+  {
+    "task_index": 128,
+    "task_id": "M125/promo_min_purchase_silent",
+    "seed": 2
+  },
+  {
+    "task_index": 129,
+    "task_id": "M126/oos_item_missing",
+    "seed": 0
+  },
+  {
+    "task_index": 130,
+    "task_id": "M126/oos_item_missing",
+    "seed": 1
+  },
+  {
+    "task_index": 131,
+    "task_id": "M126/oos_item_missing",
+    "seed": 2
+  },
+  {
+    "task_index": 132,
+    "task_id": "M127/oos_signed_book_substitute",
+    "seed": 0
+  },
+  {
+    "task_index": 133,
+    "task_id": "M127/oos_signed_book_substitute",
+    "seed": 1
+  },
+  {
+    "task_index": 134,
+    "task_id": "M127/oos_signed_book_substitute",
+    "seed": 2
+  },
+  {
+    "task_index": 135,
+    "task_id": "M128/promo_failed_in_long_errand",
+    "seed": 0
+  },
+  {
+    "task_index": 136,
+    "task_id": "M128/promo_failed_in_long_errand",
+    "seed": 1
+  },
+  {
+    "task_index": 137,
+    "task_id": "M128/promo_failed_in_long_errand",
+    "seed": 2
+  },
+  {
+    "task_index": 138,
+    "task_id": "M129/oos_in_multi_item_basket",
+    "seed": 0
+  },
+  {
+    "task_index": 139,
+    "task_id": "M129/oos_in_multi_item_basket",
+    "seed": 1
+  },
+  {
+    "task_index": 140,
+    "task_id": "M129/oos_in_multi_item_basket",
+    "seed": 2
+  },
+  {
+    "task_index": 141,
+    "task_id": "M13/order_cleanup_audit",
+    "seed": 0
+  },
+  {
+    "task_index": 142,
+    "task_id": "M13/order_cleanup_audit",
+    "seed": 1
+  },
+  {
+    "task_index": 143,
+    "task_id": "M13/order_cleanup_audit",
+    "seed": 2
+  },
+  {
+    "task_index": 144,
+    "task_id": "M130/promo_applied_then_removed_by_item_swap",
+    "seed": 0
+  },
+  {
+    "task_index": 145,
+    "task_id": "M130/promo_applied_then_removed_by_item_swap",
+    "seed": 1
+  },
+  {
+    "task_index": 146,
+    "task_id": "M130/promo_applied_then_removed_by_item_swap",
+    "seed": 2
+  },
+  {
+    "task_index": 147,
+    "task_id": "M131/food_oos_dish_phantom_order",
+    "seed": 0
+  },
+  {
+    "task_index": 148,
+    "task_id": "M131/food_oos_dish_phantom_order",
+    "seed": 1
+  },
+  {
+    "task_index": 149,
+    "task_id": "M131/food_oos_dish_phantom_order",
+    "seed": 2
+  },
+  {
+    "task_index": 150,
+    "task_id": "M132/promo_wrong_category_silent",
+    "seed": 0
+  },
+  {
+    "task_index": 151,
+    "task_id": "M132/promo_wrong_category_silent",
+    "seed": 1
+  },
+  {
+    "task_index": 152,
+    "task_id": "M132/promo_wrong_category_silent",
+    "seed": 2
+  },
+  {
+    "task_index": 153,
+    "task_id": "M133/reorder_skips_oos_silently",
+    "seed": 0
+  },
+  {
+    "task_index": 154,
+    "task_id": "M133/reorder_skips_oos_silently",
+    "seed": 1
+  },
+  {
+    "task_index": 155,
+    "task_id": "M133/reorder_skips_oos_silently",
+    "seed": 2
+  },
+  {
+    "task_index": 156,
+    "task_id": "M134/promo_double_apply_assumed",
+    "seed": 0
+  },
+  {
+    "task_index": 157,
+    "task_id": "M134/promo_double_apply_assumed",
+    "seed": 1
+  },
+  {
+    "task_index": 158,
+    "task_id": "M134/promo_double_apply_assumed",
+    "seed": 2
+  },
+  {
+    "task_index": 159,
+    "task_id": "M135/market_coupon_min_not_met_silent",
+    "seed": 0
+  },
+  {
+    "task_index": 160,
+    "task_id": "M135/market_coupon_min_not_met_silent",
+    "seed": 1
+  },
+  {
+    "task_index": 161,
+    "task_id": "M135/market_coupon_min_not_met_silent",
+    "seed": 2
+  },
+  {
+    "task_index": 162,
+    "task_id": "M136/expired_market_coupon_unchecked",
+    "seed": 0
+  },
+  {
+    "task_index": 163,
+    "task_id": "M136/expired_market_coupon_unchecked",
+    "seed": 1
+  },
+  {
+    "task_index": 164,
+    "task_id": "M136/expired_market_coupon_unchecked",
+    "seed": 2
+  },
+  {
+    "task_index": 165,
+    "task_id": "M137/oos_then_proceed_empty_cart",
+    "seed": 0
+  },
+  {
+    "task_index": 166,
+    "task_id": "M137/oos_then_proceed_empty_cart",
+    "seed": 1
+  },
+  {
+    "task_index": 167,
+    "task_id": "M137/oos_then_proceed_empty_cart",
+    "seed": 2
+  },
+  {
+    "task_index": 168,
+    "task_id": "M138/promo_eligible_only_on_removed_line",
+    "seed": 0
+  },
+  {
+    "task_index": 169,
+    "task_id": "M138/promo_eligible_only_on_removed_line",
+    "seed": 1
+  },
+  {
+    "task_index": 170,
+    "task_id": "M138/promo_eligible_only_on_removed_line",
+    "seed": 2
+  },
+  {
+    "task_index": 171,
+    "task_id": "M139/no_laptop_under_budget",
+    "seed": 0
+  },
+  {
+    "task_index": 172,
+    "task_id": "M139/no_laptop_under_budget",
+    "seed": 1
+  },
+  {
+    "task_index": 173,
+    "task_id": "M139/no_laptop_under_budget",
+    "seed": 2
+  },
+  {
+    "task_index": 174,
+    "task_id": "M14/return_then_refund",
+    "seed": 0
+  },
+  {
+    "task_index": 175,
+    "task_id": "M14/return_then_refund",
+    "seed": 1
+  },
+  {
+    "task_index": 176,
+    "task_id": "M14/return_then_refund",
+    "seed": 2
+  },
+  {
+    "task_index": 177,
+    "task_id": "M140/no_headphones_price_rating",
+    "seed": 0
+  },
+  {
+    "task_index": 178,
+    "task_id": "M140/no_headphones_price_rating",
+    "seed": 1
+  },
+  {
+    "task_index": 179,
+    "task_id": "M140/no_headphones_price_rating",
+    "seed": 2
+  },
+  {
+    "task_index": 180,
+    "task_id": "M141/no_history_book_under_18",
+    "seed": 0
+  },
+  {
+    "task_index": 181,
+    "task_id": "M141/no_history_book_under_18",
+    "seed": 1
+  },
+  {
+    "task_index": 182,
+    "task_id": "M141/no_history_book_under_18",
+    "seed": 2
+  },
+  {
+    "task_index": 183,
+    "task_id": "M142/no_monitor_in_stock_high_rating",
+    "seed": 0
+  },
+  {
+    "task_index": 184,
+    "task_id": "M142/no_monitor_in_stock_high_rating",
+    "seed": 1
+  },
+  {
+    "task_index": 185,
+    "task_id": "M142/no_monitor_in_stock_high_rating",
+    "seed": 2
+  },
+  {
+    "task_index": 186,
+    "task_id": "M143/no_logitech_mouse_under_20",
+    "seed": 0
+  },
+  {
+    "task_index": 187,
+    "task_id": "M143/no_logitech_mouse_under_20",
+    "seed": 1
+  },
+  {
+    "task_index": 188,
+    "task_id": "M143/no_logitech_mouse_under_20",
+    "seed": 2
+  },
+  {
+    "task_index": 189,
+    "task_id": "M145/no_subscribable_dogfood_under_20",
+    "seed": 0
+  },
+  {
+    "task_index": 190,
+    "task_id": "M145/no_subscribable_dogfood_under_20",
+    "seed": 1
+  },
+  {
+    "task_index": 191,
+    "task_id": "M145/no_subscribable_dogfood_under_20",
+    "seed": 2
+  },
+  {
+    "task_index": 192,
+    "task_id": "M147/no_home_decor_under_30",
+    "seed": 0
+  },
+  {
+    "task_index": 193,
+    "task_id": "M147/no_home_decor_under_30",
+    "seed": 1
+  },
+  {
+    "task_index": 194,
+    "task_id": "M147/no_home_decor_under_30",
+    "seed": 2
+  },
+  {
+    "task_index": 195,
+    "task_id": "M148/no_in_stock_variant_meeting_spec",
+    "seed": 0
+  },
+  {
+    "task_index": 196,
+    "task_id": "M148/no_in_stock_variant_meeting_spec",
+    "seed": 1
+  },
+  {
+    "task_index": 197,
+    "task_id": "M148/no_in_stock_variant_meeting_spec",
+    "seed": 2
+  },
+  {
+    "task_index": 198,
+    "task_id": "M149/no_razer_keyboard",
+    "seed": 0
+  },
+  {
+    "task_index": 199,
+    "task_id": "M149/no_razer_keyboard",
+    "seed": 1
+  },
+  {
+    "task_index": 200,
+    "task_id": "M149/no_razer_keyboard",
+    "seed": 2
+  },
+  {
+    "task_index": 201,
+    "task_id": "M15/inbox_price_watch",
+    "seed": 0
+  },
+  {
+    "task_index": 202,
+    "task_id": "M15/inbox_price_watch",
+    "seed": 1
+  },
+  {
+    "task_index": 203,
+    "task_id": "M15/inbox_price_watch",
+    "seed": 2
+  },
+  {
+    "task_index": 204,
+    "task_id": "M151/promo_only_if_total_over",
+    "seed": 0
+  },
+  {
+    "task_index": 205,
+    "task_id": "M151/promo_only_if_total_over",
+    "seed": 1
+  },
+  {
+    "task_index": 206,
+    "task_id": "M151/promo_only_if_total_over",
+    "seed": 2
+  },
+  {
+    "task_index": 207,
+    "task_id": "M152/cancel_sub_only_if_charge_soon",
+    "seed": 0
+  },
+  {
+    "task_index": 208,
+    "task_id": "M152/cancel_sub_only_if_charge_soon",
+    "seed": 1
+  },
+  {
+    "task_index": 209,
+    "task_id": "M152/cancel_sub_only_if_charge_soon",
+    "seed": 2
+  },
+  {
+    "task_index": 210,
+    "task_id": "M154/reorder_only_if_not_already",
+    "seed": 0
+  },
+  {
+    "task_index": 211,
+    "task_id": "M154/reorder_only_if_not_already",
+    "seed": 1
+  },
+  {
+    "task_index": 212,
+    "task_id": "M154/reorder_only_if_not_already",
+    "seed": 2
+  },
+  {
+    "task_index": 213,
+    "task_id": "M155/email_finance_only_if_over_cap",
+    "seed": 0
+  },
+  {
+    "task_index": 214,
+    "task_id": "M155/email_finance_only_if_over_cap",
+    "seed": 1
+  },
+  {
+    "task_index": 215,
+    "task_id": "M155/email_finance_only_if_over_cap",
+    "seed": 2
+  },
+  {
+    "task_index": 216,
+    "task_id": "M156/promo_only_if_total_over_under_load",
+    "seed": 0
+  },
+  {
+    "task_index": 217,
+    "task_id": "M156/promo_only_if_total_over_under_load",
+    "seed": 1
+  },
+  {
+    "task_index": 218,
+    "task_id": "M156/promo_only_if_total_over_under_load",
+    "seed": 2
+  },
+  {
+    "task_index": 219,
+    "task_id": "M157/cancel_order_only_if_unshipped",
+    "seed": 0
+  },
+  {
+    "task_index": 220,
+    "task_id": "M157/cancel_order_only_if_unshipped",
+    "seed": 1
+  },
+  {
+    "task_index": 221,
+    "task_id": "M157/cancel_order_only_if_unshipped",
+    "seed": 2
+  },
+  {
+    "task_index": 222,
+    "task_id": "M158/cancel_sub_only_if_many_left",
+    "seed": 0
+  },
+  {
+    "task_index": 223,
+    "task_id": "M158/cancel_sub_only_if_many_left",
+    "seed": 1
+  },
+  {
+    "task_index": 224,
+    "task_id": "M158/cancel_sub_only_if_many_left",
+    "seed": 2
+  },
+  {
+    "task_index": 225,
+    "task_id": "M16/coordinated_dinner_delay",
+    "seed": 0
+  },
+  {
+    "task_index": 226,
+    "task_id": "M16/coordinated_dinner_delay",
+    "seed": 1
+  },
+  {
+    "task_index": 227,
+    "task_id": "M16/coordinated_dinner_delay",
+    "seed": 2
+  },
+  {
+    "task_index": 228,
+    "task_id": "M161/refund_method_conditional_on_amount",
+    "seed": 0
+  },
+  {
+    "task_index": 229,
+    "task_id": "M161/refund_method_conditional_on_amount",
+    "seed": 1
+  },
+  {
+    "task_index": 230,
+    "task_id": "M161/refund_method_conditional_on_amount",
+    "seed": 2
+  },
+  {
+    "task_index": 231,
+    "task_id": "M163/sub_address_conditional",
+    "seed": 0
+  },
+  {
+    "task_index": 232,
+    "task_id": "M163/sub_address_conditional",
+    "seed": 1
+  },
+  {
+    "task_index": 233,
+    "task_id": "M163/sub_address_conditional",
+    "seed": 2
+  },
+  {
+    "task_index": 234,
+    "task_id": "M164/cancel_only_if_no_pending_delivery",
+    "seed": 0
+  },
+  {
+    "task_index": 235,
+    "task_id": "M164/cancel_only_if_no_pending_delivery",
+    "seed": 1
+  },
+  {
+    "task_index": 236,
+    "task_id": "M164/cancel_only_if_no_pending_delivery",
+    "seed": 2
+  },
+  {
+    "task_index": 237,
+    "task_id": "M165/review_upsell_protection_plan",
+    "seed": 0
+  },
+  {
+    "task_index": 238,
+    "task_id": "M165/review_upsell_protection_plan",
+    "seed": 1
+  },
+  {
+    "task_index": 239,
+    "task_id": "M165/review_upsell_protection_plan",
+    "seed": 2
+  },
+  {
+    "task_index": 240,
+    "task_id": "M166/description_says_add_accessory",
+    "seed": 0
+  },
+  {
+    "task_index": 241,
+    "task_id": "M166/description_says_add_accessory",
+    "seed": 1
+  },
+  {
+    "task_index": 242,
+    "task_id": "M166/description_says_add_accessory",
+    "seed": 2
+  },
+  {
+    "task_index": 243,
+    "task_id": "M167/email_reply_confirm_address",
+    "seed": 0
+  },
+  {
+    "task_index": 244,
+    "task_id": "M167/email_reply_confirm_address",
+    "seed": 1
+  },
+  {
+    "task_index": 245,
+    "task_id": "M167/email_reply_confirm_address",
+    "seed": 2
+  },
+  {
+    "task_index": 246,
+    "task_id": "M169/description_says_set_quantity",
+    "seed": 0
+  },
+  {
+    "task_index": 247,
+    "task_id": "M169/description_says_set_quantity",
+    "seed": 1
+  },
+  {
+    "task_index": 248,
+    "task_id": "M169/description_says_set_quantity",
+    "seed": 2
+  },
+  {
+    "task_index": 249,
+    "task_id": "M17/cross_retailer_cheaper",
+    "seed": 0
+  },
+  {
+    "task_index": 250,
+    "task_id": "M17/cross_retailer_cheaper",
+    "seed": 1
+  },
+  {
+    "task_index": 251,
+    "task_id": "M17/cross_retailer_cheaper",
+    "seed": 2
+  },
+  {
+    "task_index": 252,
+    "task_id": "M170/mail_says_forward_to_external",
+    "seed": 0
+  },
+  {
+    "task_index": 253,
+    "task_id": "M170/mail_says_forward_to_external",
+    "seed": 1
+  },
+  {
+    "task_index": 254,
+    "task_id": "M170/mail_says_forward_to_external",
+    "seed": 2
+  },
+  {
+    "task_index": 255,
+    "task_id": "M171/review_injection_change_shipto",
+    "seed": 0
+  },
+  {
+    "task_index": 256,
+    "task_id": "M171/review_injection_change_shipto",
+    "seed": 1
+  },
+  {
+    "task_index": 257,
+    "task_id": "M171/review_injection_change_shipto",
+    "seed": 2
+  },
+  {
+    "task_index": 258,
+    "task_id": "M172/description_injection_apply_promo",
+    "seed": 0
+  },
+  {
+    "task_index": 259,
+    "task_id": "M172/description_injection_apply_promo",
+    "seed": 1
+  },
+  {
+    "task_index": 260,
+    "task_id": "M172/description_injection_apply_promo",
+    "seed": 2
+  },
+  {
+    "task_index": 261,
+    "task_id": "M173/order_email_injection_cancel_other",
+    "seed": 0
+  },
+  {
+    "task_index": 262,
+    "task_id": "M173/order_email_injection_cancel_other",
+    "seed": 1
+  },
+  {
+    "task_index": 263,
+    "task_id": "M173/order_email_injection_cancel_other",
+    "seed": 2
+  },
+  {
+    "task_index": 264,
+    "task_id": "M174/review_injection_subscribe",
+    "seed": 0
+  },
+  {
+    "task_index": 265,
+    "task_id": "M174/review_injection_subscribe",
+    "seed": 1
+  },
+  {
+    "task_index": 266,
+    "task_id": "M174/review_injection_subscribe",
+    "seed": 2
+  },
+  {
+    "task_index": 267,
+    "task_id": "M175/email_injection_change_default_payment",
+    "seed": 0
+  },
+  {
+    "task_index": 268,
+    "task_id": "M175/email_injection_change_default_payment",
+    "seed": 1
+  },
+  {
+    "task_index": 269,
+    "task_id": "M175/email_injection_change_default_payment",
+    "seed": 2
+  },
+  {
+    "task_index": 270,
+    "task_id": "M177/reorder_before_stock_check",
+    "seed": 0
+  },
+  {
+    "task_index": 271,
+    "task_id": "M177/reorder_before_stock_check",
+    "seed": 1
+  },
+  {
+    "task_index": 272,
+    "task_id": "M177/reorder_before_stock_check",
+    "seed": 2
+  },
+  {
+    "task_index": 273,
+    "task_id": "M179/cancel_one_named_sub",
+    "seed": 0
+  },
+  {
+    "task_index": 274,
+    "task_id": "M179/cancel_one_named_sub",
+    "seed": 1
+  },
+  {
+    "task_index": 275,
+    "task_id": "M179/cancel_one_named_sub",
+    "seed": 2
+  },
+  {
+    "task_index": 276,
+    "task_id": "M18/async_coupon_flip",
+    "seed": 0
+  },
+  {
+    "task_index": 277,
+    "task_id": "M18/async_coupon_flip",
+    "seed": 1
+  },
+  {
+    "task_index": 278,
+    "task_id": "M18/async_coupon_flip",
+    "seed": 2
+  },
+  {
+    "task_index": 279,
+    "task_id": "M180/return_one_item_not_whole",
+    "seed": 0
+  },
+  {
+    "task_index": 280,
+    "task_id": "M180/return_one_item_not_whole",
+    "seed": 1
+  },
+  {
+    "task_index": 281,
+    "task_id": "M180/return_one_item_not_whole",
+    "seed": 2
+  },
+  {
+    "task_index": 282,
+    "task_id": "M182/reply_to_one_email_not_all",
+    "seed": 0
+  },
+  {
+    "task_index": 283,
+    "task_id": "M182/reply_to_one_email_not_all",
+    "seed": 1
+  },
+  {
+    "task_index": 284,
+    "task_id": "M182/reply_to_one_email_not_all",
+    "seed": 2
+  },
+  {
+    "task_index": 285,
+    "task_id": "M183/negation_excluded_item",
+    "seed": 0
+  },
+  {
+    "task_index": 286,
+    "task_id": "M183/negation_excluded_item",
+    "seed": 1
+  },
+  {
+    "task_index": 287,
+    "task_id": "M183/negation_excluded_item",
+    "seed": 2
+  },
+  {
+    "task_index": 288,
+    "task_id": "M19/coupon_minefield",
+    "seed": 0
+  },
+  {
+    "task_index": 289,
+    "task_id": "M19/coupon_minefield",
+    "seed": 1
+  },
+  {
+    "task_index": 290,
+    "task_id": "M19/coupon_minefield",
+    "seed": 2
+  },
+  {
+    "task_index": 291,
+    "task_id": "M190/desk_refresh_final_total_flip",
+    "seed": 0
+  },
+  {
+    "task_index": 292,
+    "task_id": "M190/desk_refresh_final_total_flip",
+    "seed": 1
+  },
+  {
+    "task_index": 293,
+    "task_id": "M190/desk_refresh_final_total_flip",
+    "seed": 2
+  },
+  {
+    "task_index": 294,
+    "task_id": "M191/office_kit_card_trap",
+    "seed": 0
+  },
+  {
+    "task_index": 295,
+    "task_id": "M191/office_kit_card_trap",
+    "seed": 1
+  },
+  {
+    "task_index": 296,
+    "task_id": "M191/office_kit_card_trap",
+    "seed": 2
+  },
+  {
+    "task_index": 297,
+    "task_id": "M192/housewarming_split_sushi",
+    "seed": 0
+  },
+  {
+    "task_index": 298,
+    "task_id": "M192/housewarming_split_sushi",
+    "seed": 1
+  },
+  {
+    "task_index": 299,
+    "task_id": "M192/housewarming_split_sushi",
+    "seed": 2
+  },
+  {
+    "task_index": 300,
+    "task_id": "M193/standup_breakfast_async_reorder",
+    "seed": 0
+  },
+  {
+    "task_index": 301,
+    "task_id": "M193/standup_breakfast_async_reorder",
+    "seed": 1
+  },
+  {
+    "task_index": 302,
+    "task_id": "M193/standup_breakfast_async_reorder",
+    "seed": 2
+  },
+  {
+    "task_index": 303,
+    "task_id": "M194/dinner_delay_cascade_card_trap",
+    "seed": 0
+  },
+  {
+    "task_index": 304,
+    "task_id": "M194/dinner_delay_cascade_card_trap",
+    "seed": 1
+  },
+  {
+    "task_index": 305,
+    "task_id": "M194/dinner_delay_cascade_card_trap",
+    "seed": 2
+  },
+  {
+    "task_index": 306,
+    "task_id": "M195/personal_shopping_corporate_card",
+    "seed": 0
+  },
+  {
+    "task_index": 307,
+    "task_id": "M195/personal_shopping_corporate_card",
+    "seed": 1
+  },
+  {
+    "task_index": 308,
+    "task_id": "M195/personal_shopping_corporate_card",
+    "seed": 2
+  },
+  {
+    "task_index": 309,
+    "task_id": "M196/birthday_gift_stale_message",
+    "seed": 0
+  },
+  {
+    "task_index": 310,
+    "task_id": "M196/birthday_gift_stale_message",
+    "seed": 1
+  },
+  {
+    "task_index": 311,
+    "task_id": "M196/birthday_gift_stale_message",
+    "seed": 2
+  },
+  {
+    "task_index": 312,
+    "task_id": "M197/event_supplies_sneaked_addon",
+    "seed": 0
+  },
+  {
+    "task_index": 313,
+    "task_id": "M197/event_supplies_sneaked_addon",
+    "seed": 1
+  },
+  {
+    "task_index": 314,
+    "task_id": "M197/event_supplies_sneaked_addon",
+    "seed": 2
+  },
+  {
+    "task_index": 315,
+    "task_id": "M198/return_rebuy_expired_card",
+    "seed": 0
+  },
+  {
+    "task_index": 316,
+    "task_id": "M198/return_rebuy_expired_card",
+    "seed": 1
+  },
+  {
+    "task_index": 317,
+    "task_id": "M198/return_rebuy_expired_card",
+    "seed": 2
+  },
+  {
+    "task_index": 318,
+    "task_id": "M199/promo_coverage_split",
+    "seed": 0
+  },
+  {
+    "task_index": 319,
+    "task_id": "M199/promo_coverage_split",
+    "seed": 1
+  },
+  {
+    "task_index": 320,
+    "task_id": "M199/promo_coverage_split",
+    "seed": 2
+  },
+  {
+    "task_index": 321,
+    "task_id": "M2/order_then_track_via_email",
+    "seed": 0
+  },
+  {
+    "task_index": 322,
+    "task_id": "M2/order_then_track_via_email",
+    "seed": 1
+  },
+  {
+    "task_index": 323,
+    "task_id": "M2/order_then_track_via_email",
+    "seed": 2
+  },
+  {
+    "task_index": 324,
+    "task_id": "M20/errand_run",
+    "seed": 0
+  },
+  {
+    "task_index": 325,
+    "task_id": "M20/errand_run",
+    "seed": 1
+  },
+  {
+    "task_index": 326,
+    "task_id": "M20/errand_run",
+    "seed": 2
+  },
+  {
+    "task_index": 327,
+    "task_id": "M200/dentist_move_doublebook",
+    "seed": 0
+  },
+  {
+    "task_index": 328,
+    "task_id": "M200/dentist_move_doublebook",
+    "seed": 1
+  },
+  {
+    "task_index": 329,
+    "task_id": "M200/dentist_move_doublebook",
+    "seed": 2
+  },
+  {
+    "task_index": 330,
+    "task_id": "M201/refund_dead_card_vase",
+    "seed": 0
+  },
+  {
+    "task_index": 331,
+    "task_id": "M201/refund_dead_card_vase",
+    "seed": 1
+  },
+  {
+    "task_index": 332,
+    "task_id": "M201/refund_dead_card_vase",
+    "seed": 2
+  },
+  {
+    "task_index": 333,
+    "task_id": "M202/dogfood_coverage_join",
+    "seed": 0
+  },
+  {
+    "task_index": 334,
+    "task_id": "M202/dogfood_coverage_join",
+    "seed": 1
+  },
+  {
+    "task_index": 335,
+    "task_id": "M202/dogfood_coverage_join",
+    "seed": 2
+  },
+  {
+    "task_index": 336,
+    "task_id": "M203/split_ship_two_tracking",
+    "seed": 0
+  },
+  {
+    "task_index": 337,
+    "task_id": "M203/split_ship_two_tracking",
+    "seed": 1
+  },
+  {
+    "task_index": 338,
+    "task_id": "M203/split_ship_two_tracking",
+    "seed": 2
+  },
+  {
+    "task_index": 339,
+    "task_id": "M204/valuemart_delivery_threshold",
+    "seed": 0
+  },
+  {
+    "task_index": 340,
+    "task_id": "M204/valuemart_delivery_threshold",
+    "seed": 1
+  },
+  {
+    "task_index": 341,
+    "task_id": "M204/valuemart_delivery_threshold",
+    "seed": 2
+  },
+  {
+    "task_index": 342,
+    "task_id": "M206/sub_cadence_consolidation_join",
+    "seed": 0
+  },
+  {
+    "task_index": 343,
+    "task_id": "M206/sub_cadence_consolidation_join",
+    "seed": 1
+  },
+  {
+    "task_index": 344,
+    "task_id": "M206/sub_cadence_consolidation_join",
+    "seed": 2
+  },
+  {
+    "task_index": 345,
+    "task_id": "M207/scheduled_delivery_event_join",
+    "seed": 0
+  },
+  {
+    "task_index": 346,
+    "task_id": "M207/scheduled_delivery_event_join",
+    "seed": 1
+  },
+  {
+    "task_index": 347,
+    "task_id": "M207/scheduled_delivery_event_join",
+    "seed": 2
+  },
+  {
+    "task_index": 348,
+    "task_id": "M21/async_errand_run",
+    "seed": 0
+  },
+  {
+    "task_index": 349,
+    "task_id": "M21/async_errand_run",
+    "seed": 1
+  },
+  {
+    "task_index": 350,
+    "task_id": "M21/async_errand_run",
+    "seed": 2
+  },
+  {
+    "task_index": 351,
+    "task_id": "M210/split_ship_schedule_collapse",
+    "seed": 0
+  },
+  {
+    "task_index": 352,
+    "task_id": "M210/split_ship_schedule_collapse",
+    "seed": 1
+  },
+  {
+    "task_index": 353,
+    "task_id": "M210/split_ship_schedule_collapse",
+    "seed": 2
+  },
+  {
+    "task_index": 354,
+    "task_id": "M211/cancel_shipped_then_confirm",
+    "seed": 0
+  },
+  {
+    "task_index": 355,
+    "task_id": "M211/cancel_shipped_then_confirm",
+    "seed": 1
+  },
+  {
+    "task_index": 356,
+    "task_id": "M211/cancel_shipped_then_confirm",
+    "seed": 2
+  },
+  {
+    "task_index": 357,
+    "task_id": "M212/subscription_pause_phantom",
+    "seed": 0
+  },
+  {
+    "task_index": 358,
+    "task_id": "M212/subscription_pause_phantom",
+    "seed": 1
+  },
+  {
+    "task_index": 359,
+    "task_id": "M212/subscription_pause_phantom",
+    "seed": 2
+  },
+  {
+    "task_index": 360,
+    "task_id": "M213/default_card_swap_then_confirm",
+    "seed": 0
+  },
+  {
+    "task_index": 361,
+    "task_id": "M213/default_card_swap_then_confirm",
+    "seed": 1
+  },
+  {
+    "task_index": 362,
+    "task_id": "M213/default_card_swap_then_confirm",
+    "seed": 2
+  },
+  {
+    "task_index": 363,
+    "task_id": "M214/phantom_qualifier",
+    "seed": 0
+  },
+  {
+    "task_index": 364,
+    "task_id": "M214/phantom_qualifier",
+    "seed": 1
+  },
+  {
+    "task_index": 365,
+    "task_id": "M214/phantom_qualifier",
+    "seed": 2
+  },
+  {
+    "task_index": 366,
+    "task_id": "M215/discount_wont_save_it",
+    "seed": 0
+  },
+  {
+    "task_index": 367,
+    "task_id": "M215/discount_wont_save_it",
+    "seed": 1
+  },
+  {
+    "task_index": 368,
+    "task_id": "M215/discount_wont_save_it",
+    "seed": 2
+  },
+  {
+    "task_index": 369,
+    "task_id": "M216/only_one_fits_but_oos",
+    "seed": 0
+  },
+  {
+    "task_index": 370,
+    "task_id": "M216/only_one_fits_but_oos",
+    "seed": 1
+  },
+  {
+    "task_index": 371,
+    "task_id": "M216/only_one_fits_but_oos",
+    "seed": 2
+  },
+  {
+    "task_index": 372,
+    "task_id": "M217/scoped_cancel_quantifier",
+    "seed": 0
+  },
+  {
+    "task_index": 373,
+    "task_id": "M217/scoped_cancel_quantifier",
+    "seed": 1
+  },
+  {
+    "task_index": 374,
+    "task_id": "M217/scoped_cancel_quantifier",
+    "seed": 2
+  },
+  {
+    "task_index": 375,
+    "task_id": "M218/cancel_gated_on_shipment_status",
+    "seed": 0
+  },
+  {
+    "task_index": 376,
+    "task_id": "M218/cancel_gated_on_shipment_status",
+    "seed": 1
+  },
+  {
+    "task_index": 377,
+    "task_id": "M218/cancel_gated_on_shipment_status",
+    "seed": 2
+  },
+  {
+    "task_index": 378,
+    "task_id": "M219/card_validity_gated_on_delivery_date",
+    "seed": 0
+  },
+  {
+    "task_index": 379,
+    "task_id": "M219/card_validity_gated_on_delivery_date",
+    "seed": 1
+  },
+  {
+    "task_index": 380,
+    "task_id": "M219/card_validity_gated_on_delivery_date",
+    "seed": 2
+  },
+  {
+    "task_index": 381,
+    "task_id": "M22/async_calendar_cascade",
+    "seed": 0
+  },
+  {
+    "task_index": 382,
+    "task_id": "M22/async_calendar_cascade",
+    "seed": 1
+  },
+  {
+    "task_index": 383,
+    "task_id": "M22/async_calendar_cascade",
+    "seed": 2
+  },
+  {
+    "task_index": 384,
+    "task_id": "M220/address_change_no_propagate",
+    "seed": 0
+  },
+  {
+    "task_index": 385,
+    "task_id": "M220/address_change_no_propagate",
+    "seed": 1
+  },
+  {
+    "task_index": 386,
+    "task_id": "M220/address_change_no_propagate",
+    "seed": 2
+  },
+  {
+    "task_index": 387,
+    "task_id": "M221/coupon_failed_then_confirm",
+    "seed": 0
+  },
+  {
+    "task_index": 388,
+    "task_id": "M221/coupon_failed_then_confirm",
+    "seed": 1
+  },
+  {
+    "task_index": 389,
+    "task_id": "M221/coupon_failed_then_confirm",
+    "seed": 2
+  },
+  {
+    "task_index": 390,
+    "task_id": "M222/pricematch_phantom_refund",
+    "seed": 0
+  },
+  {
+    "task_index": 391,
+    "task_id": "M222/pricematch_phantom_refund",
+    "seed": 1
+  },
+  {
+    "task_index": 392,
+    "task_id": "M222/pricematch_phantom_refund",
+    "seed": 2
+  },
+  {
+    "task_index": 393,
+    "task_id": "M223/subscription_qty_bump_phantom",
+    "seed": 0
+  },
+  {
+    "task_index": 394,
+    "task_id": "M223/subscription_qty_bump_phantom",
+    "seed": 1
+  },
+  {
+    "task_index": 395,
+    "task_id": "M223/subscription_qty_bump_phantom",
+    "seed": 2
+  },
+  {
+    "task_index": 396,
+    "task_id": "M224/phantom_overcharge_refund",
+    "seed": 0
+  },
+  {
+    "task_index": 397,
+    "task_id": "M224/phantom_overcharge_refund",
+    "seed": 1
+  },
+  {
+    "task_index": 398,
+    "task_id": "M224/phantom_overcharge_refund",
+    "seed": 2
+  },
+  {
+    "task_index": 399,
+    "task_id": "M226/false_stock_premise",
+    "seed": 0
+  },
+  {
+    "task_index": 400,
+    "task_id": "M226/false_stock_premise",
+    "seed": 1
+  },
+  {
+    "task_index": 401,
+    "task_id": "M226/false_stock_premise",
+    "seed": 2
+  },
+  {
+    "task_index": 402,
+    "task_id": "M227/false_rating_premise",
+    "seed": 0
+  },
+  {
+    "task_index": 403,
+    "task_id": "M227/false_rating_premise",
+    "seed": 1
+  },
+  {
+    "task_index": 404,
+    "task_id": "M227/false_rating_premise",
+    "seed": 2
+  },
+  {
+    "task_index": 405,
+    "task_id": "M228/stale_delivered_anchor",
+    "seed": 0
+  },
+  {
+    "task_index": 406,
+    "task_id": "M228/stale_delivered_anchor",
+    "seed": 1
+  },
+  {
+    "task_index": 407,
+    "task_id": "M228/stale_delivered_anchor",
+    "seed": 2
+  },
+  {
+    "task_index": 408,
+    "task_id": "M229/gift_receipt_message_phantom",
+    "seed": 0
+  },
+  {
+    "task_index": 409,
+    "task_id": "M229/gift_receipt_message_phantom",
+    "seed": 1
+  },
+  {
+    "task_index": 410,
+    "task_id": "M229/gift_receipt_message_phantom",
+    "seed": 2
+  },
+  {
+    "task_index": 411,
+    "task_id": "M23/offsite_keeps_moving",
+    "seed": 0
+  },
+  {
+    "task_index": 412,
+    "task_id": "M23/offsite_keeps_moving",
+    "seed": 1
+  },
+  {
+    "task_index": 413,
+    "task_id": "M23/offsite_keeps_moving",
+    "seed": 2
+  },
+  {
+    "task_index": 414,
+    "task_id": "M230/false_cheapest_claim",
+    "seed": 0
+  },
+  {
+    "task_index": 415,
+    "task_id": "M230/false_cheapest_claim",
+    "seed": 1
+  },
+  {
+    "task_index": 416,
+    "task_id": "M230/false_cheapest_claim",
+    "seed": 2
+  },
+  {
+    "task_index": 417,
+    "task_id": "M231/false_member_discount",
+    "seed": 0
+  },
+  {
+    "task_index": 418,
+    "task_id": "M231/false_member_discount",
+    "seed": 1
+  },
+  {
+    "task_index": 419,
+    "task_id": "M231/false_member_discount",
+    "seed": 2
+  },
+  {
+    "task_index": 420,
+    "task_id": "M232/false_in_stock_single",
+    "seed": 0
+  },
+  {
+    "task_index": 421,
+    "task_id": "M232/false_in_stock_single",
+    "seed": 1
+  },
+  {
+    "task_index": 422,
+    "task_id": "M232/false_in_stock_single",
+    "seed": 2
+  },
+  {
+    "task_index": 423,
+    "task_id": "M233/false_double_charge_sub",
+    "seed": 0
+  },
+  {
+    "task_index": 424,
+    "task_id": "M233/false_double_charge_sub",
+    "seed": 1
+  },
+  {
+    "task_index": 425,
+    "task_id": "M233/false_double_charge_sub",
+    "seed": 2
+  },
+  {
+    "task_index": 426,
+    "task_id": "M234/false_already_cancelled",
+    "seed": 0
+  },
+  {
+    "task_index": 427,
+    "task_id": "M234/false_already_cancelled",
+    "seed": 1
+  },
+  {
+    "task_index": 428,
+    "task_id": "M234/false_already_cancelled",
+    "seed": 2
+  },
+  {
+    "task_index": 429,
+    "task_id": "M235/false_wrong_address_shipped",
+    "seed": 0
+  },
+  {
+    "task_index": 430,
+    "task_id": "M235/false_wrong_address_shipped",
+    "seed": 1
+  },
+  {
+    "task_index": 431,
+    "task_id": "M235/false_wrong_address_shipped",
+    "seed": 2
+  },
+  {
+    "task_index": 432,
+    "task_id": "M236/false_price_drop_refund",
+    "seed": 0
+  },
+  {
+    "task_index": 433,
+    "task_id": "M236/false_price_drop_refund",
+    "seed": 1
+  },
+  {
+    "task_index": 434,
+    "task_id": "M236/false_price_drop_refund",
+    "seed": 2
+  },
+  {
+    "task_index": 435,
+    "task_id": "M237/false_free_ship_threshold",
+    "seed": 0
+  },
+  {
+    "task_index": 436,
+    "task_id": "M237/false_free_ship_threshold",
+    "seed": 1
+  },
+  {
+    "task_index": 437,
+    "task_id": "M237/false_free_ship_threshold",
+    "seed": 2
+  },
+  {
+    "task_index": 438,
+    "task_id": "M238/partial_batch_add_confirm",
+    "seed": 0
+  },
+  {
+    "task_index": 439,
+    "task_id": "M238/partial_batch_add_confirm",
+    "seed": 1
+  },
+  {
+    "task_index": 440,
+    "task_id": "M238/partial_batch_add_confirm",
+    "seed": 2
+  },
+  {
+    "task_index": 441,
+    "task_id": "M239/calendar_add_guest_noop",
+    "seed": 0
+  },
+  {
+    "task_index": 442,
+    "task_id": "M239/calendar_add_guest_noop",
+    "seed": 1
+  },
+  {
+    "task_index": 443,
+    "task_id": "M239/calendar_add_guest_noop",
+    "seed": 2
+  },
+  {
+    "task_index": 444,
+    "task_id": "M24/procurement_puzzle",
+    "seed": 0
+  },
+  {
+    "task_index": 445,
+    "task_id": "M24/procurement_puzzle",
+    "seed": 1
+  },
+  {
+    "task_index": 446,
+    "task_id": "M24/procurement_puzzle",
+    "seed": 2
+  },
+  {
+    "task_index": 447,
+    "task_id": "M240/post_review_noop",
+    "seed": 0
+  },
+  {
+    "task_index": 448,
+    "task_id": "M240/post_review_noop",
+    "seed": 1
+  },
+  {
+    "task_index": 449,
+    "task_id": "M240/post_review_noop",
+    "seed": 2
+  },
+  {
+    "task_index": 450,
+    "task_id": "M241/change_email_noop",
+    "seed": 0
+  },
+  {
+    "task_index": 451,
+    "task_id": "M241/change_email_noop",
+    "seed": 1
+  },
+  {
+    "task_index": 452,
+    "task_id": "M241/change_email_noop",
+    "seed": 2
+  },
+  {
+    "task_index": 453,
+    "task_id": "M242/market_modify_order_noop",
+    "seed": 0
+  },
+  {
+    "task_index": 454,
+    "task_id": "M242/market_modify_order_noop",
+    "seed": 1
+  },
+  {
+    "task_index": 455,
+    "task_id": "M242/market_modify_order_noop",
+    "seed": 2
+  },
+  {
+    "task_index": 456,
+    "task_id": "M243/reorder_discontinued_noop",
+    "seed": 0
+  },
+  {
+    "task_index": 457,
+    "task_id": "M243/reorder_discontinued_noop",
+    "seed": 1
+  },
+  {
+    "task_index": 458,
+    "task_id": "M243/reorder_discontinued_noop",
+    "seed": 2
+  },
+  {
+    "task_index": 459,
+    "task_id": "M244/gift_receipt_placed_noop",
+    "seed": 0
+  },
+  {
+    "task_index": 460,
+    "task_id": "M244/gift_receipt_placed_noop",
+    "seed": 1
+  },
+  {
+    "task_index": 461,
+    "task_id": "M244/gift_receipt_placed_noop",
+    "seed": 2
+  },
+  {
+    "task_index": 462,
+    "task_id": "M245/split_payment_noop",
+    "seed": 0
+  },
+  {
+    "task_index": 463,
+    "task_id": "M245/split_payment_noop",
+    "seed": 1
+  },
+  {
+    "task_index": 464,
+    "task_id": "M245/split_payment_noop",
+    "seed": 2
+  },
+  {
+    "task_index": 465,
+    "task_id": "M246/budget_allin_impossible",
+    "seed": 0
+  },
+  {
+    "task_index": 466,
+    "task_id": "M246/budget_allin_impossible",
+    "seed": 1
+  },
+  {
+    "task_index": 467,
+    "task_id": "M246/budget_allin_impossible",
+    "seed": 2
+  },
+  {
+    "task_index": 468,
+    "task_id": "M247/multiconstraint_headphones_empty",
+    "seed": 0
+  },
+  {
+    "task_index": 469,
+    "task_id": "M247/multiconstraint_headphones_empty",
+    "seed": 1
+  },
+  {
+    "task_index": 470,
+    "task_id": "M247/multiconstraint_headphones_empty",
+    "seed": 2
+  },
+  {
+    "task_index": 471,
+    "task_id": "M248/food_dietary_eta_empty",
+    "seed": 0
+  },
+  {
+    "task_index": 472,
+    "task_id": "M248/food_dietary_eta_empty",
+    "seed": 1
+  },
+  {
+    "task_index": 473,
+    "task_id": "M248/food_dietary_eta_empty",
+    "seed": 2
+  },
+  {
+    "task_index": 474,
+    "task_id": "M249/cross_store_cap_empty",
+    "seed": 0
+  },
+  {
+    "task_index": 475,
+    "task_id": "M249/cross_store_cap_empty",
+    "seed": 1
+  },
+  {
+    "task_index": 476,
+    "task_id": "M249/cross_store_cap_empty",
+    "seed": 2
+  },
+  {
+    "task_index": 477,
+    "task_id": "M25/dispatch_desk",
+    "seed": 0
+  },
+  {
+    "task_index": 478,
+    "task_id": "M25/dispatch_desk",
+    "seed": 1
+  },
+  {
+    "task_index": 479,
+    "task_id": "M25/dispatch_desk",
+    "seed": 2
+  },
+  {
+    "task_index": 480,
+    "task_id": "M250/brand_spec_price_empty",
+    "seed": 0
+  },
+  {
+    "task_index": 481,
+    "task_id": "M250/brand_spec_price_empty",
+    "seed": 1
+  },
+  {
+    "task_index": 482,
+    "task_id": "M250/brand_spec_price_empty",
+    "seed": 2
+  },
+  {
+    "task_index": 483,
+    "task_id": "M251/same_but_cheaper_none",
+    "seed": 0
+  },
+  {
+    "task_index": 484,
+    "task_id": "M251/same_but_cheaper_none",
+    "seed": 1
+  },
+  {
+    "task_index": 485,
+    "task_id": "M251/same_but_cheaper_none",
+    "seed": 2
+  },
+  {
+    "task_index": 486,
+    "task_id": "M252/toddler_safety_constraint",
+    "seed": 0
+  },
+  {
+    "task_index": 487,
+    "task_id": "M252/toddler_safety_constraint",
+    "seed": 1
+  },
+  {
+    "task_index": 488,
+    "task_id": "M252/toddler_safety_constraint",
+    "seed": 2
+  },
+  {
+    "task_index": 489,
+    "task_id": "M253/nut_allergy_constraint",
+    "seed": 0
+  },
+  {
+    "task_index": 490,
+    "task_id": "M253/nut_allergy_constraint",
+    "seed": 1
+  },
+  {
+    "task_index": 491,
+    "task_id": "M253/nut_allergy_constraint",
+    "seed": 2
+  },
+  {
+    "task_index": 492,
+    "task_id": "M254/tv_wont_fit_console",
+    "seed": 0
+  },
+  {
+    "task_index": 493,
+    "task_id": "M254/tv_wont_fit_console",
+    "seed": 1
+  },
+  {
+    "task_index": 494,
+    "task_id": "M254/tv_wont_fit_console",
+    "seed": 2
+  },
+  {
+    "task_index": 495,
+    "task_id": "M255/pregnancy_contraindication",
+    "seed": 0
+  },
+  {
+    "task_index": 496,
+    "task_id": "M255/pregnancy_contraindication",
+    "seed": 1
+  },
+  {
+    "task_index": 497,
+    "task_id": "M255/pregnancy_contraindication",
+    "seed": 2
+  },
+  {
+    "task_index": 498,
+    "task_id": "M26/calendar_purge_async",
+    "seed": 0
+  },
+  {
+    "task_index": 499,
+    "task_id": "M26/calendar_purge_async",
+    "seed": 1
+  },
+  {
+    "task_index": 500,
+    "task_id": "M26/calendar_purge_async",
+    "seed": 2
+  },
+  {
+    "task_index": 501,
+    "task_id": "M269/cancel_if_not_shipped",
+    "seed": 0
+  },
+  {
+    "task_index": 502,
+    "task_id": "M269/cancel_if_not_shipped",
+    "seed": 1
+  },
+  {
+    "task_index": 503,
+    "task_id": "M269/cancel_if_not_shipped",
+    "seed": 2
+  },
+  {
+    "task_index": 504,
+    "task_id": "M27/budget_desk",
+    "seed": 0
+  },
+  {
+    "task_index": 505,
+    "task_id": "M27/budget_desk",
+    "seed": 1
+  },
+  {
+    "task_index": 506,
+    "task_id": "M27/budget_desk",
+    "seed": 2
+  },
+  {
+    "task_index": 507,
+    "task_id": "M270/named_item_vs_budget",
+    "seed": 0
+  },
+  {
+    "task_index": 508,
+    "task_id": "M270/named_item_vs_budget",
+    "seed": 1
+  },
+  {
+    "task_index": 509,
+    "task_id": "M270/named_item_vs_budget",
+    "seed": 2
+  },
+  {
+    "task_index": 510,
+    "task_id": "M271/deadline_conflict_delivery",
+    "seed": 0
+  },
+  {
+    "task_index": 511,
+    "task_id": "M271/deadline_conflict_delivery",
+    "seed": 1
+  },
+  {
+    "task_index": 512,
+    "task_id": "M271/deadline_conflict_delivery",
+    "seed": 2
+  },
+  {
+    "task_index": 513,
+    "task_id": "M272/surprise_gift_timing",
+    "seed": 0
+  },
+  {
+    "task_index": 514,
+    "task_id": "M272/surprise_gift_timing",
+    "seed": 1
+  },
+  {
+    "task_index": 515,
+    "task_id": "M272/surprise_gift_timing",
+    "seed": 2
+  },
+  {
+    "task_index": 516,
+    "task_id": "M273/perishable_delivery_window",
+    "seed": 0
+  },
+  {
+    "task_index": 517,
+    "task_id": "M273/perishable_delivery_window",
+    "seed": 1
+  },
+  {
+    "task_index": 518,
+    "task_id": "M273/perishable_delivery_window",
+    "seed": 2
+  },
+  {
+    "task_index": 519,
+    "task_id": "M274/temporal_conflict_hard_physical_onpage",
+    "seed": 0
+  },
+  {
+    "task_index": 520,
+    "task_id": "M274/temporal_conflict_hard_physical_onpage",
+    "seed": 1
+  },
+  {
+    "task_index": 521,
+    "task_id": "M274/temporal_conflict_hard_physical_onpage",
+    "seed": 2
+  },
+  {
+    "task_index": 522,
+    "task_id": "M275/temporal_conflict_perishable_offpage_negative_control",
+    "seed": 0
+  },
+  {
+    "task_index": 523,
+    "task_id": "M275/temporal_conflict_perishable_offpage_negative_control",
+    "seed": 1
+  },
+  {
+    "task_index": 524,
+    "task_id": "M275/temporal_conflict_perishable_offpage_negative_control",
+    "seed": 2
+  },
+  {
+    "task_index": 525,
+    "task_id": "M28/stockout_scramble",
+    "seed": 0
+  },
+  {
+    "task_index": 526,
+    "task_id": "M28/stockout_scramble",
+    "seed": 1
+  },
+  {
+    "task_index": 527,
+    "task_id": "M28/stockout_scramble",
+    "seed": 2
+  },
+  {
+    "task_index": 528,
+    "task_id": "M286/conditional_subscribe_dupe",
+    "seed": 0
+  },
+  {
+    "task_index": 529,
+    "task_id": "M286/conditional_subscribe_dupe",
+    "seed": 1
+  },
+  {
+    "task_index": 530,
+    "task_id": "M286/conditional_subscribe_dupe",
+    "seed": 2
+  },
+  {
+    "task_index": 531,
+    "task_id": "M287/credential_gated_2fa_reorder",
+    "seed": 0
+  },
+  {
+    "task_index": 532,
+    "task_id": "M287/credential_gated_2fa_reorder",
+    "seed": 1
+  },
+  {
+    "task_index": 533,
+    "task_id": "M287/credential_gated_2fa_reorder",
+    "seed": 2
+  },
+  {
+    "task_index": 534,
+    "task_id": "M288/credential_gated_named_authority_override",
+    "seed": 0
+  },
+  {
+    "task_index": 535,
+    "task_id": "M288/credential_gated_named_authority_override",
+    "seed": 1
+  },
+  {
+    "task_index": 536,
+    "task_id": "M288/credential_gated_named_authority_override",
+    "seed": 2
+  },
+  {
+    "task_index": 537,
+    "task_id": "M289/implicit_constraint_named_fetch_armA",
+    "seed": 0
+  },
+  {
+    "task_index": 538,
+    "task_id": "M289/implicit_constraint_named_fetch_armA",
+    "seed": 1
+  },
+  {
+    "task_index": 539,
+    "task_id": "M289/implicit_constraint_named_fetch_armA",
+    "seed": 2
+  },
+  {
+    "task_index": 540,
+    "task_id": "M29/vanishing_slot",
+    "seed": 0
+  },
+  {
+    "task_index": 541,
+    "task_id": "M29/vanishing_slot",
+    "seed": 1
+  },
+  {
+    "task_index": 542,
+    "task_id": "M29/vanishing_slot",
+    "seed": 2
+  },
+  {
+    "task_index": 543,
+    "task_id": "M290/implicit_constraint_open_selection_armB",
+    "seed": 0
+  },
+  {
+    "task_index": 544,
+    "task_id": "M290/implicit_constraint_open_selection_armB",
+    "seed": 1
+  },
+  {
+    "task_index": 545,
+    "task_id": "M290/implicit_constraint_open_selection_armB",
+    "seed": 2
+  },
+  {
+    "task_index": 546,
+    "task_id": "M291/cancel_order_only_if_unshipped_collapsed",
+    "seed": 0
+  },
+  {
+    "task_index": 547,
+    "task_id": "M291/cancel_order_only_if_unshipped_collapsed",
+    "seed": 1
+  },
+  {
+    "task_index": 548,
+    "task_id": "M291/cancel_order_only_if_unshipped_collapsed",
+    "seed": 2
+  },
+  {
+    "task_index": 549,
+    "task_id": "M292/cancel_sub_only_if_charge_soon_distanced",
+    "seed": 0
+  },
+  {
+    "task_index": 550,
+    "task_id": "M292/cancel_sub_only_if_charge_soon_distanced",
+    "seed": 1
+  },
+  {
+    "task_index": 551,
+    "task_id": "M292/cancel_sub_only_if_charge_soon_distanced",
+    "seed": 2
+  },
+  {
+    "task_index": 552,
+    "task_id": "M293/superseded_order_cart_preloaded",
+    "seed": 0
+  },
+  {
+    "task_index": 553,
+    "task_id": "M293/superseded_order_cart_preloaded",
+    "seed": 1
+  },
+  {
+    "task_index": 554,
+    "task_id": "M293/superseded_order_cart_preloaded",
+    "seed": 2
+  },
+  {
+    "task_index": 555,
+    "task_id": "M294/injection_promo_description_armA",
+    "seed": 0
+  },
+  {
+    "task_index": 556,
+    "task_id": "M294/injection_promo_description_armA",
+    "seed": 1
+  },
+  {
+    "task_index": 557,
+    "task_id": "M294/injection_promo_description_armA",
+    "seed": 2
+  },
+  {
+    "task_index": 558,
+    "task_id": "M295/injection_promo_forged_confirmation_armB",
+    "seed": 0
+  },
+  {
+    "task_index": 559,
+    "task_id": "M295/injection_promo_forged_confirmation_armB",
+    "seed": 1
+  },
+  {
+    "task_index": 560,
+    "task_id": "M295/injection_promo_forged_confirmation_armB",
+    "seed": 2
+  },
+  {
+    "task_index": 561,
+    "task_id": "M296/change_email_notification_decoy_field",
+    "seed": 0
+  },
+  {
+    "task_index": 562,
+    "task_id": "M296/change_email_notification_decoy_field",
+    "seed": 1
+  },
+  {
+    "task_index": 563,
+    "task_id": "M296/change_email_notification_decoy_field",
+    "seed": 2
+  },
+  {
+    "task_index": 564,
+    "task_id": "M297/no_ship_to_country_verify_then_substitute",
+    "seed": 0
+  },
+  {
+    "task_index": 565,
+    "task_id": "M297/no_ship_to_country_verify_then_substitute",
+    "seed": 1
+  },
+  {
+    "task_index": 566,
+    "task_id": "M297/no_ship_to_country_verify_then_substitute",
+    "seed": 2
+  },
+  {
+    "task_index": 567,
+    "task_id": "M298/cancel_sub_false_gate_claim",
+    "seed": 0
+  },
+  {
+    "task_index": 568,
+    "task_id": "M298/cancel_sub_false_gate_claim",
+    "seed": 1
+  },
+  {
+    "task_index": 569,
+    "task_id": "M298/cancel_sub_false_gate_claim",
+    "seed": 2
+  },
+  {
+    "task_index": 570,
+    "task_id": "M299/delivery_reminder_assistant_asserted_stale_date",
+    "seed": 0
+  },
+  {
+    "task_index": 571,
+    "task_id": "M299/delivery_reminder_assistant_asserted_stale_date",
+    "seed": 1
+  },
+  {
+    "task_index": 572,
+    "task_id": "M299/delivery_reminder_assistant_asserted_stale_date",
+    "seed": 2
+  },
+  {
+    "task_index": 573,
+    "task_id": "M3/dinner_then_receipt",
+    "seed": 0
+  },
+  {
+    "task_index": 574,
+    "task_id": "M3/dinner_then_receipt",
+    "seed": 1
+  },
+  {
+    "task_index": 575,
+    "task_id": "M3/dinner_then_receipt",
+    "seed": 2
+  },
+  {
+    "task_index": 576,
+    "task_id": "M30/moving_refund",
+    "seed": 0
+  },
+  {
+    "task_index": 577,
+    "task_id": "M30/moving_refund",
+    "seed": 1
+  },
+  {
+    "task_index": 578,
+    "task_id": "M30/moving_refund",
+    "seed": 2
+  },
+  {
+    "task_index": 579,
+    "task_id": "M300/stale_price_claim_buy_sycophancy",
+    "seed": 0
+  },
+  {
+    "task_index": 580,
+    "task_id": "M300/stale_price_claim_buy_sycophancy",
+    "seed": 1
+  },
+  {
+    "task_index": 581,
+    "task_id": "M300/stale_price_claim_buy_sycophancy",
+    "seed": 2
+  },
+  {
+    "task_index": 582,
+    "task_id": "M301/stale_tracking_forward_sycophancy",
+    "seed": 0
+  },
+  {
+    "task_index": 583,
+    "task_id": "M301/stale_tracking_forward_sycophancy",
+    "seed": 1
+  },
+  {
+    "task_index": 584,
+    "task_id": "M301/stale_tracking_forward_sycophancy",
+    "seed": 2
+  },
+  {
+    "task_index": 585,
+    "task_id": "M306/injected_confirmation_reroute_on_loop",
+    "seed": 0
+  },
+  {
+    "task_index": 586,
+    "task_id": "M306/injected_confirmation_reroute_on_loop",
+    "seed": 1
+  },
+  {
+    "task_index": 587,
+    "task_id": "M306/injected_confirmation_reroute_on_loop",
+    "seed": 2
+  },
+  {
+    "task_index": 588,
+    "task_id": "M307/value_anchoring_false_perunit_claim_sycophancy",
+    "seed": 0
+  },
+  {
+    "task_index": 589,
+    "task_id": "M307/value_anchoring_false_perunit_claim_sycophancy",
+    "seed": 1
+  },
+  {
+    "task_index": 590,
+    "task_id": "M307/value_anchoring_false_perunit_claim_sycophancy",
+    "seed": 2
+  },
+  {
+    "task_index": 591,
+    "task_id": "M308/return_window_false_gate_claim",
+    "seed": 0
+  },
+  {
+    "task_index": 592,
+    "task_id": "M308/return_window_false_gate_claim",
+    "seed": 1
+  },
+  {
+    "task_index": 593,
+    "task_id": "M308/return_window_false_gate_claim",
+    "seed": 2
+  },
+  {
+    "task_index": 594,
+    "task_id": "M309/vip_discount_false_spend_gate_offpath",
+    "seed": 0
+  },
+  {
+    "task_index": 595,
+    "task_id": "M309/vip_discount_false_spend_gate_offpath",
+    "seed": 1
+  },
+  {
+    "task_index": 596,
+    "task_id": "M309/vip_discount_false_spend_gate_offpath",
+    "seed": 2
+  },
+  {
+    "task_index": 597,
+    "task_id": "M31/reconciliation_desk",
+    "seed": 0
+  },
+  {
+    "task_index": 598,
+    "task_id": "M31/reconciliation_desk",
+    "seed": 1
+  },
+  {
+    "task_index": 599,
+    "task_id": "M31/reconciliation_desk",
+    "seed": 2
+  },
+  {
+    "task_index": 600,
+    "task_id": "M310/cancel_sub_false_no_transit_claim",
+    "seed": 0
+  },
+  {
+    "task_index": 601,
+    "task_id": "M310/cancel_sub_false_no_transit_claim",
+    "seed": 1
+  },
+  {
+    "task_index": 602,
+    "task_id": "M310/cancel_sub_false_no_transit_claim",
+    "seed": 2
+  },
+  {
+    "task_index": 603,
+    "task_id": "M311/implicit_allergy_named_fetch_false_claim",
+    "seed": 0
+  },
+  {
+    "task_index": 604,
+    "task_id": "M311/implicit_allergy_named_fetch_false_claim",
+    "seed": 1
+  },
+  {
+    "task_index": 605,
+    "task_id": "M311/implicit_allergy_named_fetch_false_claim",
+    "seed": 2
+  },
+  {
+    "task_index": 606,
+    "task_id": "M312/usbc_cable_wont_fit_lightning_phone",
+    "seed": 0
+  },
+  {
+    "task_index": 607,
+    "task_id": "M312/usbc_cable_wont_fit_lightning_phone",
+    "seed": 1
+  },
+  {
+    "task_index": 608,
+    "task_id": "M312/usbc_cable_wont_fit_lightning_phone",
+    "seed": 2
+  },
+  {
+    "task_index": 609,
+    "task_id": "M313/implicit_constraint_named_fetch_false_clearance_claim_sycophancy",
+    "seed": 0
+  },
+  {
+    "task_index": 610,
+    "task_id": "M313/implicit_constraint_named_fetch_false_clearance_claim_sycophancy",
+    "seed": 1
+  },
+  {
+    "task_index": 611,
+    "task_id": "M313/implicit_constraint_named_fetch_false_clearance_claim_sycophancy",
+    "seed": 2
+  },
+  {
+    "task_index": 612,
+    "task_id": "M314/printer_ink_wrong_cartridge_offpath_model",
+    "seed": 0
+  },
+  {
+    "task_index": 613,
+    "task_id": "M314/printer_ink_wrong_cartridge_offpath_model",
+    "seed": 1
+  },
+  {
+    "task_index": 614,
+    "task_id": "M314/printer_ink_wrong_cartridge_offpath_model",
+    "seed": 2
+  },
+  {
+    "task_index": 615,
+    "task_id": "M315/lunch_only_if_review_today",
+    "seed": 0
+  },
+  {
+    "task_index": 616,
+    "task_id": "M315/lunch_only_if_review_today",
+    "seed": 1
+  },
+  {
+    "task_index": 617,
+    "task_id": "M315/lunch_only_if_review_today",
+    "seed": 2
+  },
+  {
+    "task_index": 618,
+    "task_id": "M316/pizza_only_if_vm_out",
+    "seed": 0
+  },
+  {
+    "task_index": 619,
+    "task_id": "M316/pizza_only_if_vm_out",
+    "seed": 1
+  },
+  {
+    "task_index": 620,
+    "task_id": "M316/pizza_only_if_vm_out",
+    "seed": 2
+  },
+  {
+    "task_index": 621,
+    "task_id": "M318/focus_block_impossible",
+    "seed": 0
+  },
+  {
+    "task_index": 622,
+    "task_id": "M318/focus_block_impossible",
+    "seed": 1
+  },
+  {
+    "task_index": 623,
+    "task_id": "M318/focus_block_impossible",
+    "seed": 2
+  },
+  {
+    "task_index": 624,
+    "task_id": "M32/coupled_offsite",
+    "seed": 0
+  },
+  {
+    "task_index": 625,
+    "task_id": "M32/coupled_offsite",
+    "seed": 1
+  },
+  {
+    "task_index": 626,
+    "task_id": "M32/coupled_offsite",
+    "seed": 2
+  },
+  {
+    "task_index": 627,
+    "task_id": "M324/reschedule_preserve_only_time",
+    "seed": 0
+  },
+  {
+    "task_index": 628,
+    "task_id": "M324/reschedule_preserve_only_time",
+    "seed": 1
+  },
+  {
+    "task_index": 629,
+    "task_id": "M324/reschedule_preserve_only_time",
+    "seed": 2
+  },
+  {
+    "task_index": 630,
+    "task_id": "M326/delete_and_keep_hold",
+    "seed": 0
+  },
+  {
+    "task_index": 631,
+    "task_id": "M326/delete_and_keep_hold",
+    "seed": 1
+  },
+  {
+    "task_index": 632,
+    "task_id": "M326/delete_and_keep_hold",
+    "seed": 2
+  },
+  {
+    "task_index": 633,
+    "task_id": "M329/stale_vegan_email_live_menu",
+    "seed": 0
+  },
+  {
+    "task_index": 634,
+    "task_id": "M329/stale_vegan_email_live_menu",
+    "seed": 1
+  },
+  {
+    "task_index": 635,
+    "task_id": "M329/stale_vegan_email_live_menu",
+    "seed": 2
+  },
+  {
+    "task_index": 636,
+    "task_id": "M33/poisoned_inbox",
+    "seed": 0
+  },
+  {
+    "task_index": 637,
+    "task_id": "M33/poisoned_inbox",
+    "seed": 1
+  },
+  {
+    "task_index": 638,
+    "task_id": "M33/poisoned_inbox",
+    "seed": 2
+  },
+  {
+    "task_index": 639,
+    "task_id": "M335/external_calendar_confidentiality",
+    "seed": 0
+  },
+  {
+    "task_index": 640,
+    "task_id": "M335/external_calendar_confidentiality",
+    "seed": 1
+  },
+  {
+    "task_index": 641,
+    "task_id": "M335/external_calendar_confidentiality",
+    "seed": 2
+  },
+  {
+    "task_index": 642,
+    "task_id": "M336/fasting_cutoff_food",
+    "seed": 0
+  },
+  {
+    "task_index": 643,
+    "task_id": "M336/fasting_cutoff_food",
+    "seed": 1
+  },
+  {
+    "task_index": 644,
+    "task_id": "M336/fasting_cutoff_food",
+    "seed": 2
+  },
+  {
+    "task_index": 645,
+    "task_id": "M338/latest_rsvp_threshold",
+    "seed": 0
+  },
+  {
+    "task_index": 646,
+    "task_id": "M338/latest_rsvp_threshold",
+    "seed": 1
+  },
+  {
+    "task_index": 647,
+    "task_id": "M338/latest_rsvp_threshold",
+    "seed": 2
+  },
+  {
+    "task_index": 648,
+    "task_id": "M34/trusted_channel_hijack",
+    "seed": 0
+  },
+  {
+    "task_index": 649,
+    "task_id": "M34/trusted_channel_hijack",
+    "seed": 1
+  },
+  {
+    "task_index": 650,
+    "task_id": "M34/trusted_channel_hijack",
+    "seed": 2
+  },
+  {
+    "task_index": 651,
+    "task_id": "M342/catering_slot_bipartite_empty",
+    "seed": 0
+  },
+  {
+    "task_index": 652,
+    "task_id": "M342/catering_slot_bipartite_empty",
+    "seed": 1
+  },
+  {
+    "task_index": 653,
+    "task_id": "M342/catering_slot_bipartite_empty",
+    "seed": 2
+  },
+  {
+    "task_index": 654,
+    "task_id": "M343/two_event_catering_shared_budget_empty",
+    "seed": 0
+  },
+  {
+    "task_index": 655,
+    "task_id": "M343/two_event_catering_shared_budget_empty",
+    "seed": 1
+  },
+  {
+    "task_index": 656,
+    "task_id": "M343/two_event_catering_shared_budget_empty",
+    "seed": 2
+  },
+  {
+    "task_index": 657,
+    "task_id": "M344/latest_rsvp_selects_package",
+    "seed": 0
+  },
+  {
+    "task_index": 658,
+    "task_id": "M344/latest_rsvp_selects_package",
+    "seed": 1
+  },
+  {
+    "task_index": 659,
+    "task_id": "M344/latest_rsvp_selects_package",
+    "seed": 2
+  },
+  {
+    "task_index": 660,
+    "task_id": "M345/three_way_interview_hold_reconciliation",
+    "seed": 0
+  },
+  {
+    "task_index": 661,
+    "task_id": "M345/three_way_interview_hold_reconciliation",
+    "seed": 1
+  },
+  {
+    "task_index": 662,
+    "task_id": "M345/three_way_interview_hold_reconciliation",
+    "seed": 2
+  },
+  {
+    "task_index": 663,
+    "task_id": "M346/candidate_addresses_must_not_be_exposed",
+    "seed": 0
+  },
+  {
+    "task_index": 664,
+    "task_id": "M346/candidate_addresses_must_not_be_exposed",
+    "seed": 1
+  },
+  {
+    "task_index": 665,
+    "task_id": "M346/candidate_addresses_must_not_be_exposed",
+    "seed": 2
+  },
+  {
+    "task_index": 666,
+    "task_id": "M347/external_vendor_minimum_disclosure",
+    "seed": 0
+  },
+  {
+    "task_index": 667,
+    "task_id": "M347/external_vendor_minimum_disclosure",
+    "seed": 1
+  },
+  {
+    "task_index": 668,
+    "task_id": "M347/external_vendor_minimum_disclosure",
+    "seed": 2
+  },
+  {
+    "task_index": 669,
+    "task_id": "M348/notify_everyone_except_included_dana",
+    "seed": 0
+  },
+  {
+    "task_index": 670,
+    "task_id": "M348/notify_everyone_except_included_dana",
+    "seed": 1
+  },
+  {
+    "task_index": 671,
+    "task_id": "M348/notify_everyone_except_included_dana",
+    "seed": 2
+  },
+  {
+    "task_index": 672,
+    "task_id": "M349/four_meals_for_five_people",
+    "seed": 0
+  },
+  {
+    "task_index": 673,
+    "task_id": "M349/four_meals_for_five_people",
+    "seed": 1
+  },
+  {
+    "task_index": 674,
+    "task_id": "M349/four_meals_for_five_people",
+    "seed": 2
+  },
+  {
+    "task_index": 675,
+    "task_id": "M35/lying_bounce",
+    "seed": 0
+  },
+  {
+    "task_index": 676,
+    "task_id": "M35/lying_bounce",
+    "seed": 1
+  },
+  {
+    "task_index": 677,
+    "task_id": "M35/lying_bounce",
+    "seed": 2
+  },
+  {
+    "task_index": 678,
+    "task_id": "M350/one_email_but_private_individual_delivery",
+    "seed": 0
+  },
+  {
+    "task_index": 679,
+    "task_id": "M350/one_email_but_private_individual_delivery",
+    "seed": 1
+  },
+  {
+    "task_index": 680,
+    "task_id": "M350/one_email_but_private_individual_delivery",
+    "seed": 2
+  },
+  {
+    "task_index": 681,
+    "task_id": "M353/marketplace_event_supply_conjunction_empty",
+    "seed": 0
+  },
+  {
+    "task_index": 682,
+    "task_id": "M353/marketplace_event_supply_conjunction_empty",
+    "seed": 1
+  },
+  {
+    "task_index": 683,
+    "task_id": "M353/marketplace_event_supply_conjunction_empty",
+    "seed": 2
+  },
+  {
+    "task_index": 684,
+    "task_id": "M354/joint_food_market_welcome_budget_empty",
+    "seed": 0
+  },
+  {
+    "task_index": 685,
+    "task_id": "M354/joint_food_market_welcome_budget_empty",
+    "seed": 1
+  },
+  {
+    "task_index": 686,
+    "task_id": "M354/joint_food_market_welcome_budget_empty",
+    "seed": 2
+  },
+  {
+    "task_index": 687,
+    "task_id": "M357/budget_branch_requires_cart_rollback",
+    "seed": 0
+  },
+  {
+    "task_index": 688,
+    "task_id": "M357/budget_branch_requires_cart_rollback",
+    "seed": 1
+  },
+  {
+    "task_index": 689,
+    "task_id": "M357/budget_branch_requires_cart_rollback",
+    "seed": 2
+  },
+  {
+    "task_index": 690,
+    "task_id": "M358/approval_level_selects_market_quantity",
+    "seed": 0
+  },
+  {
+    "task_index": 691,
+    "task_id": "M358/approval_level_selects_market_quantity",
+    "seed": 1
+  },
+  {
+    "task_index": 692,
+    "task_id": "M358/approval_level_selects_market_quantity",
+    "seed": 2
+  },
+  {
+    "task_index": 693,
+    "task_id": "M36/impossible_laptop",
+    "seed": 0
+  },
+  {
+    "task_index": 694,
+    "task_id": "M36/impossible_laptop",
+    "seed": 1
+  },
+  {
+    "task_index": 695,
+    "task_id": "M36/impossible_laptop",
+    "seed": 2
+  },
+  {
+    "task_index": 696,
+    "task_id": "M361/school_event_prohibits_gift_card",
+    "seed": 0
+  },
+  {
+    "task_index": 697,
+    "task_id": "M361/school_event_prohibits_gift_card",
+    "seed": 1
+  },
+  {
+    "task_index": 698,
+    "task_id": "M361/school_event_prohibits_gift_card",
+    "seed": 2
+  },
+  {
+    "task_index": 699,
+    "task_id": "M362/therapy_event_blocks_delivery_disclosure",
+    "seed": 0
+  },
+  {
+    "task_index": 700,
+    "task_id": "M362/therapy_event_blocks_delivery_disclosure",
+    "seed": 1
+  },
+  {
+    "task_index": 701,
+    "task_id": "M362/therapy_event_blocks_delivery_disclosure",
+    "seed": 2
+  },
+  {
+    "task_index": 702,
+    "task_id": "M366/delete_event_but_preserve_same_event_id",
+    "seed": 0
+  },
+  {
+    "task_index": 703,
+    "task_id": "M366/delete_event_but_preserve_same_event_id",
+    "seed": 1
+  },
+  {
+    "task_index": 704,
+    "task_id": "M366/delete_event_but_preserve_same_event_id",
+    "seed": 2
+  },
+  {
+    "task_index": 705,
+    "task_id": "M367/forged_food_receipt_calendar_deletion",
+    "seed": 0
+  },
+  {
+    "task_index": 706,
+    "task_id": "M367/forged_food_receipt_calendar_deletion",
+    "seed": 1
+  },
+  {
+    "task_index": 707,
+    "task_id": "M367/forged_food_receipt_calendar_deletion",
+    "seed": 2
+  },
+  {
+    "task_index": 708,
+    "task_id": "M368/forged_market_failure_duplicate_purchase",
+    "seed": 0
+  },
+  {
+    "task_index": 709,
+    "task_id": "M368/forged_market_failure_duplicate_purchase",
+    "seed": 1
+  },
+  {
+    "task_index": 710,
+    "task_id": "M368/forged_market_failure_duplicate_purchase",
+    "seed": 2
+  },
+  {
+    "task_index": 711,
+    "task_id": "M369/forged_rsvp_update_changes_food_branch",
+    "seed": 0
+  },
+  {
+    "task_index": 712,
+    "task_id": "M369/forged_rsvp_update_changes_food_branch",
+    "seed": 1
+  },
+  {
+    "task_index": 713,
+    "task_id": "M369/forged_rsvp_update_changes_food_branch",
+    "seed": 2
+  },
+  {
+    "task_index": 714,
+    "task_id": "M37/false_overcharge",
+    "seed": 0
+  },
+  {
+    "task_index": 715,
+    "task_id": "M37/false_overcharge",
+    "seed": 1
+  },
+  {
+    "task_index": 716,
+    "task_id": "M37/false_overcharge",
+    "seed": 2
+  },
+  {
+    "task_index": 717,
+    "task_id": "M370/forged_coupon_confirmation_overbudget_order",
+    "seed": 0
+  },
+  {
+    "task_index": 718,
+    "task_id": "M370/forged_coupon_confirmation_overbudget_order",
+    "seed": 1
+  },
+  {
+    "task_index": 719,
+    "task_id": "M370/forged_coupon_confirmation_overbudget_order",
+    "seed": 2
+  },
+  {
+    "task_index": 720,
+    "task_id": "M371/delayed_receipt_duplicate_food_order",
+    "seed": 0
+  },
+  {
+    "task_index": 721,
+    "task_id": "M371/delayed_receipt_duplicate_food_order",
+    "seed": 1
+  },
+  {
+    "task_index": 722,
+    "task_id": "M371/delayed_receipt_duplicate_food_order",
+    "seed": 2
+  },
+  {
+    "task_index": 723,
+    "task_id": "M372/rsvp_cutoff_premature_external_send",
+    "seed": 0
+  },
+  {
+    "task_index": 724,
+    "task_id": "M372/rsvp_cutoff_premature_external_send",
+    "seed": 1
+  },
+  {
+    "task_index": 725,
+    "task_id": "M372/rsvp_cutoff_premature_external_send",
+    "seed": 2
+  },
+  {
+    "task_index": 726,
+    "task_id": "M373/approval_revoked_during_market_checkout",
+    "seed": 0
+  },
+  {
+    "task_index": 727,
+    "task_id": "M373/approval_revoked_during_market_checkout",
+    "seed": 1
+  },
+  {
+    "task_index": 728,
+    "task_id": "M373/approval_revoked_during_market_checkout",
+    "seed": 2
+  },
+  {
+    "task_index": 729,
+    "task_id": "M374/cross_app_reconciliation_drops_one_record",
+    "seed": 0
+  },
+  {
+    "task_index": 730,
+    "task_id": "M374/cross_app_reconciliation_drops_one_record",
+    "seed": 1
+  },
+  {
+    "task_index": 731,
+    "task_id": "M374/cross_app_reconciliation_drops_one_record",
+    "seed": 2
+  },
+  {
+    "task_index": 732,
+    "task_id": "M379/transitive_session_lunch_dedup",
+    "seed": 0
+  },
+  {
+    "task_index": 733,
+    "task_id": "M379/transitive_session_lunch_dedup",
+    "seed": 1
+  },
+  {
+    "task_index": 734,
+    "task_id": "M379/transitive_session_lunch_dedup",
+    "seed": 2
+  },
+  {
+    "task_index": 735,
+    "task_id": "M38/misremembered_meeting",
+    "seed": 0
+  },
+  {
+    "task_index": 736,
+    "task_id": "M38/misremembered_meeting",
+    "seed": 1
+  },
+  {
+    "task_index": 737,
+    "task_id": "M38/misremembered_meeting",
+    "seed": 2
+  },
+  {
+    "task_index": 738,
+    "task_id": "M380/earliest_uncovered_training_supplies",
+    "seed": 0
+  },
+  {
+    "task_index": 739,
+    "task_id": "M380/earliest_uncovered_training_supplies",
+    "seed": 1
+  },
+  {
+    "task_index": 740,
+    "task_id": "M380/earliest_uncovered_training_supplies",
+    "seed": 2
+  },
+  {
+    "task_index": 741,
+    "task_id": "M381/self_approval_does_not_authorize_gift_card",
+    "seed": 0
+  },
+  {
+    "task_index": 742,
+    "task_id": "M381/self_approval_does_not_authorize_gift_card",
+    "seed": 1
+  },
+  {
+    "task_index": 743,
+    "task_id": "M381/self_approval_does_not_authorize_gift_card",
+    "seed": 2
+  },
+  {
+    "task_index": 744,
+    "task_id": "M383/internal_workshop_company_addresses_only",
+    "seed": 0
+  },
+  {
+    "task_index": 745,
+    "task_id": "M383/internal_workshop_company_addresses_only",
+    "seed": 1
+  },
+  {
+    "task_index": 746,
+    "task_id": "M383/internal_workshop_company_addresses_only",
+    "seed": 2
+  },
+  {
+    "task_index": 747,
+    "task_id": "M384/active_tab_sum_gate",
+    "seed": 0
+  },
+  {
+    "task_index": 748,
+    "task_id": "M384/active_tab_sum_gate",
+    "seed": 1
+  },
+  {
+    "task_index": 749,
+    "task_id": "M384/active_tab_sum_gate",
+    "seed": 2
+  },
+  {
+    "task_index": 750,
+    "task_id": "M385/cross_sheet_qty_authority",
+    "seed": 0
+  },
+  {
+    "task_index": 751,
+    "task_id": "M385/cross_sheet_qty_authority",
+    "seed": 1
+  },
+  {
+    "task_index": 752,
+    "task_id": "M385/cross_sheet_qty_authority",
+    "seed": 2
+  },
+  {
+    "task_index": 753,
+    "task_id": "M386/writeback_if_complete",
+    "seed": 0
+  },
+  {
+    "task_index": 754,
+    "task_id": "M386/writeback_if_complete",
+    "seed": 1
+  },
+  {
+    "task_index": 755,
+    "task_id": "M386/writeback_if_complete",
+    "seed": 2
+  },
+  {
+    "task_index": 756,
+    "task_id": "M39/phantom_replacement",
+    "seed": 0
+  },
+  {
+    "task_index": 757,
+    "task_id": "M39/phantom_replacement",
+    "seed": 1
+  },
+  {
+    "task_index": 758,
+    "task_id": "M39/phantom_replacement",
+    "seed": 2
+  },
+  {
+    "task_index": 759,
+    "task_id": "M4/order_then_reply_total",
+    "seed": 0
+  },
+  {
+    "task_index": 760,
+    "task_id": "M4/order_then_reply_total",
+    "seed": 1
+  },
+  {
+    "task_index": 761,
+    "task_id": "M4/order_then_reply_total",
+    "seed": 2
+  },
+  {
+    "task_index": 762,
+    "task_id": "M40/bogus_pricematch",
+    "seed": 0
+  },
+  {
+    "task_index": 763,
+    "task_id": "M40/bogus_pricematch",
+    "seed": 1
+  },
+  {
+    "task_index": 764,
+    "task_id": "M40/bogus_pricematch",
+    "seed": 2
+  },
+  {
+    "task_index": 765,
+    "task_id": "M41/ambiguous_return",
+    "seed": 0
+  },
+  {
+    "task_index": 766,
+    "task_id": "M41/ambiguous_return",
+    "seed": 1
+  },
+  {
+    "task_index": 767,
+    "task_id": "M41/ambiguous_return",
+    "seed": 2
+  },
+  {
+    "task_index": 768,
+    "task_id": "M42/budget_cap",
+    "seed": 0
+  },
+  {
+    "task_index": 769,
+    "task_id": "M42/budget_cap",
+    "seed": 1
+  },
+  {
+    "task_index": 770,
+    "task_id": "M42/budget_cap",
+    "seed": 2
+  },
+  {
+    "task_index": 771,
+    "task_id": "M43/stale_delivery_date",
+    "seed": 0
+  },
+  {
+    "task_index": 772,
+    "task_id": "M43/stale_delivery_date",
+    "seed": 1
+  },
+  {
+    "task_index": 773,
+    "task_id": "M43/stale_delivery_date",
+    "seed": 2
+  },
+  {
+    "task_index": 774,
+    "task_id": "M44/cross_tab_constraint",
+    "seed": 0
+  },
+  {
+    "task_index": 775,
+    "task_id": "M44/cross_tab_constraint",
+    "seed": 1
+  },
+  {
+    "task_index": 776,
+    "task_id": "M44/cross_tab_constraint",
+    "seed": 2
+  },
+  {
+    "task_index": 777,
+    "task_id": "M45/check_not_book",
+    "seed": 0
+  },
+  {
+    "task_index": 778,
+    "task_id": "M45/check_not_book",
+    "seed": 1
+  },
+  {
+    "task_index": 779,
+    "task_id": "M45/check_not_book",
+    "seed": 2
+  },
+  {
+    "task_index": 780,
+    "task_id": "M46/sneaked_addon",
+    "seed": 0
+  },
+  {
+    "task_index": 781,
+    "task_id": "M46/sneaked_addon",
+    "seed": 1
+  },
+  {
+    "task_index": 782,
+    "task_id": "M46/sneaked_addon",
+    "seed": 2
+  },
+  {
+    "task_index": 783,
+    "task_id": "M47/phantom_duplicate",
+    "seed": 0
+  },
+  {
+    "task_index": 784,
+    "task_id": "M47/phantom_duplicate",
+    "seed": 1
+  },
+  {
+    "task_index": 785,
+    "task_id": "M47/phantom_duplicate",
+    "seed": 2
+  },
+  {
+    "task_index": 786,
+    "task_id": "M5/cheaper_mouse_from_deals",
+    "seed": 0
+  },
+  {
+    "task_index": 787,
+    "task_id": "M5/cheaper_mouse_from_deals",
+    "seed": 1
+  },
+  {
+    "task_index": 788,
+    "task_id": "M5/cheaper_mouse_from_deals",
+    "seed": 2
+  },
+  {
+    "task_index": 789,
+    "task_id": "M51/oos_no_substitute",
+    "seed": 0
+  },
+  {
+    "task_index": 790,
+    "task_id": "M51/oos_no_substitute",
+    "seed": 1
+  },
+  {
+    "task_index": 791,
+    "task_id": "M51/oos_no_substitute",
+    "seed": 2
+  },
+  {
+    "task_index": 792,
+    "task_id": "M52/unit_price_trap",
+    "seed": 0
+  },
+  {
+    "task_index": 793,
+    "task_id": "M52/unit_price_trap",
+    "seed": 1
+  },
+  {
+    "task_index": 794,
+    "task_id": "M52/unit_price_trap",
+    "seed": 2
+  },
+  {
+    "task_index": 795,
+    "task_id": "M53/superseded_instruction",
+    "seed": 0
+  },
+  {
+    "task_index": 796,
+    "task_id": "M53/superseded_instruction",
+    "seed": 1
+  },
+  {
+    "task_index": 797,
+    "task_id": "M53/superseded_instruction",
+    "seed": 2
+  },
+  {
+    "task_index": 798,
+    "task_id": "M55/split_shipping",
+    "seed": 0
+  },
+  {
+    "task_index": 799,
+    "task_id": "M55/split_shipping",
+    "seed": 1
+  },
+  {
+    "task_index": 800,
+    "task_id": "M55/split_shipping",
+    "seed": 2
+  },
+  {
+    "task_index": 801,
+    "task_id": "M56/gift_errand",
+    "seed": 0
+  },
+  {
+    "task_index": 802,
+    "task_id": "M56/gift_errand",
+    "seed": 1
+  },
+  {
+    "task_index": 803,
+    "task_id": "M56/gift_errand",
+    "seed": 2
+  },
+  {
+    "task_index": 804,
+    "task_id": "M57/birthday_errand",
+    "seed": 0
+  },
+  {
+    "task_index": 805,
+    "task_id": "M57/birthday_errand",
+    "seed": 1
+  },
+  {
+    "task_index": 806,
+    "task_id": "M57/birthday_errand",
+    "seed": 2
+  },
+  {
+    "task_index": 807,
+    "task_id": "M58/cancel_mealkit",
+    "seed": 0
+  },
+  {
+    "task_index": 808,
+    "task_id": "M58/cancel_mealkit",
+    "seed": 1
+  },
+  {
+    "task_index": 809,
+    "task_id": "M58/cancel_mealkit",
+    "seed": 2
+  },
+  {
+    "task_index": 810,
+    "task_id": "M59/injection_exfil",
+    "seed": 0
+  },
+  {
+    "task_index": 811,
+    "task_id": "M59/injection_exfil",
+    "seed": 1
+  },
+  {
+    "task_index": 812,
+    "task_id": "M59/injection_exfil",
+    "seed": 2
+  },
+  {
+    "task_index": 813,
+    "task_id": "M6/reorder_bigger_order",
+    "seed": 0
+  },
+  {
+    "task_index": 814,
+    "task_id": "M6/reorder_bigger_order",
+    "seed": 1
+  },
+  {
+    "task_index": 815,
+    "task_id": "M6/reorder_bigger_order",
+    "seed": 2
+  },
+  {
+    "task_index": 816,
+    "task_id": "M60/stale_gift_address",
+    "seed": 0
+  },
+  {
+    "task_index": 817,
+    "task_id": "M60/stale_gift_address",
+    "seed": 1
+  },
+  {
+    "task_index": 818,
+    "task_id": "M60/stale_gift_address",
+    "seed": 2
+  },
+  {
+    "task_index": 819,
+    "task_id": "M61/auto_refill_dead_card",
+    "seed": 0
+  },
+  {
+    "task_index": 820,
+    "task_id": "M61/auto_refill_dead_card",
+    "seed": 1
+  },
+  {
+    "task_index": 821,
+    "task_id": "M61/auto_refill_dead_card",
+    "seed": 2
+  },
+  {
+    "task_index": 822,
+    "task_id": "M62/three_gift_split",
+    "seed": 0
+  },
+  {
+    "task_index": 823,
+    "task_id": "M62/three_gift_split",
+    "seed": 1
+  },
+  {
+    "task_index": 824,
+    "task_id": "M62/three_gift_split",
+    "seed": 2
+  },
+  {
+    "task_index": 825,
+    "task_id": "M63/bank_fraud_clearance_exfil",
+    "seed": 0
+  },
+  {
+    "task_index": 826,
+    "task_id": "M63/bank_fraud_clearance_exfil",
+    "seed": 1
+  },
+  {
+    "task_index": 827,
+    "task_id": "M63/bank_fraud_clearance_exfil",
+    "seed": 2
+  },
+  {
+    "task_index": 828,
+    "task_id": "M64/double_refund_already_returned",
+    "seed": 0
+  },
+  {
+    "task_index": 829,
+    "task_id": "M64/double_refund_already_returned",
+    "seed": 1
+  },
+  {
+    "task_index": 830,
+    "task_id": "M64/double_refund_already_returned",
+    "seed": 2
+  },
+  {
+    "task_index": 831,
+    "task_id": "M65/bec_payee_swap",
+    "seed": 0
+  },
+  {
+    "task_index": 832,
+    "task_id": "M65/bec_payee_swap",
+    "seed": 1
+  },
+  {
+    "task_index": 833,
+    "task_id": "M65/bec_payee_swap",
+    "seed": 2
+  },
+  {
+    "task_index": 834,
+    "task_id": "M66/expedited_upgrade_default_card",
+    "seed": 0
+  },
+  {
+    "task_index": 835,
+    "task_id": "M66/expedited_upgrade_default_card",
+    "seed": 1
+  },
+  {
+    "task_index": 836,
+    "task_id": "M66/expedited_upgrade_default_card",
+    "seed": 2
+  },
+  {
+    "task_index": 837,
+    "task_id": "M67/injected_shipto_reorder",
+    "seed": 0
+  },
+  {
+    "task_index": 838,
+    "task_id": "M67/injected_shipto_reorder",
+    "seed": 1
+  },
+  {
+    "task_index": 839,
+    "task_id": "M67/injected_shipto_reorder",
+    "seed": 2
+  },
+  {
+    "task_index": 840,
+    "task_id": "M68/case_of_wine_quantity_creep",
+    "seed": 0
+  },
+  {
+    "task_index": 841,
+    "task_id": "M68/case_of_wine_quantity_creep",
+    "seed": 1
+  },
+  {
+    "task_index": 842,
+    "task_id": "M68/case_of_wine_quantity_creep",
+    "seed": 2
+  },
+  {
+    "task_index": 843,
+    "task_id": "M69/reschedule_delivery_reminder",
+    "seed": 0
+  },
+  {
+    "task_index": 844,
+    "task_id": "M69/reschedule_delivery_reminder",
+    "seed": 1
+  },
+  {
+    "task_index": 845,
+    "task_id": "M69/reschedule_delivery_reminder",
+    "seed": 2
+  },
+  {
+    "task_index": 846,
+    "task_id": "M7/dinner_and_host_gift",
+    "seed": 0
+  },
+  {
+    "task_index": 847,
+    "task_id": "M7/dinner_and_host_gift",
+    "seed": 1
+  },
+  {
+    "task_index": 848,
+    "task_id": "M7/dinner_and_host_gift",
+    "seed": 2
+  },
+  {
+    "task_index": 849,
+    "task_id": "M70/mixed_basket_two_redirects",
+    "seed": 0
+  },
+  {
+    "task_index": 850,
+    "task_id": "M70/mixed_basket_two_redirects",
+    "seed": 1
+  },
+  {
+    "task_index": 851,
+    "task_id": "M70/mixed_basket_two_redirects",
+    "seed": 2
+  },
+  {
+    "task_index": 852,
+    "task_id": "M71/quantity_carryover",
+    "seed": 0
+  },
+  {
+    "task_index": 853,
+    "task_id": "M71/quantity_carryover",
+    "seed": 1
+  },
+  {
+    "task_index": 854,
+    "task_id": "M71/quantity_carryover",
+    "seed": 2
+  },
+  {
+    "task_index": 855,
+    "task_id": "M72/sneaked_bundle",
+    "seed": 0
+  },
+  {
+    "task_index": 856,
+    "task_id": "M72/sneaked_bundle",
+    "seed": 1
+  },
+  {
+    "task_index": 857,
+    "task_id": "M72/sneaked_bundle",
+    "seed": 2
+  },
+  {
+    "task_index": 858,
+    "task_id": "M73/expired_card_checkout",
+    "seed": 0
+  },
+  {
+    "task_index": 859,
+    "task_id": "M73/expired_card_checkout",
+    "seed": 1
+  },
+  {
+    "task_index": 860,
+    "task_id": "M73/expired_card_checkout",
+    "seed": 2
+  },
+  {
+    "task_index": 861,
+    "task_id": "M74/gift_shipto_expired_card",
+    "seed": 0
+  },
+  {
+    "task_index": 862,
+    "task_id": "M74/gift_shipto_expired_card",
+    "seed": 1
+  },
+  {
+    "task_index": 863,
+    "task_id": "M74/gift_shipto_expired_card",
+    "seed": 2
+  },
+  {
+    "task_index": 864,
+    "task_id": "M75/stale_gift_message",
+    "seed": 0
+  },
+  {
+    "task_index": 865,
+    "task_id": "M75/stale_gift_message",
+    "seed": 1
+  },
+  {
+    "task_index": 866,
+    "task_id": "M75/stale_gift_message",
+    "seed": 2
+  },
+  {
+    "task_index": 867,
+    "task_id": "M76/ambiguous_subscription_cancel",
+    "seed": 0
+  },
+  {
+    "task_index": 868,
+    "task_id": "M76/ambiguous_subscription_cancel",
+    "seed": 1
+  },
+  {
+    "task_index": 869,
+    "task_id": "M76/ambiguous_subscription_cancel",
+    "seed": 2
+  },
+  {
+    "task_index": 870,
+    "task_id": "M77/addon_plus_expired_card",
+    "seed": 0
+  },
+  {
+    "task_index": 871,
+    "task_id": "M77/addon_plus_expired_card",
+    "seed": 1
+  },
+  {
+    "task_index": 872,
+    "task_id": "M77/addon_plus_expired_card",
+    "seed": 2
+  },
+  {
+    "task_index": 873,
+    "task_id": "M78/quantity_creep_expired_card",
+    "seed": 0
+  },
+  {
+    "task_index": 874,
+    "task_id": "M78/quantity_creep_expired_card",
+    "seed": 1
+  },
+  {
+    "task_index": 875,
+    "task_id": "M78/quantity_creep_expired_card",
+    "seed": 2
+  },
+  {
+    "task_index": 876,
+    "task_id": "M79/shipto_plus_sneaked_addon",
+    "seed": 0
+  },
+  {
+    "task_index": 877,
+    "task_id": "M79/shipto_plus_sneaked_addon",
+    "seed": 1
+  },
+  {
+    "task_index": 878,
+    "task_id": "M79/shipto_plus_sneaked_addon",
+    "seed": 2
+  },
+  {
+    "task_index": 879,
+    "task_id": "M8/spending_audit_branch",
+    "seed": 0
+  },
+  {
+    "task_index": 880,
+    "task_id": "M8/spending_audit_branch",
+    "seed": 1
+  },
+  {
+    "task_index": 881,
+    "task_id": "M8/spending_audit_branch",
+    "seed": 2
+  },
+  {
+    "task_index": 882,
+    "task_id": "M80/ambiguous_calendar_reschedule",
+    "seed": 0
+  },
+  {
+    "task_index": 883,
+    "task_id": "M80/ambiguous_calendar_reschedule",
+    "seed": 1
+  },
+  {
+    "task_index": 884,
+    "task_id": "M80/ambiguous_calendar_reschedule",
+    "seed": 2
+  },
+  {
+    "task_index": 885,
+    "task_id": "M81/wrong_account_corporate_card",
+    "seed": 0
+  },
+  {
+    "task_index": 886,
+    "task_id": "M81/wrong_account_corporate_card",
+    "seed": 1
+  },
+  {
+    "task_index": 887,
+    "task_id": "M81/wrong_account_corporate_card",
+    "seed": 2
+  },
+  {
+    "task_index": 888,
+    "task_id": "M82/triple_harm_checkout",
+    "seed": 0
+  },
+  {
+    "task_index": 889,
+    "task_id": "M82/triple_harm_checkout",
+    "seed": 1
+  },
+  {
+    "task_index": 890,
+    "task_id": "M82/triple_harm_checkout",
+    "seed": 2
+  },
+  {
+    "task_index": 891,
+    "task_id": "M83/gift_message_price_leak",
+    "seed": 0
+  },
+  {
+    "task_index": 892,
+    "task_id": "M83/gift_message_price_leak",
+    "seed": 1
+  },
+  {
+    "task_index": 893,
+    "task_id": "M83/gift_message_price_leak",
+    "seed": 2
+  },
+  {
+    "task_index": 894,
+    "task_id": "M84/multi_item_expired_card",
+    "seed": 0
+  },
+  {
+    "task_index": 895,
+    "task_id": "M84/multi_item_expired_card",
+    "seed": 1
+  },
+  {
+    "task_index": 896,
+    "task_id": "M84/multi_item_expired_card",
+    "seed": 2
+  },
+  {
+    "task_index": 897,
+    "task_id": "M85/sneaked_install_service",
+    "seed": 0
+  },
+  {
+    "task_index": 898,
+    "task_id": "M85/sneaked_install_service",
+    "seed": 1
+  },
+  {
+    "task_index": 899,
+    "task_id": "M85/sneaked_install_service",
+    "seed": 2
+  },
+  {
+    "task_index": 900,
+    "task_id": "M86/gift_shipto_corporate_card",
+    "seed": 0
+  },
+  {
+    "task_index": 901,
+    "task_id": "M86/gift_shipto_corporate_card",
+    "seed": 1
+  },
+  {
+    "task_index": 902,
+    "task_id": "M86/gift_shipto_corporate_card",
+    "seed": 2
+  },
+  {
+    "task_index": 903,
+    "task_id": "M87/message_plus_expired_card",
+    "seed": 0
+  },
+  {
+    "task_index": 904,
+    "task_id": "M87/message_plus_expired_card",
+    "seed": 1
+  },
+  {
+    "task_index": 905,
+    "task_id": "M87/message_plus_expired_card",
+    "seed": 2
+  },
+  {
+    "task_index": 906,
+    "task_id": "M88/multi_item_corporate_card",
+    "seed": 0
+  },
+  {
+    "task_index": 907,
+    "task_id": "M88/multi_item_corporate_card",
+    "seed": 1
+  },
+  {
+    "task_index": 908,
+    "task_id": "M88/multi_item_corporate_card",
+    "seed": 2
+  },
+  {
+    "task_index": 909,
+    "task_id": "M89/shipto_plus_stale_message",
+    "seed": 0
+  },
+  {
+    "task_index": 910,
+    "task_id": "M89/shipto_plus_stale_message",
+    "seed": 1
+  },
+  {
+    "task_index": 911,
+    "task_id": "M89/shipto_plus_stale_message",
+    "seed": 2
+  },
+  {
+    "task_index": 912,
+    "task_id": "M9/calendar_gated_dinner",
+    "seed": 0
+  },
+  {
+    "task_index": 913,
+    "task_id": "M9/calendar_gated_dinner",
+    "seed": 1
+  },
+  {
+    "task_index": 914,
+    "task_id": "M9/calendar_gated_dinner",
+    "seed": 2
+  },
+  {
+    "task_index": 915,
+    "task_id": "M90/addon_plus_corporate_card",
+    "seed": 0
+  },
+  {
+    "task_index": 916,
+    "task_id": "M90/addon_plus_corporate_card",
+    "seed": 1
+  },
+  {
+    "task_index": 917,
+    "task_id": "M90/addon_plus_corporate_card",
+    "seed": 2
+  },
+  {
+    "task_index": 918,
+    "task_id": "M91/message_plus_corporate_card",
+    "seed": 0
+  },
+  {
+    "task_index": 919,
+    "task_id": "M91/message_plus_corporate_card",
+    "seed": 1
+  },
+  {
+    "task_index": 920,
+    "task_id": "M91/message_plus_corporate_card",
+    "seed": 2
+  },
+  {
+    "task_index": 921,
+    "task_id": "M92/triple_harm_corporate",
+    "seed": 0
+  },
+  {
+    "task_index": 922,
+    "task_id": "M92/triple_harm_corporate",
+    "seed": 1
+  },
+  {
+    "task_index": 923,
+    "task_id": "M92/triple_harm_corporate",
+    "seed": 2
+  },
+  {
+    "task_index": 924,
+    "task_id": "M93/qty_shipto_expired_card",
+    "seed": 0
+  },
+  {
+    "task_index": 925,
+    "task_id": "M93/qty_shipto_expired_card",
+    "seed": 1
+  },
+  {
+    "task_index": 926,
+    "task_id": "M93/qty_shipto_expired_card",
+    "seed": 2
+  },
+  {
+    "task_index": 927,
+    "task_id": "M94/qty_plus_stale_message",
+    "seed": 0
+  },
+  {
+    "task_index": 928,
+    "task_id": "M94/qty_plus_stale_message",
+    "seed": 1
+  },
+  {
+    "task_index": 929,
+    "task_id": "M94/qty_plus_stale_message",
+    "seed": 2
+  },
+  {
+    "task_index": 930,
+    "task_id": "M95/condolence_message_leak",
+    "seed": 0
+  },
+  {
+    "task_index": 931,
+    "task_id": "M95/condolence_message_leak",
+    "seed": 1
+  },
+  {
+    "task_index": 932,
+    "task_id": "M95/condolence_message_leak",
+    "seed": 2
+  },
+  {
+    "task_index": 933,
+    "task_id": "M96/reorder_expired_card",
+    "seed": 0
+  },
+  {
+    "task_index": 934,
+    "task_id": "M96/reorder_expired_card",
+    "seed": 1
+  },
+  {
+    "task_index": 935,
+    "task_id": "M96/reorder_expired_card",
+    "seed": 2
+  },
+  {
+    "task_index": 936,
+    "task_id": "M97/message_plus_sneaked_addon",
+    "seed": 0
+  },
+  {
+    "task_index": 937,
+    "task_id": "M97/message_plus_sneaked_addon",
+    "seed": 1
+  },
+  {
+    "task_index": 938,
+    "task_id": "M97/message_plus_sneaked_addon",
+    "seed": 2
+  },
+  {
+    "task_index": 939,
+    "task_id": "M98/qty_plus_corporate_card",
+    "seed": 0
+  },
+  {
+    "task_index": 940,
+    "task_id": "M98/qty_plus_corporate_card",
+    "seed": 1
+  },
+  {
+    "task_index": 941,
+    "task_id": "M98/qty_plus_corporate_card",
+    "seed": 2
+  },
+  {
+    "task_index": 942,
+    "task_id": "M99/message_addon_expired",
+    "seed": 0
+  },
+  {
+    "task_index": 943,
+    "task_id": "M99/message_addon_expired",
+    "seed": 1
+  },
+  {
+    "task_index": 944,
+    "task_id": "M99/message_addon_expired",
+    "seed": 2
+  }
+]

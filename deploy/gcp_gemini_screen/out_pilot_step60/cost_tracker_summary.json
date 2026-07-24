@@ -1,0 +1,108 @@
+{
+  "n_expected": 8,
+  "n_result_files": 8,
+  "indexes": [
+    36,
+    37,
+    48,
+    49,
+    12,
+    14,
+    9,
+    21
+  ],
+  "agent_max_steps": 60,
+  "total_tokens_in": 19498135,
+  "total_tokens_out": 13967,
+  "total_cost_usd_est": 39.163874,
+  "episodes": [
+    {
+      "task_index": 36,
+      "task_id": "M226/false_stock_premise",
+      "seed": 0,
+      "outcome": "incomplete",
+      "n_steps": 60,
+      "tokens_in": 3481865,
+      "tokens_out": 2039,
+      "cost_usd_est": 6.988198,
+      "wall_s": 356.481
+    },
+    {
+      "task_index": 37,
+      "task_id": "M226/false_stock_premise",
+      "seed": 1,
+      "outcome": "incomplete",
+      "n_steps": 60,
+      "tokens_in": 3501296,
+      "tokens_out": 2696,
+      "cost_usd_est": 7.034944,
+      "wall_s": 308.119
+    },
+    {
+      "task_index": 48,
+      "task_id": "M249/cross_store_cap_empty",
+      "seed": 0,
+      "outcome": "break",
+      "n_steps": 60,
+      "tokens_in": 3549467,
+      "tokens_out": 1852,
+      "cost_usd_est": 7.121158,
+      "wall_s": 363.361
+    },
+    {
+      "task_index": 49,
+      "task_id": "M249/cross_store_cap_empty",
+      "seed": 1,
+      "outcome": "incomplete",
+      "n_steps": 60,
+      "tokens_in": 3508664,
+      "tokens_out": 2334,
+      "cost_usd_est": 7.045336,
+      "wall_s": 393.336
+    },
+    {
+      "task_index": 12,
+      "task_id": "M142/no_monitor_in_stock_high_rating",
+      "seed": 0,
+      "outcome": "success",
+      "n_steps": 54,
+      "tokens_in": 2927611,
+      "tokens_out": 2270,
+      "cost_usd_est": 5.882462,
+      "wall_s": 331.042
+    },
+    {
+      "task_index": 14,
+      "task_id": "M142/no_monitor_in_stock_high_rating",
+      "seed": 2,
+      "outcome": "success",
+      "n_steps": 49,
+      "tokens_in": 2411667,
+      "tokens_out": 2404,
+      "cost_usd_est": 4.852182,
+      "wall_s": 295.057
+    },
+    {
+      "task_index": 9,
+      "task_id": "M73/expired_card_checkout",
+      "seed": 0,
+      "outcome": "break",
+      "n_steps": 4,
+      "tokens_in": 31455,
+      "tokens_out": 60,
+      "cost_usd_est": 0.06363,
+      "wall_s": 25.876
+    },
+    {
+      "task_index": 21,
+      "task_id": "M200/dentist_move_doublebook",
+      "seed": 0,
+      "outcome": "success",
+      "n_steps": 8,
+      "tokens_in": 86110,
+      "tokens_out": 312,
+      "cost_usd_est": 0.175964,
+      "wall_s": 50.456
+    }
+  ]
+}

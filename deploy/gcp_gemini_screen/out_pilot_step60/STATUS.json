@@ -1,0 +1,10 @@
+{
+  "updated_at": "2026-07-23T21:34:41Z",
+  "running": 0,
+  "done": 8,
+  "failed_worker_exits": 0,
+  "expected": null,
+  "message": "merged",
+  "results_dir": "/Users/maroonferrari/Deccan/ecommerce-browser-gym/deploy/gcp_gemini_screen/out_pilot_step60/results",
+  "agent_max_steps": 60
+}

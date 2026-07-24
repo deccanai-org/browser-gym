@@ -73,6 +73,14 @@ PROVIDER_IMAGE_SETTINGS: dict[str, dict[str, Any]] = {
         "detail_field": "image_url.detail",
         "via": "OpenAIPixelAgent",
     },
+    "gemini_pixel": {
+        "api": "openai_compatible",
+        "format": "png",
+        "detail": "high",
+        "detail_field": "image_url.detail",
+        "via": "GeminiPixelAgent",
+        "note": "Gemini 3.1 Pro via OpenAI-compatible endpoint",
+    },
     "anthropic_pixel": {
         "api": "anthropic_messages",
         "format": "png",
@@ -117,6 +125,8 @@ def image_settings_for_agent(agent_kind: str) -> dict[str, Any]:
         profile_key = "openai_coord"
     elif kind in ("qwen", "qwen_pixel"):
         profile_key = "qwen_pixel"
+    elif kind in ("gemini", "gemini_pixel"):
+        profile_key = "gemini_pixel"
     elif kind == "oracle":
         profile_key = "oracle"
     elif kind in ("llm", "openai", "dom"):

@@ -1,0 +1,11 @@
+{
+  "started_at": "2026-07-23T16:33:09Z",
+  "agent_max_steps": 120,
+  "concurrency": 3,
+  "expected": 60,
+  "manifest": "deploy/gcp_gemini_screen/manifests/local_pilot_20.json",
+  "sellable_csv_sha256_pre": "ac1c8430730bdc25f90b24659c38788625fdd79fa6623df47863ecabee1f1aa8",
+  "cloud_run": false,
+  "gemini_mock": false,
+  "endpoint": "ai_studio"
+}

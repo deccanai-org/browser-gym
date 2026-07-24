@@ -1,0 +1,422 @@
+[
+  {
+    "task_index": 0,
+    "task_id": "M307/value_anchoring_false_perunit_claim_sycophancy",
+    "seed": 0,
+    "vein": "sycophancy",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 1,
+    "task_id": "M307/value_anchoring_false_perunit_claim_sycophancy",
+    "seed": 1,
+    "vein": "sycophancy",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 2,
+    "task_id": "M307/value_anchoring_false_perunit_claim_sycophancy",
+    "seed": 2,
+    "vein": "sycophancy",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 3,
+    "task_id": "M103/mixed_basket_expired",
+    "seed": 0,
+    "vein": "stacked-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 4,
+    "task_id": "M103/mixed_basket_expired",
+    "seed": 1,
+    "vein": "stacked-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 5,
+    "task_id": "M103/mixed_basket_expired",
+    "seed": 2,
+    "vein": "stacked-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 6,
+    "task_id": "M207/scheduled_delivery_event_join",
+    "seed": 0,
+    "vein": "content-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 7,
+    "task_id": "M207/scheduled_delivery_event_join",
+    "seed": 1,
+    "vein": "content-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 8,
+    "task_id": "M207/scheduled_delivery_event_join",
+    "seed": 2,
+    "vein": "content-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 9,
+    "task_id": "M73/expired_card_checkout",
+    "seed": 0,
+    "vein": "instrument-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 10,
+    "task_id": "M73/expired_card_checkout",
+    "seed": 1,
+    "vein": "instrument-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 11,
+    "task_id": "M73/expired_card_checkout",
+    "seed": 2,
+    "vein": "instrument-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 12,
+    "task_id": "M142/no_monitor_in_stock_high_rating",
+    "seed": 0,
+    "vein": "infeasibility",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 13,
+    "task_id": "M142/no_monitor_in_stock_high_rating",
+    "seed": 1,
+    "vein": "infeasibility",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 14,
+    "task_id": "M142/no_monitor_in_stock_high_rating",
+    "seed": 2,
+    "vein": "infeasibility",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 15,
+    "task_id": "M272/surprise_gift_timing",
+    "seed": 0,
+    "vein": "self-contradiction",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 16,
+    "task_id": "M272/surprise_gift_timing",
+    "seed": 1,
+    "vein": "self-contradiction",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 17,
+    "task_id": "M272/surprise_gift_timing",
+    "seed": 2,
+    "vein": "self-contradiction",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 18,
+    "task_id": "M41/ambiguous_return",
+    "seed": 0,
+    "vein": "ask-dont-guess",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 19,
+    "task_id": "M41/ambiguous_return",
+    "seed": 1,
+    "vein": "ask-dont-guess",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 20,
+    "task_id": "M41/ambiguous_return",
+    "seed": 2,
+    "vein": "ask-dont-guess",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 21,
+    "task_id": "M200/dentist_move_doublebook",
+    "seed": 0,
+    "vein": "tool-affordance",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 22,
+    "task_id": "M200/dentist_move_doublebook",
+    "seed": 1,
+    "vein": "tool-affordance",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 23,
+    "task_id": "M200/dentist_move_doublebook",
+    "seed": 2,
+    "vein": "tool-affordance",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 24,
+    "task_id": "M252/toddler_safety_constraint",
+    "seed": 0,
+    "vein": "implicit-constraint",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 25,
+    "task_id": "M252/toddler_safety_constraint",
+    "seed": 1,
+    "vein": "implicit-constraint",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 26,
+    "task_id": "M252/toddler_safety_constraint",
+    "seed": 2,
+    "vein": "implicit-constraint",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 27,
+    "task_id": "M219/card_validity_gated_on_delivery_date",
+    "seed": 0,
+    "vein": "structural",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 28,
+    "task_id": "M219/card_validity_gated_on_delivery_date",
+    "seed": 1,
+    "vein": "structural",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 29,
+    "task_id": "M219/card_validity_gated_on_delivery_date",
+    "seed": 2,
+    "vein": "structural",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 30,
+    "task_id": "M59/injection_exfil",
+    "seed": 0,
+    "vein": "injection",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 31,
+    "task_id": "M59/injection_exfil",
+    "seed": 1,
+    "vein": "injection",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 32,
+    "task_id": "M59/injection_exfil",
+    "seed": 2,
+    "vein": "injection",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 33,
+    "task_id": "M43/stale_delivery_date",
+    "seed": 0,
+    "vein": "source-anchoring",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 34,
+    "task_id": "M43/stale_delivery_date",
+    "seed": 1,
+    "vein": "source-anchoring",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 35,
+    "task_id": "M43/stale_delivery_date",
+    "seed": 2,
+    "vein": "source-anchoring",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 36,
+    "task_id": "M226/false_stock_premise",
+    "seed": 0,
+    "vein": "sycophancy",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 37,
+    "task_id": "M226/false_stock_premise",
+    "seed": 1,
+    "vein": "sycophancy",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 38,
+    "task_id": "M226/false_stock_premise",
+    "seed": 2,
+    "vein": "sycophancy",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 39,
+    "task_id": "M102/qty_shipto_corporate",
+    "seed": 0,
+    "vein": "stacked-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 40,
+    "task_id": "M102/qty_shipto_corporate",
+    "seed": 1,
+    "vein": "stacked-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 41,
+    "task_id": "M102/qty_shipto_corporate",
+    "seed": 2,
+    "vein": "stacked-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 42,
+    "task_id": "M13/order_cleanup_audit",
+    "seed": 0,
+    "vein": "content-default",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 43,
+    "task_id": "M13/order_cleanup_audit",
+    "seed": 1,
+    "vein": "content-default",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 44,
+    "task_id": "M13/order_cleanup_audit",
+    "seed": 2,
+    "vein": "content-default",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 45,
+    "task_id": "M66/expedited_upgrade_default_card",
+    "seed": 0,
+    "vein": "instrument-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 46,
+    "task_id": "M66/expedited_upgrade_default_card",
+    "seed": 1,
+    "vein": "instrument-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 47,
+    "task_id": "M66/expedited_upgrade_default_card",
+    "seed": 2,
+    "vein": "instrument-default",
+    "sellable_ledger": true
+  },
+  {
+    "task_index": 48,
+    "task_id": "M249/cross_store_cap_empty",
+    "seed": 0,
+    "vein": "infeasibility",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 49,
+    "task_id": "M249/cross_store_cap_empty",
+    "seed": 1,
+    "vein": "infeasibility",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 50,
+    "task_id": "M249/cross_store_cap_empty",
+    "seed": 2,
+    "vein": "infeasibility",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 51,
+    "task_id": "M270/named_item_vs_budget",
+    "seed": 0,
+    "vein": "self-contradiction",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 52,
+    "task_id": "M270/named_item_vs_budget",
+    "seed": 1,
+    "vein": "self-contradiction",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 53,
+    "task_id": "M270/named_item_vs_budget",
+    "seed": 2,
+    "vein": "self-contradiction",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 54,
+    "task_id": "M110/ambiguous_return_v2",
+    "seed": 0,
+    "vein": "ask-dont-guess",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 55,
+    "task_id": "M110/ambiguous_return_v2",
+    "seed": 1,
+    "vein": "ask-dont-guess",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 56,
+    "task_id": "M110/ambiguous_return_v2",
+    "seed": 2,
+    "vein": "ask-dont-guess",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 57,
+    "task_id": "M245/split_payment_noop",
+    "seed": 0,
+    "vein": "tool-affordance",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 58,
+    "task_id": "M245/split_payment_noop",
+    "seed": 1,
+    "vein": "tool-affordance",
+    "sellable_ledger": false
+  },
+  {
+    "task_index": 59,
+    "task_id": "M245/split_payment_noop",
+    "seed": 2,
+    "vein": "tool-affordance",
+    "sellable_ledger": false
+  }
+]

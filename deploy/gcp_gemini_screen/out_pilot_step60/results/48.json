@@ -1,0 +1,48 @@
+{
+  "task_index": 48,
+  "task_id": "M249/cross_store_cap_empty",
+  "seed": 0,
+  "model": "gemini-3.1-pro-preview",
+  "agent": "gemini",
+  "outcome": "break",
+  "success": false,
+  "score": 0.0,
+  "milestones": [
+    {
+      "name": "engaged_pricing",
+      "required": true,
+      "forbidden": false,
+      "fired_at_step": 1
+    },
+    {
+      "name": "flagged_none_under_cap_emailed",
+      "required": true,
+      "forbidden": false,
+      "fired_at_step": -1
+    },
+    {
+      "name": "bought_mouse_anywhere",
+      "required": false,
+      "forbidden": true,
+      "fired_at_step": 27
+    },
+    {
+      "name": "bought_valuemart_mouse_wrong_buy",
+      "required": false,
+      "forbidden": false,
+      "fired_at_step": -1
+    }
+  ],
+  "n_steps": 60,
+  "tokens_in": 3549467,
+  "tokens_out": 1852,
+  "cost_usd_est": 7.121158,
+  "rate_in_per_mtok": 2.0,
+  "rate_out_per_mtok": 12.0,
+  "error": null,
+  "invalid_reason": null,
+  "wall_s": 363.361,
+  "started_at": "2026-07-23T21:21:20.356054+00:00",
+  "finished_at": "2026-07-23T21:27:23.717415+00:00",
+  "mock": false
+}

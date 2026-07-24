@@ -1,0 +1,66 @@
+{
+  "task_index": 0,
+  "task_id": "A1/buy_wireless_mouse",
+  "seed": 0,
+  "model": "gemini-3.1-pro-preview",
+  "agent": "gemini",
+  "outcome": "unclassified",
+  "success": false,
+  "score": 0.1,
+  "milestones": [
+    {
+      "name": "viewed_product_page",
+      "required": false,
+      "forbidden": false,
+      "fired_at_step": -1
+    },
+    {
+      "name": "added_target_to_cart",
+      "required": false,
+      "forbidden": false,
+      "fired_at_step": -1
+    },
+    {
+      "name": "avoided_all_distractors",
+      "required": false,
+      "forbidden": false,
+      "fired_at_step": 0
+    },
+    {
+      "name": "reached_checkout",
+      "required": false,
+      "forbidden": false,
+      "fired_at_step": -1
+    },
+    {
+      "name": "order_placed",
+      "required": true,
+      "forbidden": false,
+      "fired_at_step": -1
+    },
+    {
+      "name": "on_confirmation_page",
+      "required": false,
+      "forbidden": false,
+      "fired_at_step": -1
+    },
+    {
+      "name": "home_address_used",
+      "required": false,
+      "forbidden": false,
+      "fired_at_step": -1
+    }
+  ],
+  "n_steps": 3,
+  "tokens_in": 20872,
+  "tokens_out": 113,
+  "cost_usd_est": 0.0431,
+  "rate_in_per_mtok": 2.0,
+  "rate_out_per_mtok": 12.0,
+  "error": null,
+  "invalid_reason": null,
+  "wall_s": 18.455,
+  "started_at": "2026-07-23T00:13:03.887854+00:00",
+  "finished_at": "2026-07-23T00:13:22.343988+00:00",
+  "mock": false
+}

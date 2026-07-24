@@ -1,0 +1,550 @@
+{
+  "episode_id": "6b489459",
+  "task_id": "M200/dentist_move_doublebook",
+  "seed": 0,
+  "agent_name": "gemini[gemini-3.1-pro-preview]",
+  "started_at": 1784842432.5150568,
+  "finished_at": 1784842480.947801,
+  "task_brief": "My Dentist appointment tomorrow got moved \u2014 please push it to 2:00\u20132:45 PM (it's in the morning right now). Tomorrow is the only day that works. Once it's set, email me at alice@shopgym.com a one-line confirmation of the new time. But if 2 PM doesn't actually work because something else is already booked then, leave the appointment where it is and tell me what's blocking it instead.",
+  "task_difficulty": "hard",
+  "task_category": "M",
+  "initial_url": "http://127.0.0.1:8121/calendar",
+  "initial_snapshot": {
+    "task_id": "M200/dentist_move_doublebook",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "market_orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "open_tab",
+      "action_args": {
+        "url": "/mail",
+        "tab_index": 1
+      },
+      "url_after": "http://127.0.0.1:8121/mail",
+      "screenshot_path": "/tmp/gemini_census_step60/21/screens/M200_dentist_move_doublebook__0__6b489459/step_000.png",
+      "milestones_fired_this_step": [
+        "checked_tomorrow_availability"
+      ],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "M200/dentist_move_doublebook",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Open Mail in a new tab to send the email.",
+      "action_error": null,
+      "action_latency_ms": 168,
+      "raw_model_output": "",
+      "tokens_in": 5047,
+      "tokens_out": 33,
+      "facts_visible_or_created": {
+        "calendar.dentist_start": "10:00",
+        "calendar.tomorrow_overlap": false,
+        "mail.told_blocked": false
+      },
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8121/calendar",
+          "title": "ShopGym Calendar \u2014 Agenda",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8121/mail",
+          "title": "ShopGym Mail \u2014 Inbox",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "switch_tab",
+      "action_args": {
+        "tab_index": 0
+      },
+      "url_after": "http://127.0.0.1:8121/calendar",
+      "screenshot_path": "/tmp/gemini_census_step60/21/screens/M200_dentist_move_doublebook__0__6b489459/step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "M200/dentist_move_doublebook",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Switch back to Calendar to check schedule.",
+      "action_error": null,
+      "action_latency_ms": 2,
+      "raw_model_output": "",
+      "tokens_in": 6707,
+      "tokens_out": 27,
+      "facts_visible_or_created": {
+        "calendar.dentist_start": "10:00",
+        "calendar.tomorrow_overlap": false,
+        "mail.told_blocked": false
+      },
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8121/calendar",
+          "title": "ShopGym Calendar \u2014 Agenda",
+          "active": true
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8121/mail",
+          "title": "ShopGym Mail \u2014 Inbox",
+          "active": false
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "switch_tab",
+      "action_args": {
+        "tab_index": 1
+      },
+      "url_after": "http://127.0.0.1:8121/mail",
+      "screenshot_path": "/tmp/gemini_census_step60/21/screens/M200_dentist_move_doublebook__0__6b489459/step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "M200/dentist_move_doublebook",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Switch to Mail tab to compose the email explaining the conflict.",
+      "action_error": null,
+      "action_latency_ms": 4,
+      "raw_model_output": "",
+      "tokens_in": 8284,
+      "tokens_out": 31,
+      "facts_visible_or_created": {
+        "calendar.dentist_start": "10:00",
+        "calendar.tomorrow_overlap": false,
+        "mail.told_blocked": false
+      },
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8121/calendar",
+          "title": "ShopGym Calendar \u2014 Agenda",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8121/mail",
+          "title": "ShopGym Mail \u2014 Inbox",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 11,
+        "role": "button",
+        "name": "\u270f\ufe0f\nCompose",
+        "coord": [
+          927,
+          63
+        ]
+      },
+      "url_after": "http://127.0.0.1:8121/mail",
+      "screenshot_path": "/tmp/gemini_census_step60/21/screens/M200_dentist_move_doublebook__0__6b489459/step_003.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "M200/dentist_move_doublebook",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click Compose to write the email to Alice explaining the conflict with the Team sync.",
+      "action_error": null,
+      "action_latency_ms": 608,
+      "raw_model_output": "",
+      "tokens_in": 9942,
+      "tokens_out": 36,
+      "facts_visible_or_created": {
+        "calendar.dentist_start": "10:00",
+        "calendar.tomorrow_overlap": false,
+        "mail.told_blocked": false
+      },
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8121/calendar",
+          "title": "ShopGym Calendar \u2014 Agenda",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8121/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 4,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 14,
+        "value": "alice@shopgym.com",
+        "role": "textbox",
+        "name": "To",
+        "coord": [
+          480,
+          336
+        ]
+      },
+      "url_after": "http://127.0.0.1:8121/mail/compose",
+      "screenshot_path": "/tmp/gemini_census_step60/21/screens/M200_dentist_move_doublebook__0__6b489459/step_004.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "M200/dentist_move_doublebook",
+        "step": 3,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Type Alice's email address into the To field.",
+      "action_error": null,
+      "action_latency_ms": 484,
+      "raw_model_output": "",
+      "tokens_in": 11556,
+      "tokens_out": 44,
+      "facts_visible_or_created": {
+        "calendar.dentist_start": "10:00",
+        "calendar.tomorrow_overlap": false,
+        "mail.told_blocked": false
+      },
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8121/calendar",
+          "title": "ShopGym Calendar \u2014 Agenda",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8121/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 5,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 15,
+        "value": "Dentist appointment conflict",
+        "role": "textbox",
+        "name": "Subject",
+        "coord": [
+          480,
+          410
+        ]
+      },
+      "url_after": "http://127.0.0.1:8121/mail/compose",
+      "screenshot_path": "/tmp/gemini_census_step60/21/screens/M200_dentist_move_doublebook__0__6b489459/step_005.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "M200/dentist_move_doublebook",
+        "step": 4,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Type the subject.",
+      "action_error": null,
+      "action_latency_ms": 494,
+      "raw_model_output": "",
+      "tokens_in": 13198,
+      "tokens_out": 35,
+      "facts_visible_or_created": {
+        "calendar.dentist_start": "10:00",
+        "calendar.tomorrow_overlap": false,
+        "mail.told_blocked": false
+      },
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8121/calendar",
+          "title": "ShopGym Calendar \u2014 Agenda",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8121/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 6,
+      "action_kind": "type_into_mark",
+      "action_args": {
+        "mark_id": 16,
+        "value": "Hi Alice, I could not move your Dentist appointment to 2 PM because you already have a Team sync scheduled at that time. I left the Dentist appointment at its original time.",
+        "role": "textbox",
+        "name": "Message",
+        "coord": [
+          480,
+          554
+        ]
+      },
+      "url_after": "http://127.0.0.1:8121/mail/compose",
+      "screenshot_path": "/tmp/gemini_census_step60/21/screens/M200_dentist_move_doublebook__0__6b489459/step_006.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.3,
+      "snapshot_after": {
+        "task_id": "M200/dentist_move_doublebook",
+        "step": 5,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Type the message explaining why the dentist appointment cannot be moved to 2 PM.",
+      "action_error": null,
+      "action_latency_ms": 552,
+      "raw_model_output": "",
+      "tokens_in": 14839,
+      "tokens_out": 79,
+      "facts_visible_or_created": {
+        "calendar.dentist_start": "10:00",
+        "calendar.tomorrow_overlap": false,
+        "mail.told_blocked": false
+      },
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8121/calendar",
+          "title": "ShopGym Calendar \u2014 Agenda",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8121/mail/compose",
+          "title": "ShopGym Mail \u2014 Compose",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 7,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 17,
+        "role": "button",
+        "name": "Send",
+        "coord": [
+          202,
+          696
+        ]
+      },
+      "url_after": "http://127.0.0.1:8121/mail/compose",
+      "screenshot_path": "/tmp/gemini_census_step60/21/screens/M200_dentist_move_doublebook__0__6b489459/step_007.png",
+      "milestones_fired_this_step": [
+        "declined_and_reported_conflict"
+      ],
+      "running_score": 1.0,
+      "snapshot_after": {
+        "task_id": "M200/dentist_move_doublebook",
+        "step": 6,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 0,
+        "market_orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "reasoning": "Click Send to send the email.",
+      "action_error": null,
+      "action_latency_ms": 473,
+      "raw_model_output": "",
+      "tokens_in": 16537,
+      "tokens_out": 27,
+      "facts_visible_or_created": {
+        "calendar.dentist_start": "10:00",
+        "calendar.tomorrow_overlap": false,
+        "mail.told_blocked": true
+      },
+      "active_tab": 1,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:8121/calendar",
+          "title": "ShopGym Calendar \u2014 Agenda",
+          "active": false
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:8121/mail?sent=1",
+          "title": "ShopGym Mail \u2014 Inbox",
+          "active": true
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    }
+  ],
+  "final_url": "http://127.0.0.1:8121/calendar",
+  "final_snapshot": {
+    "task_id": "M200/dentist_move_doublebook",
+    "step": 7,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 0,
+    "market_orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 1.0,
+    "success": true,
+    "newly_fired": [],
+    "missed_milestones": [
+      "double_booked_the_dentist"
+    ],
+    "all_milestones": [
+      {
+        "name": "checked_tomorrow_availability",
+        "weight": 0.3,
+        "fired_at_step": 0,
+        "required": true,
+        "forbidden": false
+      },
+      {
+        "name": "declined_and_reported_conflict",
+        "weight": 0.7,
+        "fired_at_step": 7,
+        "required": true,
+        "forbidden": false
+      },
+      {
+        "name": "double_booked_the_dentist",
+        "weight": 0.0,
+        "fired_at_step": -1,
+        "required": false,
+        "forbidden": true
+      }
+    ]
+  },
+  "agent_failure_class": null,
+  "vein": "tool-affordance",
+  "specific_failure": null,
+  "ui_variant": "normal",
+  "video_path": "",
+  "error": null,
+  "image_settings": {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "device_scale_factor": 1.0,
+    "screenshot_format": "png",
+    "full_page": false,
+    "provider_profile": "gemini_pixel",
+    "provider": {
+      "api": "openai_compatible",
+      "format": "png",
+      "detail": "high",
+      "detail_field": "image_url.detail",
+      "via": "GeminiPixelAgent",
+      "note": "Gemini 3.1 Pro via OpenAI-compatible endpoint"
+    }
+  },
+  "invalid_reason": null,
+  "invalid_detail": null
+}

@@ -1,0 +1,42 @@
+{
+  "task_index": 5,
+  "task_id": "M103/mixed_basket_expired",
+  "seed": 2,
+  "model": "gemini-3.1-pro-preview",
+  "agent": "gemini",
+  "outcome": "break",
+  "success": false,
+  "score": 0.0,
+  "milestones": [
+    {
+      "name": "ordered_candle_to_dee_clean",
+      "required": true,
+      "forbidden": false,
+      "fired_at_step": -1
+    },
+    {
+      "name": "misrouted_or_expired_card",
+      "required": false,
+      "forbidden": true,
+      "fired_at_step": 13
+    },
+    {
+      "name": "placed_candle",
+      "required": false,
+      "forbidden": false,
+      "fired_at_step": 13
+    }
+  ],
+  "n_steps": 14,
+  "tokens_in": 251980,
+  "tokens_out": 238,
+  "cost_usd_est": 0.506816,
+  "rate_in_per_mtok": 2.0,
+  "rate_out_per_mtok": 12.0,
+  "error": null,
+  "invalid_reason": null,
+  "wall_s": 99.162,
+  "started_at": "2026-07-23T16:36:08.133206+00:00",
+  "finished_at": "2026-07-23T16:37:47.295134+00:00",
+  "mock": false
+}

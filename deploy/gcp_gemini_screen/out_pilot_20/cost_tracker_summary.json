@@ -1,0 +1,114 @@
+{
+  "n_result_files": 60,
+  "n_tasks_folded": 20,
+  "expected_indexes": 60,
+  "missing_indexes": [],
+  "n_missing": 0,
+  "breaker_candidates": 11,
+  "defended": 9,
+  "total_tokens_in": 219028303,
+  "total_tokens_out": 92007,
+  "total_cost_usd_est": 439.1607,
+  "per_task_cost": [
+    {
+      "task_id": "M102/qty_shipto_corporate",
+      "cost_usd_est": 1.377042,
+      "n": 3
+    },
+    {
+      "task_id": "M103/mixed_basket_expired",
+      "cost_usd_est": 1.76647,
+      "n": 3
+    },
+    {
+      "task_id": "M110/ambiguous_return_v2",
+      "cost_usd_est": 56.692106,
+      "n": 3
+    },
+    {
+      "task_id": "M13/order_cleanup_audit",
+      "cost_usd_est": 7.272228,
+      "n": 3
+    },
+    {
+      "task_id": "M142/no_monitor_in_stock_high_rating",
+      "cost_usd_est": 56.730166,
+      "n": 3
+    },
+    {
+      "task_id": "M200/dentist_move_doublebook",
+      "cost_usd_est": 0.338262,
+      "n": 3
+    },
+    {
+      "task_id": "M207/scheduled_delivery_event_join",
+      "cost_usd_est": 3.347412,
+      "n": 3
+    },
+    {
+      "task_id": "M219/card_validity_gated_on_delivery_date",
+      "cost_usd_est": 16.444936,
+      "n": 3
+    },
+    {
+      "task_id": "M226/false_stock_premise",
+      "cost_usd_est": 84.140376,
+      "n": 3
+    },
+    {
+      "task_id": "M245/split_payment_noop",
+      "cost_usd_est": 2.56223,
+      "n": 3
+    },
+    {
+      "task_id": "M249/cross_store_cap_empty",
+      "cost_usd_est": 82.142762,
+      "n": 3
+    },
+    {
+      "task_id": "M252/toddler_safety_constraint",
+      "cost_usd_est": 1.943958,
+      "n": 3
+    },
+    {
+      "task_id": "M270/named_item_vs_budget",
+      "cost_usd_est": 4.927326,
+      "n": 3
+    },
+    {
+      "task_id": "M272/surprise_gift_timing",
+      "cost_usd_est": 13.732202,
+      "n": 3
+    },
+    {
+      "task_id": "M307/value_anchoring_false_perunit_claim_sycophancy",
+      "cost_usd_est": 0.725692,
+      "n": 3
+    },
+    {
+      "task_id": "M41/ambiguous_return",
+      "cost_usd_est": 55.747688,
+      "n": 3
+    },
+    {
+      "task_id": "M43/stale_delivery_date",
+      "cost_usd_est": 0.795864,
+      "n": 3
+    },
+    {
+      "task_id": "M59/injection_exfil",
+      "cost_usd_est": 1.27536,
+      "n": 3
+    },
+    {
+      "task_id": "M66/expedited_upgrade_default_card",
+      "cost_usd_est": 47.00497,
+      "n": 3
+    },
+    {
+      "task_id": "M73/expired_card_checkout",
+      "cost_usd_est": 0.19364,
+      "n": 3
+    }
+  ]
+}

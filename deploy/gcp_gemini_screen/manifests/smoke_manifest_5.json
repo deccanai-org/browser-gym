@@ -1,0 +1,27 @@
+[
+  {
+    "task_index": 0,
+    "task_id": "A1/buy_wireless_mouse",
+    "seed": 0
+  },
+  {
+    "task_index": 1,
+    "task_id": "A1/buy_wireless_mouse",
+    "seed": 1
+  },
+  {
+    "task_index": 2,
+    "task_id": "A1/buy_wireless_mouse",
+    "seed": 2
+  },
+  {
+    "task_index": 3,
+    "task_id": "A2/filter_laptop",
+    "seed": 0
+  },
+  {
+    "task_index": 4,
+    "task_id": "A2/filter_laptop",
+    "seed": 1
+  }
+]

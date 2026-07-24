@@ -1,0 +1,135 @@
+{
+  "n_tasks": 20,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "n_episodes": 60,
+  "pilot_seed": 42,
+  "ordering": "diverse canonical_vein round-robin (rng_seed=42); not alphabetical",
+  "pilot_path": "deploy/gcp_gemini_screen/manifests/local_pilot_20.json",
+  "note_path": "deploy/gcp_gemini_screen/manifests/PILOT_20_NOTE.md",
+  "tasks": [
+    {
+      "task_id": "M307/value_anchoring_false_perunit_claim_sycophancy",
+      "vein": "sycophancy",
+      "sellable_ledger": true,
+      "pick": "pass_a_one_per_vein_prefer_sellable"
+    },
+    {
+      "task_id": "M103/mixed_basket_expired",
+      "vein": "stacked-default",
+      "sellable_ledger": true,
+      "pick": "pass_a_one_per_vein_prefer_sellable"
+    },
+    {
+      "task_id": "M207/scheduled_delivery_event_join",
+      "vein": "content-default",
+      "sellable_ledger": true,
+      "pick": "pass_a_one_per_vein_prefer_sellable"
+    },
+    {
+      "task_id": "M73/expired_card_checkout",
+      "vein": "instrument-default",
+      "sellable_ledger": true,
+      "pick": "pass_a_one_per_vein_prefer_sellable"
+    },
+    {
+      "task_id": "M142/no_monitor_in_stock_high_rating",
+      "vein": "infeasibility",
+      "sellable_ledger": true,
+      "pick": "pass_a_one_per_vein_prefer_sellable"
+    },
+    {
+      "task_id": "M272/surprise_gift_timing",
+      "vein": "self-contradiction",
+      "sellable_ledger": true,
+      "pick": "pass_a_one_per_vein_prefer_sellable"
+    },
+    {
+      "task_id": "M41/ambiguous_return",
+      "vein": "ask-dont-guess",
+      "sellable_ledger": true,
+      "pick": "pass_a_one_per_vein_prefer_sellable"
+    },
+    {
+      "task_id": "M200/dentist_move_doublebook",
+      "vein": "tool-affordance",
+      "sellable_ledger": true,
+      "pick": "pass_a_one_per_vein_prefer_sellable"
+    },
+    {
+      "task_id": "M252/toddler_safety_constraint",
+      "vein": "implicit-constraint",
+      "sellable_ledger": true,
+      "pick": "pass_a_one_per_vein_prefer_sellable"
+    },
+    {
+      "task_id": "M219/card_validity_gated_on_delivery_date",
+      "vein": "structural",
+      "sellable_ledger": true,
+      "pick": "pass_a_one_per_vein_prefer_sellable"
+    },
+    {
+      "task_id": "M59/injection_exfil",
+      "vein": "injection",
+      "sellable_ledger": true,
+      "pick": "pass_a_one_per_vein_prefer_sellable"
+    },
+    {
+      "task_id": "M43/stale_delivery_date",
+      "vein": "source-anchoring",
+      "sellable_ledger": true,
+      "pick": "pass_a_one_per_vein_prefer_sellable"
+    },
+    {
+      "task_id": "M226/false_stock_premise",
+      "vein": "sycophancy",
+      "sellable_ledger": false,
+      "pick": "pass_b_second_prefer_non_sellable"
+    },
+    {
+      "task_id": "M102/qty_shipto_corporate",
+      "vein": "stacked-default",
+      "sellable_ledger": true,
+      "pick": "pass_b_second_prefer_non_sellable"
+    },
+    {
+      "task_id": "M13/order_cleanup_audit",
+      "vein": "content-default",
+      "sellable_ledger": false,
+      "pick": "pass_b_second_prefer_non_sellable"
+    },
+    {
+      "task_id": "M66/expedited_upgrade_default_card",
+      "vein": "instrument-default",
+      "sellable_ledger": true,
+      "pick": "pass_b_second_prefer_non_sellable"
+    },
+    {
+      "task_id": "M249/cross_store_cap_empty",
+      "vein": "infeasibility",
+      "sellable_ledger": false,
+      "pick": "pass_b_second_prefer_non_sellable"
+    },
+    {
+      "task_id": "M270/named_item_vs_budget",
+      "vein": "self-contradiction",
+      "sellable_ledger": false,
+      "pick": "pass_b_second_prefer_non_sellable"
+    },
+    {
+      "task_id": "M110/ambiguous_return_v2",
+      "vein": "ask-dont-guess",
+      "sellable_ledger": false,
+      "pick": "pass_b_second_prefer_non_sellable"
+    },
+    {
+      "task_id": "M245/split_payment_noop",
+      "vein": "tool-affordance",
+      "sellable_ledger": false,
+      "pick": "pass_b_second_prefer_non_sellable"
+    }
+  ]
+}

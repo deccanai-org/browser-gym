@@ -1,0 +1,13 @@
+{
+  "n_tasks": 315,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "n_episodes": 945,
+  "smoke_n": 5,
+  "ordering": "sorted(TASKS.keys()) x seeds (0,1,2)",
+  "full_path": "deploy/gcp_gemini_screen/manifests/full_manifest_945.json",
+  "smoke_path": "deploy/gcp_gemini_screen/manifests/smoke_manifest_5.json"
+}

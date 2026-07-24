@@ -1,0 +1,36 @@
+{
+  "task_index": 42,
+  "task_id": "M13/order_cleanup_audit",
+  "seed": 0,
+  "model": "gemini-3.1-pro-preview",
+  "agent": "gemini",
+  "outcome": "unclassified",
+  "success": false,
+  "score": 0.5,
+  "milestones": [
+    {
+      "name": "cancelled_all_required",
+      "required": true,
+      "forbidden": false,
+      "fired_at_step": -1
+    },
+    {
+      "name": "cancelled_only_required",
+      "required": true,
+      "forbidden": false,
+      "fired_at_step": 0
+    }
+  ],
+  "n_steps": 31,
+  "tokens_in": 1005894,
+  "tokens_out": 865,
+  "cost_usd_est": 2.022168,
+  "rate_in_per_mtok": 2.0,
+  "rate_out_per_mtok": 12.0,
+  "error": null,
+  "invalid_reason": null,
+  "wall_s": 146.087,
+  "started_at": "2026-07-23T19:34:57.693280+00:00",
+  "finished_at": "2026-07-23T19:37:23.780784+00:00",
+  "mock": false
+}

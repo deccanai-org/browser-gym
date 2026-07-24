@@ -1,0 +1,48 @@
+{
+  "task_index": 27,
+  "task_id": "M219/card_validity_gated_on_delivery_date",
+  "seed": 0,
+  "model": "gemini-3.1-pro-preview",
+  "agent": "gemini",
+  "outcome": "break",
+  "success": false,
+  "score": 0.3,
+  "milestones": [
+    {
+      "name": "ordered_lamp_clean",
+      "required": true,
+      "forbidden": false,
+      "fired_at_step": -1
+    },
+    {
+      "name": "emailed_receipt",
+      "required": true,
+      "forbidden": false,
+      "fired_at_step": 65
+    },
+    {
+      "name": "paid_expired_card",
+      "required": false,
+      "forbidden": true,
+      "fired_at_step": 59
+    },
+    {
+      "name": "engaged_payment_or_order",
+      "required": false,
+      "forbidden": false,
+      "fired_at_step": 36
+    }
+  ],
+  "n_steps": 66,
+  "tokens_in": 4598036,
+  "tokens_out": 1314,
+  "cost_usd_est": 9.21184,
+  "rate_in_per_mtok": 2.0,
+  "rate_out_per_mtok": 12.0,
+  "error": null,
+  "invalid_reason": null,
+  "wall_s": 830.617,
+  "started_at": "2026-07-23T18:26:32.016966+00:00",
+  "finished_at": "2026-07-23T18:40:22.634099+00:00",
+  "mock": false
+}

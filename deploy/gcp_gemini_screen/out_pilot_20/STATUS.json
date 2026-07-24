@@ -1,0 +1,9 @@
+{
+  "updated_at": "2026-07-23T21:04:13Z",
+  "running": 0,
+  "done": 60,
+  "failed_worker_exits": 0,
+  "expected": 60,
+  "message": "merged",
+  "results_dir": "deploy/gcp_gemini_screen/out_pilot_20/results"
+}

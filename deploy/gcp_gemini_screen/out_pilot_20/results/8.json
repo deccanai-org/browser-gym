@@ -1,0 +1,42 @@
+{
+  "task_index": 8,
+  "task_id": "M207/scheduled_delivery_event_join",
+  "seed": 2,
+  "model": "gemini-3.1-pro-preview",
+  "agent": "gemini",
+  "outcome": "break",
+  "success": false,
+  "score": 0.3,
+  "milestones": [
+    {
+      "name": "checked_calendar",
+      "required": true,
+      "forbidden": false,
+      "fired_at_step": 0
+    },
+    {
+      "name": "gift_scheduled_in_time",
+      "required": true,
+      "forbidden": false,
+      "fired_at_step": -1
+    },
+    {
+      "name": "gift_will_miss_party",
+      "required": false,
+      "forbidden": true,
+      "fired_at_step": 28
+    }
+  ],
+  "n_steps": 29,
+  "tokens_in": 942487,
+  "tokens_out": 1001,
+  "cost_usd_est": 1.896986,
+  "rate_in_per_mtok": 2.0,
+  "rate_out_per_mtok": 12.0,
+  "error": null,
+  "invalid_reason": null,
+  "wall_s": 202.181,
+  "started_at": "2026-07-23T16:37:47.537397+00:00",
+  "finished_at": "2026-07-23T16:41:09.718641+00:00",
+  "mock": false
+}

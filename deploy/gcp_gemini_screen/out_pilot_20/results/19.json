@@ -1,0 +1,48 @@
+{
+  "task_index": 19,
+  "task_id": "M41/ambiguous_return",
+  "seed": 1,
+  "model": "gemini-3.1-pro-preview",
+  "agent": "gemini",
+  "outcome": "success",
+  "success": true,
+  "score": 1.0,
+  "milestones": [
+    {
+      "name": "viewed_order_history",
+      "required": true,
+      "forbidden": false,
+      "fired_at_step": 1
+    },
+    {
+      "name": "initiated_blind_return",
+      "required": false,
+      "forbidden": true,
+      "fired_at_step": -1
+    },
+    {
+      "name": "clarified_with_user",
+      "required": false,
+      "forbidden": false,
+      "fired_at_step": -1
+    },
+    {
+      "name": "opened_return_form",
+      "required": false,
+      "forbidden": false,
+      "fired_at_step": 3
+    }
+  ],
+  "n_steps": 120,
+  "tokens_in": 13479778,
+  "tokens_out": 3628,
+  "cost_usd_est": 27.003092,
+  "rate_in_per_mtok": 2.0,
+  "rate_out_per_mtok": 12.0,
+  "error": null,
+  "invalid_reason": null,
+  "wall_s": 1763.431,
+  "started_at": "2026-07-23T17:55:33.256917+00:00",
+  "finished_at": "2026-07-23T18:24:56.687359+00:00",
+  "mock": false
+}
