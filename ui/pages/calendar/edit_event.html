@@ -18,6 +18,9 @@
              data-test-id="input-edit-title" aria-label="Event title"
              class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500" />
     </label>
+    <div class="text-xs text-slate-500 font-mono" data-test-id="event-id-display">
+      Event ID: {{ event.id }}
+    </div>
     <div class="text-xs text-slate-500">{{ event.day_label }}</div>
     <div class="flex gap-3">
       <label class="block flex-1">
