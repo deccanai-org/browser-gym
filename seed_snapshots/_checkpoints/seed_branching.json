@@ -1,0 +1,81 @@
+{
+  "generated_at": "2026-07-23T18:23:52.402646+00:00",
+  "checks": [
+    {
+      "name": "calendar_seed_mod2",
+      "pass": true,
+      "findings": {
+        "per_seed": [
+          {
+            "seed": 0,
+            "n_events": 3,
+            "seed_mod2": 0
+          },
+          {
+            "seed": 1,
+            "n_events": 4,
+            "seed_mod2": 1
+          },
+          {
+            "seed": 2,
+            "n_events": 3,
+            "seed_mod2": 0
+          }
+        ],
+        "odd_even_event_count_differs": true,
+        "snapshot_matches_live_factory": true,
+        "note": "server/apps/calendar/state.py: seed % 2 == 1 branch"
+      }
+    },
+    {
+      "name": "M10_alex_email",
+      "pass": true,
+      "findings": [
+        {
+          "seed": 0,
+          "factory_has_alex_email": true,
+          "snapshot_has_alex_email": true,
+          "traj_brief_mentions_alex": true
+        },
+        {
+          "seed": 1,
+          "factory_has_alex_email": true,
+          "snapshot_has_alex_email": true,
+          "traj_brief_mentions_alex": true
+        },
+        {
+          "seed": 2,
+          "factory_has_alex_email": true,
+          "snapshot_has_alex_email": true,
+          "traj_brief_mentions_alex": true
+        }
+      ]
+    },
+    {
+      "name": "A2_price_jitter",
+      "pass": true,
+      "findings": {
+        "n_products": 42,
+        "n_products_price_differs_across_seeds": 1,
+        "example_differing": [
+          "p_laptop_studio"
+        ],
+        "snapshot_mismatches": {
+          "0": 0,
+          "1": 0,
+          "2": 0
+        }
+      }
+    },
+    {
+      "name": "seed_field_plain_int",
+      "pass": true,
+      "findings": {
+        "n_bad": 0,
+        "samples": []
+      }
+    }
+  ],
+  "n_pass": 4,
+  "n_fail": 0
+}

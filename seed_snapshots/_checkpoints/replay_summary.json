@@ -1,0 +1,14 @@
+{
+  "n_jobs": 921,
+  "n_results": 921,
+  "replay_verified_true": 873,
+  "replay_mismatch": 47,
+  "replay_errors": 1,
+  "skipped": {
+    "pixel_only": 15,
+    "no_evidence": 0,
+    "other": 0
+  },
+  "generated_at": "2026-07-23T18:23:36.987295+00:00",
+  "source_commit": "ba6a8c6"
+}

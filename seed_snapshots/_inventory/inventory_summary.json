@@ -1,0 +1,19 @@
+{
+  "n_episodes": 936,
+  "n_traj_files_scanned": 9347,
+  "corrupt_files": 0,
+  "evidence_class_counts": {
+    "selector_replayable": 921,
+    "pixel_only": 15
+  },
+  "selector_replayable": 921,
+  "pixel_only": 15,
+  "no_evidence": 0,
+  "has_any_traj": 936,
+  "methodology_notes": [
+    "DOM/HTML and network HAR are almost never persisted in these jsonl trajs.",
+    "Verifier-read side effects appear as verifier_result + compact final_snapshot (cart/orders counts), not full WorldState dumps.",
+    "Screenshot paths are referenced; on-disk PNG availability varies by cascade dir.",
+    "Selector-replayable = oracle-style click/fill/navigate with zero pixel actions."
+  ]
+}

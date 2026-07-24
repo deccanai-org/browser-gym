@@ -1,0 +1,12 @@
+{
+  "match": 16,
+  "mismatch": 0,
+  "inconclusive": 0,
+  "skipped_replayable": 920,
+  "generated_at": "2026-07-23T18:23:51.561710+00:00",
+  "limits": [
+    "No OCR / visual screenshot inspection at scale.",
+    "Compares only compact harness fields available in traj headers.",
+    "Screenshot path references noted when present but content unread."
+  ]
+}

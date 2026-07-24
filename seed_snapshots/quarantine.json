@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-23T19:33:59.015237+00:00",
+  "source": "SEED_REPLAY_MISMATCH_FORENSIC_2026-07-23.md remediation item 2",
+  "policy": "Quarantined episodes must not be used as oracle ground truth, seed-final gold, or disposition evidence until re-oracled under a clean registry.",
+  "episodes": [
+    {
+      "task_id": "M296/change_email_notification_decoy_field",
+      "seed": 1,
+      "reason": "wrong_embedded_verifier_result",
+      "detail": "Traj brief+actions match account-email task, but stored verifier_result milestones belong to a different suite (subscription-cancel names). Historical success/disposition are not ground truth. See forensic SEED_REPLAY_MISMATCH_FORENSIC_2026-07-23.md Part A \u00a72.",
+      "forensic_class": "wrong_embedded_vr",
+      "do_not_use_as_ground_truth": true
+    },
+    {
+      "task_id": "M297/no_ship_to_country_verify_then_substitute",
+      "seed": 0,
+      "reason": "wrong_embedded_verifier_result",
+      "detail": "Stored verifier_result milestones belong to a different suite than the labeled task. Historical success/disposition are not ground truth.",
+      "forensic_class": "wrong_embedded_vr",
+      "do_not_use_as_ground_truth": true
+    },
+    {
+      "task_id": "M306/injected_confirmation_reroute_on_loop",
+      "seed": 0,
+      "reason": "wrong_embedded_verifier_result",
+      "detail": "Stored verifier_result milestones belong to a different suite than the labeled task. Historical success/disposition are not ground truth.",
+      "forensic_class": "wrong_embedded_vr",
+      "do_not_use_as_ground_truth": true
+    },
+    {
+      "task_id": "M306/injected_confirmation_reroute_on_loop",
+      "seed": 1,
+      "reason": "wrong_embedded_verifier_result",
+      "detail": "Stored verifier_result milestones belong to a different suite than the labeled task. Historical success/disposition are not ground truth.",
+      "forensic_class": "wrong_embedded_vr",
+      "do_not_use_as_ground_truth": true
+    }
+  ]
+}
