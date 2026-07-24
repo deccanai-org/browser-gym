@@ -170,7 +170,8 @@ class StepRecord:
     screenshot_path: str | None
     milestones_fired_this_step: list[str]
     running_score: float
-    snapshot_after: dict[str, Any]   # /_harness/snapshot
+    snapshot_after: dict[str, Any]   # /_harness/snapshot (orders_count=Shop;
+                                     # market_orders_count=ValueMart)
     reasoning: str = ""
     action_error: str | None = None
     action_latency_ms: int = 0
@@ -207,9 +208,16 @@ class Trajectory:
     task_category: str = ""
     initial_url: str = ""
     initial_snapshot: dict[str, Any] = field(default_factory=dict)
+    # Paired with seed_initial.json written into screenshot_dir at reset
+    # (before any agent action). Empty if capture failed / not yet run.
+    seed_initial_screenshot: str | None = None
+    seed_initial_json: str | None = None
     steps: list[StepRecord] = field(default_factory=list)
     final_url: str = ""
     final_snapshot: dict[str, Any] = field(default_factory=dict)
+    # Paired with seed_final.json written after episode end (before browser close).
+    seed_final_screenshot: str | None = None
+    seed_final_json: str | None = None
     verifier_result: dict[str, Any] = field(default_factory=dict)
     video_path: str = ""
     error: str | None = None
@@ -265,9 +273,13 @@ class Trajectory:
             "task_category": self.task_category,
             "initial_url": self.initial_url,
             "initial_snapshot": self.initial_snapshot,
+            "seed_initial_screenshot": self.seed_initial_screenshot,
+            "seed_initial_json": self.seed_initial_json,
             "steps": [asdict(s) for s in self.steps],
             "final_url": self.final_url,
             "final_snapshot": self.final_snapshot,
+            "seed_final_screenshot": self.seed_final_screenshot,
+            "seed_final_json": self.seed_final_json,
             "verifier_result": self.verifier_result,
             "agent_failure_class": self.agent_failure_class,
             "vein": self.vein,
@@ -474,6 +486,36 @@ class BrowserCtx:
             error=err, latency_ms=latency_ms,
         )
 
+    async def _wait_search_autocomplete_ready(self) -> None:
+        """After typing into the header search box, wait for Alpine to open the
+        suggestion dropdown (when suggestions exist) instead of a fixed sleep.
+
+        Screenshots taken immediately after ``fill`` / ``type_*`` were often
+        missing the dropdown because Alpine's ``x-show`` + opacity transition
+        had not committed yet. We wait for either:
+          * ``[data-test-id='search-autocomplete']`` visible, or
+          * the input still empty / no matching suggestions (timeout → no-op).
+        """
+        try:
+            # Only relevant when the header search input is focused / filled.
+            q = await self.page.evaluate(
+                """() => {
+                  const el = document.querySelector(
+                    "[data-test-id='input-header-search']"
+                  );
+                  return el ? (el.value || "") : null;
+                }"""
+            )
+            if q is None or len(str(q)) < 1:
+                return
+            await self.page.wait_for_selector(
+                "[data-test-id='search-autocomplete']:visible",
+                timeout=1500,
+                state="visible",
+            )
+        except Exception:
+            pass  # no suggestions / dropdown not applicable — never block
+
     async def fill(self, selector: str, value: str,
                    reasoning: str = "") -> StepRecord:
         t0 = time.monotonic()
@@ -481,6 +523,9 @@ class BrowserCtx:
         await self._animate_cursor(selector, "FILL", detail=value)
         try:
             await self.page.fill(selector, value)
+            # Header search: wait for autocomplete render before screenshot.
+            if "input-header-search" in selector or "search" in selector.lower():
+                await self._wait_search_autocomplete_ready()
         except Exception as e:
             err = f"{type(e).__name__}: {e}"
         latency_ms = int((time.monotonic() - t0) * 1000)
@@ -686,7 +731,9 @@ class BrowserCtx:
         The clear-first behavior is intentionally NOT included — if the
         agent wants to overwrite existing content it should send
         key('Control+a') + key('Backspace') before typing. This matches
-        Anthropic Computer Use semantics.
+        Anthropic Computer Use semantics. ``key_press`` maps ``Control+a``
+        to Playwright ``ControlOrMeta+a`` so select-all works on
+        Chromium/macOS (raw Control+a is line-start there).
         """
         t0 = time.monotonic()
         err: str | None = None
@@ -702,6 +749,11 @@ class BrowserCtx:
             )
             await self.page.mouse.click(*mark.center)
             await self.page.keyboard.type(text)
+            # If this mark was the header search input, wait for dropdown.
+            name_l = (mark.name or "").lower()
+            role_l = (mark.role or "").lower()
+            if "search" in name_l or role_l == "searchbox":
+                await self._wait_search_autocomplete_ready()
         except Exception as e:
             err = f"{type(e).__name__}: {e}"
         latency_ms = int((time.monotonic() - t0) * 1000)
@@ -709,6 +761,19 @@ class BrowserCtx:
             "type_into_mark", resolved, reasoning=reasoning,
             error=err, latency_ms=latency_ms,
         )
+
+    @staticmethod
+    def _normalize_key_chord(name: str) -> str:
+        """Map agent chords to Playwright keys that work cross-platform.
+
+        On Chromium/macOS, raw ``Control+a`` is the emacs "line start" binding
+        (caret → 0, no selection). Select-all is ``Meta+a``. Playwright's
+        ``ControlOrMeta+a`` emits Meta on macOS and Control elsewhere, which
+        is what agents mean when they send ``Control+a`` for overwrite.
+        """
+        if name in ("Control+a", "Control+A"):
+            return "ControlOrMeta+a"
+        return name
 
     async def key_press(self, name: str, reasoning: str = "") -> "StepRecord":
         """Press a keyboard key (or chord) on the focused element.
@@ -718,8 +783,9 @@ class BrowserCtx:
         """
         t0 = time.monotonic()
         err: str | None = None
+        press_name = self._normalize_key_chord(name)
         try:
-            await self.page.keyboard.press(name)
+            await self.page.keyboard.press(press_name)
             # Some keys (Enter on a form) trigger navigation — wait briefly
             if name.lower() in ("enter", "return"):
                 try:
@@ -792,6 +858,8 @@ class BrowserCtx:
             await self._animate_cursor_at_coord((x, y), "FILL", detail=text)
             await self.page.mouse.click(x, y)
             await self.page.keyboard.type(text)
+            # Best-effort: if focus landed on header search, wait for dropdown.
+            await self._wait_search_autocomplete_ready()
         except Exception as e:
             err = f"{type(e).__name__}: {e}"
         latency_ms = int((time.monotonic() - t0) * 1000)

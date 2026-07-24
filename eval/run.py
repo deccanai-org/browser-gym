@@ -212,7 +212,35 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
     traj.initial_url = page.url
     async with httpx.AsyncClient(headers=harness_headers()) as c:
         snap = (await c.get(f"{server_url}/_harness/snapshot")).json()
+        # Full world dump paired with the pre-action screenshot below.
+        try:
+            world0 = (await c.get(f"{server_url}/_harness/world")).json()
+        except Exception:
+            world0 = {"snapshot": snap}
     traj.initial_snapshot = snap
+
+    # Screenshot + seed_initial.json BEFORE the first agent action, so visual
+    # evidence lines up with the factory/world state at reset (not post-step).
+    try:
+        seed_init_json = shots_dir / "seed_initial.json"
+        seed_init_json.write_text(
+            json.dumps({
+                "schema_version": 1,
+                "snapshot_kind": "seed_initial",
+                "task_id": task_id,
+                "seed": seed,
+                "url": page.url,
+                "compact_snapshot": snap,
+                "world": world0,
+            }, indent=2, default=str),
+            encoding="utf-8",
+        )
+        seed_init_png = shots_dir / "seed_initial.png"
+        await page.screenshot(path=str(seed_init_png), full_page=False)
+        traj.seed_initial_json = str(seed_init_json)
+        traj.seed_initial_screenshot = str(seed_init_png)
+    except Exception as e:
+        print(f"[runner] WARNING: seed_initial capture failed: {e}")
 
     # Drive the agent
     try:
@@ -273,11 +301,18 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
 
     # Final probe
     traj.final_url = page.url
+    world_final: dict = {}
     async with httpx.AsyncClient(headers=harness_headers()) as c:
         try:
             traj.final_snapshot = (await c.get(
                 f"{server_url}/_harness/snapshot",
             )).json()
+            try:
+                world_final = (await c.get(
+                    f"{server_url}/_harness/world",
+                )).json()
+            except Exception:
+                world_final = {"snapshot": traj.final_snapshot}
             traj.verifier_result = (await c.post(
                 f"{server_url}/_harness/verify",
                 json={"url": page.url, "step": len(traj.steps)},
@@ -315,6 +350,30 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
                 traj.agent_failure_class = cls.get("agent_failure_class")
             except Exception as e:
                 print(f"[runner] failure classification skipped: {e}")
+
+    # Final screenshot + seed_final.json AFTER episode end, before browser close.
+    try:
+        seed_fin_json = shots_dir / "seed_final.json"
+        seed_fin_json.write_text(
+            json.dumps({
+                "schema_version": 1,
+                "snapshot_kind": "seed_final",
+                "task_id": task_id,
+                "seed": seed,
+                "url": page.url,
+                "compact_snapshot": traj.final_snapshot,
+                "world": world_final,
+                "verifier_result": traj.verifier_result,
+            }, indent=2, default=str),
+            encoding="utf-8",
+        )
+        seed_fin_png = shots_dir / "seed_final.png"
+        await page.screenshot(path=str(seed_fin_png), full_page=False)
+        traj.seed_final_json = str(seed_fin_json)
+        traj.seed_final_screenshot = str(seed_fin_png)
+    except Exception as e:
+        print(f"[runner] WARNING: seed_final capture failed: {e}")
+
     # Two-field sellable label (Phase 4): vein (canonical tagger) +
     # specific_failure (fired forbidden milestone). Runs for success AND
     # failure — vein is a task property; specific_failure is None unless a
@@ -373,14 +432,15 @@ def main() -> None:
     ap.add_argument(
         "--agent",
         choices=["oracle", "llm", "pixel", "pixel_coord", "openai",
-                 "openai_pixel", "openai_coord", "qwen"],
+                 "openai_pixel", "openai_coord", "qwen", "gemini"],
         required=True,
         help="oracle = hand-coded reference; llm = Anthropic DOM/JSON agent; "
              "openai = GPT DOM/JSON agent (default gpt-4o-mini); "
              "pixel = Anthropic SoM screenshots; "
              "pixel_coord = Anthropic RAW-coordinate screenshots (no SoM); "
              "openai_pixel = GPT SoM screenshots + multi-tab (gpt-4o-mini); "
-             "openai_coord = GPT RAW-coordinate (no SoM) + multi-tab",
+             "openai_coord = GPT RAW-coordinate (no SoM) + multi-tab; "
+             "gemini = Gemini 3.1 Pro SoM + multi-tab (OpenAI-compat)",
     )
     ap.add_argument("--tasks", default="all")
     ap.add_argument("--seeds", default="0")
