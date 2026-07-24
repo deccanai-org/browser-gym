@@ -190,10 +190,13 @@
             </div>
             <div>
               <label class="text-xs font-semibold text-slate-600 uppercase tracking-wide">Pay with</label>
+              {% with cue_kind="subscription" %}{% include "_payment_as_of.html" %}{% endwith %}
               <select name="payment_id" data-test-id="select-sub-payment"
                       class="border border-slate-300 rounded px-2 py-1.5 text-sm w-full mt-1">
                 {% for pm in user.payment_methods.values() %}
-                  <option value="{{ pm.id }}" {% if pm.is_default %}selected{% endif %}>{{ pm.label }}</option>
+                  <option value="{{ pm.id }}" {% if pm.is_default %}selected{% endif %}>
+                    {{ pm.label }}{% if pm.expires %} — exp {{ pm.expires }}{% endif %}
+                  </option>
                 {% endfor %}
               </select>
             </div>

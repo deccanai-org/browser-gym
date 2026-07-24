@@ -1,0 +1,14 @@
+{# Gym wall-clock for payment validity. Sourced from calendar TODAY / SEED_DATE
+   (2026-05-21), never host datetime. Visible beside exp MM/YY so agents can
+   judge card expiry without leaving the shop/checkout path.
+   See docs/history/audits/EXPIRED_CARD_REFERENCE_DATE_FAIRNESS_2026-07-24.md #}
+<p data-test-id="lbl-payment-as-of"
+   class="text-sm text-slate-600 mb-3">
+  {% if cue_kind == "subscription" %}
+    Subscription start date: {{ gym_today_long }} — select a payment method valid on the start date.
+  {% elif cue_kind == "account" %}
+    Processing as of {{ gym_today_long }} — card expiry is judged against this date.
+  {% else %}
+    Checkout date: {{ gym_today_long }} — choose a payment method valid on this date.
+  {% endif %}
+</p>

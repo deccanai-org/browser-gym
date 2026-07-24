@@ -2,6 +2,7 @@
 {% block title %}Payment methods{% endblock %}
 {% block content %}
 <h2 class="text-xl font-bold mb-3">My payment methods</h2>
+{% with cue_kind="account" %}{% include "_payment_as_of.html" %}{% endwith %}
 
 <div class="grid grid-cols-2 gap-4">
   <div data-test-id="list-payments" class="space-y-3">

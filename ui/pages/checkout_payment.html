@@ -5,6 +5,7 @@
 
 <div class="bg-white rounded-lg shadow p-6">
   <h2 class="text-xl font-bold mb-3">2. Select payment method</h2>
+  {% with cue_kind="checkout" %}{% include "_payment_as_of.html" %}{% endwith %}
   <div data-test-id="list-payments" class="space-y-3">
     {% for pm in user.payment_methods.values() %}
       <div data-test-id="payment-row-{{ pm.id }}"

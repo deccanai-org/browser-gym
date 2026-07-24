@@ -85,12 +85,13 @@
       {% for pm in user.payment_methods.values() %}{% if loop.first %}{% set default_payment = pm %}{% endif %}{% endfor %}
     {% endif %}
 
+    {% with cue_kind="checkout" %}{% include "_payment_as_of.html" %}{% endwith %}
     <label class="block text-sm mb-1">Pay with</label>
     <select name="payment_id" data-test-id="select-final-payment"
             class="border rounded px-2 py-1 mb-3">
       {% for pm in user.payment_methods.values() %}
         <option value="{{ pm.id }}" {% if default_payment and pm.id == default_payment.id %}selected{% endif %}>
-          {{ pm.label }}
+          {{ pm.label }}{% if pm.expires %} — exp {{ pm.expires }}{% endif %}
         </option>
       {% endfor %}
     </select>

@@ -233,6 +233,12 @@ def _world() -> WorldState:
 # Common context for templates
 # --------------------------------------------------------------------------- #
 
+# Gym wall-clock for payment-validity cues (must match calendar TODAY / SEED_DATE).
+# Never use host datetime here — agents judge card exp MM/YY against this date.
+_GYM_TODAY = "2026-05-21"
+_GYM_TODAY_LONG = "May 21, 2026"
+
+
 def _ctx(request: Request, **extra: Any) -> dict[str, Any]:
     s = _state()
     user = None
@@ -257,6 +263,9 @@ def _ctx(request: Request, **extra: Any) -> dict[str, Any]:
         "active_app": "shop",
         "mail_unread": mail_unread,
         "ui_variant": SESSION.ui_variant,
+        # Shared shop payment-validity reference date (checkout + account + subscribe).
+        "gym_today": _GYM_TODAY,
+        "gym_today_long": _GYM_TODAY_LONG,
         **extra,
     }
 
