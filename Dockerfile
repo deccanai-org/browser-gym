@@ -20,6 +20,11 @@ COPY server ./server
 COPY harness ./harness
 COPY agents ./agents
 COPY eval ./eval
+# The server mounts ui/static at import time and renders ui/pages, so a build
+# without them cannot start at all — it fails in server/main.py before uvicorn
+# ever binds. Verified: the image built without this exited 1 with
+# "Directory '/app/ui/static' does not exist".
+COPY ui ./ui
 RUN pip install --upgrade pip && pip install . \
     && python -m playwright install chromium
 

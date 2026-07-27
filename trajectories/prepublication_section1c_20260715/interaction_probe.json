@@ -84,9 +84,9 @@
         "name": "Add to cart"
       },
       "click_latencies_ms": [
-        66,
-        40,
-        54
+        72,
+        87,
+        61
       ],
       "cart_rendered_quantity": 3,
       "order_id": "VM-2201",
@@ -176,9 +176,9 @@
         "name": "Add to cart"
       },
       "click_latencies_ms": [
-        43,
-        51,
-        45
+        59,
+        54,
+        53
       ],
       "cart_rendered_quantity": 3,
       "order_id": "VM-2201",
@@ -268,9 +268,9 @@
         "name": "Add to cart"
       },
       "click_latencies_ms": [
-        41,
-        66,
-        39
+        55,
+        59,
+        54
       ],
       "cart_rendered_quantity": 3,
       "order_id": "VM-2201",
@@ -360,9 +360,9 @@
         "name": "Add to cart"
       },
       "click_latencies_ms": [
-        42,
-        48,
-        48
+        54,
+        55,
+        62
       ],
       "cart_rendered_quantity": 3,
       "order_id": "VM-2201",
@@ -452,9 +452,9 @@
         "name": "Add to cart"
       },
       "click_latencies_ms": [
-        46,
-        50,
-        50
+        54,
+        57,
+        55
       ],
       "cart_rendered_quantity": 3,
       "order_id": "VM-2201",
@@ -544,9 +544,9 @@
         "name": "Add to cart"
       },
       "click_latencies_ms": [
-        45,
-        49,
-        47
+        55,
+        56,
+        54
       ],
       "cart_rendered_quantity": 3,
       "order_id": "VM-2201",
@@ -636,9 +636,9 @@
         "name": "Add to cart"
       },
       "click_latencies_ms": [
-        43,
-        49,
-        48
+        58,
+        55,
+        56
       ],
       "cart_rendered_quantity": 3,
       "order_id": "VM-2201",
@@ -728,9 +728,9 @@
         "name": "Add to cart"
       },
       "click_latencies_ms": [
-        43,
-        49,
-        39
+        55,
+        55,
+        56
       ],
       "cart_rendered_quantity": 3,
       "order_id": "VM-2201",
@@ -820,9 +820,9 @@
         "name": "Add to cart"
       },
       "click_latencies_ms": [
-        41,
-        49,
-        48
+        63,
+        56,
+        55
       ],
       "cart_rendered_quantity": 3,
       "order_id": "VM-2201",
@@ -912,9 +912,9 @@
         "name": "Add to cart"
       },
       "click_latencies_ms": [
-        44,
-        44,
-        47
+        56,
+        55,
+        56
       ],
       "cart_rendered_quantity": 3,
       "order_id": "VM-2201",
@@ -1004,9 +1004,9 @@
         "name": "Add to cart"
       },
       "click_latencies_ms": [
-        55,
-        47,
-        48
+        57,
+        54,
+        61
       ],
       "cart_rendered_quantity": 3,
       "order_id": "VM-2201",
@@ -1096,9 +1096,9 @@
         "name": "Add to cart"
       },
       "click_latencies_ms": [
-        43,
-        49,
-        46
+        57,
+        56,
+        55
       ],
       "cart_rendered_quantity": 3,
       "order_id": "VM-2201",
