@@ -116,6 +116,31 @@ against **both** the live factory **and** a frozen golden:
 The flag stays **off** until every level is green for all 312 tasks. Factories are
 **never deleted** — generator and fallback.
 
+### Anti-drift guards (standing CI, from review)
+
+Two things that are true *today* but silently rot the first time someone edits
+either side — so they are permanent tests, not one-time verifications:
+
+- **Cross-repo hash parity.** The gym's `hash_world`/`_normalize` in `_equiv.py` is
+  copied verbatim from the annotator's `checkpoints.py`. A test hashes a shared
+  fixture with both and asserts equality, so "copied verbatim" cannot quietly
+  diverge when someone "improves" one side.
+- **`build_wrapped` == real reset.** A test resets the live server and asserts
+  `build_wrapped(t, s)` equals `SESSION.world` (asdict + to_json hash) for a
+  sample of tasks. If `_reset_inline` gains a line and `build_wrapped` doesn't, the
+  goldens would silently start lying — this catches it.
+
+### CI cost tiering (from review)
+
+The gate is not one monolith. Split by cost so the cheap proof runs on every PR
+and only the expensive cross-check waits for nightly/release:
+
+- **Per-PR (fast):** Level-2 asdict + Level-1 hash over 312 × SEED_SET — pure
+  in-memory factory builds + hashing, no browser (seconds–minutes).
+- **Nightly / release (heavy):** the Level-3 render check and the all-task oracle
+  per-step cross-check (312 browser-driven episodes ×2, code vs sql) — minutes to
+  tens of minutes. Blocks the cutover, not every commit.
+
 ## Phased plan (additive, non-destructive)
 
 | Phase | Goal | Exit criterion |

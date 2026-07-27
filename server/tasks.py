@@ -1771,9 +1771,7 @@ def task_b2_track_and_return(seed: int) -> GymState:
         carrier="UPS",
         item_ids=[i.id for i in items],
         status="delivered",
-        estimated_delivery=(
-            datetime.now(timezone.utc) - timedelta(days=2)
-        ).date().isoformat(),
+        estimated_delivery="2026-05-19",  # frozen: SEED_DATE(2026-05-21) - 2d (was datetime.now, non-reproducible across days)
         events=[
             ShipmentEvent("2024-01-01T10:00:00Z", "label_created",
                           "Distribution Center", "Shipping label created"),
@@ -1911,9 +1909,7 @@ def task_b4_subscription_juggle(seed: int) -> GymState:
         carrier="UPS",
         item_ids=[i.id for i in items],
         status="delivered",
-        estimated_delivery=(
-            datetime.now(timezone.utc) - timedelta(days=5)
-        ).date().isoformat(),
+        estimated_delivery="2026-05-16",  # frozen: SEED_DATE(2026-05-21) - 5d (was datetime.now, non-reproducible across days)
         events=[
             ShipmentEvent("2026-05-01T10:00:00Z", "label_created",
                           "Distribution Center", "Shipping label created"),
@@ -2746,8 +2742,7 @@ def task_m14_return_then_refund(seed: int) -> "WorldState":
     sh = Shipment(
         id="sh_ret1", tracking_number="1Z999AA10000000001", carrier="UPS",
         item_ids=[i.id for i in items], status="delivered",
-        estimated_delivery=(
-            datetime.now(timezone.utc) - timedelta(days=2)).date().isoformat(),
+        estimated_delivery="2026-05-19",  # frozen: SEED_DATE(2026-05-21) - 2d (was datetime.now, non-reproducible across days)
         events=[
             ShipmentEvent("2024-02-01T10:00:00Z", "label_created",
                           "Distribution Center", "Shipping label created"),
@@ -3371,8 +3366,7 @@ def task_m30_moving_refund(seed: int) -> "WorldState":
     sh = Shipment(
         id="sh_9001", tracking_number="1Z999AA20000000002", carrier="UPS",
         item_ids=["ln_headphones"], status="delivered",
-        estimated_delivery=(
-            datetime.now(timezone.utc) - timedelta(days=2)).date().isoformat(),
+        estimated_delivery="2026-05-19",  # frozen: SEED_DATE(2026-05-21) - 2d (was datetime.now, non-reproducible across days)
         events=[
             ShipmentEvent("2024-02-01T10:00:00Z", "label_created",
                           "Distribution Center", "Shipping label created"),
