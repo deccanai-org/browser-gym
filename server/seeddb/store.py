@@ -1,102 +1,102 @@
-"""Phase 1 storage engine — shred a built world into rows, and back, losslessly.
+"""Storage engine — a content-addressed seed pool + per-task composition.
 
-The grain is one row per catalog/record ENTITY (a real per-type table you can
-query), plus a ``remainder`` blob of everything that is not one of those big
-collections (the scalar headers, the carts, the schedule, the event log, each
-sub-app's scalar fields). Reconstruction is, by construction, ``remainder`` with
-the collections re-inserted in ``pos`` order — so no field can be silently
-dropped: whatever is not lifted into a collection row stays in the remainder.
+This is Shravan's "store the shared seed data once, assemble it per task", made
+lossless and safe:
 
-Correctness is proven, not asserted: for every ``(task_id, seed)`` the world
-reconstructed from rows must hash-equal the golden captured in Phase 0, at BOTH
-the value level (``asdict_hash``) and the insertion-order level (``order_hash``).
+* ``seed_entity`` is the DEDUPLICATED pool — every DISTINCT seed entity (a
+  product, an email, an order) stored exactly once, keyed by the hash of its
+  content. The catalog that Phase 1a duplicated ~300x across tasks collapses to
+  one row per distinct value (measured: 43 MB -> ~2.7 MB).
+* ``seed_member`` is the per-(task, seed) COMPOSITION: for each collection, an
+  ordered list of (key -> pool entity). This is the "task overlay" — which
+  entities a task's world contains, in what order.
+* ``task`` holds the per-task REMAINDER: everything that is not one of those
+  collections (scalar headers, carts, schedule, event log, each sub-app's scalar
+  fields). It does not dedup and is not meant to — it is genuinely per task.
 
-Losslessness notes:
+Why content-addressing rather than a literal base+diff overlay: it gets the same
+de-duplication with none of the hazards a diff has. There is no "reorder the base
+rows" case (every membership carries its own ``pos``), no tombstone bookkeeping,
+and no trouble with an entity that varies in two ways at once by seed (a distinct
+value is simply a distinct pool row). Seed-invariant entities dedup automatically
+(same content -> same hash); A2's seed-varying price becomes a handful of pool
+rows; the calendar parity event is present in odd-seed compositions and absent
+from even ones. All of it falls out of "store distinct content once, reference it
+in order".
 
-* Each entity row stores the entity's COMPLETE ``asdict`` as ``data_json``; the
-  round-trip reads only ``data_json``, so JSON's type fidelity (bool stays bool,
-  None stays None) plus the shared ``_canonical`` pass (tuples->lists, integral
-  floats->ints, applied to golden and reconstruction alike) means the compare
-  cannot false-diff on serialization.
-* Hidden dataclass fields (mail ``armed_*`` / ``_next`` / ``account_name``, food
-  ``defer_receipt_steps``, market ``store_name`` …) ride along in ``asdict``
-  automatically — they are fields — so they are captured for free. ``mint_counts``
-  is a ``@property``, not a field, so ``asdict`` excludes it for free.
+Reconstruction is exact by construction — remainder + each collection's members
+resolved through the pool in ``pos`` order — so the round-trip gate that graded
+Phase 1a grades this unchanged: every (task, seed) must hash-equal its Phase-0
+golden at value AND insertion-order level.
 
-Scope of Phase 1a: rows are stored per ``(task_id, seed)`` over the captured
-SEED_SET. Base/overlay de-duplication (store the shared catalog once) and live
-``seed_rule`` recomputation for out-of-set seeds are the Phase 1b / Phase 2
-refinements — they only shrink the file and widen seed coverage; they do not
-change this reconstruction contract.
+Scope: rows cover the captured SEED_SET. An out-of-set seed is not in the pool;
+the Phase-2 hydrator falls back to the factory for those (the factories remain
+the source of truth and fallback), or a later step precomputes more seeds.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import sqlite3
 from dataclasses import asdict
-from typing import Any
 
 from server.apps.world import WorldState
 from server.seeddb import _equiv
 from server.tasks import make_task
 
-# Every dict[str, <entity>] collection in the world that becomes its own table.
-# (world path, table name, folder-discriminator column or None). Order matters
-# only for readability. Lists (world.events), singletons (carts, schedule) and all
-# scalar fields are NOT here — they stay in the task remainder, which is what makes
-# the split exhaustive.
-COLLECTIONS: list[tuple[str, str, str, str | None]] = [
-    ("shop", "products", "shop_product", None),
-    ("shop", "promotions", "shop_promotion", None),
-    ("shop", "users", "shop_user", None),
-    ("shop", "orders", "shop_order", None),
-    ("shop", "returns", "shop_return", None),
-    ("shop", "subscriptions", "shop_subscription", None),
-    ("mail", "inbox", "mail_message", "inbox"),
-    ("mail", "sent", "mail_message", "sent"),
-    ("mail", "drafts", "mail_message", "drafts"),
-    ("food", "restaurants", "food_restaurant", None),
-    ("food", "orders", "food_order", None),
-    ("calendar", "events", "calendar_event", None),
-    ("market", "products", "market_product", None),
-    ("market", "coupons", "market_coupon", None),
-    ("market", "orders", "market_order", None),
+# Every dict[str, <entity>] collection that is lifted out of the remainder into the
+# content-addressed pool. (app, field, collection_id, entity_type). collection_id is
+# the reconstruction path; entity_type makes the pool queryable
+# (SELECT * FROM seed_entity WHERE entity_type='Product').
+COLLECTIONS: list[tuple[str, str, str, str]] = [
+    ("shop", "products", "shop.products", "Product"),
+    ("shop", "promotions", "shop.promotions", "Promotion"),
+    ("shop", "users", "shop.users", "User"),
+    ("shop", "orders", "shop.orders", "Order"),
+    ("shop", "returns", "shop.returns", "Return"),
+    ("shop", "subscriptions", "shop.subscriptions", "Subscription"),
+    ("mail", "inbox", "mail.inbox", "Email"),
+    ("mail", "sent", "mail.sent", "Email"),
+    ("mail", "drafts", "mail.drafts", "Email"),
+    ("food", "restaurants", "food.restaurants", "Restaurant"),
+    ("food", "orders", "food.orders", "FoodOrder"),
+    ("calendar", "events", "calendar.events", "CalendarEvent"),
+    ("market", "products", "market.products", "MarketProduct"),
+    ("market", "coupons", "market.coupons", "MarketCoupon"),
+    ("market", "orders", "market.orders", "MarketOrder"),
 ]
 
-def _tables() -> list[str]:
-    seen: list[str] = []
-    for _app, _field, table, _folder in COLLECTIONS:
-        if table not in seen:
-            seen.append(table)
-    return seen
-
+_BY_ID = {c[2]: c for c in COLLECTIONS}
 
 DDL = [
     """CREATE TABLE fixture_version(
         version TEXT PRIMARY KEY, git_sha TEXT, created_at TEXT, notes TEXT)""",
-    # One row per (task, seed): world_kind (what make_task returns, so Phase-2
-    # hydrate knows whether to hand back a bare GymState or a WorldState) plus the
-    # remainder — the whole world MINUS the collection tables below.
+    # The per-(task, seed) remainder: the whole world MINUS the collections below.
     """CREATE TABLE task(
         task_id TEXT NOT NULL, seed INTEGER NOT NULL,
         world_kind TEXT NOT NULL,        -- 'shop' (bare GymState) | 'world' (WorldState)
-        remainder_json TEXT NOT NULL,    -- everything not lifted into a collection row
+        remainder_json TEXT NOT NULL,
         PRIMARY KEY(task_id, seed))""",
+    # The deduplicated pool: each distinct seed entity once, keyed by content hash.
+    # data_json = the entity's complete asdict and the round-trip's source of truth.
+    """CREATE TABLE seed_entity(
+        content_hash TEXT PRIMARY KEY,   -- sha256(data_json)
+        entity_type TEXT NOT NULL,       -- Product | Email | Order | ... (queryable)
+        data_json TEXT NOT NULL)""",
+    # The per-(task, seed) composition: ordered references into the pool. No
+    # primary key — the source dict already guarantees unique keys, so a composite
+    # PK would only add a large redundant index; the lookup index below is all
+    # reconstruction needs.
+    """CREATE TABLE seed_member(
+        task_id TEXT NOT NULL, seed INTEGER NOT NULL,
+        collection TEXT NOT NULL,        -- 'shop.products', 'mail.inbox', ...
+        key TEXT NOT NULL,               -- the store dict key
+        pos INTEGER NOT NULL,            -- ORDER BY pos rebuilds dict insertion order
+        content_hash TEXT NOT NULL)""",
+    "CREATE INDEX idx_member_lookup ON seed_member(task_id, seed, collection, pos)",
+    "CREATE INDEX idx_entity_type ON seed_entity(entity_type)",
 ]
-for _t in _tables():
-    _folder_col = ", folder TEXT" if _t == "mail_message" else ""
-    # key = the store dict key (may differ from an id field); pos = insertion
-    # ordinal so ORDER BY pos rebuilds dict order; data_json = the entity's
-    # complete asdict and the round-trip's source of truth.
-    DDL.append(
-        f"""CREATE TABLE {_t}(
-        task_id TEXT NOT NULL, seed INTEGER NOT NULL{_folder_col},
-        key TEXT NOT NULL,
-        pos INTEGER NOT NULL,
-        data_json TEXT NOT NULL)"""
-    )
-    DDL.append(f"CREATE INDEX idx_{_t}_task ON {_t}(task_id, seed)")
 
 
 def create_db(conn: sqlite3.Connection) -> None:
@@ -110,62 +110,60 @@ def world_kind(task_id: str, seed: int) -> str:
 
 
 def extract(task_id: str, seed: int) -> tuple[dict, list[dict]]:
-    """Build the world and shred it into (task_row, entity_rows).
+    """Build the world and shred it into (task_row, member_rows).
 
-    The remainder is ``asdict(world)`` with each collection emptied in place, so
-    remainder + collections is exhaustive by construction.
+    Each member row carries the entity's data_json inline; write() is what pools
+    it by content hash. The remainder is asdict(world) with each collection
+    emptied in place, so remainder + collections is exhaustive by construction.
     """
     world = _equiv.build_wrapped(task_id, seed)
     graph = asdict(world)
 
-    entity_rows: list[dict] = []
-    for app, field, table, folder in COLLECTIONS:
+    members: list[dict] = []
+    for app, field, collection_id, entity_type in COLLECTIONS:
         app_state = graph.get(app)
         if not isinstance(app_state, dict):
-            continue  # a sub-app that is absent (build_wrapped fills all, so rare)
+            continue
         store = app_state.get(field)
         if not isinstance(store, dict):
             continue
         for pos, (key, entity) in enumerate(store.items()):
-            row = {
-                "task_id": task_id, "seed": seed, "key": key, "pos": pos,
-                "table": table, "data_json": json.dumps(entity, default=str),
-            }
-            if folder is not None:
-                row["folder"] = folder
-            entity_rows.append(row)
-        # Empty the collection in the remainder: its contents now live in rows.
-        app_state[field] = {}
+            data_json = json.dumps(entity, default=str)
+            members.append({
+                "task_id": task_id, "seed": seed, "collection": collection_id,
+                "key": key, "pos": pos, "entity_type": entity_type,
+                "content_hash": hashlib.sha256(data_json.encode()).hexdigest(),
+                "data_json": data_json,
+            })
+        app_state[field] = {}   # contents now live in members
 
     task_row = {
         "task_id": task_id, "seed": seed,
         "world_kind": world_kind(task_id, seed),
         "remainder_json": json.dumps(graph, default=str),
     }
-    return task_row, entity_rows
+    return task_row, members
 
 
-def write(conn: sqlite3.Connection, task_row: dict, entity_rows: list[dict]) -> None:
+def write(conn: sqlite3.Connection, task_row: dict, members: list[dict]) -> None:
     conn.execute(
         "INSERT INTO task(task_id, seed, world_kind, remainder_json) VALUES(?,?,?,?)",
         (task_row["task_id"], task_row["seed"], task_row["world_kind"], task_row["remainder_json"]),
     )
-    for r in entity_rows:
-        if r["table"] == "mail_message":
-            conn.execute(
-                "INSERT INTO mail_message(task_id, seed, folder, key, pos, data_json) VALUES(?,?,?,?,?,?)",
-                (r["task_id"], r["seed"], r["folder"], r["key"], r["pos"], r["data_json"]),
-            )
-        else:
-            conn.execute(
-                f"INSERT INTO {r['table']}(task_id, seed, key, pos, data_json) VALUES(?,?,?,?,?)",
-                (r["task_id"], r["seed"], r["key"], r["pos"], r["data_json"]),
-            )
+    for m in members:
+        conn.execute(
+            "INSERT OR IGNORE INTO seed_entity(content_hash, entity_type, data_json) VALUES(?,?,?)",
+            (m["content_hash"], m["entity_type"], m["data_json"]),
+        )
+        conn.execute(
+            "INSERT INTO seed_member(task_id, seed, collection, key, pos, content_hash) VALUES(?,?,?,?,?,?)",
+            (m["task_id"], m["seed"], m["collection"], m["key"], m["pos"], m["content_hash"]),
+        )
 
 
 def reconstruct(conn: sqlite3.Connection, task_id: str, seed: int) -> dict:
-    """Rebuild the world's asdict from rows: remainder with collections re-inserted
-    in pos order. The inverse of extract()."""
+    """Rebuild the world's asdict: remainder with each collection's members
+    resolved through the pool, in pos order. The inverse of extract()."""
     row = conn.execute(
         "SELECT remainder_json FROM task WHERE task_id=? AND seed=?", (task_id, seed)
     ).fetchone()
@@ -173,22 +171,16 @@ def reconstruct(conn: sqlite3.Connection, task_id: str, seed: int) -> dict:
         raise KeyError(f"no seed rows for {task_id} seed={seed}")
     graph = json.loads(row[0])
 
-    for app, field, table, folder in COLLECTIONS:
+    for app, field, collection_id, _type in COLLECTIONS:
         app_state = graph.get(app)
         if not isinstance(app_state, dict) or field not in app_state:
             continue
-        if table == "mail_message":
-            cur = conn.execute(
-                "SELECT key, data_json FROM mail_message "
-                "WHERE task_id=? AND seed=? AND folder=? ORDER BY pos",
-                (task_id, seed, folder),
-            )
-        else:
-            cur = conn.execute(
-                f"SELECT key, data_json FROM {table} "
-                "WHERE task_id=? AND seed=? ORDER BY pos",
-                (task_id, seed),
-            )
+        cur = conn.execute(
+            "SELECT m.key, e.data_json FROM seed_member m "
+            "JOIN seed_entity e ON e.content_hash = m.content_hash "
+            "WHERE m.task_id=? AND m.seed=? AND m.collection=? ORDER BY m.pos",
+            (task_id, seed, collection_id),
+        )
         app_state[field] = {key: json.loads(data) for key, data in cur.fetchall()}
     return graph
 
@@ -197,10 +189,8 @@ def roundtrip_ok(conn: sqlite3.Connection, task_id: str, seed: int, golden: dict
     """Reconstruct and compare to the Phase-0 golden at value AND order level."""
     rebuilt = reconstruct(conn, task_id, seed)
     canon = _equiv._canonical(rebuilt)
-    value_hash = _equiv._hash(canon, ordered=False)
-    order_hash = _equiv._hash(canon, ordered=True)
-    if value_hash != golden["asdict_hash"]:
+    if _equiv._hash(canon, ordered=False) != golden["asdict_hash"]:
         return False, "asdict/value mismatch"
-    if order_hash != golden["order_hash"]:
+    if _equiv._hash(canon, ordered=True) != golden["order_hash"]:
         return False, "insertion-order mismatch"
     return True, ""

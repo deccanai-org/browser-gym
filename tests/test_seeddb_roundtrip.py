@@ -60,14 +60,34 @@ def test_fixture_version_row_present(db):
 
 
 def test_a_queryable_relational_shape(db):
-    """It is a real SQL db, not an opaque blob: per-entity tables you can query."""
+    """It is a real SQL db, not an opaque blob: a queryable entity pool + an
+    ordered per-task composition."""
     tables = {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-    assert {"shop_product", "shop_order", "mail_message", "market_product", "task"} <= tables
-    # json_extract works over the entity payload
+    assert {"seed_entity", "seed_member", "task"} <= tables
+    # json_extract works over the pooled entity payload, filtered by entity_type
     names = [r[0] for r in db.execute(
-        "SELECT json_extract(data_json,'$.name') FROM shop_product "
-        "WHERE task_id='A1/buy_wireless_mouse' AND seed=0 ORDER BY pos LIMIT 3")]
+        "SELECT DISTINCT json_extract(data_json,'$.name') FROM seed_entity "
+        "WHERE entity_type='Product' ORDER BY 1 LIMIT 3")]
     assert names and all(names)
+    # a task's catalog resolves through the composition, in order
+    ordered = [r[0] for r in db.execute(
+        "SELECT json_extract(e.data_json,'$.name') FROM seed_member m "
+        "JOIN seed_entity e ON e.content_hash=m.content_hash "
+        "WHERE m.task_id='A1/buy_wireless_mouse' AND m.seed=0 AND m.collection='shop.products' "
+        "ORDER BY m.pos LIMIT 3")]
+    assert ordered and all(ordered)
+
+
+def test_deduplicated_pool_is_far_smaller_than_the_references(db):
+    """The Phase-1b win: the shared seed data is stored once. Distinct pooled
+    entities must be a tiny fraction of the membership references."""
+    pool = db.execute("SELECT COUNT(*) FROM seed_entity").fetchone()[0]
+    refs = db.execute("SELECT COUNT(*) FROM seed_member").fetchone()[0]
+    assert pool < refs / 10, f"expected heavy dedup; pool={pool} refs={refs}"
+    prods = db.execute("SELECT COUNT(*) FROM seed_entity WHERE entity_type='Product'").fetchone()[0]
+    prod_refs = db.execute(
+        "SELECT COUNT(*) FROM seed_member WHERE collection='shop.products'").fetchone()[0]
+    assert prods < prod_refs / 20, f"catalog barely deduped: {prods} distinct vs {prod_refs} refs"
 
 
 def test_order_hash_actually_guards_insertion_order(db):

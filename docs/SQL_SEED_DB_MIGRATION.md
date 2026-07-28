@@ -147,7 +147,7 @@ and only the expensive cross-check waits for nightly/release:
 |---|---|---|
 | **0 — Stationarise + freeze goldens** | Make `make_task` byte-stationary across calendar days; capture the reference the migration is graded against. Freeze the 4 wall-clock factories to literals; build `server/seeddb/_equiv.py` (`hash_world`, `asdict_canonical`, `build_wrapped`); write `tools/gen_goldens.py`. **No SQL yet.** | `gen_goldens.py` produces a byte-identical `seed_hashes.json` on two runs; full suite green; 4 frozen tasks' date tests updated |
 | **1a — Schema + extractor** ✅ | Materialise `seed.db` by mechanically shredding the (stationary) factory output into rows — never hand-authored | **Done.** All 1560 cells reconstruct byte-equivalent (value + order); reproducible content hash; 6 CI tests |
-| **1b — Base/overlay + seed_rule** | Store the shared catalog once (`scope='base'`) with per-task overlays; compute seed-dependent values live for out-of-set seeds | File shrinks from ~56 MB to a few MB; an out-of-set seed reconstructs; same round-trip gate stays green |
+| **1b — De-duplicate the shared seed data** ✅ | Store each distinct seed entity once in a content-addressed pool, composed per task | **Done.** Entity data 43 MB → 0.37 MB (223 distinct products, not 66 k rows); round-trip gate green for all 1560 |
 | **2 — Hydrator + gate (flag OFF)** | Prove `hydrate_world` reproduces byte-equivalent worlds at all three levels, server still on factories | `test_seeddb_equivalence.py` green for all 312 × (SEED_SET + out-of-set) at Levels 1–3; wired CI-blocking |
 | **3 — Live cutover (behind flag)** | Gym serves from `seed.db`; annotator observes zero difference | Live smoke (all 312 reset→world==golden) green; all-task oracle per-step cross-check green; annotator e2e green; then `SEEDDB_MODE` defaulted ON |
 | **4 — Adjacent determinism** | Close the 2 runtime wall-clock leaks (`mutations.py:521, :651`) the migration surfaced but doesn't own | A checkout- and a subscription-bearing trajectory replay byte-identically across two calendar days; `grep datetime.now server/` → 0 code hits |
@@ -182,8 +182,27 @@ not a collection row stays in the remainder. Hidden fields (`armed_*`, `_next`,
 json_extract(data_json,'$.name') FROM shop_product …` works — and field-level
 column promotion is a mechanical refinement on top.
 
-The `.sqlite` is a **reproducible build artifact, not committed** (it rebuilds
-from the factories in ~4 s via `python -m server.seeddb.build_seed_db`); the
-factories remain the source of truth. Phase 1a stores rows per `(task, seed)` for
-the captured SEED_SET — the base/overlay de-dup and live `seed_rule` (Phase 1b)
-shrink the file and cover arbitrary seeds without changing this contract.
+**Phase 1b** de-duplicated it into Shravan's "store the shared seed data once,
+compose per task" shape — realised as **content-addressing**, which reaches the
+same goal with none of a base-plus-diff overlay's hazards (no reorder-of-base,
+no tombstones, no dual-seed-dependence special case):
+
+- `seed_entity` — the pool: every DISTINCT entity once, keyed by content hash.
+  The catalog that was duplicated ~300× collapses to one row per distinct value
+  (**43 MB → 0.37 MB**, 223 distinct products). Queryable by `entity_type`.
+- `seed_member` — per `(task, seed)` the ordered composition: which pooled
+  entities a collection contains, in what `pos` order (the "task overlay").
+- `task` — the per-task remainder (unchanged), which does not dedup by nature.
+
+Seed-invariant entities dedup automatically (same content → same hash); A2's
+seed-varying price is just a few pool rows; the calendar-parity event is present
+in odd-seed compositions and absent from even. Reconstruction is exact —
+remainder + members resolved through the pool in `pos` order — so the same
+round-trip gate grades it unchanged.
+
+The `.sqlite` is a **reproducible build artifact, not committed** (rebuilds in
+~5 s via `python -m server.seeddb.build_seed_db`); factories stay the source of
+truth. Two residuals, both non-blocking: the file is ~24 MB because the 99 k
+membership *references* are not themselves deduped (a further composition-level
+dedup would shrink it; the entity data itself is 2.7 MB), and an out-of-set seed
+is not in the pool — the Phase-2 hydrator falls back to the factory for those.
