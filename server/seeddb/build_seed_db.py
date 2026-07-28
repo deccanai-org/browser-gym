@@ -22,8 +22,8 @@ from server.seeddb import store  # noqa: E402
 from server.tasks import TASKS  # noqa: E402
 from tools.gen_goldens import GOLDEN_PATH, SEED_SET  # noqa: E402
 
-FIXTURE_VERSION = "v1"
-DB_PATH = pathlib.Path(__file__).resolve().parent.parent.parent / "fixtures" / "seed.db.v1.sqlite"
+# Re-exported from store so existing references (tests) keep working.
+from server.seeddb.store import DB_PATH, FIXTURE_VERSION  # noqa: E402,F401
 
 
 def build(conn: sqlite3.Connection, golden: dict, *, verify: bool = False) -> tuple[int, list[str]]:

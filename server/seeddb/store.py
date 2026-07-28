@@ -38,12 +38,18 @@ from __future__ import annotations
 
 import hashlib
 import json
+import pathlib
 import sqlite3
 from dataclasses import asdict
 
 from server.apps.world import WorldState
 from server.seeddb import _equiv
 from server.tasks import make_task
+
+# The built seed database. Defined here (not in the CLI builder) so the runtime
+# seam can import it without pulling in the goldens/build tooling.
+FIXTURE_VERSION = "v1"
+DB_PATH = pathlib.Path(__file__).resolve().parent.parent.parent / "fixtures" / "seed.db.v1.sqlite"
 
 # Every dict[str, <entity>] collection that is lifted out of the remainder into the
 # content-addressed pool. (app, field, collection_id, entity_type). collection_id is

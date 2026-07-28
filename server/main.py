@@ -194,7 +194,11 @@ def _state() -> GymState:
 
 
 def _reset_inline(task_id: str, seed: int, ui: str = "normal") -> None:
-    built = make_task(task_id, seed)
+    # The seed baseline comes from seed.db when SEEDDB_MODE is on and the pool
+    # covers this (task, seed); otherwise from the factory (the default, and the
+    # fallback). Imported lazily so the seed-db layer never loads at import time.
+    from server.seeddb.runtime import seed_source
+    built = seed_source(task_id, seed)
     # Cross-app (category M) factories return a fully-built WorldState;
     # single-app factories return a GymState we wrap with default stores.
     if isinstance(built, WorldState):
