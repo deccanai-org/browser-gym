@@ -146,7 +146,8 @@ and only the expensive cross-check waits for nightly/release:
 | Phase | Goal | Exit criterion |
 |---|---|---|
 | **0 — Stationarise + freeze goldens** | Make `make_task` byte-stationary across calendar days; capture the reference the migration is graded against. Freeze the 4 wall-clock factories to literals; build `server/seeddb/_equiv.py` (`hash_world`, `asdict_canonical`, `build_wrapped`); write `tools/gen_goldens.py`. **No SQL yet.** | `gen_goldens.py` produces a byte-identical `seed_hashes.json` on two runs; full suite green; 4 frozen tasks' date tests updated |
-| **1 — Schema + extractor** | Materialise `seed.db` by mechanically shredding the (now stationary) factory output into rows — never hand-authored | Reproducible `.sqlite` on two runs; round-trip test shows zero dropped fields; no-reorder-of-base invariant holds for all 312 |
+| **1a — Schema + extractor** ✅ | Materialise `seed.db` by mechanically shredding the (stationary) factory output into rows — never hand-authored | **Done.** All 1560 cells reconstruct byte-equivalent (value + order); reproducible content hash; 6 CI tests |
+| **1b — Base/overlay + seed_rule** | Store the shared catalog once (`scope='base'`) with per-task overlays; compute seed-dependent values live for out-of-set seeds | File shrinks from ~56 MB to a few MB; an out-of-set seed reconstructs; same round-trip gate stays green |
 | **2 — Hydrator + gate (flag OFF)** | Prove `hydrate_world` reproduces byte-equivalent worlds at all three levels, server still on factories | `test_seeddb_equivalence.py` green for all 312 × (SEED_SET + out-of-set) at Levels 1–3; wired CI-blocking |
 | **3 — Live cutover (behind flag)** | Gym serves from `seed.db`; annotator observes zero difference | Live smoke (all 312 reset→world==golden) green; all-task oracle per-step cross-check green; annotator e2e green; then `SEEDDB_MODE` defaulted ON |
 | **4 — Adjacent determinism** | Close the 2 runtime wall-clock leaks (`mutations.py:521, :651`) the migration surfaced but doesn't own | A checkout- and a subscription-bearing trajectory replay byte-identically across two calendar days; `grep datetime.now server/` → 0 code hits |
@@ -166,10 +167,23 @@ The full DDL is in `server/seeddb/schema.sql`. Conventions:
   recomputed by the unchanged `to_json` from hydrated rows.
 - `mint_counts` is **never** stored.
 
-Tables map 1:1 to the in-memory entities: `product` / `product_variant` /
-`review` / `promotion` / `app_user` / `address` / `payment_method` (catalog,
-`scope base|task_id`); `seed_shop_cart_item` / `seed_order` / `seed_order_item` /
-`seed_shipment` / `seed_shipment_event` / `seed_return` / `seed_subscription`
-(seeded-mutable, task-scoped); plus mail / food / calendar / market tables, the
-`task` header table, `fixture_version`, and `seed_rule` (the live-computed
-seed-dependence rules). See `schema.sql` for columns and keys.
+`schema.sql` is the fully field-normalised *target* (one column per field). What
+**Phase 1a actually ships** (`server/seeddb/store.py`) is a safer interim that
+reaches the same losslessness by a shorter path: one queryable table per entity
+type (`shop_product`, `shop_order`, `mail_message`, `market_product`, …) whose
+rows carry `(task_id, seed, key, pos, data_json)`, where `data_json` is the
+entity's **complete `asdict`** — plus a `task` row holding a `remainder_json` of
+everything not lifted into a collection (scalars, carts, schedule, event log,
+each sub-app's scalar fields). Reconstruction is `remainder` + collections
+re-inserted in `pos` order, so **nothing can be silently dropped**: whatever is
+not a collection row stays in the remainder. Hidden fields (`armed_*`, `_next`,
+`account_name`) ride along in `asdict` for free; `mint_counts` is a property so
+`asdict` excludes it for free. It is genuinely relational — `SELECT
+json_extract(data_json,'$.name') FROM shop_product …` works — and field-level
+column promotion is a mechanical refinement on top.
+
+The `.sqlite` is a **reproducible build artifact, not committed** (it rebuilds
+from the factories in ~4 s via `python -m server.seeddb.build_seed_db`); the
+factories remain the source of truth. Phase 1a stores rows per `(task, seed)` for
+the captured SEED_SET — the base/overlay de-dup and live `seed_rule` (Phase 1b)
+shrink the file and cover arbitrary seeds without changing this contract.

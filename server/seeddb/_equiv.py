@@ -101,9 +101,24 @@ def asdict_canonical(world: Any) -> dict:
     return _canonical(dataclasses.asdict(world))
 
 
-def asdict_hash(world: Any) -> str:
-    payload = json.dumps(asdict_canonical(world), sort_keys=True, separators=(",", ":"), default=str)
+def _hash(canonical: Any, *, ordered: bool) -> str:
+    """Hash an already-canonical structure. ``ordered=False`` sorts keys (an
+    order-INsensitive VALUE hash); ``ordered=True`` preserves key order (an
+    order-SENSITIVE hash that catches a reordered catalog). Both the world-object
+    and the reconstructed-dict paths hash through here, so a rebuild can be
+    compared to a golden byte-for-byte."""
+    payload = json.dumps(canonical, sort_keys=(not ordered), separators=(",", ":"), default=str)
     return hashlib.sha256(payload.encode()).hexdigest()
+
+
+def asdict_hash(world: Any) -> str:
+    return _hash(asdict_canonical(world), ordered=False)
+
+
+def order_hash(world: Any) -> str:
+    """Order-sensitive signature of the full graph — catches a reordered dced dict
+    the value hash is blind to."""
+    return _hash(asdict_canonical(world), ordered=True)
 
 
 # ------------------------------------------------ the reference world builder

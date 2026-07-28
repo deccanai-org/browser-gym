@@ -58,3 +58,7 @@ trajectories/oracle_phase0_refix/
 # Phase-5: auto-generated cascade run-reports (archived to docs/history/archive/cascade_reports.tgz; regenerable)
 trajectories/cascade_*/**/*.md
 trajectories/cascade_*/*.md
+
+# Generated seed database (reproducible: python -m server.seeddb.build_seed_db)
+fixtures/seed.db*.sqlite
+fixtures/seed.db*.sqlite.tmp
