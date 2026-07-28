@@ -1,0 +1,45 @@
+# Keep the Docker build context small. Both images (top-level Dockerfile and
+# live_browser/Dockerfile) build from the repo root, so this applies to both.
+# Only source dirs the Dockerfiles COPY are needed; everything below is noise.
+
+# VCS
+.git
+.gitignore
+
+# Secrets — must never enter the build context
+.env
+.env.*
+!.env.example
+
+# Virtualenvs
+.venv
+venv
+env
+
+# Generated / runtime output (large)
+videos
+screenshots
+trajectories
+fixtures/*.sqlite
+fixtures/seed.db*
+
+# Python caches
+**/__pycache__
+**/*.pyc
+**/*.pyo
+.pytest_cache
+.mypy_cache
+.ruff_cache
+
+# Not needed to build either image
+tests
+docs
+tools
+
+# Editor / OS cruft
+.DS_Store
+**/.DS_Store
+.idea
+.vscode
+*.log
+node_modules
