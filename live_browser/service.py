@@ -39,6 +39,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 VIEWPORT_W = int(os.getenv("LIVE_VIEWPORT_W", "1280"))
@@ -49,6 +50,18 @@ SECRET = os.getenv("LIVE_STREAM_SECRET", os.getenv("HARNESS_TOKEN", "dev-live-se
 ALLOWED_ORIGINS = [o.strip() for o in os.getenv("LIVE_ALLOWED_ORIGINS", "*").split(",") if o.strip()]
 
 app = FastAPI(title="live-browser")
+
+# The pane's REST calls (open/close/act/describe) come from the annotator's
+# frontend, a DIFFERENT origin in any hosted deploy. Without CORS the browser
+# blocks them and the pane is dead cross-origin — the websocket is unaffected (it
+# Origin-checks against ALLOWED_ORIGINS itself). Same allow-list for both; the
+# ticket, not the origin, is what actually authorises a session.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS or ["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # --------------------------------------------------------------------------- tickets
