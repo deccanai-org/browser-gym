@@ -1139,10 +1139,13 @@ async def _spawn_eval_run(agent: str, task_id: str, seed: int, extra_argv: list[
     import shutil
     import tempfile
     run_out = tempfile.mkdtemp(prefix=f"gymrun_{agent.replace('/', '_')}_")
+    # eval.run drives THIS live server, so it must dial whatever port uvicorn
+    # bound. Cloud Run / any $PORT != 8000 would otherwise get connection-refused.
+    server_port = os.environ.get("PORT", "8000")
     proc = await asyncio.create_subprocess_exec(
         sys.executable, "-m", "eval.run",
         "--agent", agent, "--tasks", task_id, "--seeds", str(seed),
-        "--server", "http://localhost:8000", "--out-traj", run_out, *headless, *extra_argv,
+        "--server", f"http://localhost:{server_port}", "--out-traj", run_out, *headless, *extra_argv,
         cwd=str(root), env=agent_env,
         stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.STDOUT,
     )
