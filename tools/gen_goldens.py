@@ -36,10 +36,8 @@ import sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
 from server.seeddb import _equiv  # noqa: E402
+from server.seeddb.store import GOLDEN_PATH, SEED_SET  # noqa: E402,F401 (single source)
 from server.tasks import TASKS  # noqa: E402
-
-SEED_SET = [0, 1, 2, 3, 42]
-GOLDEN_PATH = pathlib.Path(__file__).resolve().parent.parent / "tests" / "goldens" / "seed_hashes.json"
 
 
 def _order_hash(world: object) -> str:

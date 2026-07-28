@@ -20,13 +20,12 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent.parent))
 
 from server.seeddb import store  # noqa: E402
 from server.tasks import TASKS  # noqa: E402
-from tools.gen_goldens import GOLDEN_PATH, SEED_SET  # noqa: E402
+# All build constants live in store so this module (and an image build) need only
+# server/ — never tools/ or tests/. GOLDEN_PATH is read only when verifying.
+from server.seeddb.store import DB_PATH, FIXTURE_VERSION, GOLDEN_PATH, SEED_SET  # noqa: E402,F401
 
-# Re-exported from store so existing references (tests) keep working.
-from server.seeddb.store import DB_PATH, FIXTURE_VERSION  # noqa: E402,F401
 
-
-def build(conn: sqlite3.Connection, golden: dict, *, verify: bool = False) -> tuple[int, list[str]]:
+def build(conn: sqlite3.Connection, golden: dict | None = None, *, verify: bool = False) -> tuple[int, list[str]]:
     """Shred every (task, seed) into rows. Fast (~seconds): the per-cell
     round-trip verification is OFF by default here because it is enforced by
     tests/test_seeddb_roundtrip.py against the committed file. Pass verify=True to
@@ -73,8 +72,8 @@ def main() -> int:
                     help="also round-trip every cell against the golden inline (slower)")
     args = ap.parse_args()
 
-    golden = json.loads(GOLDEN_PATH.read_text(encoding="utf-8"))
     n_tasks = len(set(TASKS))
+    golden = json.loads(GOLDEN_PATH.read_text(encoding="utf-8")) if (args.check or args.verify) else None
 
     if args.check:
         # In-memory only; report the content fingerprint without writing a file.

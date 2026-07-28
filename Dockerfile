@@ -28,6 +28,18 @@ COPY ui ./ui
 RUN pip install --upgrade pip && pip install . \
     && python -m playwright install chromium
 
+# Bake the SQL seed database into the image, read-only at runtime. Generated FROM
+# the factories at build time (reproducible, ~24 MB) — needs only server/, no
+# tools/ or tests/. If the build cannot reproduce the worlds it exits non-zero and
+# the image build fails, so a broken seed db can never ship.
+RUN python -m server.seeddb.build_seed_db
+
+# Serve the seed baseline from seed.db. Proven byte-identical to the factories
+# (all 1560 resets match the golden; the whole gym suite passes with it on and
+# off), and the factories remain the fallback for any out-of-set seed. Override
+# with `-e SEEDDB_MODE=0` to build from the factories instead.
+ENV SEEDDB_MODE=1
+
 # Cloud Run injects $PORT; 8000 locally. HARNESS_TOKEN gates every /_harness/*
 # call and MUST match the annotator's GYM_HARNESS_TOKEN.
 ENV PORT=8000

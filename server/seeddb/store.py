@@ -46,10 +46,14 @@ from server.apps.world import WorldState
 from server.seeddb import _equiv
 from server.tasks import make_task
 
-# The built seed database. Defined here (not in the CLI builder) so the runtime
-# seam can import it without pulling in the goldens/build tooling.
+# Build/runtime constants. Defined here (not in the CLI builder or the goldens
+# tool) so both the runtime seam AND an image build can import them WITHOUT pulling
+# in tools/ or tests/ — the Docker image copies only server/.
 FIXTURE_VERSION = "v1"
-DB_PATH = pathlib.Path(__file__).resolve().parent.parent.parent / "fixtures" / "seed.db.v1.sqlite"
+_ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
+DB_PATH = _ROOT / "fixtures" / "seed.db.v1.sqlite"
+GOLDEN_PATH = _ROOT / "tests" / "goldens" / "seed_hashes.json"
+SEED_SET = [0, 1, 2, 3, 42]   # the captured seeds; goldens + seed.db both cover these
 
 # Every dict[str, <entity>] collection that is lifted out of the remainder into the
 # content-addressed pool. (app, field, collection_id, entity_type). collection_id is
