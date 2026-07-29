@@ -61,39 +61,58 @@ def _display_name(addr: str | None) -> str:
     return local.replace(".", " ").replace("_", " ").title()
 
 
+_GMAIL_LABELS = [
+    {"id": "l1", "name": "Work", "color": "#ef4444"},
+    {"id": "l2", "name": "Personal", "color": "#3b82f6"},
+    {"id": "l3", "name": "Travel", "color": "#22c55e"},
+    {"id": "l4", "name": "Finance", "color": "#eab308"},
+]
+
+
+def _iso(ts: str | None) -> str | None:
+    if not ts:
+        return None
+    return ts if (ts.endswith("Z") or "+" in ts) else ts + "Z"
+
+
 def transform_mail(mail: dict) -> dict:
-    """gym MailState -> gmail_mock.
+    """gym MailState -> gmail_mock state (see CUA-Gym-Hub websites/gmail_mock/SCHEMA.md).
 
     gym:    {account_email, account_name, inbox/sent/drafts: {id: email}, ...}
-    gmail:  {user: {name, email, avatar}, emails: [{id, from, to:[{name,email}], cc, ...}]}
-    Matches the shape of real gmail_mock rows; confirm the full field set with Kashyap.
+    gmail:  {user:{userId,username,email,avatar}, emails:[{id, threadId, from, to:[{name,email}],
+             cc, bcc, subject, body(html), timestamp, read, starred, important, labels,
+             category, folder, attachments}], labels:[...], drafts:[], settings:{...}}
     """
-    def recips(addr: str | None) -> list[dict]:
-        return [{"name": _display_name(addr), "email": addr}] if addr else []
-
     account = mail.get("account_email") or ""
+    name = mail.get("account_name") or _display_name(account)
     emails: list[dict] = []
     for folder in ("inbox", "sent", "drafts"):
         for e in (mail.get(folder) or {}).values():
+            to_addr = e.get("to") or account
             emails.append({
                 "id": e.get("id"),
+                "threadId": f"thread_{e.get('id')}",
                 "from": {"name": _display_name(e.get("sender")), "email": e.get("sender")},
-                "to": recips(e.get("to") or (account if folder == "inbox" else None)),
+                "to": [{"name": _display_name(to_addr), "email": to_addr}],
                 "cc": [],
+                "bcc": [],
                 "subject": e.get("subject") or "",
-                "body": e.get("body") or "",
-                "date": e.get("received_at"),
+                "body": (e.get("body") or "").replace("\n", "<br>"),
+                "timestamp": _iso(e.get("received_at")),
                 "read": bool(e.get("read")),
+                "starred": False,
+                "important": False,
+                "labels": [],
+                "category": "primary",
                 "folder": e.get("folder") or folder,
-                "labels": e.get("labels") or [],
+                "attachments": [],
             })
     return {
-        "user": {
-            "name": mail.get("account_name") or _display_name(account),
-            "email": account,
-            "avatar": None,
-        },
+        "user": {"userId": "u1", "username": name, "email": account, "avatar": None},
         "emails": emails,
+        "labels": list(_GMAIL_LABELS),
+        "drafts": [],
+        "settings": {"density": "default", "undoSend": 10},
     }
 
 
@@ -163,19 +182,47 @@ def load_rows(rows: list[dict], dsn: str) -> None:
         conn.commit()
 
 
+def post_rows(rows: list[dict], base_url: str, admin_token: str | None = None) -> None:
+    """Seed a RUNNING mock via its state API: POST /post?sid=<sid> {action:set, state}.
+
+    This is the canonical CUA-Gym-Hub contract (works on the mock's own dev/preview
+    server). Use with --app so all rows target the one mock at base_url.
+    """
+    import urllib.request
+
+    base = base_url.rstrip("/")
+    headers = {"Content-Type": "application/json"}
+    if admin_token:
+        headers["X-CUA-Admin-Token"] = admin_token
+    for r in rows:
+        payload = json.dumps({"action": "set", "state": r["state"]}).encode()
+        req = urllib.request.Request(
+            f"{base}/post?sid={r['sid']}", data=payload, method="POST", headers=headers,
+        )
+        with urllib.request.urlopen(req) as resp:
+            body = resp.read().decode()
+        print(f"seeded {r['mock']} sid={r['sid']} -> {body[:200]}")
+
+
 # ------------------------------------------------------------------ cli --------
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--task", required=True, help="gym task id, e.g. M1")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--app", action="append", help="limit to these gym apps (repeatable)")
-    ap.add_argument("--commit", action="store_true", help="actually write to cua-gym (needs CUA_GYM_DSN)")
+    ap.add_argument("--commit", action="store_true", help="write to cua-gym Postgres (needs CUA_GYM_DSN)")
+    ap.add_argument("--post", metavar="URL", help="seed a running mock via POST URL/post?sid (use with --app)")
+    ap.add_argument("--admin-token", help="X-CUA-Admin-Token for a hardened mock")
     args = ap.parse_args(argv)
 
     rows = build_seed_rows(args.task, args.seed, args.app)
     if not rows:
         print("no rows produced (no working transform for the requested apps)", file=sys.stderr)
         return 1
+
+    if args.post:
+        post_rows(rows, args.post, args.admin_token)
+        return 0
 
     if args.commit:
         dsn = os.environ.get("CUA_GYM_DSN")
