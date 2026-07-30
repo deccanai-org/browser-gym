@@ -494,6 +494,14 @@ def main() -> None:
     if app_origins and not args.bridge_url:
         print("ERROR: --app-origins requires --bridge-url", file=sys.stderr)
         sys.exit(2)
+    # The DOM agents (openai/llm) are single-origin, gym-HTML-selector agents and
+    # never tick the scheduler — in bridged mode (BRIDGE_TICK=0, harness owns the
+    # clock) time-based cross-app events would never fire. Use a pixel/SoM agent.
+    if app_origins and args.agent in ("openai", "llm"):
+        print(f"ERROR: --agent {args.agent} can't drive the realistic UIs "
+              "(gym-HTML selectors + no scheduler tick). Use pixel / openai_pixel / qwen.",
+              file=sys.stderr)
+        sys.exit(2)
 
     resume_state = json.loads(Path(args.resume_file).read_text()) if args.resume_file else None
 

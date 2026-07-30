@@ -65,10 +65,19 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
                               ("line_id", "gift_wrap", "gift_message", "ship_to_address_id", "scheduled_delivery")),
     "shop.remove_product":   ("POST", "/api/cart/remove",    ("line_id",)),
     "shop.apply_promo":      ("POST", "/api/cart/promo",     ("code",)),
-    # read/navigation — hitting these gym routes logs the view (view_order_detail /
-    # viewed_tracking) an agent must produce for the corresponding milestones.
+    # read/navigation — hitting these gym GET routes logs the view/read signal
+    # (view_order_detail / viewed_tracking / view_product / search / ...) that many
+    # tasks gate success on. In bridged mode the mock emits these as the agent
+    # navigates (see the *_bridged mock patches), so the milestone fires the same
+    # way it would from the gym's own pages.
     "shop.view_order":       ("GET",  "/account/orders/{order_id}",       ()),
     "shop.view_tracking":    ("GET",  "/account/orders/{order_id}/track", ()),
+    "shop.view_product":     ("GET",  "/product/{product_id}",            ("tab",)),
+    "shop.search":           ("GET",  "/search",                          ("q", "category")),
+    "shop.view_orders":      ("GET",  "/account/orders",                  ()),
+    "shop.view_subscriptions": ("GET", "/account/subscriptions",         ()),
+    "shop.view_addresses":   ("GET",  "/account/addresses",              ()),
+    "mail.open":             ("GET",  "/mail/message/{email_id}",         ()),
     "shop.place_order":      ("POST", "/api/checkout/place", ("payment_id",)),
     "shop.add_address":      ("POST", "/api/account/addresses",
                               ("label", "full_name", "line1", "line2", "city", "state", "zip", "set_default")),
@@ -79,7 +88,10 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "shop.enable_two_fa":    ("POST", "/api/account/security/two-fa", ("code",)),
     "shop.create_return":    ("POST", "/api/returns",
                               ("order_id", "item_ids", "reason", "refund_method", "notes")),
-    "shop.create_subscription": ("POST", "/api/subscriptions", ("product_id", "cadence", "deliveries")),
+    "shop.create_subscription": ("POST", "/api/subscriptions",
+                              ("product_id", "cadence", "deliveries", "address_id", "payment_id", "quantity", "variant_id")),
+    "calendar.view":         ("GET",  "/calendar",                       ()),
+    "calendar.view_event":   ("GET",  "/calendar/edit/{event_id}",       ()),
     "shop.cancel_subscription": ("POST", "/api/subscriptions/{subscription_id}/cancel", ()),
     # mail (Gmail)
     "mail.send":             ("POST", "/mail/send",          ("to", "subject", "body")),
@@ -112,6 +124,22 @@ def _resolve_line_id(world: dict, product_id: str) -> str | None:
         if it.get("product_id") == product_id:
             return it.get("id")
     return None
+
+
+def _default_addr_pay(world: dict) -> dict:
+    """The current user's default address_id + payment_id — used to fill the
+    required fields the subscription endpoint needs when a mock click omits them
+    (the projected user carries both, so a subscribe click needn't ask again)."""
+    shop = world.get("shop") or {}
+    user = (shop.get("users") or {}).get(shop.get("current_user_id")) or {}
+    out: dict = {}
+    addrs = user.get("addresses") or {}
+    if addrs:
+        out["address_id"] = next((a for a, v in addrs.items() if (v or {}).get("is_default")), None) or next(iter(addrs))
+    pays = user.get("payment_methods") or {}
+    if pays:
+        out["payment_id"] = next((p for p, v in pays.items() if (v or {}).get("is_default")), None) or next(iter(pays))
+    return out
 
 
 def _http(method: str, url: str, *, form: dict | None = None,
@@ -221,6 +249,11 @@ class Bridge:
                 return {"ok": False, "status": 0, "error": "product not in cart",
                         "world_step": self._step, "pushed": []}
             payload = {**payload, "line_id": lid}
+        # Subscriptions require an address + payment the mock click may not carry;
+        # fill them from the current user's defaults so the endpoint doesn't 422.
+        if action == "shop.create_subscription" and not (payload.get("address_id") and payload.get("payment_id")):
+            dflt = _default_addr_pay(self.world())
+            payload = {**{k: v for k, v in dflt.items() if not payload.get(k)}, **payload}
         method, path, fields = ACTIONS[action]
         path = path.format(**payload)
         # GET actions (views/navigation) carry their args in the path, no body.

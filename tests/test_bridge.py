@@ -249,6 +249,35 @@ def test_bridge_tick_disable(monkeypatch):
     assert calls["act"] == 1 and calls["tick"] == 0, calls
 
 
+def test_create_subscription_autofills_address_and_payment(wired):
+    """create_subscription used to 422 (missing address_id/payment_id) — the
+    bridge now fills them from the user's defaults so subscribe clicks succeed."""
+    from server.main import TASKS
+    b = wired
+    c3 = next((t for t in TASKS if t.startswith("C3/")), None)
+    b.reset(c3, 0)
+    sh = b.world()["shop"]
+    subable = [p for p, v in sh["products"].items() if v.get("is_subscribable")]
+    assert subable, "expected a subscribable product on C3"
+    before = len(b.world()["shop"].get("subscriptions") or {})
+    r = b.act("shop.create_subscription", product_id=subable[0], cadence="weekly", deliveries=4)
+    assert r["ok"], r
+    assert len(b.world()["shop"].get("subscriptions") or {}) == before + 1
+
+
+def test_view_and_search_actions_log(wired):
+    """The nav/view GET actions must log the signal view-gated milestones need."""
+    b = wired
+    b.reset(TASK, 0)
+    pid = next(iter(b.world()["shop"]["products"]))
+    b.act("shop.view_product", product_id=pid)
+    b.act("shop.search", q="mouse")
+    b.act("shop.view_orders")
+    log = [a.get("kind") for a in b.world()["shop"].get("action_log", [])]
+    for k in ("view_product", "search", "view_orders"):
+        assert k in log, (k, log[-6:])
+
+
 def test_actions_cover_every_app(wired):
     apps = {a.split(".")[0] for a in bridge.ACTIONS}
     assert apps == {"shop", "mail", "market", "food", "calendar"}
@@ -257,4 +286,5 @@ def test_actions_cover_every_app(wired):
     import re
     for name, (_m, path, _f) in bridge.ACTIONS.items():
         for tok in re.findall(r"\{(\w+)\}", path):
-            assert tok in ("address_id", "payment_id", "subscription_id", "order_id"), (name, tok)
+            assert tok in ("address_id", "payment_id", "subscription_id", "order_id",
+                           "product_id", "email_id", "event_id"), (name, tok)
