@@ -112,7 +112,11 @@ def transform_mail(mail: dict) -> dict:
         "emails": emails,
         "labels": list(_GMAIL_LABELS),
         "drafts": [],
-        "settings": {"density": "default", "undoSend": 10},
+        "settings": {"density": "default", "undoSend": 10, "signature": f"--\n{name}",
+                     "categoryTabs": {"primary": True, "social": True, "promotions": True,
+                                      "updates": False, "forums": False},
+                     "replyBehavior": "Reply", "language": "English (US)",
+                     "sysLabelShown": {}, "userLabelShown": {}},
     }
 
 
@@ -145,6 +149,27 @@ _FOOD_STATUS = {
     "on_the_way": "on_the_way", "out_for_delivery": "on_the_way",
     "delivered": "delivered", "completed": "delivered", "cancelled": "cancelled",
 }
+
+
+_UBER_CATEGORIES = [
+    {"id": "cat_1", "name": "Pizza", "icon": "\U0001F355"}, {"id": "cat_2", "name": "Burgers", "icon": "\U0001F354"},
+    {"id": "cat_3", "name": "Sushi", "icon": "\U0001F363"}, {"id": "cat_4", "name": "Chinese", "icon": "\U0001F961"},
+    {"id": "cat_5", "name": "Mexican", "icon": "\U0001F32E"}, {"id": "cat_6", "name": "Indian", "icon": "\U0001F35B"},
+    {"id": "cat_7", "name": "Thai", "icon": "\U0001F35C"}, {"id": "cat_8", "name": "Italian", "icon": "\U0001F35D"},
+    {"id": "cat_9", "name": "Healthy", "icon": "\U0001F957"}, {"id": "cat_10", "name": "Dessert", "icon": "\U0001F370"},
+    {"id": "cat_11", "name": "Coffee", "icon": "☕"}, {"id": "cat_12", "name": "Breakfast", "icon": "\U0001F95E"},
+    {"id": "cat_13", "name": "Sandwich", "icon": "\U0001F96A"}, {"id": "cat_14", "name": "Korean", "icon": "\U0001F372"},
+    {"id": "cat_15", "name": "Mediterranean", "icon": "\U0001F959"},
+]
+_UBER_ADDR = {"id": "addr_1", "label": "Home", "street": "123 Main St", "apt": "", "city": "San Francisco",
+              "state": "CA", "zip": "94102", "instructions": "", "isDefault": True}
+_UBER_PAY = {"id": "pay_1", "type": "visa", "label": "Visa •••• 4242", "last4": "4242", "isDefault": True}
+# Fallback amazon address/payment so checkout never renders zero options for a
+# user-less task (real users map from the gym; this only fires when there is none).
+_AMZ_ADDR = {"id": "addr_default", "fullName": "Alice Anderson", "street": "100 Park Avenue, Apt 4B",
+             "city": "Brooklyn", "state": "NY", "zip": "11201", "country": "United States",
+             "phone": "555-0123", "isDefault": True}
+_AMZ_PAY = {"id": "pay_default", "last4": "4242", "brand": "Visa", "expiry": "08/27", "isDefault": True}
 
 
 def _last4(label: str | None) -> str:
@@ -202,16 +227,18 @@ def transform_shop(shop: dict) -> dict:
                             "content": r.get("body"), "date": "2024-01-01T00:00:00.000Z", "helpful": 0,
                             "verifiedPurchase": bool(r.get("verified_purchase"))})
 
-    if gu:
-        addrs = [_amazon_address(a) for a in (gu.get("addresses") or {}).values()]
-        pays = [_amazon_payment(p) for p in (gu.get("payment_methods") or {}).values()]
-        def_addr = next((a for a in addrs if a["isDefault"]), addrs[0] if addrs else None)
-        def_pay = next((p for p in pays if p["isDefault"]), pays[0] if pays else None)
-        user = {"id": gu.get("id"), "name": gu.get("full_name"), "email": gu.get("email"),
-                "address": def_addr, "addresses": addrs, "paymentMethod": def_pay, "paymentMethods": pays}
-    else:
-        user = {"id": "u1", "name": "Demo User", "email": "demo@example.com",
-                "address": None, "addresses": [], "paymentMethod": None, "paymentMethods": []}
+    addrs = [_amazon_address(a) for a in ((gu or {}).get("addresses") or {}).values()]
+    pays = [_amazon_payment(p) for p in ((gu or {}).get("payment_methods") or {}).values()]
+    # Checkout renders zero radio options on an empty list -> always guarantee >=1.
+    if not addrs:
+        addrs = [dict(_AMZ_ADDR)]
+    if not pays:
+        pays = [dict(_AMZ_PAY)]
+    def_addr = next((a for a in addrs if a["isDefault"]), addrs[0])
+    def_pay = next((p for p in pays if p["isDefault"]), pays[0])
+    user = {"id": (gu or {}).get("id", "u1"), "name": (gu or {}).get("full_name", "Alice Anderson"),
+            "email": (gu or {}).get("email", "alice@example.com"),
+            "address": def_addr, "addresses": addrs, "paymentMethod": def_pay, "paymentMethods": pays}
 
     agg: dict = {}
     for it in ((shop.get("cart") or {}).get("items") or []):
@@ -244,8 +271,11 @@ def transform_shop(shop: dict) -> dict:
             if 0 < frac < 1:
                 prod["originalPrice"] = round(prod["price"] / (1 - frac), 2)
 
-    return {"products": products, "user": user, "cart": cart, "wishlist": [], "savedForLater": [],
-            "orders": orders, "reviews": reviews, "recentSearches": [], "recentlyViewed": [],
+    seed_pids = [p["id"] for p in products[:3]]
+    return {"products": products, "user": user, "cart": cart,
+            "wishlist": seed_pids, "savedForLater": [],
+            "orders": orders, "reviews": reviews,
+            "recentSearches": [], "recentlyViewed": seed_pids,
             # No native amazon UI for these gym concepts -> preserved (not dropped),
             # available in state/verification even though the mock can't render them.
             "_gym_subscriptions": list((shop.get("subscriptions") or {}).values()),
@@ -267,24 +297,34 @@ def transform_market(m: dict) -> dict:
               "avatar": _picsum("valuemart", "100/100"), "feedbackScore": 500, "feedbackRating": 99.0}
     end_ms = int(datetime.datetime(2026, 5, 28, 12, 0, 0).timestamp() * 1000)
 
+    # which products have been ordered -> their listings show as "sold"
+    ordered_pids = set()
+    for o in (m.get("orders") or {}).values():
+        for it in (o.get("items") or []):
+            if it.get("product_id"):
+                ordered_pids.add(it["product_id"])
+
     listings = []
     for pid, p in (m.get("products") or {}).items():
-        price = p.get("price")
+        price = p.get("price") if p.get("price") is not None else 0.0  # a fixed listing must have a price
         listings.append({
             "id": pid, "sellerId": seller_id, "title": p.get("name"),
             "description": p.get("description") or "", "images": [_picsum(pid)],
             "type": "fixed", "startingBid": None, "currentBid": None, "price": price,
             "buyItNowPrice": price, "bids": [], "watchers": [], "views": 0, "endTime": end_ms,
             "condition": "New", "shippingCost": 0.0, "location": "United States",
+            "status": "sold" if pid in ordered_pids else "active",
             "quantity": 1 if p.get("in_stock") else 0,
             "category": _EBAY_CAT.get((p.get("category") or "").lower(), "Other"),
         })
     cart = [it.get("product_id") for it in ((m.get("cart") or {}).get("items") or []) if it.get("product_id")]
     orders = []
     for oid, o in (m.get("orders") or {}).items():
+        pids = [it.get("product_id") for it in (o.get("items") or [])]
         orders.append({"id": oid, "buyerId": buyer_id, "sellerId": seller_id,
-                       "items": [it.get("product_id") for it in (o.get("items") or [])],
-                       "total": o.get("total"), "status": "completed", "created": end_ms})
+                       "items": pids, "listingId": pids[0] if pids else None,
+                       "amount": o.get("total"), "total": o.get("total"),
+                       "status": "completed", "created": end_ms, "date": end_ms})
     return {"currentUser": buyer, "users": [buyer, seller], "listings": listings, "orders": orders,
             "messages": [], "notifications": [], "feedbacks": [], "cart": cart,
             # eBay has no coupon UI -> preserved (not dropped), plus the priced cart detail.
@@ -358,8 +398,10 @@ def transform_food(food: dict) -> dict:
                             "categories": [], "tags": [], "supportsPickup": True,
                             "pickupTimeMin": 10, "pickupTimeMax": 20})
     user = {"id": "user_1", "name": "Alex Johnson", "email": "alex.johnson@email.com",
-            "phone": "(415) 555-0100", "avatarUrl": "", "addresses": [], "defaultAddressId": None,
-            "paymentMethods": [], "defaultPaymentId": None, "uberOneActive": False, "favoriteRestaurantIds": []}
+            "phone": "(415) 555-0100", "avatarUrl": "",
+            "addresses": [dict(_UBER_ADDR)], "defaultAddressId": _UBER_ADDR["id"],
+            "paymentMethods": [dict(_UBER_PAY)], "defaultPaymentId": _UBER_PAY["id"],
+            "uberOneActive": False, "favoriteRestaurantIds": []}
     # cart: gym FoodCart -> uber cart
     fc = food.get("cart") or {}
     cart_items = []
@@ -387,9 +429,9 @@ def transform_food(food: dict) -> dict:
                        "deliveryFee": o.get("delivery_fee"), "total": o.get("total")})
     active = orders[-1]["id"] if orders else None
 
-    return {"user": user, "categories": [], "restaurants": restaurants, "menuItems": menu_items,
+    return {"user": user, "categories": list(_UBER_CATEGORIES), "restaurants": restaurants, "menuItems": menu_items,
             "cart": cart, "orders": orders, "activeOrderId": active, "promotions": [], "reviews": [],
-            "ui": {"selectedAddressId": None, "deliveryMode": "delivery", "searchQuery": "",
+            "ui": {"selectedAddressId": _UBER_ADDR["id"], "deliveryMode": "delivery", "searchQuery": "",
                    "recentSearches": [], "activeFilters": {"sort": "", "priceRange": [], "dietary": [],
                                                            "maxDeliveryFee": None, "deals": False}}}
 
