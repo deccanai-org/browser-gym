@@ -446,15 +446,17 @@ TRANSFORMERS: dict[str, Callable[[dict], dict]] = {
 
 
 # ------------------------------------------------------- build seed rows -------
-def transformed_states(task_id: str, seed: int, apps: list[str] | None = None) -> dict[str, tuple[str, dict]]:
-    """{app: (mock_key, state)} — the transformed mock state per app, no sid assigned.
+def transform_world(world: dict[str, Any], apps: list[str] | None = None) -> dict[str, tuple[str, dict]]:
+    """{app: (mock_key, state)} for an already-dumped world dict.
 
-    The reusable core: seeding (build_seed_rows) and the session manager both call this.
+    Split out from transformed_states so the live bridge can re-project the
+    RUNNING engine's world (asdict of SESSION.world) after each action, not just
+    a freshly-built seed. `world` is the asdict shape (per-app store under its
+    app key), same as dump_world returns.
     """
-    world = dump_world(task_id, seed)
     out: dict[str, tuple[str, dict]] = {}
     for app in (apps or list(APP_TO_MOCK)):
-        if app not in world:
+        if app not in world or world[app] is None:
             continue
         transform = TRANSFORMERS.get(app)
         if transform is None:
@@ -464,6 +466,14 @@ def transformed_states(task_id: str, seed: int, apps: list[str] | None = None) -
         except NotImplementedError as exc:
             print(f"  skip {app}: {exc}", file=sys.stderr)
     return out
+
+
+def transformed_states(task_id: str, seed: int, apps: list[str] | None = None) -> dict[str, tuple[str, dict]]:
+    """{app: (mock_key, state)} — the transformed mock state per app, no sid assigned.
+
+    The reusable core: seeding (build_seed_rows) and the session manager both call this.
+    """
+    return transform_world(dump_world(task_id, seed), apps)
 
 
 def build_seed_rows(task_id: str, seed: int, apps: list[str] | None = None) -> list[dict]:

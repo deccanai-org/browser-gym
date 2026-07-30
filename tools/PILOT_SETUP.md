@@ -97,6 +97,58 @@ exists for the clone. The annotator's `seed_sid` scheme matches the gym seeder e
 backend + a redeploy — untestable locally): confirm the live-browser can reach the mock
 hosts, and set each task's card `allowedSites` to the cua hosts via `cua_hub.allowed_sites()`.
 
+## Bridged mode — realistic UIs as a live front-end over the gym engine
+
+Seeding (above) makes the mocks *show* a task's world. **Bridged mode** makes them
+*drive* it: a click in the realistic UI runs the REAL gym engine (full logic —
+cross-app bus, scheduler, breaker traps, verifiers) and the result is re-projected
+back into every tab. This is what closes the gap between "UI shell" and "full gym
+semantics" — a shop order's confirmation email shows up in the Gmail tab on its own.
+
+```
+click in the realistic UI
+  -> semantic action (tools/bridge.py ACTIONS, per app)
+  -> the gym's OWN http action endpoint         (mutation + cross-app hook)
+  -> WorldState advances with FULL logic         (bus / scheduler / traps fire)
+  -> re-project live world -> mock state         (seed_to_cuagym.transform_world)
+  -> push to every mock tab                       (cross-app effects appear)
+  -> gym's real verifier suite scores it          (/_harness/verify)
+```
+
+**Pieces**
+- `tools/bridge.py` — the library. `Bridge(gym_url, mock_map, harness_token)` with
+  `reset / project / push / act / tick / verify`. `ACTIONS` maps each app's
+  interactables to the gym's real endpoints (all 5 apps wired).
+- `tools/bridge_service.py` — the HTTP seam the mocks call: `POST /bridge/reset`,
+  `POST /bridge/act`, `GET /bridge/state`, `GET /bridge/verify`, `GET /bridge/actions`.
+- `tools/bridge_client.js` — a drop-in shim: swap a mock's data layer to call
+  `bridgeAct(...)` and render the returned per-app state (amazon add-to-cart /
+  place-order worked example inside).
+- `GET /_harness/world_full` (gym) — the complete world (asdict, incl. the shop
+  catalog that `/_harness/world`'s `to_json` drops) that the bridge re-projects.
+
+**Run it**
+```bash
+# 1. gym engine with a harness token
+HARNESS_TOKEN=dev uvicorn server.main:app --port 8077
+# 2. bridge service pointed at it (+ optional per-app mock push targets)
+GYM_URL=http://127.0.0.1:8077 HARNESS_TOKEN=dev \
+  CUA_HUB_URL_SHOP=http://127.0.0.1:5201 CUA_HUB_URL_MAIL=http://127.0.0.1:5203 \
+  uvicorn tools.bridge_service:app --port 8090
+# 3. the mock UIs run bridged (VITE_BRIDGE_URL=http://127.0.0.1:8090) — see bridge_client.js
+```
+
+**Tested:** `tests/test_bridge.py` proves the loop in-process (reset -> project into
+every tab -> add-to-cart/place-order through the real engine -> order created +
+cart cleared + **cross-app confirmation email in the Gmail tab** -> real verifier
+verdict). Shop is fully wired + tested; the other apps' actions are in `ACTIONS`
+and reachable — the remaining last-mile is swapping each mock's client to call
+`bridgeAct` (the `bridge_client.js` example is the pattern for every interactable).
+
+**Scope note:** the gym keeps ONE world per instance, so one (gym + bridge) = one
+live episode. Many concurrent annotators = one pair per attempt, or keep the mocks
+read-only-seeded (session_manager) and bridge only the active tab.
+
 ## Notes
 - Seed data is static/frozen per (task, seed) — deterministic, matches the gym's own reset.
 - The hosted annotator wires these via `cua_hub.mock_url(app, path, sid)` (annotator repo,

@@ -1028,6 +1028,16 @@ def harness_world() -> dict[str, Any]:
     return _world().to_json()
 
 
+@app.get("/_harness/world_full")
+def harness_world_full() -> dict[str, Any]:
+    """The COMPLETE world as plain dicts (dataclasses.asdict), including the shop
+    catalog and every field ``to_json`` drops. The realistic-UI bridge
+    (tools/bridge.py) reads this to re-project the live engine state into the
+    mock UIs after each action. Read-only."""
+    import dataclasses
+    return dataclasses.asdict(_world())
+
+
 @app.get("/_harness/snapshot")
 def harness_snapshot() -> dict[str, Any]:
     """Lightweight snapshot: cart count, orders count, current user, etc."""
