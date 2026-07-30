@@ -1,0 +1,223 @@
+diff --git a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_mock/src/context/StoreContext.jsx
+index 39de525..7d1f2cc 100644
+--- a/websites/amazon_mock/src/context/StoreContext.jsx
++++ b/websites/amazon_mock/src/context/StoreContext.jsx
+@@ -1,5 +1,15 @@
+ import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+ import { INITIAL_DATA, getSessionId, fetchCustomState, saveState, initializeData } from '../lib/mockData';
++import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
++
++const APP = 'shop'; // bridge engine app key for this mock
++// In bridged mode: run the gym action, then adopt the engine's authoritative
++// per-app state (already in this mock's shape). Merge so UI-only fields survive.
++const applyEngine = (setState, r) => {
++  // Normalize through initializeData (deep-merge onto defaults) so the adopted
++  // state matches the seeded shape — same path normal seeding uses.
++  if (r && r.apps && r.apps[APP]) setState(prev => ({ ...prev, ...initializeData(null, r.apps[APP]) }));
++};
+ 
+ const StoreContext = createContext();
+ 
+@@ -22,6 +32,17 @@ export const StoreProvider = ({ children }) => {
+     initDone.current = true;
+     const sid = sidRef.current;
+ 
++    // Bridged mode: the gym engine is the source of truth. Load its state and
++    // poll so cross-app effects (e.g. an order email) surface here too.
++    if (bridged()) {
++      bridgeState(APP).then(s => {
++        if (s) { const data = initializeData(sid, s); setState(data); setInitialState(JSON.parse(JSON.stringify(data))); }
++        setHydrated(true);
++      });
++      const stop = bridgePoll(APP, s => setState(prev => ({ ...prev, ...initializeData(sid, s) })));
++      return () => stop();
++    }
++
+     if (sid) {
+       const sessionKey = `${BASE_INITIAL_KEY}_${sid}`;
+       const isRefresh = localStorage.getItem(sessionKey) !== null;
+@@ -55,6 +76,11 @@ export const StoreProvider = ({ children }) => {
+ 
+   // Actions
+   const addToCart = (product, quantity = 1) => {
++    if (bridged()) {
++      bridgeAct('shop.add_to_cart', { product_id: product.id, quantity })
++        .then(r => applyEngine(setState, r));
++      return;
++    }
+     setState(prev => {
+       const existing = prev.cart.find(item => item.productId === product.id);
+       let newCart;
+@@ -72,6 +98,11 @@ export const StoreProvider = ({ children }) => {
+   };
+ 
+   const removeFromCart = (productId) => {
++    if (bridged()) {
++      bridgeAct('shop.remove_product', { product_id: productId })
++        .then(r => applyEngine(setState, r));
++      return;
++    }
+     setState(prev => ({
+       ...prev,
+       cart: prev.cart.filter(item => item.productId !== productId)
+@@ -80,6 +111,11 @@ export const StoreProvider = ({ children }) => {
+ 
+   const updateCartQty = (productId, quantity) => {
+     if (quantity < 1) return removeFromCart(productId);
++    if (bridged()) {
++      bridgeAct('shop.set_qty', { product_id: productId, quantity })
++        .then(r => applyEngine(setState, r));
++      return;
++    }
+     setState(prev => ({
+       ...prev,
+       cart: prev.cart.map(item =>
+@@ -157,6 +193,14 @@ export const StoreProvider = ({ children }) => {
+   };
+ 
+   const placeOrder = (orderData) => {
++    if (bridged()) {
++      return bridgeAct('shop.place_order', { payment_id: orderData?.paymentMethod?.id })
++        .then(r => {
++          applyEngine(setState, r);
++          const os = (r.apps && r.apps[APP] && r.apps[APP].orders) || [];
++          return os.length ? os[os.length - 1].id : undefined;
++        });
++    }
+     const newOrder = {
+       id: `ord-${Date.now()}`,
+       date: new Date().toISOString(),
+@@ -204,6 +248,18 @@ export const StoreProvider = ({ children }) => {
+   };
+ 
+   const addAddress = (address) => {
++    if (bridged()) {
++      bridgeAct('shop.add_address', {
++        label: address.label || address.name || 'Address',
++        full_name: address.fullName || address.full_name || address.name || '',
++        line1: address.line1 || address.street || address.address || '',
++        line2: address.line2 || address.street2 || '',
++        city: address.city || '', state: address.state || '',
++        zip: address.zip || address.zipCode || address.postalCode || '',
++        set_default: !!address.isDefault,
++      }).then(r => applyEngine(setState, r));
++      return;
++    }
+     setState(prev => {
+       const newAddr = { ...address, id: `addr-${Date.now()}` };
+       const addresses = [...(prev.user.addresses || [prev.user.address]), newAddr];
+@@ -212,6 +268,11 @@ export const StoreProvider = ({ children }) => {
+   };
+ 
+   const setDefaultAddress = (addressId) => {
++    if (bridged()) {
++      bridgeAct('shop.set_default_address', { address_id: addressId })
++        .then(r => applyEngine(setState, r));
++      return;
++    }
+     setState(prev => {
+       const addresses = (prev.user.addresses || [prev.user.address]).map(a => ({ ...a, isDefault: a.id === addressId }));
+       const defaultAddr = addresses.find(a => a.isDefault) || addresses[0];
+@@ -220,6 +281,15 @@ export const StoreProvider = ({ children }) => {
+   };
+ 
+   const addPaymentMethod = (pm) => {
++    if (bridged()) {
++      bridgeAct('shop.add_payment', {
++        label: pm.label || pm.brand || 'Card', kind: pm.kind || 'credit_card',
++        card_number: pm.cardNumber || pm.card_number || pm.number || '',
++        expires: pm.expires || pm.expiry || '', cvv: pm.cvv || '',
++        nickname: pm.nickname || pm.name || '', set_default: !!pm.isDefault,
++      }).then(r => applyEngine(setState, r));
++      return;
++    }
+     setState(prev => {
+       const newPm = { ...pm, id: `pm-${Date.now()}` };
+       const paymentMethods = [...(prev.user.paymentMethods || [prev.user.paymentMethod]), newPm];
+@@ -228,6 +298,11 @@ export const StoreProvider = ({ children }) => {
+   };
+ 
+   const setDefaultPaymentMethod = (pmId) => {
++    if (bridged()) {
++      bridgeAct('shop.set_default_payment', { payment_id: pmId })
++        .then(r => applyEngine(setState, r));
++      return;
++    }
+     setState(prev => {
+       const paymentMethods = (prev.user.paymentMethods || [prev.user.paymentMethod]).map(p => ({ ...p, isDefault: p.id === pmId }));
+       const defaultPm = paymentMethods.find(p => p.isDefault) || paymentMethods[0];
+diff --git a/websites/amazon_mock/src/lib/bridge.js b/websites/amazon_mock/src/lib/bridge.js
+new file mode 100644
+index 0000000..10df18d
+--- /dev/null
++++ b/websites/amazon_mock/src/lib/bridge.js
+@@ -0,0 +1,47 @@
++// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
++// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
++// verifiers) instead of this mock's local store. Cross-app effects (e.g. a shop
++// order's confirmation email) then appear in the relevant tab on their own.
++//
++// Runtime opt-in: bridged when the page URL carries ?bridge=<bridge-service-url>
++// (e.g. ...?bridge=http://127.0.0.1:8090). No param -> the mock behaves exactly
++// as upstream (legacy mode), so one build serves both.
++//
++// The bridge service holds ONE live episode (the harness/annotator resets it);
++// the mock only reads state + dispatches actions. The engine's per-app state is
++// already in this mock's own shape (gym-side transform), so setState needs no
++// mapping — merge it over the previous state to keep UI-only fields.
++
++const _params = new URLSearchParams(
++  typeof window !== 'undefined' ? window.location.search : '');
++const BASE = (_params.get('bridge') || '').replace(/\/$/, '');
++
++export const bridged = () => !!BASE;
++
++export async function bridgeState(app) {
++  const r = await fetch(`${BASE}/bridge/state?app=${encodeURIComponent(app)}`);
++  if (!r.ok) return null;
++  return (await r.json()).apps?.[app] || null;
++}
++
++export async function bridgeAct(action, payload = {}) {
++  const r = await fetch(`${BASE}/bridge/act`, {
++    method: 'POST',
++    headers: { 'Content-Type': 'application/json' },
++    body: JSON.stringify({ action, payload }),
++  });
++  return await r.json(); // { ok, status, apps:{shop,mail,market,calendar,food} }
++}
++
++// Poll the engine so cross-app effects produced in OTHER tabs surface here too.
++export function bridgePoll(app, onState, ms = 2500) {
++  if (!bridged()) return () => {};
++  let live = true;
++  const tick = async () => {
++    if (!live) return;
++    try { const s = await bridgeState(app); if (s) onState(s); } catch (_) {}
++    if (live) setTimeout(tick, ms);
++  };
++  setTimeout(tick, ms);
++  return () => { live = false; };
++}
+diff --git a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/src/pages/Checkout.jsx
+index 3bf6ccf..6f6a398 100644
+--- a/websites/amazon_mock/src/pages/Checkout.jsx
++++ b/websites/amazon_mock/src/pages/Checkout.jsx
+@@ -34,7 +34,7 @@ export const Checkout = () => {
+ 
+   const handlePlaceOrder = () => {
+     setLoading(true);
+-    setTimeout(() => {
++    setTimeout(async () => {
+       const orderData = {
+         items: state.cart,
+         total: total,
+@@ -43,7 +43,7 @@ export const Checkout = () => {
+         trackingNumber: null,
+         estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+       };
+-      const orderId = placeOrder(orderData);
++      const orderId = await placeOrder(orderData);
+       setLoading(false);
+       navigate(`/order-confirmation/${orderId}`);
+     }, 1500);

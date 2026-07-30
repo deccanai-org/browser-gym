@@ -1,0 +1,133 @@
+diff --git a/websites/ebay_mock/src/context/StoreContext.jsx b/websites/ebay_mock/src/context/StoreContext.jsx
+index 4809cab..5ad5897 100644
+--- a/websites/ebay_mock/src/context/StoreContext.jsx
++++ b/websites/ebay_mock/src/context/StoreContext.jsx
+@@ -1,5 +1,14 @@
+ import React, { createContext, useContext, useReducer, useEffect, useRef, useState } from 'react';
+ import { INITIAL_STATE, getSessionId, fetchCustomState, saveState, initializeData } from '../data/mockData';
++import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
++
++const APP = 'market'; // bridge engine app key for this mock
++// In bridged mode: run the gym action, then adopt the engine's authoritative
++// per-app state (already in this mock's shape). Merge so UI-only fields survive.
++const applyEngine = (dispatch, r) => {
++  // Normalize through initializeData so the adopted state matches the seeded shape.
++  if (r && r.apps && r.apps[APP]) dispatch({ type: 'SET_STATE', payload: initializeData(null, r.apps[APP]) });
++};
+ 
+ const StoreContext = createContext();
+ 
+@@ -372,6 +381,19 @@ export const StoreProvider = ({ children }) => {
+     initDone.current = true;
+     const sid = sidRef.current;
+ 
++    // Bridged mode: the gym engine is the source of truth. Load its state and
++    // poll so cross-app effects (e.g. an order email) surface here too.
++    if (bridged()) {
++      // Normalize engine state through initializeData (deep-merge onto defaults)
++      // — the SAME path normal seeding uses, so rendering matches the seeded UI.
++      bridgeState(APP).then(s => {
++        if (s) dispatch({ type: ACTIONS.SET_STATE, payload: initializeData(sid, s) });
++        setHydrated(true);
++      });
++      const stop = bridgePoll(APP, s => dispatch({ type: ACTIONS.SET_STATE, payload: initializeData(sid, s) }));
++      return () => stop();
++    }
++
+     if (sid) {
+       const sessionKey = `${BASE_INITIAL_KEY}_${sid}`;
+       const isRefresh = localStorage.getItem(sessionKey) !== null;
+@@ -405,6 +427,12 @@ export const StoreProvider = ({ children }) => {
+   };
+ 
+   const buyNow = (listingId) => {
++    if (bridged()) {
++      bridgeAct('market.add_to_cart', { product_id: listingId, quantity: 1 })
++        .then(() => bridgeAct('market.checkout', {}))
++        .then(r => applyEngine(dispatch, r));
++      return;
++    }
+     dispatch({ type: ACTIONS.BUY_NOW, payload: { listingId, userId: state.currentUser.id } });
+   };
+ 
+@@ -452,14 +480,29 @@ export const StoreProvider = ({ children }) => {
+   };
+ 
+   const addToCart = (listingId) => {
++    if (bridged()) {
++      bridgeAct('market.add_to_cart', { product_id: listingId, quantity: 1 })
++        .then(r => applyEngine(dispatch, r));
++      return;
++    }
+     dispatch({ type: ACTIONS.ADD_TO_CART, payload: { listingId } });
+   };
+ 
+   const removeFromCart = (listingId) => {
++    if (bridged()) {
++      bridgeAct('market.remove', { product_id: listingId })
++        .then(r => applyEngine(dispatch, r));
++      return;
++    }
+     dispatch({ type: ACTIONS.REMOVE_FROM_CART, payload: { listingId } });
+   };
+ 
+   const clearCart = () => {
++    if (bridged()) {
++      bridgeAct('market.clear_cart', {})
++        .then(r => applyEngine(dispatch, r));
++      return;
++    }
+     dispatch({ type: ACTIONS.CLEAR_CART });
+   };
+ 
+diff --git a/websites/ebay_mock/src/lib/bridge.js b/websites/ebay_mock/src/lib/bridge.js
+new file mode 100644
+index 0000000..592181e
+--- /dev/null
++++ b/websites/ebay_mock/src/lib/bridge.js
+@@ -0,0 +1,45 @@
++// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
++// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
++// verifiers) instead of this mock's local store. Cross-app effects (e.g. a shop
++// order's confirmation email) then appear in the relevant tab on their own.
++//
++// Runtime opt-in: bridged when the page URL carries ?bridge=<bridge-service-url>
++// (e.g. ...?bridge=http://127.0.0.1:8090). No param -> upstream behavior (legacy),
++// so one build serves both. The bridge service holds ONE live episode (the
++// harness/annotator resets it); the mock only reads state + dispatches actions.
++// The engine's per-app state is already in this mock's own shape (gym-side
++// transform), so applying it needs no mapping.
++
++const _params = new URLSearchParams(
++  typeof window !== 'undefined' ? window.location.search : '');
++const BASE = (_params.get('bridge') || '').replace(/\/$/, '');
++
++export const bridged = () => !!BASE;
++
++export async function bridgeState(app) {
++  const r = await fetch(`${BASE}/bridge/state?app=${encodeURIComponent(app)}`);
++  if (!r.ok) return null;
++  return (await r.json()).apps?.[app] || null;
++}
++
++export async function bridgeAct(action, payload = {}) {
++  const r = await fetch(`${BASE}/bridge/act`, {
++    method: 'POST',
++    headers: { 'Content-Type': 'application/json' },
++    body: JSON.stringify({ action, payload }),
++  });
++  return await r.json(); // { ok, status, apps:{shop,mail,market,calendar,food} }
++}
++
++// Poll the engine so cross-app effects produced in OTHER tabs surface here too.
++export function bridgePoll(app, onState, ms = 2500) {
++  if (!bridged()) return () => {};
++  let live = true;
++  const tick = async () => {
++    if (!live) return;
++    try { const s = await bridgeState(app); if (s) onState(s); } catch (_) {}
++    if (live) setTimeout(tick, ms);
++  };
++  setTimeout(tick, ms);
++  return () => { live = false; };
++}

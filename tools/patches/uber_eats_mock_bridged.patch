@@ -1,0 +1,325 @@
+diff --git a/websites/uber_eats_mock/src/App.jsx b/websites/uber_eats_mock/src/App.jsx
+index 677f6ad..10b350b 100644
+--- a/websites/uber_eats_mock/src/App.jsx
++++ b/websites/uber_eats_mock/src/App.jsx
+@@ -1,57 +1,58 @@
++import React, { useState } from 'react';
++import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
++import { AppProvider } from './context/AppContext';
++import Header from './components/Header';
++import Sidebar from './components/Sidebar';
++import CartPanel from './components/CartPanel';
++import Homepage from './pages/Homepage';
++import StorePage from './pages/StorePage';
++import SearchPage from './pages/SearchPage';
++import Favorites from './pages/Favorites';
++import Account from './pages/Account';
++import OrderTracking from './pages/OrderTracking';
++import CheckoutPage from './pages/CheckoutPage';
++import Go from './pages/Go';
+ 
+-    import React, { useState } from 'react';
+-    import { BrowserRouter, Routes, Route, Navigate, useLocation, useSearchParams } from 'react-router-dom';
+-    import { StoreProvider } from './context/StoreContext';
+-    import Navbar from './components/Navbar';
+-    import CartDrawer from './components/CartDrawer';
+-    import CartSwitchDialog from './components/CartSwitchDialog';
+-    import Home from './pages/Home';
+-    import RestaurantDetails from './pages/RestaurantDetails';
+-    import Checkout from './pages/Checkout';
+-    import Orders from './pages/Orders';
+-    import GoEndpoint from './pages/GoEndpoint';
++// This mock shipped with two parallel implementations: a StoreContext app that was
++// mounted but cross-wired (its Home rendered an AppContext RestaurantCard, which
++// crashed because AppProvider was never mounted), and this richer AppContext app
++// that was never mounted. We commit to the AppContext ("System B") app — it has the
++// full component set (Header/Sidebar/CartPanel/RestaurantCard/FilterBar) and pages,
++// and its data shape matches the seed transform. CheckoutPage fills the one missing page.
++function Layout({ children }) {
++  const [sidebarOpen, setSidebarOpen] = useState(false);
++  const [cartOpen, setCartOpen] = useState(false);
++  const location = useLocation();
++  if (location.pathname === '/go') return children;
++  return (
++    <div className="min-h-screen" style={{ background: '#fff' }}>
++      <Header onCartClick={() => setCartOpen(true)} onMenuClick={() => setSidebarOpen(true)} />
++      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
++      <CartPanel isOpen={cartOpen} onClose={() => setCartOpen(false)} />
++      <main>{children}</main>
++    </div>
++  );
++}
+ 
+-    function RedirectWithQuery({ to }) {
+-      const [searchParams] = useSearchParams();
+-      const query = searchParams.toString();
+-      return <Navigate to={query ? `${to}?${query}` : to} replace />;
+-    }
+-
+-    function Layout({ children }) {
+-      const [isCartOpen, setIsCartOpen] = useState(false);
+-      const location = useLocation();
+-
+-      // Don't show layout on /go
+-      if (location.pathname === '/go') {
+-        return children;
+-      }
+-
+-      return (
+-        <div className="min-h-screen bg-white">
+-          <Navbar toggleCart={() => setIsCartOpen(true)} />
+-          <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+-          <CartSwitchDialog />
+-          <main>
+-            {children}
+-          </main>
+-        </div>
+-      );
+-    }
+-
+-    export default function App() {
+-      return (
+-        <StoreProvider>
+-          <BrowserRouter>
+-            <Layout>
+-              <Routes>
+-                <Route path="/" element={<Home />} />
+-                <Route path="/restaurant/:id" element={<RestaurantDetails />} />
+-                <Route path="/checkout" element={<Checkout />} />
+-                <Route path="/orders" element={<Orders />} />
+-                <Route path="/go" element={<GoEndpoint />} />
+-              </Routes>
+-            </Layout>
+-          </BrowserRouter>
+-        </StoreProvider>
+-      );
+-    }
++export default function App() {
++  return (
++    <AppProvider>
++      <BrowserRouter>
++        <Layout>
++          <Routes>
++            <Route path="/" element={<Homepage />} />
++            <Route path="/store/:id" element={<StorePage />} />
++            <Route path="/search" element={<SearchPage />} />
++            <Route path="/favorites" element={<Favorites />} />
++            <Route path="/account" element={<Account />} />
++            <Route path="/checkout" element={<CheckoutPage />} />
++            <Route path="/orders" element={<OrderTracking />} />
++            <Route path="/orders/:orderId" element={<OrderTracking />} />
++            <Route path="/go" element={<Go />} />
++            <Route path="*" element={<Navigate to="/" replace />} />
++          </Routes>
++        </Layout>
++      </BrowserRouter>
++    </AppProvider>
++  );
++}
+diff --git a/websites/uber_eats_mock/src/context/StoreContext.jsx b/websites/uber_eats_mock/src/context/StoreContext.jsx
+index 76c6084..3ba2bfe 100644
+--- a/websites/uber_eats_mock/src/context/StoreContext.jsx
++++ b/websites/uber_eats_mock/src/context/StoreContext.jsx
+@@ -2,6 +2,16 @@
+     import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+     import { generateInitialState, getSessionId, fetchCustomState, saveState, initializeData } from '../lib/mockData';
+     import { generateId } from '../lib/utils';
++    import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
++
++    const APP = 'food'; // bridge engine app key for this mock
++    // In bridged mode: run the gym action, then adopt the engine's authoritative
++    // per-app state (already in this mock's shape). Guard against a null store.
++    const applyEngine = (setState, r) => {
++      // Normalize through initializeData (deep-merge onto defaults) so the adopted
++      // state matches the seeded shape — same path normal seeding uses.
++      if (r && r.apps && r.apps[APP]) setState(prev => ({ ...(prev || {}), ...initializeData(null, r.apps[APP]) }));
++    };
+ 
+     const StoreContext = createContext();
+ 
+@@ -22,6 +32,16 @@
+ 
+         const sid = sidRef.current;
+ 
++        // Bridged mode: the gym engine is the source of truth. Load its state and
++        // poll so cross-app effects (e.g. an order confirmation) surface here too.
++        // uber's setState REPLACES (not merges) and may start null, so use a bare
++        // setState(s) for the initial load — guarded against a null engine state.
++        if (bridged()) {
++          bridgeState(APP).then(s => { if (s) { const data = initializeData(sid, s); setState(data); setInitialStateRef(data); } setLoading(false); });
++          const stop = bridgePoll(APP, s => { if (s) setState(initializeData(sid, s)); });
++          return () => stop();
++        }
++
+         if (sid) {
+           // CRITICAL: Check localStorage BEFORE initializeData
+           const sessionKey = `${BASE_INITIAL_KEY}_${sid}`;
+@@ -98,6 +118,14 @@
+ 
+       // Actions
+       const addToCart = (item, quantity, modifiers, instructions) => {
++        if (bridged()) {
++          bridgeAct('food.add_to_cart', {
++            restaurant_id: item.restaurantId || item.restaurant_id || (state && state.currentRestaurantId) || (state && state.selectedRestaurant && state.selectedRestaurant.id) || '',
++            dish_id: item.id || item.dishId || item.dish_id,
++            quantity: quantity || 1,
++          }).then(r => applyEngine(setState, r));
++          return;
++        }
+         if (state.cart.restaurantId && state.cart.restaurantId !== item.restaurantId) {
+           setPendingCartSwitch({ item, quantity, modifiers, instructions });
+           return;
+@@ -173,6 +201,15 @@
+       };
+ 
+       const placeOrder = (deliveryDetails) => {
++        if (bridged()) {
++          return bridgeAct('food.checkout', {
++            delivery_note: (deliveryDetails && (deliveryDetails.note || deliveryDetails.instructions)) || '',
++          }).then(r => {
++            applyEngine(setState, r);
++            const os = (r.apps && r.apps[APP] && r.apps[APP].orders) || [];
++            return os.length ? os[os.length - 1].id : undefined;
++          });
++        }
+         const orderId = generateId();
+         const newOrder = {
+           id: orderId,
+diff --git a/websites/uber_eats_mock/src/lib/bridge.js b/websites/uber_eats_mock/src/lib/bridge.js
+new file mode 100644
+index 0000000..592181e
+--- /dev/null
++++ b/websites/uber_eats_mock/src/lib/bridge.js
+@@ -0,0 +1,45 @@
++// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
++// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
++// verifiers) instead of this mock's local store. Cross-app effects (e.g. a shop
++// order's confirmation email) then appear in the relevant tab on their own.
++//
++// Runtime opt-in: bridged when the page URL carries ?bridge=<bridge-service-url>
++// (e.g. ...?bridge=http://127.0.0.1:8090). No param -> upstream behavior (legacy),
++// so one build serves both. The bridge service holds ONE live episode (the
++// harness/annotator resets it); the mock only reads state + dispatches actions.
++// The engine's per-app state is already in this mock's own shape (gym-side
++// transform), so applying it needs no mapping.
++
++const _params = new URLSearchParams(
++  typeof window !== 'undefined' ? window.location.search : '');
++const BASE = (_params.get('bridge') || '').replace(/\/$/, '');
++
++export const bridged = () => !!BASE;
++
++export async function bridgeState(app) {
++  const r = await fetch(`${BASE}/bridge/state?app=${encodeURIComponent(app)}`);
++  if (!r.ok) return null;
++  return (await r.json()).apps?.[app] || null;
++}
++
++export async function bridgeAct(action, payload = {}) {
++  const r = await fetch(`${BASE}/bridge/act`, {
++    method: 'POST',
++    headers: { 'Content-Type': 'application/json' },
++    body: JSON.stringify({ action, payload }),
++  });
++  return await r.json(); // { ok, status, apps:{shop,mail,market,calendar,food} }
++}
++
++// Poll the engine so cross-app effects produced in OTHER tabs surface here too.
++export function bridgePoll(app, onState, ms = 2500) {
++  if (!bridged()) return () => {};
++  let live = true;
++  const tick = async () => {
++    if (!live) return;
++    try { const s = await bridgeState(app); if (s) onState(s); } catch (_) {}
++    if (live) setTimeout(tick, ms);
++  };
++  setTimeout(tick, ms);
++  return () => { live = false; };
++}
+diff --git a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx
+new file mode 100644
+index 0000000..b70cc11
+--- /dev/null
++++ b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx
+@@ -0,0 +1,81 @@
++import React from 'react';
++import { useNavigate } from 'react-router-dom';
++import { useApp } from '../context/AppContext';
++
++// Checkout for the System-B (AppContext) app. The mock shipped without a checkout
++// page even though CartPanel navigates to /checkout; this fills that gap using the
++// existing placeOrder() action so the cart -> order flow completes.
++const card = { background: '#fff', border: '1px solid #eee', borderRadius: 12, padding: 16, marginBottom: 16 };
++const h2 = { fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: '#888', marginBottom: 8 };
++const btn = { background: '#06C167', color: '#fff', border: 'none', borderRadius: 999, padding: '14px 24px', fontSize: 16, fontWeight: 700, cursor: 'pointer', width: '100%' };
++
++export default function CheckoutPage() {
++  const navigate = useNavigate();
++  const { state, placeOrder } = useApp();
++  const cart = state.cart || { items: [] };
++  const items = cart.items || [];
++  const restaurant = (state.restaurants || []).find(r => r.id === cart.restaurantId);
++  const subtotal = items.reduce((s, it) => s + (it.totalPrice || 0), 0);
++  const deliveryFee = restaurant ? (restaurant.deliveryFee || 0) : 0;
++  const serviceFee = items.length ? Math.min(Math.max(subtotal * 0.15, 0.99), 9.99) : 0;
++  const tax = subtotal * 0.09;
++  const total = subtotal + deliveryFee + serviceFee + tax;
++
++  const addrs = state.user?.addresses || [];
++  const addr = addrs.find(a => a.id === (state.ui?.selectedAddressId || state.user?.defaultAddressId)) || addrs[0];
++  const pays = state.user?.paymentMethods || [];
++  const pay = pays.find(p => p.id === state.user?.defaultPaymentId) || pays[0];
++
++  if (items.length === 0) {
++    return (
++      <div style={{ maxWidth: 720, margin: '0 auto', padding: 24 }}>
++        <h1 style={{ fontSize: 24, fontWeight: 700 }}>Checkout</h1>
++        <p style={{ color: '#666', margin: '12px 0 20px' }}>Your cart is empty.</p>
++        <button onClick={() => navigate('/')} style={btn}>Browse restaurants</button>
++      </div>
++    );
++  }
++
++  const handlePlace = () => {
++    placeOrder({});
++    navigate('/orders');
++  };
++
++  return (
++    <div style={{ maxWidth: 720, margin: '0 auto', padding: 24 }}>
++      <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 4 }}>Checkout</h1>
++      {restaurant && <p style={{ color: '#666', marginBottom: 16 }}>Order from <b>{restaurant.name}</b></p>}
++
++      <section style={card}>
++        <h2 style={h2}>Delivery address</h2>
++        <p>{addr ? `${addr.street}${addr.apt ? ', ' + addr.apt : ''}, ${addr.city}, ${addr.state} ${addr.zip}` : 'No address on file'}</p>
++      </section>
++
++      <section style={card}>
++        <h2 style={h2}>Payment</h2>
++        <p>{pay ? pay.label : 'No payment method'}</p>
++      </section>
++
++      <section style={card}>
++        <h2 style={h2}>Your items</h2>
++        {items.map((it, i) => (
++          <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0' }}>
++            <span>{it.quantity}× {it.name}</span>
++            <span>${(it.totalPrice || 0).toFixed(2)}</span>
++          </div>
++        ))}
++        <hr style={{ margin: '12px 0', border: 'none', borderTop: '1px solid #eee' }} />
++        {[['Subtotal', subtotal], ['Delivery fee', deliveryFee], ['Service fee', serviceFee], ['Tax', tax]].map(([l, v]) => (
++          <div key={l} style={{ display: 'flex', justifyContent: 'space-between', color: '#666', padding: '2px 0' }}>
++            <span>{l}</span><span>${Number(v).toFixed(2)}</span>
++          </div>
++        ))}
++        <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, marginTop: 8, fontSize: 18 }}>
++          <span>Total</span><span>${total.toFixed(2)}</span>
++        </div>
++      </section>
++
++      <button onClick={handlePlace} style={btn}>Place order · ${total.toFixed(2)}</button>
++    </div>
++  );
++}

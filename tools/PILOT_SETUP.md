@@ -21,10 +21,14 @@ world into them via their state API. No cua-gym DB or Kashyap dependency.
 # 1. clone the UIs next to the gym repo
 git clone https://github.com/xlang-ai/CUA-Gym-Hub.git
 
-# 2. apply our uber_eats fix (that mock ships internally broken — two parallel
-#    context systems, cross-wired; the patch commits it to the working AppContext
-#    app and adds the missing Checkout page)
-git -C CUA-Gym-Hub apply "<gym>/tools/patches/uber_eats_mock_systemB.patch"
+# 2. apply the bridged-mode patches (one per app). These wire each mock's client
+#    interactables to the gym engine (see "Bridged mode" below) AND, for uber,
+#    include the systemB fix (that mock ships internally broken — two parallel
+#    context systems cross-wired). The 5 *_bridged.patch supersede the standalone
+#    uber_eats_mock_systemB.patch — apply the bridged set, not both.
+for a in amazon_mock ebay_mock gmail_mock google_calendar_mock uber_eats_mock; do
+  git -C CUA-Gym-Hub apply "<gym>/tools/patches/${a}_bridged.patch"
+done
 
 # 3. install each mock's deps (npm cache must be writable; use a local one if ~/.npm is locked)
 for a in amazon_mock ebay_mock gmail_mock google_calendar_mock uber_eats_mock; do
@@ -138,12 +142,34 @@ GYM_URL=http://127.0.0.1:8077 HARNESS_TOKEN=dev \
 # 3. the mock UIs run bridged (VITE_BRIDGE_URL=http://127.0.0.1:8090) — see bridge_client.js
 ```
 
+**Client wiring — all 5 mocks (the `*_bridged.patch`):** each mock's central
+`context/StoreContext.jsx` gets a `src/lib/bridge.js` helper and a runtime opt-in:
+open the mock with `?bridge=<bridge-service-url>` and it becomes a live front-end
+over the engine; with no param it behaves exactly as upstream (one build, both
+modes). On load it hydrates from `GET /bridge/state?app=<key>` and polls (so
+cross-app effects from other tabs surface); each gym-backed action short-circuits
+to `bridgeAct(...)`. **Engine state is normalized through the mock's own
+`initializeData` (deep-merge onto defaults)** — the same path normal seeding uses,
+so the bridged UI renders identically to the seeded UI. Wired per app:
+- **amazon (shop):** add/remove/set-qty cart, place order, add/set-default address, add/set-default payment
+- **ebay (market):** add/remove/clear cart, buy-now (add+checkout), checkout, coupon
+- **gmail (mail):** send, reply
+- **calendar:** create / update / delete event (via a bridged `dispatch`)
+- **uber (food):** add-to-cart, checkout (place order)
+
+Actions the gym engine doesn't model (auctions, labels/drafts, wishlists,
+per-item food edits, drag-reschedule) stay on the local store — they don't affect
+task verification. `GET /bridge/actions` lists every wired action + its fields.
+
+Run a mock bridged (after `npm run build`): serve its `dist/` (`vite preview`)
+and open `http://<host>/?bridge=http://<bridge-host>:8090`. Reset the episode once
+(`POST /bridge/reset {task_id, seed}`) and every tab reflects that task.
+
 **Tested:** `tests/test_bridge.py` proves the loop in-process (reset -> project into
 every tab -> add-to-cart/place-order through the real engine -> order created +
 cart cleared + **cross-app confirmation email in the Gmail tab** -> real verifier
-verdict). Shop is fully wired + tested; the other apps' actions are in `ACTIONS`
-and reachable — the remaining last-mile is swapping each mock's client to call
-`bridgeAct` (the `bridge_client.js` example is the pattern for every interactable).
+verdict). All 5 mocks were also verified rendering + driving the engine in a real
+browser in bridged mode (amazon add-to-cart -> engine -> cart display end-to-end).
 
 **Scope note:** the gym keeps ONE world per instance, so one (gym + bridge) = one
 live episode. Many concurrent annotators = one pair per attempt, or keep the mocks

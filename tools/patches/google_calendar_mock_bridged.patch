@@ -1,0 +1,143 @@
+diff --git a/websites/google_calendar_mock/src/context/StoreContext.jsx b/websites/google_calendar_mock/src/context/StoreContext.jsx
+index 7343fdd..e5a029b 100644
+--- a/websites/google_calendar_mock/src/context/StoreContext.jsx
++++ b/websites/google_calendar_mock/src/context/StoreContext.jsx
+@@ -1,6 +1,15 @@
+ import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react';
+ import { MOCK_USER, DEFAULT_CALENDARS, generateMockEvents, getSessionId, fetchCustomState, saveState, initializeData, getInitialState } from '../utils/helpers';
+ import { addMinutes, differenceInMinutes } from 'date-fns';
++import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
++
++const APP = 'calendar'; // bridge engine app key for this mock
++// In bridged mode: run the gym action, then adopt the engine's authoritative
++// per-app state (already in this mock's shape) via the existing LOAD_STATE case.
++const applyEngine = (dispatch, r) => {
++  // Normalize through initializeData so the adopted state matches the seeded shape.
++  if (r && r.apps && r.apps[APP]) dispatch({ type: 'LOAD_STATE', payload: initializeData(null, r.apps[APP]) });
++};
+ 
+ const StoreContext = createContext();
+ 
+@@ -114,6 +123,20 @@ export const StoreProvider = ({ children }) => {
+     initDone.current = true;
+ 
+     const sid = sidRef.current;
++
++    // Bridged mode: the gym engine is the source of truth. Load its state and
++    // poll so cross-app effects (e.g. an invite from another app) surface here.
++    if (bridged()) {
++      // Normalize through initializeData (deep-merge onto defaults) — same path
++      // normal seeding uses, so rendering matches the seeded UI.
++      bridgeState(APP).then(s => {
++        if (s) dispatch({ type: 'LOAD_STATE', payload: initializeData(sid, s) });
++        setReadyToSave(true);
++      });
++      const stop = bridgePoll(APP, s => dispatch({ type: 'LOAD_STATE', payload: initializeData(sid, s) }));
++      return () => stop();
++    }
++
+     fetchCustomState(sid).then(customState => {
+       if (customState) {
+         const data = initializeData(sid, customState);
+@@ -139,6 +162,41 @@ export const StoreProvider = ({ children }) => {
+     saveState(state, sid);
+   }, [state, readyToSave]);
+ 
++  // In bridged mode, route the gym-backed reducer actions (ADD/UPDATE/DELETE_EVENT)
++  // to the real engine, then adopt its authoritative state. Everything else
++  // (view, date, sidebar, drag MOVE_EVENT, calendars, settings, notices) stays
++  // local and dispatches unchanged — as does every action in legacy mode.
++  const bridgedDispatch = (action) => {
++    if (bridged() && action) {
++      if (action.type === 'ADD_EVENT') {
++        const e = action.payload || {};
++        bridgeAct('calendar.create', {
++          title: e.title || '',
++          day: e.day || e.date || '',
++          start: e.start || '19:00',
++          end: e.end || '20:00',
++        }).then(r => applyEngine(dispatch, r));
++        return;
++      }
++      if (action.type === 'UPDATE_EVENT') {
++        const e = action.payload || {};
++        bridgeAct('calendar.update', {
++          event_id: e.id || e.eventId,
++          title: e.title || '',
++          start: e.start || '',
++          end: e.end || '',
++        }).then(r => applyEngine(dispatch, r));
++        return;
++      }
++      if (action.type === 'DELETE_EVENT') {
++        const id = (action.payload && action.payload.id) ? action.payload.id : action.payload;
++        bridgeAct('calendar.delete', { event_id: id }).then(r => applyEngine(dispatch, r));
++        return;
++      }
++    }
++    return dispatch(action);
++  };
++
+   const getDiff = () => {
+     // Simple shallow diff for demonstration
+     const diff = {};
+@@ -150,7 +208,7 @@ export const StoreProvider = ({ children }) => {
+ 
+   const value = {
+     state,
+-    dispatch,
++    dispatch: bridgedDispatch,
+     originalState,
+     getDiff
+   };
+diff --git a/websites/google_calendar_mock/src/lib/bridge.js b/websites/google_calendar_mock/src/lib/bridge.js
+new file mode 100644
+index 0000000..592181e
+--- /dev/null
++++ b/websites/google_calendar_mock/src/lib/bridge.js
+@@ -0,0 +1,45 @@
++// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
++// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
++// verifiers) instead of this mock's local store. Cross-app effects (e.g. a shop
++// order's confirmation email) then appear in the relevant tab on their own.
++//
++// Runtime opt-in: bridged when the page URL carries ?bridge=<bridge-service-url>
++// (e.g. ...?bridge=http://127.0.0.1:8090). No param -> upstream behavior (legacy),
++// so one build serves both. The bridge service holds ONE live episode (the
++// harness/annotator resets it); the mock only reads state + dispatches actions.
++// The engine's per-app state is already in this mock's own shape (gym-side
++// transform), so applying it needs no mapping.
++
++const _params = new URLSearchParams(
++  typeof window !== 'undefined' ? window.location.search : '');
++const BASE = (_params.get('bridge') || '').replace(/\/$/, '');
++
++export const bridged = () => !!BASE;
++
++export async function bridgeState(app) {
++  const r = await fetch(`${BASE}/bridge/state?app=${encodeURIComponent(app)}`);
++  if (!r.ok) return null;
++  return (await r.json()).apps?.[app] || null;
++}
++
++export async function bridgeAct(action, payload = {}) {
++  const r = await fetch(`${BASE}/bridge/act`, {
++    method: 'POST',
++    headers: { 'Content-Type': 'application/json' },
++    body: JSON.stringify({ action, payload }),
++  });
++  return await r.json(); // { ok, status, apps:{shop,mail,market,calendar,food} }
++}
++
++// Poll the engine so cross-app effects produced in OTHER tabs surface here too.
++export function bridgePoll(app, onState, ms = 2500) {
++  if (!bridged()) return () => {};
++  let live = true;
++  const tick = async () => {
++    if (!live) return;
++    try { const s = await bridgeState(app); if (s) onState(s); } catch (_) {}
++    if (live) setTimeout(tick, ms);
++  };
++  setTimeout(tick, ms);
++  return () => { live = false; };
++}
