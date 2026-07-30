@@ -7,13 +7,13 @@ Pipeline:  dump  ->  transform  ->  load
   load       mint a seed_sid per (task, mock); INSERT into cua-gym mock_states +
              an initial `set` mock_state_events row
 
-Phase-1 pilot status:
-  * dump + the MAIL transform are complete (the gmail_mock shape is known from
-    real cua-gym rows).
-  * shop/market/calendar/food transforms are STUBS — each needs the target
-    mock_states schema from Kashyap (or read from cua-gym) before it can be filled.
-  * load is DRY-RUN by default: the exact cua-gym write contract + DB access come
-    from Kashyap/Ganesh. Pass --commit + CUA_GYM_DSN to actually write.
+All five transforms are complete. The mocks deep-merge a seed over their own
+defaults and run per-key array normalizers, which strip fields they don't know:
+anything the mock would drop but a verifier needs rides in a sibling `_gym_*`
+key, which every mock passes through verbatim.
+
+load is DRY-RUN by default. Pass --commit + CUA_GYM_DSN to write straight to
+Postgres, or --post/--mock-map to go through the hub's state API.
 
 Run:
   python -m tools.seed_to_cuagym --task M1 --seed 0            # dry-run, prints JSON
@@ -25,20 +25,26 @@ from __future__ import annotations
 
 import argparse
 import dataclasses
+import datetime as _dt
 import json
 import os
 import sys
 import uuid
 from typing import Any, Callable
 
+from server.apps.calendar.state import TODAY
 from server.seeddb._equiv import build_wrapped
+
+# Bumped whenever a transform changes shape; lands in each app's _gym_meta so a
+# seeded sid can be traced back to the code that produced it.
+PROJECTION_VERSION = "2"
 
 # gym app key -> cua-hub mock key (the `mock` column in cua-gym.mock_state_events)
 APP_TO_MOCK = {
     "shop": "amazon_mock",
     "mail": "gmail_mock",
     "market": "ebay_mock",
-    "calendar": "google_calendar",
+    "calendar": "google_calendar_mock",
     "food": "uber_eats_mock",
 }
 
@@ -54,6 +60,18 @@ def dump_world(task_id: str, seed: int) -> dict[str, Any]:
 
 
 # ----------------------------------------------------------- transforms --------
+def _gym_meta(state: dict, app: str) -> dict:
+    """Provenance stamped into every seeded app state.
+
+    The mocks echo their whole state back on each `set_current`, so this rides
+    along into every mock_state_events row: a trace says which task it belongs to
+    without a registry lookup, and a state with NO _gym_meta is a dead giveaway
+    that the sid was never seeded and the mock is showing its stock demo data.
+    """
+    return {"task_id": state.get("task_id"), "seed": state.get("seed"), "app": app,
+            "today": TODAY, "projection_version": PROJECTION_VERSION}
+
+
 def _display_name(addr: str | None) -> str:
     if not addr:
         return ""
@@ -117,6 +135,7 @@ def transform_mail(mail: dict) -> dict:
                                       "updates": False, "forums": False},
                      "replyBehavior": "Reply", "language": "English (US)",
                      "sysLabelShown": {}, "userLabelShown": {}},
+        "_gym_meta": _gym_meta(mail, "mail"),
     }
 
 
@@ -200,6 +219,22 @@ def _amazon_payment(p: dict) -> dict:
             "expiry": p.get("expires") or "", "isDefault": bool(p.get("is_default"))}
 
 
+def _order_payment(pay_by_id: dict, payment_id: str | None, def_pay: dict) -> dict:
+    """The card an order was actually charged to.
+
+    An order can reference a card the user has since REMOVED (the dead-card
+    tasks turn on exactly that), so falling back to the account default would
+    erase the thing under test. Keep the real id and synthesize a stub.
+    """
+    if not payment_id:
+        return def_pay
+    known = pay_by_id.get(payment_id)
+    if known:
+        return known
+    return {"id": payment_id, "last4": "0000", "brand": "Removed card",
+            "expiry": "", "isDefault": False}
+
+
 def transform_shop(shop: dict) -> dict:
     """gym GymState -> amazon_mock (products[], user, cart[], orders[], reviews[])."""
     users = shop.get("users") or {}
@@ -236,6 +271,12 @@ def transform_shop(shop: dict) -> dict:
         pays = [dict(_AMZ_PAY)]
     def_addr = next((a for a in addrs if a["isDefault"]), addrs[0])
     def_pay = next((p for p in pays if p["isDefault"]), pays[0])
+    # An order must carry the card/address it ACTUALLY used, not the account
+    # default -- 26 of the breakers hinge on `payment_id == pay_visa`. The mock's
+    # own Checkout writes the whole selected payment object (id included), so a
+    # seeded order and an agent-placed one end up the same shape.
+    pay_by_id = {p["id"]: p for p in pays}
+    addr_by_id = {a["id"]: a for a in addrs}
     user = {"id": (gu or {}).get("id", "u1"), "name": (gu or {}).get("full_name", "Alice Anderson"),
             "email": (gu or {}).get("email", "alice@example.com"),
             "address": def_addr, "addresses": addrs, "paymentMethod": def_pay, "paymentMethods": pays}
@@ -256,7 +297,10 @@ def transform_shop(shop: dict) -> dict:
                        "status": status, "total": o.get("total"),
                        "items": [{"productId": i.get("product_id"), "quantity": i.get("quantity") or 1}
                                  for i in (o.get("items") or [])],
-                       "shippingAddress": user.get("address"), "paymentMethod": user.get("paymentMethod"),
+                       # gym ship-to is per LINE; order level = the first line's.
+                       "shippingAddress": addr_by_id.get(
+                           ((o.get("items") or [{}])[0]).get("ship_to_address_id")) or def_addr,
+                       "paymentMethod": _order_payment(pay_by_id, o.get("payment_id"), def_pay),
                        # tracking # + eta come from the order's first shipment so the
                        # realistic UI actually shows the live tracking an agent must read.
                        "trackingNumber": (o.get("shipments") or [{}])[0].get("tracking_number"),
@@ -274,15 +318,25 @@ def transform_shop(shop: dict) -> dict:
             if 0 < frac < 1:
                 prod["originalPrice"] = round(prod["price"] / (1 - frac), 2)
 
-    seed_pids = [p["id"] for p in products[:3]]
     return {"products": products, "user": user, "cart": cart,
-            "wishlist": seed_pids, "savedForLater": [],
+            # recentlyViewed/recentSearches are the mock's only native engagement
+            # signal (ProductDetail + Header write them as the agent browses), so
+            # they MUST start empty -- pre-filling them forges "the agent looked".
+            "wishlist": [], "savedForLater": [],
             "orders": orders, "reviews": reviews,
-            "recentSearches": [], "recentlyViewed": seed_pids,
+            "recentSearches": [], "recentlyViewed": [],
             # No native amazon UI for these gym concepts -> preserved (not dropped),
             # available in state/verification even though the mock can't render them.
             "_gym_subscriptions": list((shop.get("subscriptions") or {}).values()),
-            "_gym_promotions": list((shop.get("promotions") or {}).values())}
+            "_gym_promotions": list((shop.get("promotions") or {}).values()),
+            # The mock's normalizeOrder/normalizeCartItem reduce every line to
+            # {productId, quantity} and drop payment/address ids, so the fields the
+            # gift-wrap, split-ship and payment breakers verify against are kept here.
+            "_gym_orders": list((shop.get("orders") or {}).values()),
+            "_gym_cart_detail": {"items": (shop.get("cart") or {}).get("items") or [],
+                                 "applied_promo": (shop.get("cart") or {}).get("applied_promo")},
+            "_gym_returns": list((shop.get("returns") or {}).values()),
+            "_gym_meta": _gym_meta(shop, "shop")}
 
 
 # --- ebay (gym market / ValueMart) -------------------------------------------
@@ -291,14 +345,16 @@ _EBAY_CAT = {"electronics": "Electronics", "audio": "Electronics", "home": "Home
 
 def transform_market(m: dict) -> dict:
     """gym MarketState -> ebay_mock (listings[], users[], cart[])."""
-    import datetime
     store = m.get("store_name") or "ValueMart"
     seller_id, buyer_id = "user_valuemart", "user_1"
     buyer = {"id": buyer_id, "username": "admin", "email": "admin@example.com",
              "avatar": _picsum("user1", "100/100"), "feedbackScore": 154, "feedbackRating": 98.5}
     seller = {"id": seller_id, "username": store, "email": "store@valuemart.example.com",
               "avatar": _picsum("valuemart", "100/100"), "feedbackScore": 500, "feedbackRating": 99.0}
-    end_ms = int(datetime.datetime(2026, 5, 28, 12, 0, 0).timestamp() * 1000)
+    # UTC-pinned: a naive datetime here made the projection (and therefore any
+    # content hash of it) depend on the operator's local timezone.
+    end_ms = int(_dt.datetime(2026, 5, 28, 12, 0, 0,
+                              tzinfo=_dt.timezone.utc).timestamp() * 1000)
 
     # which products have been ordered -> their listings show as "sold"
     ordered_pids = set()
@@ -332,7 +388,9 @@ def transform_market(m: dict) -> dict:
             "messages": [], "notifications": [], "feedbacks": [], "cart": cart,
             # eBay has no coupon UI -> preserved (not dropped), plus the priced cart detail.
             "_gym_coupons": list((m.get("coupons") or {}).values()),
-            "_gym_cart_detail": (m.get("cart") or {}).get("items") or []}
+            "_gym_cart_detail": (m.get("cart") or {}).get("items") or [],
+            "_gym_orders": list((m.get("orders") or {}).values()),
+            "_gym_meta": _gym_meta(m, "market")}
 
 
 # --- google calendar (gym calendar) ------------------------------------------
@@ -355,20 +413,24 @@ def transform_calendar(cal: dict) -> dict:
     email = ".".join(name.lower().split()) + "@example.com"
     user = {"id": "u1", "username": name, "email": email, "avatar": _picsum("user1", "100/100")}
     ordered = sorted((cal.get("events") or {}).values(), key=lambda e: (e.get("day", ""), e.get("start", "")))
-    events, current_date = [], None
+    events = []
     for e in ordered:
         day = e.get("day")
-        if current_date is None:
-            current_date = f"{day}T00:00:00.000Z"
+        # `source` is what the gym uses to tell a seeded event from an agent-made
+        # one. normalizeEvent strips it from the live state, but it survives in the
+        # raw initial_state, so a verifier can still diff new-since-seed by id.
         events.append({"id": e.get("id"), "calendarId": "c1", "title": e.get("title") or "(No Title)",
                        "start": f"{day}T{e.get('start')}:00.000Z", "end": f"{day}T{e.get('end')}:00.000Z",
                        "allDay": False, "location": "", "description": "", "guests": [],
-                       "color": "#039BE5", "recurring": "none"})
+                       "color": "#039BE5", "recurring": "none", "source": e.get("source") or "seed"})
     return {"user": user, "calendars": _CAL_DEFAULTS, "otherCalendars": _CAL_OTHER, "events": events,
-            "view": "week", "currentDate": current_date or "2026-05-21T00:00:00.000Z", "sidebarOpen": True,
+            # The frozen gym clock, NOT the earliest event -- deriving it from the
+            # events opened 23 tasks on the wrong "today".
+            "view": "week", "currentDate": f"{TODAY}T00:00:00.000Z", "sidebarOpen": True,
             "settings": {"weekStart": 0, "defaultDuration": 60, "defaultView": "week",
                          "defaultReminder": {"type": "popup", "minutes": 10}, "timeFormat": "12h",
-                         "showWeekNumbers": False, "showDeclinedEvents": False}}
+                         "showWeekNumbers": False, "showDeclinedEvents": False},
+            "_gym_meta": _gym_meta(cal, "calendar")}
 
 
 # --- uber eats (gym food) ----------------------------------------------------
@@ -378,6 +440,12 @@ _DIETARY = {"vegetarian": "Vegetarian", "vegan": "Vegan", "gluten-free": "Gluten
 def _price_range(fee) -> str:
     fee = fee or 0
     return "$" if fee < 2 else ("$$" if fee < 4 else "$$$")
+
+
+# Fixed order timestamp: normalizeOrder defaults `created` to Date.now(), which
+# would make the projection differ on every run.
+_FOOD_EPOCH_MS = int(_dt.datetime(2026, 5, 21, 12, 0, 0,
+                                  tzinfo=_dt.timezone.utc).timestamp() * 1000)
 
 
 def transform_food(food: dict) -> dict:
@@ -396,6 +464,10 @@ def transform_food(food: dict) -> dict:
                             "cuisineType": [r.get("cuisine")] if r.get("cuisine") else [],
                             "rating": r.get("rating"), "reviewCount": 0,
                             "priceRange": _price_range(r.get("delivery_fee")), "deliveryFee": r.get("delivery_fee"),
+                            # etaLabel is the gym's absolute arrival time ("7:20 PM"). The mock
+                            # only has a generic min/max window, so tasks gated on "will it get
+                            # here by 7pm" need the real label carried alongside it.
+                            "etaLabel": r.get("eta_label"),
                             "deliveryTimeMin": 20, "deliveryTimeMax": 40, "distance": 1.0, "isOpen": True,
                             "hours": "", "address": "", "phone": "", "isSponsored": False, "promotions": [],
                             "categories": [], "tags": [], "supportsPickup": True,
@@ -405,38 +477,52 @@ def transform_food(food: dict) -> dict:
             "addresses": [dict(_UBER_ADDR)], "defaultAddressId": _UBER_ADDR["id"],
             "paymentMethods": [dict(_UBER_PAY)], "defaultPaymentId": _UBER_PAY["id"],
             "uberOneActive": False, "favoriteRestaurantIds": []}
-    # cart: gym FoodCart -> uber cart
+    # The mock's normalizeCartItem/normalizeOrderItem both want
+    # {cartItemId, menuItem:{...}, quantity, modifiers, instructions} and nest the
+    # dish as a whole object -- emitting a flat {menuItemId, name, price} made every
+    # seeded line render blank, because `menuItem` fell back to {}.
+    by_dish = {m["id"]: m for m in menu_items}
+
+    def _line(it, i, prefix):
+        q = it.get("quantity") or 1
+        return {"cartItemId": f"{prefix}_{i}", "menuItem": by_dish.get(it.get("dish_id")) or
+                {"id": it.get("dish_id"), "name": it.get("name"), "price": it.get("unit_price")},
+                "quantity": q, "modifiers": {}, "instructions": it.get("note") or ""}
+
+    # cart: gym FoodCart -> uber cart. deepMergeWithDefaults rebuilds `cart` as
+    # {restaurantId, items} only, so tip/mode/delivery_note are kept in _gym_food_cart.
     fc = food.get("cart") or {}
-    cart_items = []
-    for it in (fc.get("items") or []):
-        up, q = (it.get("unit_price") or 0), (it.get("quantity") or 1)
-        cart_items.append({"menuItemId": it.get("dish_id"), "name": it.get("name"), "quantity": q,
-                           "basePrice": up, "selectedOptions": [], "totalPrice": round(up * q, 2),
-                           "specialInstructions": ""})
-    cart = {"restaurantId": fc.get("restaurant_id"), "items": cart_items, "tipPercentage": 0,
-            "tipAmount": 0, "promoDiscount": 0, "deliveryMode": "delivery", "scheduledTime": None}
+    cart = {"restaurantId": fc.get("restaurant_id"),
+            "items": [_line(it, i, "cart_item") for i, it in enumerate(fc.get("items") or [])]}
 
     # orders: gym FoodOrder -> uber order
     orders = []
     for o in (food.get("orders") or {}).values():
-        its = []
-        for it in (o.get("items") or []):
-            up, q = (it.get("unit_price") or 0), (it.get("quantity") or 1)
-            its.append({"menuItemId": it.get("dish_id"), "name": it.get("name"), "quantity": q,
-                        "unitPrice": up, "totalPrice": round(up * q, 2),
-                        "selectedOptions": [], "specialInstructions": ""})
-        orders.append({"id": o.get("id"), "restaurantId": o.get("restaurant_id"),
-                       "restaurantName": o.get("restaurant_name"), "items": its,
+        sub = o.get("subtotal") or 0
+        fee = o.get("delivery_fee") or 0
+        orders.append({"id": o.get("id"), "userId": user["id"], "restaurantId": o.get("restaurant_id"),
+                       "restaurantName": o.get("restaurant_name"),
+                       "items": [_line(it, i, f"{o.get('id')}_item")
+                                 for i, it in enumerate(o.get("items") or [])],
                        "status": _FOOD_STATUS.get((o.get("status") or "").lower(), "placed"),
-                       "placedAt": o.get("placed_at"), "subtotal": o.get("subtotal"),
-                       "deliveryFee": o.get("delivery_fee"), "total": o.get("total")})
+                       # normalizeOrder wants `created` (ms) and an object `total`;
+                       # a bare number there rendered as $0.
+                       "created": _FOOD_EPOCH_MS, "placedAt": o.get("placed_at"),
+                       "deliveryDetails": {"note": o.get("delivery_note") or ""},
+                       "total": {"subtotal": sub, "fee": fee, "tax": 0,
+                                 "total": o.get("total") or round(sub + fee, 2)}})
     active = orders[-1]["id"] if orders else None
 
     return {"user": user, "categories": list(_UBER_CATEGORIES), "restaurants": restaurants, "menuItems": menu_items,
             "cart": cart, "orders": orders, "activeOrderId": active, "promotions": [], "reviews": [],
             "ui": {"selectedAddressId": _UBER_ADDR["id"], "deliveryMode": "delivery", "searchQuery": "",
                    "recentSearches": [], "activeFilters": {"sort": "", "priceRange": [], "dietary": [],
-                                                           "maxDeliveryFee": None, "deals": False}}}
+                                                           "maxDeliveryFee": None, "deals": False}},
+            # delivery_note is the whole harm surface of the delivery-disclosure
+            # breakers and the mock drops it on both cart and order.
+            "_gym_food_cart": fc,
+            "_gym_food_orders": list((food.get("orders") or {}).values()),
+            "_gym_meta": _gym_meta(food, "food")}
 
 
 TRANSFORMERS: dict[str, Callable[[dict], dict]] = {
@@ -449,7 +535,8 @@ TRANSFORMERS: dict[str, Callable[[dict], dict]] = {
 
 
 # ------------------------------------------------------- build seed rows -------
-def transform_world(world: dict[str, Any], apps: list[str] | None = None) -> dict[str, tuple[str, dict]]:
+def transform_world(world: dict[str, Any], apps: list[str] | None = None,
+                    task_id: str | None = None) -> dict[str, tuple[str, dict]]:
     """{app: (mock_key, state)} for an already-dumped world dict.
 
     Split out from transformed_states so the live bridge can re-project the
@@ -457,6 +544,13 @@ def transform_world(world: dict[str, Any], apps: list[str] | None = None) -> dic
     a freshly-built seed. `world` is the asdict shape (per-app store under its
     app key), same as dump_world returns.
     """
+    # Only the shop store carries task_id/seed; stamp them onto every app so each
+    # mock's _gym_meta identifies the task it belongs to. Prefer the REQUESTED id:
+    # arm variants (…_armB) build the same base world and would otherwise all
+    # report the base id, which is what the seed sid is derived from.
+    shop = world.get("shop") or {}
+    task_id, seed = task_id or shop.get("task_id"), shop.get("seed")
+
     out: dict[str, tuple[str, dict]] = {}
     for app in (apps or list(APP_TO_MOCK)):
         if app not in world or world[app] is None:
@@ -465,9 +559,14 @@ def transform_world(world: dict[str, Any], apps: list[str] | None = None) -> dic
         if transform is None:
             continue
         try:
-            out[app] = (APP_TO_MOCK[app], transform(world[app]))
+            state = transform(world[app])
         except NotImplementedError as exc:
             print(f"  skip {app}: {exc}", file=sys.stderr)
+            continue
+        meta = state.get("_gym_meta")
+        if meta is not None:
+            meta["task_id"], meta["seed"] = task_id, seed
+        out[app] = (APP_TO_MOCK[app], state)
     return out
 
 
@@ -476,7 +575,7 @@ def transformed_states(task_id: str, seed: int, apps: list[str] | None = None) -
 
     The reusable core: seeding (build_seed_rows) and the session manager both call this.
     """
-    return transform_world(dump_world(task_id, seed), apps)
+    return transform_world(dump_world(task_id, seed), apps, task_id=task_id)
 
 
 def build_seed_rows(task_id: str, seed: int, apps: list[str] | None = None) -> list[dict]:

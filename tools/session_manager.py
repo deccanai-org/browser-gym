@@ -13,11 +13,15 @@ Operations:
   diffs(session_id)                                   -> per-app /go state_diff (the verifier signal)
   list_sessions()                                     -> registry rows
 
-Sessions are tracked in a SQLite registry next to this file. mock_map is
-"shop=http://localhost:5201,mail=http://localhost:5203,...".
+A seed_sid is never opened in a browser — only written and read server-side.
+Opening one would mutate it (the mocks post their state on mount, before any
+click), which is exactly how a shared seed gets clobbered by the first attempt.
+
+Sessions are tracked in a SQLite registry next to this file. mock_map defaults
+to the live hub from tools/cua_env; pass "shop=...,mail=..." to override.
 
 CLI:
-  python -m tools.session_manager start  --task M301/... --seed 0 --annotator alice --mock-map "shop=...,mail=..."
+  python -m tools.session_manager start  --task M301/... --seed 0 --annotator alice
   python -m tools.session_manager diffs  --session <id>
   python -m tools.session_manager golden --session <id>
   python -m tools.session_manager end    --session <id>
@@ -31,12 +35,13 @@ import argparse
 import json
 import os
 import pathlib
-import re
 import sqlite3
 import urllib.request
 import uuid
 from datetime import datetime, timedelta, timezone
 
+from harness.runner import hosted_app_url
+from tools.cua_env import api_map
 from tools.seed_to_cuagym import APP_TO_MOCK, transformed_states
 
 DB = pathlib.Path(__file__).resolve().parent / ".pilot_sessions.sqlite"
@@ -44,13 +49,19 @@ DEFAULT_TTL_MIN = int(os.environ.get("PILOT_TTL_MIN", "90"))
 
 
 # --------------------------------------------------------------- helpers -------
-def _sanitize(s: str) -> str:
-    # the mock sanitizes sids to [a-zA-Z0-9_-]; match that so seed_sids are stable.
-    return re.sub(r"[^a-zA-Z0-9_-]", "_", s)
+# The hosted hub stores state in Postgres and rejects any sid that isn't a real
+# UUID, so seed sids are UUIDv5: still deterministic (same task always resolves to
+# the same sid, on any machine, in any language) but legal for the `uuid` column.
+NS_GYM = uuid.uuid5(uuid.NAMESPACE_URL, "https://gym.deccanexperts.ai/cua-seed/v1")
+
+# Bump to mint a fresh sid family when a projection change means the frozen
+# initial_state must be re-cut. `set` will NOT re-freeze a non-NULL initial_state,
+# so a new rev is cheaper and safer than repairing in place.
+SEED_REV = 1
 
 
-def _seed_sid(task_id: str, seed: int, app: str) -> str:
-    return _sanitize(f"seed-{task_id}-{seed}-{app}")
+def _seed_sid(task_id: str, seed: int, app: str, rev: int = SEED_REV) -> str:
+    return str(uuid.uuid5(NS_GYM, f"{task_id}|{seed}|{app}|r{rev}"))
 
 
 def _http(method: str, url: str, body: dict | None = None) -> dict:
@@ -71,6 +82,17 @@ def _get_state(url: str, sid: str) -> dict:
     return _http("GET", f"{url.rstrip('/')}/state?sid={sid}").get("stored_state") or {}
 
 
+def _get_initial(url: str, sid: str) -> dict:
+    """The FROZEN baseline for a sid.
+
+    /state returns `current`, which drifts the moment anything opens the sid —
+    even a bare page load, since the mocks post their hydrated state on mount.
+    Cloning from it would propagate one annotator's leftovers into every later
+    attempt. /go keeps the untouched initial_state, so clone from that.
+    """
+    return _http("GET", f"{url.rstrip('/')}/go?sid={sid}").get("initial_state") or {}
+
+
 def _reset(url: str, sid: str) -> dict:
     return _http("POST", f"{url.rstrip('/')}/post?sid={sid}", {"action": "reset"})
 
@@ -79,7 +101,10 @@ def _now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-def parse_mock_map(s: str) -> dict[str, str]:
+def parse_mock_map(s: str | None) -> dict[str, str]:
+    """app -> state-API base. Defaults to the live hub (see tools/cua_env)."""
+    if not s:
+        return api_map()
     return dict(p.split("=", 1) for p in s.split(",") if "=" in p)
 
 
@@ -119,14 +144,19 @@ def start_session(task_id: str, seed: int, annotator: str, mock_map: dict[str, s
     conn.execute("INSERT INTO session VALUES (?,?,?,?,?,?,?,0)",
                  (session_id, task_id, seed, annotator, "active",
                   started.isoformat(), expires.isoformat()))
+    # Clone from the LOCAL projection, not from the network: it is the source of
+    # truth, and it means a corrupted hosted seed can never leak into an attempt.
+    local = {app: state for app, (_m, state) in
+             transformed_states(task_id, seed, list(seed_sids)).items()}
     apps = []
     for app, seedsid in seed_sids.items():
         url = mock_map[app]
-        state = _get_state(url, seedsid)              # read the frozen seed
+        state = local.get(app) or _get_initial(url, seedsid)
         attempt = str(uuid.uuid4())
         _post_state(url, attempt, state, "set")       # clone -> attempt's own initial+current
-        frag = "#/inbox" if APP_TO_MOCK.get(app) == "gmail_mock" else ""
-        open_url = f"{url.rstrip('/')}/?sid={attempt}{frag}"
+        # The SPA lives on a different host than the state API — handing out the
+        # api base would open raw JSON instead of the storefront.
+        open_url = hosted_app_url(app, attempt)
         conn.execute("INSERT INTO session_app VALUES (?,?,?,?,?)",
                      (session_id, app, APP_TO_MOCK[app], attempt, url))
         apps.append({"app": app, "attempt_sid": attempt, "url": open_url})
@@ -214,7 +244,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--task", required=True)
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--annotator", default="anon")
-    p.add_argument("--mock-map", required=True)
+    p.add_argument("--mock-map", default=None, help="default: the live hub (CUA_ENV)")
     p.add_argument("--ttl-min", type=int, default=DEFAULT_TTL_MIN)
 
     for name in ("end", "golden", "diffs"):

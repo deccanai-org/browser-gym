@@ -59,19 +59,32 @@ def _seg_to_app(path: str) -> str:
     return _SEG_TO_APP.get(seg, "shop")
 
 
-def bridged_app_url(app_origins: dict, bridge_url: str, app: str,
-                    start_path: str | None = None) -> str:
-    """URL that opens the realistic mock for ``app`` in bridged mode: the mock's
-    origin at its start path, carrying ``?bridge=<bridge_url>`` BEFORE any hash so
-    a hash-routed SPA (Gmail's /#/inbox) still reads it from location.search."""
-    origin = app_origins[app].rstrip("/")
+def _app_url(origin: str, app: str, param: dict, start_path: str | None = None) -> str:
+    """``origin`` at the app's start path, carrying ``param`` BEFORE any hash so a
+    hash-routed SPA (Gmail's /#/inbox) still reads it from location.search."""
     sp = start_path or _APP_START_PATH.get(app, "/")
     if not sp.startswith(("/", "#", "?")):
         sp = "/" + sp
     parts = urlsplit(sp)
-    extra = urlencode({"bridge": bridge_url})
+    extra = urlencode(param)
     query = f"{parts.query}&{extra}" if parts.query else extra
-    return origin + urlunsplit(("", "", parts.path or "/", query, parts.fragment))
+    return origin.rstrip("/") + urlunsplit(("", "", parts.path or "/", query, parts.fragment))
+
+
+def bridged_app_url(app_origins: dict, bridge_url: str, app: str,
+                    start_path: str | None = None) -> str:
+    """Bridged mode: the mock drives the live gym engine via ``?bridge=``."""
+    return _app_url(app_origins[app], app, {"bridge": bridge_url}, start_path)
+
+
+def hosted_app_url(app: str, sid: str, start_path: str | None = None) -> str:
+    """Hosted mode: the deployed mock, seeded per ``?sid=``.
+
+    The mock reads its whole world from the hub for that sid and writes every
+    mutation straight back, so the DB is the trajectory — no bridge involved.
+    """
+    from tools.cua_env import ui_base
+    return _app_url(ui_base(app), app, {"sid": sid}, start_path)
 
 
 def _mock_start_path(app: str, gym_path: str | None) -> str | None:
@@ -422,6 +435,16 @@ class BrowserCtx:
     # server_url (the gym). None -> classic gym-HTML mode (unchanged).
     app_origins: Optional[dict] = None
     bridge_url: Optional[str] = None
+    # Hosted mode: {app: attempt_sid}. The deployed mocks are seeded per sid and
+    # persist every mutation to cua-gym, so this is the live-server path. Takes
+    # precedence over bridge_url when both are set.
+    app_sids: Optional[dict] = None
+
+    def _hosted(self) -> bool:
+        return bool(self.app_sids)
+
+    def _apps(self) -> list:
+        return list(self.app_sids or self.app_origins or {})
 
     def __post_init__(self) -> None:
         if not self.pages:
@@ -1150,7 +1173,11 @@ class BrowserCtx:
         # Bridged mode: an app-level path (/mail, /food, ...) opens that mock's
         # own origin at its start page. Within-app navigation is by marks, so we
         # ignore the sub-path here and land on the app start.
-        if self.app_origins and self.bridge_url:
+        if self._hosted():
+            app = _seg_to_app(path)
+            if app in self.app_sids:
+                return hosted_app_url(app, self.app_sids[app])
+        elif self.app_origins and self.bridge_url:
             app = _seg_to_app(path)
             if app in self.app_origins:
                 return bridged_app_url(self.app_origins, self.bridge_url, app)
@@ -1164,11 +1191,13 @@ class BrowserCtx:
         moves between apps with switch_tab (both pixel agents support it). The
         primary tab honors the task's deep-link start-path where the mock has a
         matching route (else the app start)."""
-        order = [primary] + [a for a in apps if a != primary and a in self.app_origins]
+        known = self._apps()
+        order = [primary] + [a for a in apps if a != primary and a in known]
         built: list = []
         for i, app in enumerate(order):
             sp = _mock_start_path(app, primary_start_path) if i == 0 else None
-            url = bridged_app_url(self.app_origins, self.bridge_url, app, sp)
+            url = (hosted_app_url(app, self.app_sids[app], sp) if self._hosted()
+                   else bridged_app_url(self.app_origins, self.bridge_url, app, sp))
             pg = self.page if i == 0 else await self.page.context.new_page()
             try:
                 await pg.goto(url, wait_until="load")
