@@ -94,8 +94,39 @@ index b1c8bae..4c5ecfc 100644
              >
                <Trash2 size={18} />
              </button>
+diff --git a/websites/gmail_mock/src/components/ThreadView.jsx b/websites/gmail_mock/src/components/ThreadView.jsx
+index bd00442..a0d008f 100644
+--- a/websites/gmail_mock/src/components/ThreadView.jsx
++++ b/websites/gmail_mock/src/components/ThreadView.jsx
+@@ -27,7 +27,7 @@ const ThreadMoveToMenu = ({ emailIds, onClose }) => {
+ const ThreadView = () => {
+   const { threadId } = useParams();
+   const navigate = useNavigate();
+-  const { state, toggleStar, replyToEmail, archiveEmails, deleteEmails, bulkUpdateEmails, forwardEmail, showToast, snoozeEmail } = useStore();
++  const { state, toggleStar, replyToEmail, archiveEmails, deleteEmails, bulkUpdateEmails, forwardEmail, showToast, snoozeEmail, openThread } = useStore();
+   const [replyBody, setReplyBody] = useState('');
+   const [isReplying, setIsReplying] = useState(false);
+   const [replyAttachments, setReplyAttachments] = useState([]);
+@@ -37,14 +37,10 @@ const ThreadView = () => {
+   const replyRef = useRef(null);
+   const replyFileInputRef = useRef(null);
+ 
+-  // Auto-mark all unread emails in the thread as read on open
++  // Auto-mark all unread emails in the thread as read on open. In bridged mode
++  // this also logs the open to the gym engine (see openThread in StoreContext).
+   useEffect(() => {
+-    const unreadIds = state.emails
+-      .filter(e => e.threadId === threadId && !e.read)
+-      .map(e => e.id);
+-    if (unreadIds.length > 0) {
+-      bulkUpdateEmails(unreadIds, { read: true });
+-    }
++    openThread(threadId);
+     // Only run when the thread changes, not on every state update
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [threadId]);
 diff --git a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mock/src/context/StoreContext.jsx
-index 88aa2ee..6eb815b 100644
+index 88aa2ee..9ed13da 100644
 --- a/websites/gmail_mock/src/context/StoreContext.jsx
 +++ b/websites/gmail_mock/src/context/StoreContext.jsx
 @@ -1,6 +1,16 @@
@@ -165,6 +196,39 @@ index 88aa2ee..6eb815b 100644
       const newEmail = {
        id: generateId(),
        threadId: originalEmail.threadId,
+@@ -283,6 +322,24 @@ export const StoreProvider = ({ children }) => {
+       updateEmail(emailId, { read: status });
+   }
+ 
++  // Opening a thread reads its emails. In bridged mode, log the open to the gym
++  // engine (mail.open marks the email read server-side — some tasks require the
++  // agent to actually OPEN a confirmation email) and adopt the authoritative
++  // state. Legacy behavior is unchanged: mark unread thread emails read locally.
++  const openThread = (threadId) => {
++    const threadEmails = state.emails.filter(e => e.threadId === threadId);
++    if (bridged()) {
++      threadEmails.forEach(e => {
++        bridgeAct('mail.open', { email_id: e.id }).then(r => applyEngine(setState, r));
++      });
++      return;
++    }
++    const unreadIds = threadEmails.filter(e => !e.read).map(e => e.id);
++    if (unreadIds.length > 0) {
++      bulkUpdateEmails(unreadIds, { read: true });
++    }
++  };
++
+   const addLabel = (emailId, labelId) => {
+     const email = state.emails.find(e => e.id === emailId);
+     if (email && !email.labels.includes(labelId)) {
+@@ -442,6 +499,7 @@ export const StoreProvider = ({ children }) => {
+       toggleStar,
+       toggleImportant,
+       toggleRead,
++      openThread,
+       addLabel,
+       removeLabel,
+       createLabel,
 diff --git a/websites/gmail_mock/src/lib/bridge.js b/websites/gmail_mock/src/lib/bridge.js
 new file mode 100644
 index 0000000..592181e

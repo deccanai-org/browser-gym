@@ -116,6 +116,130 @@ index 677f6ad..10b350b 100644
 +    </AppProvider>
 +  );
 +}
+diff --git a/websites/uber_eats_mock/src/components/ItemModal.jsx b/websites/uber_eats_mock/src/components/ItemModal.jsx
+index 0a0f06d..f6095c2 100644
+--- a/websites/uber_eats_mock/src/components/ItemModal.jsx
++++ b/websites/uber_eats_mock/src/components/ItemModal.jsx
+@@ -52,7 +52,7 @@
+ 
+       const handleSubmit = () => {
+         // Validation: Check required modifiers
+-        const missingRequired = item.modifiers.filter(m => m.required && !modifiers[m.id]);
++        const missingRequired = (item.modifiers || []).filter(m => m.required && !modifiers[m.id]);
+         if (missingRequired.length > 0) {
+           setValidationMessage(`Please select: ${missingRequired.map(m => m.name).join(', ')}`);
+           return;
+@@ -82,7 +82,7 @@
+               
+               {/* Modifiers */}
+               <div className="space-y-8">
+-                {item.modifiers.map(mod => (
++                {(item.modifiers || []).map(mod => (
+                   <div key={mod.id} className="border-b border-gray-100 pb-6 last:border-0">
+                     <div className="flex justify-between mb-4">
+                       <h3 className="font-bold text-lg">{mod.name}</h3>
+@@ -90,7 +90,7 @@
+                     </div>
+                     
+                     <div className="space-y-3">
+-                      {mod.options.map((opt, idx) => (
++                      {(mod.options || []).map((opt, idx) => (
+                         <label key={idx} className="flex items-center justify-between cursor-pointer group">
+                           <div className="flex items-center gap-3">
+                             <input 
+diff --git a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_eats_mock/src/context/AppContext.jsx
+index 81ca688..53980e1 100644
+--- a/websites/uber_eats_mock/src/context/AppContext.jsx
++++ b/websites/uber_eats_mock/src/context/AppContext.jsx
+@@ -1,6 +1,9 @@
+ import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
+ import { getSessionId, fetchCustomState, saveState, initializeData, initialKey, generateId } from '../utils/dataManager';
+ import { computeStateDiff } from '../utils/stateTracker';
++import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
++
++const APP = 'food'; // bridge engine app key for this mock
+ 
+ const AppContext = createContext(null);
+ 
+@@ -11,11 +14,36 @@ export function AppProvider({ children }) {
+   const sidRef = useRef(getSessionId());
+   const initDone = useRef(false);
+ 
++  // Bridged mode: adopt the engine's authoritative per-app state. Normalize the
++  // SAME way the normal load path does — initializeData(sid, engineState) deep-
++  // merges it onto the seeded defaults — then REPLACE state (uber's setState
++  // replaces, not merges). Guard against a null engine state.
++  const applyEngine = useCallback((engineState) => {
++    if (!engineState) return;
++    setState(initializeData(sidRef.current, engineState));
++  }, []);
++
+   useEffect(() => {
+     if (initDone.current) return;
+     initDone.current = true;
+ 
+     const sid = sidRef.current;
++
++    // Bridged mode: the gym engine is the source of truth. Load its state and
++    // poll so cross-app effects (e.g. an order confirmation) surface here too.
++    if (bridged()) {
++      bridgeState(APP).then(s => {
++        if (s) {
++          const data = initializeData(sid, s);
++          setState(data);
++          setInitialStateSnapshot(JSON.parse(JSON.stringify(data)));
++        }
++        setLoading(false);
++      });
++      const stop = bridgePoll(APP, s => { if (s) setState(initializeData(sid, s)); });
++      return () => stop();
++    }
++
+     const ik = initialKey(sid);
+     const isRefresh = localStorage.getItem(ik) !== null;
+ 
+@@ -44,6 +72,14 @@ export function AppProvider({ children }) {
+   // --- Actions ---
+ 
+   const addToCart = useCallback((menuItem, restaurant, quantity, selectedOptions, specialInstructions) => {
++    if (bridged()) {
++      bridgeAct('food.add_to_cart', {
++        restaurant_id: (restaurant && restaurant.id) || (menuItem && (menuItem.restaurantId || menuItem.restaurant_id)) || '',
++        dish_id: menuItem && (menuItem.id || menuItem.dishId),
++        quantity: quantity || 1,
++      }).then(r => applyEngine(r && r.apps && r.apps[APP]));
++      return;
++    }
+     setState(prev => {
+       if (!prev) return prev;
+       const modifierTotal = selectedOptions.reduce((s, o) => s + o.priceModifier, 0);
+@@ -155,6 +191,17 @@ export function AppProvider({ children }) {
+   }, []);
+ 
+   const placeOrder = useCallback((orderData) => {
++    if (bridged()) {
++      return bridgeAct('food.checkout', {
++        delivery_note: (orderData && (orderData.note || orderData.instructions || orderData.deliveryInstructions)) ||
++          (state && state.cart && state.cart.deliveryInstructions) || '',
++      }).then(r => {
++        const es = r && r.apps && r.apps[APP];
++        applyEngine(es);
++        const os = (es && es.orders) || [];
++        return os.length ? os[os.length - 1].id : undefined;
++      });
++    }
+     const orderId = 'ord_' + Date.now().toString(36);
+     setState(prev => {
+       if (!prev) return prev;
+@@ -228,7 +275,7 @@ export function AppProvider({ children }) {
+       };
+     });
+     return orderId;
+-  }, []);
++  }, [state, applyEngine]);
+ 
+   const toggleFavorite = useCallback((restaurantId) => {
+     setState(prev => {
 diff --git a/websites/uber_eats_mock/src/context/StoreContext.jsx b/websites/uber_eats_mock/src/context/StoreContext.jsx
 index 76c6084..3ba2bfe 100644
 --- a/websites/uber_eats_mock/src/context/StoreContext.jsx
@@ -323,3 +447,19 @@ index 0000000..b70cc11
 +    </div>
 +  );
 +}
+diff --git a/websites/uber_eats_mock/src/pages/StorePage.jsx b/websites/uber_eats_mock/src/pages/StorePage.jsx
+index ffb8350..9fe7d87 100644
+--- a/websites/uber_eats_mock/src/pages/StorePage.jsx
++++ b/websites/uber_eats_mock/src/pages/StorePage.jsx
+@@ -263,9 +263,10 @@ export default function StorePage() {
+       {selectedItem && (
+         <ItemModal
+           item={selectedItem}
++          isOpen={true}
+           restaurant={restaurant}
+           onClose={() => setSelectedItem(null)}
+-          onAdd={handleAddToCart}
++          onAddToCart={handleAddToCart}
+         />
+       )}
+     </div>

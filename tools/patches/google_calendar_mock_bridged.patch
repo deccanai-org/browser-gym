@@ -1,8 +1,50 @@
+diff --git a/websites/google_calendar_mock/src/components/EventModal.jsx b/websites/google_calendar_mock/src/components/EventModal.jsx
+index 7fff9e8..52ebefc 100644
+--- a/websites/google_calendar_mock/src/components/EventModal.jsx
++++ b/websites/google_calendar_mock/src/components/EventModal.jsx
+@@ -108,10 +108,21 @@ export default function EventModal({ isOpen, onClose, event, selectedDate }) {
+       end: new Date(formData.end).toISOString()
+     };
+ 
++    // Raw wall-clock date + HH:MM straight from the datetime-local inputs,
++    // BEFORE the ISO conversion above. Carried on a sibling `bridge` field so
++    // bridgedDispatch can forward the shape the gym expects (day + HH:MM)
++    // without re-parsing/timezone-shifting the ISO string. The legacy reducer
++    // ignores `action.bridge`, so the persisted event stays unchanged.
++    const bridge = {
++      day: formData.start.slice(0, 10),   // "YYYY-MM-DD"
++      start: formData.start.slice(11, 16), // "HH:MM"
++      end: formData.end.slice(11, 16),     // "HH:MM"
++    };
++
+     if (event) {
+-      dispatch({ type: 'UPDATE_EVENT', payload: newEvent });
++      dispatch({ type: 'UPDATE_EVENT', payload: newEvent, bridge });
+     } else {
+-      dispatch({ type: 'ADD_EVENT', payload: newEvent });
++      dispatch({ type: 'ADD_EVENT', payload: newEvent, bridge });
+     }
+     onClose();
+   };
+@@ -137,7 +148,12 @@ export default function EventModal({ isOpen, onClose, event, selectedDate }) {
+         end: new Date(formData.end).toISOString(),
+         guests: formData.guests,
+       };
+-      dispatch({ type: 'ADD_EVENT', payload: newEvent });
++      const bridge = {
++        day: formData.start.slice(0, 10),
++        start: formData.start.slice(11, 16),
++        end: formData.end.slice(11, 16),
++      };
++      dispatch({ type: 'ADD_EVENT', payload: newEvent, bridge });
+       onClose();
+     }
+   };
 diff --git a/websites/google_calendar_mock/src/context/StoreContext.jsx b/websites/google_calendar_mock/src/context/StoreContext.jsx
-index 7343fdd..e5a029b 100644
+index 7343fdd..5008080 100644
 --- a/websites/google_calendar_mock/src/context/StoreContext.jsx
 +++ b/websites/google_calendar_mock/src/context/StoreContext.jsx
-@@ -1,6 +1,15 @@
+@@ -1,6 +1,25 @@
  import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react';
  import { MOCK_USER, DEFAULT_CALENDARS, generateMockEvents, getSessionId, fetchCustomState, saveState, initializeData, getInitialState } from '../utils/helpers';
  import { addMinutes, differenceInMinutes } from 'date-fns';
@@ -15,10 +57,20 @@ index 7343fdd..e5a029b 100644
 +  // Normalize through initializeData so the adopted state matches the seeded shape.
 +  if (r && r.apps && r.apps[APP]) dispatch({ type: 'LOAD_STATE', payload: initializeData(null, r.apps[APP]) });
 +};
++
++// Fallback HH:MM extraction from a full ISO datetime, used only when the modal
++// didn't attach raw wall-clock values (action.bridge). new Date(iso).toTimeString()
++// round-trips the local wall time the user picked (the ISO was produced from a
++// local datetime-local value), so it matches what was entered.
++const isoToHM = (iso) => {
++  if (typeof iso !== 'string' || !iso) return '';
++  try { return new Date(iso).toTimeString().slice(0, 5); } catch (_) { return iso.slice(11, 16); }
++};
++const isoToDay = (iso) => (typeof iso === 'string' ? iso.slice(0, 10) : '');
  
  const StoreContext = createContext();
  
-@@ -114,6 +123,20 @@ export const StoreProvider = ({ children }) => {
+@@ -114,6 +133,23 @@ export const StoreProvider = ({ children }) => {
      initDone.current = true;
  
      const sid = sidRef.current;
@@ -26,6 +78,9 @@ index 7343fdd..e5a029b 100644
 +    // Bridged mode: the gym engine is the source of truth. Load its state and
 +    // poll so cross-app effects (e.g. an invite from another app) surface here.
 +    if (bridged()) {
++      // Log a calendar view so the viewed_calendar milestone can fire (the GET
++      // view action the verifier watches for). Fire-and-forget, once on mount.
++      bridgeAct('calendar.view', {}).catch(() => {});
 +      // Normalize through initializeData (deep-merge onto defaults) — same path
 +      // normal seeding uses, so rendering matches the seeded UI.
 +      bridgeState(APP).then(s => {
@@ -39,7 +94,7 @@ index 7343fdd..e5a029b 100644
      fetchCustomState(sid).then(customState => {
        if (customState) {
          const data = initializeData(sid, customState);
-@@ -139,6 +162,41 @@ export const StoreProvider = ({ children }) => {
+@@ -139,6 +175,46 @@ export const StoreProvider = ({ children }) => {
      saveState(state, sid);
    }, [state, readyToSave]);
  
@@ -51,21 +106,26 @@ index 7343fdd..e5a029b 100644
 +    if (bridged() && action) {
 +      if (action.type === 'ADD_EVENT') {
 +        const e = action.payload || {};
++        const b = action.bridge || {};
++        // The gym expects a day token (YYYY-MM-DD) + HH:MM times, NOT full ISO.
++        // Prefer the raw wall-clock values the modal attached; fall back to
++        // parsing the ISO on the event payload.
 +        bridgeAct('calendar.create', {
 +          title: e.title || '',
-+          day: e.day || e.date || '',
-+          start: e.start || '19:00',
-+          end: e.end || '20:00',
++          day: b.day || isoToDay(e.start) || e.date || '',
++          start: b.start || isoToHM(e.start) || '19:00',
++          end: b.end || isoToHM(e.end) || '20:00',
 +        }).then(r => applyEngine(dispatch, r));
 +        return;
 +      }
 +      if (action.type === 'UPDATE_EVENT') {
 +        const e = action.payload || {};
++        const b = action.bridge || {};
 +        bridgeAct('calendar.update', {
 +          event_id: e.id || e.eventId,
 +          title: e.title || '',
-+          start: e.start || '',
-+          end: e.end || '',
++          start: b.start || isoToHM(e.start) || '',
++          end: b.end || isoToHM(e.end) || '',
 +        }).then(r => applyEngine(dispatch, r));
 +        return;
 +      }
@@ -81,7 +141,7 @@ index 7343fdd..e5a029b 100644
    const getDiff = () => {
      // Simple shallow diff for demonstration
      const diff = {};
-@@ -150,7 +208,7 @@ export const StoreProvider = ({ children }) => {
+@@ -150,7 +226,7 @@ export const StoreProvider = ({ children }) => {
  
    const value = {
      state,

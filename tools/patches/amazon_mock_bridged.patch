@@ -1,5 +1,5 @@
 diff --git a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_mock/src/context/StoreContext.jsx
-index 39de525..13feb4c 100644
+index 39de525..8f7347c 100644
 --- a/websites/amazon_mock/src/context/StoreContext.jsx
 +++ b/websites/amazon_mock/src/context/StoreContext.jsx
 @@ -1,5 +1,15 @@
@@ -146,7 +146,7 @@ index 39de525..13feb4c 100644
      setState(prev => {
        const paymentMethods = (prev.user.paymentMethods || [prev.user.paymentMethod]).map(p => ({ ...p, isDefault: p.id === pmId }));
        const defaultPm = paymentMethods.find(p => p.isDefault) || paymentMethods[0];
-@@ -235,6 +310,32 @@ export const StoreProvider = ({ children }) => {
+@@ -235,6 +310,41 @@ export const StoreProvider = ({ children }) => {
      });
    };
  
@@ -176,15 +176,25 @@ index 39de525..13feb4c 100644
 +    }));
 +  };
 +
++  const applyPromo = (code) => {
++    if (bridged()) {
++      bridgeAct('shop.apply_promo', { code })
++        .then(r => applyEngine(setState, r));
++      return;
++    }
++    // legacy: promo is handled locally in the Cart component's UI state
++  };
++
    // Helper to get diff for /go endpoint
    const getStateDiff = () => {
      const diff = {};
-@@ -272,6 +373,8 @@ export const StoreProvider = ({ children }) => {
+@@ -272,6 +382,9 @@ export const StoreProvider = ({ children }) => {
        setDefaultAddress,
        addPaymentMethod,
        setDefaultPaymentMethod,
 +      setLineOptions,
 +      enableTwoFa,
++      applyPromo,
      }}>
        {children}
      </StoreContext.Provider>
@@ -242,7 +252,7 @@ index 0000000..10df18d
 +  return () => { live = false; };
 +}
 diff --git a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/pages/Cart.jsx
-index f07280a..ac48457 100644
+index f07280a..2e499a5 100644
 --- a/websites/amazon_mock/src/pages/Cart.jsx
 +++ b/websites/amazon_mock/src/pages/Cart.jsx
 @@ -5,7 +5,7 @@ import { Button } from '../components/ui/Button';
@@ -250,11 +260,23 @@ index f07280a..ac48457 100644
  
  export const Cart = () => {
 -  const { state, updateCartQty, removeFromCart, saveForLater, moveToCart, removeSavedItem, addToCart } = useStore();
-+  const { state, updateCartQty, removeFromCart, saveForLater, moveToCart, removeSavedItem, addToCart, setLineOptions } = useStore();
++  const { state, updateCartQty, removeFromCart, saveForLater, moveToCart, removeSavedItem, addToCart, setLineOptions, applyPromo } = useStore();
    const navigate = useNavigate();
    const [promoCode, setPromoCode] = useState('');
    const [appliedPromo, setAppliedPromo] = useState(null);
-@@ -91,6 +91,52 @@ export const Cart = () => {
+@@ -22,7 +22,10 @@ export const Cart = () => {
+   const savedItems = state.savedForLater || [];
+ 
+   const handleApplyPromo = () => {
+-    if (promoCode.trim().toUpperCase() === 'SAVE10') {
++    const code = promoCode.trim().toUpperCase();
++    // Bridged: drive the real gym engine. Legacy: no-op (local UX below).
++    applyPromo(code);
++    if (code === 'SAVE10') {
+       setAppliedPromo('SAVE10');
+       setPromoError('');
+     } else {
+@@ -91,6 +94,52 @@ export const Cart = () => {
                            <span className="text-gray-300">|</span>
                            <button onClick={() => saveForLater(item.productId)} className="text-xmazon-blue hover:underline text-xs">Save for later</button>
                          </div>
@@ -352,17 +374,28 @@ index 162968d..bbd5f57 100644
    if (!order) {
      return (
 diff --git a/websites/amazon_mock/src/pages/Orders.jsx b/websites/amazon_mock/src/pages/Orders.jsx
-index 1f5d6d9..5e8a54c 100644
+index 1f5d6d9..d352e9c 100644
 --- a/websites/amazon_mock/src/pages/Orders.jsx
 +++ b/websites/amazon_mock/src/pages/Orders.jsx
 @@ -1,5 +1,6 @@
- import React, { useState } from 'react';
+-import React, { useState } from 'react';
++import React, { useState, useEffect } from 'react';
  import { useStore } from '../context/StoreContext';
 +import { bridged, bridgeAct } from '../lib/bridge';
  import { Link, useNavigate } from 'react-router-dom';
  import { Button } from '../components/ui/Button';
  import { Search, Package, Truck, CheckCircle, Clock, X, MapPin } from 'lucide-react';
-@@ -271,7 +272,7 @@ export const Orders = () => {
+@@ -31,6 +32,9 @@ export const Orders = () => {
+   const [returnModal, setReturnModal] = useState(null); // { order, product }
+   const [returnSubmitted, setReturnSubmitted] = useState({});
+ 
++  // Bridged: opening the orders page logs view_orders in the engine (milestones).
++  useEffect(() => { if (bridged()) bridgeAct('shop.view_orders', {}); }, []);
++
+   const now = new Date();
+   const threeMonthsAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+   const sixMonthsAgo = new Date(now.getTime() - 180 * 24 * 60 * 60 * 1000);
+@@ -271,7 +275,7 @@ export const Orders = () => {
                      {order.trackingNumber && order.status === 'Shipped' && (
                        <button
                          className="ml-auto text-xs text-xmazon-blue hover:underline cursor-pointer"
@@ -371,6 +404,59 @@ index 1f5d6d9..5e8a54c 100644
                        >
                          Track package
                        </button>
+diff --git a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_mock/src/pages/ProductDetail.jsx
+index 30559ab..01f845c 100644
+--- a/websites/amazon_mock/src/pages/ProductDetail.jsx
++++ b/websites/amazon_mock/src/pages/ProductDetail.jsx
+@@ -1,6 +1,7 @@
+ import React, { useEffect, useState, useRef } from 'react';
+ import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
+ import { useStore } from '../context/StoreContext';
++import { bridged, bridgeAct } from '../lib/bridge';
+ import { Rating } from '../components/ui/Rating';
+ import { Button } from '../components/ui/Button';
+ import { MapPin, User, ZoomIn, Star } from 'lucide-react';
+@@ -27,10 +28,14 @@ export const ProductDetail = () => {
+   useEffect(() => {
+     if (product) {
+       addToRecentlyViewed(product.id);
++      // Bridged: viewing a product logs view_product in the engine (milestones).
++      // Depend on product?.id (not just id) so this re-fires once async bridged
++      // hydration resolves the product — before that, product is undefined.
++      if (bridged()) bridgeAct('shop.view_product', { product_id: product.id });
+     }
+     setSelectedImageIdx(0);
+     setVotedReviews(new Set());
+-  }, [id]);
++  }, [id, product?.id]);
+ 
+   useEffect(() => {
+     if (location.hash === '#reviews' && reviewsRef.current) {
+diff --git a/websites/amazon_mock/src/pages/ProductListing.jsx b/websites/amazon_mock/src/pages/ProductListing.jsx
+index 383d343..2146ed4 100644
+--- a/websites/amazon_mock/src/pages/ProductListing.jsx
++++ b/websites/amazon_mock/src/pages/ProductListing.jsx
+@@ -1,6 +1,7 @@
+-import React, { useState, useMemo } from 'react';
++import React, { useState, useMemo, useEffect } from 'react';
+ import { useSearchParams, useNavigate } from 'react-router-dom';
+ import { useStore } from '../context/StoreContext';
++import { bridged, bridgeAct } from '../lib/bridge';
+ import { ProductCard } from '../components/product/ProductCard';
+ import { Rating } from '../components/ui/Rating';
+ import { CATEGORIES } from '../lib/mockData';
+@@ -14,6 +15,11 @@ export const ProductListing = () => {
+   const categoryParam = searchParams.get('category') || '';
+   const dealsParam = searchParams.get('deals') === 'true';
+ 
++  // Bridged: a search (results mount / query change) logs shop.search in the engine.
++  useEffect(() => {
++    if (bridged() && query) bridgeAct('shop.search', { q: query, category: categoryParam });
++  }, [query, categoryParam]);
++
+   // Get unique brands from products in the current category/search
+   const availableBrands = useMemo(() => {
+     const filtered = state.products.filter(p => categoryParam ? p.category === categoryParam : true);
 diff --git a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/src/pages/Profile.jsx
 index 4d7a93d..354dc89 100644
 --- a/websites/amazon_mock/src/pages/Profile.jsx
