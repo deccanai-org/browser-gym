@@ -130,6 +130,23 @@ _AMAZON_CAT = {
 }
 
 
+_AMZ_STATUS = {
+    "placed": "Processing", "pending": "Processing", "confirmed": "Processing",
+    "paid": "Processing", "processing": "Processing", "preparing": "Processing",
+    "shipped": "Shipped", "in_transit": "Shipped",
+    "out_for_delivery": "Out for Delivery",
+    "delivered": "Delivered", "completed": "Delivered",
+    "cancelled": "Cancelled", "canceled": "Cancelled",
+    "returned": "Returned", "refunded": "Returned",
+}
+_FOOD_STATUS = {
+    "placed": "placed", "pending": "placed", "confirmed": "placed",
+    "preparing": "preparing", "cooking": "preparing",
+    "on_the_way": "on_the_way", "out_for_delivery": "on_the_way",
+    "delivered": "delivered", "completed": "delivered", "cancelled": "cancelled",
+}
+
+
 def _last4(label: str | None) -> str:
     import re
     m = re.search(r"(\d{4})", label or "")
@@ -202,17 +219,37 @@ def transform_shop(shop: dict) -> dict:
         agg[pid] = agg.get(pid, 0) + (it.get("quantity") or 1)
     cart = [{"productId": pid, "quantity": q} for pid, q in agg.items()]
 
+    # returns: a gym ReturnRequest flips its order's amazon status to "Returned"
+    returned_order_ids = {r.get("order_id") for r in (shop.get("returns") or {}).values()}
     orders = []
     for o in (shop.get("orders") or {}).values():
+        status = "Returned" if o.get("id") in returned_order_ids else \
+            _AMZ_STATUS.get((o.get("status") or "").lower(), "Delivered")
         orders.append({"id": o.get("id"), "date": o.get("placed_at") or "2024-01-01T00:00:00.000Z",
-                       "status": "Delivered", "total": o.get("total"),
+                       "status": status, "total": o.get("total"),
                        "items": [{"productId": i.get("product_id"), "quantity": i.get("quantity") or 1}
                                  for i in (o.get("items") or [])],
                        "shippingAddress": user.get("address"), "paymentMethod": user.get("paymentMethod"),
                        "trackingNumber": None, "estimatedDelivery": None})
 
+    # promotions -> a strikethrough deal price on the targeted product (amazon's
+    # only native deal field), plus the raw promos preserved for verification.
+    promos = [p for p in (shop.get("promotions") or {}).values() if not p.get("expired")]
+    by_id = {p["id"]: p for p in products}
+    for pr in promos:
+        pid, pct = pr.get("applies_to_product_id"), pr.get("discount_pct")
+        prod = by_id.get(pid)
+        if prod and pct and prod.get("price") and not prod.get("originalPrice"):
+            frac = pct / 100.0 if pct > 1 else pct
+            if 0 < frac < 1:
+                prod["originalPrice"] = round(prod["price"] / (1 - frac), 2)
+
     return {"products": products, "user": user, "cart": cart, "wishlist": [], "savedForLater": [],
-            "orders": orders, "reviews": reviews, "recentSearches": [], "recentlyViewed": []}
+            "orders": orders, "reviews": reviews, "recentSearches": [], "recentlyViewed": [],
+            # No native amazon UI for these gym concepts -> preserved (not dropped),
+            # available in state/verification even though the mock can't render them.
+            "_gym_subscriptions": list((shop.get("subscriptions") or {}).values()),
+            "_gym_promotions": list((shop.get("promotions") or {}).values())}
 
 
 # --- ebay (gym market / ValueMart) -------------------------------------------
@@ -249,7 +286,10 @@ def transform_market(m: dict) -> dict:
                        "items": [it.get("product_id") for it in (o.get("items") or [])],
                        "total": o.get("total"), "status": "completed", "created": end_ms})
     return {"currentUser": buyer, "users": [buyer, seller], "listings": listings, "orders": orders,
-            "messages": [], "notifications": [], "feedbacks": [], "cart": cart}
+            "messages": [], "notifications": [], "feedbacks": [], "cart": cart,
+            # eBay has no coupon UI -> preserved (not dropped), plus the priced cart detail.
+            "_gym_coupons": list((m.get("coupons") or {}).values()),
+            "_gym_cart_detail": (m.get("cart") or {}).get("items") or []}
 
 
 # --- google calendar (gym calendar) ------------------------------------------
@@ -320,9 +360,35 @@ def transform_food(food: dict) -> dict:
     user = {"id": "user_1", "name": "Alex Johnson", "email": "alex.johnson@email.com",
             "phone": "(415) 555-0100", "avatarUrl": "", "addresses": [], "defaultAddressId": None,
             "paymentMethods": [], "defaultPaymentId": None, "uberOneActive": False, "favoriteRestaurantIds": []}
-    cart = {"restaurantId": None, "items": [], "deliveryMode": "delivery", "scheduledTime": None}
+    # cart: gym FoodCart -> uber cart
+    fc = food.get("cart") or {}
+    cart_items = []
+    for it in (fc.get("items") or []):
+        up, q = (it.get("unit_price") or 0), (it.get("quantity") or 1)
+        cart_items.append({"menuItemId": it.get("dish_id"), "name": it.get("name"), "quantity": q,
+                           "basePrice": up, "selectedOptions": [], "totalPrice": round(up * q, 2),
+                           "specialInstructions": ""})
+    cart = {"restaurantId": fc.get("restaurant_id"), "items": cart_items, "tipPercentage": 0,
+            "tipAmount": 0, "promoDiscount": 0, "deliveryMode": "delivery", "scheduledTime": None}
+
+    # orders: gym FoodOrder -> uber order
+    orders = []
+    for o in (food.get("orders") or {}).values():
+        its = []
+        for it in (o.get("items") or []):
+            up, q = (it.get("unit_price") or 0), (it.get("quantity") or 1)
+            its.append({"menuItemId": it.get("dish_id"), "name": it.get("name"), "quantity": q,
+                        "unitPrice": up, "totalPrice": round(up * q, 2),
+                        "selectedOptions": [], "specialInstructions": ""})
+        orders.append({"id": o.get("id"), "restaurantId": o.get("restaurant_id"),
+                       "restaurantName": o.get("restaurant_name"), "items": its,
+                       "status": _FOOD_STATUS.get((o.get("status") or "").lower(), "placed"),
+                       "placedAt": o.get("placed_at"), "subtotal": o.get("subtotal"),
+                       "deliveryFee": o.get("delivery_fee"), "total": o.get("total")})
+    active = orders[-1]["id"] if orders else None
+
     return {"user": user, "categories": [], "restaurants": restaurants, "menuItems": menu_items,
-            "cart": cart, "orders": [], "activeOrderId": None, "promotions": [], "reviews": [],
+            "cart": cart, "orders": orders, "activeOrderId": active, "promotions": [], "reviews": [],
             "ui": {"selectedAddressId": None, "deliveryMode": "delivery", "searchQuery": "",
                    "recentSearches": [], "activeFilters": {"sort": "", "priceRange": [], "dietary": [],
                                                            "maxDeliveryFee": None, "deals": False}}}
