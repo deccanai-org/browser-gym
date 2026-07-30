@@ -1,5 +1,5 @@
 diff --git a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_mock/src/context/StoreContext.jsx
-index 39de525..7d1f2cc 100644
+index 39de525..13feb4c 100644
 --- a/websites/amazon_mock/src/context/StoreContext.jsx
 +++ b/websites/amazon_mock/src/context/StoreContext.jsx
 @@ -1,5 +1,15 @@
@@ -146,6 +146,48 @@ index 39de525..7d1f2cc 100644
      setState(prev => {
        const paymentMethods = (prev.user.paymentMethods || [prev.user.paymentMethod]).map(p => ({ ...p, isDefault: p.id === pmId }));
        const defaultPm = paymentMethods.find(p => p.isDefault) || paymentMethods[0];
+@@ -235,6 +310,32 @@ export const StoreProvider = ({ children }) => {
+     });
+   };
+ 
++  const setLineOptions = (productId, opts = {}) => {
++    if (bridged()) {
++      bridgeAct('shop.set_line_options', { product_id: productId, ...opts })
++        .then(r => applyEngine(setState, r));
++      return;
++    }
++    setState(prev => ({
++      ...prev,
++      cart: prev.cart.map(item =>
++        item.productId === productId ? { ...item, ...opts } : item
++      )
++    }));
++  };
++
++  const enableTwoFa = (code) => {
++    if (bridged()) {
++      bridgeAct('shop.enable_two_fa', { code })
++        .then(r => applyEngine(setState, r));
++      return;
++    }
++    setState(prev => ({
++      ...prev,
++      user: { ...prev.user, two_fa_enabled: true }
++    }));
++  };
++
+   // Helper to get diff for /go endpoint
+   const getStateDiff = () => {
+     const diff = {};
+@@ -272,6 +373,8 @@ export const StoreProvider = ({ children }) => {
+       setDefaultAddress,
+       addPaymentMethod,
+       setDefaultPaymentMethod,
++      setLineOptions,
++      enableTwoFa,
+     }}>
+       {children}
+     </StoreContext.Provider>
 diff --git a/websites/amazon_mock/src/lib/bridge.js b/websites/amazon_mock/src/lib/bridge.js
 new file mode 100644
 index 0000000..10df18d
@@ -199,6 +241,72 @@ index 0000000..10df18d
 +  setTimeout(tick, ms);
 +  return () => { live = false; };
 +}
+diff --git a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/pages/Cart.jsx
+index f07280a..ac48457 100644
+--- a/websites/amazon_mock/src/pages/Cart.jsx
++++ b/websites/amazon_mock/src/pages/Cart.jsx
+@@ -5,7 +5,7 @@ import { Button } from '../components/ui/Button';
+ import { Tag } from 'lucide-react';
+ 
+ export const Cart = () => {
+-  const { state, updateCartQty, removeFromCart, saveForLater, moveToCart, removeSavedItem, addToCart } = useStore();
++  const { state, updateCartQty, removeFromCart, saveForLater, moveToCart, removeSavedItem, addToCart, setLineOptions } = useStore();
+   const navigate = useNavigate();
+   const [promoCode, setPromoCode] = useState('');
+   const [appliedPromo, setAppliedPromo] = useState(null);
+@@ -91,6 +91,52 @@ export const Cart = () => {
+                           <span className="text-gray-300">|</span>
+                           <button onClick={() => saveForLater(item.productId)} className="text-xmazon-blue hover:underline text-xs">Save for later</button>
+                         </div>
++
++                        {/* Gift options */}
++                        <div className="mt-3 border-t pt-3 space-y-2">
++                          <div className="text-xs font-bold text-gray-700">Gift options</div>
++                          <label className="flex items-center gap-2 text-sm">
++                            <input
++                              type="checkbox"
++                              aria-label="Gift wrap this item"
++                              checked={!!item.gift_wrap}
++                              onChange={(e) => setLineOptions(item.productId, {
++                                gift_wrap: e.target.checked,
++                                gift_message: item.gift_message || '',
++                                scheduled_delivery: item.scheduled_delivery || '',
++                              })}
++                            />
++                            <span>Gift wrap this item</span>
++                          </label>
++                          <div>
++                            <label className="block text-xs text-gray-600 mb-1">Gift message</label>
++                            <textarea
++                              aria-label="Gift message"
++                              value={item.gift_message || ''}
++                              onChange={(e) => setLineOptions(item.productId, {
++                                gift_wrap: !!item.gift_wrap,
++                                gift_message: e.target.value,
++                                scheduled_delivery: item.scheduled_delivery || '',
++                              })}
++                              rows={2}
++                              className="w-full border rounded px-2 py-1 text-sm focus:outline-none focus:border-xmazon-orange"
++                            />
++                          </div>
++                          <div>
++                            <label className="block text-xs text-gray-600 mb-1">Scheduled delivery date</label>
++                            <input
++                              type="date"
++                              aria-label="Scheduled delivery date"
++                              value={item.scheduled_delivery || ''}
++                              onChange={(e) => setLineOptions(item.productId, {
++                                gift_wrap: !!item.gift_wrap,
++                                gift_message: item.gift_message || '',
++                                scheduled_delivery: e.target.value,
++                              })}
++                              className="border rounded px-2 py-1 text-sm focus:outline-none focus:border-xmazon-orange"
++                            />
++                          </div>
++                        </div>
+                       </div>
+                       <div className="text-right font-bold text-base">
+                         ${(product.price * item.quantity).toFixed(2)}
 diff --git a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/src/pages/Checkout.jsx
 index 3bf6ccf..6f6a398 100644
 --- a/websites/amazon_mock/src/pages/Checkout.jsx
@@ -263,3 +371,58 @@ index 1f5d6d9..5e8a54c 100644
                        >
                          Track package
                        </button>
+diff --git a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/src/pages/Profile.jsx
+index 4d7a93d..354dc89 100644
+--- a/websites/amazon_mock/src/pages/Profile.jsx
++++ b/websites/amazon_mock/src/pages/Profile.jsx
+@@ -17,7 +17,7 @@ const Toast = ({ message, onDone }) => {
+ };
+ 
+ export const Profile = () => {
+-  const { state, updateUserProfile, addAddress, setDefaultAddress, addPaymentMethod, setDefaultPaymentMethod } = useStore();
++  const { state, updateUserProfile, addAddress, setDefaultAddress, addPaymentMethod, setDefaultPaymentMethod, enableTwoFa } = useStore();
+   const [activeSection, setActiveSection] = useState(null);
+   const [toast, setToast] = useState(null);
+   const [editName, setEditName] = useState('');
+@@ -27,6 +27,7 @@ export const Profile = () => {
+   const [newPmForm, setNewPmForm] = useState({ brand: 'Visa', last4: '', expiry: '' });
+   const [showNewAddress, setShowNewAddress] = useState(false);
+   const [showNewPm, setShowNewPm] = useState(false);
++  const [twoFaCode, setTwoFaCode] = useState('');
+ 
+   const addresses = state.user.addresses || [state.user.address];
+   const paymentMethods = state.user.paymentMethods || [state.user.paymentMethod];
+@@ -156,6 +157,33 @@ export const Profile = () => {
+                   <div className="text-sm text-gray-600">{state.user.email}</div>
+                 </div>
+               </div>
++              <div className="py-3 border-b">
++                <div className="text-sm font-bold mb-2">Two-step verification</div>
++                {state.user.two_fa_enabled ? (
++                  <div className="flex items-center gap-2 text-sm text-green-700">
++                    <Check size={16} /> Two-step verification is enabled.
++                  </div>
++                ) : (
++                  <div className="flex items-end gap-2">
++                    <div>
++                      <label className="block text-xs text-gray-600 mb-1">Verification code</label>
++                      <input
++                        type="text"
++                        aria-label="Two-factor code"
++                        value={twoFaCode}
++                        onChange={e => setTwoFaCode(e.target.value)}
++                        className="border rounded p-2 text-sm focus:outline-none focus:border-xmazon-orange"
++                      />
++                    </div>
++                    <Button
++                      type="button"
++                      onClick={() => { enableTwoFa(twoFaCode); setTwoFaCode(''); setToast('Two-step verification enabled.'); }}
++                    >
++                      Enable two-step verification
++                    </Button>
++                  </div>
++                )}
++              </div>
+             </div>
+             {isEditingProfile && (
+               <form onSubmit={handleSaveProfile} className="space-y-3 border-t pt-4">

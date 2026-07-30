@@ -211,11 +211,17 @@ HARNESS_TOKEN=<tok> GYM_URL=http://127.0.0.1:8078 BRIDGE_URL=http://127.0.0.1:80
   python -m tools.newui_harness_smoke
 ```
 
-**Caveats:** single-app tasks fully work; cross-app works via the pre-opened tabs. Tasks
-whose success needs a UI control the mock lacks (gift message/wrap, scheduled delivery, 2FA
-setup) still can't be *driven* through the UI until those inputs are added to the mock — the
-bridge supports the actions, but the agent can't click what isn't rendered. A just-delivered
-async cross-app event shows in the agent's view on the next poll/`wait`/reload, not instantly.
+**Caveats:** single-app tasks fully work; cross-app works via the pre-opened tabs. A
+just-delivered async cross-app event shows in the agent's view on the next poll/`wait`/reload,
+not instantly.
+
+**Mock UI controls (closed):** the mocks now render + label the controls the gym models —
+Amazon cart has per-line gift-wrap / gift-message / scheduled-delivery (→ `shop.set_line_options`)
+and the account page has a two-step-verification control (→ `shop.enable_two_fa`); Gmail's compose
+**To** and **message body** (and the toolbar buttons) now carry accessible names. This last one
+was the fix from the first real run: a Set-of-Mark agent could not target the unnamed compose
+body (it typed into the Subject line). All new/fixed controls are verified targetable via
+`page.accessibility.snapshot()`. Each is additive — legacy mode is unchanged.
 
 ## Notes
 - Seed data is static/frozen per (task, seed) — deterministic, matches the gym's own reset.
