@@ -51,12 +51,15 @@ sleep 4
 
 echo "[newui] origins: $origins"
 echo "[newui] running $AGENT ($MODEL) on $TASKS seeds=$SEEDS"
+# HEADLESS=0 opens a REAL Chromium window you can watch (with the ghost cursor) +
+# records a video; default headless for unattended sweeps.
+if [ "${HEADLESS:-1}" = "0" ]; then MODE_FLAGS=""; else MODE_FLAGS="--headless --no-video"; fi
 HARNESS_TOKEN="$TOKEN" "$PY" -m eval.run \
   --agent "$AGENT" --model "$MODEL" \
   --tasks "$TASKS" --seeds "$SEEDS" \
   --server "http://127.0.0.1:$GYM_PORT" \
   --app-origins "$origins" --bridge-url "http://127.0.0.1:$BRIDGE_PORT" \
-  --headless --no-video \
+  $MODE_FLAGS \
   --out-traj "trajectories/newui_$AGENT" --out-screens "screenshots/newui_$AGENT"
 
 echo "[newui] done — trajectories/newui_$AGENT/  screenshots/newui_$AGENT/"
