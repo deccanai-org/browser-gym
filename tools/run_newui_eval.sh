@@ -20,8 +20,8 @@ TASKS="${TASKS:-A1/buy_wireless_mouse}"; SEEDS="${SEEDS:-0}"
 TOKEN="${HARNESS_TOKEN:-newui-$RANDOM}"
 GYM_PORT="${GYM_PORT:-8078}"; BRIDGE_PORT="${BRIDGE_PORT:-8091}"
 PY="${PY:-$HERE/.venv/bin/python}"
-declare -A PORT=( [shop]=5203 [market]=5301 [mail]=5401 [calendar]=5402 [food]=5403 )
-declare -A DIR=( [shop]=amazon_mock [market]=ebay_mock [mail]=gmail_mock [calendar]=google_calendar_mock [food]=uber_eats_mock )
+# app:port:mock-dir — indexed strings, not associative arrays (works on macOS bash 3.2)
+APPS="shop:5203:amazon_mock market:5301:ebay_mock mail:5401:gmail_mock calendar:5402:google_calendar_mock food:5403:uber_eats_mock"
 
 pids=()
 cleanup(){ for p in "${pids[@]:-}"; do kill "$p" 2>/dev/null || true; done; }
@@ -36,8 +36,9 @@ GYM_URL="http://127.0.0.1:$GYM_PORT" HARNESS_TOKEN="$TOKEN" BRIDGE_TICK=0 \
 sleep 3
 
 origins=""
-for app in shop market mail calendar food; do
-  d="$HUB/websites/${DIR[$app]}"; p="${PORT[$app]}"
+for entry in $APPS; do
+  app="${entry%%:*}"; rest="${entry#*:}"; p="${rest%%:*}"; dir="${rest##*:}"
+  d="$HUB/websites/$dir"
   if [ -d "$d/dist" ]; then
     ( cd "$d" && ./node_modules/.bin/vite preview --host 127.0.0.1 --port "$p" --strictPort >/dev/null 2>&1 & )
     pids+=($!)
