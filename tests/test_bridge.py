@@ -118,6 +118,48 @@ def test_verifier_suite_scores_the_live_world(wired):
     assert "all_milestones" in v and "success" in v
 
 
+def test_product_keyed_cart_edits_resolve_to_line_ids(wired):
+    """The mocks know product ids, not gym line ids — the bridge resolves them."""
+    b = wired
+    b.reset(TASK, 0)
+    sh = b.world()["shop"]
+    pids = list(sh["products"])[:2]
+    for p in pids:
+        assert b.act("shop.add_to_cart", product_id=p, quantity=1)["ok"]
+    assert len(b.world()["shop"]["cart"]["items"]) == 2
+
+    # set_qty by product_id (not line_id) -> bridge resolves + updates
+    r = b.act("shop.set_qty", product_id=pids[0], quantity=3)
+    assert r["ok"], r
+    line = next(i for i in b.world()["shop"]["cart"]["items"] if i["product_id"] == pids[0])
+    assert line["quantity"] == 3
+
+    # remove_product by product_id -> bridge resolves + removes
+    assert b.act("shop.remove_product", product_id=pids[1])["ok"]
+    remaining = [i["product_id"] for i in b.world()["shop"]["cart"]["items"]]
+    assert pids[1] not in remaining and pids[0] in remaining
+
+    # removing something not in the cart fails cleanly (no crash)
+    assert b.act("shop.remove_product", product_id=pids[1])["ok"] is False
+
+
+def test_add_address_runs_through_engine(wired):
+    b = wired
+    b.reset(TASK, 0)
+    uid = b.world()["shop"]["current_user_id"]
+    before = len(b.world()["shop"]["users"][uid]["addresses"])
+    r = b.act("shop.add_address", label="Work", full_name="Alice A", line1="1 Main St",
+              city="Austin", state="TX", zip="78701", set_default=True)
+    assert r["ok"], r
+    assert len(b.world()["shop"]["users"][uid]["addresses"]) == before + 1
+
+
 def test_actions_cover_every_app(wired):
     apps = {a.split(".")[0] for a in bridge.ACTIONS}
     assert apps == {"shop", "mail", "market", "food", "calendar"}
+    # every action's path template only references fields it declares or a
+    # payload key the bridge resolves (address_id / payment_id / subscription_id)
+    import re
+    for name, (_m, path, _f) in bridge.ACTIONS.items():
+        for tok in re.findall(r"\{(\w+)\}", path):
+            assert tok in ("address_id", "payment_id", "subscription_id"), (name, tok)

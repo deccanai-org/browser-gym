@@ -50,27 +50,57 @@ APP_PREFIX = {"shop": "", "mail": "/mail", "market": "/market",
 # --------------------------------------------------------------------------- #
 ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     # shop (Amazon)
-    "shop.login":        ("POST", "/api/login",          ("email", "password")),
-    "shop.add_to_cart":  ("POST", "/api/cart/add",       ("product_id", "quantity", "variant_id")),
-    "shop.update_line":  ("POST", "/api/cart/update",    ("line_id", "quantity")),
-    "shop.remove_line":  ("POST", "/api/cart/remove",    ("line_id",)),
-    "shop.apply_promo":  ("POST", "/api/cart/promo",     ("code",)),
-    "shop.place_order":  ("POST", "/api/checkout/place", ("payment_id",)),
+    "shop.login":            ("POST", "/api/login",          ("email", "password")),
+    "shop.add_to_cart":      ("POST", "/api/cart/add",       ("product_id", "quantity", "variant_id")),
+    "shop.update_line":      ("POST", "/api/cart/update",    ("line_id", "quantity")),
+    "shop.remove_line":      ("POST", "/api/cart/remove",    ("line_id",)),
+    # product-keyed cart edits (the mocks know product ids, not gym line ids;
+    # the bridge resolves product_id -> line_id from the live cart, see RESOLVERS)
+    "shop.set_qty":          ("POST", "/api/cart/update",    ("line_id", "quantity")),
+    "shop.remove_product":   ("POST", "/api/cart/remove",    ("line_id",)),
+    "shop.apply_promo":      ("POST", "/api/cart/promo",     ("code",)),
+    "shop.place_order":      ("POST", "/api/checkout/place", ("payment_id",)),
+    "shop.add_address":      ("POST", "/api/account/addresses",
+                              ("label", "full_name", "line1", "line2", "city", "state", "zip", "set_default")),
+    "shop.set_default_address": ("POST", "/api/account/addresses/{address_id}/default", ()),
+    "shop.add_payment":      ("POST", "/api/account/payments",
+                              ("label", "kind", "card_number", "expires", "cvv", "nickname", "set_default")),
+    "shop.set_default_payment": ("POST", "/api/account/payments/{payment_id}/default", ()),
+    "shop.create_return":    ("POST", "/api/returns",
+                              ("order_id", "item_ids", "reason", "refund_method", "notes")),
+    "shop.create_subscription": ("POST", "/api/subscriptions", ("product_id", "cadence", "deliveries")),
+    "shop.cancel_subscription": ("POST", "/api/subscriptions/{subscription_id}/cancel", ()),
     # mail (Gmail)
-    "mail.send":         ("POST", "/mail/send",          ("to", "subject", "body")),
-    # market (eBay)
-    "market.add_to_cart": ("POST", "/market/cart/add",    ("product_id", "quantity")),
-    "market.remove":      ("POST", "/market/cart/remove", ("product_id",)),
-    "market.apply_coupon": ("POST", "/market/apply-coupon", ("code",)),
-    "market.checkout":    ("POST", "/market/checkout",    ()),
+    "mail.send":             ("POST", "/mail/send",          ("to", "subject", "body")),
+    # market (eBay) — a mock listingId IS the gym product_id, so no resolution
+    "market.add_to_cart":    ("POST", "/market/cart/add",    ("product_id", "quantity")),
+    "market.remove":         ("POST", "/market/cart/remove", ("product_id",)),
+    "market.clear_cart":     ("POST", "/market/cart/clear",  ()),
+    "market.apply_coupon":   ("POST", "/market/apply-coupon", ("code",)),
+    "market.remove_coupon":  ("POST", "/market/remove-coupon", ()),
+    "market.checkout":       ("POST", "/market/checkout",    ()),
     # food (Uber Eats)
-    "food.add_to_cart":  ("POST", "/food/cart/add",      ("restaurant_id", "dish_id", "quantity")),
-    "food.checkout":     ("POST", "/food/checkout",      ("delivery_note",)),
+    "food.add_to_cart":      ("POST", "/food/cart/add",      ("restaurant_id", "dish_id", "quantity")),
+    "food.clear_cart":       ("POST", "/food/cart/clear",    ()),
+    "food.checkout":         ("POST", "/food/checkout",      ("delivery_note",)),
     # calendar (Google Calendar)
-    "calendar.create":   ("POST", "/calendar/create",    ("title", "day", "start", "end")),
-    "calendar.update":   ("POST", "/calendar/update",    ("event_id", "title", "start", "end")),
-    "calendar.delete":   ("POST", "/calendar/delete",    ("event_id",)),
+    "calendar.create":       ("POST", "/calendar/create",    ("title", "day", "start", "end")),
+    "calendar.update":       ("POST", "/calendar/update",    ("event_id", "title", "start", "end")),
+    "calendar.delete":       ("POST", "/calendar/delete",    ("event_id",)),
 }
+
+# Actions whose payload is product-keyed but whose gym endpoint wants a cart
+# line_id — resolved from the live world just before dispatch.
+_LINE_RESOLVED = {"shop.set_qty", "shop.remove_product"}
+
+
+def _resolve_line_id(world: dict, product_id: str) -> str | None:
+    """The gym cart line_id for a product_id (first match; variants collapse to
+    one line in the mock's aggregated view)."""
+    for it in ((world.get("shop") or {}).get("cart") or {}).get("items") or []:
+        if it.get("product_id") == product_id:
+            return it.get("id")
+    return None
 
 
 def _http(method: str, url: str, *, form: dict | None = None,
@@ -79,7 +109,9 @@ def _http(method: str, url: str, *, form: dict | None = None,
     data = None
     headers = dict(headers or {})
     if form is not None:
-        data = urllib.parse.urlencode({k: v for k, v in form.items() if v is not None}).encode()
+        # doseq handles list fields (e.g. returns' item_ids) as repeated keys.
+        data = urllib.parse.urlencode(
+            {k: v for k, v in form.items() if v is not None}, doseq=True).encode()
         headers["Content-Type"] = "application/x-www-form-urlencoded"
     elif json_body is not None:
         data = json.dumps(json_body).encode()
@@ -166,6 +198,13 @@ class Bridge:
         Returns {ok, status, world_step, pushed}."""
         if action not in ACTIONS:
             raise KeyError(f"unknown action {action!r}; known: {sorted(ACTIONS)}")
+        # Resolve product-keyed cart edits to the gym's line_id before dispatch.
+        if action in _LINE_RESOLVED and "line_id" not in payload and payload.get("product_id"):
+            lid = _resolve_line_id(self.world(), payload["product_id"])
+            if lid is None:
+                return {"ok": False, "status": 0, "error": "product not in cart",
+                        "world_step": self._step, "pushed": []}
+            payload = {**payload, "line_id": lid}
         method, path, fields = ACTIONS[action]
         path = path.format(**payload)
         form = {f: payload.get(f) for f in fields}
