@@ -229,6 +229,23 @@ def test_harness_bridged_nav_urls():
     assert _seg_to_app("/market/x") == "market" and _seg_to_app("/food") == "food"
 
 
+def test_deep_link_start_path_mapping():
+    """Bridged mode honors a task's deep-link start-path where the mock has a
+    matching route; unknown paths fall back safely to the app root."""
+    from harness.runner import _mock_start_path
+    assert _mock_start_path("shop", "/cart") == "/cart"
+    assert _mock_start_path("shop", "/product/p_x") == "/product/p_x"
+    assert _mock_start_path("shop", "/search?q=abc&category=electronics") == "/search?q=abc&category=electronics"
+    assert _mock_start_path("shop", "/account/orders") == "/orders"
+    assert _mock_start_path("market", "/market/product/vm_mouse") == "/item/vm_mouse"
+    assert _mock_start_path("market", "/market/cart") == "/cart"
+    assert _mock_start_path("food", "/food/cart") == "/cart"
+    # unknown / app-root -> None (falls back to the app start page)
+    assert _mock_start_path("shop", "/") is None
+    assert _mock_start_path("shop", "/account/orders/ORD-1") is None
+    assert _mock_start_path("shop", None) is None
+
+
 def test_bridge_tick_disable(monkeypatch):
     """With tick disabled (harness owns the clock), act() must not tick."""
     import tools.bridge as bridge

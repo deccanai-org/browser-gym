@@ -74,6 +74,41 @@ def bridged_app_url(app_origins: dict, bridge_url: str, app: str,
     return origin + urlunsplit(("", "", parts.path or "/", query, parts.fragment))
 
 
+def _mock_start_path(app: str, gym_path: str | None) -> str | None:
+    """Map a gym deep-link start-path to the realistic mock's equivalent route, so
+    a task that starts pre-positioned (a cart, a product, a search) lands there
+    instead of the app root. Returns None (-> app start) when there is no SAFE
+    equivalent, so an unknown path never breaks rendering."""
+    if not gym_path:
+        return None
+    parts = urlsplit(gym_path)
+    p = parts.path.rstrip("/")
+    q = ("?" + parts.query) if parts.query else ""
+    segs = [s for s in p.split("/") if s]
+    if app == "shop":
+        if p == "/cart":
+            return "/cart"
+        if p == "/search":
+            return "/search" + q                       # keep ?q= & category
+        if len(segs) == 2 and segs[0] == "product":
+            return f"/product/{segs[1]}"
+        if p == "/account/orders":
+            return "/orders"
+        if p == "/wishlist":
+            return "/wishlist"
+    elif app == "market":                              # gym /market/... -> ebay mock
+        if segs[:1] == ["market"]:
+            rest = segs[1:]
+            if len(rest) == 2 and rest[0] == "product":
+                return f"/item/{rest[1]}"
+            if rest[:1] == ["cart"]:
+                return "/cart"
+    elif app == "food":
+        if segs[:2] == ["food", "cart"]:
+            return "/cart"
+    return None
+
+
 # --------------------------------------------------------------------------- #
 # Pinned image / viewport settings (Section 1C)
 # --------------------------------------------------------------------------- #
@@ -322,6 +357,11 @@ class Trajectory:
 
 
 def save_trajectory(traj: Trajectory, out_dir: str | Path) -> Path:
+    # NOTE: the file is ONE pretty-printed JSON object, not line-delimited JSON,
+    # but keeps the `.jsonl` extension on purpose — the whole eval ecosystem
+    # (eval/cost_tracker, eval/harvest_failures, run_screen.sh, the annotator's
+    # ingest) globs `*.jsonl`, and every reader uses whole-file json.load. Do not
+    # rename to `.json` without updating all of those globs.
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     safe_task = traj.task_id.replace("/", "_")
@@ -1116,15 +1156,19 @@ class BrowserCtx:
                 return bridged_app_url(self.app_origins, self.bridge_url, app)
         return f"{self.server_url}{path}"
 
-    async def open_app_tabs(self, apps: list[str], primary: str) -> None:
+    async def open_app_tabs(self, apps: list[str], primary: str,
+                            primary_start_path: str | None = None) -> None:
         """Pre-open one browser tab per realistic app (bridged), ``primary``
         active. Mirrors a person who already has the relevant app tabs open —
         the cross-app substitute for the gym's single-origin app-bar. The agent
-        moves between apps with switch_tab (both pixel agents support it)."""
+        moves between apps with switch_tab (both pixel agents support it). The
+        primary tab honors the task's deep-link start-path where the mock has a
+        matching route (else the app start)."""
         order = [primary] + [a for a in apps if a != primary and a in self.app_origins]
         built: list = []
         for i, app in enumerate(order):
-            url = bridged_app_url(self.app_origins, self.bridge_url, app)
+            sp = _mock_start_path(app, primary_start_path) if i == 0 else None
+            url = bridged_app_url(self.app_origins, self.bridge_url, app, sp)
             pg = self.page if i == 0 else await self.page.context.new_page()
             try:
                 await pg.goto(url, wait_until="load")

@@ -256,7 +256,8 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
         if primary not in app_origins:
             primary = next(iter(app_origins))
         try:
-            await bctx.open_app_tabs(list(app_origins), primary)
+            await bctx.open_app_tabs(list(app_origins), primary,
+                                     primary_start_path=start_path)
         except Exception as e:
             print(f"[runner] WARNING: failed to open bridged app tabs: {e}")
     else:

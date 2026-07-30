@@ -3461,6 +3461,128 @@ def _facts_m286(world: dict, url: str) -> dict[str, Any]:
 
 
 
+# --------------------------------------------------------------------------- #
+# Generic fallback extractor
+# --------------------------------------------------------------------------- #
+
+# Order statuses that mean "still in flight" (used for the open-orders facts).
+_OPEN_ORDER_STATUSES = {"confirmed", "processing", "preparing", "on_the_way",
+                        "in_transit", "shipped", "label_created", "pending"}
+
+
+def _facts_generic(world: dict, url: str) -> dict[str, Any]:
+    """Task-agnostic fallback fact extractor.
+
+    Bespoke per-task extractors (the 219 entries in ``FACT_EXTRACTORS``) always
+    take precedence; this runs for every OTHER task so the per-step
+    ``facts_visible_or_created`` field is populated with useful cross-app state
+    instead of being silently empty. It records the cheap, common "what is on
+    the environment right now" facts — order / cart / inbox / calendar / food /
+    market counts plus the salient ids, statuses and titles — that the failure
+    harvester can still line up against what the agent later acted on.
+
+    Fully defensive: it reads only serialized ``to_json`` fields, never throws
+    on a missing / partially-filled app, and returns ``{}`` for an empty world.
+    Namespaced keys mirror the bespoke extractors (``shop.*`` / ``mail.*`` /
+    ``food.*`` / ``calendar.*`` / ``market.*``)."""
+    facts: dict[str, Any] = {}
+    if not isinstance(world, dict) or not world:
+        return facts
+
+    def _d(v: Any) -> dict:
+        return v if isinstance(v, dict) else {}
+
+    _CAP = 5   # keep list-valued facts compact
+
+    # ---- Shop (always present) ------------------------------------------- #
+    shop = _d(world.get("shop"))
+    orders = _d(shop.get("orders"))
+    if orders:
+        facts["shop.orders_count"] = len(orders)
+        facts["shop.order_ids"] = sorted(orders)[:_CAP]
+        statuses: dict[str, str] = {}
+        open_ids: list[str] = []
+        for oid, o in orders.items():
+            st = str(_d(o).get("status") or "")
+            if st:
+                statuses[oid] = st
+            if st in _OPEN_ORDER_STATUSES:
+                open_ids.append(oid)
+        if statuses:
+            facts["shop.order_statuses"] = dict(
+                sorted(statuses.items())[:_CAP])
+        facts["shop.open_orders_count"] = len(open_ids)
+        if open_ids:
+            facts["shop.open_order_ids"] = sorted(open_ids)[:_CAP]
+    cart_items = _d(shop.get("cart")).get("items")
+    if isinstance(cart_items, list) and cart_items:
+        facts["shop.cart_items"] = len(cart_items)
+    subs = _d(shop.get("subscriptions"))
+    if subs:
+        facts["shop.active_subscriptions"] = sum(
+            1 for s in subs.values() if _d(s).get("status") == "active")
+    returns = _d(shop.get("returns"))
+    if returns:
+        facts["shop.returns_count"] = len(returns)
+
+    # ---- Mail ------------------------------------------------------------ #
+    mail = _d(world.get("mail"))
+    inbox = _d(mail.get("inbox"))
+    if inbox:
+        uc = mail.get("unread_count")
+        facts["mail.unread_count"] = uc if isinstance(uc, int) else sum(
+            1 for e in inbox.values() if not _d(e).get("read"))
+        facts["mail.inbox_count"] = len(inbox)
+        latest = sorted(
+            inbox.values(),
+            key=lambda e: str(_d(e).get("received_at") or ""), reverse=True)
+        subjects = [str(_d(e).get("subject") or "") for e in latest[:3]]
+        subjects = [s for s in subjects if s]
+        if subjects:
+            facts["mail.latest_inbox_subjects"] = subjects
+    sent = _d(mail.get("sent"))
+    if sent:
+        facts["mail.sent_count"] = len(sent)
+
+    # ---- Calendar -------------------------------------------------------- #
+    cal = _d(world.get("calendar"))
+    events = _d(cal.get("events"))
+    if events:
+        facts["calendar.event_count"] = len(events)
+        titles = [str(_d(e).get("title") or "") for e in events.values()]
+        titles = [t for t in titles if t]
+        if titles:
+            facts["calendar.event_titles"] = sorted(titles)[:_CAP]
+        facts["calendar.user_event_count"] = sum(
+            1 for e in events.values() if _d(e).get("source") == "user")
+
+    # ---- Food ------------------------------------------------------------ #
+    food = _d(world.get("food"))
+    forders = _d(food.get("orders"))
+    if forders:
+        facts["food.orders_count"] = len(forders)
+        active = [oid for oid, o in forders.items()
+                  if str(_d(o).get("status") or "") != "delivered"]
+        facts["food.active_orders_count"] = len(active)
+        if active:
+            facts["food.active_order_ids"] = sorted(active)[:_CAP]
+    fcart = food.get("cart_count")
+    if isinstance(fcart, int) and fcart:
+        facts["food.cart_count"] = fcart
+
+    # ---- Market (ValueMart) ---------------------------------------------- #
+    market = _d(world.get("market"))
+    morders = _d(market.get("orders"))
+    if morders:
+        facts["market.orders_count"] = len(morders)
+        facts["market.order_ids"] = sorted(morders)[:_CAP]
+    mcart = market.get("cart_count")
+    if isinstance(mcart, int) and mcart:
+        facts["market.cart_count"] = mcart
+
+    return facts
+
+
 FACT_EXTRACTORS: dict[str, Callable[[dict, str], dict]] = {
     "M269/cancel_if_not_shipped": _facts_m269,
     "M286/conditional_subscribe_dupe": _facts_m286,
@@ -3684,7 +3806,11 @@ FACT_EXTRACTORS: dict[str, Callable[[dict, str], dict]] = {
 }
 
 
-def get_fact_extractor(task_id: str) -> Callable[[dict, str], dict] | None:
-    """The fact extractor for a task, or None (single-app tasks record no
-    facts and skip the extra /_harness/world fetch)."""
-    return FACT_EXTRACTORS.get(task_id)
+def get_fact_extractor(task_id: str) -> Callable[[dict, str], dict]:
+    """The fact extractor for a task.
+
+    A task's bespoke extractor takes precedence; any task without one falls
+    back to :func:`_facts_generic`, which records cheap task-agnostic cross-app
+    facts. This is never ``None`` any more — every task populates the per-step
+    ``facts_visible_or_created`` field with at least the generic facts."""
+    return FACT_EXTRACTORS.get(task_id, _facts_generic)
