@@ -1,0 +1,205 @@
+diff --git a/websites/uber_eats_mock/src/App.jsx b/websites/uber_eats_mock/src/App.jsx
+index 677f6ad..10b350b 100644
+--- a/websites/uber_eats_mock/src/App.jsx
++++ b/websites/uber_eats_mock/src/App.jsx
+@@ -1,57 +1,58 @@
++import React, { useState } from 'react';
++import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
++import { AppProvider } from './context/AppContext';
++import Header from './components/Header';
++import Sidebar from './components/Sidebar';
++import CartPanel from './components/CartPanel';
++import Homepage from './pages/Homepage';
++import StorePage from './pages/StorePage';
++import SearchPage from './pages/SearchPage';
++import Favorites from './pages/Favorites';
++import Account from './pages/Account';
++import OrderTracking from './pages/OrderTracking';
++import CheckoutPage from './pages/CheckoutPage';
++import Go from './pages/Go';
+ 
+-    import React, { useState } from 'react';
+-    import { BrowserRouter, Routes, Route, Navigate, useLocation, useSearchParams } from 'react-router-dom';
+-    import { StoreProvider } from './context/StoreContext';
+-    import Navbar from './components/Navbar';
+-    import CartDrawer from './components/CartDrawer';
+-    import CartSwitchDialog from './components/CartSwitchDialog';
+-    import Home from './pages/Home';
+-    import RestaurantDetails from './pages/RestaurantDetails';
+-    import Checkout from './pages/Checkout';
+-    import Orders from './pages/Orders';
+-    import GoEndpoint from './pages/GoEndpoint';
++// This mock shipped with two parallel implementations: a StoreContext app that was
++// mounted but cross-wired (its Home rendered an AppContext RestaurantCard, which
++// crashed because AppProvider was never mounted), and this richer AppContext app
++// that was never mounted. We commit to the AppContext ("System B") app — it has the
++// full component set (Header/Sidebar/CartPanel/RestaurantCard/FilterBar) and pages,
++// and its data shape matches the seed transform. CheckoutPage fills the one missing page.
++function Layout({ children }) {
++  const [sidebarOpen, setSidebarOpen] = useState(false);
++  const [cartOpen, setCartOpen] = useState(false);
++  const location = useLocation();
++  if (location.pathname === '/go') return children;
++  return (
++    <div className="min-h-screen" style={{ background: '#fff' }}>
++      <Header onCartClick={() => setCartOpen(true)} onMenuClick={() => setSidebarOpen(true)} />
++      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
++      <CartPanel isOpen={cartOpen} onClose={() => setCartOpen(false)} />
++      <main>{children}</main>
++    </div>
++  );
++}
+ 
+-    function RedirectWithQuery({ to }) {
+-      const [searchParams] = useSearchParams();
+-      const query = searchParams.toString();
+-      return <Navigate to={query ? `${to}?${query}` : to} replace />;
+-    }
+-
+-    function Layout({ children }) {
+-      const [isCartOpen, setIsCartOpen] = useState(false);
+-      const location = useLocation();
+-
+-      // Don't show layout on /go
+-      if (location.pathname === '/go') {
+-        return children;
+-      }
+-
+-      return (
+-        <div className="min-h-screen bg-white">
+-          <Navbar toggleCart={() => setIsCartOpen(true)} />
+-          <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+-          <CartSwitchDialog />
+-          <main>
+-            {children}
+-          </main>
+-        </div>
+-      );
+-    }
+-
+-    export default function App() {
+-      return (
+-        <StoreProvider>
+-          <BrowserRouter>
+-            <Layout>
+-              <Routes>
+-                <Route path="/" element={<Home />} />
+-                <Route path="/restaurant/:id" element={<RestaurantDetails />} />
+-                <Route path="/checkout" element={<Checkout />} />
+-                <Route path="/orders" element={<Orders />} />
+-                <Route path="/go" element={<GoEndpoint />} />
+-              </Routes>
+-            </Layout>
+-          </BrowserRouter>
+-        </StoreProvider>
+-      );
+-    }
++export default function App() {
++  return (
++    <AppProvider>
++      <BrowserRouter>
++        <Layout>
++          <Routes>
++            <Route path="/" element={<Homepage />} />
++            <Route path="/store/:id" element={<StorePage />} />
++            <Route path="/search" element={<SearchPage />} />
++            <Route path="/favorites" element={<Favorites />} />
++            <Route path="/account" element={<Account />} />
++            <Route path="/checkout" element={<CheckoutPage />} />
++            <Route path="/orders" element={<OrderTracking />} />
++            <Route path="/orders/:orderId" element={<OrderTracking />} />
++            <Route path="/go" element={<Go />} />
++            <Route path="*" element={<Navigate to="/" replace />} />
++          </Routes>
++        </Layout>
++      </BrowserRouter>
++    </AppProvider>
++  );
++}
+diff --git a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx
+new file mode 100644
+index 0000000..b70cc11
+--- /dev/null
++++ b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx
+@@ -0,0 +1,81 @@
++import React from 'react';
++import { useNavigate } from 'react-router-dom';
++import { useApp } from '../context/AppContext';
++
++// Checkout for the System-B (AppContext) app. The mock shipped without a checkout
++// page even though CartPanel navigates to /checkout; this fills that gap using the
++// existing placeOrder() action so the cart -> order flow completes.
++const card = { background: '#fff', border: '1px solid #eee', borderRadius: 12, padding: 16, marginBottom: 16 };
++const h2 = { fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: '#888', marginBottom: 8 };
++const btn = { background: '#06C167', color: '#fff', border: 'none', borderRadius: 999, padding: '14px 24px', fontSize: 16, fontWeight: 700, cursor: 'pointer', width: '100%' };
++
++export default function CheckoutPage() {
++  const navigate = useNavigate();
++  const { state, placeOrder } = useApp();
++  const cart = state.cart || { items: [] };
++  const items = cart.items || [];
++  const restaurant = (state.restaurants || []).find(r => r.id === cart.restaurantId);
++  const subtotal = items.reduce((s, it) => s + (it.totalPrice || 0), 0);
++  const deliveryFee = restaurant ? (restaurant.deliveryFee || 0) : 0;
++  const serviceFee = items.length ? Math.min(Math.max(subtotal * 0.15, 0.99), 9.99) : 0;
++  const tax = subtotal * 0.09;
++  const total = subtotal + deliveryFee + serviceFee + tax;
++
++  const addrs = state.user?.addresses || [];
++  const addr = addrs.find(a => a.id === (state.ui?.selectedAddressId || state.user?.defaultAddressId)) || addrs[0];
++  const pays = state.user?.paymentMethods || [];
++  const pay = pays.find(p => p.id === state.user?.defaultPaymentId) || pays[0];
++
++  if (items.length === 0) {
++    return (
++      <div style={{ maxWidth: 720, margin: '0 auto', padding: 24 }}>
++        <h1 style={{ fontSize: 24, fontWeight: 700 }}>Checkout</h1>
++        <p style={{ color: '#666', margin: '12px 0 20px' }}>Your cart is empty.</p>
++        <button onClick={() => navigate('/')} style={btn}>Browse restaurants</button>
++      </div>
++    );
++  }
++
++  const handlePlace = () => {
++    placeOrder({});
++    navigate('/orders');
++  };
++
++  return (
++    <div style={{ maxWidth: 720, margin: '0 auto', padding: 24 }}>
++      <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 4 }}>Checkout</h1>
++      {restaurant && <p style={{ color: '#666', marginBottom: 16 }}>Order from <b>{restaurant.name}</b></p>}
++
++      <section style={card}>
++        <h2 style={h2}>Delivery address</h2>
++        <p>{addr ? `${addr.street}${addr.apt ? ', ' + addr.apt : ''}, ${addr.city}, ${addr.state} ${addr.zip}` : 'No address on file'}</p>
++      </section>
++
++      <section style={card}>
++        <h2 style={h2}>Payment</h2>
++        <p>{pay ? pay.label : 'No payment method'}</p>
++      </section>
++
++      <section style={card}>
++        <h2 style={h2}>Your items</h2>
++        {items.map((it, i) => (
++          <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0' }}>
++            <span>{it.quantity}× {it.name}</span>
++            <span>${(it.totalPrice || 0).toFixed(2)}</span>
++          </div>
++        ))}
++        <hr style={{ margin: '12px 0', border: 'none', borderTop: '1px solid #eee' }} />
++        {[['Subtotal', subtotal], ['Delivery fee', deliveryFee], ['Service fee', serviceFee], ['Tax', tax]].map(([l, v]) => (
++          <div key={l} style={{ display: 'flex', justifyContent: 'space-between', color: '#666', padding: '2px 0' }}>
++            <span>{l}</span><span>${Number(v).toFixed(2)}</span>
++          </div>
++        ))}
++        <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, marginTop: 8, fontSize: 18 }}>
++          <span>Total</span><span>${total.toFixed(2)}</span>
++        </div>
++      </section>
++
++      <button onClick={handlePlace} style={btn}>Place order · ${total.toFixed(2)}</button>
++    </div>
++  );
++}

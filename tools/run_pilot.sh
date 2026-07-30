@@ -10,9 +10,9 @@
 # Requires: the CUA-Gym-Hub repo cloned (github.com/xlang-ai/CUA-Gym-Hub) with each
 # mock's deps installed (npm install per websites/<app>).
 #
-# NOTE: uber_eats_mock currently ships broken upstream (its components use an
-# unmounted AppContext and it renders blank even with default data) — it seeds
-# fine but won't render until that mock is fixed upstream.
+# NOTE: uber_eats_mock ships internally broken (two parallel context systems,
+# cross-wired) — apply tools/patches/uber_eats_mock_systemB.patch to the clone
+# first (see tools/PILOT_SETUP.md); then it renders like the other four.
 set -uo pipefail
 
 GYM="$(cd "$(dirname "$0")/.." && pwd)"
