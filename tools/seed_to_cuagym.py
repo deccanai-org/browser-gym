@@ -415,8 +415,25 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--app", action="append", help="limit to these gym apps (repeatable)")
     ap.add_argument("--commit", action="store_true", help="write to cua-gym Postgres (needs CUA_GYM_DSN)")
     ap.add_argument("--post", metavar="URL", help="seed a running mock via POST URL/post?sid (use with --app)")
+    ap.add_argument("--mock-map", metavar="A=URL,...",
+                    help="seed EVERY app of the task to its mock, e.g. shop=http://localhost:5201,mail=http://localhost:5203")
     ap.add_argument("--admin-token", help="X-CUA-Admin-Token for a hardened mock")
     args = ap.parse_args(argv)
+
+    # Seed all of a task's apps across their mocks in one shot, print open URLs.
+    if args.mock_map:
+        mapping = dict(p.split("=", 1) for p in args.mock_map.split(",") if "=" in p)
+        any_ok = False
+        for app, url in mapping.items():
+            rows = build_seed_rows(args.task, args.seed, [app])
+            if not rows:
+                continue
+            post_rows(rows, url, args.admin_token)
+            for r in rows:
+                frag = "#/inbox" if r["mock"] == "gmail_mock" else ""
+                print(f"open: {url.rstrip('/')}/?sid={r['sid']}{frag}")
+            any_ok = True
+        return 0 if any_ok else 1
 
     rows = build_seed_rows(args.task, args.seed, args.app)
     if not rows:
