@@ -159,6 +159,11 @@ class Bridge:
     session: dict[str, str] = field(default_factory=dict)  # app -> mock sid
     task_id: str | None = None
     seed: int = 0
+    # When an external harness owns the clock (it ticks /_harness/tick at each
+    # turn boundary), disable the bridge's own per-action tick so the scheduler
+    # isn't advanced ahead of the agent's observation. Default on for standalone
+    # / annotator use (no external ticker).
+    tick_enabled: bool = True
     _step: int = 0
 
     def _hh(self) -> dict:
@@ -222,7 +227,8 @@ class Bridge:
         form = None if method == "GET" else {f: payload.get(f) for f in fields}
         status, _ = _http(method, f"{self.gym_url}{path}", form=form)
         ok = status in (200, 201, 302, 303)
-        self.tick()                      # flush any scheduled cross-app effects
+        if self.tick_enabled:
+            self.tick()                  # flush any scheduled cross-app effects
         pushed = self.push()             # re-project the advanced world to all tabs
         return {"ok": ok, "status": status, "world_step": self._step, "pushed": pushed}
 

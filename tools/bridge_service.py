@@ -42,10 +42,15 @@ def _mock_map() -> dict[str, str]:
 
 
 # One live episode per service instance.
+# BRIDGE_TICK=0 disables the per-action scheduler tick — set this when an external
+# harness (eval.run) owns the clock, so scheduled events aren't advanced ahead of
+# the agent's observation.
+_TICK = os.environ.get("BRIDGE_TICK", "1").strip().lower() not in ("0", "false", "off", "no")
 BRIDGE = Bridge(
     gym_url=os.environ.get("GYM_URL", "http://127.0.0.1:8077"),
     mock_map=_mock_map(),
     harness_token=os.environ.get("HARNESS_TOKEN", ""),
+    tick_enabled=_TICK,
 )
 
 

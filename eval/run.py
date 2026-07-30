@@ -144,7 +144,9 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
                    resume_step: int | None = None,
                    resume_url: str | None = None,
                    brief_override: str | None = None,
-                   correction: str = "") -> Trajectory:
+                   correction: str = "",
+                   app_origins: dict | None = None,
+                   bridge_url: str | None = None) -> Trajectory:
     from harness.invalid_episode import INVALID_BROWSER_CRASH, INVALID_RESET
     from harness.runner import image_settings_for_agent
 
@@ -227,6 +229,7 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
     bctx = BrowserCtx(
         page=page, server_url=server_url, trajectory=traj,
         screenshot_dir=shots_dir,
+        app_origins=app_origins, bridge_url=bridge_url,
     )
     # Cross-app tasks record per-step facts (the substrate for the failure-
     # mode signature builder). Single-app tasks get None -> no facts, no
@@ -245,10 +248,22 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
     # emit navigate("/") as its first action anyway — pre-loading
     # just saves it that step.
     start_path = reset.get("start_path", "/")
-    try:
-        await page.goto(f"{server_url}{start_path}", wait_until="load")
-    except Exception as e:
-        print(f"[runner] WARNING: failed to pre-load {server_url}{start_path}: {e}")
+    if app_origins and bridge_url:
+        # Realistic-UI mode: open one tab per mock app (bridged), landing on the
+        # task's primary app. The agent drives these SPAs; scoring stays on the gym.
+        from harness.runner import _seg_to_app
+        primary = _seg_to_app(start_path)
+        if primary not in app_origins:
+            primary = next(iter(app_origins))
+        try:
+            await bctx.open_app_tabs(list(app_origins), primary)
+        except Exception as e:
+            print(f"[runner] WARNING: failed to open bridged app tabs: {e}")
+    else:
+        try:
+            await page.goto(f"{server_url}{start_path}", wait_until="load")
+        except Exception as e:
+            print(f"[runner] WARNING: failed to pre-load {server_url}{start_path}: {e}")
 
     # Initial snapshot — captured AFTER pre-navigation so initial_url
     # reflects the actual starting page (typically /), not about:blank.
@@ -314,8 +329,10 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
             traj.invalid_reason = reason
             traj.invalid_detail = (traj.error or "")[:500]
 
-    # Final probe
-    traj.final_url = page.url
+    # Final probe — use the ACTIVE tab (bctx.page), which the agent may have
+    # switched away from the primary (matters for the multi-tab bridged flow).
+    active_url = bctx.page.url
+    traj.final_url = active_url
     async with httpx.AsyncClient(headers=harness_headers()) as c:
         try:
             traj.final_snapshot = (await c.get(
@@ -323,7 +340,7 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
             )).json()
             traj.verifier_result = (await c.post(
                 f"{server_url}/_harness/verify",
-                json={"url": page.url, "step": len(traj.steps)},
+                json={"url": active_url, "step": len(traj.steps)},
             )).json()
         except Exception as e:
             from harness.invalid_episode import (
@@ -346,7 +363,7 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
                 cls = (await c.post(
                     f"{server_url}/_harness/classify_failure",
                     json={
-                        "url": page.url,
+                        "url": active_url,
                         "success": traj.verifier_result.get("success", False),
                         "score": traj.verifier_result.get("score", 0.0),
                         "n_steps": len(traj.steps),
@@ -451,8 +468,32 @@ def main() -> None:
     ap.add_argument("--resume-url", default=None, help="mid-episode URL to navigate to on resume")
     ap.add_argument("--brief-override", default=None, help="drive the agent under a replacement task brief (annotator prompt edit)")
     ap.add_argument("--correction", default="", help="reviewer's instruction injected into the agent's brief on drive-forward resume")
+    # Realistic-UI (bridged) mode: drive the CUA-Gym-Hub mock SPAs instead of the
+    # gym's own HTML. Browser navigation targets the mock origins (+ ?bridge=);
+    # scoring still uses --server (the gym). Requires the bridge service running
+    # against the same gym, and each mock served. Same agents/models as usual.
+    ap.add_argument("--app-origins", default=None,
+                    help="realistic-UI mode: comma map app=origin, e.g. "
+                         "shop=http://127.0.0.1:5203,mail=http://127.0.0.1:5401,"
+                         "market=http://127.0.0.1:5301,calendar=http://127.0.0.1:5402,"
+                         "food=http://127.0.0.1:5403")
+    ap.add_argument("--bridge-url", default=None,
+                    help="realistic-UI mode: the bridge service URL (e.g. "
+                         "http://127.0.0.1:8090). Run it with BRIDGE_TICK=0 so the "
+                         "harness owns the scheduler clock.")
     args = ap.parse_args()
     ensure_harness_token()
+
+    app_origins = None
+    if args.app_origins:
+        app_origins = {}
+        for part in args.app_origins.split(","):
+            if "=" in part:
+                k, v = part.split("=", 1)
+                app_origins[k.strip()] = v.strip()
+    if app_origins and not args.bridge_url:
+        print("ERROR: --app-origins requires --bridge-url", file=sys.stderr)
+        sys.exit(2)
 
     resume_state = json.loads(Path(args.resume_file).read_text()) if args.resume_file else None
 
@@ -496,6 +537,8 @@ def main() -> None:
                 resume_url=args.resume_url,
                 brief_override=args.brief_override,
                 correction=args.correction,
+                app_origins=app_origins,
+                bridge_url=args.bridge_url,
             ))
             v = traj.verifier_result
             print(f"  -> score={v.get('score', 0):.2f} "

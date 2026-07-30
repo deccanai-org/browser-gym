@@ -33,10 +33,45 @@ from pathlib import Path
 from typing import Any, Callable, Optional
 
 import httpx
+from urllib.parse import urlencode, urlsplit, urlunsplit
 from playwright.async_api import (
     Browser, BrowserContext, Page, Playwright, async_playwright,
 )
 from harness.auth import harness_headers
+
+
+# --------------------------------------------------------------------------- #
+# Realistic-UI (bridged) navigation
+# --------------------------------------------------------------------------- #
+# Each realistic mock (CUA-Gym-Hub Amazon/Gmail/eBay/GCal/UberEats) is its OWN
+# origin, unlike the gym's single path-prefixed origin. These maps let the
+# harness open the right mock: a gym-style path segment -> app key, and each app
+# -> its mock start path. Scoring still goes to the gym /_harness/* — only
+# browser navigation is redirected to the mock origins.
+_SEG_TO_APP = {"": "shop", "mail": "mail", "food": "food",
+               "market": "market", "valuemart": "market", "calendar": "calendar"}
+_APP_START_PATH = {"shop": "/", "mail": "/#/inbox", "market": "/",
+                   "calendar": "/", "food": "/"}
+
+
+def _seg_to_app(path: str) -> str:
+    seg = urlsplit(path or "/").path.lstrip("/").split("/")[0].lower()
+    return _SEG_TO_APP.get(seg, "shop")
+
+
+def bridged_app_url(app_origins: dict, bridge_url: str, app: str,
+                    start_path: str | None = None) -> str:
+    """URL that opens the realistic mock for ``app`` in bridged mode: the mock's
+    origin at its start path, carrying ``?bridge=<bridge_url>`` BEFORE any hash so
+    a hash-routed SPA (Gmail's /#/inbox) still reads it from location.search."""
+    origin = app_origins[app].rstrip("/")
+    sp = start_path or _APP_START_PATH.get(app, "/")
+    if not sp.startswith(("/", "#", "?")):
+        sp = "/" + sp
+    parts = urlsplit(sp)
+    extra = urlencode({"bridge": bridge_url})
+    query = f"{parts.query}&{extra}" if parts.query else extra
+    return origin + urlunsplit(("", "", parts.path or "/", query, parts.fragment))
 
 
 # --------------------------------------------------------------------------- #
@@ -342,6 +377,11 @@ class BrowserCtx:
     # Per-task fact extractor: (world_json, active_url) -> {namespaced facts}.
     # None for single-app tasks (then no /_harness/world fetch happens).
     extract_facts: Optional[Callable[[dict, str], dict]] = None
+    # Realistic-UI (bridged) mode: when set, browser navigation targets the mock
+    # origins (carrying ?bridge=) instead of the gym; scoring still uses
+    # server_url (the gym). None -> classic gym-HTML mode (unchanged).
+    app_origins: Optional[dict] = None
+    bridge_url: Optional[str] = None
 
     def __post_init__(self) -> None:
         if not self.pages:
@@ -1067,7 +1107,39 @@ class BrowserCtx:
     def _abs(self, path: str) -> str:
         if path.startswith("http"):
             return path
+        # Bridged mode: an app-level path (/mail, /food, ...) opens that mock's
+        # own origin at its start page. Within-app navigation is by marks, so we
+        # ignore the sub-path here and land on the app start.
+        if self.app_origins and self.bridge_url:
+            app = _seg_to_app(path)
+            if app in self.app_origins:
+                return bridged_app_url(self.app_origins, self.bridge_url, app)
         return f"{self.server_url}{path}"
+
+    async def open_app_tabs(self, apps: list[str], primary: str) -> None:
+        """Pre-open one browser tab per realistic app (bridged), ``primary``
+        active. Mirrors a person who already has the relevant app tabs open —
+        the cross-app substitute for the gym's single-origin app-bar. The agent
+        moves between apps with switch_tab (both pixel agents support it)."""
+        order = [primary] + [a for a in apps if a != primary and a in self.app_origins]
+        built: list = []
+        for i, app in enumerate(order):
+            url = bridged_app_url(self.app_origins, self.bridge_url, app)
+            pg = self.page if i == 0 else await self.page.context.new_page()
+            try:
+                await pg.goto(url, wait_until="load")
+            except Exception as e:
+                print(f"[runner] WARNING: failed to open {app} tab at {url}: {e}")
+            built.append(pg)
+        # Assign LAST so the popup-tracking listener's interim mutations don't
+        # leave duplicates: this clean list is the source of truth.
+        self.pages = built or [self.page]
+        self.active_tab = 0
+        self.page = self.pages[0]
+        try:
+            await self.page.bring_to_front()
+        except Exception:
+            pass
 
 
 # --------------------------------------------------------------------------- #

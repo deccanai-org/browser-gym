@@ -215,6 +215,40 @@ def test_tracking_number_is_projected(wired):
     assert order["trackingNumber"].startswith("1Z")
 
 
+def test_harness_bridged_nav_urls():
+    """The harness builds mock-origin URLs carrying ?bridge=, query before hash."""
+    from harness.runner import bridged_app_url, _seg_to_app
+    ao = {"shop": "http://h:5203", "mail": "http://h:5401", "food": "http://h:5403"}
+    bu = "http://h:8090"
+    shop = bridged_app_url(ao, bu, "shop")
+    assert shop.startswith("http://h:5203/?bridge=")
+    mail = bridged_app_url(ao, bu, "mail")
+    # hash-routed Gmail: ?bridge must come BEFORE the #, so location.search sees it
+    assert "?bridge=" in mail and mail.index("?bridge=") < mail.index("#/inbox")
+    assert _seg_to_app("/") == "shop" and _seg_to_app("/mail") == "mail"
+    assert _seg_to_app("/market/x") == "market" and _seg_to_app("/food") == "food"
+
+
+def test_bridge_tick_disable(monkeypatch):
+    """With tick disabled (harness owns the clock), act() must not tick."""
+    import tools.bridge as bridge
+    calls = {"tick": 0, "act": 0}
+
+    def fake_http(method, url, *, form=None, json_body=None, headers=None, timeout=30):
+        if url.endswith("/_harness/tick"):
+            calls["tick"] += 1
+        if "/api/" in url:
+            calls["act"] += 1
+        if url.endswith("/_harness/world_full"):
+            return 200, {"shop": {"cart": {"items": []}}}
+        return 200, {}
+    monkeypatch.setattr(bridge, "_http", fake_http)
+    b = bridge.Bridge(gym_url="http://g", mock_map={}, tick_enabled=False)
+    b.reset("A1/buy_wireless_mouse", 0)
+    b.act("shop.apply_promo", code="X")
+    assert calls["act"] == 1 and calls["tick"] == 0, calls
+
+
 def test_actions_cover_every_app(wired):
     apps = {a.split(".")[0] for a in bridge.ACTIONS}
     assert apps == {"shop", "mail", "market", "food", "calendar"}

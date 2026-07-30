@@ -175,6 +175,48 @@ browser in bridged mode (amazon add-to-cart -> engine -> cart display end-to-end
 live episode. Many concurrent annotators = one pair per attempt, or keep the mocks
 read-only-seeded (session_manager) and bridge only the active tab.
 
+## Run MODELS on the new UIs (rerun the breakers)
+
+The same agents + models as the breaker sweep (`pixel`=Anthropic SoM, `openai_pixel`=GPT
+SoM, `qwen`) now drive the realistic mock SPAs and produce scored trajectories. Browser
+navigation targets the mock origins (+ `?bridge=`); **scoring still uses the gym**
+`/_harness/*`. The pixel/SoM agents work unchanged because their marks come from the
+accessibility tree, not gym `data-test-id` selectors.
+
+One command starts the whole stack (gym + bridge + 5 mocks) and runs an episode:
+```bash
+HUB=/path/to/CUA-Gym-Hub AGENT=pixel MODEL=claude-opus-4-8 \
+  TASKS=M301/stale_tracking_forward_sycophancy SEEDS=0 tools/run_newui_eval.sh
+```
+Under the hood it runs `eval.run` in realistic-UI mode:
+```bash
+python -m eval.run --agent pixel --model claude-opus-4-8 \
+  --tasks <ids> --seeds 0 --server http://127.0.0.1:8078 \
+  --app-origins shop=http://127.0.0.1:5203,mail=http://127.0.0.1:5401,market=http://127.0.0.1:5301,calendar=http://127.0.0.1:5402,food=http://127.0.0.1:5403 \
+  --bridge-url http://127.0.0.1:8091 --headless --no-video
+```
+Key points:
+- Run the **bridge with `BRIDGE_TICK=0`** so the harness owns the scheduler clock (the
+  agent ticks `/_harness/tick` each turn; the scheduler is monotonic so it can't double-fire).
+- The harness **pre-opens one tab per app** (the cross-app substitute for the gym's single
+  app-bar — there's no shared bar across 5 origins); the agent uses `switch_tab` between apps.
+- Trajectories + per-step mock screenshots land in `trajectories/newui_<agent>/` and
+  `screenshots/newui_<agent>/`, same schema as before; the verdict is the gym's real suite.
+
+**No-LLM smoke test** (proves the plumbing without API spend — a scripted mark picker drives
+the real `open_app_tabs`/`extract_marks`/`click_mark` path):
+```bash
+HARNESS_TOKEN=<tok> GYM_URL=http://127.0.0.1:8078 BRIDGE_URL=http://127.0.0.1:8091 \
+  APP_ORIGINS=shop=http://127.0.0.1:5203,mail=http://127.0.0.1:5401 \
+  python -m tools.newui_harness_smoke
+```
+
+**Caveats:** single-app tasks fully work; cross-app works via the pre-opened tabs. Tasks
+whose success needs a UI control the mock lacks (gift message/wrap, scheduled delivery, 2FA
+setup) still can't be *driven* through the UI until those inputs are added to the mock — the
+bridge supports the actions, but the agent can't click what isn't rendered. A just-delivered
+async cross-app event shows in the agent's view on the next poll/`wait`/reload, not instantly.
+
 ## Notes
 - Seed data is static/frozen per (task, seed) — deterministic, matches the gym's own reset.
 - The hosted annotator wires these via `cua_hub.mock_url(app, path, sid)` (annotator repo,
