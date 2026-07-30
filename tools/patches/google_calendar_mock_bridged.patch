@@ -1,3 +1,16 @@
+diff --git a/websites/google_calendar_mock/index.html b/websites/google_calendar_mock/index.html
+index 8e88873..41e1f66 100644
+--- a/websites/google_calendar_mock/index.html
++++ b/websites/google_calendar_mock/index.html
+@@ -4,7 +4,7 @@
+     <meta charset="UTF-8" />
+     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-    <title>Xoogle Calendar Clone</title>
++    <title>GymCal</title>
+   </head>
+   <body>
+     <div id="root"></div>
 diff --git a/websites/google_calendar_mock/src/components/EventModal.jsx b/websites/google_calendar_mock/src/components/EventModal.jsx
 index 7fff9e8..52ebefc 100644
 --- a/websites/google_calendar_mock/src/components/EventModal.jsx
@@ -40,6 +53,45 @@ index 7fff9e8..52ebefc 100644
        onClose();
      }
    };
+diff --git a/websites/google_calendar_mock/src/components/EventPopover.jsx b/websites/google_calendar_mock/src/components/EventPopover.jsx
+index 554c62c..551c2b3 100644
+--- a/websites/google_calendar_mock/src/components/EventPopover.jsx
++++ b/websites/google_calendar_mock/src/components/EventPopover.jsx
+@@ -135,7 +135,7 @@ export default function EventPopover({ event, position, onClose, onEdit, onDelet
+               onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
+               onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
+             >
+-              Join Google Meet
++              Join GymCal Meet
+             </a>
+           </div>
+         )}
+diff --git a/websites/google_calendar_mock/src/components/Header.jsx b/websites/google_calendar_mock/src/components/Header.jsx
+index 49a8751..8116d08 100644
+--- a/websites/google_calendar_mock/src/components/Header.jsx
++++ b/websites/google_calendar_mock/src/components/Header.jsx
+@@ -165,7 +165,7 @@ export default function Header({ onSearch }) {
+           <div className="w-8 h-8 bg-primary rounded text-white flex items-center justify-center font-bold text-lg">
+             31
+           </div>
+-          <span className="text-xl text-text-secondary hidden sm:block">Calendar</span>
++          <span className="text-xl text-text-secondary hidden sm:block">GymCal</span>
+         </div>
+       </div>
+ 
+diff --git a/websites/google_calendar_mock/src/components/SettingsModal.jsx b/websites/google_calendar_mock/src/components/SettingsModal.jsx
+index c0aed38..5c16a4d 100644
+--- a/websites/google_calendar_mock/src/components/SettingsModal.jsx
++++ b/websites/google_calendar_mock/src/components/SettingsModal.jsx
+@@ -36,7 +36,7 @@ export default function SettingsModal({ isOpen, onClose }) {
+     const lines = [
+       'BEGIN:VCALENDAR',
+       'VERSION:2.0',
+-      'PRODID:-//CUA Gym//Google Calendar Mock//EN',
++      'PRODID:-//CUA Gym//GymCal Mock//EN',
+       'CALSCALE:GREGORIAN',
+       ...state.events.flatMap(event => [
+         'BEGIN:VEVENT',
 diff --git a/websites/google_calendar_mock/src/context/StoreContext.jsx b/websites/google_calendar_mock/src/context/StoreContext.jsx
 index 7343fdd..5008080 100644
 --- a/websites/google_calendar_mock/src/context/StoreContext.jsx

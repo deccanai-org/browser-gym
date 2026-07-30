@@ -1,3 +1,28 @@
+diff --git a/websites/gmail_mock/index.html b/websites/gmail_mock/index.html
+index bebe3d3..15708df 100644
+--- a/websites/gmail_mock/index.html
++++ b/websites/gmail_mock/index.html
+@@ -2,16 +2,16 @@
+ <html lang="en">
+   <head>
+     <meta charset="UTF-8" />
+-    <link rel="icon" type="image/svg+xml" href="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" />
++    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23c5221f'/%3E%3Ctext x='16' y='22' font-size='18' fill='white' text-anchor='middle' font-family='Arial'%3ES%3C/text%3E%3C/svg%3E" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-    <title>Xmail Clone</title>
++    <title>ShopMail Clone</title>
+   </head>
+   <body>
+     <div id="root">
+       <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; color: #5f6368;">
+         <div style="text-align: center;">
+-          <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r2.png" alt="Xmail" style="height: 40px; margin-bottom: 20px;" />
+-          <p>Loading Xmail...</p>
++          <div style="font-size:34px;font-weight:500;color:#c5221f;margin-bottom:20px;font-family:Roboto,Arial,sans-serif;">ShopMail</div>
++          <p>Loading ShopMail...</p>
+         </div>
+       </div>
+     </div>
 diff --git a/websites/gmail_mock/src/components/ComposeModal.jsx b/websites/gmail_mock/src/components/ComposeModal.jsx
 index b1c8bae..4c5ecfc 100644
 --- a/websites/gmail_mock/src/components/ComposeModal.jsx
@@ -94,6 +119,86 @@ index b1c8bae..4c5ecfc 100644
              >
                <Trash2 size={18} />
              </button>
+diff --git a/websites/gmail_mock/src/components/EmailList.jsx b/websites/gmail_mock/src/components/EmailList.jsx
+index 0efbcc3..ee149d6 100644
+--- a/websites/gmail_mock/src/components/EmailList.jsx
++++ b/websites/gmail_mock/src/components/EmailList.jsx
+@@ -284,7 +284,7 @@ const EMPTY_STATES = {
+     icon: null,
+     svgPath: 'M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z',
+     title: 'Nothing in Important',
+-    desc: 'Xmail automatically marks messages as important based on how you read and reply to them.',
++    desc: 'ShopMail automatically marks messages as important based on how you read and reply to them.',
+   },
+   sent: {
+     icon: Send,
+@@ -304,7 +304,7 @@ const EMPTY_STATES = {
+   spam: {
+     icon: ShieldCheck,
+     title: 'Hooray, no spam here!',
+-    desc: 'Xmail protects you from spam messages. Messages marked as spam are deleted after 30 days.',
++    desc: 'ShopMail protects you from spam messages. Messages marked as spam are deleted after 30 days.',
+   },
+   trash: {
+     icon: Trash2,
+diff --git a/websites/gmail_mock/src/components/Header.jsx b/websites/gmail_mock/src/components/Header.jsx
+index 6e8d113..213a479 100644
+--- a/websites/gmail_mock/src/components/Header.jsx
++++ b/websites/gmail_mock/src/components/Header.jsx
+@@ -87,7 +87,7 @@ const GoogleAppsPanel = ({ onClose }) => {
+     { name: 'YouTube', icon: '▶️' },
+     { name: 'Play', icon: '🎮' },
+     { name: 'News', icon: '📰' },
+-    { name: 'Xmail', icon: '✉️' },
++    { name: 'ShopMail', icon: '✉️' },
+     { name: 'Meet', icon: '📹' },
+     { name: 'Chat', icon: '💬' },
+     { name: 'Drive', icon: '📁' },
+@@ -101,7 +101,7 @@ const GoogleAppsPanel = ({ onClose }) => {
+       ref={ref}
+       className="absolute top-12 right-0 bg-white border border-gray-200 rounded-xl shadow-xl z-50 w-72 p-3"
+     >
+-      <h3 className="text-sm font-medium text-gray-700 px-2 pb-2 border-b border-gray-100 mb-2">Google apps</h3>
++      <h3 className="text-sm font-medium text-gray-700 px-2 pb-2 border-b border-gray-100 mb-2">Apps</h3>
+       <div className="grid grid-cols-3 gap-1">
+         {apps.map(app => (
+           <button
+@@ -146,7 +146,7 @@ const ProfileDropdown = ({ onClose }) => {
+           onClick={onClose}
+           className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+         >
+-          Manage your Google Account
++          Manage your account
+         </button>
+         <button
+           onClick={onClose}
+@@ -176,7 +176,7 @@ const Header = () => {
+           <Menu size={24} className="text-gray-600" />
+         </button>
+         <div className="flex items-center gap-2">
+-          <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r2.png" alt="Xmail" className="h-10" />
++          <span className="text-2xl font-medium text-gray-600" style={{fontFamily:"Roboto,Arial,sans-serif"}}>ShopMail</span>
+         </div>
+       </div>
+ 
+@@ -204,7 +204,7 @@ const Header = () => {
+         <button
+           className="p-2 hover:bg-gray-100 rounded-full"
+           title="Support"
+-          onClick={() => showToast('Xmail Help Center — not available in mock')}
++          onClick={() => showToast('ShopMail Help Center — not available in mock')}
+         >
+           <HelpCircle size={24} className="text-gray-600" />
+         </button>
+@@ -214,7 +214,7 @@ const Header = () => {
+         <div className="relative">
+           <button
+             className="p-2 hover:bg-gray-100 rounded-full"
+-            title="Google apps"
++            title="Apps"
+             onClick={() => setShowAppsPanel(v => !v)}
+           >
+             <Grid size={24} className="text-gray-600" />
 diff --git a/websites/gmail_mock/src/components/ThreadView.jsx b/websites/gmail_mock/src/components/ThreadView.jsx
 index bd00442..a0d008f 100644
 --- a/websites/gmail_mock/src/components/ThreadView.jsx
@@ -229,6 +334,63 @@ index 88aa2ee..9ed13da 100644
        addLabel,
        removeLabel,
        createLabel,
+diff --git a/websites/gmail_mock/src/data/mockData.js b/websites/gmail_mock/src/data/mockData.js
+index 9e16d33..9b5659b 100644
+--- a/websites/gmail_mock/src/data/mockData.js
++++ b/websites/gmail_mock/src/data/mockData.js
+@@ -356,7 +356,7 @@ Lisa`,
+   emails.push({
+     id: 'email_promo_1',
+     threadId: 'thread_promo_1',
+-    from: { name: 'Amazon', email: 'store-news@amazon.com', avatar: 'https://picsum.photos/100/100?random=5' },
++    from: { name: 'ShopGym', email: 'store-news@shopgym.example', avatar: 'https://picsum.photos/100/100?random=5' },
+     to: [{ name: 'Demo User', email: 'demo@example.com' }],
+     cc: [],
+     bcc: [],
+@@ -460,11 +460,11 @@ Lisa`,
+   emails.push({
+     id: 'email_promo_2',
+     threadId: 'thread_promo_2',
+-    from: { name: 'Uber Eats', email: 'receipts@uber.com', avatar: 'https://picsum.photos/100/100?random=uber' },
++    from: { name: 'GymEats', email: 'receipts@gymeats.example', avatar: 'https://picsum.photos/100/100?random=uber' },
+     to: [{ name: 'Demo User', email: 'demo@example.com' }],
+     cc: [],
+     bcc: [],
+-    subject: 'Your Uber Eats receipt - $23.45',
++    subject: 'Your GymEats receipt - $23.45',
+     body: 'Thanks for your order from Chipotle Mexican Grill. Your total was $23.45.',
+     snippet: 'Thanks for your order from Chipotle Mexican Grill. Total: $23.45',
+     timestamp: new Date(BASE_TIME - 1000 * 60 * 60 * 36).toISOString(),
+@@ -722,13 +722,13 @@ Mike`,
+   emails.push({
+     id: 'email_updates_2',
+     threadId: 'thread_updates_2',
+-    from: { name: 'Google', email: 'no-reply@accounts.google.com', avatar: 'https://picsum.photos/100/100?random=google' },
++    from: { name: 'ShopMail', email: 'no-reply@security.shopmail.example', avatar: 'https://picsum.photos/100/100?random=google' },
+     to: [{ name: 'Demo User', email: 'demo@example.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Security alert: New sign-in on Windows',
+-    body: 'Your Google Account demo@example.com was just signed in to from a Windows device. If this was you, you can ignore this alert. If not, we recommend securing your account.',
+-    snippet: 'Your Google Account was just signed in to from a Windows device.',
++    body: 'Your ShopMail account demo@example.com was just signed in to from a Windows device. If this was you, you can ignore this alert. If not, we recommend securing your account.',
++    snippet: 'Your ShopMail account was just signed in to from a Windows device.',
+     timestamp: new Date(BASE_TIME - 1000 * 60 * 60 * 20).toISOString(), // 20 hours ago
+     read: true,
+     starred: false,
+diff --git a/websites/gmail_mock/src/index.css b/websites/gmail_mock/src/index.css
+index 80723b9..75db066 100644
+--- a/websites/gmail_mock/src/index.css
++++ b/websites/gmail_mock/src/index.css
+@@ -10,7 +10,7 @@ html, body, #root {
+ }
+ 
+ body {
+-  font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
++  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+   -webkit-font-smoothing: antialiased;
+   background-color: #f6f8fc;
+ }
 diff --git a/websites/gmail_mock/src/lib/bridge.js b/websites/gmail_mock/src/lib/bridge.js
 new file mode 100644
 index 0000000..592181e
@@ -280,3 +442,25 @@ index 0000000..592181e
 +  setTimeout(tick, ms);
 +  return () => { live = false; };
 +}
+diff --git a/websites/gmail_mock/src/pages/Settings.jsx b/websites/gmail_mock/src/pages/Settings.jsx
+index cce938c..5f8ae57 100644
+--- a/websites/gmail_mock/src/pages/Settings.jsx
++++ b/websites/gmail_mock/src/pages/Settings.jsx
+@@ -435,7 +435,7 @@ const SettingsPage = () => {
+                   <div>
+                     <p className="font-medium text-gray-900 text-base">{state.user.username}</p>
+                     <p className="text-sm text-gray-500">{state.user.email}</p>
+-                    <p className="text-xs text-gray-400 mt-1">Google Account</p>
++                    <p className="text-xs text-gray-400 mt-1">Account</p>
+                   </div>
+                 </div>
+ 
+@@ -457,7 +457,7 @@ const SettingsPage = () => {
+                   <div className="flex items-center justify-between py-3 border-b border-gray-100">
+                     <div>
+                       <p className="text-sm font-medium text-gray-800">Language</p>
+-                      <p className="text-xs text-gray-500">Display language for Xmail</p>
++                      <p className="text-xs text-gray-500">Display language for ShopMail</p>
+                     </div>
+                     <select
+                       value={language}
