@@ -62,3 +62,6 @@ trajectories/cascade_*/*.md
 # Generated seed database (reproducible: python -m server.seeddb.build_seed_db)
 fixtures/seed.db*.sqlite
 fixtures/seed.db*.sqlite.tmp
+
+# Pilot session registry (runtime state)
+tools/.pilot_sessions.sqlite

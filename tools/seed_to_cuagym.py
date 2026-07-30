@@ -338,29 +338,32 @@ TRANSFORMERS: dict[str, Callable[[dict], dict]] = {
 
 
 # ------------------------------------------------------- build seed rows -------
-def build_seed_rows(task_id: str, seed: int, apps: list[str] | None = None) -> list[dict]:
-    """[{mock, sid, state}] — one row per app that has a working transform."""
+def transformed_states(task_id: str, seed: int, apps: list[str] | None = None) -> dict[str, tuple[str, dict]]:
+    """{app: (mock_key, state)} — the transformed mock state per app, no sid assigned.
+
+    The reusable core: seeding (build_seed_rows) and the session manager both call this.
+    """
     world = dump_world(task_id, seed)
-    want = apps or list(APP_TO_MOCK)
-    rows: list[dict] = []
-    for app in want:
+    out: dict[str, tuple[str, dict]] = {}
+    for app in (apps or list(APP_TO_MOCK)):
         if app not in world:
             continue
         transform = TRANSFORMERS.get(app)
         if transform is None:
             continue
         try:
-            state = transform(world[app])
+            out[app] = (APP_TO_MOCK[app], transform(world[app]))
         except NotImplementedError as exc:
             print(f"  skip {app}: {exc}", file=sys.stderr)
-            continue
-        rows.append({
-            "app": app,
-            "mock": APP_TO_MOCK[app],
-            "sid": str(uuid.uuid4()),
-            "state": state,
-        })
-    return rows
+    return out
+
+
+def build_seed_rows(task_id: str, seed: int, apps: list[str] | None = None) -> list[dict]:
+    """[{app, mock, sid, state}] — one row per app that has a working transform."""
+    return [
+        {"app": app, "mock": mock, "sid": str(uuid.uuid4()), "state": state}
+        for app, (mock, state) in transformed_states(task_id, seed, apps).items()
+    ]
 
 
 # ----------------------------------------------------------------- load --------

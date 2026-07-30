@@ -55,6 +55,25 @@ the realistic UIs.
 Modes: `--post URL` (one mock), `--mock-map app=URL,...` (a whole task across mocks),
 `--commit` (write to a cua-gym Postgres instead, via `CUA_GYM_DSN`).
 
+## Session management (`tools/session_manager.py`)
+
+Implements the base -> clone -> discard model: a frozen `seed_sid` per (task, app),
+cloned into a per-attempt `attempt_sid` that the annotator mutates and is TTL-wiped.
+Sessions are tracked in a SQLite registry (`tools/.pilot_sessions.sqlite`).
+
+```bash
+MM="shop=http://127.0.0.1:5201,mail=http://127.0.0.1:5199,market=http://127.0.0.1:5202,calendar=http://127.0.0.1:5204,food=http://127.0.0.1:5205"
+python -m tools.session_manager start  --task M301/... --seed 0 --annotator alice --mock-map "$MM"  # -> session id + per-app URLs
+python -m tools.session_manager diffs  --session <id>   # per-app /go state_diff (verifier signal)
+python -m tools.session_manager golden --session <id>   # keep this session's trajectory
+python -m tools.session_manager expire                  # wipe non-golden sessions past TTL (cron)
+python -m tools.session_manager end    --session <id>
+python -m tools.session_manager list
+```
+
+Each attempt is isolated (a mutation in one session never touches the seed or another
+session), golden sessions survive `expire`, and `PILOT_TTL_MIN` (default 90) sets the window.
+
 ## Notes
 - Seed data is static/frozen per (task, seed) — deterministic, matches the gym's own reset.
 - The hosted annotator wires these via `cua_hub.mock_url(app, path, sid)` (annotator repo,
