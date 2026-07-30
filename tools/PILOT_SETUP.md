@@ -74,6 +74,29 @@ python -m tools.session_manager list
 Each attempt is isolated (a mutation in one session never touches the seed or another
 session), golden sessions survive `expire`, and `PILOT_TTL_MIN` (default 90) sets the window.
 
+## Wiring it into the annotator (cua-hub mode)
+
+The annotator's live browser opens these seeded UIs when **`CUA_HUB_MODE=1`** is set on
+the backend. Flow (`backend/app/api/live.py::_open_cua_session` + `app/cua_hub.py`):
+a gym task's `open_live_session` clones each app's frozen `seed_sid` into a fresh
+`attempt_sid` (isolated per annotator), lands the live browser on the task's primary
+app, and returns the others as tabs — bypassing the gym lease/seed/restore path.
+
+Deploy config on the annotator backend:
+```bash
+CUA_HUB_MODE=1
+CUA_HUB_DOMAIN=delta.deccanexperts.ai          # prod subdomains, OR per-app overrides:
+CUA_HUB_URL_SHOP=http://amazon-mock:5201        CUA_HUB_URL_MAIL=http://gmail-mock:5203
+CUA_HUB_URL_MARKET=http://ebay-mock:5202        CUA_HUB_URL_CALENDAR=http://gcal-mock:5204
+CUA_HUB_URL_FOOD=http://ubereats-mock:5205
+```
+Prereq: run `tools/seed_all_tasks --mock-map "$MM"` once so every task's `seed_sid`
+exists for the clone. The annotator's `seed_sid` scheme matches the gym seeder exactly.
+
+**Remaining for the hosted deploy** (needs the live-browser service reachable from the
+backend + a redeploy — untestable locally): confirm the live-browser can reach the mock
+hosts, and set each task's card `allowedSites` to the cua hosts via `cua_hub.allowed_sites()`.
+
 ## Notes
 - Seed data is static/frozen per (task, seed) — deterministic, matches the gym's own reset.
 - The hosted annotator wires these via `cua_hub.mock_url(app, path, sid)` (annotator repo,
