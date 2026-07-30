@@ -52,13 +52,23 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     # shop (Amazon)
     "shop.login":            ("POST", "/api/login",          ("email", "password")),
     "shop.add_to_cart":      ("POST", "/api/cart/add",       ("product_id", "quantity", "variant_id")),
-    "shop.update_line":      ("POST", "/api/cart/update",    ("line_id", "quantity")),
+    # cart-line edits carry the engine's full per-line option set (gift wrap /
+    # message, PER-LINE ship-to for split shipping, scheduled delivery) — dropping
+    # these silently defangs the gift/split-shipping breaker tasks.
+    "shop.update_line":      ("POST", "/api/cart/update",
+                              ("line_id", "quantity", "gift_wrap", "gift_message", "ship_to_address_id", "scheduled_delivery")),
     "shop.remove_line":      ("POST", "/api/cart/remove",    ("line_id",)),
     # product-keyed cart edits (the mocks know product ids, not gym line ids;
-    # the bridge resolves product_id -> line_id from the live cart, see RESOLVERS)
+    # the bridge resolves product_id -> line_id from the live cart, see _LINE_RESOLVED)
     "shop.set_qty":          ("POST", "/api/cart/update",    ("line_id", "quantity")),
+    "shop.set_line_options": ("POST", "/api/cart/update",
+                              ("line_id", "gift_wrap", "gift_message", "ship_to_address_id", "scheduled_delivery")),
     "shop.remove_product":   ("POST", "/api/cart/remove",    ("line_id",)),
     "shop.apply_promo":      ("POST", "/api/cart/promo",     ("code",)),
+    # read/navigation — hitting these gym routes logs the view (view_order_detail /
+    # viewed_tracking) an agent must produce for the corresponding milestones.
+    "shop.view_order":       ("GET",  "/account/orders/{order_id}",       ()),
+    "shop.view_tracking":    ("GET",  "/account/orders/{order_id}/track", ()),
     "shop.place_order":      ("POST", "/api/checkout/place", ("payment_id",)),
     "shop.add_address":      ("POST", "/api/account/addresses",
                               ("label", "full_name", "line1", "line2", "city", "state", "zip", "set_default")),
@@ -66,6 +76,7 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "shop.add_payment":      ("POST", "/api/account/payments",
                               ("label", "kind", "card_number", "expires", "cvv", "nickname", "set_default")),
     "shop.set_default_payment": ("POST", "/api/account/payments/{payment_id}/default", ()),
+    "shop.enable_two_fa":    ("POST", "/api/account/security/two-fa", ("code",)),
     "shop.create_return":    ("POST", "/api/returns",
                               ("order_id", "item_ids", "reason", "refund_method", "notes")),
     "shop.create_subscription": ("POST", "/api/subscriptions", ("product_id", "cadence", "deliveries")),
@@ -91,7 +102,7 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
 
 # Actions whose payload is product-keyed but whose gym endpoint wants a cart
 # line_id — resolved from the live world just before dispatch.
-_LINE_RESOLVED = {"shop.set_qty", "shop.remove_product"}
+_LINE_RESOLVED = {"shop.set_qty", "shop.remove_product", "shop.set_line_options"}
 
 
 def _resolve_line_id(world: dict, product_id: str) -> str | None:
@@ -207,7 +218,8 @@ class Bridge:
             payload = {**payload, "line_id": lid}
         method, path, fields = ACTIONS[action]
         path = path.format(**payload)
-        form = {f: payload.get(f) for f in fields}
+        # GET actions (views/navigation) carry their args in the path, no body.
+        form = None if method == "GET" else {f: payload.get(f) for f in fields}
         status, _ = _http(method, f"{self.gym_url}{path}", form=form)
         ok = status in (200, 201, 302, 303)
         self.tick()                      # flush any scheduled cross-app effects

@@ -257,7 +257,10 @@ def transform_shop(shop: dict) -> dict:
                        "items": [{"productId": i.get("product_id"), "quantity": i.get("quantity") or 1}
                                  for i in (o.get("items") or [])],
                        "shippingAddress": user.get("address"), "paymentMethod": user.get("paymentMethod"),
-                       "trackingNumber": None, "estimatedDelivery": None})
+                       # tracking # + eta come from the order's first shipment so the
+                       # realistic UI actually shows the live tracking an agent must read.
+                       "trackingNumber": (o.get("shipments") or [{}])[0].get("tracking_number"),
+                       "estimatedDelivery": (o.get("shipments") or [{}])[0].get("estimated_delivery")})
 
     # promotions -> a strikethrough deal price on the targeted product (amazon's
     # only native deal field), plus the raw promos preserved for verification.

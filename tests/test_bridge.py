@@ -154,6 +154,67 @@ def test_add_address_runs_through_engine(wired):
     assert len(b.world()["shop"]["users"][uid]["addresses"]) == before + 1
 
 
+def test_line_options_reach_the_engine(wired):
+    """gift message / gift wrap / per-line ship-to must not be dropped."""
+    b = wired
+    b.reset(TASK, 0)
+    sh = b.world()["shop"]
+    pid = next(iter(sh["products"]))
+    uid = sh["current_user_id"]
+    addr_id = next(iter(sh["users"][uid]["addresses"]))
+    assert b.act("shop.add_to_cart", product_id=pid, quantity=1)["ok"]
+    r = b.act("shop.set_line_options", product_id=pid, gift_wrap=True,
+              gift_message="Happy birthday", ship_to_address_id=addr_id)
+    assert r["ok"], r
+    line = b.world()["shop"]["cart"]["items"][0]
+    assert line.get("gift_wrap") is True
+    assert line.get("gift_message") == "Happy birthday"
+    assert line.get("ship_to_address_id") == addr_id
+
+
+def test_enable_two_fa_reaches_engine(wired):
+    b = wired
+    b.reset(TASK, 0)
+    r = b.act("shop.enable_two_fa", code="123456")
+    assert r["ok"], r
+    uid = b.world()["shop"]["current_user_id"]
+    user = b.world()["shop"]["users"][uid]
+    # engine records 2FA on the user (field name may vary; just assert a truthy flag)
+    assert any(("two" in k.lower() and "fa" in k.lower()) and user[k] for k in user) or \
+           user.get("two_fa_enabled") is True, user
+
+
+def test_view_actions_log_for_verifiers(wired):
+    """A GET view action must produce the log entry milestones look for."""
+    b = wired
+    b.reset(TASK, 0)
+    sh = b.world()["shop"]
+    pid = next(iter(sh["products"]))
+    pay = next(iter(sh["users"][sh["current_user_id"]]["payment_methods"]))
+    b.act("shop.add_to_cart", product_id=pid, quantity=1)
+    b.act("shop.place_order", payment_id=pay)
+    order_id = list(b.world()["shop"]["orders"])[-1]
+    r = b.act("shop.view_tracking", order_id=order_id)
+    assert r["ok"], r
+    log = [a.get("kind") for a in b.world()["shop"].get("action_log", [])]
+    assert "viewed_tracking" in log, log
+
+
+def test_tracking_number_is_projected(wired):
+    """The mock order must carry the real shipment tracking # (was hardcoded None)."""
+    b = wired
+    b.reset(TASK, 0)
+    sh = b.world()["shop"]
+    pid = next(iter(sh["products"]))
+    pay = next(iter(sh["users"][sh["current_user_id"]]["payment_methods"]))
+    b.act("shop.add_to_cart", product_id=pid, quantity=1)
+    b.act("shop.place_order", payment_id=pay)
+    b.push()
+    order = _tab(b, "shop")["orders"][-1]
+    assert order.get("trackingNumber"), "projected order should carry a tracking number"
+    assert order["trackingNumber"].startswith("1Z")
+
+
 def test_actions_cover_every_app(wired):
     apps = {a.split(".")[0] for a in bridge.ACTIONS}
     assert apps == {"shop", "mail", "market", "food", "calendar"}
@@ -162,4 +223,4 @@ def test_actions_cover_every_app(wired):
     import re
     for name, (_m, path, _f) in bridge.ACTIONS.items():
         for tok in re.findall(r"\{(\w+)\}", path):
-            assert tok in ("address_id", "payment_id", "subscription_id"), (name, tok)
+            assert tok in ("address_id", "payment_id", "subscription_id", "order_id"), (name, tok)

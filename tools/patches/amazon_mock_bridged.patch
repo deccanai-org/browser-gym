@@ -221,3 +221,45 @@ index 3bf6ccf..6f6a398 100644
        setLoading(false);
        navigate(`/order-confirmation/${orderId}`);
      }, 1500);
+diff --git a/websites/amazon_mock/src/pages/OrderConfirmation.jsx b/websites/amazon_mock/src/pages/OrderConfirmation.jsx
+index 162968d..bbd5f57 100644
+--- a/websites/amazon_mock/src/pages/OrderConfirmation.jsx
++++ b/websites/amazon_mock/src/pages/OrderConfirmation.jsx
+@@ -1,13 +1,16 @@
+-import React from 'react';
++import React, { useEffect } from 'react';
+ import { Link, useParams } from 'react-router-dom';
+ import { CheckCircle, Package } from 'lucide-react';
+ import { useStore } from '../context/StoreContext';
++import { bridged, bridgeAct } from '../lib/bridge';
+ import { Button } from '../components/ui/Button';
+ 
+ export const OrderConfirmation = () => {
+   const { orderId } = useParams();
+   const { state } = useStore();
+   const order = state.orders.find(o => o.id === orderId);
++  // Bridged: viewing an order logs view_order_detail in the engine (milestones).
++  useEffect(() => { if (bridged() && orderId) bridgeAct('shop.view_order', { order_id: orderId }); }, [orderId]);
+ 
+   if (!order) {
+     return (
+diff --git a/websites/amazon_mock/src/pages/Orders.jsx b/websites/amazon_mock/src/pages/Orders.jsx
+index 1f5d6d9..5e8a54c 100644
+--- a/websites/amazon_mock/src/pages/Orders.jsx
++++ b/websites/amazon_mock/src/pages/Orders.jsx
+@@ -1,5 +1,6 @@
+ import React, { useState } from 'react';
+ import { useStore } from '../context/StoreContext';
++import { bridged, bridgeAct } from '../lib/bridge';
+ import { Link, useNavigate } from 'react-router-dom';
+ import { Button } from '../components/ui/Button';
+ import { Search, Package, Truck, CheckCircle, Clock, X, MapPin } from 'lucide-react';
+@@ -271,7 +272,7 @@ export const Orders = () => {
+                     {order.trackingNumber && order.status === 'Shipped' && (
+                       <button
+                         className="ml-auto text-xs text-xmazon-blue hover:underline cursor-pointer"
+-                        onClick={() => setTrackingModal({ orderId: order.id, trackingNumber: order.trackingNumber })}
++                        onClick={() => { if (bridged()) bridgeAct('shop.view_tracking', { order_id: order.id }); setTrackingModal({ orderId: order.id, trackingNumber: order.trackingNumber }); }}
+                       >
+                         Track package
+                       </button>
