@@ -26,8 +26,10 @@ from __future__ import annotations
 import argparse
 import dataclasses
 import datetime as _dt
+import hashlib
 import json
 import os
+import re
 import sys
 import uuid
 from typing import Any, Callable
@@ -87,6 +89,29 @@ _GMAIL_LABELS = [
 ]
 
 
+# gym label -> gmail category tab, so a seeded promo lands under Promotions.
+_GMAIL_CATEGORY = {"promotions": "promotions", "social": "social", "updates": "updates",
+                   "forums": "forums", "orders": "updates"}
+
+_RE_PREFIX = re.compile(r"^\s*(?:re|fwd|fw)\s*:\s*", re.I)
+
+
+def _thread_id(subject: str) -> str:
+    """Group a conversation by its subject, the way a mail client does.
+
+    "Dinner tonight" and "Re: dinner tonight" belong to one thread; keying on the
+    message id instead gave every reply its own inbox row.
+    """
+    s = subject or ""
+    while True:
+        stripped = _RE_PREFIX.sub("", s)
+        if stripped == s:
+            break
+        s = stripped
+    key = " ".join(s.split()).casefold() or "no-subject"
+    return "thread_" + hashlib.sha1(key.encode()).hexdigest()[:12]
+
+
 def _iso(ts: str | None) -> str | None:
     if not ts:
         return None
@@ -107,21 +132,29 @@ def transform_mail(mail: dict) -> dict:
     for folder in ("inbox", "sent", "drafts"):
         for e in (mail.get(folder) or {}).values():
             to_addr = e.get("to") or account
+            subject = e.get("subject") or ""
+            labels = list(e.get("labels") or [])
             emails.append({
                 "id": e.get("id"),
-                "threadId": f"thread_{e.get('id')}",
+                # Thread by CONVERSATION, not by message. Keying the thread on the
+                # message id made every reply its own inbox row, so a task that
+                # says "read the thread" showed one message and hid the rest.
+                "threadId": _thread_id(subject),
                 "from": {"name": _display_name(e.get("sender")), "email": e.get("sender")},
                 "to": [{"name": _display_name(to_addr), "email": to_addr}],
                 "cc": [],
                 "bcc": [],
-                "subject": e.get("subject") or "",
+                "subject": subject,
                 "body": (e.get("body") or "").replace("\n", "<br>"),
                 "timestamp": _iso(e.get("received_at")),
                 "read": bool(e.get("read")),
-                "starred": False,
-                "important": False,
-                "labels": [],
-                "category": "primary",
+                # The gym has no starred/important flags, but leaving them all
+                # false left those folders permanently empty. Derive them from the
+                # labels it does have so the mailbox looks lived-in.
+                "starred": "starred" in labels or bool(e.get("order_id")),
+                "important": "important" in labels or bool(e.get("order_id")),
+                "labels": labels,
+                "category": _GMAIL_CATEGORY.get(next(iter(labels), ""), "primary"),
                 "folder": e.get("folder") or folder,
                 "attachments": [],
             })
@@ -183,6 +216,10 @@ _UBER_CATEGORIES = [
 _UBER_ADDR = {"id": "addr_1", "label": "Home", "street": "123 Main St", "apt": "", "city": "San Francisco",
               "state": "CA", "zip": "94102", "instructions": "", "isDefault": True}
 _UBER_PAY = {"id": "pay_1", "type": "visa", "label": "Visa •••• 4242", "last4": "4242", "isDefault": True}
+# The gym has no courier model, but order tracking hides its driver card without
+# one — a fixed stand-in keeps the page complete and the runs deterministic.
+_UBER_COURIER = {"id": "courier_1", "name": "Jordan Lee", "vehicleType": "car",
+                 "rating": 4.9, "phone": "(415) 555-0142"}
 # Fallback amazon address/payment so checkout never renders zero options for a
 # user-less task (real users map from the gym; this only fires when there is none).
 _AMZ_ADDR = {"id": "addr_default", "fullName": "Alice Anderson", "street": "100 Park Avenue, Apt 4B",
@@ -419,14 +456,17 @@ def transform_calendar(cal: dict) -> dict:
         # `source` is what the gym uses to tell a seeded event from an agent-made
         # one. normalizeEvent strips it from the live state, but it survives in the
         # raw initial_state, so a verifier can still diff new-since-seed by id.
+        # LOCAL wall-clock, no Z. The gym stores "09:00 on 2026-05-21" as a wall
+        # time; stamping it Zulu meant a browser behind UTC parsed it as the
+        # previous day, so Day view came up empty while Week/Month looked right.
         events.append({"id": e.get("id"), "calendarId": "c1", "title": e.get("title") or "(No Title)",
-                       "start": f"{day}T{e.get('start')}:00.000Z", "end": f"{day}T{e.get('end')}:00.000Z",
+                       "start": f"{day}T{e.get('start')}:00", "end": f"{day}T{e.get('end')}:00",
                        "allDay": False, "location": "", "description": "", "guests": [],
                        "color": "#039BE5", "recurring": "none", "source": e.get("source") or "seed"})
     return {"user": user, "calendars": _CAL_DEFAULTS, "otherCalendars": _CAL_OTHER, "events": events,
             # The frozen gym clock, NOT the earliest event -- deriving it from the
             # events opened 23 tasks on the wrong "today".
-            "view": "week", "currentDate": f"{TODAY}T00:00:00.000Z", "sidebarOpen": True,
+            "view": "week", "currentDate": f"{TODAY}T00:00:00", "sidebarOpen": True,
             "settings": {"weekStart": 0, "defaultDuration": 60, "defaultView": "week",
                          "defaultReminder": {"type": "popup", "minutes": 10}, "timeFormat": "12h",
                          "showWeekNumbers": False, "showDeclinedEvents": False},
@@ -500,6 +540,19 @@ def transform_food(food: dict) -> dict:
     for o in (food.get("orders") or {}).values():
         sub = o.get("subtotal") or 0
         fee = o.get("delivery_fee") or 0
+        # The receipt reads serviceFee/tax off the ORDER, not off `total`; leaving
+        # them undefined rendered "$NaN". The gym's total is authoritative (tasks
+        # quote it), so split whatever it leaves over subtotal+delivery rather than
+        # inventing percentages that wouldn't add up on screen.
+        total = o.get("total")
+        if total is None:
+            tax = round(sub * 0.08, 2)
+            service = round(sub * 0.05, 2)
+            total = round(sub + fee + tax + service, 2)
+        else:
+            residual = round(total - sub - fee, 2)
+            tax = round(residual * 0.6, 2) if residual > 0 else 0.0
+            service = round(residual - tax, 2) if residual > 0 else 0.0
         orders.append({"id": o.get("id"), "userId": user["id"], "restaurantId": o.get("restaurant_id"),
                        "restaurantName": o.get("restaurant_name"),
                        "items": [_line(it, i, f"{o.get('id')}_item")
@@ -508,9 +561,15 @@ def transform_food(food: dict) -> dict:
                        # normalizeOrder wants `created` (ms) and an object `total`;
                        # a bare number there rendered as $0.
                        "created": _FOOD_EPOCH_MS, "placedAt": o.get("placed_at"),
-                       "deliveryDetails": {"note": o.get("delivery_note") or ""},
-                       "total": {"subtotal": sub, "fee": fee, "tax": 0,
-                                 "total": o.get("total") or round(sub + fee, 2)}})
+                       "subtotal": sub, "deliveryFee": fee, "serviceFee": service, "tax": tax,
+                       # Tracking hides the courier card and falls back to the
+                       # placeholder "delivery address" without these two.
+                       "deliveryAddress": dict(_UBER_ADDR),
+                       "deliveryPerson": dict(_UBER_COURIER),
+                       "deliveryDetails": {"note": o.get("delivery_note") or "",
+                                           "address": dict(_UBER_ADDR)},
+                       "total": {"subtotal": sub, "fee": fee, "tax": tax,
+                                 "serviceFee": service, "total": total}})
     active = orders[-1]["id"] if orders else None
 
     return {"user": user, "categories": list(_UBER_CATEGORIES), "restaurants": restaurants, "menuItems": menu_items,

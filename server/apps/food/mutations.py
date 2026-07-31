@@ -51,6 +51,31 @@ def add_dish(food: FoodState, *, restaurant_id: str, dish_id: str,
     return {"ok": True, "dish_id": dish_id, "cart_count": food.cart.count()}
 
 
+def set_dish_quantity(food: FoodState, *, dish_id: str, quantity: int) -> dict[str, Any]:
+    """Change one cart line's quantity; quantity 0 removes the line.
+
+    Without this the food cart was add-or-clear-everything: a realistic app lets
+    you back one item down, and a task that says "make it two, not three" had no
+    way to be performed.
+    """
+    line = next((i for i in food.cart.items if i.dish_id == dish_id), None)
+    if line is None:
+        return {"ok": False, "error": "no such line"}
+    if quantity < 0:
+        return {"ok": False, "error": "quantity must be at least 0"}
+    if quantity == 0:
+        food.cart.items.remove(line)
+        if not food.cart.items:          # an empty cart is restaurant-less again
+            food.cart.restaurant_id = None
+    else:
+        line.quantity = quantity
+    return {"ok": True, "dish_id": dish_id, "cart_count": food.cart.count()}
+
+
+def remove_dish(food: FoodState, *, dish_id: str) -> dict[str, Any]:
+    return set_dish_quantity(food, dish_id=dish_id, quantity=0)
+
+
 def clear_cart(food: FoodState) -> dict[str, Any]:
     food.cart.items.clear()
     food.cart.restaurant_id = None

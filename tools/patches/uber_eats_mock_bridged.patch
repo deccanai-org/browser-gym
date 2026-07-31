@@ -457,7 +457,7 @@ diff -ruN a_uber_eats_mock/src/components/Sidebar.jsx b_uber_eats_mock/src/compo
          </div>
 diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/context/AppContext.jsx
 --- a/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-30 17:35:25
++++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-30 18:40:58
 @@ -1,7 +1,10 @@
  import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
  import { getSessionId, fetchCustomState, saveState, initializeData, initialKey, generateId } from '../utils/dataManager';
@@ -521,7 +521,65 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
      setState(prev => {
        if (!prev) return prev;
        const modifierTotal = selectedOptions.reduce((s, o) => s + o.priceModifier, 0);
-@@ -155,6 +191,17 @@
+@@ -90,10 +126,24 @@
+     });
+   }, []);
+ 
++  // A cart line is addressed by cartItemId; seeded lines only ever had that,
++  // while these handlers matched on .id, so nothing seeded could be edited.
++  const lineKey = (i) => i.cartItemId ?? i.id;
++  const dishOf = (prev, key) => {
++    const line = (prev?.cart?.items || []).find(i => lineKey(i) === key);
++    return line && (line.menuItem?.id ?? line.menuItemId);
++  };
++
+   const removeFromCart = useCallback((cartItemId) => {
+     setState(prev => {
+       if (!prev) return prev;
+-      const newItems = prev.cart.items.filter(i => i.id !== cartItemId);
++      if (bridged()) {
++        const dish = dishOf(prev, cartItemId);
++        if (dish) bridgeAct('food.remove_item', { dish_id: dish })
++          .then(r => applyEngine(r && r.apps && r.apps[APP]));
++        return prev;                      // the engine's re-projection is the truth
++      }
++      const newItems = prev.cart.items.filter(i => lineKey(i) !== cartItemId);
+       return {
+         ...prev,
+         cart: {
+@@ -109,8 +159,14 @@
+   const updateCartItemQuantity = useCallback((cartItemId, newQuantity) => {
+     setState(prev => {
+       if (!prev) return prev;
++      if (bridged()) {
++        const dish = dishOf(prev, cartItemId);
++        if (dish) bridgeAct('food.set_qty', { dish_id: dish, quantity: Math.max(0, newQuantity) })
++          .then(r => applyEngine(r && r.apps && r.apps[APP]));
++        return prev;
++      }
+       if (newQuantity < 1) {
+-        const newItems = prev.cart.items.filter(i => i.id !== cartItemId);
++        const newItems = prev.cart.items.filter(i => lineKey(i) !== cartItemId);
+         return {
+           ...prev,
+           cart: {
+@@ -126,12 +182,12 @@
+         cart: {
+           ...prev.cart,
+           items: prev.cart.items.map(item => {
+-            if (item.id !== cartItemId) return item;
+-            const modTotal = item.selectedOptions.reduce((s, o) => s + o.priceModifier, 0);
++            if (lineKey(item) !== cartItemId) return item;
++            const modTotal = (item.selectedOptions || []).reduce((s, o) => s + (o.priceModifier || 0), 0);
+             return {
+               ...item,
+               quantity: newQuantity,
+-              totalPrice: (item.basePrice + modTotal) * newQuantity
++              totalPrice: ((item.basePrice || 0) + modTotal) * newQuantity
+             };
+           })
+         }
+@@ -155,6 +211,17 @@
    }, []);
  
    const placeOrder = useCallback((orderData) => {
@@ -539,7 +597,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
      const orderId = 'ord_' + Date.now().toString(36);
      setState(prev => {
        if (!prev) return prev;
-@@ -228,7 +275,7 @@
+@@ -228,7 +295,7 @@
        };
      });
      return orderId;
@@ -548,7 +606,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
  
    const toggleFavorite = useCallback((restaurantId) => {
      setState(prev => {
-@@ -444,7 +491,7 @@
+@@ -444,7 +511,7 @@
        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: '#fff', fontFamily: 'var(--font-family)' }}>
          <div style={{ textAlign: 'center' }}>
            <div style={{ fontSize: '32px', fontWeight: 'bold' }}>
