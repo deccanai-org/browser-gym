@@ -195,6 +195,37 @@ def _product_image(pid: str, size: str = "400/400") -> str:
     return _picsum(pid, size)
 
 
+def _svg_tile(text: str, seed: str) -> str:
+    """A self-contained gradient tile (data URI) with the item's initial — used
+    for listings we have no real photo for, so nothing falls back to picsum. Color
+    is deterministic from the seed; no external host."""
+    import hashlib
+    import urllib.parse
+    hue = int(hashlib.sha1(seed.encode()).hexdigest(), 16) % 360
+    initial = (text or "?").strip()[:1].upper() or "?"
+    svg = (
+        '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">'
+        '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
+        f'<stop offset="0" stop-color="hsl({hue},52%,46%)"/>'
+        f'<stop offset="1" stop-color="hsl({(hue + 38) % 360},52%,34%)"/>'
+        '</linearGradient></defs><rect width="400" height="400" fill="url(#g)"/>'
+        f'<text x="200" y="250" font-family="Arial,Helvetica,sans-serif" font-size="190" '
+        f'font-weight="700" fill="rgba(255,255,255,0.92)" text-anchor="middle">{initial}</text></svg>'
+    )
+    return "data:image/svg+xml," + urllib.parse.quote(svg)
+
+
+def _market_image(pid: str, name: str) -> str:
+    """ValueMart mirrors the shop catalog with vm_ ids; reuse the real product
+    photo when one matches, else a gradient tile. Never picsum."""
+    if pid in _PRODUCT_IMAGES:
+        return f"/assets/products/{pid}.jpg"
+    alt = "p_" + pid[3:] if pid.startswith("vm_") else pid
+    if alt in _PRODUCT_IMAGES:
+        return f"/assets/products/{alt}.jpg"
+    return _svg_tile(name or pid, pid)
+
+
 # --- amazon (gym shop) -------------------------------------------------------
 _AMAZON_CAT = {
     "electronics": "Electronics", "audio": "Electronics",
@@ -420,9 +451,9 @@ def transform_market(m: dict) -> dict:
     store = m.get("store_name") or "ValueMart"
     seller_id, buyer_id = "user_valuemart", "user_1"
     buyer = {"id": buyer_id, "username": ALICE_NAME, "email": ALICE_EMAIL,
-             "avatar": None, "feedbackScore": 154, "feedbackRating": 98.5}
+             "avatar": _svg_tile(ALICE_NAME, "buyer"), "feedbackScore": 154, "feedbackRating": 98.5}
     seller = {"id": seller_id, "username": store, "email": "store@valuemart.example.com",
-              "avatar": _picsum("valuemart", "100/100"), "feedbackScore": 500, "feedbackRating": 99.0}
+              "avatar": _svg_tile(store, "seller"), "feedbackScore": 500, "feedbackRating": 99.0}
     # UTC-pinned: a naive datetime here made the projection (and therefore any
     # content hash of it) depend on the operator's local timezone.
     end_ms = int(_dt.datetime(2026, 5, 28, 12, 0, 0,
@@ -440,7 +471,7 @@ def transform_market(m: dict) -> dict:
         price = p.get("price") if p.get("price") is not None else 0.0  # a fixed listing must have a price
         listings.append({
             "id": pid, "sellerId": seller_id, "title": p.get("name"),
-            "description": p.get("description") or "", "images": [_product_image(pid)],
+            "description": p.get("description") or "", "images": [_market_image(pid, p.get("name"))],
             "type": "fixed", "startingBid": None, "currentBid": None, "price": price,
             "buyItNowPrice": price, "bids": [], "watchers": [], "views": 0, "endTime": end_ms,
             "condition": "New", "shippingCost": 0.0, "location": "United States",
