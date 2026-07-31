@@ -44,6 +44,13 @@ if [[ ! -x "$VENV/bin/uvicorn" ]]; then
   "$VENV/bin/pip" -q install -r "$HUB_SRC/requirements.txt"
 fi
 
-echo "hub  -> http://127.0.0.1:$PORT   (db: $CUA_DB_USER@$CUA_DB_HOST/$CUA_DB_NAME)"
+# The store makes SYNCHRONOUS psycopg calls inside async handlers, so a single
+# slow round-trip to a remote Postgres (e.g. over a VPN) blocks the whole event
+# loop and the hub goes unresponsive under any concurrency. Running several
+# workers means one blocked call can't freeze the others. Each worker opens its
+# own pool, so keep the count modest.
+WORKERS="${CUA_HUB_WORKERS:-4}"
+
+echo "hub  -> http://127.0.0.1:$PORT   (db: $CUA_DB_USER@$CUA_DB_HOST/$CUA_DB_NAME, workers=$WORKERS)"
 cd "$HUB_SRC"
-exec "$VENV/bin/uvicorn" app.main:app --host 127.0.0.1 --port "$PORT"
+exec "$VENV/bin/uvicorn" app.main:app --host 127.0.0.1 --port "$PORT" --workers "$WORKERS"

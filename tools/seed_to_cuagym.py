@@ -29,6 +29,7 @@ import datetime as _dt
 import hashlib
 import json
 import os
+import pathlib
 import re
 import sys
 import uuid
@@ -176,6 +177,24 @@ def _picsum(key: str, size: str = "400/400") -> str:
     return f"https://picsum.photos/seed/{key}/{size}"
 
 
+# Realistic licensed product photos (Adobe Stock free collection) live in each
+# mock's public/assets/products/<id>.jpg. The manifest lists which product ids
+# have one; anything not yet sourced falls back to picsum so nothing renders
+# blank. Relative URL so it resolves on both the local preview and the hosted
+# deployments.
+_IMG_MANIFEST = pathlib.Path(__file__).with_name("product_images.json")
+try:
+    _PRODUCT_IMAGES = set(json.loads(_IMG_MANIFEST.read_text())) if _IMG_MANIFEST.exists() else set()
+except Exception:
+    _PRODUCT_IMAGES = set()
+
+
+def _product_image(pid: str, size: str = "400/400") -> str:
+    if pid in _PRODUCT_IMAGES:
+        return f"/assets/products/{pid}.jpg"
+    return _picsum(pid, size)
+
+
 # --- amazon (gym shop) -------------------------------------------------------
 _AMAZON_CAT = {
     "electronics": "Electronics", "audio": "Electronics",
@@ -284,7 +303,7 @@ def transform_shop(shop: dict) -> dict:
         products.append({
             "id": p["id"], "title": p.get("name"), "price": p.get("base_price"),
             "originalPrice": None, "rating": p.get("rating"), "reviewCount": p.get("review_count"),
-            "image": _picsum(p["id"]), "images": [_picsum(p["id"])],
+            "image": _product_image(p["id"]), "images": [_product_image(p["id"])],
             "description": p.get("long_description") or p.get("short_description") or "",
             "bulletPoints": p.get("tags") or [],
             "specs": {"Brand": p.get("brand"), "Weight": f"{p.get('weight_kg')} kg", "Emoji": p.get("image_emoji")},
@@ -407,7 +426,7 @@ def transform_market(m: dict) -> dict:
         price = p.get("price") if p.get("price") is not None else 0.0  # a fixed listing must have a price
         listings.append({
             "id": pid, "sellerId": seller_id, "title": p.get("name"),
-            "description": p.get("description") or "", "images": [_picsum(pid)],
+            "description": p.get("description") or "", "images": [_product_image(pid)],
             "type": "fixed", "startingBid": None, "currentBid": None, "price": price,
             "buyItNowPrice": price, "bids": [], "watchers": [], "views": 0, "endTime": end_ms,
             "condition": "New", "shippingCost": 0.0, "location": "United States",

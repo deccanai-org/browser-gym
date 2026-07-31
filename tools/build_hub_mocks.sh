@@ -44,6 +44,13 @@ for m in $MOCKS; do
 
   printf 'VITE_API_BASE=%s\nVITE_MOCK_ID=%s\n' "$API_BASE" "$m" > "$d/.env.production"
 
+  # Ship our licensed realistic product images (tools/save_product_images.py).
+  # Only the storefronts render them; vite copies public/ into dist at build.
+  if [ -d "$HERE/product_assets" ] && { [ "$m" = amazon_mock ] || [ "$m" = ebay_mock ]; }; then
+    mkdir -p "$d/public/assets"
+    cp -R "$HERE/product_assets/." "$d/public/assets/"
+  fi
+
   ( cd "$d"
     [ -d node_modules ] || npm install --silent --no-audit --no-fund
     npx vite build >/dev/null )
