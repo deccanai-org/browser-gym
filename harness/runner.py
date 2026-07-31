@@ -1170,13 +1170,15 @@ class BrowserCtx:
     def _abs(self, path: str) -> str:
         if path.startswith("http"):
             return path
-        # Bridged mode: an app-level path (/mail, /food, ...) opens that mock's
-        # own origin at its start page. Within-app navigation is by marks, so we
-        # ignore the sub-path here and land on the app start.
+        # Realistic-UI modes: an app-level path (/mail, /food, ...) opens that
+        # mock's own origin. Keep the sub-path where the mock has a matching route
+        # (a product, a cart) so a deep link lands where it should; _mock_start_path
+        # returns None when there's no safe equivalent and we fall back to the app
+        # start rather than a 404.
         if self._hosted():
             app = _seg_to_app(path)
             if app in self.app_sids:
-                return hosted_app_url(app, self.app_sids[app])
+                return hosted_app_url(app, self.app_sids[app], _mock_start_path(app, path))
         elif self.app_origins and self.bridge_url:
             app = _seg_to_app(path)
             if app in self.app_origins:

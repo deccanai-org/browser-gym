@@ -146,7 +146,8 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
                    brief_override: str | None = None,
                    correction: str = "",
                    app_origins: dict | None = None,
-                   bridge_url: str | None = None) -> Trajectory:
+                   bridge_url: str | None = None,
+                   app_sids: dict | None = None) -> Trajectory:
     from harness.invalid_episode import INVALID_BROWSER_CRASH, INVALID_RESET
     from harness.runner import image_settings_for_agent
 
@@ -229,7 +230,7 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
     bctx = BrowserCtx(
         page=page, server_url=server_url, trajectory=traj,
         screenshot_dir=shots_dir,
-        app_origins=app_origins, bridge_url=bridge_url,
+        app_origins=app_origins, bridge_url=bridge_url, app_sids=app_sids,
     )
     # Cross-app tasks record per-step facts (the substrate for the failure-
     # mode signature builder). Single-app tasks get None -> no facts, no
@@ -248,7 +249,20 @@ async def _run_one(*, agent_kind: str, task_id: str, seed: int,
     # emit navigate("/") as its first action anyway — pre-loading
     # just saves it that step.
     start_path = reset.get("start_path", "/")
-    if app_origins and bridge_url:
+    if app_sids:
+        # Hosted mode: the deployed mocks, each opened at its own attempt sid.
+        # They read and write their world through the hub, so every click lands in
+        # cua-gym; scoring still comes from the gym via the bridge.
+        from harness.runner import _seg_to_app
+        primary = _seg_to_app(start_path)
+        if primary not in app_sids:
+            primary = next(iter(app_sids))
+        try:
+            await bctx.open_app_tabs(list(app_sids), primary,
+                                     primary_start_path=start_path)
+        except Exception as e:
+            print(f"[runner] WARNING: failed to open hosted app tabs: {e}")
+    elif app_origins and bridge_url:
         # Realistic-UI mode: open one tab per mock app (bridged), landing on the
         # task's primary app. The agent drives these SPAs; scoring stays on the gym.
         from harness.runner import _seg_to_app
@@ -482,6 +496,14 @@ def main() -> None:
                     help="realistic-UI mode: the bridge service URL (e.g. "
                          "http://127.0.0.1:8090). Run it with BRIDGE_TICK=0 so the "
                          "harness owns the scheduler clock.")
+    # Hosted mode: drive the DEPLOYED mocks instead of local origins. Each app
+    # opens at its own attempt sid, so the whole episode is journalled to cua-gym.
+    ap.add_argument("--app-sids", default=None,
+                    help="hosted mode: comma map app=uuid, e.g. shop=<uuid>,mail=<uuid>. "
+                         "Origins come from tools/cua_env (CUA_ENV, default delta).")
+    ap.add_argument("--session", default=None,
+                    help="hosted mode: a session id from tools.session_manager; its "
+                         "per-app attempt sids are looked up for you.")
     args = ap.parse_args()
     ensure_harness_token()
 
@@ -492,13 +514,27 @@ def main() -> None:
             if "=" in part:
                 k, v = part.split("=", 1)
                 app_origins[k.strip()] = v.strip()
+    app_sids = None
+    if args.session:
+        from tools.session_manager import session_app_sids
+        app_sids = session_app_sids(args.session)
+        if not app_sids:
+            print(f"ERROR: no apps recorded for session {args.session!r}", file=sys.stderr)
+            sys.exit(2)
+    elif args.app_sids:
+        app_sids = {k.strip(): v.strip() for k, v in
+                    (p.split("=", 1) for p in args.app_sids.split(",") if "=" in p)}
+    if app_sids and app_origins:
+        print("ERROR: --app-sids/--session (hosted) and --app-origins (local bridged) "
+              "are different modes; pass one", file=sys.stderr)
+        sys.exit(2)
     if app_origins and not args.bridge_url:
         print("ERROR: --app-origins requires --bridge-url", file=sys.stderr)
         sys.exit(2)
     # The DOM agents (openai/llm) are single-origin, gym-HTML-selector agents and
     # never tick the scheduler — in bridged mode (BRIDGE_TICK=0, harness owns the
     # clock) time-based cross-app events would never fire. Use a pixel/SoM agent.
-    if app_origins and args.agent in ("openai", "llm"):
+    if (app_origins or app_sids) and args.agent in ("openai", "llm"):
         print(f"ERROR: --agent {args.agent} can't drive the realistic UIs "
               "(gym-HTML selectors + no scheduler tick). Use pixel / openai_pixel / qwen.",
               file=sys.stderr)
@@ -548,6 +584,7 @@ def main() -> None:
                 correction=args.correction,
                 app_origins=app_origins,
                 bridge_url=args.bridge_url,
+                app_sids=app_sids,
             ))
             v = traj.verifier_result
             print(f"  -> score={v.get('score', 0):.2f} "

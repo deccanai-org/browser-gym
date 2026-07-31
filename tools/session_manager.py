@@ -162,6 +162,16 @@ def _session_apps(conn, session_id):
         (session_id,)).fetchall()
 
 
+def session_app_sids(session_id: str) -> dict[str, str]:
+    """{app: attempt_sid} for a session — what an episode runner needs to open
+    the right tabs. Empty dict if the session is unknown."""
+    conn = _db()
+    try:
+        return {app: attempt for app, _mock, attempt, _url in _session_apps(conn, session_id)}
+    finally:
+        conn.close()
+
+
 def end_session(session_id: str) -> None:
     conn = _db()
     for _app, _mock, attempt, url in _session_apps(conn, session_id):
