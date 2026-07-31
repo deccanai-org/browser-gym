@@ -158,6 +158,102 @@ diff -ruN a_uber_eats_mock/src/components/CartDrawer.jsx b_uber_eats_mock/src/co
 -      );
 -    }
 -  
+diff -ruN a_uber_eats_mock/src/components/CartPanel.jsx b_uber_eats_mock/src/components/CartPanel.jsx
+--- a/websites/uber_eats_mock/src/components/CartPanel.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/CartPanel.jsx	2026-07-30 20:24:05
+@@ -6,7 +6,7 @@
+ import './CartPanel.css';
+ 
+ export default function CartPanel({ isOpen, onClose }) {
+-  const { state, removeFromCart, updateCartItemQuantity } = useApp();
++  const { state, removeFromCart, updateCartItemQuantity, clearCart } = useApp();
+   const navigate = useNavigate();
+ 
+   if (!isOpen) return null;
+@@ -53,39 +53,53 @@
+ 
+             {/* Items */}
+             <div className="cart-panel__items">
+-              {items.map((item) => (
+-                <div key={item.id} className="cart-item">
++              {items.map((item) => {
++                // Locally-added lines look like {id, name, totalPrice, selectedOptions};
++                // engine-projected ones look like {cartItemId, menuItem, quantity}.
++                // Read through both shapes so the panel renders either without
++                // throwing — an unguarded .length here white-screened the app.
++                const key = item.cartItemId ?? item.id;
++                const dish = item.menuItem ?? item;
++                const opts = item.selectedOptions ?? [];
++                const note = item.specialInstructions ?? item.instructions ?? '';
++                const unit = item.basePrice ?? dish.price ?? 0;
++                const line = item.totalPrice ?? unit * (item.quantity ?? 1);
++                return (
++                <div key={key} className="cart-item">
+                   <div className="cart-item__info">
+-                    <div className="cart-item__name">{item.name}</div>
+-                    {item.selectedOptions.length > 0 && (
++                    <div className="cart-item__name">{dish.name}</div>
++                    {opts.length > 0 && (
+                       <div className="cart-item__options">
+-                        {item.selectedOptions.map(o => o.optionName).join(', ')}
++                        {opts.map(o => o.optionName).join(', ')}
+                       </div>
+                     )}
+-                    {item.specialInstructions && (
+-                      <div className="cart-item__instructions">"{item.specialInstructions}"</div>
++                    {note && (
++                      <div className="cart-item__instructions">"{note}"</div>
+                     )}
+                   </div>
+                   <div className="cart-item__right">
+-                    <div className="cart-item__price">{formatCurrency(item.totalPrice)}</div>
++                    <div className="cart-item__price">{formatCurrency(line)}</div>
+                     <div className="cart-item__qty-controls">
+                       <button
+                         className="cart-item__qty-btn"
+-                        onClick={() => updateCartItemQuantity(item.id, item.quantity - 1)}
++                        aria-label="Decrease quantity"
++                        onClick={() => updateCartItemQuantity(key, item.quantity - 1)}
+                       >
+                         {item.quantity === 1 ? <Trash2 size={14} /> : <Minus size={14} />}
+                       </button>
+                       <span className="cart-item__qty">{item.quantity}</span>
+                       <button
+                         className="cart-item__qty-btn"
+-                        onClick={() => updateCartItemQuantity(item.id, item.quantity + 1)}
++                        aria-label="Increase quantity"
++                        onClick={() => updateCartItemQuantity(key, item.quantity + 1)}
+                       >
+                         <Plus size={14} />
+                       </button>
+                     </div>
+                   </div>
+                 </div>
+-              ))}
++                );
++              })}
+             </div>
+ 
+             {/* Footer */}
+@@ -96,6 +110,18 @@
+               </div>
+               <button className="cart-panel__checkout-btn" onClick={handleCheckout}>
+                 Go to Checkout
++              </button>
++              {/* Food carts are single-restaurant: without a way to empty it, a
++                  cart seeded from one place blocks ordering from anywhere else. */}
++              <button
++                className="cart-panel__clear-btn"
++                aria-label="Clear cart"
++                onClick={clearCart}
++                style={{ width: '100%', marginTop: 8, padding: '10px 0', background: 'none',
++                         border: '1px solid #e2e2e2', borderRadius: 8, cursor: 'pointer',
++                         fontSize: 14, color: '#545454' }}
++              >
++                Clear cart
+               </button>
+             </div>
+           </>
 diff -ruN a_uber_eats_mock/src/components/CartSwitchDialog.jsx b_uber_eats_mock/src/components/CartSwitchDialog.jsx
 --- a/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx	1969-12-31 16:00:00
@@ -457,7 +553,7 @@ diff -ruN a_uber_eats_mock/src/components/Sidebar.jsx b_uber_eats_mock/src/compo
          </div>
 diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/context/AppContext.jsx
 --- a/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-30 18:40:58
++++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-30 20:23:39
 @@ -1,7 +1,10 @@
  import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
  import { getSessionId, fetchCustomState, saveState, initializeData, initialKey, generateId } from '../utils/dataManager';
@@ -469,7 +565,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
  const AppContext = createContext(null);
  
  export function AppProvider({ children }) {
-@@ -11,11 +14,36 @@
+@@ -11,11 +14,43 @@
    const sidRef = useRef(getSessionId());
    const initDone = useRef(false);
  
@@ -499,14 +595,21 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
 +        }
 +        setLoading(false);
 +      });
-+      const stop = bridgePoll(APP, s => { if (s) setState(initializeData(sid, s)); });
++// Poll = adopt the ENGINE's world, but keep the keys the engine does not own.
++      // Re-adopting wholesale every 2.5s snapped the user's own view state back
++      // (which month you were on, your filters, saved-for-later) mid-interaction.
++      const stop = bridgePoll(APP, s => {
++        if (!s) return;
++        const { ui, ...engineOwned } = initializeData(sid, s);
++        setState(prev => ({ ...(prev || {}), ...engineOwned, ui: prev?.ui ?? ui }));
++      });
 +      return () => stop();
 +    }
 +
      const ik = initialKey(sid);
      const isRefresh = localStorage.getItem(ik) !== null;
  
-@@ -44,6 +72,14 @@
+@@ -44,6 +79,14 @@
    // --- Actions ---
  
    const addToCart = useCallback((menuItem, restaurant, quantity, selectedOptions, specialInstructions) => {
@@ -521,7 +624,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
      setState(prev => {
        if (!prev) return prev;
        const modifierTotal = selectedOptions.reduce((s, o) => s + o.priceModifier, 0);
-@@ -90,10 +126,24 @@
+@@ -90,10 +133,24 @@
      });
    }, []);
  
@@ -547,7 +650,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
        return {
          ...prev,
          cart: {
-@@ -109,8 +159,14 @@
+@@ -109,8 +166,14 @@
    const updateCartItemQuantity = useCallback((cartItemId, newQuantity) => {
      setState(prev => {
        if (!prev) return prev;
@@ -563,7 +666,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
          return {
            ...prev,
            cart: {
-@@ -126,12 +182,12 @@
+@@ -126,12 +189,12 @@
          cart: {
            ...prev.cart,
            items: prev.cart.items.map(item => {
@@ -579,7 +682,21 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
              };
            })
          }
-@@ -155,6 +211,17 @@
+@@ -140,6 +203,13 @@
+   }, []);
+ 
+   const clearCart = useCallback(() => {
++    if (bridged()) {
++      // food.clear_cart existed but nothing ever called it, so a cart seeded
++      // from another restaurant could never be emptied — and the engine
++      // refuses to add across restaurants.
++      bridgeAct('food.clear_cart', {}).then(r => applyEngine(r && r.apps && r.apps[APP]));
++      return;
++    }
+     setState(prev => {
+       if (!prev) return prev;
+       return {
+@@ -155,6 +225,17 @@
    }, []);
  
    const placeOrder = useCallback((orderData) => {
@@ -597,7 +714,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
      const orderId = 'ord_' + Date.now().toString(36);
      setState(prev => {
        if (!prev) return prev;
-@@ -228,7 +295,7 @@
+@@ -228,7 +309,7 @@
        };
      });
      return orderId;
@@ -606,7 +723,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
  
    const toggleFavorite = useCallback((restaurantId) => {
      setState(prev => {
-@@ -444,7 +511,7 @@
+@@ -444,7 +525,7 @@
        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: '#fff', fontFamily: 'var(--font-family)' }}>
          <div style={{ textAlign: 'center' }}>
            <div style={{ fontSize: '32px', fontWeight: 'bold' }}>
@@ -1321,6 +1438,25 @@ diff -ruN a_uber_eats_mock/src/pages/OrderTracking.jsx b_uber_eats_mock/src/page
              <button className="tracking-modal__btn" onClick={() => setShowContactModal(false)}>
                <Phone size={16} /> Send message
              </button>
+diff -ruN a_uber_eats_mock/src/pages/Orders.jsx b_uber_eats_mock/src/pages/Orders.jsx
+--- a/websites/uber_eats_mock/src/pages/Orders.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/pages/Orders.jsx	2026-07-30 20:23:39
+@@ -168,9 +168,12 @@
+     }
+     clearCart();
+     order.items.forEach(item => {
+-      const menuItem = state.menuItems.find(m => m.id === item.menuItemId) || {
+-        id: item.menuItemId,
+-        name: item.name,
++      // engine-projected lines nest the dish under menuItem; locally-added
++      // ones carry a flat menuItemId.
++      const dishId = item.menuItem?.id ?? item.menuItemId;
++      const menuItem = state.menuItems.find(m => m.id === dishId) || {
++        id: dishId,
++        name: item.menuItem?.name ?? item.name,
+         price: item.unitPrice || item.totalPrice / item.quantity,
+       };
+       addToCart(menuItem, restaurant, item.quantity, [], item.specialInstructions || '');
 diff -ruN a_uber_eats_mock/src/pages/RestaurantDetails.jsx b_uber_eats_mock/src/pages/RestaurantDetails.jsx
 --- a/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx	1969-12-31 16:00:00
@@ -1505,19 +1641,15 @@ diff -ruN a_uber_eats_mock/src/pages/RestaurantDetails.jsx b_uber_eats_mock/src/
 -  
 diff -ruN a_uber_eats_mock/src/pages/StorePage.jsx b_uber_eats_mock/src/pages/StorePage.jsx
 --- a/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-07-30 17:35:25
-@@ -263,9 +263,10 @@
++++ b/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-07-30 20:19:34
+@@ -263,6 +263,7 @@
        {selectedItem && (
          <ItemModal
            item={selectedItem}
 +          isOpen={true}
            restaurant={restaurant}
            onClose={() => setSelectedItem(null)}
--          onAdd={handleAddToCart}
-+          onAddToCart={handleAddToCart}
-         />
-       )}
-     </div>
+           onAdd={handleAddToCart}
 diff -ruN a_uber_eats_mock/src/utils/dataManager.js b_uber_eats_mock/src/utils/dataManager.js
 --- a/websites/uber_eats_mock/src/utils/dataManager.js	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/utils/dataManager.js	2026-07-30 17:35:25

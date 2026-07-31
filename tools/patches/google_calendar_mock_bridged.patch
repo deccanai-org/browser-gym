@@ -154,7 +154,7 @@ diff -ruN a_google_calendar_mock/src/components/WeekView.jsx b_google_calendar_m
  
 diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_mock/src/context/StoreContext.jsx
 --- a/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-30 17:35:14
++++ b/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-30 20:21:06
 @@ -1,7 +1,26 @@
  import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react';
  import { MOCK_USER, DEFAULT_CALENDARS, generateMockEvents, getSessionId, fetchCustomState, saveState, initializeData, getInitialState } from '../utils/helpers';
@@ -182,7 +182,7 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
  const StoreContext = createContext();
  
  const defaultState = {
-@@ -114,6 +133,23 @@
+@@ -114,6 +133,31 @@
      initDone.current = true;
  
      const sid = sidRef.current;
@@ -199,14 +199,22 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
 +        if (s) dispatch({ type: 'LOAD_STATE', payload: initializeData(sid, s) });
 +        setReadyToSave(true);
 +      });
-+      const stop = bridgePoll(APP, s => dispatch({ type: 'LOAD_STATE', payload: initializeData(sid, s) }));
++// Poll = adopt the ENGINE's world, but keep the keys the engine does not own.
++      // Re-adopting wholesale every 2.5s snapped the user's own view state back
++      // (which month you were on, your filters, saved-for-later) mid-interaction.
++      const stop = bridgePoll(APP, s => {
++        if (!s) return;
++        const { view, currentDate, sidebarOpen, calendars, otherCalendars, settings,
++                notices, ...engineOwned } = initializeData(sid, s);
++        dispatch({ type: 'LOAD_STATE', payload: engineOwned });
++      });
 +      return () => stop();
 +    }
 +
      fetchCustomState(sid).then(customState => {
        if (customState) {
          const data = initializeData(sid, customState);
-@@ -139,6 +175,46 @@
+@@ -139,6 +183,46 @@
      saveState(state, sid);
    }, [state, readyToSave]);
  
@@ -253,7 +261,7 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
    const getDiff = () => {
      // Simple shallow diff for demonstration
      const diff = {};
-@@ -150,7 +226,7 @@
+@@ -150,7 +234,7 @@
  
    const value = {
      state,

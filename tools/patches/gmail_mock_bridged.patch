@@ -279,7 +279,7 @@ diff -ruN a_gmail_mock/src/components/ThreadView.jsx b_gmail_mock/src/components
    }, [threadId]);
 diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/StoreContext.jsx
 --- a/websites/gmail_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/context/StoreContext.jsx	2026-07-30 18:56:02
++++ b/websites/gmail_mock/src/context/StoreContext.jsx	2026-07-30 20:22:55
 @@ -1,7 +1,17 @@
  import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
  import { INITIAL_STATE, DEFAULT_SETTINGS, getSessionId, fetchCustomState, saveState, initializeData } from '../data/mockData';
@@ -298,7 +298,7 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
  const StoreContext = createContext();
  
  const INITIAL_KEY_PREFIX = 'xmail-clone-initialState';
-@@ -39,6 +49,18 @@
+@@ -39,6 +49,25 @@
      if (initDone.current) return;
      initDone.current = true;
      const sid = sidRef.current;
@@ -310,14 +310,69 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
 +        if (s) { const data = initializeData(sid, s); setState(data); setInitialState(JSON.parse(JSON.stringify(data))); }
 +        setLoading(false);
 +      });
-+      const stop = bridgePoll(APP, s => setState(prev => ({ ...prev, ...initializeData(sid, s) })));
++// Poll = adopt the ENGINE's world, but keep the keys the engine does not own.
++      // Re-adopting wholesale every 2.5s snapped the user's own view state back
++      // (which month you were on, your filters, saved-for-later) mid-interaction.
++      const stop = bridgePoll(APP, s => setState(prev => {
++        if (!s) return prev;
++        const { settings, ...engineOwned } = initializeData(sid, s);
++        return { ...prev, ...engineOwned };
++      }));
 +      return () => stop();
 +    }
 +
      if (sid) {
        const sessionKey = `${INITIAL_KEY_PREFIX}_${sid}`;
        const isRefresh = localStorage.getItem(sessionKey) !== null;
-@@ -102,6 +124,13 @@
+@@ -82,7 +111,39 @@
+     }
+   }, [state, loading]);
+ 
++  // Every folder move, read flag and label change in this app funnels through
++  // these two. Bridging HERE rather than at each of the ~12 call sites means a
++  // spam/trash/archive move actually reaches the engine — before, it repainted
++  // locally and the next poll silently put the mail back.
++  //
++  // The mailbox's own folder names don't all match the engine's: 'all-mail' is
++  // what this UI calls archive.
++  const FOLDER_TO_ENGINE = { 'all-mail': 'archive', archive: 'archive', trash: 'trash',
++                             spam: 'spam', inbox: 'inbox' };
++
++  const bridgeEmailUpdates = (emailIds, updates) => {
++    const calls = [];
++    for (const id of emailIds) {
++      if (updates.folder !== undefined) {
++        const folder = FOLDER_TO_ENGINE[updates.folder] || updates.folder;
++        calls.push(bridgeAct('mail.set_folder', { email_id: id, folder }));
++      }
++      // read:true is "the agent opened it" — the signal several tasks gate on.
++      if (updates.read === true) calls.push(bridgeAct('mail.open', { email_id: id }));
++      if (updates.starred !== undefined)
++        calls.push(bridgeAct('mail.toggle_label', { email_id: id, label: 'starred' }));
++      if (updates.important !== undefined)
++        calls.push(bridgeAct('mail.toggle_label', { email_id: id, label: 'important' }));
++      if (Array.isArray(updates.labels))
++        calls.push(bridgeAct('mail.toggle_label', { email_id: id, label: updates.labels.at(-1) }));
++    }
++    if (!calls.length) return false;
++    Promise.all(calls).then(rs => applyEngine(setState, rs[rs.length - 1]));
++    return true;
++  };
++
+   const updateEmail = (emailId, updates) => {
++    if (bridged() && bridgeEmailUpdates([emailId], updates)) return;
+     setState(prev => ({
+       ...prev,
+       emails: prev.emails.map(email =>
+@@ -92,6 +153,7 @@
+   };
+ 
+   const bulkUpdateEmails = (emailIds, updates) => {
++    if (bridged() && bridgeEmailUpdates(emailIds, updates)) { setSelectedEmails([]); return; }
+     setState(prev => ({
+       ...prev,
+       emails: prev.emails.map(email =>
+@@ -102,6 +164,13 @@
    };
  
    const deleteEmails = (emailIds) => {
@@ -331,7 +386,7 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
      setState(prev => {
        const emailsToUpdate = prev.emails.filter(e => emailIds.includes(e.id));
        const trashIds = emailsToUpdate.filter(e => e.folder === 'trash').map(e => e.id);
-@@ -131,6 +160,13 @@
+@@ -131,6 +200,13 @@
    };
  
    const archiveEmails = (emailIds) => {
@@ -345,7 +400,7 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
      setState(prev => {
        const snapshot = prev.emails;
        showToast('Conversation archived', () => setState(s => ({ ...s, emails: snapshot })));
-@@ -151,6 +187,15 @@
+@@ -151,6 +227,15 @@
    };
  
    const sendEmail = (emailData) => {
@@ -361,7 +416,7 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
      const newEmail = {
        id: generateId(),
        threadId: generateId(),
-@@ -243,6 +288,14 @@
+@@ -243,6 +328,14 @@
    }
  
    const replyToEmail = (originalEmail, body, isReplyAll = false, attachments = []) => {
@@ -376,7 +431,7 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
       const newEmail = {
        id: generateId(),
        threadId: originalEmail.threadId,
-@@ -269,12 +322,25 @@
+@@ -269,20 +362,41 @@
      }));
    }
  
@@ -384,25 +439,18 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
 +  // projection reads back to set these flags — so a toggle round-trips instead
 +  // of living only in this tab.
    const toggleStar = (emailId) => {
-+    if (bridged()) {
-+      bridgeAct('mail.toggle_label', { email_id: emailId, label: 'starred' })
-+        .then(r => applyEngine(setState, r));
-+      return;
-+    }
      const email = state.emails.find(e => e.id === emailId);
-     if (email) updateEmail(emailId, { starred: !email.starred });
+-    if (email) updateEmail(emailId, { starred: !email.starred });
++    updateEmail(emailId, { starred: !(email && email.starred) });
    };
  
    const toggleImportant = (emailId) => {
-+    if (bridged()) {
-+      bridgeAct('mail.toggle_label', { email_id: emailId, label: 'important' })
-+        .then(r => applyEngine(setState, r));
-+      return;
-+    }
      const email = state.emails.find(e => e.id === emailId);
-     if (email) updateEmail(emailId, { important: !email.important });
+-    if (email) updateEmail(emailId, { important: !email.important });
++    updateEmail(emailId, { important: !(email && email.important) });
    };
-@@ -283,6 +349,24 @@
+ 
+   const toggleRead = (emailId, status) => {
        updateEmail(emailId, { read: status });
    }
  
@@ -427,7 +475,7 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
    const addLabel = (emailId, labelId) => {
      const email = state.emails.find(e => e.id === emailId);
      if (email && !email.labels.includes(labelId)) {
-@@ -442,6 +526,7 @@
+@@ -442,6 +556,7 @@
        toggleStar,
        toggleImportant,
        toggleRead,

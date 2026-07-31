@@ -105,7 +105,7 @@ diff -ruN a_ebay_mock/src/components/Navbar.jsx b_ebay_mock/src/components/Navba
              ) : (
 diff -ruN a_ebay_mock/src/context/StoreContext.jsx b_ebay_mock/src/context/StoreContext.jsx
 --- a/websites/ebay_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/context/StoreContext.jsx	2026-07-30 17:35:14
++++ b/websites/ebay_mock/src/context/StoreContext.jsx	2026-07-30 20:21:06
 @@ -1,6 +1,15 @@
  import React, { createContext, useContext, useReducer, useEffect, useRef, useState } from 'react';
  import { INITIAL_STATE, getSessionId, fetchCustomState, saveState, initializeData } from '../data/mockData';
@@ -176,7 +176,7 @@ diff -ruN a_ebay_mock/src/context/StoreContext.jsx b_ebay_mock/src/context/Store
      case ACTIONS.MARK_NOTIFICATION_READ: {
        const { notifId } = action.payload;
        const newNotifications = state.notifications.map(n =>
-@@ -372,6 +421,19 @@
+@@ -372,6 +421,26 @@
      initDone.current = true;
      const sid = sidRef.current;
  
@@ -189,14 +189,21 @@ diff -ruN a_ebay_mock/src/context/StoreContext.jsx b_ebay_mock/src/context/Store
 +        if (s) dispatch({ type: ACTIONS.SET_STATE, payload: initializeData(sid, s) });
 +        setHydrated(true);
 +      });
-+      const stop = bridgePoll(APP, s => dispatch({ type: ACTIONS.SET_STATE, payload: initializeData(sid, s) }));
++// Poll = adopt the ENGINE's world, but keep the keys the engine does not own.
++      // Re-adopting wholesale every 2.5s snapped the user's own view state back
++      // (which month you were on, your filters, saved-for-later) mid-interaction.
++      const stop = bridgePoll(APP, s => {
++        if (!s) return;
++        const { searchQuery, filters, ...engineOwned } = initializeData(sid, s);
++        dispatch({ type: ACTIONS.SET_STATE, payload: engineOwned });
++      });
 +      return () => stop();
 +    }
 +
      if (sid) {
        const sessionKey = `${BASE_INITIAL_KEY}_${sid}`;
        const isRefresh = localStorage.getItem(sessionKey) !== null;
-@@ -405,6 +467,12 @@
+@@ -405,6 +474,12 @@
    };
  
    const buyNow = (listingId) => {
@@ -209,7 +216,7 @@ diff -ruN a_ebay_mock/src/context/StoreContext.jsx b_ebay_mock/src/context/Store
      dispatch({ type: ACTIONS.BUY_NOW, payload: { listingId, userId: state.currentUser.id } });
    };
  
-@@ -452,17 +520,59 @@
+@@ -452,17 +527,59 @@
    };
  
    const addToCart = (listingId) => {
@@ -269,7 +276,7 @@ diff -ruN a_ebay_mock/src/context/StoreContext.jsx b_ebay_mock/src/context/Store
    const markNotificationRead = (notifId) => {
      dispatch({ type: ACTIONS.MARK_NOTIFICATION_READ, payload: { notifId } });
    };
-@@ -488,6 +598,9 @@
+@@ -488,6 +605,9 @@
        addToCart,
        removeFromCart,
        clearCart,
