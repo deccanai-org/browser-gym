@@ -78,6 +78,7 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "shop.view_orders":      ("GET",  "/account/orders",                  ()),
     "shop.view_subscriptions": ("GET", "/account/subscriptions",         ()),
     "shop.view_addresses":   ("GET",  "/account/addresses",              ()),
+    "shop.view_payment_methods": ("GET", "/account/payments",            ()),
     "mail.open":             ("GET",  "/mail/message/{email_id}",         ()),
     "shop.place_order":      ("POST", "/api/checkout/place", ("payment_id",)),
     "shop.add_address":      ("POST", "/api/account/addresses",

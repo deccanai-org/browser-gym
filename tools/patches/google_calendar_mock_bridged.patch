@@ -30,6 +30,29 @@ diff -ruN a_google_calendar_mock/index.html b_google_calendar_mock/index.html
    </head>
    <body>
      <div id="root"></div>
+diff -ruN a_google_calendar_mock/src/App.jsx b_google_calendar_mock/src/App.jsx
+--- a/websites/google_calendar_mock/src/App.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/App.jsx	2026-07-30 18:15:02
+@@ -8,6 +8,7 @@
+ import EventModal from './components/EventModal';
+ import EventPopover from './components/EventPopover';
+ import GoEndpoint from './components/GoEndpoint';
++import { bridged, bridgeAct } from './lib/bridge';
+ 
+ // Simple router component since we can't use React Router easily in this constrained env without more setup
+ const Router = () => {
+@@ -39,6 +40,11 @@
+   const [deleteTarget, setDeleteTarget] = useState(null);
+ 
+   const handleEventClick = (event, e) => {
++    // Opening an event is the "did the agent actually look at it" signal a few
++    // milestones gate on; the popover alone leaves no trace in state.
++    if (bridged() && event && event.id) {
++      bridgeAct('calendar.view_event', { event_id: event.id }).catch(() => {});
++    }
+     // If e is provided, show popover at click position
+     if (e) {
+       const rect = e.currentTarget.getBoundingClientRect();
 diff -ruN a_google_calendar_mock/src/components/EventModal.jsx b_google_calendar_mock/src/components/EventModal.jsx
 --- a/websites/google_calendar_mock/src/components/EventModal.jsx	2026-07-28 11:01:47
 +++ b/websites/google_calendar_mock/src/components/EventModal.jsx	2026-07-30 17:35:14

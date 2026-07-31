@@ -1,6 +1,6 @@
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/index.html hubdev/websites/amazon_mock/index.html
+diff -ruN a_amazon_mock/index.html b_amazon_mock/index.html
 --- a/websites/amazon_mock/index.html	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/index.html	2026-07-30 17:17:43
++++ b/websites/amazon_mock/index.html	2026-07-30 18:17:09
 @@ -4,7 +4,7 @@
      <meta charset="UTF-8" />
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -10,9 +10,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
    </head>
    <body>
      <div id="root"></div>
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/App.jsx hubdev/websites/amazon_mock/src/App.jsx
+diff -ruN a_amazon_mock/src/App.jsx b_amazon_mock/src/App.jsx
 --- a/websites/amazon_mock/src/App.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/App.jsx	2026-07-30 17:21:49
++++ b/websites/amazon_mock/src/App.jsx	2026-07-30 18:17:09
 @@ -9,6 +9,7 @@
  import { Checkout } from './pages/Checkout';
  import { Orders } from './pages/Orders';
@@ -77,9 +77,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
              <Route path="wishlist" element={<Wishlist />} />
              <Route path="profile" element={<Profile />} />
            </Route>
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/components/layout/Header.jsx hubdev/websites/amazon_mock/src/components/layout/Header.jsx
+diff -ruN a_amazon_mock/src/components/layout/Header.jsx b_amazon_mock/src/components/layout/Header.jsx
 --- a/websites/amazon_mock/src/components/layout/Header.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/components/layout/Header.jsx	2026-07-30 17:22:12
++++ b/websites/amazon_mock/src/components/layout/Header.jsx	2026-07-30 18:17:09
 @@ -108,7 +108,7 @@
        {/* Top Bar */}
        <div className="bg-xmazon text-white px-4 py-2 flex items-center gap-4 h-[60px]">
@@ -116,9 +116,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
                    </li>
                    <li>
                      <Link to="/wishlist" onClick={() => setShowNavMenu(false)} className="text-sm text-xmazon-blue hover:underline block py-1">Your Wishlist</Link>
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/components/product/ProductCard.jsx hubdev/websites/amazon_mock/src/components/product/ProductCard.jsx
+diff -ruN a_amazon_mock/src/components/product/ProductCard.jsx b_amazon_mock/src/components/product/ProductCard.jsx
 --- a/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-07-30 17:17:43
++++ b/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-07-30 18:17:09
 @@ -72,9 +72,9 @@
        {product.badges && product.badges.includes('Best Seller') && (
          <span className="absolute top-0 left-0 bg-[#e47911] text-white text-[10px] font-bold px-1.5 py-0.5 z-10 rounded-br">Best Seller</span>
@@ -131,9 +131,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
          </span>
        )}
  
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/context/StoreContext.jsx hubdev/websites/amazon_mock/src/context/StoreContext.jsx
+diff -ruN a_amazon_mock/src/context/StoreContext.jsx b_amazon_mock/src/context/StoreContext.jsx
 --- a/websites/amazon_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/context/StoreContext.jsx	2026-07-30 17:21:19
++++ b/websites/amazon_mock/src/context/StoreContext.jsx	2026-07-30 18:17:36
 @@ -1,6 +1,16 @@
  import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
  import { INITIAL_DATA, getSessionId, fetchCustomState, saveState, initializeData } from '../lib/mockData';
@@ -279,7 +279,7 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
      setState(prev => {
        const paymentMethods = (prev.user.paymentMethods || [prev.user.paymentMethod]).map(p => ({ ...p, isDefault: p.id === pmId }));
        const defaultPm = paymentMethods.find(p => p.isDefault) || paymentMethods[0];
-@@ -235,6 +310,79 @@
+@@ -235,6 +310,96 @@
      });
    };
  
@@ -294,6 +294,23 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
 +      cart: prev.cart.map(item =>
 +        item.productId === productId ? { ...item, ...opts } : item
 +      )
++    }));
++  };
++
++  const createSubscription = ({ productId, cadence = 'monthly', deliveries = 4, quantity = 1 }) => {
++    if (bridged()) {
++      bridgeAct('shop.create_subscription', {
++        product_id: productId, cadence, deliveries, quantity,
++      }).then(r => applyEngine(setState, r));
++      return;
++    }
++    setState(prev => ({
++      ...prev,
++      _gym_subscriptions: [...(prev._gym_subscriptions || []), {
++        id: `SUB-${Date.now()}`, product_id: productId, cadence,
++        deliveries_remaining: deliveries, quantity, status: 'active',
++        next_delivery_date: null,
++      }],
 +    }));
 +  };
 +
@@ -359,11 +376,12 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
    // Helper to get diff for /go endpoint
    const getStateDiff = () => {
      const diff = {};
-@@ -272,6 +420,11 @@
+@@ -272,6 +437,12 @@
        setDefaultAddress,
        addPaymentMethod,
        setDefaultPaymentMethod,
 +      setLineOptions,
++      createSubscription,
 +      cancelSubscription,
 +      createReturn,
 +      enableTwoFa,
@@ -371,9 +389,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
      }}>
        {children}
      </StoreContext.Provider>
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/index.css hubdev/websites/amazon_mock/src/index.css
+diff -ruN a_amazon_mock/src/index.css b_amazon_mock/src/index.css
 --- a/websites/amazon_mock/src/index.css	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/index.css	2026-07-30 17:17:43
++++ b/websites/amazon_mock/src/index.css	2026-07-30 18:17:09
 @@ -4,7 +4,7 @@
  
  body {
@@ -383,9 +401,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
    color: #0F1111;
    margin: 0;
  }
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/lib/bridge.js hubdev/websites/amazon_mock/src/lib/bridge.js
+diff -ruN a_amazon_mock/src/lib/bridge.js b_amazon_mock/src/lib/bridge.js
 --- a/websites/amazon_mock/src/lib/bridge.js	1969-12-31 16:00:00
-+++ b/websites/amazon_mock/src/lib/bridge.js	2026-07-30 17:17:43
++++ b/websites/amazon_mock/src/lib/bridge.js	2026-07-30 18:17:09
 @@ -0,0 +1,47 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
@@ -434,9 +452,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
 +  setTimeout(tick, ms);
 +  return () => { live = false; };
 +}
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/lib/mockData.js hubdev/websites/amazon_mock/src/lib/mockData.js
+diff -ruN a_amazon_mock/src/lib/mockData.js b_amazon_mock/src/lib/mockData.js
 --- a/websites/amazon_mock/src/lib/mockData.js	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/lib/mockData.js	2026-07-30 17:17:43
++++ b/websites/amazon_mock/src/lib/mockData.js	2026-07-30 18:17:09
 @@ -7,7 +7,7 @@
    {
      id: "p1", category: "Electronics", brand: "Samsung", title: "Samsung Galaxy Buds Pro - True Wireless Bluetooth Noise Cancelling Earbuds",
@@ -932,9 +950,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
      rating: Math.min(Math.max(rating, 0), 5),
      title: r.title || r.headline || '',
      content: r.content || r.body || r.text || '',
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/Cart.jsx hubdev/websites/amazon_mock/src/pages/Cart.jsx
+diff -ruN a_amazon_mock/src/pages/Cart.jsx b_amazon_mock/src/pages/Cart.jsx
 --- a/websites/amazon_mock/src/pages/Cart.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Cart.jsx	2026-07-30 17:18:39
++++ b/websites/amazon_mock/src/pages/Cart.jsx	2026-07-30 18:17:09
 @@ -4,8 +4,18 @@
  import { Button } from '../components/ui/Button';
  import { Tag } from 'lucide-react';
@@ -1040,9 +1058,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
                          </div>
                        </div>
                        <div className="text-right font-bold text-base">
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/Checkout.jsx hubdev/websites/amazon_mock/src/pages/Checkout.jsx
+diff -ruN a_amazon_mock/src/pages/Checkout.jsx b_amazon_mock/src/pages/Checkout.jsx
 --- a/websites/amazon_mock/src/pages/Checkout.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Checkout.jsx	2026-07-30 17:19:01
++++ b/websites/amazon_mock/src/pages/Checkout.jsx	2026-07-30 18:17:09
 @@ -34,7 +34,7 @@
  
    const handlePlaceOrder = () => {
@@ -1083,9 +1101,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
              </p>
              <h3 className="font-bold text-lg mb-2">Order Summary</h3>
              <div className="text-sm space-y-1">
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/OrderConfirmation.jsx hubdev/websites/amazon_mock/src/pages/OrderConfirmation.jsx
+diff -ruN a_amazon_mock/src/pages/OrderConfirmation.jsx b_amazon_mock/src/pages/OrderConfirmation.jsx
 --- a/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-07-30 17:17:43
++++ b/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-07-30 18:17:09
 @@ -1,13 +1,16 @@
 -import React from 'react';
 +import React, { useEffect } from 'react';
@@ -1104,9 +1122,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
  
    if (!order) {
      return (
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/Orders.jsx hubdev/websites/amazon_mock/src/pages/Orders.jsx
+diff -ruN a_amazon_mock/src/pages/Orders.jsx b_amazon_mock/src/pages/Orders.jsx
 --- a/websites/amazon_mock/src/pages/Orders.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Orders.jsx	2026-07-30 17:20:25
++++ b/websites/amazon_mock/src/pages/Orders.jsx	2026-07-30 18:17:09
 @@ -1,5 +1,6 @@
 -import React, { useState } from 'react';
 +import React, { useState, useEffect } from 'react';
@@ -1174,9 +1192,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
                </div>
                <div className="flex gap-2">
                  <Button type="submit" className="flex-1">Submit Return Request</Button>
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/ProductDetail.jsx hubdev/websites/amazon_mock/src/pages/ProductDetail.jsx
+diff -ruN a_amazon_mock/src/pages/ProductDetail.jsx b_amazon_mock/src/pages/ProductDetail.jsx
 --- a/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-07-30 17:17:43
++++ b/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-07-30 18:17:36
 @@ -1,6 +1,7 @@
  import React, { useEffect, useState, useRef } from 'react';
  import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
@@ -1185,7 +1203,18 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
  import { Rating } from '../components/ui/Rating';
  import { Button } from '../components/ui/Button';
  import { MapPin, User, ZoomIn, Star } from 'lucide-react';
-@@ -27,10 +28,14 @@
+@@ -10,8 +11,9 @@
+   const { id } = useParams();
+   const navigate = useNavigate();
+   const location = useLocation();
+-  const { state, addToCart, addToRecentlyViewed, toggleWishlist, addReview, voteHelpful } = useStore();
++  const { state, addToCart, addToRecentlyViewed, toggleWishlist, addReview, voteHelpful, createSubscription } = useStore();
+   const [qty, setQty] = useState(1);
++  const [subCadence, setSubCadence] = useState('monthly');
+   const [newReview, setNewReview] = useState({ rating: 5, title: '', content: '' });
+   const [showReviewForm, setShowReviewForm] = useState(false);
+   const [reviewError, setReviewError] = useState('');
+@@ -27,10 +29,14 @@
    useEffect(() => {
      if (product) {
        addToRecentlyViewed(product.id);
@@ -1201,7 +1230,7 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
  
    useEffect(() => {
      if (location.hash === '#reviews' && reviewsRef.current) {
-@@ -160,7 +165,7 @@
+@@ -160,7 +166,7 @@
      <div className="max-w-[1500px] mx-auto bg-[#eaeded]">
        {/* Breadcrumb */}
        <div className="text-[12px] text-[#007185] px-4 pt-3 pb-1">
@@ -1210,7 +1239,7 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
          <span className="text-[#565959] mx-1">›</span>
          <Link to={`/search?category=${encodeURIComponent(product.category)}`} className="hover:underline hover:text-[#c7511f]">{product.category}</Link>
          <span className="text-[#565959] mx-1">›</span>
-@@ -217,7 +222,7 @@
+@@ -217,7 +223,7 @@
                <div className="flex gap-2 mb-2">
                  {product.badges.map(badge => (
                    <span key={badge} className={`text-xs font-bold px-2 py-0.5 rounded ${badge === 'Best Seller' ? 'bg-xmazon-orange text-white' : 'bg-xmazon-blue text-white'}`}>
@@ -1219,7 +1248,36 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
                    </span>
                  ))}
                </div>
-@@ -330,7 +335,7 @@
+@@ -325,12 +331,36 @@
+                   </select>
+ 
+                   <Button className="w-full mb-2 text-sm" onClick={() => addToCart(product, qty)}>Add to Cart</Button>
++
++                  {/* Subscribe & Save: a recurring order rather than a one-off. */}
++                  <div className="mb-2 border rounded p-2 text-xs bg-gray-50">
++                    <label className="block font-bold mb-1" htmlFor="sub-cadence">Subscribe &amp; Save</label>
++                    <select
++                      id="sub-cadence"
++                      aria-label="Delivery frequency"
++                      value={subCadence}
++                      onChange={(e) => setSubCadence(e.target.value)}
++                      className="w-full mb-2 p-1 border rounded bg-white"
++                    >
++                      <option value="weekly">Every week</option>
++                      <option value="biweekly">Every 2 weeks</option>
++                      <option value="monthly">Every month</option>
++                    </select>
++                    <Button
++                      variant="secondary"
++                      className="w-full text-xs"
++                      aria-label="Subscribe to this item"
++                      onClick={() => createSubscription({ productId: product.id, cadence: subCadence, quantity: qty })}
++                    >
++                      Subscribe
++                    </Button>
++                  </div>
+                   <Button variant="orange" className="w-full mb-4 text-sm" onClick={handleBuyNow}>Buy Now</Button>
+                 </>
                )}
  
                <div className="text-xs text-gray-500 space-y-1 mb-4">
@@ -1228,7 +1286,7 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
                  <div className="flex justify-between"><span>Sold by</span> <span>{product.seller || product.brand}</span></div>
                </div>
  
-@@ -510,7 +515,7 @@
+@@ -510,7 +540,7 @@
                          <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
                            <User size={16} />
                          </div>
@@ -1237,9 +1295,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
                        </div>
                        <div className="flex items-center gap-2 mb-1">
                          <Rating value={review.rating} size={14} />
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/ProductListing.jsx hubdev/websites/amazon_mock/src/pages/ProductListing.jsx
+diff -ruN a_amazon_mock/src/pages/ProductListing.jsx b_amazon_mock/src/pages/ProductListing.jsx
 --- a/websites/amazon_mock/src/pages/ProductListing.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/ProductListing.jsx	2026-07-30 17:17:43
++++ b/websites/amazon_mock/src/pages/ProductListing.jsx	2026-07-30 18:17:09
 @@ -1,6 +1,7 @@
 -import React, { useState, useMemo } from 'react';
 +import React, { useState, useMemo, useEffect } from 'react';
@@ -1270,19 +1328,37 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
            <span className="text-[#565959] mx-1">›</span>
            {categoryParam ? (
              <span className="text-gray-700">{categoryParam}</span>
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/Profile.jsx hubdev/websites/amazon_mock/src/pages/Profile.jsx
+diff -ruN a_amazon_mock/src/pages/Profile.jsx b_amazon_mock/src/pages/Profile.jsx
 --- a/websites/amazon_mock/src/pages/Profile.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Profile.jsx	2026-07-30 17:17:43
-@@ -17,7 +17,7 @@
++++ b/websites/amazon_mock/src/pages/Profile.jsx	2026-07-30 18:17:36
+@@ -1,8 +1,9 @@
+-import React, { useState } from 'react';
++import React, { useState, useEffect } from 'react';
+ import { Link } from 'react-router-dom';
+ import { useStore } from '../context/StoreContext';
+ import { Button } from '../components/ui/Button';
+ import { User, MapPin, CreditCard, Package, Heart, ChevronRight, X, Check } from 'lucide-react';
++import { bridged, bridgeAct } from '../lib/bridge';
+ 
+ const Toast = ({ message, onDone }) => {
+   React.useEffect(() => {
+@@ -17,7 +18,14 @@
  };
  
  export const Profile = () => {
 -  const { state, updateUserProfile, addAddress, setDefaultAddress, addPaymentMethod, setDefaultPaymentMethod } = useStore();
++  // This page is where addresses and cards are inspected — emit both view
++  // signals so the "checked before acting" milestones can fire.
++  useEffect(() => {
++    if (!bridged()) return;
++    bridgeAct('shop.view_addresses', {}).catch(() => {});
++    bridgeAct('shop.view_payment_methods', {}).catch(() => {});
++  }, []);
 +  const { state, updateUserProfile, addAddress, setDefaultAddress, addPaymentMethod, setDefaultPaymentMethod, enableTwoFa } = useStore();
    const [activeSection, setActiveSection] = useState(null);
    const [toast, setToast] = useState(null);
    const [editName, setEditName] = useState('');
-@@ -27,6 +27,7 @@
+@@ -27,6 +35,7 @@
    const [newPmForm, setNewPmForm] = useState({ brand: 'Visa', last4: '', expiry: '' });
    const [showNewAddress, setShowNewAddress] = useState(false);
    const [showNewPm, setShowNewPm] = useState(false);
@@ -1290,7 +1366,7 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
  
    const addresses = state.user.addresses || [state.user.address];
    const paymentMethods = state.user.paymentMethods || [state.user.paymentMethod];
-@@ -156,6 +157,33 @@
+@@ -156,6 +165,33 @@
                    <div className="text-sm text-gray-600">{state.user.email}</div>
                  </div>
                </div>
@@ -1324,7 +1400,7 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
              </div>
              {isEditingProfile && (
                <form onSubmit={handleSaveProfile} className="space-y-3 border-t pt-4">
-@@ -276,7 +304,7 @@
+@@ -276,7 +312,7 @@
              <div className="flex items-center gap-4 mb-4 p-4 bg-gradient-to-r from-[#232f3e] to-[#37475a] rounded-lg">
                <span className="text-[#00a8e1] font-bold italic text-[28px]">prime</span>
                <div className="text-white">
@@ -1333,9 +1409,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
                  <div className="text-[12px] text-gray-300">
                    {state.user.isPrime
                      ? `Member since ${state.user.memberSince || '2019'} - Enjoy FREE same-day, one-day, and two-day delivery`
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/Subscriptions.jsx hubdev/websites/amazon_mock/src/pages/Subscriptions.jsx
+diff -ruN a_amazon_mock/src/pages/Subscriptions.jsx b_amazon_mock/src/pages/Subscriptions.jsx
 --- a/websites/amazon_mock/src/pages/Subscriptions.jsx	1969-12-31 16:00:00
-+++ b/websites/amazon_mock/src/pages/Subscriptions.jsx	2026-07-30 17:21:39
++++ b/websites/amazon_mock/src/pages/Subscriptions.jsx	2026-07-30 18:17:09
 @@ -0,0 +1,77 @@
 +import React, { useEffect } from 'react';
 +import { Link } from 'react-router-dom';
@@ -1414,9 +1490,9 @@ diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/website
 +    </div>
 +  );
 +};
-diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/Wishlist.jsx hubdev/websites/amazon_mock/src/pages/Wishlist.jsx
+diff -ruN a_amazon_mock/src/pages/Wishlist.jsx b_amazon_mock/src/pages/Wishlist.jsx
 --- a/websites/amazon_mock/src/pages/Wishlist.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Wishlist.jsx	2026-07-30 17:17:43
++++ b/websites/amazon_mock/src/pages/Wishlist.jsx	2026-07-30 18:17:09
 @@ -32,7 +32,7 @@
          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
            <div>
