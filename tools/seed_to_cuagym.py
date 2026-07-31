@@ -290,7 +290,9 @@ def transform_shop(shop: dict) -> dict:
             "specs": {"Brand": p.get("brand"), "Weight": f"{p.get('weight_kg')} kg", "Emoji": p.get("image_emoji")},
             "category": _AMAZON_CAT.get((p.get("category") or "").lower(), "Electronics"),
             "brand": p.get("brand"), "prime": True, "inStock": stock > 0, "stockCount": stock,
-            "seller": "Amazon.com", "badges": (["Best Seller"] if (p.get("rating") or 0) >= 4.5 else []),
+            # The store is branded ShopGym; the old value re-introduced on every
+            # product the exact name the rebrand took out of the mock.
+            "seller": "ShopGym", "badges": (["Best Seller"] if (p.get("rating") or 0) >= 4.5 else []),
             "createdAt": "2024-01-01T00:00:00.000Z",
         })
         for r in (p.get("reviews") or []):

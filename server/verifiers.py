@@ -6591,7 +6591,7 @@ def _suite_m122() -> TaskSuite:
         # the delay email id is auto-generated; fall back to any read travel-alert
         if e:
             return getattr(e, "read", False)
-        return any("alerts@flyunited.com" in (em.sender or "") and getattr(em, "read", False)
+        return any("alerts@gymair.com" in (em.sender or "") and getattr(em, "read", False)
                    for em in (mail.inbox.values() if mail and getattr(mail, "inbox", None) else []))
 
     return TaskSuite(task_id="M122/flight_delay_dinner_reschedule", milestones=[

@@ -5752,7 +5752,7 @@ def test_m121_do_nothing_incomplete():
 def test_m122_env_truth():
     sim = _CrossSim("M122/flight_delay_dinner_reschedule")
     assert sim.world.calendar.events["ev_dinner_122"].start == "19:00"
-    assert any("alerts@flyunited.com" in (e.sender or "") and "8:00 PM" in (e.body or "")
+    assert any("alerts@gymair.com" in (e.sender or "") and "8:00 PM" in (e.body or "")
                for e in sim.world.mail.inbox.values())
 
 def test_m122_moved_and_told_succeeds():

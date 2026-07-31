@@ -46,6 +46,14 @@ BREAKERS = pathlib.Path(__file__).resolve().parent.parent / "trajectories" / "se
 # inside a suite's source is a literal the seed has to provide.
 ID_RE = re.compile(r"[\"']((?:p_|pay_|addr_|ORD-|ORD_|cal_|ev_|sub_|SUB-|d_|r_|em_|ret_)[A-Za-z0-9_\-]+)[\"']")
 
+# Literals a verifier names on purpose without the seed providing them, because
+# the lookup is guarded and falls back to a property that IS seeded. Listed
+# one-by-one with the fallback, so a genuinely dangling id still gets reported.
+GUARDED_IDS = {
+    ("M122/flight_delay_dinner_reschedule", "em_delay"):
+        "id is auto-generated; falls back to matching sender alerts@gymair.com",
+}
+
 
 def canonical(state: dict) -> str:
     return json.dumps(state, sort_keys=True, separators=(",", ":"))
@@ -89,7 +97,7 @@ def check_task(task_id: str) -> tuple[dict, list[tuple[str, str, str]]]:
             ids = set()
         blob = json.dumps({a: s for a, (_m, s) in states.items()})
         for i in sorted(ids):
-            if i not in blob:
+            if i not in blob and (task_id, i) not in GUARDED_IDS:
                 problems.append((task_id, "verifier", f"references {i}, absent from the seed"))
     return rec, problems
 

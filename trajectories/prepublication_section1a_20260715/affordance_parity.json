@@ -189,8 +189,8 @@
       "seed": 0,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "e79c5d7d0ced27f849473731128a230e48c2338c56c5e5971e1173d9efa95827",
-      "semantic_after_sha256": "fa1ba74fe26bf685eb9fcc6844e20173a85c4c16219fc738ebe34a4808905d5b",
+      "semantic_before_sha256": "d5d8ee76504c50fd4806b40d02f548bde0d4ab8021cd8bb5fd573d17da4c33f9",
+      "semantic_after_sha256": "bbc3b450c869173cc9b5e59d0bc008a254858a72e03a199f904f6bab9fb6cb71",
       "raw_diff": [
         {
           "path": "$.events",
@@ -239,7 +239,8 @@
                 "restaurant_id": "r_burger",
                 "name": "Classic Cheeseburger",
                 "unit_price": 10.0,
-                "quantity": 2
+                "quantity": 2,
+                "note": ""
               }
             ],
             "subtotal": 20.0,
@@ -292,8 +293,8 @@
       "seed": 1,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "e79c5d7d0ced27f849473731128a230e48c2338c56c5e5971e1173d9efa95827",
-      "semantic_after_sha256": "fa1ba74fe26bf685eb9fcc6844e20173a85c4c16219fc738ebe34a4808905d5b",
+      "semantic_before_sha256": "d5d8ee76504c50fd4806b40d02f548bde0d4ab8021cd8bb5fd573d17da4c33f9",
+      "semantic_after_sha256": "bbc3b450c869173cc9b5e59d0bc008a254858a72e03a199f904f6bab9fb6cb71",
       "raw_diff": [
         {
           "path": "$.events",
@@ -342,7 +343,8 @@
                 "restaurant_id": "r_burger",
                 "name": "Classic Cheeseburger",
                 "unit_price": 10.0,
-                "quantity": 2
+                "quantity": 2,
+                "note": ""
               }
             ],
             "subtotal": 20.0,
@@ -395,8 +397,8 @@
       "seed": 2,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "e79c5d7d0ced27f849473731128a230e48c2338c56c5e5971e1173d9efa95827",
-      "semantic_after_sha256": "fa1ba74fe26bf685eb9fcc6844e20173a85c4c16219fc738ebe34a4808905d5b",
+      "semantic_before_sha256": "d5d8ee76504c50fd4806b40d02f548bde0d4ab8021cd8bb5fd573d17da4c33f9",
+      "semantic_after_sha256": "bbc3b450c869173cc9b5e59d0bc008a254858a72e03a199f904f6bab9fb6cb71",
       "raw_diff": [
         {
           "path": "$.events",
@@ -445,7 +447,8 @@
                 "restaurant_id": "r_burger",
                 "name": "Classic Cheeseburger",
                 "unit_price": 10.0,
-                "quantity": 2
+                "quantity": 2,
+                "note": ""
               }
             ],
             "subtotal": 20.0,
@@ -498,8 +501,8 @@
       "seed": 0,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "b54a4cd5b653e69d146399d98d2e49086bc7f485c8607f8800cf602ae888505b",
-      "semantic_after_sha256": "fe4f9e27e51bc18b6205e84a1d8427f19215126046606678568e019a6c20197f",
+      "semantic_before_sha256": "9311d63b26448c3db8f8c4db612d79536e703450ebb7d18a08fb3bff7098536c",
+      "semantic_after_sha256": "c3f676dab5a50154af1186277cae1c6fb243a802019bcedc3ac3bb8f165e38ca",
       "raw_diff": [
         {
           "path": "$.calendar._next",
@@ -516,7 +519,13 @@
             "day_label": "Today (Thu May 21)",
             "start": "19:00",
             "end": "20:00",
-            "source": "user"
+            "source": "user",
+            "location": "",
+            "description": "",
+            "calendar_id": "c1",
+            "all_day": false,
+            "recurring": "none",
+            "reminder_minutes": null
           }
         }
       ],
@@ -535,8 +544,8 @@
       "seed": 1,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "f3fbf9b89755298bbd9c4578efeed9a61227e5718529f5bdd56c24f48f6a5905",
-      "semantic_after_sha256": "865cb19880ec25491fec45953b81221207e304fd0b2d53513384019e50051ce2",
+      "semantic_before_sha256": "171783109ef0d861a5813c92a43fb5f45d8d014eae6ae5d4b5ba11aa2e5da3ed",
+      "semantic_after_sha256": "9620d3da352b657169b57338b0e156d8f01bffb4a7fb03f246a3b7ba2f14dd55",
       "raw_diff": [
         {
           "path": "$.calendar._next",
@@ -553,7 +562,13 @@
             "day_label": "Today (Thu May 21)",
             "start": "19:00",
             "end": "20:00",
-            "source": "user"
+            "source": "user",
+            "location": "",
+            "description": "",
+            "calendar_id": "c1",
+            "all_day": false,
+            "recurring": "none",
+            "reminder_minutes": null
           }
         }
       ],
@@ -572,8 +587,8 @@
       "seed": 2,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "b54a4cd5b653e69d146399d98d2e49086bc7f485c8607f8800cf602ae888505b",
-      "semantic_after_sha256": "fe4f9e27e51bc18b6205e84a1d8427f19215126046606678568e019a6c20197f",
+      "semantic_before_sha256": "9311d63b26448c3db8f8c4db612d79536e703450ebb7d18a08fb3bff7098536c",
+      "semantic_after_sha256": "c3f676dab5a50154af1186277cae1c6fb243a802019bcedc3ac3bb8f165e38ca",
       "raw_diff": [
         {
           "path": "$.calendar._next",
@@ -590,7 +605,13 @@
             "day_label": "Today (Thu May 21)",
             "start": "19:00",
             "end": "20:00",
-            "source": "user"
+            "source": "user",
+            "location": "",
+            "description": "",
+            "calendar_id": "c1",
+            "all_day": false,
+            "recurring": "none",
+            "reminder_minutes": null
           }
         }
       ],
@@ -609,8 +630,8 @@
       "seed": 0,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "dec300b4f404b3dd1a9bf7065e96ec702b4f3f1f14517d5dbd0070f2fb8f56a2",
-      "semantic_after_sha256": "cd2c65cc7c8c4a674d3ca5171110d22f8948350075f65d68d73cf04a93ef1329",
+      "semantic_before_sha256": "d6dddc00c895d5b82bf10908a220e1321ee2d4bad033042ba757413bc0bcf114",
+      "semantic_after_sha256": "e5029c55809d8783f7797052c2e42be03fa31c49cd9fa2a90b05be49851177e9",
       "raw_diff": [
         {
           "path": "$.calendar.events.ev_6.end",
@@ -638,8 +659,8 @@
       "seed": 1,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "b1e890a9ad374cb25769e853b07c7ab52915872f755e1526002eee79f053209c",
-      "semantic_after_sha256": "d62bb0bd84e0faed0e253e1b98323d402346925f0e2914a59d4d299d2025866b",
+      "semantic_before_sha256": "40d9358d1d385786303998a4bdeb879840b730ce62fe8d73076905c26dc6c982",
+      "semantic_after_sha256": "5eeadfe09770f6e17d14de51669e6093319454a789d0f0cc3274688f6098a8ae",
       "raw_diff": [
         {
           "path": "$.calendar.events.ev_7.end",
@@ -667,8 +688,8 @@
       "seed": 2,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "dec300b4f404b3dd1a9bf7065e96ec702b4f3f1f14517d5dbd0070f2fb8f56a2",
-      "semantic_after_sha256": "cd2c65cc7c8c4a674d3ca5171110d22f8948350075f65d68d73cf04a93ef1329",
+      "semantic_before_sha256": "d6dddc00c895d5b82bf10908a220e1321ee2d4bad033042ba757413bc0bcf114",
+      "semantic_after_sha256": "e5029c55809d8783f7797052c2e42be03fa31c49cd9fa2a90b05be49851177e9",
       "raw_diff": [
         {
           "path": "$.calendar.events.ev_6.end",
@@ -696,7 +717,7 @@
       "seed": 0,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "4d40eac8b63181902b69dea96808ad5e8f5696d5e31216bfbd0c82f326e7a5b7",
+      "semantic_before_sha256": "38ce3064a2169466fa227593a83828e22981806d13ffe9813220fdac539998c6",
       "semantic_after_sha256": "02fbf31cc7ff554ea8318738cd268701843b06e190a6979a03b7b746ca5f7daa",
       "raw_diff": [
         {
@@ -708,7 +729,13 @@
             "day_label": "Tomorrow (Fri May 22)",
             "start": "14:00",
             "end": "15:00",
-            "source": "seed"
+            "source": "seed",
+            "location": "",
+            "description": "",
+            "calendar_id": "c1",
+            "all_day": false,
+            "recurring": "none",
+            "reminder_minutes": null
           },
           "after": "<MISSING>"
         }
@@ -728,7 +755,7 @@
       "seed": 1,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "ad1bd047357be84db1c15bf419adf55414ec442395834d20035ff3a3ab2a9dde",
+      "semantic_before_sha256": "532590d48f6936a5c3b51af861b6c53bbe6bb1bd062db03937cab2ebfa17df93",
       "semantic_after_sha256": "598205f36203316eeed82d3eff9441d22802a3683c18eec5154ee8a8e6bafa09",
       "raw_diff": [
         {
@@ -740,7 +767,13 @@
             "day_label": "Tomorrow (Fri May 22)",
             "start": "14:00",
             "end": "15:00",
-            "source": "seed"
+            "source": "seed",
+            "location": "",
+            "description": "",
+            "calendar_id": "c1",
+            "all_day": false,
+            "recurring": "none",
+            "reminder_minutes": null
           },
           "after": "<MISSING>"
         }
@@ -760,7 +793,7 @@
       "seed": 2,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "4d40eac8b63181902b69dea96808ad5e8f5696d5e31216bfbd0c82f326e7a5b7",
+      "semantic_before_sha256": "38ce3064a2169466fa227593a83828e22981806d13ffe9813220fdac539998c6",
       "semantic_after_sha256": "02fbf31cc7ff554ea8318738cd268701843b06e190a6979a03b7b746ca5f7daa",
       "raw_diff": [
         {
@@ -772,7 +805,13 @@
             "day_label": "Tomorrow (Fri May 22)",
             "start": "14:00",
             "end": "15:00",
-            "source": "seed"
+            "source": "seed",
+            "location": "",
+            "description": "",
+            "calendar_id": "c1",
+            "all_day": false,
+            "recurring": "none",
+            "reminder_minutes": null
           },
           "after": "<MISSING>"
         }

@@ -985,7 +985,7 @@ BRIEFS = {
     ),
 
     "M122": (
-        "Ugh, my flight (UA123) got delayed. Can you move my Birthday Dinner to my new "
+        "Ugh, my flight (GA123) got delayed. Can you move my Birthday Dinner to my new "
         "landing time so I can head straight there, and let Sam and Dana "
         "(sam@example.com, dana@example.com) know the new time so they're not sitting "
         "there waiting for me?"
@@ -6388,17 +6388,17 @@ def task_m122_flight_delay_dinner_reschedule(seed: int) -> "WorldState":
     # ORIGINAL itinerary — arrives 5:00 PM (the now-STALE value).
     e1 = mail.new_id()
     mail.inbox[e1] = Email(
-        id=e1, sender="itinerary@flyunited.com", to=mail.account_email,
-        subject="Your itinerary — UA123 to JFK",
-        body=("You're all set for UA123.\nScheduled arrival: 5:00 PM (Fri May 22) at JFK.\n"
+        id=e1, sender="itinerary@gymair.com", to=mail.account_email,
+        subject="Your itinerary — GA123 to JFK",
+        body=("You're all set for GA123.\nScheduled arrival: 5:00 PM (Fri May 22) at JFK.\n"
               "Have a great trip!"),
         received_at=f"{SEED_DATE}T08:00:00", received_label="8:00 AM", read=False, labels=["travel"])
     # NEWER delay notice — now arrives 8:00 PM (the LATEST truth that supersedes the itinerary).
     e2 = mail.new_id()
     mail.inbox[e2] = Email(
-        id=e2, sender="alerts@flyunited.com", to=mail.account_email,
-        subject="Delay: UA123 now arriving later",
-        body=("Update for flight UA123: due to a delay, your NEW arrival time is 8:00 PM "
+        id=e2, sender="alerts@gymair.com", to=mail.account_email,
+        subject="Delay: GA123 now arriving later",
+        body=("Update for flight GA123: due to a delay, your NEW arrival time is 8:00 PM "
               "(Fri May 22) at JFK — three hours later than scheduled. We're sorry for the "
               "inconvenience."),
         received_at=f"{SEED_DATE}T12:30:00", received_label="12:30 PM", read=False, labels=["travel"])
