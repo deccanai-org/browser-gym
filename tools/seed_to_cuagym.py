@@ -461,8 +461,11 @@ def transform_calendar(cal: dict) -> dict:
         # previous day, so Day view came up empty while Week/Month looked right.
         events.append({"id": e.get("id"), "calendarId": "c1", "title": e.get("title") or "(No Title)",
                        "start": f"{day}T{e.get('start')}:00", "end": f"{day}T{e.get('end')}:00",
-                       "allDay": False, "location": "", "description": "", "guests": [],
-                       "color": "#039BE5", "recurring": "none", "source": e.get("source") or "seed"})
+                       "allDay": bool(e.get("all_day")), "location": e.get("location") or "",
+                       "description": e.get("description") or "",
+                       "color": "#039BE5", "recurring": e.get("recurring") or "none",
+                       "reminderMinutes": e.get("reminder_minutes"),
+                       "source": e.get("source") or "seed"})
     return {"user": user, "calendars": _CAL_DEFAULTS, "otherCalendars": _CAL_OTHER, "events": events,
             # The frozen gym clock, NOT the earliest event -- deriving it from the
             # events opened 23 tasks on the wrong "today".
@@ -572,8 +575,12 @@ def transform_food(food: dict) -> dict:
                                  "serviceFee": service, "total": total}})
     active = orders[-1]["id"] if orders else None
 
+    # the checkout promo box needs real codes behind it, and the applied one
+    promos = [{"code": c, "percentOff": pct, "description": f"{int(pct * 100)}% off your order"}
+              for c, pct in (food.get("promos") or {}).items()]
     return {"user": user, "categories": list(_UBER_CATEGORIES), "restaurants": restaurants, "menuItems": menu_items,
-            "cart": cart, "orders": orders, "activeOrderId": active, "promotions": [], "reviews": [],
+            "cart": cart, "orders": orders, "activeOrderId": active,
+            "promotions": promos, "appliedPromoCode": (fc.get("promo_code") or ""), "reviews": [],
             "ui": {"selectedAddressId": _UBER_ADDR["id"], "deliveryMode": "delivery", "searchQuery": "",
                    "recentSearches": [], "activeFilters": {"sort": "", "priceRange": [], "dietary": [],
                                                            "maxDeliveryFee": None, "deals": False}},

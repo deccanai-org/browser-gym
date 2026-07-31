@@ -73,10 +73,11 @@ async def cart_add(
     restaurant_id: str = Form(...),
     dish_id: str = Form(...),
     quantity: int = Form(1),
+    note: str = Form(""),
 ):
     world = _deps["get_world"]()
     r = F.add_dish(world.food, restaurant_id=restaurant_id,
-                   dish_id=dish_id, quantity=quantity)
+                   dish_id=dish_id, quantity=quantity, note=note)
     if r.get("ok"):
         _deps["flash"](world.shop, "success", "Added to your food order.")
     elif r.get("error") == "cart_has_other_restaurant":
@@ -104,6 +105,29 @@ async def cart_remove(request: Request, dish_id: str = Form(...)):
     if not r.get("ok"):
         _deps["flash"](world.shop, "error", "Could not remove that item.")
     return RedirectResponse("/food/cart", 303)
+
+
+@router.post("/cart/promo")
+async def cart_promo(request: Request, code: str = Form("")):
+    world = _deps["get_world"]()
+    r = F.apply_promo(world.food, code)
+    if r.get("ok"):
+        if r.get("promo_code"):
+            _deps["flash"](world.shop, "success", f"Promo {r['promo_code']} applied.")
+    else:
+        _deps["flash"](world.shop, "error", r.get("error", "Could not apply that code."))
+    return RedirectResponse("/food/cart", 303)
+
+
+@router.post("/order/{order_id}/cancel")
+async def order_cancel(request: Request, order_id: str):
+    world = _deps["get_world"]()
+    r = F.cancel_order(world.food, order_id)
+    if r.get("ok"):
+        _deps["flash"](world.shop, "success", "Order cancelled.")
+    else:
+        _deps["flash"](world.shop, "error", r.get("error", "Could not cancel."))
+    return RedirectResponse("/food", 303)
 
 
 @router.post("/cart/clear")

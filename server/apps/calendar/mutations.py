@@ -19,8 +19,34 @@ def check_availability(cal: CalendarState, day: str, start: str,
             "day": day, "window": f"{start}-{end}"}
 
 
+def _details(location: str = "", description: str = "", calendar_id: str = "",
+             all_day: Any = None, recurring: str = "",
+             reminder_minutes: Any = None) -> dict[str, Any]:
+    """Normalise the optional detail fields the event form collects.
+
+    They arrive as form strings, so coerce here rather than in each caller.
+    There is deliberately no guests handling — see CalendarEvent.
+    """
+    out: dict[str, Any] = {}
+    if location:    out["location"] = location.strip()
+    if description: out["description"] = description.strip()
+    if calendar_id: out["calendar_id"] = calendar_id.strip()
+    if recurring:   out["recurring"] = recurring.strip().lower()
+    if all_day is not None and all_day != "":
+        out["all_day"] = str(all_day).strip().lower() in ("1", "true", "yes", "on")
+    if reminder_minutes not in (None, ""):
+        try:
+            out["reminder_minutes"] = int(reminder_minutes)
+        except (TypeError, ValueError):
+            pass
+    return out
+
+
 def create_event(cal: CalendarState, *, title: str, day: str,
-                 start: str, end: str, day_label: str = "") -> dict[str, Any]:
+                 start: str, end: str, day_label: str = "",
+                 location: str = "", description: str = "", calendar_id: str = "",
+                 all_day: Any = None, recurring: str = "",
+                 reminder_minutes: Any = None) -> dict[str, Any]:
     title = (title or "").strip()
     if not title:
         return {"ok": False, "error": "a title is required"}
@@ -48,12 +74,17 @@ def create_event(cal: CalendarState, *, title: str, day: str,
     cal.events[eid] = CalendarEvent(
         id=eid, title=title, day=day, day_label=day_label or day,
         start=s, end=e, source="user",
+        **_details(location, description, calendar_id, all_day, recurring,
+                   reminder_minutes),
     )
     return {"ok": True, "event_id": eid, "title": title, "day": day}
 
 
 def update_event(cal: CalendarState, event_id: str, *, start: str = "",
-                 end: str = "", title: str = "", day: str = "") -> dict[str, Any]:
+                 end: str = "", title: str = "", day: str = "",
+                 location: str = "", description: str = "", calendar_id: str = "",
+                 all_day: Any = None, recurring: str = "",
+                 reminder_minutes: Any = None) -> dict[str, Any]:
     """Move/retitle an existing event IN PLACE — the same event keeps its id.
     This is the path an agent takes to push a reminder to a new time WITHOUT
     leaving the old one behind (the M16 'don't over-keep' negative action).
@@ -75,6 +106,9 @@ def update_event(cal: CalendarState, event_id: str, *, start: str = "",
             e.day_label = day
     if title.strip():
         e.title = title.strip()
+    for k, v in _details(location, description, calendar_id, all_day, recurring,
+                         reminder_minutes).items():
+        setattr(e, k, v)
     return {"ok": True, "event_id": event_id, "day": e.day, "start": e.start, "end": e.end}
 
 

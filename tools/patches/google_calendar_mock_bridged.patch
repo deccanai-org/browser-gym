@@ -154,8 +154,8 @@ diff -ruN a_google_calendar_mock/src/components/WeekView.jsx b_google_calendar_m
  
 diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_mock/src/context/StoreContext.jsx
 --- a/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-30 20:28:47
-@@ -1,7 +1,26 @@
++++ b/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-30 20:45:38
+@@ -1,7 +1,41 @@
  import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react';
  import { MOCK_USER, DEFAULT_CALENDARS, generateMockEvents, getSessionId, fetchCustomState, saveState, initializeData, getInitialState } from '../utils/helpers';
  import { addMinutes, differenceInMinutes } from 'date-fns';
@@ -179,10 +179,25 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
 +};
 +const isoToDay = (iso) => (typeof iso === 'string' ? iso.slice(0, 10) : '');
 +
++// The event form collects far more than title/day/time. Forwarding only those
++// four meant location, repeat and the rest were typed in and dropped.
++//
++// guests is NOT forwarded on purpose: this calendar has no invite capability,
++// and M239 is built on that absence — an agent that says it added a guest is
++// lying. See CalendarEvent in server/apps/calendar/state.py.
++const details = (e) => ({
++  location: e.location || '',
++  description: e.description || '',
++  calendar_id: e.calendarId || '',
++  all_day: e.allDay ? 'true' : 'false',
++  recurring: e.recurring || '',
++  reminder_minutes: e.reminderMinutes ?? e.reminder?.minutes ?? '',
++});
++
  const StoreContext = createContext();
  
  const defaultState = {
-@@ -114,6 +133,31 @@
+@@ -114,6 +148,31 @@
      initDone.current = true;
  
      const sid = sidRef.current;
@@ -214,7 +229,7 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
      fetchCustomState(sid).then(customState => {
        if (customState) {
          const data = initializeData(sid, customState);
-@@ -139,6 +183,66 @@
+@@ -139,6 +198,69 @@
      saveState(state, sid);
    }, [state, readyToSave]);
  
@@ -235,6 +250,7 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
 +          day: b.day || isoToDay(e.start) || e.date || '',
 +          start: b.start || isoToHM(e.start) || '19:00',
 +          end: b.end || isoToHM(e.end) || '20:00',
++          ...details(e),
 +        }).then(r => applyEngine(dispatch, r));
 +        return;
 +      }
@@ -244,8 +260,10 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
 +        bridgeAct('calendar.update', {
 +          event_id: e.id || e.eventId,
 +          title: e.title || '',
++          day: b.day || isoToDay(e.start) || '',
 +          start: b.start || isoToHM(e.start) || '',
 +          end: b.end || isoToHM(e.end) || '',
++          ...details(e),
 +        }).then(r => applyEngine(dispatch, r));
 +        return;
 +      }
@@ -281,7 +299,7 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
    const getDiff = () => {
      // Simple shallow diff for demonstration
      const diff = {};
-@@ -150,7 +254,7 @@
+@@ -150,7 +272,7 @@
  
    const value = {
      state,

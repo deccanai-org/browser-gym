@@ -553,7 +553,7 @@ diff -ruN a_uber_eats_mock/src/components/Sidebar.jsx b_uber_eats_mock/src/compo
          </div>
 diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/context/AppContext.jsx
 --- a/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-30 20:23:39
++++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-30 20:37:48
 @@ -1,7 +1,10 @@
  import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
  import { getSessionId, fetchCustomState, saveState, initializeData, initialKey, generateId } from '../utils/dataManager';
@@ -609,7 +609,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
      const ik = initialKey(sid);
      const isRefresh = localStorage.getItem(ik) !== null;
  
-@@ -44,6 +79,14 @@
+@@ -44,6 +79,16 @@
    // --- Actions ---
  
    const addToCart = useCallback((menuItem, restaurant, quantity, selectedOptions, specialInstructions) => {
@@ -618,13 +618,15 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
 +        restaurant_id: (restaurant && restaurant.id) || (menuItem && (menuItem.restaurantId || menuItem.restaurant_id)) || '',
 +        dish_id: menuItem && (menuItem.id || menuItem.dishId),
 +        quantity: quantity || 1,
++        // "no onions" was collected by the item modal and thrown away
++        note: specialInstructions || '',
 +      }).then(r => applyEngine(r && r.apps && r.apps[APP]));
 +      return;
 +    }
      setState(prev => {
        if (!prev) return prev;
        const modifierTotal = selectedOptions.reduce((s, o) => s + o.priceModifier, 0);
-@@ -90,10 +133,24 @@
+@@ -90,10 +135,24 @@
      });
    }, []);
  
@@ -650,7 +652,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
        return {
          ...prev,
          cart: {
-@@ -109,8 +166,14 @@
+@@ -109,8 +168,14 @@
    const updateCartItemQuantity = useCallback((cartItemId, newQuantity) => {
      setState(prev => {
        if (!prev) return prev;
@@ -666,7 +668,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
          return {
            ...prev,
            cart: {
-@@ -126,12 +189,12 @@
+@@ -126,12 +191,12 @@
          cart: {
            ...prev.cart,
            items: prev.cart.items.map(item => {
@@ -682,7 +684,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
              };
            })
          }
-@@ -140,6 +203,13 @@
+@@ -140,6 +205,13 @@
    }, []);
  
    const clearCart = useCallback(() => {
@@ -696,7 +698,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
      setState(prev => {
        if (!prev) return prev;
        return {
-@@ -155,6 +225,17 @@
+@@ -155,6 +227,17 @@
    }, []);
  
    const placeOrder = useCallback((orderData) => {
@@ -714,7 +716,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
      const orderId = 'ord_' + Date.now().toString(36);
      setState(prev => {
        if (!prev) return prev;
-@@ -228,7 +309,7 @@
+@@ -228,7 +311,7 @@
        };
      });
      return orderId;
@@ -723,7 +725,35 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
  
    const toggleFavorite = useCallback((restaurantId) => {
      setState(prev => {
-@@ -444,7 +525,7 @@
+@@ -332,7 +415,27 @@
+     });
+   }, []);
+ 
++  const cancelOrder = useCallback((orderId) => {
++    if (bridged()) {
++      bridgeAct('food.cancel_order', { order_id: orderId })
++        .then(r => applyEngine(r && r.apps && r.apps[APP]));
++      return;
++    }
++    setState(prev => prev && ({
++      ...prev,
++      orders: (prev.orders || []).map(o =>
++        o.id === orderId ? { ...o, status: 'cancelled' } : o),
++    }));
++  }, []);
++
+   const applyPromoCode = useCallback((code) => {
++    if (bridged()) {
++      // the engine owns the code list and the discount; the box used to look
++      // codes up in state.promotions, which was always empty
++      bridgeAct('food.apply_promo', { code: code || '' })
++        .then(r => applyEngine(r && r.apps && r.apps[APP]));
++      return;
++    }
+     setState(prev => {
+       if (!prev) return prev;
+       const promo = prev.promotions.find(p => p.code && p.code.toLowerCase() === code.toLowerCase());
+@@ -444,7 +547,7 @@
        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: '#fff', fontFamily: 'var(--font-family)' }}>
          <div style={{ textAlign: 'center' }}>
            <div style={{ fontSize: '32px', fontWeight: 'bold' }}>
@@ -732,6 +762,14 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
              <span style={{ color: '#06C167' }}>Eats</span>
            </div>
            <p style={{ color: '#6B6B6B', marginTop: '12px' }}>Loading...</p>
+@@ -471,6 +574,7 @@
+       updateDefaultPayment,
+       setTip,
+       applyPromoCode,
++      cancelOrder,
+       updateOrderStatus,
+       getDebugState,
+       updateUser,
 diff -ruN a_uber_eats_mock/src/context/StoreContext.jsx b_uber_eats_mock/src/context/StoreContext.jsx
 --- a/websites/uber_eats_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/context/StoreContext.jsx	1969-12-31 16:00:00
@@ -1419,7 +1457,16 @@ diff -ruN a_uber_eats_mock/src/pages/Homepage.jsx b_uber_eats_mock/src/pages/Hom
            </div>
 diff -ruN a_uber_eats_mock/src/pages/OrderTracking.jsx b_uber_eats_mock/src/pages/OrderTracking.jsx
 --- a/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-07-30 17:35:25
++++ b/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-07-30 20:38:25
+@@ -25,7 +25,7 @@
+ 
+ export default function OrderTracking() {
+   const { orderId } = useParams();
+-  const { state, updateOrderStatus, rateOrder } = useApp();
++  const { state, updateOrderStatus, rateOrder, cancelOrder } = useApp();
+   const navigate = useNavigate();
+   const [showContactModal, setShowContactModal] = useState(false);
+   const [showHelpModal, setShowHelpModal] = useState(false);
 @@ -83,7 +83,7 @@
  
    const downloadReceipt = () => {
@@ -1429,7 +1476,35 @@ diff -ruN a_uber_eats_mock/src/pages/OrderTracking.jsx b_uber_eats_mock/src/page
        `Restaurant: ${order.restaurantName}`,
        `Placed: ${new Date(order.placedAt).toLocaleString()}`,
        '',
-@@ -321,7 +321,7 @@
+@@ -111,7 +111,26 @@
+   };
+ 
+   const handleHelpOption = (label) => {
+-    setHelpMessage(`${label}: a local support case has been drafted for this sandbox order.`);
++    // "Cancel my order" now really cancels — it used to just print a sentence,
++    // so an agent told to cancel had no way to actually do it. The rest are
++    // genuinely informational and say so rather than implying a support ticket
++    // was filed somewhere.
++    if (label === 'Cancel my order') {
++      if (order && order.status === 'delivered') {
++        setHelpMessage('This order has already been delivered, so it can no longer be cancelled.');
++        return;
++      }
++      cancelOrder(order.id);
++      setHelpMessage('Your order has been cancelled.');
++      return;
++    }
++    if (label === 'Where is my order?') {
++      setHelpMessage(order
++        ? `Your order from ${order.restaurantName || 'the restaurant'} is ${(order.status || '').replace('_', ' ')}. Estimated arrival ${order.etaLabel || 'shortly'}.`
++        : 'We could not find that order.');
++      return;
++    }
++    setHelpMessage(`${label}: this demo storefront has no support desk — nothing was filed.`);
+   };
+ 
+   return (
+@@ -321,7 +340,7 @@
                <strong>{order.deliveryPerson.name}</strong>
                <span>{order.deliveryPerson.vehicleType === 'car' ? 'Car' : 'Bicycle'} &bull; {order.deliveryPerson.rating} ★</span>
              </div>

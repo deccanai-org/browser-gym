@@ -139,7 +139,7 @@ diff -ruN a_amazon_mock/src/components/product/ProductCard.jsx b_amazon_mock/src
  
 diff -ruN a_amazon_mock/src/context/StoreContext.jsx b_amazon_mock/src/context/StoreContext.jsx
 --- a/websites/amazon_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/context/StoreContext.jsx	2026-07-30 20:21:06
++++ b/websites/amazon_mock/src/context/StoreContext.jsx	2026-07-30 20:34:53
 @@ -1,6 +1,16 @@
  import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
  import { INITIAL_DATA, getSessionId, fetchCustomState, saveState, initializeData } from '../lib/mockData';
@@ -218,7 +218,45 @@ diff -ruN a_amazon_mock/src/context/StoreContext.jsx b_amazon_mock/src/context/S
      setState(prev => ({
        ...prev,
        cart: prev.cart.map(item =>
-@@ -149,6 +192,10 @@
+@@ -100,7 +143,20 @@
+     });
+   };
+ 
++  // Save-for-later is a UI shelf, not an engine concept — the poll preserves the
++  // savedForLater slice. But the item has to actually LEAVE the engine cart, or
++  // the next re-projection puts it straight back and it appears in both places.
+   const saveForLater = (productId) => {
++    if (bridged()) {
++      const item = (state.cart || []).find(i => i.productId === productId);
++      bridgeAct('shop.remove_product', { product_id: productId })
++        .then(r => {
++          applyEngine(setState, r);
++          if (item) setState(prev => ({ ...prev,
++            savedForLater: [...(prev.savedForLater || []), item] }));
++        });
++      return;
++    }
+     setState(prev => {
+       const cartItem = prev.cart.find(item => item.productId === productId);
+       if (!cartItem) return prev;
+@@ -113,6 +169,16 @@
+   };
+ 
+   const moveToCart = (productId) => {
++    if (bridged()) {
++      const item = (state.savedForLater || []).find(i => i.productId === productId);
++      bridgeAct('shop.add_to_cart', { product_id: productId, quantity: item?.quantity || 1 })
++        .then(r => {
++          applyEngine(setState, r);
++          setState(prev => ({ ...prev,
++            savedForLater: (prev.savedForLater || []).filter(i => i.productId !== productId) }));
++        });
++      return;
++    }
+     setState(prev => {
+       const savedItem = prev.savedForLater.find(item => item.productId === productId);
+       if (!savedItem) return prev;
+@@ -149,6 +215,10 @@
      });
    };
  
@@ -229,7 +267,7 @@ diff -ruN a_amazon_mock/src/context/StoreContext.jsx b_amazon_mock/src/context/S
    const addToRecentlyViewed = (productId) => {
      setState(prev => {
        const filtered = prev.recentlyViewed.filter(id => id !== productId);
-@@ -157,6 +204,14 @@
+@@ -157,6 +227,14 @@
    };
  
    const placeOrder = (orderData) => {
@@ -244,7 +282,7 @@ diff -ruN a_amazon_mock/src/context/StoreContext.jsx b_amazon_mock/src/context/S
      const newOrder = {
        id: `ord-${Date.now()}`,
        date: new Date().toISOString(),
-@@ -204,6 +259,18 @@
+@@ -204,6 +282,18 @@
    };
  
    const addAddress = (address) => {
@@ -263,7 +301,7 @@ diff -ruN a_amazon_mock/src/context/StoreContext.jsx b_amazon_mock/src/context/S
      setState(prev => {
        const newAddr = { ...address, id: `addr-${Date.now()}` };
        const addresses = [...(prev.user.addresses || [prev.user.address]), newAddr];
-@@ -212,6 +279,11 @@
+@@ -212,6 +302,11 @@
    };
  
    const setDefaultAddress = (addressId) => {
@@ -275,7 +313,7 @@ diff -ruN a_amazon_mock/src/context/StoreContext.jsx b_amazon_mock/src/context/S
      setState(prev => {
        const addresses = (prev.user.addresses || [prev.user.address]).map(a => ({ ...a, isDefault: a.id === addressId }));
        const defaultAddr = addresses.find(a => a.isDefault) || addresses[0];
-@@ -220,6 +292,15 @@
+@@ -220,6 +315,15 @@
    };
  
    const addPaymentMethod = (pm) => {
@@ -291,7 +329,7 @@ diff -ruN a_amazon_mock/src/context/StoreContext.jsx b_amazon_mock/src/context/S
      setState(prev => {
        const newPm = { ...pm, id: `pm-${Date.now()}` };
        const paymentMethods = [...(prev.user.paymentMethods || [prev.user.paymentMethod]), newPm];
-@@ -228,6 +309,11 @@
+@@ -228,6 +332,11 @@
    };
  
    const setDefaultPaymentMethod = (pmId) => {
@@ -303,7 +341,7 @@ diff -ruN a_amazon_mock/src/context/StoreContext.jsx b_amazon_mock/src/context/S
      setState(prev => {
        const paymentMethods = (prev.user.paymentMethods || [prev.user.paymentMethod]).map(p => ({ ...p, isDefault: p.id === pmId }));
        const defaultPm = paymentMethods.find(p => p.isDefault) || paymentMethods[0];
-@@ -235,6 +321,96 @@
+@@ -235,6 +344,96 @@
      });
    };
  
@@ -400,7 +438,7 @@ diff -ruN a_amazon_mock/src/context/StoreContext.jsx b_amazon_mock/src/context/S
    // Helper to get diff for /go endpoint
    const getStateDiff = () => {
      const diff = {};
-@@ -263,6 +439,7 @@
+@@ -263,6 +462,7 @@
        removeSavedItem,
        addToRecentSearches,
        addToRecentlyViewed,
@@ -408,7 +446,7 @@ diff -ruN a_amazon_mock/src/context/StoreContext.jsx b_amazon_mock/src/context/S
        placeOrder,
        addReview,
        cancelOrder,
-@@ -272,6 +449,12 @@
+@@ -272,6 +472,12 @@
        setDefaultAddress,
        addPaymentMethod,
        setDefaultPaymentMethod,

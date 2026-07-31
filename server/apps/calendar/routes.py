@@ -60,12 +60,21 @@ async def create(
     day: str = Form(""),
     start: str = Form("19:00"),
     end: str = Form("20:00"),
+    location: str = Form(""),
+    description: str = Form(""),
+    calendar_id: str = Form(""),
+    all_day: str = Form(""),
+    recurring: str = Form(""),
+    reminder_minutes: str = Form(""),
 ):
     world = _deps["get_world"]()
     day_label = ("Tomorrow (Fri May 22)" if day == TOMORROW
                  else ("Today (Thu May 21)" if day == TODAY else day))
     r = C.create_event(world.calendar, title=title, day=day,
-                       start=start, end=end, day_label=day_label)
+                       start=start, end=end, day_label=day_label,
+                       location=location, description=description,
+                       calendar_id=calendar_id, all_day=all_day,
+                       recurring=recurring, reminder_minutes=reminder_minutes)
     if r.get("ok"):
         _deps["flash"](world.shop, "success",
                        f"Added '{r['title']}' to your calendar.")
@@ -95,10 +104,17 @@ async def update(
     start: str = Form(""),
     end: str = Form(""),
     day: str = Form(""),
+    location: str = Form(""),
+    description: str = Form(""),
+    calendar_id: str = Form(""),
+    all_day: str = Form(""),
+    recurring: str = Form(""),
+    reminder_minutes: str = Form(""),
 ):
     world = _deps["get_world"]()
     r = C.update_event(world.calendar, event_id, start=start, end=end,
-                       title=title, day=day)
+                       title=title, day=day, location=location, description=description, calendar_id=calendar_id,
+                       all_day=all_day, recurring=recurring, reminder_minutes=reminder_minutes)
     if r.get("ok"):
         _deps["flash"](world.shop, "success", "Updated your calendar event.")
         return RedirectResponse("/calendar", 303)

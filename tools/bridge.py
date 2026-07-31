@@ -107,14 +107,18 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "market.remove_coupon":  ("POST", "/market/remove-coupon", ()),
     "market.checkout":       ("POST", "/market/checkout",    ()),
     # food (Uber Eats)
-    "food.add_to_cart":      ("POST", "/food/cart/add",      ("restaurant_id", "dish_id", "quantity")),
+    "food.add_to_cart":      ("POST", "/food/cart/add",      ("restaurant_id", "dish_id", "quantity", "note")),
     "food.set_qty":          ("POST", "/food/cart/set_qty",  ("dish_id", "quantity")),
     "food.remove_item":      ("POST", "/food/cart/remove",   ("dish_id",)),
+    "food.apply_promo":      ("POST", "/food/cart/promo",    ("code",)),
+    "food.cancel_order":     ("POST", "/food/order/{order_id}/cancel", ()),
     "food.clear_cart":       ("POST", "/food/cart/clear",    ()),
     "food.checkout":         ("POST", "/food/checkout",      ("delivery_note",)),
     # calendar (Google Calendar)
-    "calendar.create":       ("POST", "/calendar/create",    ("title", "day", "start", "end")),
-    "calendar.update":       ("POST", "/calendar/update",    ("event_id", "title", "start", "end", "day")),
+    "calendar.create":       ("POST", "/calendar/create",
+                          ("title", "day", "start", "end", "location", "description", "calendar_id", "all_day", "recurring", "reminder_minutes")),
+    "calendar.update":       ("POST", "/calendar/update",
+                          ("event_id", "title", "start", "end", "day", "location", "description", "calendar_id", "all_day", "recurring", "reminder_minutes")),
     "calendar.delete":       ("POST", "/calendar/delete",    ("event_id",)),
 }
 

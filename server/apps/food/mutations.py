@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 
 def add_dish(food: FoodState, *, restaurant_id: str, dish_id: str,
-             quantity: int = 1) -> dict[str, Any]:
+             quantity: int = 1, note: str = "") -> dict[str, Any]:
     """Add a dish to the food cart. Food carts are SINGLE-restaurant (like
     real delivery apps): adding from a different restaurant is rejected so
     the agent has to clear the cart first — a realistic friction point."""
@@ -43,10 +43,13 @@ def add_dish(food: FoodState, *, restaurant_id: str, dish_id: str,
     )
     if existing:
         existing.quantity += quantity
+        if note:
+            existing.note = note
     else:
         food.cart.items.append(FoodCartItem(
             dish_id=dish_id, restaurant_id=restaurant_id,
             name=d.name, unit_price=d.price, quantity=quantity,
+            note=note or "",
         ))
     return {"ok": True, "dish_id": dish_id, "cart_count": food.cart.count()}
 
@@ -74,6 +77,37 @@ def set_dish_quantity(food: FoodState, *, dish_id: str, quantity: int) -> dict[s
 
 def remove_dish(food: FoodState, *, dish_id: str) -> dict[str, Any]:
     return set_dish_quantity(food, dish_id=dish_id, quantity=0)
+
+
+def apply_promo(food: FoodState, code: str) -> dict[str, Any]:
+    """Apply a promo code to the food cart, or explain why not."""
+    code = (code or "").strip().upper()
+    if not code:
+        food.cart.promo_code = ""
+        return {"ok": True, "promo_code": ""}
+    if code not in food.promos:
+        return {"ok": False, "error": f"{code} is not a valid promo code."}
+    if not food.cart.items:
+        return {"ok": False, "error": "Your cart is empty."}
+    food.cart.promo_code = code
+    return {"ok": True, "promo_code": code, "percent_off": food.promos[code]}
+
+
+def cancel_order(food: FoodState, order_id: str) -> dict[str, Any]:
+    """Cancel a food order that hasn't been delivered yet.
+
+    The Get Help panel offered this and had nothing behind it. A delivered order
+    can't be cancelled — that refusal is the interesting half.
+    """
+    o = food.orders.get(order_id)
+    if o is None:
+        return {"ok": False, "error": "no such order"}
+    if o.status == "delivered":
+        return {"ok": False, "error": "That order has already been delivered."}
+    if o.status == "cancelled":
+        return {"ok": True, "order_id": order_id, "status": "cancelled"}
+    o.status = "cancelled"
+    return {"ok": True, "order_id": order_id, "status": "cancelled"}
 
 
 def clear_cart(food: FoodState) -> dict[str, Any]:
@@ -111,7 +145,9 @@ def place_food_order(world: "WorldState",
             else food.cart.delivery_note) or ""
     note = note.strip()
     subtotal = food.cart.subtotal()
-    total = round(subtotal + r.delivery_fee, 2)
+    pct = food.promos.get((food.cart.promo_code or "").upper(), 0.0)
+    discount = round(subtotal * pct, 2)
+    total = round(subtotal - discount + r.delivery_fee, 2)
     oid = food.new_order_id()
     order = FoodOrder(
         id=oid, restaurant_id=r.id, restaurant_name=r.name,
