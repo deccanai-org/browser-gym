@@ -30,6 +30,8 @@ import hashlib
 import json
 import os
 import pathlib
+
+from tools import ambient_catalog as _amb
 import re
 import sys
 import uuid
@@ -159,6 +161,8 @@ def transform_mail(mail: dict) -> dict:
                 "folder": e.get("folder") or folder,
                 "attachments": [],
             })
+    # browse-only filler so Sent/Drafts/Snoozed and the category tabs aren't empty
+    emails = emails + _amb.build_mail(lambda d: f"2026-05-{d:02d}T12:00:00")
     return {
         "user": {"userId": "u1", "username": name, "email": account, "avatar": None},
         "emails": emails,
@@ -421,6 +425,7 @@ def transform_shop(shop: dict) -> dict:
             if 0 < frac < 1:
                 prod["originalPrice"] = round(prod["price"] / (1 - frac), 2)
 
+    products = products + _amb.build_shop()   # browse-only filler (projection-only)
     return {"products": products, "user": user, "cart": cart,
             # recentlyViewed/recentSearches are the mock's only native engagement
             # signal (ProductDetail + Header write them as the agent browses), so
@@ -487,7 +492,9 @@ def transform_market(m: dict) -> dict:
                        "items": pids, "listingId": pids[0] if pids else None,
                        "amount": o.get("total"), "total": o.get("total"),
                        "status": "completed", "created": end_ms, "date": end_ms})
-    return {"currentUser": buyer, "users": [buyer, seller], "listings": listings, "orders": orders,
+    amb_listings, amb_sellers = _amb.build_market(_svg_tile)   # browse-only filler
+    listings = listings + amb_listings
+    return {"currentUser": buyer, "users": [buyer, seller] + amb_sellers, "listings": listings, "orders": orders,
             "messages": [], "notifications": [], "feedbacks": [], "cart": cart,
             # eBay has no coupon UI -> preserved (not dropped), plus the priced cart detail.
             "_gym_coupons": list((m.get("coupons") or {}).values()),
