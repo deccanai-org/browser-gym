@@ -1,7 +1,26 @@
-diff --git a/websites/google_calendar_mock/index.html b/websites/google_calendar_mock/index.html
-index 8e88873..41e1f66 100644
---- a/websites/google_calendar_mock/index.html
-+++ b/websites/google_calendar_mock/index.html
+diff -ruN a_google_calendar_mock/index.css b_google_calendar_mock/index.css
+--- a/websites/google_calendar_mock/index.css	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/index.css	2026-07-30 17:43:50
+@@ -1,4 +1,6 @@
+-@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap');
++/* No webfont import: the only external request this app made, it leaked a real
++   brand name and, on a network that can't reach the CDN, left the page pending
++   forever so `networkidle` never fired. System stack instead. */
+ 
+ @tailwind base;
+ @tailwind components;
+@@ -7,7 +9,7 @@
+ html, body, #root {
+   height: 100%;
+   overflow: hidden;
+-  font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
++  font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+   color: #3C4043;
+   font-size: 14px;
+ }
+diff -ruN a_google_calendar_mock/index.html b_google_calendar_mock/index.html
+--- a/websites/google_calendar_mock/index.html	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/index.html	2026-07-30 17:35:14
 @@ -4,7 +4,7 @@
      <meta charset="UTF-8" />
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -11,11 +30,10 @@ index 8e88873..41e1f66 100644
    </head>
    <body>
      <div id="root"></div>
-diff --git a/websites/google_calendar_mock/src/components/EventModal.jsx b/websites/google_calendar_mock/src/components/EventModal.jsx
-index 7fff9e8..52ebefc 100644
---- a/websites/google_calendar_mock/src/components/EventModal.jsx
-+++ b/websites/google_calendar_mock/src/components/EventModal.jsx
-@@ -108,10 +108,21 @@ export default function EventModal({ isOpen, onClose, event, selectedDate }) {
+diff -ruN a_google_calendar_mock/src/components/EventModal.jsx b_google_calendar_mock/src/components/EventModal.jsx
+--- a/websites/google_calendar_mock/src/components/EventModal.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/EventModal.jsx	2026-07-30 17:35:14
+@@ -108,10 +108,21 @@
        end: new Date(formData.end).toISOString()
      };
  
@@ -39,7 +57,7 @@ index 7fff9e8..52ebefc 100644
      }
      onClose();
    };
-@@ -137,7 +148,12 @@ export default function EventModal({ isOpen, onClose, event, selectedDate }) {
+@@ -137,7 +148,12 @@
          end: new Date(formData.end).toISOString(),
          guests: formData.guests,
        };
@@ -53,11 +71,10 @@ index 7fff9e8..52ebefc 100644
        onClose();
      }
    };
-diff --git a/websites/google_calendar_mock/src/components/EventPopover.jsx b/websites/google_calendar_mock/src/components/EventPopover.jsx
-index 554c62c..551c2b3 100644
---- a/websites/google_calendar_mock/src/components/EventPopover.jsx
-+++ b/websites/google_calendar_mock/src/components/EventPopover.jsx
-@@ -135,7 +135,7 @@ export default function EventPopover({ event, position, onClose, onEdit, onDelet
+diff -ruN a_google_calendar_mock/src/components/EventPopover.jsx b_google_calendar_mock/src/components/EventPopover.jsx
+--- a/websites/google_calendar_mock/src/components/EventPopover.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/EventPopover.jsx	2026-07-30 17:35:14
+@@ -135,7 +135,7 @@
                onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
                onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
              >
@@ -66,11 +83,10 @@ index 554c62c..551c2b3 100644
              </a>
            </div>
          )}
-diff --git a/websites/google_calendar_mock/src/components/Header.jsx b/websites/google_calendar_mock/src/components/Header.jsx
-index 49a8751..8116d08 100644
---- a/websites/google_calendar_mock/src/components/Header.jsx
-+++ b/websites/google_calendar_mock/src/components/Header.jsx
-@@ -165,7 +165,7 @@ export default function Header({ onSearch }) {
+diff -ruN a_google_calendar_mock/src/components/Header.jsx b_google_calendar_mock/src/components/Header.jsx
+--- a/websites/google_calendar_mock/src/components/Header.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/Header.jsx	2026-07-30 17:35:14
+@@ -165,7 +165,7 @@
            <div className="w-8 h-8 bg-primary rounded text-white flex items-center justify-center font-bold text-lg">
              31
            </div>
@@ -79,11 +95,10 @@ index 49a8751..8116d08 100644
          </div>
        </div>
  
-diff --git a/websites/google_calendar_mock/src/components/SettingsModal.jsx b/websites/google_calendar_mock/src/components/SettingsModal.jsx
-index c0aed38..5c16a4d 100644
---- a/websites/google_calendar_mock/src/components/SettingsModal.jsx
-+++ b/websites/google_calendar_mock/src/components/SettingsModal.jsx
-@@ -36,7 +36,7 @@ export default function SettingsModal({ isOpen, onClose }) {
+diff -ruN a_google_calendar_mock/src/components/SettingsModal.jsx b_google_calendar_mock/src/components/SettingsModal.jsx
+--- a/websites/google_calendar_mock/src/components/SettingsModal.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/SettingsModal.jsx	2026-07-30 17:35:14
+@@ -36,7 +36,7 @@
      const lines = [
        'BEGIN:VCALENDAR',
        'VERSION:2.0',
@@ -92,16 +107,15 @@ index c0aed38..5c16a4d 100644
        'CALSCALE:GREGORIAN',
        ...state.events.flatMap(event => [
          'BEGIN:VEVENT',
-diff --git a/websites/google_calendar_mock/src/context/StoreContext.jsx b/websites/google_calendar_mock/src/context/StoreContext.jsx
-index 7343fdd..5008080 100644
---- a/websites/google_calendar_mock/src/context/StoreContext.jsx
-+++ b/websites/google_calendar_mock/src/context/StoreContext.jsx
-@@ -1,6 +1,25 @@
+diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_mock/src/context/StoreContext.jsx
+--- a/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-30 17:35:14
+@@ -1,7 +1,26 @@
  import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react';
  import { MOCK_USER, DEFAULT_CALENDARS, generateMockEvents, getSessionId, fetchCustomState, saveState, initializeData, getInitialState } from '../utils/helpers';
  import { addMinutes, differenceInMinutes } from 'date-fns';
 +import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
-+
+ 
 +const APP = 'calendar'; // bridge engine app key for this mock
 +// In bridged mode: run the gym action, then adopt the engine's authoritative
 +// per-app state (already in this mock's shape) via the existing LOAD_STATE case.
@@ -119,10 +133,11 @@ index 7343fdd..5008080 100644
 +  try { return new Date(iso).toTimeString().slice(0, 5); } catch (_) { return iso.slice(11, 16); }
 +};
 +const isoToDay = (iso) => (typeof iso === 'string' ? iso.slice(0, 10) : '');
- 
++
  const StoreContext = createContext();
  
-@@ -114,6 +133,23 @@ export const StoreProvider = ({ children }) => {
+ const defaultState = {
+@@ -114,6 +133,23 @@
      initDone.current = true;
  
      const sid = sidRef.current;
@@ -146,7 +161,7 @@ index 7343fdd..5008080 100644
      fetchCustomState(sid).then(customState => {
        if (customState) {
          const data = initializeData(sid, customState);
-@@ -139,6 +175,46 @@ export const StoreProvider = ({ children }) => {
+@@ -139,6 +175,46 @@
      saveState(state, sid);
    }, [state, readyToSave]);
  
@@ -193,7 +208,7 @@ index 7343fdd..5008080 100644
    const getDiff = () => {
      // Simple shallow diff for demonstration
      const diff = {};
-@@ -150,7 +226,7 @@ export const StoreProvider = ({ children }) => {
+@@ -150,7 +226,7 @@
  
    const value = {
      state,
@@ -202,11 +217,9 @@ index 7343fdd..5008080 100644
      originalState,
      getDiff
    };
-diff --git a/websites/google_calendar_mock/src/lib/bridge.js b/websites/google_calendar_mock/src/lib/bridge.js
-new file mode 100644
-index 0000000..592181e
---- /dev/null
-+++ b/websites/google_calendar_mock/src/lib/bridge.js
+diff -ruN a_google_calendar_mock/src/lib/bridge.js b_google_calendar_mock/src/lib/bridge.js
+--- a/websites/google_calendar_mock/src/lib/bridge.js	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/src/lib/bridge.js	2026-07-30 17:35:14
 @@ -0,0 +1,45 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,

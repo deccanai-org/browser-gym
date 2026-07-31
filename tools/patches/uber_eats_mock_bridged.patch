@@ -1,7 +1,6 @@
-diff --git a/websites/uber_eats_mock/index.html b/websites/uber_eats_mock/index.html
-index 68ecede..1e863cb 100644
---- a/websites/uber_eats_mock/index.html
-+++ b/websites/uber_eats_mock/index.html
+diff -ruN a_uber_eats_mock/index.html b_uber_eats_mock/index.html
+--- a/websites/uber_eats_mock/index.html	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/index.html	2026-07-30 17:35:25
 @@ -4,7 +4,7 @@
      <meta charset="UTF-8" />
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -11,129 +10,10 @@ index 68ecede..1e863cb 100644
    </head>
    <body>
      <div id="root"></div>
-diff --git a/websites/uber_eats_mock/src/App.jsx b/websites/uber_eats_mock/src/App.jsx
-index 677f6ad..10b350b 100644
---- a/websites/uber_eats_mock/src/App.jsx
-+++ b/websites/uber_eats_mock/src/App.jsx
-@@ -1,57 +1,58 @@
-+import React, { useState } from 'react';
-+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-+import { AppProvider } from './context/AppContext';
-+import Header from './components/Header';
-+import Sidebar from './components/Sidebar';
-+import CartPanel from './components/CartPanel';
-+import Homepage from './pages/Homepage';
-+import StorePage from './pages/StorePage';
-+import SearchPage from './pages/SearchPage';
-+import Favorites from './pages/Favorites';
-+import Account from './pages/Account';
-+import OrderTracking from './pages/OrderTracking';
-+import CheckoutPage from './pages/CheckoutPage';
-+import Go from './pages/Go';
- 
--    import React, { useState } from 'react';
--    import { BrowserRouter, Routes, Route, Navigate, useLocation, useSearchParams } from 'react-router-dom';
--    import { StoreProvider } from './context/StoreContext';
--    import Navbar from './components/Navbar';
--    import CartDrawer from './components/CartDrawer';
--    import CartSwitchDialog from './components/CartSwitchDialog';
--    import Home from './pages/Home';
--    import RestaurantDetails from './pages/RestaurantDetails';
--    import Checkout from './pages/Checkout';
--    import Orders from './pages/Orders';
--    import GoEndpoint from './pages/GoEndpoint';
-+// This mock shipped with two parallel implementations: a StoreContext app that was
-+// mounted but cross-wired (its Home rendered an AppContext RestaurantCard, which
-+// crashed because AppProvider was never mounted), and this richer AppContext app
-+// that was never mounted. We commit to the AppContext ("System B") app — it has the
-+// full component set (Header/Sidebar/CartPanel/RestaurantCard/FilterBar) and pages,
-+// and its data shape matches the seed transform. CheckoutPage fills the one missing page.
-+function Layout({ children }) {
-+  const [sidebarOpen, setSidebarOpen] = useState(false);
-+  const [cartOpen, setCartOpen] = useState(false);
-+  const location = useLocation();
-+  if (location.pathname === '/go') return children;
-+  return (
-+    <div className="min-h-screen" style={{ background: '#fff' }}>
-+      <Header onCartClick={() => setCartOpen(true)} onMenuClick={() => setSidebarOpen(true)} />
-+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-+      <CartPanel isOpen={cartOpen} onClose={() => setCartOpen(false)} />
-+      <main>{children}</main>
-+    </div>
-+  );
-+}
- 
--    function RedirectWithQuery({ to }) {
--      const [searchParams] = useSearchParams();
--      const query = searchParams.toString();
--      return <Navigate to={query ? `${to}?${query}` : to} replace />;
--    }
--
--    function Layout({ children }) {
--      const [isCartOpen, setIsCartOpen] = useState(false);
--      const location = useLocation();
--
--      // Don't show layout on /go
--      if (location.pathname === '/go') {
--        return children;
--      }
--
--      return (
--        <div className="min-h-screen bg-white">
--          <Navbar toggleCart={() => setIsCartOpen(true)} />
--          <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
--          <CartSwitchDialog />
--          <main>
--            {children}
--          </main>
--        </div>
--      );
--    }
--
--    export default function App() {
--      return (
--        <StoreProvider>
--          <BrowserRouter>
--            <Layout>
--              <Routes>
--                <Route path="/" element={<Home />} />
--                <Route path="/restaurant/:id" element={<RestaurantDetails />} />
--                <Route path="/checkout" element={<Checkout />} />
--                <Route path="/orders" element={<Orders />} />
--                <Route path="/go" element={<GoEndpoint />} />
--              </Routes>
--            </Layout>
--          </BrowserRouter>
--        </StoreProvider>
--      );
--    }
-+export default function App() {
-+  return (
-+    <AppProvider>
-+      <BrowserRouter>
-+        <Layout>
-+          <Routes>
-+            <Route path="/" element={<Homepage />} />
-+            <Route path="/store/:id" element={<StorePage />} />
-+            <Route path="/search" element={<SearchPage />} />
-+            <Route path="/favorites" element={<Favorites />} />
-+            <Route path="/account" element={<Account />} />
-+            <Route path="/checkout" element={<CheckoutPage />} />
-+            <Route path="/orders" element={<OrderTracking />} />
-+            <Route path="/orders/:orderId" element={<OrderTracking />} />
-+            <Route path="/go" element={<Go />} />
-+            <Route path="*" element={<Navigate to="/" replace />} />
-+          </Routes>
-+        </Layout>
-+      </BrowserRouter>
-+    </AppProvider>
-+  );
-+}
-diff --git a/websites/uber_eats_mock/src/components/Footer.jsx b/websites/uber_eats_mock/src/components/Footer.jsx
-index a633a00..2b95eda 100644
---- a/websites/uber_eats_mock/src/components/Footer.jsx
-+++ b/websites/uber_eats_mock/src/components/Footer.jsx
-@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
+diff -ruN a_uber_eats_mock/src/components/Footer.jsx b_uber_eats_mock/src/components/Footer.jsx
+--- a/websites/uber_eats_mock/src/components/Footer.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/Footer.jsx	2026-07-30 17:35:25
+@@ -3,7 +3,7 @@
  import './Footer.css';
  
  const FOOTER_CONTENT = {
@@ -142,7 +22,7 @@ index a633a00..2b95eda 100644
    gift: { title: 'Gift cards', body: 'Sandbox gift cards can be added at checkout with promo code SAVE5. No external purchase is required.' },
    restaurant: { title: 'Add your restaurant', body: 'Restaurant onboarding is simulated locally. Your draft is saved in this browser session for training tasks.' },
    deliver: { title: 'Sign up to deliver', body: 'Delivery partner signup opens a local information flow in this sandbox and never contacts external services.' },
-@@ -11,9 +11,9 @@ const FOOTER_CONTENT = {
+@@ -11,9 +11,9 @@
    cities: { title: 'Cities', body: 'This sandbox currently serves San Francisco neighborhoods with stable local fixtures.' },
    countries: { title: 'Countries', body: 'Country selection is fixed to the United States so prices, addresses, and taxes remain deterministic.' },
    pickup: { title: 'Pickup near me', body: 'Use the Delivery/Pickup toggle in the header to switch the catalog and cart to pickup mode.' },
@@ -154,7 +34,7 @@ index a633a00..2b95eda 100644
    privacy: { title: 'Privacy Policy', body: 'Sandbox data stays local to this mock server and browser storage for the active session id.' },
    terms: { title: 'Terms', body: 'Training actions are local and deterministic. No real orders, payments, or external accounts are created.' },
    pricing: { title: 'Pricing', body: 'Menu prices, fees, tax, tips, and promotions are calculated locally from fixture data.' },
-@@ -28,8 +28,8 @@ export default function Footer() {
+@@ -28,8 +28,8 @@
        <div className="ue-footer__inner">
          <div className="ue-footer__brand">
            <div className="ue-footer__logo">
@@ -165,7 +45,7 @@ index a633a00..2b95eda 100644
            </div>
          </div>
  
-@@ -47,7 +47,7 @@ export default function Footer() {
+@@ -47,7 +47,7 @@
              <button className="ue-footer__link" onClick={() => setModalKey('pickup')}>Pickup near me</button>
            </div>
            <div className="ue-footer__col">
@@ -174,7 +54,7 @@ index a633a00..2b95eda 100644
              <Link to="/" className="ue-footer__link">English</Link>
            </div>
          </div>
-@@ -65,13 +65,13 @@ export default function Footer() {
+@@ -65,13 +65,13 @@
                <span className="ue-footer__store-icon">&#9654;</span>
                <div>
                  <span className="ue-footer__store-sub">Get it on</span>
@@ -190,11 +70,10 @@ index a633a00..2b95eda 100644
              <span className="ue-footer__dot">&bull;</span>
              <button className="ue-footer__legal-link" onClick={() => setModalKey('privacy')}>Privacy Policy</button>
              <span className="ue-footer__dot">&bull;</span>
-diff --git a/websites/uber_eats_mock/src/components/Header.jsx b/websites/uber_eats_mock/src/components/Header.jsx
-index 2af0022..31d0fb8 100644
---- a/websites/uber_eats_mock/src/components/Header.jsx
-+++ b/websites/uber_eats_mock/src/components/Header.jsx
-@@ -69,8 +69,8 @@ export default function Header({ onCartClick, onMenuClick }) {
+diff -ruN a_uber_eats_mock/src/components/Header.jsx b_uber_eats_mock/src/components/Header.jsx
+--- a/websites/uber_eats_mock/src/components/Header.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/Header.jsx	2026-07-30 17:35:25
+@@ -69,8 +69,8 @@
  
          {/* Logo */}
          <Link to="/" className="ue-header__logo">
@@ -205,7 +84,7 @@ index 2af0022..31d0fb8 100644
          </Link>
  
          {/* Delivery/Pickup Toggle */}
-@@ -194,7 +194,7 @@ export default function Header({ onCartClick, onMenuClick }) {
+@@ -194,7 +194,7 @@
            <Search size={18} className="ue-header__search-icon" />
            <input
              type="text"
@@ -214,41 +93,9 @@ index 2af0022..31d0fb8 100644
              className="ue-header__search-input"
              value={searchValue}
              onChange={(e) => setSearchValue(e.target.value)}
-diff --git a/websites/uber_eats_mock/src/components/ItemModal.jsx b/websites/uber_eats_mock/src/components/ItemModal.jsx
-index 0a0f06d..f6095c2 100644
---- a/websites/uber_eats_mock/src/components/ItemModal.jsx
-+++ b/websites/uber_eats_mock/src/components/ItemModal.jsx
-@@ -52,7 +52,7 @@
- 
-       const handleSubmit = () => {
-         // Validation: Check required modifiers
--        const missingRequired = item.modifiers.filter(m => m.required && !modifiers[m.id]);
-+        const missingRequired = (item.modifiers || []).filter(m => m.required && !modifiers[m.id]);
-         if (missingRequired.length > 0) {
-           setValidationMessage(`Please select: ${missingRequired.map(m => m.name).join(', ')}`);
-           return;
-@@ -82,7 +82,7 @@
-               
-               {/* Modifiers */}
-               <div className="space-y-8">
--                {item.modifiers.map(mod => (
-+                {(item.modifiers || []).map(mod => (
-                   <div key={mod.id} className="border-b border-gray-100 pb-6 last:border-0">
-                     <div className="flex justify-between mb-4">
-                       <h3 className="font-bold text-lg">{mod.name}</h3>
-@@ -90,7 +90,7 @@
-                     </div>
-                     
-                     <div className="space-y-3">
--                      {mod.options.map((opt, idx) => (
-+                      {(mod.options || []).map((opt, idx) => (
-                         <label key={idx} className="flex items-center justify-between cursor-pointer group">
-                           <div className="flex items-center gap-3">
-                             <input 
-diff --git a/websites/uber_eats_mock/src/components/Navbar.jsx b/websites/uber_eats_mock/src/components/Navbar.jsx
-index ebb0c36..117078f 100644
---- a/websites/uber_eats_mock/src/components/Navbar.jsx
-+++ b/websites/uber_eats_mock/src/components/Navbar.jsx
+diff -ruN a_uber_eats_mock/src/components/Navbar.jsx b_uber_eats_mock/src/components/Navbar.jsx
+--- a/websites/uber_eats_mock/src/components/Navbar.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/Navbar.jsx	2026-07-30 17:35:25
 @@ -31,7 +31,7 @@
                  <Menu className="w-6 h-6" />
                </button>
@@ -267,11 +114,10 @@ index ebb0c36..117078f 100644
                    <button onClick={() => setIsMenuOpen(false)} className="rounded-full p-2 hover:bg-gray-100" aria-label="Close navigation menu">
                      <X className="h-5 w-5" />
                    </button>
-diff --git a/websites/uber_eats_mock/src/components/Sidebar.jsx b/websites/uber_eats_mock/src/components/Sidebar.jsx
-index 9a7815b..11aa509 100644
---- a/websites/uber_eats_mock/src/components/Sidebar.jsx
-+++ b/websites/uber_eats_mock/src/components/Sidebar.jsx
-@@ -71,14 +71,14 @@ export default function Sidebar({ isOpen, onClose }) {
+diff -ruN a_uber_eats_mock/src/components/Sidebar.jsx b_uber_eats_mock/src/components/Sidebar.jsx
+--- a/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-07-30 17:35:25
+@@ -71,14 +71,14 @@
            </button>
          </div>
  
@@ -289,7 +135,7 @@ index 9a7815b..11aa509 100644
                <span className="sidebar__uber-one-trial">Try free for 4 weeks</span>
              </div>
            </div>
-@@ -102,13 +102,13 @@ export default function Sidebar({ isOpen, onClose }) {
+@@ -102,13 +102,13 @@
            <div className="sidebar__bottom-divider" />
            <button className="sidebar__bottom-link" onClick={() => openLocalDialog('Business account draft', 'Business account setup is represented locally. Company orders and billing stay inside this browser session.')}>Create a business account</button>
            <button className="sidebar__bottom-link" onClick={() => openLocalDialog('Restaurant onboarding', 'Restaurant signup is simulated locally with no external submission.')}>Add your restaurant</button>
@@ -305,21 +151,21 @@ index 9a7815b..11aa509 100644
            </div>
            <span className="sidebar__app-text">There's more to love in the app.</span>
          </div>
-diff --git a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_eats_mock/src/context/AppContext.jsx
-index 81ca688..a2a71a4 100644
---- a/websites/uber_eats_mock/src/context/AppContext.jsx
-+++ b/websites/uber_eats_mock/src/context/AppContext.jsx
-@@ -1,6 +1,9 @@
+diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/context/AppContext.jsx
+--- a/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-30 17:35:25
+@@ -1,7 +1,10 @@
  import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
  import { getSessionId, fetchCustomState, saveState, initializeData, initialKey, generateId } from '../utils/dataManager';
  import { computeStateDiff } from '../utils/stateTracker';
 +import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
-+
-+const APP = 'food'; // bridge engine app key for this mock
  
++const APP = 'food'; // bridge engine app key for this mock
++
  const AppContext = createContext(null);
  
-@@ -11,11 +14,36 @@ export function AppProvider({ children }) {
+ export function AppProvider({ children }) {
+@@ -11,11 +14,36 @@
    const sidRef = useRef(getSessionId());
    const initDone = useRef(false);
  
@@ -356,7 +202,7 @@ index 81ca688..a2a71a4 100644
      const ik = initialKey(sid);
      const isRefresh = localStorage.getItem(ik) !== null;
  
-@@ -44,6 +72,14 @@ export function AppProvider({ children }) {
+@@ -44,6 +72,14 @@
    // --- Actions ---
  
    const addToCart = useCallback((menuItem, restaurant, quantity, selectedOptions, specialInstructions) => {
@@ -371,7 +217,7 @@ index 81ca688..a2a71a4 100644
      setState(prev => {
        if (!prev) return prev;
        const modifierTotal = selectedOptions.reduce((s, o) => s + o.priceModifier, 0);
-@@ -155,6 +191,17 @@ export function AppProvider({ children }) {
+@@ -155,6 +191,17 @@
    }, []);
  
    const placeOrder = useCallback((orderData) => {
@@ -389,7 +235,7 @@ index 81ca688..a2a71a4 100644
      const orderId = 'ord_' + Date.now().toString(36);
      setState(prev => {
        if (!prev) return prev;
-@@ -228,7 +275,7 @@ export function AppProvider({ children }) {
+@@ -228,7 +275,7 @@
        };
      });
      return orderId;
@@ -398,7 +244,7 @@ index 81ca688..a2a71a4 100644
  
    const toggleFavorite = useCallback((restaurantId) => {
      setState(prev => {
-@@ -444,7 +491,7 @@ export function AppProvider({ children }) {
+@@ -444,7 +491,7 @@
        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: '#fff', fontFamily: 'var(--font-family)' }}>
          <div style={{ textAlign: 'center' }}>
            <div style={{ fontSize: '32px', fontWeight: 'bold' }}>
@@ -407,16 +253,15 @@ index 81ca688..a2a71a4 100644
              <span style={{ color: '#06C167' }}>Eats</span>
            </div>
            <p style={{ color: '#6B6B6B', marginTop: '12px' }}>Loading...</p>
-diff --git a/websites/uber_eats_mock/src/context/StoreContext.jsx b/websites/uber_eats_mock/src/context/StoreContext.jsx
-index 76c6084..3ba2bfe 100644
---- a/websites/uber_eats_mock/src/context/StoreContext.jsx
-+++ b/websites/uber_eats_mock/src/context/StoreContext.jsx
-@@ -2,6 +2,16 @@
+diff -ruN a_uber_eats_mock/src/context/StoreContext.jsx b_uber_eats_mock/src/context/StoreContext.jsx
+--- a/websites/uber_eats_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/context/StoreContext.jsx	2026-07-30 17:35:25
+@@ -2,7 +2,17 @@
      import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
      import { generateInitialState, getSessionId, fetchCustomState, saveState, initializeData } from '../lib/mockData';
      import { generateId } from '../lib/utils';
 +    import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
-+
+ 
 +    const APP = 'food'; // bridge engine app key for this mock
 +    // In bridged mode: run the gym action, then adopt the engine's authoritative
 +    // per-app state (already in this mock's shape). Guard against a null store.
@@ -425,9 +270,10 @@ index 76c6084..3ba2bfe 100644
 +      // state matches the seeded shape — same path normal seeding uses.
 +      if (r && r.apps && r.apps[APP]) setState(prev => ({ ...(prev || {}), ...initializeData(null, r.apps[APP]) }));
 +    };
- 
++
      const StoreContext = createContext();
  
+     const BASE_INITIAL_KEY = 'food_delivery_initialState';
 @@ -22,6 +32,16 @@
  
          const sid = sidRef.current;
@@ -476,11 +322,9 @@ index 76c6084..3ba2bfe 100644
          const orderId = generateId();
          const newOrder = {
            id: orderId,
-diff --git a/websites/uber_eats_mock/src/lib/bridge.js b/websites/uber_eats_mock/src/lib/bridge.js
-new file mode 100644
-index 0000000..592181e
---- /dev/null
-+++ b/websites/uber_eats_mock/src/lib/bridge.js
+diff -ruN a_uber_eats_mock/src/lib/bridge.js b_uber_eats_mock/src/lib/bridge.js
+--- a/websites/uber_eats_mock/src/lib/bridge.js	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/src/lib/bridge.js	2026-07-30 17:35:25
 @@ -0,0 +1,45 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
@@ -527,11 +371,10 @@ index 0000000..592181e
 +  setTimeout(tick, ms);
 +  return () => { live = false; };
 +}
-diff --git a/websites/uber_eats_mock/src/pages/Account.jsx b/websites/uber_eats_mock/src/pages/Account.jsx
-index 5c874ba..d76f73f 100644
---- a/websites/uber_eats_mock/src/pages/Account.jsx
-+++ b/websites/uber_eats_mock/src/pages/Account.jsx
-@@ -54,11 +54,11 @@ export default function Account() {
+diff -ruN a_uber_eats_mock/src/pages/Account.jsx b_uber_eats_mock/src/pages/Account.jsx
+--- a/websites/uber_eats_mock/src/pages/Account.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/pages/Account.jsx	2026-07-30 17:35:25
+@@ -54,11 +54,11 @@
          <p className="account-profile__email">{user.email}</p>
        </div>
  
@@ -545,7 +388,7 @@ index 5c874ba..d76f73f 100644
              <p>$0 Delivery Fee and 5% off eligible orders</p>
            </div>
            <button className="account-uber-one__btn" onClick={() => setShowUberOneModal(true)}>Try free for 1 month</button>
-@@ -67,7 +67,7 @@ export default function Account() {
+@@ -67,7 +67,7 @@
        {user.uberOneActive && (
          <div className="account-uber-one account-uber-one--active">
            <div className="account-uber-one__content">
@@ -554,7 +397,7 @@ index 5c874ba..d76f73f 100644
              <p>Enjoy $0 delivery and 5% off eligible orders</p>
            </div>
            <Shield size={24} />
-@@ -257,7 +257,7 @@ export default function Account() {
+@@ -257,7 +257,7 @@
          </div>
        </section>
  
@@ -563,7 +406,7 @@ index 5c874ba..d76f73f 100644
        {showUberOneModal && (
          <div className="uber-one-modal-overlay" onClick={() => setShowUberOneModal(false)}>
            <div className="uber-one-modal" onClick={(e) => e.stopPropagation()}>
-@@ -265,7 +265,7 @@ export default function Account() {
+@@ -265,7 +265,7 @@
                <X size={20} />
              </button>
              <div className="uber-one-modal__header">
@@ -572,11 +415,9 @@ index 5c874ba..d76f73f 100644
              </div>
              <div className="uber-one-modal__benefits">
                <div className="uber-one-modal__benefit">
-diff --git a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx
-new file mode 100644
-index 0000000..b70cc11
---- /dev/null
-+++ b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx
+diff -ruN a_uber_eats_mock/src/pages/CheckoutPage.jsx b_uber_eats_mock/src/pages/CheckoutPage.jsx
+--- a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx	2026-07-30 17:35:25
 @@ -0,0 +1,81 @@
 +import React from 'react';
 +import { useNavigate } from 'react-router-dom';
@@ -659,11 +500,10 @@ index 0000000..b70cc11
 +    </div>
 +  );
 +}
-diff --git a/websites/uber_eats_mock/src/pages/Homepage.jsx b/websites/uber_eats_mock/src/pages/Homepage.jsx
-index 826edf6..628af5f 100644
---- a/websites/uber_eats_mock/src/pages/Homepage.jsx
-+++ b/websites/uber_eats_mock/src/pages/Homepage.jsx
-@@ -73,7 +73,7 @@ export default function Homepage() {
+diff -ruN a_uber_eats_mock/src/pages/Homepage.jsx b_uber_eats_mock/src/pages/Homepage.jsx
+--- a/websites/uber_eats_mock/src/pages/Homepage.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/pages/Homepage.jsx	2026-07-30 17:35:25
+@@ -73,7 +73,7 @@
    const promoBanners = [
      { id: 'pb1', title: '$0 Delivery Fee', subtitle: 'Spend $15+ on select restaurants', bg: '#06C167', accent: 'rgba(255,255,255,0.15)' },
      { id: 'pb2', title: '$5 off $25+', subtitle: 'Use code SAVE5 at checkout', bg: '#000000', accent: 'rgba(255,255,255,0.08)' },
@@ -672,7 +512,7 @@ index 826edf6..628af5f 100644
    ];
  
    const handlePrevBanner = () => {
-@@ -159,7 +159,7 @@ export default function Homepage() {
+@@ -159,7 +159,7 @@
        {featured.length > 0 && (
          <section className="homepage__section">
            <div className="homepage__section-header">
@@ -681,7 +521,7 @@ index 826edf6..628af5f 100644
              <Link to="/search?q=popular" className="homepage__see-all">See all</Link>
            </div>
            <div className="homepage__grid">
-@@ -197,11 +197,11 @@ export default function Homepage() {
+@@ -197,11 +197,11 @@
          </div>
        </section>
  
@@ -695,7 +535,7 @@ index 826edf6..628af5f 100644
            </div>
            <div className="homepage__grid">
              {newRestaurants.map(r => (
-@@ -211,7 +211,7 @@ export default function Homepage() {
+@@ -211,7 +211,7 @@
          </section>
        )}
  
@@ -704,7 +544,7 @@ index 826edf6..628af5f 100644
        {!state.user.uberOneActive && (
          <div className="homepage__uber-one-banner">
            <div className="homepage__uber-one-content">
-@@ -219,7 +219,7 @@ export default function Homepage() {
+@@ -219,7 +219,7 @@
                <span style={{ fontWeight: 700, fontSize: 14, color: '#fff' }}>1</span>
              </div>
              <div>
@@ -713,11 +553,10 @@ index 826edf6..628af5f 100644
                <p className="homepage__uber-one-sub">Plus 5% off eligible orders. Cancel anytime.</p>
              </div>
            </div>
-diff --git a/websites/uber_eats_mock/src/pages/OrderTracking.jsx b/websites/uber_eats_mock/src/pages/OrderTracking.jsx
-index 0f8c472..c6dbcf7 100644
---- a/websites/uber_eats_mock/src/pages/OrderTracking.jsx
-+++ b/websites/uber_eats_mock/src/pages/OrderTracking.jsx
-@@ -83,7 +83,7 @@ export default function OrderTracking() {
+diff -ruN a_uber_eats_mock/src/pages/OrderTracking.jsx b_uber_eats_mock/src/pages/OrderTracking.jsx
+--- a/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-07-30 17:35:25
+@@ -83,7 +83,7 @@
  
    const downloadReceipt = () => {
      const receipt = [
@@ -726,7 +565,7 @@ index 0f8c472..c6dbcf7 100644
        `Restaurant: ${order.restaurantName}`,
        `Placed: ${new Date(order.placedAt).toLocaleString()}`,
        '',
-@@ -321,7 +321,7 @@ export default function OrderTracking() {
+@@ -321,7 +321,7 @@
                <strong>{order.deliveryPerson.name}</strong>
                <span>{order.deliveryPerson.vehicleType === 'car' ? 'Car' : 'Bicycle'} &bull; {order.deliveryPerson.rating} ★</span>
              </div>
@@ -735,11 +574,10 @@ index 0f8c472..c6dbcf7 100644
              <button className="tracking-modal__btn" onClick={() => setShowContactModal(false)}>
                <Phone size={16} /> Send message
              </button>
-diff --git a/websites/uber_eats_mock/src/pages/StorePage.jsx b/websites/uber_eats_mock/src/pages/StorePage.jsx
-index ffb8350..9fe7d87 100644
---- a/websites/uber_eats_mock/src/pages/StorePage.jsx
-+++ b/websites/uber_eats_mock/src/pages/StorePage.jsx
-@@ -263,9 +263,10 @@ export default function StorePage() {
+diff -ruN a_uber_eats_mock/src/pages/StorePage.jsx b_uber_eats_mock/src/pages/StorePage.jsx
+--- a/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-07-30 17:35:25
+@@ -263,9 +263,10 @@
        {selectedItem && (
          <ItemModal
            item={selectedItem}
@@ -751,11 +589,10 @@ index ffb8350..9fe7d87 100644
          />
        )}
      </div>
-diff --git a/websites/uber_eats_mock/src/utils/dataManager.js b/websites/uber_eats_mock/src/utils/dataManager.js
-index 1ef6927..8c9baa4 100644
---- a/websites/uber_eats_mock/src/utils/dataManager.js
-+++ b/websites/uber_eats_mock/src/utils/dataManager.js
-@@ -871,7 +871,7 @@ export function createInitialData() {
+diff -ruN a_uber_eats_mock/src/utils/dataManager.js b_uber_eats_mock/src/utils/dataManager.js
+--- a/websites/uber_eats_mock/src/utils/dataManager.js	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/utils/dataManager.js	2026-07-30 17:35:25
+@@ -871,7 +871,7 @@
        { id: 'promo_2', type: 'free_delivery', title: 'Free Delivery', description: 'Free delivery at Mediterranean Grill', code: null, minOrder: 0, discountAmount: 0, discountPercent: null, expiresAt: '2026-12-31', restaurantId: 'rest_10' },
        { id: 'promo_3', type: 'percentage', title: '20% off first order', description: '20% off your first order', code: 'FIRST20', minOrder: 15.00, discountAmount: 0, discountPercent: 20, expiresAt: '2026-12-31', restaurantId: null },
        { id: 'promo_4', type: 'discount', title: '$3 off Sushi', description: '$3 off at Tokyo Express', code: 'SUSHI3', minOrder: 15.00, discountAmount: 3.00, discountPercent: null, expiresAt: '2026-12-31', restaurantId: 'rest_2' },
