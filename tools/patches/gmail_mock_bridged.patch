@@ -1,4 +1,4 @@
-diff -ruN a_gmail_mock/.mock-files/_default/Benefits_Form.pdf b_gmail_mock/.mock-files/_default/Benefits_Form.pdf
+diff -ruN a/websites/gmail_mock/.mock-files/_default/Benefits_Form.pdf b/websites/gmail_mock/.mock-files/_default/Benefits_Form.pdf
 --- a/websites/gmail_mock/.mock-files/_default/Benefits_Form.pdf	1969-12-31 16:00:00
 +++ b/websites/gmail_mock/.mock-files/_default/Benefits_Form.pdf	2026-07-30 17:35:49
 @@ -0,0 +1,21 @@
@@ -24,7 +24,7 @@ diff -ruN a_gmail_mock/.mock-files/_default/Benefits_Form.pdf b_gmail_mock/.mock
 +442
 +%%EOF
 \ No newline at end of file
-diff -ruN a_gmail_mock/.mock-files/_default/roadmap_q4.pdf b_gmail_mock/.mock-files/_default/roadmap_q4.pdf
+diff -ruN a/websites/gmail_mock/.mock-files/_default/roadmap_q4.pdf b/websites/gmail_mock/.mock-files/_default/roadmap_q4.pdf
 --- a/websites/gmail_mock/.mock-files/_default/roadmap_q4.pdf	1969-12-31 16:00:00
 +++ b/websites/gmail_mock/.mock-files/_default/roadmap_q4.pdf	2026-07-30 17:35:49
 @@ -0,0 +1,21 @@
@@ -50,7 +50,2377 @@ diff -ruN a_gmail_mock/.mock-files/_default/roadmap_q4.pdf b_gmail_mock/.mock-fi
 +434
 +%%EOF
 \ No newline at end of file
-diff -ruN a_gmail_mock/index.html b_gmail_mock/index.html
+diff -ruN a/websites/gmail_mock/.mock-states/0d3ce871-f45b-4076-b60d-bc85fbe11dcf.initial.json b/websites/gmail_mock/.mock-states/0d3ce871-f45b-4076-b60d-bc85fbe11dcf.initial.json
+--- a/websites/gmail_mock/.mock-states/0d3ce871-f45b-4076-b60d-bc85fbe11dcf.initial.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/0d3ce871-f45b-4076-b60d-bc85fbe11dcf.initial.json	2026-07-30 19:30:39
+@@ -0,0 +1,138 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@example.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/0d3ce871-f45b-4076-b60d-bc85fbe11dcf.json b/websites/gmail_mock/.mock-states/0d3ce871-f45b-4076-b60d-bc85fbe11dcf.json
+--- a/websites/gmail_mock/.mock-states/0d3ce871-f45b-4076-b60d-bc85fbe11dcf.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/0d3ce871-f45b-4076-b60d-bc85fbe11dcf.json	2026-07-30 19:31:14
+@@ -0,0 +1,166 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@example.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_4",
++      "threadId": "thread_e4765695d664",
++      "from": {
++        "name": "Orders",
++        "email": "orders@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your ShopGym order ORD_1AA3C975 is confirmed",
++      "body": "Thanks for your order!<br><br>Order number: ORD_1AA3C975<br>Total: $982.48<br><br>Use the tracking link below to see where your package is.<br>",
++      "timestamp": "2026-05-21T12:05:00Z",
++      "read": false,
++      "starred": true,
++      "important": true,
++      "labels": [
++        "orders"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json b/websites/gmail_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json
+--- a/websites/gmail_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json	2026-07-30 17:37:11
+@@ -0,0 +1,134 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@shopgym.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_em_1",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_em_2",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_em_3",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "M212/subscription_pause_phantom",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/11111111-1111-5111-8111-111111111111.json b/websites/gmail_mock/.mock-states/11111111-1111-5111-8111-111111111111.json
+--- a/websites/gmail_mock/.mock-states/11111111-1111-5111-8111-111111111111.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/11111111-1111-5111-8111-111111111111.json	2026-07-30 20:04:27
+@@ -0,0 +1,138 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@shopgym.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/1860b239-95d1-4231-847e-acdc70b36bbe.initial.json b/websites/gmail_mock/.mock-states/1860b239-95d1-4231-847e-acdc70b36bbe.initial.json
+--- a/websites/gmail_mock/.mock-states/1860b239-95d1-4231-847e-acdc70b36bbe.initial.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/1860b239-95d1-4231-847e-acdc70b36bbe.initial.json	2026-07-30 19:31:34
+@@ -0,0 +1,138 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@example.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/1860b239-95d1-4231-847e-acdc70b36bbe.json b/websites/gmail_mock/.mock-states/1860b239-95d1-4231-847e-acdc70b36bbe.json
+--- a/websites/gmail_mock/.mock-states/1860b239-95d1-4231-847e-acdc70b36bbe.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/1860b239-95d1-4231-847e-acdc70b36bbe.json	2026-07-30 19:31:34
+@@ -0,0 +1,138 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@example.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/7155511d-fc49-50d2-b35b-4c91bbb38821.initial.json b/websites/gmail_mock/.mock-states/7155511d-fc49-50d2-b35b-4c91bbb38821.initial.json
+--- a/websites/gmail_mock/.mock-states/7155511d-fc49-50d2-b35b-4c91bbb38821.initial.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/7155511d-fc49-50d2-b35b-4c91bbb38821.initial.json	2026-07-30 20:26:01
+@@ -0,0 +1,138 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@shopgym.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/7155511d-fc49-50d2-b35b-4c91bbb38821.json b/websites/gmail_mock/.mock-states/7155511d-fc49-50d2-b35b-4c91bbb38821.json
+--- a/websites/gmail_mock/.mock-states/7155511d-fc49-50d2-b35b-4c91bbb38821.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/7155511d-fc49-50d2-b35b-4c91bbb38821.json	2026-07-30 20:26:01
+@@ -0,0 +1,138 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@shopgym.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/93d601d3-0a1d-4c47-81d6-4e03dc880178.initial.json b/websites/gmail_mock/.mock-states/93d601d3-0a1d-4c47-81d6-4e03dc880178.initial.json
+--- a/websites/gmail_mock/.mock-states/93d601d3-0a1d-4c47-81d6-4e03dc880178.initial.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/93d601d3-0a1d-4c47-81d6-4e03dc880178.initial.json	2026-07-30 19:25:03
+@@ -0,0 +1,138 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@example.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "updates",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "promotions",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/93d601d3-0a1d-4c47-81d6-4e03dc880178.json b/websites/gmail_mock/.mock-states/93d601d3-0a1d-4c47-81d6-4e03dc880178.json
+--- a/websites/gmail_mock/.mock-states/93d601d3-0a1d-4c47-81d6-4e03dc880178.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/93d601d3-0a1d-4c47-81d6-4e03dc880178.json	2026-07-30 19:28:15
+@@ -0,0 +1,166 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@example.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "updates",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "promotions",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_4",
++      "threadId": "thread_e4765695d664",
++      "from": {
++        "name": "Orders",
++        "email": "orders@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your ShopGym order ORD_1AA3C975 is confirmed",
++      "body": "Thanks for your order!<br><br>Order number: ORD_1AA3C975<br>Total: $982.48<br><br>Use the tracking link below to see where your package is.<br>",
++      "timestamp": "2026-05-21T12:05:00Z",
++      "read": false,
++      "starred": true,
++      "important": true,
++      "labels": [
++        "orders"
++      ],
++      "category": "updates",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/a2184fbb-c668-586e-8125-63c33a931b95.initial.json b/websites/gmail_mock/.mock-states/a2184fbb-c668-586e-8125-63c33a931b95.initial.json
+--- a/websites/gmail_mock/.mock-states/a2184fbb-c668-586e-8125-63c33a931b95.initial.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/a2184fbb-c668-586e-8125-63c33a931b95.initial.json	2026-07-30 19:25:03
+@@ -0,0 +1,138 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@example.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "updates",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "promotions",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/a2184fbb-c668-586e-8125-63c33a931b95.json b/websites/gmail_mock/.mock-states/a2184fbb-c668-586e-8125-63c33a931b95.json
+--- a/websites/gmail_mock/.mock-states/a2184fbb-c668-586e-8125-63c33a931b95.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/a2184fbb-c668-586e-8125-63c33a931b95.json	2026-07-30 19:31:34
+@@ -0,0 +1,138 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@example.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/de1eed44-148c-4e73-980e-ecb8c85ff3c4.initial.json b/websites/gmail_mock/.mock-states/de1eed44-148c-4e73-980e-ecb8c85ff3c4.initial.json
+--- a/websites/gmail_mock/.mock-states/de1eed44-148c-4e73-980e-ecb8c85ff3c4.initial.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/de1eed44-148c-4e73-980e-ecb8c85ff3c4.initial.json	2026-07-30 20:26:01
+@@ -0,0 +1,138 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@shopgym.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/de1eed44-148c-4e73-980e-ecb8c85ff3c4.json b/websites/gmail_mock/.mock-states/de1eed44-148c-4e73-980e-ecb8c85ff3c4.json
+--- a/websites/gmail_mock/.mock-states/de1eed44-148c-4e73-980e-ecb8c85ff3c4.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/de1eed44-148c-4e73-980e-ecb8c85ff3c4.json	2026-07-30 20:26:11
+@@ -0,0 +1,140 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@shopgym.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": true,
++      "important": false,
++      "labels": [
++        "starred"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/e8a7ff26-2cc4-479f-88a4-ee801060c8e9.initial.json b/websites/gmail_mock/.mock-states/e8a7ff26-2cc4-479f-88a4-ee801060c8e9.initial.json
+--- a/websites/gmail_mock/.mock-states/e8a7ff26-2cc4-479f-88a4-ee801060c8e9.initial.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/e8a7ff26-2cc4-479f-88a4-ee801060c8e9.initial.json	2026-07-30 19:29:21
+@@ -0,0 +1,138 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@example.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/.mock-states/e8a7ff26-2cc4-479f-88a4-ee801060c8e9.json b/websites/gmail_mock/.mock-states/e8a7ff26-2cc4-479f-88a4-ee801060c8e9.json
+--- a/websites/gmail_mock/.mock-states/e8a7ff26-2cc4-479f-88a4-ee801060c8e9.json	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-states/e8a7ff26-2cc4-479f-88a4-ee801060c8e9.json	2026-07-30 19:30:12
+@@ -0,0 +1,166 @@
++{
++  "user": {
++    "userId": "u1",
++    "username": "Alice Anderson",
++    "email": "alice@example.com",
++    "avatar": null
++  },
++  "emails": [
++    {
++      "id": "em_1",
++      "threadId": "thread_42b169664ca8",
++      "from": {
++        "name": "Welcome",
++        "email": "welcome@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Welcome to ShopGym",
++      "body": "Thanks for joining ShopGym!<br><br>Browse today's deals and enjoy free shipping on orders over $50.",
++      "timestamp": "2026-05-21T08:00:00Z",
++      "read": true,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "updates"
++      ],
++      "category": "updates",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_2",
++      "threadId": "thread_045dfb3c2bc5",
++      "from": {
++        "name": "Deals",
++        "email": "deals@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your weekend deals are here",
++      "body": "Up to 40% off electronics this weekend only. Don't miss out!",
++      "timestamp": "2026-05-21T09:30:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [
++        "promotions"
++      ],
++      "category": "promotions",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_3",
++      "threadId": "thread_e113b12b69da",
++      "from": {
++        "name": "Alex",
++        "email": "alex@example.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Dinner this week?",
++      "body": "Hey! Are you free for dinner one evening this week? Let me know what works.<br><br>- Alex",
++      "timestamp": "2026-05-21T10:15:00Z",
++      "read": false,
++      "starred": false,
++      "important": false,
++      "labels": [],
++      "category": "primary",
++      "folder": "inbox",
++      "attachments": []
++    },
++    {
++      "id": "em_4",
++      "threadId": "thread_e4765695d664",
++      "from": {
++        "name": "Orders",
++        "email": "orders@shopgym.com"
++      },
++      "to": [
++        {
++          "name": "Alice",
++          "email": "alice@example.com"
++        }
++      ],
++      "cc": [],
++      "bcc": [],
++      "subject": "Your ShopGym order ORD_1AA3C975 is confirmed",
++      "body": "Thanks for your order!<br><br>Order number: ORD_1AA3C975<br>Total: $982.48<br><br>Use the tracking link below to see where your package is.<br>",
++      "timestamp": "2026-05-21T12:05:00Z",
++      "read": false,
++      "starred": true,
++      "important": true,
++      "labels": [
++        "orders"
++      ],
++      "category": "updates",
++      "folder": "inbox",
++      "attachments": []
++    }
++  ],
++  "labels": [
++    {
++      "id": "l1",
++      "name": "Work",
++      "color": "#ef4444"
++    },
++    {
++      "id": "l2",
++      "name": "Personal",
++      "color": "#3b82f6"
++    },
++    {
++      "id": "l3",
++      "name": "Travel",
++      "color": "#22c55e"
++    },
++    {
++      "id": "l4",
++      "name": "Finance",
++      "color": "#eab308"
++    }
++  ],
++  "drafts": [],
++  "settings": {
++    "density": "default",
++    "undoSend": 10,
++    "signature": "--\nAlice Anderson",
++    "categoryTabs": {
++      "primary": true,
++      "social": true,
++      "promotions": true,
++      "updates": false,
++      "forums": false
++    },
++    "replyBehavior": "Reply",
++    "language": "English (US)",
++    "sysLabelShown": {},
++    "userLabelShown": {}
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "mail",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/gmail_mock/index.html b/websites/gmail_mock/index.html
 --- a/websites/gmail_mock/index.html	2026-07-28 11:01:47
 +++ b/websites/gmail_mock/index.html	2026-07-30 17:35:14
 @@ -2,16 +2,16 @@
@@ -74,10 +2444,103 @@ diff -ruN a_gmail_mock/index.html b_gmail_mock/index.html
          </div>
        </div>
      </div>
-diff -ruN a_gmail_mock/src/components/ComposeModal.jsx b_gmail_mock/src/components/ComposeModal.jsx
+diff -ruN a/websites/gmail_mock/src/components/Avatar.jsx b/websites/gmail_mock/src/components/Avatar.jsx
+--- a/websites/gmail_mock/src/components/Avatar.jsx	1969-12-31 16:00:00
++++ b/websites/gmail_mock/src/components/Avatar.jsx	2026-07-31 15:07:27
+@@ -0,0 +1,38 @@
++import React from 'react';
++
++// Self-contained initials avatar: a colored disc with the first initial, with the
++// color deterministically hashed from the name/email. Renders instead of an <img>
++// so a null avatar never shows a broken image and no external host is contacted.
++
++const AVATAR_COLORS = [
++  '#1a73e8', '#d93025', '#188038', '#e37400', '#9334e6',
++  '#1967d2', '#129eaf', '#a8007f', '#7627bb', '#b06000',
++  '#0b8043', '#3949ab', '#00897b', '#8e24aa', '#5f6368',
++];
++
++function hashString(str) {
++  let hash = 0;
++  for (let i = 0; i < str.length; i++) {
++    hash = (hash << 5) - hash + str.charCodeAt(i);
++    hash |= 0; // keep 32-bit
++  }
++  return Math.abs(hash);
++}
++
++const Avatar = ({ name = '', email = '', size = 40, className = '', title }) => {
++  const seed = (name || email || '?').trim();
++  const initial = (seed.charAt(0) || '?').toUpperCase();
++  const color = AVATAR_COLORS[hashString(seed.toLowerCase()) % AVATAR_COLORS.length];
++  return (
++    <div
++      className={`rounded-full flex items-center justify-center text-white font-medium select-none flex-shrink-0 ${className}`}
++      style={{ width: size, height: size, backgroundColor: color, fontSize: Math.round(size * 0.45), lineHeight: 1 }}
++      title={title || name || email || undefined}
++      aria-label={name || email || undefined}
++    >
++      {initial}
++    </div>
++  );
++};
++
++export default Avatar;
+diff -ruN a/websites/gmail_mock/src/components/ComposeModal.jsx b/websites/gmail_mock/src/components/ComposeModal.jsx
 --- a/websites/gmail_mock/src/components/ComposeModal.jsx	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/components/ComposeModal.jsx	2026-07-30 17:35:14
-@@ -247,6 +247,7 @@
++++ b/websites/gmail_mock/src/components/ComposeModal.jsx	2026-07-31 15:09:19
+@@ -3,7 +3,11 @@
+ import { useStore } from '../context/StoreContext';
+ import { generateId } from '../lib/utils';
+ 
+-const DEFAULT_SIGNATURE = `-- \nDemo User\ndemo@example.com`;
++const escapeHtml = (s) => String(s)
++  .replace(/&/g, '&amp;')
++  .replace(/</g, '&lt;')
++  .replace(/>/g, '&gt;');
++
+ const SCHEDULE_OPTIONS = [
+   { label: 'Tomorrow morning (8:00 AM)', getDate: () => { const t = new Date(); t.setDate(t.getDate() + 1); t.setHours(8, 0, 0, 0); return t.toISOString(); } },
+   { label: 'Tomorrow afternoon (1:00 PM)', getDate: () => { const t = new Date(); t.setDate(t.getDate() + 1); t.setHours(13, 0, 0, 0); return t.toISOString(); } },
+@@ -11,7 +15,18 @@
+ ];
+ 
+ const ComposeModal = () => {
+-  const { isComposeOpen, setIsComposeOpen, sendEmail, saveDraft, deleteDraft, currentDraftId, setCurrentDraftId, composePreFill, setComposePreFill } = useStore();
++  const { isComposeOpen, setIsComposeOpen, sendEmail, saveDraft, deleteDraft, currentDraftId, setCurrentDraftId, composePreFill, setComposePreFill, settings, state } = useStore();
++
++  // Signature comes from the user's settings; if unset (or still the legacy demo
++  // placeholder) fall back to a name-derived "--\n<user name>". Never hardcoded.
++  const buildSignatureText = () => {
++    const raw = (settings?.signature || '').trim();
++    if (raw && !raw.includes('Demo User')) return raw;
++    const name = (state?.user?.username || '').trim() || 'Me';
++    return `--\n${name}`;
++  };
++  const buildSignatureHtml = () =>
++    `<br><br><span class="xmail-sig" style="color:#777;font-size:12px;white-space:pre-wrap">${escapeHtml(buildSignatureText())}</span>`;
+   const [isMinimized, setIsMinimized] = useState(false);
+   const [isMaximized, setIsMaximized] = useState(false);
+ 
+@@ -87,7 +102,7 @@
+   // Auto-insert signature on new compose open (not pre-filled)
+   useEffect(() => {
+     if (isComposeOpen && !composePreFill && !currentDraftId) {
+-      const sig = `<br><br><span class="xmail-sig" style="color:#777;font-size:12px;white-space:pre-wrap">${DEFAULT_SIGNATURE}</span>`;
++      const sig = buildSignatureHtml();
+       setBody(sig);
+       setShowSignature(true);
+       setTimeout(() => {
+@@ -194,7 +209,7 @@
+ 
+   const insertSignature = () => {
+     if (bodyRef.current) {
+-      const sig = `<br><br><span class="xmail-sig" style="color:#777;font-size:12px;white-space:pre-wrap">${DEFAULT_SIGNATURE}</span>`;
++      const sig = buildSignatureHtml();
+       bodyRef.current.innerHTML = bodyRef.current.innerHTML + sig;
+       setBody(bodyRef.current.innerHTML);
+       setShowSignature(true);
+@@ -247,6 +262,7 @@
      <button
        onMouseDown={(e) => { e.preventDefault(); onClick(); }}
        title={title}
@@ -85,7 +2548,7 @@ diff -ruN a_gmail_mock/src/components/ComposeModal.jsx b_gmail_mock/src/componen
        className="w-7 h-7 flex items-center justify-center rounded hover:bg-gray-200 text-gray-600 text-xs font-medium"
      >
        {children}
-@@ -266,13 +267,13 @@
+@@ -266,13 +282,13 @@
        >
          <span className="font-medium text-sm text-gray-700">New Message</span>
          <div className="flex items-center gap-2">
@@ -102,7 +2565,7 @@ diff -ruN a_gmail_mock/src/components/ComposeModal.jsx b_gmail_mock/src/componen
              <X size={14} />
            </button>
          </div>
-@@ -288,6 +289,7 @@
+@@ -288,6 +304,7 @@
                  <input
                    id="to-input"
                    type="text"
@@ -110,7 +2573,7 @@ diff -ruN a_gmail_mock/src/components/ComposeModal.jsx b_gmail_mock/src/componen
                    className={`flex-1 outline-none text-sm py-1 ${toError ? 'border-b border-red-500' : ''}`}
                    value={to}
                    onChange={(e) => { setTo(e.target.value); if (e.target.value.trim()) setToError(false); }}
-@@ -305,14 +307,14 @@
+@@ -305,14 +322,14 @@
              {showCc && (
                <div className="px-4 py-2 border-b border-gray-100 flex items-center">
                  <span className="text-gray-500 text-sm w-12">Cc</span>
@@ -127,7 +2590,7 @@ diff -ruN a_gmail_mock/src/components/ComposeModal.jsx b_gmail_mock/src/componen
                </div>
              )}
  
-@@ -320,6 +322,7 @@
+@@ -320,6 +337,7 @@
                <input
                  type="text"
                  placeholder="Subject"
@@ -135,7 +2598,7 @@ diff -ruN a_gmail_mock/src/components/ComposeModal.jsx b_gmail_mock/src/componen
                  className="w-full outline-none text-sm py-1 placeholder-gray-500"
                  value={subject}
                  onChange={(e) => setSubject(e.target.value)}
-@@ -366,6 +369,9 @@
+@@ -366,6 +384,9 @@
                ref={bodyRef}
                contentEditable
                suppressContentEditableWarning
@@ -145,7 +2608,7 @@ diff -ruN a_gmail_mock/src/components/ComposeModal.jsx b_gmail_mock/src/componen
                data-compose-body="true"
                className="flex-1 p-4 outline-none text-sm font-sans min-h-[80px]"
                onInput={() => setBody(bodyRef.current?.innerHTML || '')}
-@@ -441,12 +447,12 @@
+@@ -441,12 +462,12 @@
                <div className="h-6 w-px bg-gray-200 mx-1" />
  
                <input type="file" multiple className="hidden" ref={fileInputRef} onChange={handleFileSelect} />
@@ -161,7 +2624,7 @@ diff -ruN a_gmail_mock/src/components/ComposeModal.jsx b_gmail_mock/src/componen
  
                <button
                  onClick={showSignature ? removeSignature : insertSignature}
-@@ -461,6 +467,7 @@
+@@ -461,6 +482,7 @@
                onClick={() => { if (currentDraftId) deleteDraft(currentDraftId); closeModal(); }}
                className="text-gray-500 hover:bg-gray-100 p-2 rounded"
                title="Discard draft"
@@ -169,7 +2632,7 @@ diff -ruN a_gmail_mock/src/components/ComposeModal.jsx b_gmail_mock/src/componen
              >
                <Trash2 size={18} />
              </button>
-diff -ruN a_gmail_mock/src/components/EmailList.jsx b_gmail_mock/src/components/EmailList.jsx
+diff -ruN a/websites/gmail_mock/src/components/EmailList.jsx b/websites/gmail_mock/src/components/EmailList.jsx
 --- a/websites/gmail_mock/src/components/EmailList.jsx	2026-07-28 11:01:47
 +++ b/websites/gmail_mock/src/components/EmailList.jsx	2026-07-30 17:35:14
 @@ -284,7 +284,7 @@
@@ -190,10 +2653,18 @@ diff -ruN a_gmail_mock/src/components/EmailList.jsx b_gmail_mock/src/components/
    },
    trash: {
      icon: Trash2,
-diff -ruN a_gmail_mock/src/components/Header.jsx b_gmail_mock/src/components/Header.jsx
+diff -ruN a/websites/gmail_mock/src/components/Header.jsx b/websites/gmail_mock/src/components/Header.jsx
 --- a/websites/gmail_mock/src/components/Header.jsx	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/components/Header.jsx	2026-07-30 17:35:14
-@@ -87,7 +87,7 @@
++++ b/websites/gmail_mock/src/components/Header.jsx	2026-07-31 15:09:30
+@@ -2,6 +2,7 @@
+ import { Menu, Search, Settings, HelpCircle, Grid, SlidersHorizontal, X } from 'lucide-react';
+ import { useStore } from '../context/StoreContext';
+ import { useNavigate } from 'react-router-dom';
++import Avatar from './Avatar';
+ 
+ const AdvancedSearchModal = () => {
+   const { isSearchModalOpen, setIsSearchModalOpen, setSearchQuery } = useStore();
+@@ -87,7 +88,7 @@
      { name: 'YouTube', icon: '▶️' },
      { name: 'Play', icon: '🎮' },
      { name: 'News', icon: '📰' },
@@ -202,7 +2673,7 @@ diff -ruN a_gmail_mock/src/components/Header.jsx b_gmail_mock/src/components/Hea
      { name: 'Meet', icon: '📹' },
      { name: 'Chat', icon: '💬' },
      { name: 'Drive', icon: '📁' },
-@@ -101,7 +101,7 @@
+@@ -101,7 +102,7 @@
        ref={ref}
        className="absolute top-12 right-0 bg-white border border-gray-200 rounded-xl shadow-xl z-50 w-72 p-3"
      >
@@ -211,7 +2682,23 @@ diff -ruN a_gmail_mock/src/components/Header.jsx b_gmail_mock/src/components/Hea
        <div className="grid grid-cols-3 gap-1">
          {apps.map(app => (
            <button
-@@ -146,7 +146,7 @@
+@@ -133,10 +134,11 @@
+   return (
+     <div ref={ref} className="absolute top-12 right-0 bg-white border border-gray-200 rounded-xl shadow-xl z-50 w-72 py-4">
+       <div className="flex flex-col items-center px-4 pb-4 border-b border-gray-100">
+-        <img
+-          src={state.user.avatar}
+-          alt={state.user.username}
+-          className="w-16 h-16 rounded-full border border-gray-200 mb-2"
++        <Avatar
++          name={state.user.username}
++          email={state.user.email}
++          size={64}
++          className="border border-gray-200 mb-2"
+         />
+         <p className="font-medium text-gray-900 text-base">{state.user.username}</p>
+         <p className="text-sm text-gray-500">{state.user.email}</p>
+@@ -146,7 +148,7 @@
            onClick={onClose}
            className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
          >
@@ -220,7 +2707,7 @@ diff -ruN a_gmail_mock/src/components/Header.jsx b_gmail_mock/src/components/Hea
          </button>
          <button
            onClick={onClose}
-@@ -176,7 +176,7 @@
+@@ -176,7 +178,7 @@
            <Menu size={24} className="text-gray-600" />
          </button>
          <div className="flex items-center gap-2">
@@ -229,7 +2716,7 @@ diff -ruN a_gmail_mock/src/components/Header.jsx b_gmail_mock/src/components/Hea
          </div>
        </div>
  
-@@ -204,7 +204,7 @@
+@@ -204,7 +206,7 @@
          <button
            className="p-2 hover:bg-gray-100 rounded-full"
            title="Support"
@@ -238,7 +2725,7 @@ diff -ruN a_gmail_mock/src/components/Header.jsx b_gmail_mock/src/components/Hea
          >
            <HelpCircle size={24} className="text-gray-600" />
          </button>
-@@ -214,7 +214,7 @@
+@@ -214,7 +216,7 @@
          <div className="relative">
            <button
              className="p-2 hover:bg-gray-100 rounded-full"
@@ -247,10 +2734,34 @@ diff -ruN a_gmail_mock/src/components/Header.jsx b_gmail_mock/src/components/Hea
              onClick={() => setShowAppsPanel(v => !v)}
            >
              <Grid size={24} className="text-gray-600" />
-diff -ruN a_gmail_mock/src/components/ThreadView.jsx b_gmail_mock/src/components/ThreadView.jsx
+@@ -229,10 +231,11 @@
+             className="rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+             title={state.user.email}
+           >
+-            <img
+-              src={state.user.avatar}
+-              alt="Profile"
+-              className="w-8 h-8 rounded-full border border-gray-200 hover:opacity-90"
++            <Avatar
++              name={state.user.username}
++              email={state.user.email}
++              size={32}
++              className="border border-gray-200 hover:opacity-90"
+             />
+           </button>
+           {showProfileDropdown && (
+diff -ruN a/websites/gmail_mock/src/components/ThreadView.jsx b/websites/gmail_mock/src/components/ThreadView.jsx
 --- a/websites/gmail_mock/src/components/ThreadView.jsx	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/components/ThreadView.jsx	2026-07-30 17:35:14
-@@ -27,7 +27,7 @@
++++ b/websites/gmail_mock/src/components/ThreadView.jsx	2026-07-31 15:09:41
+@@ -3,6 +3,7 @@
+ import { ArrowLeft, Star, Printer, ExternalLink, MoreVertical, Reply, ReplyAll, Forward, Trash2, Archive, CornerUpLeft, Mail, MailOpen, Download, Paperclip, X, ShieldAlert, FolderInput, Clock } from 'lucide-react';
+ import { useStore } from '../context/StoreContext';
+ import { formatDate, cn, generateId } from '../lib/utils';
++import Avatar from './Avatar';
+ 
+ const ThreadMoveToMenu = ({ emailIds, onClose }) => {
+   const { bulkUpdateEmails, showToast } = useStore();
+@@ -27,7 +28,7 @@
  const ThreadView = () => {
    const { threadId } = useParams();
    const navigate = useNavigate();
@@ -259,7 +2770,7 @@ diff -ruN a_gmail_mock/src/components/ThreadView.jsx b_gmail_mock/src/components
    const [replyBody, setReplyBody] = useState('');
    const [isReplying, setIsReplying] = useState(false);
    const [replyAttachments, setReplyAttachments] = useState([]);
-@@ -37,14 +37,10 @@
+@@ -37,14 +38,10 @@
    const replyRef = useRef(null);
    const replyFileInputRef = useRef(null);
  
@@ -277,9 +2788,27 @@ diff -ruN a_gmail_mock/src/components/ThreadView.jsx b_gmail_mock/src/components
      // Only run when the thread changes, not on every state update
      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [threadId]);
-diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/StoreContext.jsx
+@@ -177,7 +174,7 @@
+           {threadEmails.map((email, index) => (
+             <div key={email.id} className={cn("border border-gray-200 rounded-lg overflow-hidden", index === threadEmails.length - 1 ? "bg-white" : "bg-gray-50")}>
+               <div className="flex items-start p-4 gap-4 cursor-pointer">
+-                <img src={email.from.avatar} alt="" className="w-10 h-10 rounded-full" />
++                <Avatar name={email.from.name} email={email.from.email} size={40} />
+                 <div className="flex-1 min-w-0">
+                   <div className="flex items-center justify-between">
+                     <span className="font-bold text-gray-900">{email.from.name}</span>
+@@ -229,7 +226,7 @@
+         </div>
+ 
+         <div className="mt-8 flex gap-4 items-start">
+-            <img src={state.user.avatar} className="w-10 h-10 rounded-full" />
++            <Avatar name={state.user.username} email={state.user.email} size={40} />
+             <div 
+                 className={cn("flex-1 border border-gray-300 rounded-lg shadow-sm transition-all", isReplying ? "h-auto" : "h-12 overflow-hidden")}
+                 onClick={() => setIsReplying(true)}
+diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mock/src/context/StoreContext.jsx
 --- a/websites/gmail_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/context/StoreContext.jsx	2026-07-30 20:29:34
++++ b/websites/gmail_mock/src/context/StoreContext.jsx	2026-07-31 15:10:21
 @@ -1,7 +1,17 @@
  import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
  import { INITIAL_STATE, DEFAULT_SETTINGS, getSessionId, fetchCustomState, saveState, initializeData } from '../data/mockData';
@@ -298,7 +2827,18 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
  const StoreContext = createContext();
  
  const INITIAL_KEY_PREFIX = 'xmail-clone-initialState';
-@@ -39,6 +49,25 @@
+@@ -18,6 +28,10 @@
+   const [initialState, setInitialState] = useState(() => JSON.parse(JSON.stringify(INITIAL_STATE)));
+   const [state, setState] = useState(() => INITIAL_STATE);
+   const [loading, setLoading] = useState(true);
++  // When a sid is in the URL but its seed state can't be loaded, fail loudly
++  // instead of silently booting generic demo data (which a reviewer can't tell
++  // apart from a real seeded session).
++  const [loadError, setLoadError] = useState(null);
+   const sidRef = useRef(getSessionId());
+   const initDone = useRef(false);
+ 
+@@ -39,6 +53,25 @@
      if (initDone.current) return;
      initDone.current = true;
      const sid = sidRef.current;
@@ -324,7 +2864,21 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
      if (sid) {
        const sessionKey = `${INITIAL_KEY_PREFIX}_${sid}`;
        const isRefresh = localStorage.getItem(sessionKey) !== null;
-@@ -82,7 +111,39 @@
+@@ -50,6 +83,13 @@
+         setLoading(false);
+       } else {
+         fetchCustomState(sid).then(customState => {
++          // A sid was requested but the state server had no seed for it (or the
++          // fetch failed). Surface it loudly rather than falling back to demo data.
++          if (!customState) {
++            setLoadError(sid);
++            setLoading(false);
++            return;
++          }
+           const data = initializeData(sid, customState);
+           setState(data);
+           setInitialState(JSON.parse(JSON.stringify(data)));
+@@ -82,7 +122,39 @@
      }
    }, [state, loading]);
  
@@ -364,7 +2918,7 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
      setState(prev => ({
        ...prev,
        emails: prev.emails.map(email =>
-@@ -92,6 +153,7 @@
+@@ -92,6 +164,7 @@
    };
  
    const bulkUpdateEmails = (emailIds, updates) => {
@@ -372,7 +2926,7 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
      setState(prev => ({
        ...prev,
        emails: prev.emails.map(email =>
-@@ -102,6 +164,13 @@
+@@ -102,6 +175,13 @@
    };
  
    const deleteEmails = (emailIds) => {
@@ -386,7 +2940,7 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
      setState(prev => {
        const emailsToUpdate = prev.emails.filter(e => emailIds.includes(e.id));
        const trashIds = emailsToUpdate.filter(e => e.folder === 'trash').map(e => e.id);
-@@ -131,6 +200,13 @@
+@@ -131,6 +211,13 @@
    };
  
    const archiveEmails = (emailIds) => {
@@ -400,7 +2954,7 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
      setState(prev => {
        const snapshot = prev.emails;
        showToast('Conversation archived', () => setState(s => ({ ...s, emails: snapshot })));
-@@ -151,6 +227,20 @@
+@@ -151,6 +238,20 @@
    };
  
    const sendEmail = (emailData) => {
@@ -421,7 +2975,7 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
      const newEmail = {
        id: generateId(),
        threadId: generateId(),
-@@ -243,6 +333,17 @@
+@@ -243,6 +344,17 @@
    }
  
    const replyToEmail = (originalEmail, body, isReplyAll = false, attachments = []) => {
@@ -439,7 +2993,7 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
       const newEmail = {
        id: generateId(),
        threadId: originalEmail.threadId,
-@@ -269,20 +370,41 @@
+@@ -269,20 +381,41 @@
      }));
    }
  
@@ -483,7 +3037,36 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
    const addLabel = (emailId, labelId) => {
      const email = state.emails.find(e => e.id === emailId);
      if (email && !email.labels.includes(labelId)) {
-@@ -442,6 +564,7 @@
+@@ -415,6 +548,28 @@
+     }));
+   };
+ 
++  if (loadError) {
++    return (
++      <div style={{
++        position: 'fixed', inset: 0, display: 'flex', flexDirection: 'column',
++        alignItems: 'center', justifyContent: 'center', textAlign: 'center',
++        padding: '2rem', background: '#fff', color: '#202124',
++        fontFamily: 'Roboto, Arial, sans-serif', zIndex: 9999,
++      }}>
++        <div style={{ fontSize: 48, lineHeight: 1, marginBottom: 16 }}>⚠️</div>
++        <h1 style={{ fontSize: 22, fontWeight: 500, margin: '0 0 8px' }}>
++          Could not load session
++        </h1>
++        <p style={{ fontSize: 15, color: '#5f6368', maxWidth: 520, margin: 0 }}>
++          Could not load session <code style={{ fontFamily: 'monospace', color: '#d93025' }}>{loadError}</code> from the state server.
++        </p>
++        <p style={{ fontSize: 13, color: '#80868b', maxWidth: 520, marginTop: 12 }}>
++          The seed state for this session was not found. This session was not started with generic demo data.
++        </p>
++      </div>
++    );
++  }
++
+   return (
+     <StoreContext.Provider value={{
+       state,
+@@ -442,6 +597,7 @@
        toggleStar,
        toggleImportant,
        toggleRead,
@@ -491,25 +3074,198 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
        addLabel,
        removeLabel,
        createLabel,
-diff -ruN a_gmail_mock/src/data/mockData.js b_gmail_mock/src/data/mockData.js
+diff -ruN a/websites/gmail_mock/src/data/mockData.js b/websites/gmail_mock/src/data/mockData.js
 --- a/websites/gmail_mock/src/data/mockData.js	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/data/mockData.js	2026-07-30 17:35:14
-@@ -356,7 +356,7 @@
++++ b/websites/gmail_mock/src/data/mockData.js	2026-07-31 15:08:38
+@@ -111,9 +111,9 @@
+ 
+ export const CURRENT_USER = {
+   userId: 'u1',
+-  username: 'Demo User',
+-  email: 'demo@example.com',
+-  avatar: 'https://picsum.photos/100/100?random=user1'
++  username: 'Alice Anderson',
++  email: 'alice@shopgym.com',
++  avatar: null
+ };
+ 
+ export const LABELS = [
+@@ -133,8 +133,8 @@
+   emails.push({
+     id: 'email_1',
+     threadId: 'thread_1',
+-    from: { name: 'Alice Smith', email: 'alice@company.com', avatar: 'https://picsum.photos/100/100?random=2' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'Alice Smith', email: 'alice@company.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Q4 Project Roadmap Update',
+@@ -156,8 +156,8 @@
+   emails.push({
+     id: 'email_2',
+     threadId: 'thread_2',
+-    from: { name: 'Bob Jones', email: 'bob@friends.com', avatar: 'https://picsum.photos/100/100?random=3' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'Bob Jones', email: 'bob@friends.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Lunch tomorrow?',
+@@ -176,7 +176,7 @@
+   emails.push({
+     id: 'email_3',
+     threadId: 'thread_2',
+-    from: { name: 'Demo User', email: 'demo@example.com', avatar: CURRENT_USER.avatar },
++    from: { name: 'Alice Anderson', email: 'alice@shopgym.com', avatar: CURRENT_USER.avatar },
+     to: [{ name: 'Bob Jones', email: 'bob@friends.com' }],
+     cc: [],
+     bcc: [],
+@@ -196,8 +196,8 @@
+   emails.push({
+     id: 'email_4',
+     threadId: 'thread_2',
+-    from: { name: 'Bob Jones', email: 'bob@friends.com', avatar: 'https://picsum.photos/100/100?random=3' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'Bob Jones', email: 'bob@friends.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Re: Lunch tomorrow?',
+@@ -217,8 +217,8 @@
+   emails.push({
+     id: 'email_hr_benefits',
+     threadId: 'thread_hr',
+-    from: { name: 'HR Department', email: 'HR@company.com', avatar: 'https://picsum.photos/100/100?random=hr' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'HR Department', email: 'HR@company.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Benefits Enrollment - Action Required',
+@@ -248,8 +248,8 @@
+   emails.push({
+     id: 'email_budget_1',
+     threadId: 'thread_budget',
+-    from: { name: 'Sarah Manager', email: 'sarah@company.com', avatar: 'https://picsum.photos/100/100?random=sarah' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }, { name: 'Mike', email: 'mike@company.com' }, { name: 'Lisa', email: 'lisa@company.com' }],
++    from: { name: 'Sarah Manager', email: 'sarah@company.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }, { name: 'Mike', email: 'mike@company.com' }, { name: 'Lisa', email: 'lisa@company.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Q1 Budget Discussion',
+@@ -271,8 +271,8 @@
+   emails.push({
+     id: 'email_budget_2',
+     threadId: 'thread_budget',
+-    from: { name: 'Mike Chen', email: 'mike@company.com', avatar: 'https://picsum.photos/100/100?random=mike' },
+-    to: [{ name: 'Sarah Manager', email: 'sarah@company.com' }, { name: 'Demo User', email: 'demo@example.com' }, { name: 'Lisa', email: 'lisa@company.com' }],
++    from: { name: 'Mike Chen', email: 'mike@company.com', avatar: null },
++    to: [{ name: 'Sarah Manager', email: 'sarah@company.com' }, { name: 'Alice Anderson', email: 'alice@shopgym.com' }, { name: 'Lisa', email: 'lisa@company.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Re: Q1 Budget Discussion',
+@@ -292,8 +292,8 @@
+   emails.push({
+     id: 'email_budget_3',
+     threadId: 'thread_budget',
+-    from: { name: 'Lisa Anderson', email: 'lisa@company.com', avatar: 'https://picsum.photos/100/100?random=lisa' },
+-    to: [{ name: 'Sarah Manager', email: 'sarah@company.com' }, { name: 'Demo User', email: 'demo@example.com' }, { name: 'Mike', email: 'mike@company.com' }],
++    from: { name: 'Lisa Anderson', email: 'lisa@company.com', avatar: null },
++    to: [{ name: 'Sarah Manager', email: 'sarah@company.com' }, { name: 'Alice Anderson', email: 'alice@shopgym.com' }, { name: 'Mike', email: 'mike@company.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Re: Q1 Budget Discussion',
+@@ -313,13 +313,13 @@
+   emails.push({
+     id: 'email_budget_4',
+     threadId: 'thread_budget',
+-    from: { name: 'Demo User', email: 'demo@example.com', avatar: CURRENT_USER.avatar },
++    from: { name: 'Alice Anderson', email: 'alice@shopgym.com', avatar: CURRENT_USER.avatar },
+     to: [{ name: 'Sarah Manager', email: 'sarah@company.com' }, { name: 'Mike', email: 'mike@company.com' }, { name: 'Lisa', email: 'lisa@company.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Re: Q1 Budget Discussion',
+     body: `I agree with Mike. Let's go with $75,000 to be safe.<br><br>
+-- Demo`,
++- Alice`,
+     snippet: "I agree with Mike. Let's go with $75,000 to be safe.",
+     timestamp: new Date(BASE_TIME - 1000 * 60 * 60 * 12).toISOString(), // 12 hours ago
+     read: true,
+@@ -335,8 +335,8 @@
+   emails.push({
+     id: 'email_social_1',
+     threadId: 'thread_social_1',
+-    from: { name: 'LinkedIn', email: 'notifications@linkedin.com', avatar: 'https://picsum.photos/100/100?random=4' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'LinkedIn', email: 'notifications@linkedin.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'You appeared in 5 searches this week',
+@@ -356,8 +356,8 @@
    emails.push({
      id: 'email_promo_1',
      threadId: 'thread_promo_1',
 -    from: { name: 'Amazon', email: 'store-news@amazon.com', avatar: 'https://picsum.photos/100/100?random=5' },
-+    from: { name: 'ShopGym', email: 'store-news@shopgym.example', avatar: 'https://picsum.photos/100/100?random=5' },
-     to: [{ name: 'Demo User', email: 'demo@example.com' }],
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'ShopGym', email: 'store-news@shopgym.example', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
      cc: [],
      bcc: [],
+     subject: 'Your order has shipped',
+@@ -377,8 +377,8 @@
+   emails.push({
+     id: 'email_spam_1',
+     threadId: 'thread_spam_1',
+-    from: { name: 'Prince Henry', email: 'money@rich.com', avatar: 'https://picsum.photos/100/100?random=6' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'Prince Henry', email: 'money@rich.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'URGENT BUSINESS PROPOSAL',
+@@ -398,8 +398,8 @@
+   emails.push({
+     id: 'email_trash_1',
+     threadId: 'thread_trash_1',
+-    from: { name: 'Newsletter', email: 'news@letter.com', avatar: 'https://picsum.photos/100/100?random=7' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'Newsletter', email: 'news@letter.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Weekly Digest',
+@@ -419,8 +419,8 @@
+   emails.push({
+     id: 'email_social_2',
+     threadId: 'thread_social_2',
+-    from: { name: 'Twitter', email: 'notify@twitter.com', avatar: 'https://picsum.photos/100/100?random=twitter' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'Twitter', email: 'notify@twitter.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
+     cc: [],
+     bcc: [],
+     subject: '@alice_dev mentioned you in a tweet',
+@@ -439,8 +439,8 @@
+   emails.push({
+     id: 'email_social_3',
+     threadId: 'thread_social_3',
+-    from: { name: 'Facebook', email: 'notification@facebookmail.com', avatar: 'https://picsum.photos/100/100?random=facebook' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'Facebook', email: 'notification@facebookmail.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'You have 3 new friend requests',
 @@ -460,11 +460,11 @@
    emails.push({
      id: 'email_promo_2',
      threadId: 'thread_promo_2',
 -    from: { name: 'Uber Eats', email: 'receipts@uber.com', avatar: 'https://picsum.photos/100/100?random=uber' },
-+    from: { name: 'GymEats', email: 'receipts@gymeats.example', avatar: 'https://picsum.photos/100/100?random=uber' },
-     to: [{ name: 'Demo User', email: 'demo@example.com' }],
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'GymEats', email: 'receipts@gymeats.example', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
      cc: [],
      bcc: [],
 -    subject: 'Your Uber Eats receipt - $23.45',
@@ -517,24 +3273,171 @@ diff -ruN a_gmail_mock/src/data/mockData.js b_gmail_mock/src/data/mockData.js
      body: 'Thanks for your order from Chipotle Mexican Grill. Your total was $23.45.',
      snippet: 'Thanks for your order from Chipotle Mexican Grill. Total: $23.45',
      timestamp: new Date(BASE_TIME - 1000 * 60 * 60 * 36).toISOString(),
+@@ -480,8 +480,8 @@
+   emails.push({
+     id: 'email_promo_3',
+     threadId: 'thread_promo_3',
+-    from: { name: 'Spotify', email: 'noreply@spotify.com', avatar: 'https://picsum.photos/100/100?random=spotify' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'Spotify', email: 'noreply@spotify.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Your Spotify Premium invoice for February 2026',
+@@ -501,8 +501,8 @@
+   emails.push({
+     id: 'email_attachments_1',
+     threadId: 'thread_attachments_1',
+-    from: { name: 'David Park', email: 'david@company.com', avatar: 'https://picsum.photos/100/100?random=david' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'David Park', email: 'david@company.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
+     cc: [{ name: 'Sarah Manager', email: 'sarah@company.com' }],
+     bcc: [],
+     subject: 'Q4 Reports and Assets',
+@@ -534,8 +534,8 @@
+   emails.push({
+     id: 'email_sprint_1',
+     threadId: 'thread_sprint',
+-    from: { name: 'Emma Wilson', email: 'emma@company.com', avatar: 'https://picsum.photos/100/100?random=emma' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }, { name: 'Mike Chen', email: 'mike@company.com' }, { name: 'Lisa Anderson', email: 'lisa@company.com' }],
++    from: { name: 'Emma Wilson', email: 'emma@company.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }, { name: 'Mike Chen', email: 'mike@company.com' }, { name: 'Lisa Anderson', email: 'lisa@company.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Sprint 12 Planning - Input Needed',
+@@ -559,8 +559,8 @@
+   emails.push({
+     id: 'email_sprint_2',
+     threadId: 'thread_sprint',
+-    from: { name: 'Mike Chen', email: 'mike@company.com', avatar: 'https://picsum.photos/100/100?random=mike' },
+-    to: [{ name: 'Emma Wilson', email: 'emma@company.com' }, { name: 'Demo User', email: 'demo@example.com' }, { name: 'Lisa Anderson', email: 'lisa@company.com' }],
++    from: { name: 'Mike Chen', email: 'mike@company.com', avatar: null },
++    to: [{ name: 'Emma Wilson', email: 'emma@company.com' }, { name: 'Alice Anderson', email: 'alice@shopgym.com' }, { name: 'Lisa Anderson', email: 'lisa@company.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Re: Sprint 12 Planning - Input Needed',
+@@ -584,8 +584,8 @@
+   emails.push({
+     id: 'email_sprint_3',
+     threadId: 'thread_sprint',
+-    from: { name: 'Lisa Anderson', email: 'lisa@company.com', avatar: 'https://picsum.photos/100/100?random=lisa' },
+-    to: [{ name: 'Emma Wilson', email: 'emma@company.com' }, { name: 'Demo User', email: 'demo@example.com' }, { name: 'Mike Chen', email: 'mike@company.com' }],
++    from: { name: 'Lisa Anderson', email: 'lisa@company.com', avatar: null },
++    to: [{ name: 'Emma Wilson', email: 'emma@company.com' }, { name: 'Alice Anderson', email: 'alice@shopgym.com' }, { name: 'Mike Chen', email: 'mike@company.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Re: Sprint 12 Planning - Input Needed',
+@@ -609,7 +609,7 @@
+   emails.push({
+     id: 'email_sprint_4',
+     threadId: 'thread_sprint',
+-    from: { name: 'Demo User', email: 'demo@example.com', avatar: CURRENT_USER.avatar },
++    from: { name: 'Alice Anderson', email: 'alice@shopgym.com', avatar: CURRENT_USER.avatar },
+     to: [{ name: 'Emma Wilson', email: 'emma@company.com' }, { name: 'Mike Chen', email: 'mike@company.com' }, { name: 'Lisa Anderson', email: 'lisa@company.com' }],
+     cc: [],
+     bcc: [],
+@@ -620,7 +620,7 @@
+ - Unit tests coverage improvement (we're at 62%, target 80%)<br><br>
+ Search perf: 5 points, Tests: 8 points<br><br>
+ That brings our total to 36 points — we might need to cut something. Let's discuss Monday.<br><br>
+-- Demo`,
++- Alice`,
+     snippet: 'Great input! I\'ll add: Performance optimization for the search feature.',
+     timestamp: new Date(BASE_TIME - 1000 * 60 * 60 * 72).toISOString(),
+     read: true,
+@@ -635,8 +635,8 @@
+   emails.push({
+     id: 'email_sprint_5',
+     threadId: 'thread_sprint',
+-    from: { name: 'Emma Wilson', email: 'emma@company.com', avatar: 'https://picsum.photos/100/100?random=emma' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }, { name: 'Mike Chen', email: 'mike@company.com' }, { name: 'Lisa Anderson', email: 'lisa@company.com' }],
++    from: { name: 'Emma Wilson', email: 'emma@company.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }, { name: 'Mike Chen', email: 'mike@company.com' }, { name: 'Lisa Anderson', email: 'lisa@company.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Re: Sprint 12 Planning - Input Needed',
+@@ -657,8 +657,8 @@
+   emails.push({
+     id: 'email_sprint_6',
+     threadId: 'thread_sprint',
+-    from: { name: 'Mike Chen', email: 'mike@company.com', avatar: 'https://picsum.photos/100/100?random=mike' },
+-    to: [{ name: 'Emma Wilson', email: 'emma@company.com' }, { name: 'Demo User', email: 'demo@example.com' }, { name: 'Lisa Anderson', email: 'lisa@company.com' }],
++    from: { name: 'Mike Chen', email: 'mike@company.com', avatar: null },
++    to: [{ name: 'Emma Wilson', email: 'emma@company.com' }, { name: 'Alice Anderson', email: 'alice@shopgym.com' }, { name: 'Lisa Anderson', email: 'lisa@company.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Re: Sprint 12 Planning - Input Needed',
+@@ -681,7 +681,7 @@
+   emails.push({
+     id: 'email_draft_1',
+     threadId: 'thread_draft_1',
+-    from: { name: 'Demo User', email: 'demo@example.com', avatar: CURRENT_USER.avatar },
++    from: { name: 'Alice Anderson', email: 'alice@shopgym.com', avatar: CURRENT_USER.avatar },
+     to: [{ name: 'alice@company.com', email: 'alice@company.com' }],
+     cc: [],
+     bcc: [],
+@@ -702,8 +702,8 @@
+   emails.push({
+     id: 'email_updates_1',
+     threadId: 'thread_updates_1',
+-    from: { name: 'Chase Bank', email: 'no-reply@chase.com', avatar: 'https://picsum.photos/100/100?random=chase' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'Chase Bank', email: 'no-reply@chase.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
+     cc: [],
+     bcc: [],
+     subject: 'Your February 2026 statement is ready',
 @@ -722,13 +722,13 @@
    emails.push({
      id: 'email_updates_2',
      threadId: 'thread_updates_2',
 -    from: { name: 'Google', email: 'no-reply@accounts.google.com', avatar: 'https://picsum.photos/100/100?random=google' },
-+    from: { name: 'ShopMail', email: 'no-reply@security.shopmail.example', avatar: 'https://picsum.photos/100/100?random=google' },
-     to: [{ name: 'Demo User', email: 'demo@example.com' }],
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'ShopMail', email: 'no-reply@security.shopmail.example', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
      cc: [],
      bcc: [],
      subject: 'Security alert: New sign-in on Windows',
 -    body: 'Your Google Account demo@example.com was just signed in to from a Windows device. If this was you, you can ignore this alert. If not, we recommend securing your account.',
 -    snippet: 'Your Google Account was just signed in to from a Windows device.',
-+    body: 'Your ShopMail account demo@example.com was just signed in to from a Windows device. If this was you, you can ignore this alert. If not, we recommend securing your account.',
++    body: 'Your ShopMail account alice@shopgym.com was just signed in to from a Windows device. If this was you, you can ignore this alert. If not, we recommend securing your account.',
 +    snippet: 'Your ShopMail account was just signed in to from a Windows device.',
      timestamp: new Date(BASE_TIME - 1000 * 60 * 60 * 20).toISOString(), // 20 hours ago
      read: true,
      starred: false,
-diff -ruN a_gmail_mock/src/index.css b_gmail_mock/src/index.css
+@@ -743,8 +743,8 @@
+   emails.push({
+     id: 'email_forums_1',
+     threadId: 'thread_forums_1',
+-    from: { name: 'Python Mailing List', email: 'python-dev@python.org', avatar: 'https://picsum.photos/100/100?random=python' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'Python Mailing List', email: 'python-dev@python.org', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
+     cc: [],
+     bcc: [],
+     subject: '[Python-dev] PEP 740 - Index Support for Verifiable Build Provenance',
+@@ -763,8 +763,8 @@
+   emails.push({
+     id: 'email_forums_2',
+     threadId: 'thread_forums_2',
+-    from: { name: 'Company All-Hands Group', email: 'all-hands@company.com', avatar: 'https://picsum.photos/100/100?random=allhands' },
+-    to: [{ name: 'Demo User', email: 'demo@example.com' }],
++    from: { name: 'Company All-Hands Group', email: 'all-hands@company.com', avatar: null },
++    to: [{ name: 'Alice Anderson', email: 'alice@shopgym.com' }],
+     cc: [],
+     bcc: [],
+     subject: '[Company] Engineering All-Hands Notes - Feb 2026',
+@@ -786,7 +786,7 @@
+ export const DEFAULT_SETTINGS = {
+   density: 'default',
+   undoSend: 10,
+-  signature: '--\nDemo User\ndemo@example.com',
++  signature: '--\nAlice Anderson\nalice@shopgym.com',
+   categoryTabs: { primary: true, social: true, promotions: true, updates: false, forums: false },
+   replyBehavior: 'Reply',
+   language: 'English (US)',
+diff -ruN a/websites/gmail_mock/src/index.css b/websites/gmail_mock/src/index.css
 --- a/websites/gmail_mock/src/index.css	2026-07-28 11:01:47
 +++ b/websites/gmail_mock/src/index.css	2026-07-30 17:35:14
 @@ -10,7 +10,7 @@
@@ -546,7 +3449,7 @@ diff -ruN a_gmail_mock/src/index.css b_gmail_mock/src/index.css
    -webkit-font-smoothing: antialiased;
    background-color: #f6f8fc;
  }
-diff -ruN a_gmail_mock/src/lib/bridge.js b_gmail_mock/src/lib/bridge.js
+diff -ruN a/websites/gmail_mock/src/lib/bridge.js b/websites/gmail_mock/src/lib/bridge.js
 --- a/websites/gmail_mock/src/lib/bridge.js	1969-12-31 16:00:00
 +++ b/websites/gmail_mock/src/lib/bridge.js	2026-07-30 19:22:19
 @@ -0,0 +1,54 @@
@@ -604,10 +3507,40 @@ diff -ruN a_gmail_mock/src/lib/bridge.js b_gmail_mock/src/lib/bridge.js
 +  setTimeout(tick, ms);
 +  return () => { live = false; };
 +}
-diff -ruN a_gmail_mock/src/pages/Settings.jsx b_gmail_mock/src/pages/Settings.jsx
+diff -ruN a/websites/gmail_mock/src/pages/Settings.jsx b/websites/gmail_mock/src/pages/Settings.jsx
 --- a/websites/gmail_mock/src/pages/Settings.jsx	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/pages/Settings.jsx	2026-07-30 17:35:14
-@@ -435,7 +435,7 @@
++++ b/websites/gmail_mock/src/pages/Settings.jsx	2026-07-31 15:09:56
+@@ -3,6 +3,7 @@
+ import { ArrowLeft, AlertTriangle } from 'lucide-react';
+ import { useStore } from '../context/StoreContext';
+ import { cn } from '../lib/utils';
++import Avatar from '../components/Avatar';
+ 
+ const EditLabelModal = ({ label, onSave, onClose }) => {
+   const [name, setName] = useState(label.name);
+@@ -91,7 +92,7 @@
+   // General tab local state (pre-populated from persisted settings)
+   const [density, setDensity] = useState(settings.density || 'default');
+   const [undoSend, setUndoSend] = useState(settings.undoSend || 10);
+-  const [signature, setSignature] = useState(settings.signature || '--\nDemo User\ndemo@example.com');
++  const [signature, setSignature] = useState(settings.signature || '--\nAlice Anderson\nalice@shopgym.com');
+ 
+   // Inbox tab local state
+   const [categoryTabs, setCategoryTabs] = useState(() => ({
+@@ -427,15 +428,16 @@
+                 <h3 className="text-sm font-semibold text-gray-800 mb-4">Account info</h3>
+ 
+                 <div className="bg-gray-50 rounded-lg p-6 flex items-center gap-4">
+-                  <img
+-                    src={state.user.avatar}
+-                    alt={state.user.username}
+-                    className="w-16 h-16 rounded-full border border-gray-200"
++                  <Avatar
++                    name={state.user.username}
++                    email={state.user.email}
++                    size={64}
++                    className="border border-gray-200"
+                   />
                    <div>
                      <p className="font-medium text-gray-900 text-base">{state.user.username}</p>
                      <p className="text-sm text-gray-500">{state.user.email}</p>
@@ -616,7 +3549,7 @@ diff -ruN a_gmail_mock/src/pages/Settings.jsx b_gmail_mock/src/pages/Settings.js
                    </div>
                  </div>
  
-@@ -457,7 +457,7 @@
+@@ -457,7 +459,7 @@
                    <div className="flex items-center justify-between py-3 border-b border-gray-100">
                      <div>
                        <p className="text-sm font-medium text-gray-800">Language</p>

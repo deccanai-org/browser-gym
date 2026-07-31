@@ -1,4 +1,2164 @@
-diff -ruN a_google_calendar_mock/index.css b_google_calendar_mock/index.css
+diff -ruN a/websites/google_calendar_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json b/websites/google_calendar_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json
+--- a/websites/google_calendar_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json	2026-07-30 17:37:11
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00.000Z",
++      "end": "2026-05-21T19:00:00.000Z",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00.000Z",
++      "end": "2026-05-22T10:45:00.000Z",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00.000Z",
++      "end": "2026-05-22T15:00:00.000Z",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00.000Z",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "M212/subscription_pause_phantom",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/11111111-1111-5111-8111-111111111111.json b/websites/google_calendar_mock/.mock-states/11111111-1111-5111-8111-111111111111.json
+--- a/websites/google_calendar_mock/.mock-states/11111111-1111-5111-8111-111111111111.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/11111111-1111-5111-8111-111111111111.json	2026-07-30 20:05:26
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "reminders": []
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "reminders": []
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "reminders": []
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-06-17T07:00:00.000Z",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/4e1b0d38-4f44-52f0-8db5-020f25aaf46b.initial.json b/websites/google_calendar_mock/.mock-states/4e1b0d38-4f44-52f0-8db5-020f25aaf46b.initial.json
+--- a/websites/google_calendar_mock/.mock-states/4e1b0d38-4f44-52f0-8db5-020f25aaf46b.initial.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/4e1b0d38-4f44-52f0-8db5-020f25aaf46b.initial.json	2026-07-30 20:26:01
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/4e1b0d38-4f44-52f0-8db5-020f25aaf46b.json b/websites/google_calendar_mock/.mock-states/4e1b0d38-4f44-52f0-8db5-020f25aaf46b.json
+--- a/websites/google_calendar_mock/.mock-states/4e1b0d38-4f44-52f0-8db5-020f25aaf46b.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/4e1b0d38-4f44-52f0-8db5-020f25aaf46b.json	2026-07-30 20:26:01
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/5994d83c-218a-4436-b77e-94e042c5c865.initial.json b/websites/google_calendar_mock/.mock-states/5994d83c-218a-4436-b77e-94e042c5c865.initial.json
+--- a/websites/google_calendar_mock/.mock-states/5994d83c-218a-4436-b77e-94e042c5c865.initial.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/5994d83c-218a-4436-b77e-94e042c5c865.initial.json	2026-07-30 19:30:39
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/5994d83c-218a-4436-b77e-94e042c5c865.json b/websites/google_calendar_mock/.mock-states/5994d83c-218a-4436-b77e-94e042c5c865.json
+--- a/websites/google_calendar_mock/.mock-states/5994d83c-218a-4436-b77e-94e042c5c865.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/5994d83c-218a-4436-b77e-94e042c5c865.json	2026-07-30 19:31:13
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/5d52038c-5bf1-47eb-a543-dccaa0d59e82.initial.json b/websites/google_calendar_mock/.mock-states/5d52038c-5bf1-47eb-a543-dccaa0d59e82.initial.json
+--- a/websites/google_calendar_mock/.mock-states/5d52038c-5bf1-47eb-a543-dccaa0d59e82.initial.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/5d52038c-5bf1-47eb-a543-dccaa0d59e82.initial.json	2026-07-30 19:25:03
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/5d52038c-5bf1-47eb-a543-dccaa0d59e82.json b/websites/google_calendar_mock/.mock-states/5d52038c-5bf1-47eb-a543-dccaa0d59e82.json
+--- a/websites/google_calendar_mock/.mock-states/5d52038c-5bf1-47eb-a543-dccaa0d59e82.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/5d52038c-5bf1-47eb-a543-dccaa0d59e82.json	2026-07-30 19:27:09
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/a034e6ad-0af1-4500-afef-5999157c5a74.initial.json b/websites/google_calendar_mock/.mock-states/a034e6ad-0af1-4500-afef-5999157c5a74.initial.json
+--- a/websites/google_calendar_mock/.mock-states/a034e6ad-0af1-4500-afef-5999157c5a74.initial.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/a034e6ad-0af1-4500-afef-5999157c5a74.initial.json	2026-07-30 19:31:34
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/a034e6ad-0af1-4500-afef-5999157c5a74.json b/websites/google_calendar_mock/.mock-states/a034e6ad-0af1-4500-afef-5999157c5a74.json
+--- a/websites/google_calendar_mock/.mock-states/a034e6ad-0af1-4500-afef-5999157c5a74.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/a034e6ad-0af1-4500-afef-5999157c5a74.json	2026-07-30 19:31:34
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/a51ee49d-c993-5689-9ac4-021ab904a53a.initial.json b/websites/google_calendar_mock/.mock-states/a51ee49d-c993-5689-9ac4-021ab904a53a.initial.json
+--- a/websites/google_calendar_mock/.mock-states/a51ee49d-c993-5689-9ac4-021ab904a53a.initial.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/a51ee49d-c993-5689-9ac4-021ab904a53a.initial.json	2026-07-30 19:25:03
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/a51ee49d-c993-5689-9ac4-021ab904a53a.json b/websites/google_calendar_mock/.mock-states/a51ee49d-c993-5689-9ac4-021ab904a53a.json
+--- a/websites/google_calendar_mock/.mock-states/a51ee49d-c993-5689-9ac4-021ab904a53a.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/a51ee49d-c993-5689-9ac4-021ab904a53a.json	2026-07-30 19:31:34
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/d2ddc7bf-e103-49dd-b2bb-e7a40d8ce449.initial.json b/websites/google_calendar_mock/.mock-states/d2ddc7bf-e103-49dd-b2bb-e7a40d8ce449.initial.json
+--- a/websites/google_calendar_mock/.mock-states/d2ddc7bf-e103-49dd-b2bb-e7a40d8ce449.initial.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/d2ddc7bf-e103-49dd-b2bb-e7a40d8ce449.initial.json	2026-07-30 20:26:01
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/d2ddc7bf-e103-49dd-b2bb-e7a40d8ce449.json b/websites/google_calendar_mock/.mock-states/d2ddc7bf-e103-49dd-b2bb-e7a40d8ce449.json
+--- a/websites/google_calendar_mock/.mock-states/d2ddc7bf-e103-49dd-b2bb-e7a40d8ce449.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/d2ddc7bf-e103-49dd-b2bb-e7a40d8ce449.json	2026-07-30 20:26:11
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/d9431af5-ca98-4084-9fe0-500f0137dabc.initial.json b/websites/google_calendar_mock/.mock-states/d9431af5-ca98-4084-9fe0-500f0137dabc.initial.json
+--- a/websites/google_calendar_mock/.mock-states/d9431af5-ca98-4084-9fe0-500f0137dabc.initial.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/d9431af5-ca98-4084-9fe0-500f0137dabc.initial.json	2026-07-30 19:29:21
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/.mock-states/d9431af5-ca98-4084-9fe0-500f0137dabc.json b/websites/google_calendar_mock/.mock-states/d9431af5-ca98-4084-9fe0-500f0137dabc.json
+--- a/websites/google_calendar_mock/.mock-states/d9431af5-ca98-4084-9fe0-500f0137dabc.json	1969-12-31 16:00:00
++++ b/websites/google_calendar_mock/.mock-states/d9431af5-ca98-4084-9fe0-500f0137dabc.json	2026-07-30 19:29:53
+@@ -0,0 +1,130 @@
++{
++  "user": {
++    "id": "u1",
++    "username": "Alice Anderson",
++    "email": "alice.anderson@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100"
++  },
++  "calendars": [
++    {
++      "id": "c1",
++      "name": "Personal",
++      "color": "#039BE5",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": true
++    },
++    {
++      "id": "c2",
++      "name": "Work",
++      "color": "#33B679",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c3",
++      "name": "Family",
++      "color": "#8E24AA",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c4",
++      "name": "Holidays",
++      "color": "#F4511E",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    },
++    {
++      "id": "c5",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true,
++      "userId": "u1",
++      "isDefault": false
++    }
++  ],
++  "otherCalendars": [
++    {
++      "id": "oc1",
++      "name": "Holidays in United States",
++      "color": "#0B8043",
++      "visible": true
++    },
++    {
++      "id": "oc2",
++      "name": "Birthdays",
++      "color": "#E67C73",
++      "visible": true
++    }
++  ],
++  "events": [
++    {
++      "id": "ev_1",
++      "calendarId": "c1",
++      "title": "Gym session",
++      "start": "2026-05-21T18:00:00",
++      "end": "2026-05-21T19:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_3",
++      "calendarId": "c1",
++      "title": "Dentist",
++      "start": "2026-05-22T10:00:00",
++      "end": "2026-05-22T10:45:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    },
++    {
++      "id": "ev_2",
++      "calendarId": "c1",
++      "title": "Team sync",
++      "start": "2026-05-22T14:00:00",
++      "end": "2026-05-22T15:00:00",
++      "allDay": false,
++      "location": "",
++      "description": "",
++      "guests": [],
++      "color": "#039BE5",
++      "recurring": "none",
++      "source": "seed"
++    }
++  ],
++  "view": "week",
++  "currentDate": "2026-05-21T00:00:00",
++  "sidebarOpen": true,
++  "settings": {
++    "weekStart": 0,
++    "defaultDuration": 60,
++    "defaultView": "week",
++    "defaultReminder": {
++      "type": "popup",
++      "minutes": 10
++    },
++    "timeFormat": "12h",
++    "showWeekNumbers": false,
++    "showDeclinedEvents": false
++  },
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "calendar",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/google_calendar_mock/index.css b/websites/google_calendar_mock/index.css
 --- a/websites/google_calendar_mock/index.css	2026-07-28 11:01:47
 +++ b/websites/google_calendar_mock/index.css	2026-07-30 17:43:50
 @@ -1,4 +1,6 @@
@@ -18,7 +2178,7 @@ diff -ruN a_google_calendar_mock/index.css b_google_calendar_mock/index.css
    color: #3C4043;
    font-size: 14px;
  }
-diff -ruN a_google_calendar_mock/index.html b_google_calendar_mock/index.html
+diff -ruN a/websites/google_calendar_mock/index.html b/websites/google_calendar_mock/index.html
 --- a/websites/google_calendar_mock/index.html	2026-07-28 11:01:47
 +++ b/websites/google_calendar_mock/index.html	2026-07-30 17:35:14
 @@ -4,7 +4,7 @@
@@ -30,7 +2190,7 @@ diff -ruN a_google_calendar_mock/index.html b_google_calendar_mock/index.html
    </head>
    <body>
      <div id="root"></div>
-diff -ruN a_google_calendar_mock/src/App.jsx b_google_calendar_mock/src/App.jsx
+diff -ruN a/websites/google_calendar_mock/src/App.jsx b/websites/google_calendar_mock/src/App.jsx
 --- a/websites/google_calendar_mock/src/App.jsx	2026-07-28 11:01:47
 +++ b/websites/google_calendar_mock/src/App.jsx	2026-07-30 18:15:02
 @@ -8,6 +8,7 @@
@@ -53,10 +2213,67 @@ diff -ruN a_google_calendar_mock/src/App.jsx b_google_calendar_mock/src/App.jsx
      // If e is provided, show popover at click position
      if (e) {
        const rect = e.currentTarget.getBoundingClientRect();
-diff -ruN a_google_calendar_mock/src/components/EventModal.jsx b_google_calendar_mock/src/components/EventModal.jsx
+diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websites/google_calendar_mock/src/components/EventModal.jsx
 --- a/websites/google_calendar_mock/src/components/EventModal.jsx	2026-07-28 11:01:47
-+++ b/websites/google_calendar_mock/src/components/EventModal.jsx	2026-07-30 17:35:14
-@@ -108,10 +108,21 @@
++++ b/websites/google_calendar_mock/src/components/EventModal.jsx	2026-07-31 15:11:28
+@@ -1,19 +1,10 @@
+ import React, { useState, useEffect, useRef } from 'react';
+-import { X, Clock, MapPin, AlignLeft, Users, Bell, Trash2, Copy, Repeat, Check } from 'lucide-react';
++import { X, Clock, MapPin, AlignLeft, Bell, Trash2, Copy, Repeat } from 'lucide-react';
+ import { useStore } from '../context/StoreContext';
+ import { generateId } from '../utils/helpers';
+ import { format } from 'date-fns';
+ import clsx from 'clsx';
+ 
+-// Mock users for the picker
+-const MOCK_USERS = [
+-  { email: 'alice@example.com', name: 'Alice Smith', avatar: 'https://picsum.photos/50/50?random=1' },
+-  { email: 'bob@example.com', name: 'Bob Jones', avatar: 'https://picsum.photos/50/50?random=2' },
+-  { email: 'charlie@example.com', name: 'Charlie Brown', avatar: 'https://picsum.photos/50/50?random=3' },
+-  { email: 'david@example.com', name: 'David Lee', avatar: 'https://picsum.photos/50/50?random=4' },
+-  { email: 'eve@example.com', name: 'Eve Wilson', avatar: 'https://picsum.photos/50/50?random=5' }
+-];
+-
+ export default function EventModal({ isOpen, onClose, event, selectedDate }) {
+   const { state, dispatch } = useStore();
+   const [formData, setFormData] = useState({
+@@ -30,10 +21,7 @@
+     reminders: []
+   });
+   
+-  const [guestInput, setGuestInput] = useState('');
+-  const [showUserPicker, setShowUserPicker] = useState(false);
+   const [deletePending, setDeletePending] = useState(false);
+-  const pickerRef = useRef(null);
+ 
+   useEffect(() => {
+     if (isOpen) {
+@@ -68,24 +56,11 @@
+           reminders: [{ type: 'popup', minutes: 10 }]
+         });
+       }
+-      setGuestInput('');
+-      setShowUserPicker(false);
+       setDeletePending(false);
+     }
+   }, [isOpen, event, selectedDate, state.calendars]);
+ 
+-  // Handle click outside picker
+   useEffect(() => {
+-    const handleClickOutside = (event) => {
+-      if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+-        setShowUserPicker(false);
+-      }
+-    };
+-    document.addEventListener('mousedown', handleClickOutside);
+-    return () => document.removeEventListener('mousedown', handleClickOutside);
+-  }, []);
+-
+-  useEffect(() => {
+     if (!isOpen) return;
+     const handleEscape = (e) => {
+       if (e.key !== 'Escape') return;
+@@ -108,10 +83,21 @@
        end: new Date(formData.end).toISOString()
      };
  
@@ -80,7 +2297,7 @@ diff -ruN a_google_calendar_mock/src/components/EventModal.jsx b_google_calendar
      }
      onClose();
    };
-@@ -137,7 +148,12 @@
+@@ -137,7 +123,12 @@
          end: new Date(formData.end).toISOString(),
          guests: formData.guests,
        };
@@ -94,7 +2311,114 @@ diff -ruN a_google_calendar_mock/src/components/EventModal.jsx b_google_calendar
        onClose();
      }
    };
-diff -ruN a_google_calendar_mock/src/components/EventPopover.jsx b_google_calendar_mock/src/components/EventPopover.jsx
+@@ -203,30 +194,6 @@
+     updateReminder(index, 'minutes', newMinutes);
+   };
+ 
+-  const addGuest = (email) => {
+-    if (email && !formData.guests.includes(email)) {
+-      setFormData({
+-        ...formData,
+-        guests: [...formData.guests, email]
+-      });
+-    }
+-    setGuestInput('');
+-    setShowUserPicker(false);
+-  };
+-
+-  const removeGuest = (email) => {
+-    setFormData({
+-      ...formData,
+-      guests: formData.guests.filter(g => g !== email)
+-    });
+-  };
+-
+-  const filteredUsers = MOCK_USERS.filter(user => 
+-    !formData.guests.includes(user.email) &&
+-    (user.name.toLowerCase().includes(guestInput.toLowerCase()) || 
+-     user.email.toLowerCase().includes(guestInput.toLowerCase()))
+-  );
+-
+   return (
+     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+       <div className="bg-white rounded-lg shadow-xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
+@@ -388,75 +355,6 @@
+               value={formData.description}
+               onChange={e => setFormData({ ...formData, description: e.target.value })}
+             />
+-          </div>
+-
+-          <div className="flex items-start gap-4 relative" ref={pickerRef}>
+-            <Users className="text-gray-400 mt-1" size={20} />
+-            <div className="flex-1">
+-              <div className="flex flex-wrap gap-2 mb-2">
+-                {formData.guests.map(email => (
+-                  <div key={email} className="flex items-center gap-1 bg-gray-100 rounded-full px-2 py-1 text-xs">
+-                    <img 
+-                      src={MOCK_USERS.find(u => u.email === email)?.avatar || `https://ui-avatars.com/api/?name=${email}`} 
+-                      alt="" 
+-                      className="w-4 h-4 rounded-full"
+-                    />
+-                    <span>{MOCK_USERS.find(u => u.email === email)?.name || email}</span>
+-                    <button type="button" onClick={() => removeGuest(email)} className="text-gray-500 hover:text-gray-700">
+-                      <X size={12} />
+-                    </button>
+-                  </div>
+-                ))}
+-              </div>
+-              <input
+-                type="text"
+-                placeholder="Add guests"
+-                className="w-full border-b border-gray-200 focus:border-primary outline-none py-1 text-sm"
+-                value={guestInput}
+-                onChange={e => {
+-                  setGuestInput(e.target.value);
+-                  setShowUserPicker(true);
+-                }}
+-                onFocus={() => setShowUserPicker(true)}
+-                onKeyDown={(e) => {
+-                  if (e.key === 'Enter' && guestInput) {
+-                    e.preventDefault();
+-                    addGuest(guestInput);
+-                  }
+-                }}
+-              />
+-              
+-              {showUserPicker && (
+-                <div className="absolute top-full left-9 right-0 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 max-h-48 overflow-y-auto z-50">
+-                  {filteredUsers.length > 0 ? (
+-                    filteredUsers.map(user => (
+-                      <button
+-                        key={user.email}
+-                        type="button"
+-                        onClick={() => addGuest(user.email)}
+-                        className="w-full text-left px-3 py-2 hover:bg-gray-50 flex items-center gap-2 text-sm"
+-                      >
+-                        <img src={user.avatar} alt="" className="w-6 h-6 rounded-full" />
+-                        <div className="flex flex-col">
+-                          <span className="font-medium text-text-primary">{user.name}</span>
+-                          <span className="text-xs text-text-secondary">{user.email}</span>
+-                        </div>
+-                      </button>
+-                    ))
+-                  ) : (
+-                    guestInput && (
+-                      <button
+-                        type="button"
+-                        onClick={() => addGuest(guestInput)}
+-                        className="w-full text-left px-3 py-2 hover:bg-gray-50 text-sm text-primary"
+-                      >
+-                        Add "{guestInput}"
+-                      </button>
+-                    )
+-                  )}
+-                </div>
+-              )}
+-            </div>
+           </div>
+ 
+           <div className="flex justify-end pt-4">
+diff -ruN a/websites/google_calendar_mock/src/components/EventPopover.jsx b/websites/google_calendar_mock/src/components/EventPopover.jsx
 --- a/websites/google_calendar_mock/src/components/EventPopover.jsx	2026-07-28 11:01:47
 +++ b/websites/google_calendar_mock/src/components/EventPopover.jsx	2026-07-30 17:35:14
 @@ -135,7 +135,7 @@
@@ -106,10 +2430,31 @@ diff -ruN a_google_calendar_mock/src/components/EventPopover.jsx b_google_calend
              </a>
            </div>
          )}
-diff -ruN a_google_calendar_mock/src/components/Header.jsx b_google_calendar_mock/src/components/Header.jsx
+diff -ruN a/websites/google_calendar_mock/src/components/Header.jsx b/websites/google_calendar_mock/src/components/Header.jsx
 --- a/websites/google_calendar_mock/src/components/Header.jsx	2026-07-28 11:01:47
-+++ b/websites/google_calendar_mock/src/components/Header.jsx	2026-07-30 17:35:14
-@@ -165,7 +165,7 @@
++++ b/websites/google_calendar_mock/src/components/Header.jsx	2026-07-31 15:10:37
+@@ -3,6 +3,7 @@
+ import { Menu, ChevronLeft, ChevronRight, Search, Settings, HelpCircle, User, ChevronDown, Plus, Database } from 'lucide-react';
+ import { format, addMonths, subMonths, addWeeks, subWeeks, addDays, subDays, addHours, startOfTomorrow } from 'date-fns';
+ import { generateId, getSessionId } from '../utils/helpers';
++import SettingsModal from './SettingsModal';
+ 
+ export default function Header({ onSearch }) {
+   const { state, dispatch } = useStore();
+@@ -25,9 +26,9 @@
+       if (quickAddRef.current && !quickAddRef.current.contains(event.target)) {
+         setQuickAddOpen(false);
+       }
+-      if (settingsRef.current && !settingsRef.current.contains(event.target)) {
+-        setSettingsOpen(false);
+-      }
++      // Settings now opens a full-screen SettingsModal which manages its own
++      // dismissal (overlay click / Cancel / Escape); no outside-click branch here
++      // or every click inside the modal would immediately close it.
+     };
+     const handleEscape = (event) => {
+       if (event.key === 'Escape') {
+@@ -165,7 +166,7 @@
            <div className="w-8 h-8 bg-primary rounded text-white flex items-center justify-center font-bold text-lg">
              31
            </div>
@@ -118,7 +2463,118 @@ diff -ruN a_google_calendar_mock/src/components/Header.jsx b_google_calendar_moc
          </div>
        </div>
  
-diff -ruN a_google_calendar_mock/src/components/SettingsModal.jsx b_google_calendar_mock/src/components/SettingsModal.jsx
+@@ -285,45 +286,30 @@
+         </div>
+ 
+         <div className="flex items-center gap-2 ml-2">
+-          <div className="relative" ref={settingsRef}>
+           <button
+-            onClick={() => setSettingsOpen(!settingsOpen)}
++            onClick={() => setSettingsOpen(true)}
+             className="p-2 hover:bg-gray-100 rounded-full text-text-secondary"
+             title="Settings"
+             aria-label="Settings"
+           >
+             <Settings size={20} />
+           </button>
+-          {settingsOpen && (
+-            <div className="absolute top-full right-0 mt-2 w-72 bg-white border border-google-border rounded-lg shadow-xl p-4 z-50">
+-              <h3 className="text-sm font-medium text-text-primary mb-3">Calendar settings</h3>
+-              <label className="block text-xs text-text-secondary mb-1">Week starts on</label>
+-              <select
+-                value={state.settings.weekStart}
+-                onChange={(e) => dispatch({ type: 'UPDATE_SETTINGS', payload: { weekStart: Number(e.target.value) } })}
+-                className="w-full border border-google-border rounded p-2 text-sm mb-3"
+-              >
+-                <option value={0}>Sunday</option>
+-                <option value={1}>Monday</option>
+-              </select>
+-              <label className="block text-xs text-text-secondary mb-1">Default event duration</label>
+-              <select
+-                value={state.settings.defaultDuration}
+-                onChange={(e) => dispatch({ type: 'UPDATE_SETTINGS', payload: { defaultDuration: Number(e.target.value) } })}
+-                className="w-full border border-google-border rounded p-2 text-sm"
+-              >
+-                <option value={30}>30 minutes</option>
+-                <option value={60}>60 minutes</option>
+-                <option value={90}>90 minutes</option>
+-              </select>
++          <SettingsModal isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
++          {state.user.avatar ? (
++            <img
++              src={state.user.avatar}
++              alt="User"
++              className="w-8 h-8 rounded-full border border-google-border"
++            />
++          ) : (
++            <div
++              className="w-8 h-8 rounded-full border border-google-border bg-primary text-white flex items-center justify-center text-sm font-medium"
++              title={state.user.username}
++              aria-label={state.user.username}
++            >
++              {(state.user.username || 'U').trim().charAt(0).toUpperCase()}
+             </div>
+           )}
+-          </div>
+-          <img 
+-            src={state.user.avatar} 
+-            alt="User" 
+-            className="w-8 h-8 rounded-full border border-google-border"
+-          />
+         </div>
+       </div>
+     </header>
+diff -ruN a/websites/google_calendar_mock/src/components/MonthView.jsx b/websites/google_calendar_mock/src/components/MonthView.jsx
+--- a/websites/google_calendar_mock/src/components/MonthView.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/MonthView.jsx	2026-07-31 15:08:27
+@@ -55,6 +55,33 @@
+     }
+   });
+ 
++  // Named Tailwind color -> hex, so seeded events (which may carry either a hex
++  // like "#33B679" or a class like "bg-green-500") always resolve to a real
++  // color. Applying the raw class as a className silently broke Month view: a
++  // hex became an invalid class and the chip rendered white-on-white.
++  const NAMED_COLORS = {
++    'bg-blue-500': '#039BE5',
++    'bg-green-500': '#33B679',
++    'bg-purple-500': '#8E24AA',
++    'bg-yellow-500': '#F6BF26',
++    'bg-red-500': '#E67C73',
++    'bg-orange-500': '#F4511E',
++    'bg-indigo-500': '#3F51B5',
++    'bg-teal-500': '#009688',
++    'bg-pink-500': '#E67C73',
++  };
++
++  const getEventColor = (event) => {
++    if (event.color && event.color.startsWith('#')) return event.color;
++    if (event.color && NAMED_COLORS[event.color]) return NAMED_COLORS[event.color];
++    const cal = state.calendars.find(c => c.id === event.calendarId);
++    if (cal?.color) {
++      if (cal.color.startsWith('#')) return cal.color;
++      if (NAMED_COLORS[cal.color]) return NAMED_COLORS[cal.color];
++    }
++    return '#039BE5';
++  };
++
+   const getEventsForDay = (day) => {
+     return events.filter(event => {
+       const start = new Date(event.start);
+@@ -157,10 +184,9 @@
+                         : event;
+                       onEventClick(targetEvent, e);
+                     }}
++                    style={{ backgroundColor: getEventColor(event) }}
+                     className={clsx(
+-                      "text-xs px-2 py-0.5 rounded truncate cursor-pointer shadow-sm hover:opacity-80",
+-                      event.color || "bg-blue-500",
+-                      "text-white",
++                      "text-xs px-2 py-0.5 rounded truncate cursor-pointer shadow-sm hover:opacity-80 text-white",
+                       event.allDay && "font-medium"
+                     )}
+                   >
+diff -ruN a/websites/google_calendar_mock/src/components/SettingsModal.jsx b/websites/google_calendar_mock/src/components/SettingsModal.jsx
 --- a/websites/google_calendar_mock/src/components/SettingsModal.jsx	2026-07-28 11:01:47
 +++ b/websites/google_calendar_mock/src/components/SettingsModal.jsx	2026-07-30 17:35:14
 @@ -36,7 +36,7 @@
@@ -130,7 +2586,176 @@ diff -ruN a_google_calendar_mock/src/components/SettingsModal.jsx b_google_calen
        'CALSCALE:GREGORIAN',
        ...state.events.flatMap(event => [
          'BEGIN:VEVENT',
-diff -ruN a_google_calendar_mock/src/components/WeekView.jsx b_google_calendar_mock/src/components/WeekView.jsx
+diff -ruN a/websites/google_calendar_mock/src/components/Sidebar.jsx b/websites/google_calendar_mock/src/components/Sidebar.jsx
+--- a/websites/google_calendar_mock/src/components/Sidebar.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/Sidebar.jsx	2026-07-31 15:10:12
+@@ -3,13 +3,27 @@
+ import { Plus, Eye, EyeOff, Trash2, Database } from 'lucide-react';
+ import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, startOfWeek, endOfWeek } from 'date-fns';
+ import clsx from 'clsx';
+-import { generateId, getSessionId } from '../utils/helpers';
++import { getSessionId } from '../utils/helpers';
++import AddCalendarModal from './AddCalendarModal';
+ 
++// Named Tailwind color -> hex so a swatch renders whether a calendar carries a
++// hex ("#039BE5") or a class ("bg-green-500").
++const NAMED_COLORS = {
++  'bg-blue-500': '#039BE5',
++  'bg-green-500': '#33B679',
++  'bg-purple-500': '#8E24AA',
++  'bg-yellow-500': '#F6BF26',
++  'bg-red-500': '#E67C73',
++  'bg-indigo-500': '#3F51B5',
++};
++const swatchColor = (c) => !c ? '#039BE5' : c.startsWith('#') ? c : (NAMED_COLORS[c] || '#039BE5');
++
+ export default function Sidebar({ onCreateEvent }) {
+   const { state, dispatch } = useStore();
+-  const [newCalName, setNewCalName] = useState('');
+-  const [isAddingCal, setIsAddingCal] = useState(false);
+   const [calendarToDelete, setCalendarToDelete] = useState(null);
++  const [addModalOpen, setAddModalOpen] = useState(false);
++  const [addModalMode, setAddModalMode] = useState('my');
++  const openAddModal = (mode) => { setAddModalMode(mode); setAddModalOpen(true); };
+   const sid = getSessionId();
+   const goHref = sid ? `/go?sid=${encodeURIComponent(sid)}` : '/go';
+ 
+@@ -31,25 +45,6 @@
+   
+   const calendarDays = eachDayOfInterval({ start: startDate, end: endDate });
+ 
+-  const handleAddCalendar = (e) => {
+-    e.preventDefault();
+-    if (!newCalName.trim()) return;
+-    
+-    dispatch({
+-      type: 'ADD_CALENDAR',
+-      payload: {
+-        id: generateId(),
+-        name: newCalName,
+-        color: 'bg-indigo-500',
+-        textColor: 'text-white',
+-        visible: true,
+-        userId: state.user.id
+-      }
+-    });
+-    setNewCalName('');
+-    setIsAddingCal(false);
+-  };
+-
+   return (
+     <aside className={clsx(
+       "w-64 flex-shrink-0 flex flex-col border-r border-google-border bg-white transition-all duration-300 overflow-y-auto",
+@@ -99,27 +94,16 @@
+         <div className="border-t border-google-border pt-4">
+           <div className="flex items-center justify-between mb-2 px-2">
+             <h3 className="text-sm font-medium text-text-primary">My calendars</h3>
+-            <button 
+-              onClick={() => setIsAddingCal(!isAddingCal)}
++            <button
++              onClick={() => openAddModal('my')}
+               className="text-text-secondary hover:bg-gray-100 p-1 rounded"
++              title="Create new calendar"
++              aria-label="Create new calendar"
+             >
+               <Plus size={16} />
+             </button>
+           </div>
+ 
+-          {isAddingCal && (
+-            <form onSubmit={handleAddCalendar} className="mb-2 px-2">
+-              <input
+-                autoFocus
+-                type="text"
+-                placeholder="New calendar name"
+-                className="w-full text-sm border border-google-border rounded p-1 mb-1"
+-                value={newCalName}
+-                onChange={(e) => setNewCalName(e.target.value)}
+-              />
+-            </form>
+-          )}
+-
+           <div className="space-y-1">
+             {state.calendars.map(cal => (
+               <div key={cal.id} className="group flex items-center justify-between px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">
+@@ -164,6 +148,63 @@
+               </div>
+             ))}
+           </div>
++
++          {/* Other calendars — subscribed / shared calendars, seeded separately
++              from "My calendars". Each row has an eye toggle wired to
++              TOGGLE_OTHER_CALENDAR. */}
++          <div className="mt-4 border-t border-google-border pt-4">
++            <div className="flex items-center justify-between mb-2 px-2">
++              <h3 className="text-sm font-medium text-text-primary">Other calendars</h3>
++              <button
++                onClick={() => openAddModal('other')}
++                className="text-text-secondary hover:bg-gray-100 p-1 rounded"
++                title="Subscribe to calendar"
++                aria-label="Subscribe to calendar"
++              >
++                <Plus size={16} />
++              </button>
++            </div>
++
++            <div className="space-y-1">
++              {(state.otherCalendars || []).map(cal => (
++                <div key={cal.id} className="group flex items-center justify-between px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">
++                  <div
++                    className="flex items-center gap-3 flex-1"
++                    onClick={() => dispatch({ type: 'TOGGLE_OTHER_CALENDAR', payload: cal.id })}
++                  >
++                    <div
++                      className="w-4 h-4 rounded border flex items-center justify-center"
++                      style={{
++                        backgroundColor: cal.visible ? swatchColor(cal.color) : 'transparent',
++                        borderColor: cal.visible ? swatchColor(cal.color) : '#70757A',
++                      }}
++                    >
++                      {cal.visible && <span className="text-white text-xs">✓</span>}
++                    </div>
++                    <span className="text-sm text-text-primary truncate">{cal.name}</span>
++                  </div>
++
++                  <div className="flex items-center gap-1">
++                    <button
++                      onClick={(e) => {
++                        e.stopPropagation();
++                        dispatch({ type: 'TOGGLE_OTHER_CALENDAR', payload: cal.id });
++                      }}
++                      className="p-1 text-gray-400 hover:text-gray-600"
++                      title={cal.visible ? "Hide from calendar" : "Show on calendar"}
++                      aria-label={cal.visible ? "Hide calendar" : "Show calendar"}
++                    >
++                      {cal.visible ? <Eye size={16} /> : <EyeOff size={16} />}
++                    </button>
++                  </div>
++                </div>
++              ))}
++              {(!state.otherCalendars || state.otherCalendars.length === 0) && (
++                <p className="px-2 text-xs text-text-secondary">No other calendars.</p>
++              )}
++            </div>
++          </div>
++
+           {calendarToDelete && (
+             <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40">
+               <div className="w-full max-w-sm rounded-lg bg-white p-5 shadow-xl border border-gray-200">
+@@ -196,6 +237,12 @@
+           </div>
+         </div>
+       </div>
++
++      <AddCalendarModal
++        isOpen={addModalOpen}
++        onClose={() => setAddModalOpen(false)}
++        mode={addModalMode}
++      />
+     </aside>
+   );
+ }
+diff -ruN a/websites/google_calendar_mock/src/components/WeekView.jsx b/websites/google_calendar_mock/src/components/WeekView.jsx
 --- a/websites/google_calendar_mock/src/components/WeekView.jsx	2026-07-28 11:01:47
 +++ b/websites/google_calendar_mock/src/components/WeekView.jsx	2026-07-30 18:56:43
 @@ -219,9 +219,17 @@
@@ -152,9 +2777,9 @@ diff -ruN a_google_calendar_mock/src/components/WeekView.jsx b_google_calendar_m
          return;
        }
  
-diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_mock/src/context/StoreContext.jsx
+diff -ruN a/websites/google_calendar_mock/src/context/StoreContext.jsx b/websites/google_calendar_mock/src/context/StoreContext.jsx
 --- a/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-30 20:45:38
++++ b/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-31 15:09:02
 @@ -1,7 +1,41 @@
  import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react';
  import { MOCK_USER, DEFAULT_CALENDARS, generateMockEvents, getSessionId, fetchCustomState, saveState, initializeData, getInitialState } from '../utils/helpers';
@@ -197,7 +2822,33 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
  const StoreContext = createContext();
  
  const defaultState = {
-@@ -114,6 +148,31 @@
+@@ -74,6 +108,15 @@
+       return { ...state, calendars: [...state.calendars, action.payload] };
+     case 'DELETE_CALENDAR':
+       return { ...state, calendars: state.calendars.filter(c => c.id !== action.payload) };
++    case 'ADD_OTHER_CALENDAR':
++      return { ...state, otherCalendars: [...(state.otherCalendars || []), action.payload] };
++    case 'TOGGLE_OTHER_CALENDAR':
++      return {
++        ...state,
++        otherCalendars: (state.otherCalendars || []).map(c =>
++          c.id === action.payload ? { ...c, visible: !c.visible } : c
++        )
++      };
+     case 'UPDATE_SETTINGS':
+       return { ...state, settings: { ...state.settings, ...action.payload } };
+     case 'ADD_NOTICE':
+@@ -95,6 +138,9 @@
+   const sidRef = useRef(getSessionId());
+   const initDone = useRef(false);
+   const [readyToSave, setReadyToSave] = React.useState(false);
++  // When a ?sid= is present but its seed can't be loaded, fail loudly instead of
++  // silently booting generic demo data (a reviewer can't tell demo from seed).
++  const [loadError, setLoadError] = React.useState(null);
+ 
+   const [state, dispatch] = useReducer(reducer, defaultState, (initial) => {
+     // Session-aware: check localStorage with session key BEFORE any async fetch
+@@ -114,22 +160,65 @@
      initDone.current = true;
  
      const sid = sidRef.current;
@@ -229,7 +2880,49 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
      fetchCustomState(sid).then(customState => {
        if (customState) {
          const data = initializeData(sid, customState);
-@@ -139,6 +198,69 @@
+         dispatch({ type: 'LOAD_STATE', payload: data });
+         setOriginalState(deepClone(data));
+         setReadyToSave(true);
+-      } else {
+-        // No custom state - just ensure initialState is saved
+-        const data = initializeData(sid, null);
+-        dispatch({ type: 'LOAD_STATE', payload: data });
+-        const initialStored = getInitialState(sid);
+-        if (initialStored) {
+-          setOriginalState(initialStored);
++        return;
++      }
++
++      // The state server returned nothing usable.
++      if (sid) {
++        // A specific session was requested but its seed could not be loaded.
++        // Only trust state already persisted locally for THIS exact sid; other-
++        // wise surface a loud error rather than pretending demo data is the seed.
++        const stored = localStorage.getItem(`gcal_mock_state_${sid}`);
++        if (stored) {
++          const data = JSON.parse(stored);
++          dispatch({ type: 'LOAD_STATE', payload: data });
++          setOriginalState(deepClone(data));
++          setReadyToSave(true);
++        } else {
++          setLoadError(sid);
+         }
+-        setReadyToSave(true);
++        return;
+       }
++
++      // No sid in the URL at all -> the demo fallback is legitimate.
++      const data = initializeData(null, null);
++      dispatch({ type: 'LOAD_STATE', payload: data });
++      const initialStored = getInitialState(null);
++      if (initialStored) {
++        setOriginalState(initialStored);
++      }
++      setReadyToSave(true);
+     });
+   }, []);
+ 
+@@ -139,6 +228,69 @@
      saveState(state, sid);
    }, [state, readyToSave]);
  
@@ -299,7 +2992,7 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
    const getDiff = () => {
      // Simple shallow diff for demonstration
      const diff = {};
-@@ -150,7 +272,7 @@
+@@ -150,10 +302,34 @@
  
    const value = {
      state,
@@ -308,7 +3001,34 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
      originalState,
      getDiff
    };
-diff -ruN a_google_calendar_mock/src/lib/bridge.js b_google_calendar_mock/src/lib/bridge.js
++
++  if (loadError) {
++    return (
++      <div style={{
++        position: 'fixed', inset: 0, zIndex: 9999, background: '#fff',
++        display: 'flex', alignItems: 'center', justifyContent: 'center',
++        padding: '24px', textAlign: 'center',
++        fontFamily: 'Roboto, Arial, sans-serif',
++      }}>
++        <div style={{ maxWidth: '480px' }}>
++          <div style={{ fontSize: '48px', marginBottom: '16px' }}>⚠️</div>
++          <h1 style={{ fontSize: '20px', fontWeight: 600, color: '#3C4043', marginBottom: '8px' }}>
++            Could not load session
++          </h1>
++          <p style={{ fontSize: '14px', color: '#5F6368', lineHeight: 1.5 }}>
++            Could not load session <code style={{
++              background: '#F1F3F4', padding: '1px 6px', borderRadius: '4px', color: '#3C4043',
++            }}>{loadError}</code> from the state server. The seeded calendar
++            state was not returned, so no data is shown.
++          </p>
++        </div>
++      </div>
++    );
++  }
+ 
+   return (
+     <StoreContext.Provider value={value}>
+diff -ruN a/websites/google_calendar_mock/src/lib/bridge.js b/websites/google_calendar_mock/src/lib/bridge.js
 --- a/websites/google_calendar_mock/src/lib/bridge.js	1969-12-31 16:00:00
 +++ b/websites/google_calendar_mock/src/lib/bridge.js	2026-07-30 19:22:19
 @@ -0,0 +1,54 @@
@@ -366,3 +3086,38 @@ diff -ruN a_google_calendar_mock/src/lib/bridge.js b_google_calendar_mock/src/li
 +  setTimeout(tick, ms);
 +  return () => { live = false; };
 +}
+diff -ruN a/websites/google_calendar_mock/src/utils/helpers.js b/websites/google_calendar_mock/src/utils/helpers.js
+--- a/websites/google_calendar_mock/src/utils/helpers.js	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/utils/helpers.js	2026-07-31 15:08:12
+@@ -5,9 +5,9 @@
+ 
+ export const MOCK_USER = {
+   id: 'u1',
+-  username: 'Demo User',
+-  email: 'demo@example.com',
+-  avatar: 'https://picsum.photos/100/100?random=user1'
++  username: 'Alice Anderson',
++  email: 'alice@shopgym.com',
++  avatar: null
+ };
+ 
+ export const DEFAULT_CALENDARS = [
+@@ -15,6 +15,18 @@
+   { id: 'c2', name: 'Work', color: 'bg-green-500', textColor: 'text-white', visible: true, userId: 'u1' },
+   { id: 'c3', name: 'Family', color: 'bg-purple-500', textColor: 'text-white', visible: true, userId: 'u1' },
+   { id: 'c4', name: 'Holidays', color: 'bg-yellow-500', textColor: 'text-white', visible: true, userId: 'u1' }
++];
++
++// Google-style event/calendar color palette. Consumed by AddCalendarModal's
++// swatch picker (each entry needs id/name/hex).
++export const EVENT_COLORS = [
++  { id: 'peacock', name: 'Peacock', hex: '#039BE5' },
++  { id: 'basil', name: 'Basil', hex: '#33B679' },
++  { id: 'grape', name: 'Grape', hex: '#8E24AA' },
++  { id: 'tangerine', name: 'Tangerine', hex: '#F4511E' },
++  { id: 'flamingo', name: 'Flamingo', hex: '#E67C73' },
++  { id: 'banana', name: 'Banana', hex: '#F6BF26' },
++  { id: 'sage', name: 'Sage', hex: '#0B8043' },
+ ];
+ 
+ export const generateMockEvents = () => {

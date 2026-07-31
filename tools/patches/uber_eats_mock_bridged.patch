@@ -1,4 +1,5967 @@
-diff -ruN a_uber_eats_mock/index.html b_uber_eats_mock/index.html
+diff -ruN a/websites/uber_eats_mock/.mock-states/0986b10c-9147-4c47-a1bb-f3cc77da9d2f.initial.json b/websites/uber_eats_mock/.mock-states/0986b10c-9147-4c47-a1bb-f3cc77da9d2f.initial.json
+--- a/websites/uber_eats_mock/.mock-states/0986b10c-9147-4c47-a1bb-f3cc77da9d2f.initial.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/0986b10c-9147-4c47-a1bb-f3cc77da9d2f.initial.json	2026-07-30 19:31:34
+@@ -0,0 +1,352 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "7:20 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": null,
++    "items": []
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [],
++    "restaurant_id": null,
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/0986b10c-9147-4c47-a1bb-f3cc77da9d2f.json b/websites/uber_eats_mock/.mock-states/0986b10c-9147-4c47-a1bb-f3cc77da9d2f.json
+--- a/websites/uber_eats_mock/.mock-states/0986b10c-9147-4c47-a1bb-f3cc77da9d2f.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/0986b10c-9147-4c47-a1bb-f3cc77da9d2f.json	2026-07-30 19:31:34
+@@ -0,0 +1,352 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "7:20 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": null,
++    "items": []
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [],
++    "restaurant_id": null,
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json b/websites/uber_eats_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json
+--- a/websites/uber_eats_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json	2026-07-30 17:37:11
+@@ -0,0 +1,352 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "7:20 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": null,
++    "items": []
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [],
++    "restaurant_id": null,
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "M212/subscription_pause_phantom",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/11111111-1111-5111-8111-111111111111.json b/websites/uber_eats_mock/.mock-states/11111111-1111-5111-8111-111111111111.json
+--- a/websites/uber_eats_mock/.mock-states/11111111-1111-5111-8111-111111111111.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/11111111-1111-5111-8111-111111111111.json	2026-07-30 20:21:56
+@@ -0,0 +1,427 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": "r_sushi",
++    "restaurantName": "Sakura Sushi",
++    "items": [
++      {
++        "cartItemId": "cart_item_0",
++        "menuItem": {
++          "id": "d_salmon_roll",
++          "restaurantId": "r_sushi",
++          "category": "Sushi",
++          "name": "Salmon Avocado Roll",
++          "description": "Fresh salmon, avocado, sushi rice.",
++          "price": 12.5,
++          "imageUrl": "",
++          "isPopular": true,
++          "isAvailable": true,
++          "dietaryTags": [],
++          "customizationGroups": []
++        },
++        "quantity": 2,
++        "modifiers": {},
++        "instructions": ""
++      },
++      {
++        "cartItemId": "cart_item_1",
++        "menuItem": {
++          "id": "d_miso",
++          "restaurantId": "r_sushi",
++          "category": "Soup",
++          "name": "Miso Soup",
++          "description": "Classic soybean broth with tofu.",
++          "price": 3.5,
++          "imageUrl": "",
++          "isPopular": false,
++          "isAvailable": true,
++          "dietaryTags": [
++            "Vegetarian"
++          ],
++          "customizationGroups": []
++        },
++        "quantity": 1,
++        "modifiers": {},
++        "instructions": ""
++      },
++      {
++        "id": "id_vl4gptl1h_ms8dm7x6",
++        "menuItemId": "d_salmon_roll",
++        "restaurantId": "r_sushi",
++        "name": "Salmon Avocado Roll",
++        "quantity": 1,
++        "basePrice": 12.5,
++        "selectedOptions": [],
++        "specialInstructions": "",
++        "totalPrice": 12.5
++      }
++    ],
++    "deliveryMode": "delivery",
++    "scheduledTime": null,
++    "promoCode": null,
++    "promoDiscount": 0,
++    "tipAmount": 0,
++    "tipPercentage": 18,
++    "deliveryInstructions": ""
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [
++      {
++        "dish_id": "d_salmon_roll",
++        "restaurant_id": "r_sushi",
++        "name": "Salmon Avocado Roll",
++        "unit_price": 12.5,
++        "quantity": 2
++      },
++      {
++        "dish_id": "d_miso",
++        "restaurant_id": "r_sushi",
++        "name": "Miso Soup",
++        "unit_price": 3.5,
++        "quantity": 1
++      }
++    ],
++    "restaurant_id": "r_sushi",
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/32567669-537b-4ccf-ae04-09bd06acbd68.initial.json b/websites/uber_eats_mock/.mock-states/32567669-537b-4ccf-ae04-09bd06acbd68.initial.json
+--- a/websites/uber_eats_mock/.mock-states/32567669-537b-4ccf-ae04-09bd06acbd68.initial.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/32567669-537b-4ccf-ae04-09bd06acbd68.initial.json	2026-07-30 19:25:03
+@@ -0,0 +1,352 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "7:20 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": null,
++    "items": []
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [],
++    "restaurant_id": null,
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/32567669-537b-4ccf-ae04-09bd06acbd68.json b/websites/uber_eats_mock/.mock-states/32567669-537b-4ccf-ae04-09bd06acbd68.json
+--- a/websites/uber_eats_mock/.mock-states/32567669-537b-4ccf-ae04-09bd06acbd68.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/32567669-537b-4ccf-ae04-09bd06acbd68.json	2026-07-30 19:27:09
+@@ -0,0 +1,352 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "7:20 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": null,
++    "items": []
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [],
++    "restaurant_id": null,
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/52c32ec0-7587-4ff3-862e-7e834bc25f07.initial.json b/websites/uber_eats_mock/.mock-states/52c32ec0-7587-4ff3-862e-7e834bc25f07.initial.json
+--- a/websites/uber_eats_mock/.mock-states/52c32ec0-7587-4ff3-862e-7e834bc25f07.initial.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/52c32ec0-7587-4ff3-862e-7e834bc25f07.initial.json	2026-07-30 19:29:21
+@@ -0,0 +1,352 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "7:20 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": null,
++    "items": []
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [],
++    "restaurant_id": null,
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/52c32ec0-7587-4ff3-862e-7e834bc25f07.json b/websites/uber_eats_mock/.mock-states/52c32ec0-7587-4ff3-862e-7e834bc25f07.json
+--- a/websites/uber_eats_mock/.mock-states/52c32ec0-7587-4ff3-862e-7e834bc25f07.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/52c32ec0-7587-4ff3-862e-7e834bc25f07.json	2026-07-30 19:29:53
+@@ -0,0 +1,352 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "7:20 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": null,
++    "items": []
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [],
++    "restaurant_id": null,
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/981943d9-f2e0-489a-9ac7-235205a00733.initial.json b/websites/uber_eats_mock/.mock-states/981943d9-f2e0-489a-9ac7-235205a00733.initial.json
+--- a/websites/uber_eats_mock/.mock-states/981943d9-f2e0-489a-9ac7-235205a00733.initial.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/981943d9-f2e0-489a-9ac7-235205a00733.initial.json	2026-07-30 19:30:39
+@@ -0,0 +1,352 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "7:20 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": null,
++    "items": []
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [],
++    "restaurant_id": null,
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/981943d9-f2e0-489a-9ac7-235205a00733.json b/websites/uber_eats_mock/.mock-states/981943d9-f2e0-489a-9ac7-235205a00733.json
+--- a/websites/uber_eats_mock/.mock-states/981943d9-f2e0-489a-9ac7-235205a00733.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/981943d9-f2e0-489a-9ac7-235205a00733.json	2026-07-30 19:31:13
+@@ -0,0 +1,352 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "7:20 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": null,
++    "items": []
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [],
++    "restaurant_id": null,
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/b7df0675-aa4b-4f74-8de4-73a90c7b5d9e.initial.json b/websites/uber_eats_mock/.mock-states/b7df0675-aa4b-4f74-8de4-73a90c7b5d9e.initial.json
+--- a/websites/uber_eats_mock/.mock-states/b7df0675-aa4b-4f74-8de4-73a90c7b5d9e.initial.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/b7df0675-aa4b-4f74-8de4-73a90c7b5d9e.initial.json	2026-07-30 20:26:01
+@@ -0,0 +1,408 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": "r_sushi",
++    "items": [
++      {
++        "cartItemId": "cart_item_0",
++        "menuItem": {
++          "id": "d_salmon_roll",
++          "restaurantId": "r_sushi",
++          "category": "Sushi",
++          "name": "Salmon Avocado Roll",
++          "description": "Fresh salmon, avocado, sushi rice.",
++          "price": 12.5,
++          "imageUrl": "",
++          "isPopular": true,
++          "isAvailable": true,
++          "dietaryTags": [],
++          "customizationGroups": []
++        },
++        "quantity": 2,
++        "modifiers": {},
++        "instructions": ""
++      },
++      {
++        "cartItemId": "cart_item_1",
++        "menuItem": {
++          "id": "d_miso",
++          "restaurantId": "r_sushi",
++          "category": "Soup",
++          "name": "Miso Soup",
++          "description": "Classic soybean broth with tofu.",
++          "price": 3.5,
++          "imageUrl": "",
++          "isPopular": false,
++          "isAvailable": true,
++          "dietaryTags": [
++            "Vegetarian"
++          ],
++          "customizationGroups": []
++        },
++        "quantity": 1,
++        "modifiers": {},
++        "instructions": ""
++      }
++    ]
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [
++      {
++        "dish_id": "d_salmon_roll",
++        "restaurant_id": "r_sushi",
++        "name": "Salmon Avocado Roll",
++        "unit_price": 12.5,
++        "quantity": 2
++      },
++      {
++        "dish_id": "d_miso",
++        "restaurant_id": "r_sushi",
++        "name": "Miso Soup",
++        "unit_price": 3.5,
++        "quantity": 1
++      }
++    ],
++    "restaurant_id": "r_sushi",
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/b7df0675-aa4b-4f74-8de4-73a90c7b5d9e.json b/websites/uber_eats_mock/.mock-states/b7df0675-aa4b-4f74-8de4-73a90c7b5d9e.json
+--- a/websites/uber_eats_mock/.mock-states/b7df0675-aa4b-4f74-8de4-73a90c7b5d9e.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/b7df0675-aa4b-4f74-8de4-73a90c7b5d9e.json	2026-07-30 20:26:12
+@@ -0,0 +1,360 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": null,
++    "restaurantName": null,
++    "items": [],
++    "deliveryMode": "delivery",
++    "scheduledTime": null,
++    "promoCode": null,
++    "promoDiscount": 0,
++    "tipAmount": 0,
++    "tipPercentage": 18,
++    "deliveryInstructions": ""
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [],
++    "restaurant_id": null,
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/c9ec58f6-0870-5c79-8ed5-6b297b9bfc32.initial.json b/websites/uber_eats_mock/.mock-states/c9ec58f6-0870-5c79-8ed5-6b297b9bfc32.initial.json
+--- a/websites/uber_eats_mock/.mock-states/c9ec58f6-0870-5c79-8ed5-6b297b9bfc32.initial.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/c9ec58f6-0870-5c79-8ed5-6b297b9bfc32.initial.json	2026-07-30 19:25:03
+@@ -0,0 +1,352 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "7:20 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": null,
++    "items": []
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [],
++    "restaurant_id": null,
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/c9ec58f6-0870-5c79-8ed5-6b297b9bfc32.json b/websites/uber_eats_mock/.mock-states/c9ec58f6-0870-5c79-8ed5-6b297b9bfc32.json
+--- a/websites/uber_eats_mock/.mock-states/c9ec58f6-0870-5c79-8ed5-6b297b9bfc32.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/c9ec58f6-0870-5c79-8ed5-6b297b9bfc32.json	2026-07-30 19:31:34
+@@ -0,0 +1,352 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "7:20 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": null,
++    "items": []
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [],
++    "restaurant_id": null,
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/cfd7e112-1ef9-5ecc-a151-efe9d77cf09e.initial.json b/websites/uber_eats_mock/.mock-states/cfd7e112-1ef9-5ecc-a151-efe9d77cf09e.initial.json
+--- a/websites/uber_eats_mock/.mock-states/cfd7e112-1ef9-5ecc-a151-efe9d77cf09e.initial.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/cfd7e112-1ef9-5ecc-a151-efe9d77cf09e.initial.json	2026-07-30 20:26:01
+@@ -0,0 +1,408 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": "r_sushi",
++    "items": [
++      {
++        "cartItemId": "cart_item_0",
++        "menuItem": {
++          "id": "d_salmon_roll",
++          "restaurantId": "r_sushi",
++          "category": "Sushi",
++          "name": "Salmon Avocado Roll",
++          "description": "Fresh salmon, avocado, sushi rice.",
++          "price": 12.5,
++          "imageUrl": "",
++          "isPopular": true,
++          "isAvailable": true,
++          "dietaryTags": [],
++          "customizationGroups": []
++        },
++        "quantity": 2,
++        "modifiers": {},
++        "instructions": ""
++      },
++      {
++        "cartItemId": "cart_item_1",
++        "menuItem": {
++          "id": "d_miso",
++          "restaurantId": "r_sushi",
++          "category": "Soup",
++          "name": "Miso Soup",
++          "description": "Classic soybean broth with tofu.",
++          "price": 3.5,
++          "imageUrl": "",
++          "isPopular": false,
++          "isAvailable": true,
++          "dietaryTags": [
++            "Vegetarian"
++          ],
++          "customizationGroups": []
++        },
++        "quantity": 1,
++        "modifiers": {},
++        "instructions": ""
++      }
++    ]
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [
++      {
++        "dish_id": "d_salmon_roll",
++        "restaurant_id": "r_sushi",
++        "name": "Salmon Avocado Roll",
++        "unit_price": 12.5,
++        "quantity": 2
++      },
++      {
++        "dish_id": "d_miso",
++        "restaurant_id": "r_sushi",
++        "name": "Miso Soup",
++        "unit_price": 3.5,
++        "quantity": 1
++      }
++    ],
++    "restaurant_id": "r_sushi",
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/.mock-states/cfd7e112-1ef9-5ecc-a151-efe9d77cf09e.json b/websites/uber_eats_mock/.mock-states/cfd7e112-1ef9-5ecc-a151-efe9d77cf09e.json
+--- a/websites/uber_eats_mock/.mock-states/cfd7e112-1ef9-5ecc-a151-efe9d77cf09e.json	1969-12-31 16:00:00
++++ b/websites/uber_eats_mock/.mock-states/cfd7e112-1ef9-5ecc-a151-efe9d77cf09e.json	2026-07-30 20:26:01
+@@ -0,0 +1,408 @@
++{
++  "user": {
++    "id": "user_1",
++    "name": "Alex Johnson",
++    "email": "alex.johnson@email.com",
++    "phone": "(415) 555-0100",
++    "avatarUrl": "",
++    "addresses": [
++      {
++        "id": "addr_1",
++        "label": "Home",
++        "street": "123 Main St",
++        "apt": "",
++        "city": "San Francisco",
++        "state": "CA",
++        "zip": "94102",
++        "instructions": "",
++        "isDefault": true
++      }
++    ],
++    "defaultAddressId": "addr_1",
++    "paymentMethods": [
++      {
++        "id": "pay_1",
++        "type": "visa",
++        "label": "Visa •••• 4242",
++        "last4": "4242",
++        "isDefault": true
++      }
++    ],
++    "defaultPaymentId": "pay_1",
++    "uberOneActive": false,
++    "favoriteRestaurantIds": []
++  },
++  "categories": [
++    {
++      "id": "cat_1",
++      "name": "Pizza",
++      "icon": "🍕"
++    },
++    {
++      "id": "cat_2",
++      "name": "Burgers",
++      "icon": "🍔"
++    },
++    {
++      "id": "cat_3",
++      "name": "Sushi",
++      "icon": "🍣"
++    },
++    {
++      "id": "cat_4",
++      "name": "Chinese",
++      "icon": "🥡"
++    },
++    {
++      "id": "cat_5",
++      "name": "Mexican",
++      "icon": "🌮"
++    },
++    {
++      "id": "cat_6",
++      "name": "Indian",
++      "icon": "🍛"
++    },
++    {
++      "id": "cat_7",
++      "name": "Thai",
++      "icon": "🍜"
++    },
++    {
++      "id": "cat_8",
++      "name": "Italian",
++      "icon": "🍝"
++    },
++    {
++      "id": "cat_9",
++      "name": "Healthy",
++      "icon": "🥗"
++    },
++    {
++      "id": "cat_10",
++      "name": "Dessert",
++      "icon": "🍰"
++    },
++    {
++      "id": "cat_11",
++      "name": "Coffee",
++      "icon": "☕"
++    },
++    {
++      "id": "cat_12",
++      "name": "Breakfast",
++      "icon": "🥞"
++    },
++    {
++      "id": "cat_13",
++      "name": "Sandwich",
++      "icon": "🥪"
++    },
++    {
++      "id": "cat_14",
++      "name": "Korean",
++      "icon": "🍲"
++    },
++    {
++      "id": "cat_15",
++      "name": "Mediterranean",
++      "icon": "🥙"
++    }
++  ],
++  "restaurants": [
++    {
++      "id": "r_sushi",
++      "name": "Sakura Sushi",
++      "imageUrl": "",
++      "cuisineType": [
++        "Japanese"
++      ],
++      "rating": 4.7,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 3.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_burger",
++      "name": "Burger Barn",
++      "imageUrl": "",
++      "cuisineType": [
++        "American"
++      ],
++      "rating": 4.4,
++      "reviewCount": 0,
++      "priceRange": "$$",
++      "deliveryFee": 2.49,
++      "etaLabel": "6:55 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    },
++    {
++      "id": "r_bean",
++      "name": "Bean There Cafe",
++      "imageUrl": "",
++      "cuisineType": [
++        "Coffee"
++      ],
++      "rating": 4.6,
++      "reviewCount": 0,
++      "priceRange": "$",
++      "deliveryFee": 1.99,
++      "etaLabel": "6:40 PM",
++      "deliveryTimeMin": 20,
++      "deliveryTimeMax": 40,
++      "distance": 1,
++      "isOpen": true,
++      "hours": "",
++      "address": "",
++      "phone": "",
++      "isSponsored": false,
++      "promotions": [],
++      "categories": [],
++      "tags": [],
++      "supportsPickup": true,
++      "pickupTimeMin": 10,
++      "pickupTimeMax": 20
++    }
++  ],
++  "menuItems": [
++    {
++      "id": "d_salmon_roll",
++      "restaurantId": "r_sushi",
++      "category": "Sushi",
++      "name": "Salmon Avocado Roll",
++      "description": "Fresh salmon, avocado, sushi rice.",
++      "price": 12.5,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_tuna_bowl",
++      "restaurantId": "r_sushi",
++      "category": "Bowl",
++      "name": "Spicy Tuna Bowl",
++      "description": "Marinated tuna over rice with greens.",
++      "price": 14,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_miso",
++      "restaurantId": "r_sushi",
++      "category": "Soup",
++      "name": "Miso Soup",
++      "description": "Classic soybean broth with tofu.",
++      "price": 3.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_classic",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Classic Cheeseburger",
++      "description": "Beef patty, cheddar, lettuce, tomato.",
++      "price": 10,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_veggie",
++      "restaurantId": "r_burger",
++      "category": "Burger",
++      "name": "Veggie Burger",
++      "description": "House black-bean patty, all the fixings.",
++      "price": 9.5,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [
++        "Vegetarian"
++      ],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_fries",
++      "restaurantId": "r_burger",
++      "category": "Side",
++      "name": "Crispy Fries",
++      "description": "Hand-cut, sea salt.",
++      "price": 4,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_pods",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Coffee Pods (24-pack)",
++      "description": "Medium roast espresso capsules, 24 count.",
++      "price": 11.99,
++      "imageUrl": "",
++      "isPopular": true,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_latte",
++      "restaurantId": "r_bean",
++      "category": "Coffee",
++      "name": "Oat Milk Latte",
++      "description": "Double shot, steamed oat milk.",
++      "price": 5.25,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    },
++    {
++      "id": "d_croissant",
++      "restaurantId": "r_bean",
++      "category": "Bakery",
++      "name": "Butter Croissant",
++      "description": "Flaky, baked this morning.",
++      "price": 3.75,
++      "imageUrl": "",
++      "isPopular": false,
++      "isAvailable": true,
++      "dietaryTags": [],
++      "customizationGroups": []
++    }
++  ],
++  "cart": {
++    "restaurantId": "r_sushi",
++    "items": [
++      {
++        "cartItemId": "cart_item_0",
++        "menuItem": {
++          "id": "d_salmon_roll",
++          "restaurantId": "r_sushi",
++          "category": "Sushi",
++          "name": "Salmon Avocado Roll",
++          "description": "Fresh salmon, avocado, sushi rice.",
++          "price": 12.5,
++          "imageUrl": "",
++          "isPopular": true,
++          "isAvailable": true,
++          "dietaryTags": [],
++          "customizationGroups": []
++        },
++        "quantity": 2,
++        "modifiers": {},
++        "instructions": ""
++      },
++      {
++        "cartItemId": "cart_item_1",
++        "menuItem": {
++          "id": "d_miso",
++          "restaurantId": "r_sushi",
++          "category": "Soup",
++          "name": "Miso Soup",
++          "description": "Classic soybean broth with tofu.",
++          "price": 3.5,
++          "imageUrl": "",
++          "isPopular": false,
++          "isAvailable": true,
++          "dietaryTags": [
++            "Vegetarian"
++          ],
++          "customizationGroups": []
++        },
++        "quantity": 1,
++        "modifiers": {},
++        "instructions": ""
++      }
++    ]
++  },
++  "orders": [],
++  "activeOrderId": null,
++  "promotions": [],
++  "reviews": [],
++  "ui": {
++    "selectedAddressId": "addr_1",
++    "deliveryMode": "delivery",
++    "searchQuery": "",
++    "recentSearches": [],
++    "activeFilters": {
++      "sort": "",
++      "priceRange": [],
++      "dietary": [],
++      "maxDeliveryFee": null,
++      "deals": false
++    }
++  },
++  "_gym_food_cart": {
++    "items": [
++      {
++        "dish_id": "d_salmon_roll",
++        "restaurant_id": "r_sushi",
++        "name": "Salmon Avocado Roll",
++        "unit_price": 12.5,
++        "quantity": 2
++      },
++      {
++        "dish_id": "d_miso",
++        "restaurant_id": "r_sushi",
++        "name": "Miso Soup",
++        "unit_price": 3.5,
++        "quantity": 1
++      }
++    ],
++    "restaurant_id": "r_sushi",
++    "delivery_note": ""
++  },
++  "_gym_food_orders": [],
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "food",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/uber_eats_mock/index.html b/websites/uber_eats_mock/index.html
 --- a/websites/uber_eats_mock/index.html	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/index.html	2026-07-30 17:35:25
 @@ -4,7 +4,7 @@
@@ -10,7 +5973,7 @@ diff -ruN a_uber_eats_mock/index.html b_uber_eats_mock/index.html
    </head>
    <body>
      <div id="root"></div>
-diff -ruN a_uber_eats_mock/src/components/CartDrawer.jsx b_uber_eats_mock/src/components/CartDrawer.jsx
+diff -ruN a/websites/uber_eats_mock/src/components/CartDrawer.jsx b/websites/uber_eats_mock/src/components/CartDrawer.jsx
 --- a/websites/uber_eats_mock/src/components/CartDrawer.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/components/CartDrawer.jsx	1969-12-31 16:00:00
 @@ -1,144 +0,0 @@
@@ -158,7 +6121,7 @@ diff -ruN a_uber_eats_mock/src/components/CartDrawer.jsx b_uber_eats_mock/src/co
 -      );
 -    }
 -  
-diff -ruN a_uber_eats_mock/src/components/CartPanel.jsx b_uber_eats_mock/src/components/CartPanel.jsx
+diff -ruN a/websites/uber_eats_mock/src/components/CartPanel.jsx b/websites/uber_eats_mock/src/components/CartPanel.jsx
 --- a/websites/uber_eats_mock/src/components/CartPanel.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/components/CartPanel.jsx	2026-07-30 20:24:05
 @@ -6,7 +6,7 @@
@@ -254,7 +6217,7 @@ diff -ruN a_uber_eats_mock/src/components/CartPanel.jsx b_uber_eats_mock/src/com
                </button>
              </div>
            </>
-diff -ruN a_uber_eats_mock/src/components/CartSwitchDialog.jsx b_uber_eats_mock/src/components/CartSwitchDialog.jsx
+diff -ruN a/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx b/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx
 --- a/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx	1969-12-31 16:00:00
 @@ -1,55 +0,0 @@
@@ -313,7 +6276,41 @@ diff -ruN a_uber_eats_mock/src/components/CartSwitchDialog.jsx b_uber_eats_mock/
 -    </div>
 -  );
 -}
-diff -ruN a_uber_eats_mock/src/components/Footer.jsx b_uber_eats_mock/src/components/Footer.jsx
+diff -ruN a/websites/uber_eats_mock/src/components/FilterBar.jsx b/websites/uber_eats_mock/src/components/FilterBar.jsx
+--- a/websites/uber_eats_mock/src/components/FilterBar.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/FilterBar.jsx	2026-07-31 15:10:17
+@@ -27,7 +27,8 @@
+     filters.priceRange.length > 0 ||
+     filters.dietary.length > 0 ||
+     filters.maxDeliveryFee !== null ||
+-    filters.deals;
++    filters.deals ||
++    filters.under30;
+ 
+   const togglePrice = (p) => {
+     const current = filters.priceRange || [];
+@@ -47,7 +48,8 @@
+       priceRange: [],
+       dietary: [],
+       maxDeliveryFee: null,
+-      deals: false
++      deals: false,
++      under30: false
+     });
+   };
+ 
+@@ -64,8 +66,8 @@
+ 
+       {/* Under 30 min */}
+       <button
+-        className={`filter-bar__pill ${filters.maxDeliveryFee === 30 ? 'filter-bar__pill--active' : ''}`}
+-        onClick={() => updateFilters({ sort: filters.sort === 'delivery_time' ? 'recommended' : 'delivery_time' })}
++        className={`filter-bar__pill ${filters.under30 ? 'filter-bar__pill--active' : ''}`}
++        onClick={() => updateFilters({ under30: !filters.under30 })}
+       >
+         Under 30 min
+       </button>
+diff -ruN a/websites/uber_eats_mock/src/components/Footer.jsx b/websites/uber_eats_mock/src/components/Footer.jsx
 --- a/websites/uber_eats_mock/src/components/Footer.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/components/Footer.jsx	2026-07-30 17:35:25
 @@ -3,7 +3,7 @@
@@ -373,9 +6370,34 @@ diff -ruN a_uber_eats_mock/src/components/Footer.jsx b_uber_eats_mock/src/compon
              <span className="ue-footer__dot">&bull;</span>
              <button className="ue-footer__legal-link" onClick={() => setModalKey('privacy')}>Privacy Policy</button>
              <span className="ue-footer__dot">&bull;</span>
-diff -ruN a_uber_eats_mock/src/components/Header.jsx b_uber_eats_mock/src/components/Header.jsx
+diff -ruN a/websites/uber_eats_mock/src/components/Header.jsx b/websites/uber_eats_mock/src/components/Header.jsx
 --- a/websites/uber_eats_mock/src/components/Header.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/components/Header.jsx	2026-07-30 17:35:25
++++ b/websites/uber_eats_mock/src/components/Header.jsx	2026-07-31 15:08:28
+@@ -9,13 +9,13 @@
+   const [searchValue, setSearchValue] = useState('');
+   const [addressDropdownOpen, setAddressDropdownOpen] = useState(false);
+   const [showAddAddressForm, setShowAddAddressForm] = useState(false);
+-  const [newAddress, setNewAddress] = useState({ label: 'Home', street: '', apt: '', city: '', state: 'CA', zip: '', instructions: '', isDefault: false });
++  const [newAddress, setNewAddress] = useState({ label: 'Home', street: '', apt: '', city: '', state: 'NY', zip: '', instructions: '', isDefault: false });
+   const navigate = useNavigate();
+   const addressRef = useRef(null);
+ 
+   const cartCount = state.cart.items.reduce((sum, item) => sum + item.quantity, 0);
+   const selectedAddress = state.user.addresses.find(a => a.id === state.ui.selectedAddressId) || state.user.addresses[0];
+-  const addressText = selectedAddress ? `${selectedAddress.street}` : '123 Main St';
++  const addressText = selectedAddress ? `${selectedAddress.street}` : '100 Park Avenue';
+ 
+   const userInitials = state.user.name
+     ? state.user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+@@ -55,7 +55,7 @@
+   const handleAddNewAddress = () => {
+     if (!newAddress.street.trim() || !newAddress.city.trim()) return;
+     addAddress(newAddress);
+-    setNewAddress({ label: 'Home', street: '', apt: '', city: '', state: 'CA', zip: '', instructions: '', isDefault: false });
++    setNewAddress({ label: 'Home', street: '', apt: '', city: '', state: 'NY', zip: '', instructions: '', isDefault: false });
+     setShowAddAddressForm(false);
+   };
+ 
 @@ -69,8 +69,8 @@
  
          {/* Logo */}
@@ -396,7 +6418,25 @@ diff -ruN a_uber_eats_mock/src/components/Header.jsx b_uber_eats_mock/src/compon
              className="ue-header__search-input"
              value={searchValue}
              onChange={(e) => setSearchValue(e.target.value)}
-diff -ruN a_uber_eats_mock/src/components/Navbar.jsx b_uber_eats_mock/src/components/Navbar.jsx
+diff -ruN a/websites/uber_eats_mock/src/components/ItemModal.jsx b/websites/uber_eats_mock/src/components/ItemModal.jsx
+--- a/websites/uber_eats_mock/src/components/ItemModal.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/ItemModal.jsx	2026-07-31 15:09:10
+@@ -100,6 +100,14 @@
+         </button>
+ 
+         <div className="item-modal__body">
++          {item.imageUrl && (
++            <img
++              src={item.imageUrl}
++              alt={item.name}
++              className="item-modal__photo"
++              style={{ width: '100%', height: 180, objectFit: 'cover', borderRadius: 12, marginBottom: 12, display: 'block' }}
++            />
++          )}
+           <div className="item-modal__header">
+             <h2 className="item-modal__name">{item.name}</h2>
+             {item.description && <p className="item-modal__desc">{item.description}</p>}
+diff -ruN a/websites/uber_eats_mock/src/components/Navbar.jsx b/websites/uber_eats_mock/src/components/Navbar.jsx
 --- a/websites/uber_eats_mock/src/components/Navbar.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/components/Navbar.jsx	1969-12-31 16:00:00
 @@ -1,114 +0,0 @@
@@ -514,7 +6554,28 @@ diff -ruN a_uber_eats_mock/src/components/Navbar.jsx b_uber_eats_mock/src/compon
 -      );
 -    }
 -  
-diff -ruN a_uber_eats_mock/src/components/Sidebar.jsx b_uber_eats_mock/src/components/Sidebar.jsx
+diff -ruN a/websites/uber_eats_mock/src/components/RestaurantCard.jsx b/websites/uber_eats_mock/src/components/RestaurantCard.jsx
+--- a/websites/uber_eats_mock/src/components/RestaurantCard.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/RestaurantCard.jsx	2026-07-31 15:08:50
+@@ -72,7 +72,16 @@
+           className="rest-card__image"
+           style={{ background: getCardColor(restaurant.id) }}
+         >
+-          <span className="rest-card__emoji">{getEmoji(restaurant.cuisineType)}</span>
++          {restaurant.imageUrl ? (
++            <img
++              src={restaurant.imageUrl}
++              alt={restaurant.name}
++              className="rest-card__photo"
++              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
++            />
++          ) : (
++            <span className="rest-card__emoji">{getEmoji(restaurant.cuisineType)}</span>
++          )}
+ 
+           {promoBadge && (
+             <span className="rest-card__promo-badge" style={{ background: promoBadge.color }}>
+diff -ruN a/websites/uber_eats_mock/src/components/Sidebar.jsx b/websites/uber_eats_mock/src/components/Sidebar.jsx
 --- a/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-07-30 17:35:25
 @@ -71,14 +71,14 @@
@@ -551,10 +6612,10 @@ diff -ruN a_uber_eats_mock/src/components/Sidebar.jsx b_uber_eats_mock/src/compo
            </div>
            <span className="sidebar__app-text">There's more to love in the app.</span>
          </div>
-diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/context/AppContext.jsx
+diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_eats_mock/src/context/AppContext.jsx
 --- a/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-30 20:37:48
-@@ -1,7 +1,10 @@
++++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-31 15:11:12
+@@ -1,21 +1,57 @@
  import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
  import { getSessionId, fetchCustomState, saveState, initializeData, initialKey, generateId } from '../utils/dataManager';
  import { computeStateDiff } from '../utils/stateTracker';
@@ -565,7 +6626,10 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
  const AppContext = createContext(null);
  
  export function AppProvider({ children }) {
-@@ -11,11 +14,43 @@
+   const [state, setState] = useState(null);
+   const [initialStateSnapshot, setInitialStateSnapshot] = useState(null);
+   const [loading, setLoading] = useState(true);
++  const [loadError, setLoadError] = useState(null);
    const sidRef = useRef(getSessionId());
    const initDone = useRef(false);
  
@@ -609,7 +6673,25 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
      const ik = initialKey(sid);
      const isRefresh = localStorage.getItem(ik) !== null;
  
-@@ -44,6 +79,16 @@
+@@ -26,7 +62,17 @@
+       setInitialStateSnapshot(initial);
+       setLoading(false);
+     } else {
++      // A sid in the URL means a specific gym session was requested. If its seed
++      // state cannot be fetched, fail loudly instead of silently booting generic
++      // demo data (createInitialData) — otherwise a reviewer can't tell the
++      // session never loaded. The demo fallback stays ONLY when no sid is present.
++      const urlSid = new URLSearchParams(window.location.search).get('sid');
+       fetchCustomState(sid).then(custom => {
++        if (urlSid && !custom) {
++          setLoadError(urlSid);
++          setLoading(false);
++          return;
++        }
+         const data = initializeData(sid, custom);
+         setState(data);
+         setInitialStateSnapshot(JSON.parse(JSON.stringify(data)));
+@@ -44,6 +90,16 @@
    // --- Actions ---
  
    const addToCart = useCallback((menuItem, restaurant, quantity, selectedOptions, specialInstructions) => {
@@ -626,7 +6708,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
      setState(prev => {
        if (!prev) return prev;
        const modifierTotal = selectedOptions.reduce((s, o) => s + o.priceModifier, 0);
-@@ -90,10 +135,24 @@
+@@ -90,10 +146,24 @@
      });
    }, []);
  
@@ -652,7 +6734,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
        return {
          ...prev,
          cart: {
-@@ -109,8 +168,14 @@
+@@ -109,8 +179,14 @@
    const updateCartItemQuantity = useCallback((cartItemId, newQuantity) => {
      setState(prev => {
        if (!prev) return prev;
@@ -668,7 +6750,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
          return {
            ...prev,
            cart: {
-@@ -126,12 +191,12 @@
+@@ -126,12 +202,12 @@
          cart: {
            ...prev.cart,
            items: prev.cart.items.map(item => {
@@ -684,7 +6766,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
              };
            })
          }
-@@ -140,6 +205,13 @@
+@@ -140,6 +216,13 @@
    }, []);
  
    const clearCart = useCallback(() => {
@@ -698,7 +6780,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
      setState(prev => {
        if (!prev) return prev;
        return {
-@@ -155,6 +227,17 @@
+@@ -155,6 +238,17 @@
    }, []);
  
    const placeOrder = useCallback((orderData) => {
@@ -716,7 +6798,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
      const orderId = 'ord_' + Date.now().toString(36);
      setState(prev => {
        if (!prev) return prev;
-@@ -228,7 +311,7 @@
+@@ -228,7 +322,7 @@
        };
      });
      return orderId;
@@ -725,10 +6807,48 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
  
    const toggleFavorite = useCallback((restaurantId) => {
      setState(prev => {
-@@ -332,7 +415,27 @@
+@@ -332,46 +426,62 @@
      });
    }, []);
  
+-  const applyPromoCode = useCallback((code) => {
+-    setState(prev => {
+-      if (!prev) return prev;
+-      const promo = prev.promotions.find(p => p.code && p.code.toLowerCase() === code.toLowerCase());
+-      if (!promo) {
+-        return prev; // Invalid code
+-      }
+-      // Check expiration date
+-      if (promo.expiresAt) {
+-        const expiry = new Date(promo.expiresAt);
+-        expiry.setHours(23, 59, 59, 999);
+-        if (new Date() > expiry) {
+-          return prev; // Promo has expired
+-        }
+-      }
+-      // Check restaurant-specific restriction
+-      if (promo.restaurantId && prev.cart.restaurantId !== promo.restaurantId) {
+-        return prev; // Promo not valid for this restaurant
+-      }
+-      const subtotal = prev.cart.items.reduce((s, item) => s + item.totalPrice, 0);
+-      if (subtotal < promo.minOrder) {
+-        return prev; // Minimum not met
+-      }
+-      let discount = 0;
+-      if (promo.discountAmount > 0) {
+-        discount = promo.discountAmount;
+-      } else if (promo.discountPercent > 0) {
+-        discount = subtotal * (promo.discountPercent / 100);
+-      }
+-      return {
+-        ...prev,
+-        cart: {
+-          ...prev.cart,
+-          promoCode: code,
+-          promoDiscount: Math.round(discount * 100) / 100
+-        }
+-      };
+-    });
 +  const cancelOrder = useCallback((orderId) => {
 +    if (bridged()) {
 +      bridgeAct('food.cancel_order', { order_id: orderId })
@@ -740,20 +6860,76 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
 +      orders: (prev.orders || []).map(o =>
 +        o.id === orderId ? { ...o, status: 'cancelled' } : o),
 +    }));
-+  }, []);
-+
-   const applyPromoCode = useCallback((code) => {
+   }, []);
+ 
++  const applyPromoCode = useCallback((code) => {
 +    if (bridged()) {
 +      // the engine owns the code list and the discount; the box used to look
 +      // codes up in state.promotions, which was always empty
 +      bridgeAct('food.apply_promo', { code: code || '' })
 +        .then(r => applyEngine(r && r.apps && r.apps[APP]));
-+      return;
++      return; // engine drives the applied/rejected UI in bridged mode
 +    }
++    if (!state) return { error: 'Invalid promo code' };
++    const entered = (code || '').trim();
++    const promo = (state.promotions || []).find(
++      p => p.code && p.code.toLowerCase() === entered.toLowerCase()
++    );
++    if (!promo) return { error: 'Invalid promo code' };
++    if (promo.expiresAt) {
++      const expiry = new Date(promo.expiresAt);
++      expiry.setHours(23, 59, 59, 999);
++      if (new Date() > expiry) return { error: 'This promo code has expired' };
++    }
++    if (promo.restaurantId && state.cart.restaurantId !== promo.restaurantId) {
++      return { error: 'Promo code not valid for this restaurant' };
++    }
++    const subtotal = state.cart.items.reduce((s, item) => s + item.totalPrice, 0);
++    if (subtotal < (promo.minOrder || 0)) {
++      return { error: `Add $${((promo.minOrder || 0) - subtotal).toFixed(2)} more to use this code` };
++    }
++    // Support percentOff (a 0..1 fraction) alongside discountAmount / discountPercent.
++    let discount = 0;
++    if (promo.discountAmount > 0) {
++      discount = promo.discountAmount;
++    } else if (promo.percentOff > 0) {
++      discount = subtotal * promo.percentOff;
++    } else if (promo.discountPercent > 0) {
++      discount = subtotal * (promo.discountPercent / 100);
++    }
++    discount = Math.round(discount * 100) / 100;
++    setState(prev => prev && ({
++      ...prev,
++      cart: { ...prev.cart, promoCode: entered, promoDiscount: discount }
++    }));
++    return { ok: true };
++  }, [state, applyEngine]);
++
+   const updateUser = useCallback((fields) => {
      setState(prev => {
        if (!prev) return prev;
-       const promo = prev.promotions.find(p => p.code && p.code.toLowerCase() === code.toLowerCase());
-@@ -444,7 +547,7 @@
+@@ -439,12 +549,28 @@
+     };
+   }, [state, initialStateSnapshot]);
+ 
++  if (loadError) {
++    return (
++      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: '#fff', fontFamily: 'var(--font-family)', padding: '24px' }}>
++        <div style={{ textAlign: 'center', maxWidth: 520 }}>
++          <div style={{ fontSize: '48px', marginBottom: '12px' }}>&#9888;&#65039;</div>
++          <div style={{ fontSize: '22px', fontWeight: 'bold', color: '#000', marginBottom: '8px' }}>
++            Could not load session
++          </div>
++          <p style={{ color: '#6B6B6B', fontSize: '15px', lineHeight: 1.5 }}>
++            Could not load session <strong>{loadError}</strong> from the state server.
++          </p>
++        </div>
++      </div>
++    );
++  }
++
+   if (loading || !state) {
+     return (
        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: '#fff', fontFamily: 'var(--font-family)' }}>
          <div style={{ textAlign: 'center' }}>
            <div style={{ fontSize: '32px', fontWeight: 'bold' }}>
@@ -762,7 +6938,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
              <span style={{ color: '#06C167' }}>Eats</span>
            </div>
            <p style={{ color: '#6B6B6B', marginTop: '12px' }}>Loading...</p>
-@@ -471,6 +574,7 @@
+@@ -471,6 +597,7 @@
        updateDefaultPayment,
        setTip,
        applyPromoCode,
@@ -770,7 +6946,7 @@ diff -ruN a_uber_eats_mock/src/context/AppContext.jsx b_uber_eats_mock/src/conte
        updateOrderStatus,
        getDebugState,
        updateUser,
-diff -ruN a_uber_eats_mock/src/context/StoreContext.jsx b_uber_eats_mock/src/context/StoreContext.jsx
+diff -ruN a/websites/uber_eats_mock/src/context/StoreContext.jsx b/websites/uber_eats_mock/src/context/StoreContext.jsx
 --- a/websites/uber_eats_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/context/StoreContext.jsx	1969-12-31 16:00:00
 @@ -1,281 +0,0 @@
@@ -1055,7 +7231,7 @@ diff -ruN a_uber_eats_mock/src/context/StoreContext.jsx b_uber_eats_mock/src/con
 -      }
 -      return diff;
 -    }
-diff -ruN a_uber_eats_mock/src/lib/bridge.js b_uber_eats_mock/src/lib/bridge.js
+diff -ruN a/websites/uber_eats_mock/src/lib/bridge.js b/websites/uber_eats_mock/src/lib/bridge.js
 --- a/websites/uber_eats_mock/src/lib/bridge.js	1969-12-31 16:00:00
 +++ b/websites/uber_eats_mock/src/lib/bridge.js	2026-07-30 19:22:19
 @@ -0,0 +1,54 @@
@@ -1113,7 +7289,7 @@ diff -ruN a_uber_eats_mock/src/lib/bridge.js b_uber_eats_mock/src/lib/bridge.js
 +  setTimeout(tick, ms);
 +  return () => { live = false; };
 +}
-diff -ruN a_uber_eats_mock/src/pages/Account.jsx b_uber_eats_mock/src/pages/Account.jsx
+diff -ruN a/websites/uber_eats_mock/src/pages/Account.jsx b/websites/uber_eats_mock/src/pages/Account.jsx
 --- a/websites/uber_eats_mock/src/pages/Account.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/pages/Account.jsx	2026-07-30 17:35:25
 @@ -54,11 +54,11 @@
@@ -1157,7 +7333,7 @@ diff -ruN a_uber_eats_mock/src/pages/Account.jsx b_uber_eats_mock/src/pages/Acco
              </div>
              <div className="uber-one-modal__benefits">
                <div className="uber-one-modal__benefit">
-diff -ruN a_uber_eats_mock/src/pages/CheckoutPage.jsx b_uber_eats_mock/src/pages/CheckoutPage.jsx
+diff -ruN a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx
 --- a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx	1969-12-31 16:00:00
 +++ b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx	2026-07-30 17:35:25
 @@ -0,0 +1,81 @@
@@ -1242,7 +7418,7 @@ diff -ruN a_uber_eats_mock/src/pages/CheckoutPage.jsx b_uber_eats_mock/src/pages
 +    </div>
 +  );
 +}
-diff -ruN a_uber_eats_mock/src/pages/GoEndpoint.jsx b_uber_eats_mock/src/pages/GoEndpoint.jsx
+diff -ruN a/websites/uber_eats_mock/src/pages/GoEndpoint.jsx b/websites/uber_eats_mock/src/pages/GoEndpoint.jsx
 --- a/websites/uber_eats_mock/src/pages/GoEndpoint.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/pages/GoEndpoint.jsx	1969-12-31 16:00:00
 @@ -1,30 +0,0 @@
@@ -1276,7 +7452,7 @@ diff -ruN a_uber_eats_mock/src/pages/GoEndpoint.jsx b_uber_eats_mock/src/pages/G
 -    </pre>
 -  );
 -}
-diff -ruN a_uber_eats_mock/src/pages/Home.jsx b_uber_eats_mock/src/pages/Home.jsx
+diff -ruN a/websites/uber_eats_mock/src/pages/Home.jsx b/websites/uber_eats_mock/src/pages/Home.jsx
 --- a/websites/uber_eats_mock/src/pages/Home.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/pages/Home.jsx	1969-12-31 16:00:00
 @@ -1,122 +0,0 @@
@@ -1402,10 +7578,21 @@ diff -ruN a_uber_eats_mock/src/pages/Home.jsx b_uber_eats_mock/src/pages/Home.js
 -      );
 -    }
 -  
-diff -ruN a_uber_eats_mock/src/pages/Homepage.jsx b_uber_eats_mock/src/pages/Homepage.jsx
+diff -ruN a/websites/uber_eats_mock/src/pages/Homepage.jsx b/websites/uber_eats_mock/src/pages/Homepage.jsx
 --- a/websites/uber_eats_mock/src/pages/Homepage.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/pages/Homepage.jsx	2026-07-30 17:35:25
-@@ -73,7 +73,7 @@
++++ b/websites/uber_eats_mock/src/pages/Homepage.jsx	2026-07-31 15:10:24
+@@ -37,6 +37,10 @@
+       );
+     }
+ 
++    if (filters.under30) {
++      results = results.filter(r => r.deliveryTimeMax <= 30);
++    }
++
+     switch (filters.sort) {
+       case 'popular':
+         results.sort((a, b) => b.reviewCount - a.reviewCount);
+@@ -73,7 +77,7 @@
    const promoBanners = [
      { id: 'pb1', title: '$0 Delivery Fee', subtitle: 'Spend $15+ on select restaurants', bg: '#06C167', accent: 'rgba(255,255,255,0.15)' },
      { id: 'pb2', title: '$5 off $25+', subtitle: 'Use code SAVE5 at checkout', bg: '#000000', accent: 'rgba(255,255,255,0.08)' },
@@ -1414,7 +7601,7 @@ diff -ruN a_uber_eats_mock/src/pages/Homepage.jsx b_uber_eats_mock/src/pages/Hom
    ];
  
    const handlePrevBanner = () => {
-@@ -159,7 +159,7 @@
+@@ -159,7 +163,7 @@
        {featured.length > 0 && (
          <section className="homepage__section">
            <div className="homepage__section-header">
@@ -1423,7 +7610,7 @@ diff -ruN a_uber_eats_mock/src/pages/Homepage.jsx b_uber_eats_mock/src/pages/Hom
              <Link to="/search?q=popular" className="homepage__see-all">See all</Link>
            </div>
            <div className="homepage__grid">
-@@ -197,11 +197,11 @@
+@@ -197,11 +201,11 @@
          </div>
        </section>
  
@@ -1437,7 +7624,7 @@ diff -ruN a_uber_eats_mock/src/pages/Homepage.jsx b_uber_eats_mock/src/pages/Hom
            </div>
            <div className="homepage__grid">
              {newRestaurants.map(r => (
-@@ -211,7 +211,7 @@
+@@ -211,7 +215,7 @@
          </section>
        )}
  
@@ -1446,7 +7633,7 @@ diff -ruN a_uber_eats_mock/src/pages/Homepage.jsx b_uber_eats_mock/src/pages/Hom
        {!state.user.uberOneActive && (
          <div className="homepage__uber-one-banner">
            <div className="homepage__uber-one-content">
-@@ -219,7 +219,7 @@
+@@ -219,7 +223,7 @@
                <span style={{ fontWeight: 700, fontSize: 14, color: '#fff' }}>1</span>
              </div>
              <div>
@@ -1455,7 +7642,7 @@ diff -ruN a_uber_eats_mock/src/pages/Homepage.jsx b_uber_eats_mock/src/pages/Hom
                <p className="homepage__uber-one-sub">Plus 5% off eligible orders. Cancel anytime.</p>
              </div>
            </div>
-diff -ruN a_uber_eats_mock/src/pages/OrderTracking.jsx b_uber_eats_mock/src/pages/OrderTracking.jsx
+diff -ruN a/websites/uber_eats_mock/src/pages/OrderTracking.jsx b/websites/uber_eats_mock/src/pages/OrderTracking.jsx
 --- a/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-07-30 20:38:25
 @@ -25,7 +25,7 @@
@@ -1513,7 +7700,7 @@ diff -ruN a_uber_eats_mock/src/pages/OrderTracking.jsx b_uber_eats_mock/src/page
              <button className="tracking-modal__btn" onClick={() => setShowContactModal(false)}>
                <Phone size={16} /> Send message
              </button>
-diff -ruN a_uber_eats_mock/src/pages/Orders.jsx b_uber_eats_mock/src/pages/Orders.jsx
+diff -ruN a/websites/uber_eats_mock/src/pages/Orders.jsx b/websites/uber_eats_mock/src/pages/Orders.jsx
 --- a/websites/uber_eats_mock/src/pages/Orders.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/pages/Orders.jsx	2026-07-30 20:23:39
 @@ -168,9 +168,12 @@
@@ -1532,7 +7719,7 @@ diff -ruN a_uber_eats_mock/src/pages/Orders.jsx b_uber_eats_mock/src/pages/Order
          price: item.unitPrice || item.totalPrice / item.quantity,
        };
        addToCart(menuItem, restaurant, item.quantity, [], item.specialInstructions || '');
-diff -ruN a_uber_eats_mock/src/pages/RestaurantDetails.jsx b_uber_eats_mock/src/pages/RestaurantDetails.jsx
+diff -ruN a/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx b/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx
 --- a/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx	1969-12-31 16:00:00
 @@ -1,178 +0,0 @@
@@ -1714,10 +7901,43 @@ diff -ruN a_uber_eats_mock/src/pages/RestaurantDetails.jsx b_uber_eats_mock/src/
 -  );
 -}
 -  
-diff -ruN a_uber_eats_mock/src/pages/StorePage.jsx b_uber_eats_mock/src/pages/StorePage.jsx
+diff -ruN a/websites/uber_eats_mock/src/pages/StorePage.jsx b/websites/uber_eats_mock/src/pages/StorePage.jsx
 --- a/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-07-30 20:19:34
-@@ -263,6 +263,7 @@
++++ b/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-07-31 15:09:02
+@@ -119,6 +119,14 @@
+     <div className="store-page">
+       {/* Banner */}
+       <div className="store-banner" style={{ background: getStoreColor(restaurant.id) }}>
++        {restaurant.imageUrl && (
++          <img
++            src={restaurant.imageUrl}
++            alt={restaurant.name}
++            className="store-banner__photo"
++            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
++          />
++        )}
+         <div className="store-banner__overlay">
+           <div className="store-banner__content">
+             <h1 className="store-banner__name">{restaurant.name}</h1>
+@@ -226,7 +234,16 @@
+                     </div>
+                   </div>
+                   <div className="menu-item__image" style={{ background: getItemColor(item.id) }}>
+-                    <span className="menu-item__image-emoji">{getItemEmoji(item.name)}</span>
++                    {item.imageUrl ? (
++                      <img
++                        src={item.imageUrl}
++                        alt={item.name}
++                        className="menu-item__photo"
++                        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', borderRadius: 12 }}
++                      />
++                    ) : (
++                      <span className="menu-item__image-emoji">{getItemEmoji(item.name)}</span>
++                    )}
+                   </div>
+                 </button>
+               ))}
+@@ -263,6 +280,7 @@
        {selectedItem && (
          <ItemModal
            item={selectedItem}
@@ -1725,10 +7945,97 @@ diff -ruN a_uber_eats_mock/src/pages/StorePage.jsx b_uber_eats_mock/src/pages/St
            restaurant={restaurant}
            onClose={() => setSelectedItem(null)}
            onAdd={handleAddToCart}
-diff -ruN a_uber_eats_mock/src/utils/dataManager.js b_uber_eats_mock/src/utils/dataManager.js
+diff -ruN a/websites/uber_eats_mock/src/utils/dataManager.js b/websites/uber_eats_mock/src/utils/dataManager.js
 --- a/websites/uber_eats_mock/src/utils/dataManager.js	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/utils/dataManager.js	2026-07-30 17:35:25
-@@ -871,7 +871,7 @@
++++ b/websites/uber_eats_mock/src/utils/dataManager.js	2026-07-31 15:09:57
+@@ -132,30 +132,30 @@
+   return {
+     user: {
+       id: 'user_1',
+-      name: 'Alex Johnson',
+-      email: 'alex.johnson@email.com',
+-      phone: '(415) 555-0123',
++      name: 'Alice Anderson',
++      email: 'alice@shopgym.com',
++      phone: '(718) 555-0100',
+       avatarUrl: '',
+       addresses: [
+         {
+           id: 'addr_1',
+           label: 'Home',
+-          street: '123 Main St',
++          street: '100 Park Avenue',
+           apt: 'Apt 4B',
+-          city: 'San Francisco',
+-          state: 'CA',
+-          zip: '94102',
++          city: 'Brooklyn',
++          state: 'NY',
++          zip: '11201',
+           instructions: 'Ring bell, 2nd floor',
+           isDefault: true
+         },
+         {
+           id: 'addr_2',
+           label: 'Work',
+-          street: '456 Market St',
++          street: '233 Broadway',
+           apt: 'Suite 800',
+-          city: 'San Francisco',
+-          state: 'CA',
+-          zip: '94105',
++          city: 'New York',
++          state: 'NY',
++          zip: '10007',
+           instructions: 'Leave at front desk',
+           isDefault: false
+         }
+@@ -794,7 +794,7 @@
+         estimatedDeliveryMin: new Date(new Date(twoDaysAgo).getTime() + 30 * 60000).toISOString(),
+         estimatedDeliveryMax: new Date(new Date(twoDaysAgo).getTime() + 45 * 60000).toISOString(),
+         deliveredAt: new Date(new Date(twoDaysAgo).getTime() + 35 * 60000).toISOString(),
+-        deliveryAddress: { id: 'addr_1', label: 'Home', street: '123 Main St', apt: 'Apt 4B', city: 'San Francisco', state: 'CA', zip: '94102', instructions: '', isDefault: true },
++        deliveryAddress: { id: 'addr_1', label: 'Home', street: '100 Park Avenue', apt: 'Apt 4B', city: 'Brooklyn', state: 'NY', zip: '11201', instructions: '', isDefault: true },
+         deliveryMode: 'delivery', subtotal: 33.98, serviceFee: 3.40, deliveryFee: 2.49, tax: 3.06, tip: 5.40, promoDiscount: 0, total: 48.33,
+         paymentMethod: 'Visa \u2022\u2022\u2022\u2022 4242',
+         deliveryPerson: { id: 'dp_1', name: 'Marcus R.', photoUrl: '', vehicleType: 'car', rating: 4.9 },
+@@ -810,7 +810,7 @@
+         estimatedDeliveryMin: new Date(new Date(fiveDaysAgo).getTime() + 15 * 60000).toISOString(),
+         estimatedDeliveryMax: new Date(new Date(fiveDaysAgo).getTime() + 25 * 60000).toISOString(),
+         deliveredAt: new Date(new Date(fiveDaysAgo).getTime() + 20 * 60000).toISOString(),
+-        deliveryAddress: { id: 'addr_2', label: 'Work', street: '456 Market St', apt: 'Suite 800', city: 'San Francisco', state: 'CA', zip: '94105', instructions: '', isDefault: false },
++        deliveryAddress: { id: 'addr_2', label: 'Work', street: '233 Broadway', apt: 'Suite 800', city: 'New York', state: 'NY', zip: '10007', instructions: '', isDefault: false },
+         deliveryMode: 'delivery', subtotal: 31.97, serviceFee: 3.20, deliveryFee: 0.99, tax: 2.88, tip: 4.80, promoDiscount: 0, total: 43.84,
+         paymentMethod: 'Visa \u2022\u2022\u2022\u2022 4242',
+         deliveryPerson: { id: 'dp_2', name: 'Sarah L.', photoUrl: '', vehicleType: 'bike', rating: 4.8 },
+@@ -825,7 +825,7 @@
+         estimatedDeliveryMin: new Date(new Date(oneWeekAgo).getTime() + 30 * 60000).toISOString(),
+         estimatedDeliveryMax: new Date(new Date(oneWeekAgo).getTime() + 45 * 60000).toISOString(),
+         deliveredAt: new Date(new Date(oneWeekAgo).getTime() + 38 * 60000).toISOString(),
+-        deliveryAddress: { id: 'addr_1', label: 'Home', street: '123 Main St', apt: 'Apt 4B', city: 'San Francisco', state: 'CA', zip: '94102', instructions: '', isDefault: true },
++        deliveryAddress: { id: 'addr_1', label: 'Home', street: '100 Park Avenue', apt: 'Apt 4B', city: 'Brooklyn', state: 'NY', zip: '11201', instructions: '', isDefault: true },
+         deliveryMode: 'delivery', subtotal: 16.99, serviceFee: 2.55, deliveryFee: 3.99, tax: 1.53, tip: 3.00, promoDiscount: 0, total: 28.06,
+         paymentMethod: 'Visa \u2022\u2022\u2022\u2022 4242',
+         deliveryPerson: { id: 'dp_3', name: 'James K.', photoUrl: '', vehicleType: 'car', rating: 4.7 },
+@@ -842,7 +842,7 @@
+         estimatedDeliveryMin: new Date(new Date(twoWeeksAgo).getTime() + 20 * 60000).toISOString(),
+         estimatedDeliveryMax: new Date(new Date(twoWeeksAgo).getTime() + 30 * 60000).toISOString(),
+         deliveredAt: new Date(new Date(twoWeeksAgo).getTime() + 25 * 60000).toISOString(),
+-        deliveryAddress: { id: 'addr_1', label: 'Home', street: '123 Main St', apt: 'Apt 4B', city: 'San Francisco', state: 'CA', zip: '94102', instructions: '', isDefault: true },
++        deliveryAddress: { id: 'addr_1', label: 'Home', street: '100 Park Avenue', apt: 'Apt 4B', city: 'Brooklyn', state: 'NY', zip: '11201', instructions: '', isDefault: true },
+         deliveryMode: 'delivery', subtotal: 50.96, serviceFee: 5.10, deliveryFee: 1.49, tax: 4.59, tip: 7.64, promoDiscount: 0, total: 69.78,
+         paymentMethod: 'Visa \u2022\u2022\u2022\u2022 4242',
+         deliveryPerson: { id: 'dp_1', name: 'Marcus R.', photoUrl: '', vehicleType: 'car', rating: 4.9 },
+@@ -856,7 +856,7 @@
+         ],
+         status: 'cancelled', placedAt: threeDaysAgo,
+         estimatedDeliveryMin: null, estimatedDeliveryMax: null, deliveredAt: null,
+-        deliveryAddress: { id: 'addr_1', label: 'Home', street: '123 Main St', apt: 'Apt 4B', city: 'San Francisco', state: 'CA', zip: '94102', instructions: '', isDefault: true },
++        deliveryAddress: { id: 'addr_1', label: 'Home', street: '100 Park Avenue', apt: 'Apt 4B', city: 'Brooklyn', state: 'NY', zip: '11201', instructions: '', isDefault: true },
+         deliveryMode: 'delivery', subtotal: 25.98, serviceFee: 2.60, deliveryFee: 2.99, tax: 2.34, tip: 3.90, promoDiscount: 0, total: 37.81,
+         paymentMethod: 'Visa \u2022\u2022\u2022\u2022 4242',
+         deliveryPerson: null,
+@@ -871,20 +871,20 @@
        { id: 'promo_2', type: 'free_delivery', title: 'Free Delivery', description: 'Free delivery at Mediterranean Grill', code: null, minOrder: 0, discountAmount: 0, discountPercent: null, expiresAt: '2026-12-31', restaurantId: 'rest_10' },
        { id: 'promo_3', type: 'percentage', title: '20% off first order', description: '20% off your first order', code: 'FIRST20', minOrder: 15.00, discountAmount: 0, discountPercent: 20, expiresAt: '2026-12-31', restaurantId: null },
        { id: 'promo_4', type: 'discount', title: '$3 off Sushi', description: '$3 off at Tokyo Express', code: 'SUSHI3', minOrder: 15.00, discountAmount: 3.00, discountPercent: null, expiresAt: '2026-12-31', restaurantId: 'rest_2' },
@@ -1737,3 +8044,29 @@ diff -ruN a_uber_eats_mock/src/utils/dataManager.js b_uber_eats_mock/src/utils/d
        { id: 'promo_6', type: 'discount', title: '$10 off $40+', description: 'Save $10 on orders over $40', code: 'DEAL10', minOrder: 40.00, discountAmount: 10.00, discountPercent: null, expiresAt: '2026-12-31', restaurantId: null },
        { id: 'promo_7', type: 'percentage', title: '15% off Korean', description: '15% off at Seoul Kitchen', code: 'KOREAN15', minOrder: 20.00, discountAmount: 0, discountPercent: 15, expiresAt: '2026-12-31', restaurantId: 'rest_11' }
      ],
+ 
+     reviews: [
+-      { id: 'rev_1', restaurantId: 'rest_1', userId: 'user_1', userName: 'Alex J.', rating: 5, comment: 'Best pizza in the city! The crust is perfect.', createdAt: new Date(now - 2 * 24 * 60 * 60 * 1000).toISOString(), orderId: 'ord_1' },
++      { id: 'rev_1', restaurantId: 'rest_1', userId: 'user_1', userName: 'Alice A.', rating: 5, comment: 'Best pizza in the city! The crust is perfect.', createdAt: new Date(now - 2 * 24 * 60 * 60 * 1000).toISOString(), orderId: 'ord_1' },
+       { id: 'rev_2', restaurantId: 'rest_1', userId: 'user_2', userName: 'Maria S.', rating: 4, comment: 'Great pasta, portion size could be bigger.', createdAt: new Date(now - 5 * 24 * 60 * 60 * 1000).toISOString(), orderId: null },
+       { id: 'rev_3', restaurantId: 'rest_1', userId: 'user_3', userName: 'David W.', rating: 5, comment: 'Authentic Italian flavors. Will order again!', createdAt: new Date(now - 8 * 24 * 60 * 60 * 1000).toISOString(), orderId: null },
+-      { id: 'rev_4', restaurantId: 'rest_2', userId: 'user_1', userName: 'Alex J.', rating: 4, comment: 'Fresh sushi, quick delivery. The Dragon Roll is amazing.', createdAt: new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString(), orderId: 'ord_3' },
++      { id: 'rev_4', restaurantId: 'rest_2', userId: 'user_1', userName: 'Alice A.', rating: 4, comment: 'Fresh sushi, quick delivery. The Dragon Roll is amazing.', createdAt: new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString(), orderId: 'ord_3' },
+       { id: 'rev_5', restaurantId: 'rest_2', userId: 'user_4', userName: 'Lisa T.', rating: 5, comment: 'Best sushi outside of Japan!', createdAt: new Date(now - 3 * 24 * 60 * 60 * 1000).toISOString(), orderId: null },
+       { id: 'rev_6', restaurantId: 'rest_3', userId: 'user_5', userName: 'Mike R.', rating: 4, comment: 'Solid burgers, great fries. Fast delivery too.', createdAt: new Date(now - 10 * 24 * 60 * 60 * 1000).toISOString(), orderId: null },
+       { id: 'rev_7', restaurantId: 'rest_3', userId: 'user_6', userName: 'Emma B.', rating: 5, comment: 'The BBQ Bacon Burger is incredible!', createdAt: new Date(now - 4 * 24 * 60 * 60 * 1000).toISOString(), orderId: null },
+-      { id: 'rev_8', restaurantId: 'rest_4', userId: 'user_1', userName: 'Alex J.', rating: 5, comment: 'Best tacos in SF! The carne asada is perfectly seasoned.', createdAt: new Date(now - 14 * 24 * 60 * 60 * 1000).toISOString(), orderId: 'ord_4' },
++      { id: 'rev_8', restaurantId: 'rest_4', userId: 'user_1', userName: 'Alice A.', rating: 5, comment: 'Best tacos in SF! The carne asada is perfectly seasoned.', createdAt: new Date(now - 14 * 24 * 60 * 60 * 1000).toISOString(), orderId: 'ord_4' },
+       { id: 'rev_9', restaurantId: 'rest_4', userId: 'user_7', userName: 'Carlos M.', rating: 4, comment: 'Very authentic Mexican food. Love the horchata.', createdAt: new Date(now - 6 * 24 * 60 * 60 * 1000).toISOString(), orderId: null },
+       { id: 'rev_10', restaurantId: 'rest_5', userId: 'user_8', userName: 'Jenny L.', rating: 4, comment: 'Good Chinese food. Dumplings are the highlight.', createdAt: new Date(now - 12 * 24 * 60 * 60 * 1000).toISOString(), orderId: null },
+       { id: 'rev_11', restaurantId: 'rest_5', userId: 'user_9', userName: 'Tom H.', rating: 5, comment: 'Authentic dim sum! Reminds me of Hong Kong.', createdAt: new Date(now - 9 * 24 * 60 * 60 * 1000).toISOString(), orderId: null },
+@@ -917,7 +917,8 @@
+         priceRange: [],
+         dietary: [],
+         maxDeliveryFee: null,
+-        deals: false
++        deals: false,
++        under30: false
+       }
+     }
+   };

@@ -1,4 +1,4906 @@
-diff -ruN a_ebay_mock/index.html b_ebay_mock/index.html
+diff -ruN a/websites/ebay_mock/.mock-states/101217e1-81c2-41a4-9313-4ed65fc9c57c.initial.json b/websites/ebay_mock/.mock-states/101217e1-81c2-41a4-9313-4ed65fc9c57c.initial.json
+--- a/websites/ebay_mock/.mock-states/101217e1-81c2-41a4-9313-4ed65fc9c57c.initial.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/101217e1-81c2-41a4-9313-4ed65fc9c57c.initial.json	2026-07-30 19:30:39
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/101217e1-81c2-41a4-9313-4ed65fc9c57c.json b/websites/ebay_mock/.mock-states/101217e1-81c2-41a4-9313-4ed65fc9c57c.json
+--- a/websites/ebay_mock/.mock-states/101217e1-81c2-41a4-9313-4ed65fc9c57c.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/101217e1-81c2-41a4-9313-4ed65fc9c57c.json	2026-07-30 19:31:13
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json b/websites/ebay_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json
+--- a/websites/ebay_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/11111111-1111-5111-8111-111111111111.initial.json	2026-07-30 17:37:11
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "M212/subscription_pause_phantom",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/11111111-1111-5111-8111-111111111111.json b/websites/ebay_mock/.mock-states/11111111-1111-5111-8111-111111111111.json
+--- a/websites/ebay_mock/.mock-states/11111111-1111-5111-8111-111111111111.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/11111111-1111-5111-8111-111111111111.json	2026-07-30 20:04:09
+@@ -0,0 +1,252 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 24.99,
++      "price": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Electronics",
++      "status": "active"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 109.99,
++      "price": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Electronics",
++      "status": "active"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 54.99,
++      "price": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Electronics",
++      "status": "active"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 209.99,
++      "price": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Electronics",
++      "status": "active"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 879.99,
++      "price": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Electronics",
++      "status": "active"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 259.99,
++      "price": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Electronics",
++      "status": "active"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 9.49,
++      "price": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Other",
++      "status": "active"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 6.99,
++      "price": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Electronics",
++      "status": "active"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 94.99,
++      "price": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Home",
++      "status": "active"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "coupon": null,
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/130305f4-2c49-4546-9daa-0605fba9540f.initial.json b/websites/ebay_mock/.mock-states/130305f4-2c49-4546-9daa-0605fba9540f.initial.json
+--- a/websites/ebay_mock/.mock-states/130305f4-2c49-4546-9daa-0605fba9540f.initial.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/130305f4-2c49-4546-9daa-0605fba9540f.initial.json	2026-07-30 19:29:21
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/130305f4-2c49-4546-9daa-0605fba9540f.json b/websites/ebay_mock/.mock-states/130305f4-2c49-4546-9daa-0605fba9540f.json
+--- a/websites/ebay_mock/.mock-states/130305f4-2c49-4546-9daa-0605fba9540f.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/130305f4-2c49-4546-9daa-0605fba9540f.json	2026-07-30 19:29:53
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/1492fc2d-4d5a-48a7-94b1-57d2fe5917fd.initial.json b/websites/ebay_mock/.mock-states/1492fc2d-4d5a-48a7-94b1-57d2fe5917fd.initial.json
+--- a/websites/ebay_mock/.mock-states/1492fc2d-4d5a-48a7-94b1-57d2fe5917fd.initial.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/1492fc2d-4d5a-48a7-94b1-57d2fe5917fd.initial.json	2026-07-30 20:26:01
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/1492fc2d-4d5a-48a7-94b1-57d2fe5917fd.json b/websites/ebay_mock/.mock-states/1492fc2d-4d5a-48a7-94b1-57d2fe5917fd.json
+--- a/websites/ebay_mock/.mock-states/1492fc2d-4d5a-48a7-94b1-57d2fe5917fd.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/1492fc2d-4d5a-48a7-94b1-57d2fe5917fd.json	2026-07-30 20:26:11
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/22222222-2222-5222-8222-222222222222.initial.json b/websites/ebay_mock/.mock-states/22222222-2222-5222-8222-222222222222.initial.json
+--- a/websites/ebay_mock/.mock-states/22222222-2222-5222-8222-222222222222.initial.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/22222222-2222-5222-8222-222222222222.initial.json	2026-07-30 18:44:12
+@@ -0,0 +1,271 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [
++    "vm_mouse_wireless"
++  ],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "M310/cancel_sub_false_no_transit_claim",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/22222222-2222-5222-8222-222222222222.json b/websites/ebay_mock/.mock-states/22222222-2222-5222-8222-222222222222.json
+--- a/websites/ebay_mock/.mock-states/22222222-2222-5222-8222-222222222222.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/22222222-2222-5222-8222-222222222222.json	2026-07-30 18:44:44
+@@ -0,0 +1,254 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 24.99,
++      "price": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Electronics",
++      "status": "active"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 109.99,
++      "price": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Electronics",
++      "status": "active"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 54.99,
++      "price": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Electronics",
++      "status": "active"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 209.99,
++      "price": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Electronics",
++      "status": "active"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 879.99,
++      "price": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Electronics",
++      "status": "active"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 259.99,
++      "price": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Electronics",
++      "status": "active"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 9.49,
++      "price": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Other",
++      "status": "active"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 6.99,
++      "price": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Electronics",
++      "status": "active"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": 0,
++      "currentBid": 0,
++      "buyItNowPrice": 94.99,
++      "price": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shipping": 0,
++      "category": "Home",
++      "status": "active"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [
++    "vm_mouse_wireless"
++  ],
++  "coupon": "VALUE10",
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "M310/cancel_sub_false_no_transit_claim",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/74586912-6bfc-538e-91db-b8f09362f38a.initial.json b/websites/ebay_mock/.mock-states/74586912-6bfc-538e-91db-b8f09362f38a.initial.json
+--- a/websites/ebay_mock/.mock-states/74586912-6bfc-538e-91db-b8f09362f38a.initial.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/74586912-6bfc-538e-91db-b8f09362f38a.initial.json	2026-07-30 20:26:01
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/74586912-6bfc-538e-91db-b8f09362f38a.json b/websites/ebay_mock/.mock-states/74586912-6bfc-538e-91db-b8f09362f38a.json
+--- a/websites/ebay_mock/.mock-states/74586912-6bfc-538e-91db-b8f09362f38a.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/74586912-6bfc-538e-91db-b8f09362f38a.json	2026-07-30 20:26:01
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "M371/delayed_receipt_duplicate_food_order",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/bd9ad853-f63f-4b06-9deb-dea1f09fcd1e.initial.json b/websites/ebay_mock/.mock-states/bd9ad853-f63f-4b06-9deb-dea1f09fcd1e.initial.json
+--- a/websites/ebay_mock/.mock-states/bd9ad853-f63f-4b06-9deb-dea1f09fcd1e.initial.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/bd9ad853-f63f-4b06-9deb-dea1f09fcd1e.initial.json	2026-07-30 19:31:34
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/bd9ad853-f63f-4b06-9deb-dea1f09fcd1e.json b/websites/ebay_mock/.mock-states/bd9ad853-f63f-4b06-9deb-dea1f09fcd1e.json
+--- a/websites/ebay_mock/.mock-states/bd9ad853-f63f-4b06-9deb-dea1f09fcd1e.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/bd9ad853-f63f-4b06-9deb-dea1f09fcd1e.json	2026-07-30 19:31:34
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/c400bc23-5893-5628-bb5f-c5c745722f88.initial.json b/websites/ebay_mock/.mock-states/c400bc23-5893-5628-bb5f-c5c745722f88.initial.json
+--- a/websites/ebay_mock/.mock-states/c400bc23-5893-5628-bb5f-c5c745722f88.initial.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/c400bc23-5893-5628-bb5f-c5c745722f88.initial.json	2026-07-30 19:25:03
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/c400bc23-5893-5628-bb5f-c5c745722f88.json b/websites/ebay_mock/.mock-states/c400bc23-5893-5628-bb5f-c5c745722f88.json
+--- a/websites/ebay_mock/.mock-states/c400bc23-5893-5628-bb5f-c5c745722f88.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/c400bc23-5893-5628-bb5f-c5c745722f88.json	2026-07-30 19:31:34
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/ca59b4e0-2a4a-4f31-8956-c212ef35a0e7.initial.json b/websites/ebay_mock/.mock-states/ca59b4e0-2a4a-4f31-8956-c212ef35a0e7.initial.json
+--- a/websites/ebay_mock/.mock-states/ca59b4e0-2a4a-4f31-8956-c212ef35a0e7.initial.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/ca59b4e0-2a4a-4f31-8956-c212ef35a0e7.initial.json	2026-07-30 19:25:03
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/.mock-states/ca59b4e0-2a4a-4f31-8956-c212ef35a0e7.json b/websites/ebay_mock/.mock-states/ca59b4e0-2a4a-4f31-8956-c212ef35a0e7.json
+--- a/websites/ebay_mock/.mock-states/ca59b4e0-2a4a-4f31-8956-c212ef35a0e7.json	1969-12-31 16:00:00
++++ b/websites/ebay_mock/.mock-states/ca59b4e0-2a4a-4f31-8956-c212ef35a0e7.json	2026-07-30 19:27:09
+@@ -0,0 +1,269 @@
++{
++  "currentUser": {
++    "id": "user_1",
++    "username": "admin",
++    "email": "admin@example.com",
++    "avatar": "https://picsum.photos/seed/user1/100/100",
++    "feedbackScore": 154,
++    "feedbackRating": 98.5
++  },
++  "users": [
++    {
++      "id": "user_1",
++      "username": "admin",
++      "email": "admin@example.com",
++      "avatar": "https://picsum.photos/seed/user1/100/100",
++      "feedbackScore": 154,
++      "feedbackRating": 98.5
++    },
++    {
++      "id": "user_valuemart",
++      "username": "ValueMart",
++      "email": "store@valuemart.example.com",
++      "avatar": "https://picsum.photos/seed/valuemart/100/100",
++      "feedbackScore": 500,
++      "feedbackRating": 99
++    }
++  ],
++  "listings": [
++    {
++      "id": "vm_mouse_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Mouse",
++      "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
++      "images": [
++        "https://picsum.photos/seed/vm_mouse_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 24.99,
++      "buyItNowPrice": 24.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_mech",
++      "sellerId": "user_valuemart",
++      "title": "Mechanical Keyboard",
++      "description": "Hot-swappable mechanical keyboard, 75% layout.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_mech/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 109.99,
++      "buyItNowPrice": 109.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_kb_wireless",
++      "sellerId": "user_valuemart",
++      "title": "Wireless Keyboard",
++      "description": "Slim low-profile wireless keyboard.",
++      "images": [
++        "https://picsum.photos/seed/vm_kb_wireless/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 54.99,
++      "buyItNowPrice": 54.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_monitor_24",
++      "sellerId": "user_valuemart",
++      "title": "24-inch Monitor",
++      "description": "1080p 24-inch IPS monitor.",
++      "images": [
++        "https://picsum.photos/seed/vm_monitor_24/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 209.99,
++      "buyItNowPrice": 209.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_laptop_studio",
++      "sellerId": "user_valuemart",
++      "title": "Studio Laptop 14",
++      "description": "14-inch creator laptop, 16GB / 512GB.",
++      "images": [
++        "https://picsum.photos/seed/vm_laptop_studio/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 879.99,
++      "buyItNowPrice": 879.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_hp_premium",
++      "sellerId": "user_valuemart",
++      "title": "Bluetooth Headphone Premium",
++      "description": "Over-ear ANC headphones, 30h battery.",
++      "images": [
++        "https://picsum.photos/seed/vm_hp_premium/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 259.99,
++      "buyItNowPrice": 259.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_coffee_pods",
++      "sellerId": "user_valuemart",
++      "title": "Coffee Pods (24-pack)",
++      "description": "Medium-roast espresso capsules, 24 count.",
++      "images": [
++        "https://picsum.photos/seed/vm_coffee_pods/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 9.49,
++      "buyItNowPrice": 9.49,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Other"
++    },
++    {
++      "id": "vm_usb_cable",
++      "sellerId": "user_valuemart",
++      "title": "USB-C Cable 2m",
++      "description": "Braided USB-C to USB-C cable, 2 meters.",
++      "images": [
++        "https://picsum.photos/seed/vm_usb_cable/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 6.99,
++      "buyItNowPrice": 6.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Electronics"
++    },
++    {
++      "id": "vm_chair",
++      "sellerId": "user_valuemart",
++      "title": "Office Chair",
++      "description": "Mesh-back ergonomic office chair.",
++      "images": [
++        "https://picsum.photos/seed/vm_chair/400/400"
++      ],
++      "type": "fixed",
++      "startingBid": null,
++      "currentBid": null,
++      "price": 94.99,
++      "buyItNowPrice": 94.99,
++      "bids": [],
++      "watchers": [],
++      "views": 0,
++      "endTime": 1779969600000,
++      "condition": "New",
++      "shippingCost": 0,
++      "location": "United States",
++      "status": "active",
++      "quantity": 1,
++      "category": "Home"
++    }
++  ],
++  "orders": [],
++  "messages": [],
++  "notifications": [],
++  "feedbacks": [],
++  "cart": [],
++  "_gym_coupons": [
++    {
++      "code": "VALUE10",
++      "percent_off": 0.1,
++      "min_subtotal": 0,
++      "description": "10% off your ValueMart order",
++      "expired": false
++    }
++  ],
++  "_gym_cart_detail": [],
++  "_gym_orders": [],
++  "_gym_meta": {
++    "task_id": "A1/buy_wireless_mouse",
++    "seed": 0,
++    "app": "market",
++    "today": "2026-05-21",
++    "projection_version": "2"
++  }
++}
+\ No newline at end of file
+diff -ruN a/websites/ebay_mock/index.html b/websites/ebay_mock/index.html
 --- a/websites/ebay_mock/index.html	2026-07-28 11:01:47
 +++ b/websites/ebay_mock/index.html	2026-07-30 17:35:14
 @@ -4,7 +4,7 @@
@@ -10,7 +4912,7 @@ diff -ruN a_ebay_mock/index.html b_ebay_mock/index.html
    </head>
    <body>
      <div id="root"></div>
-diff -ruN a_ebay_mock/src/App.jsx b_ebay_mock/src/App.jsx
+diff -ruN a/websites/ebay_mock/src/App.jsx b/websites/ebay_mock/src/App.jsx
 --- a/websites/ebay_mock/src/App.jsx	2026-07-28 11:01:47
 +++ b/websites/ebay_mock/src/App.jsx	2026-07-30 17:35:14
 @@ -7,6 +7,7 @@
@@ -38,7 +4940,7 @@ diff -ruN a_ebay_mock/src/App.jsx b_ebay_mock/src/App.jsx
              <Route path="/go" element={<Go />} />
            </Routes>
          </Layout>
-diff -ruN a_ebay_mock/src/components/Navbar.jsx b_ebay_mock/src/components/Navbar.jsx
+diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/src/components/Navbar.jsx
 --- a/websites/ebay_mock/src/components/Navbar.jsx	2026-07-28 11:01:47
 +++ b/websites/ebay_mock/src/components/Navbar.jsx	2026-07-30 17:35:14
 @@ -120,14 +120,14 @@
@@ -103,9 +5005,9 @@ diff -ruN a_ebay_mock/src/components/Navbar.jsx b_ebay_mock/src/components/Navba
                  <button onClick={() => setShowHelpDialog(false)} className="mt-5 btn-primary text-sm">Done</button>
                </div>
              ) : (
-diff -ruN a_ebay_mock/src/context/StoreContext.jsx b_ebay_mock/src/context/StoreContext.jsx
+diff -ruN a/websites/ebay_mock/src/context/StoreContext.jsx b/websites/ebay_mock/src/context/StoreContext.jsx
 --- a/websites/ebay_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/context/StoreContext.jsx	2026-07-30 20:21:06
++++ b/websites/ebay_mock/src/context/StoreContext.jsx	2026-07-31 15:07:11
 @@ -1,6 +1,15 @@
  import React, { createContext, useContext, useReducer, useEffect, useRef, useState } from 'react';
  import { INITIAL_STATE, getSessionId, fetchCustomState, saveState, initializeData } from '../data/mockData';
@@ -176,7 +5078,15 @@ diff -ruN a_ebay_mock/src/context/StoreContext.jsx b_ebay_mock/src/context/Store
      case ACTIONS.MARK_NOTIFICATION_READ: {
        const { notifId } = action.payload;
        const newNotifications = state.notifications.map(n =>
-@@ -372,6 +421,26 @@
+@@ -361,6 +410,7 @@
+   const sidRef = useRef(getSessionId());
+   const initDone = useRef(false);
+   const [hydrated, setHydrated] = useState(false);
++  const [loadError, setLoadError] = useState(null);
+ 
+   const [state, dispatch] = useReducer(reducer, INITIAL_STATE, (initial) => {
+     return initial;
+@@ -372,6 +422,26 @@
      initDone.current = true;
      const sid = sidRef.current;
  
@@ -203,7 +5113,21 @@ diff -ruN a_ebay_mock/src/context/StoreContext.jsx b_ebay_mock/src/context/Store
      if (sid) {
        const sessionKey = `${BASE_INITIAL_KEY}_${sid}`;
        const isRefresh = localStorage.getItem(sessionKey) !== null;
-@@ -405,6 +474,12 @@
+@@ -381,6 +451,13 @@
+         setHydrated(true);
+       } else {
+         fetchCustomState(sid).then(customState => {
++          // Loud failure: a sid was requested but no seed state could be loaded.
++          // Do NOT silently boot generic demo data — a reviewer can't tell.
++          if (customState == null) {
++            setLoadError(sid);
++            setHydrated(true);
++            return;
++          }
+           const data = initializeData(sid, customState);
+           dispatch({ type: ACTIONS.SET_STATE, payload: data });
+           setHydrated(true);
+@@ -405,6 +482,12 @@
    };
  
    const buyNow = (listingId) => {
@@ -216,7 +5140,7 @@ diff -ruN a_ebay_mock/src/context/StoreContext.jsx b_ebay_mock/src/context/Store
      dispatch({ type: ACTIONS.BUY_NOW, payload: { listingId, userId: state.currentUser.id } });
    };
  
-@@ -452,17 +527,59 @@
+@@ -452,17 +535,59 @@
    };
  
    const addToCart = (listingId) => {
@@ -276,7 +5200,34 @@ diff -ruN a_ebay_mock/src/context/StoreContext.jsx b_ebay_mock/src/context/Store
    const markNotificationRead = (notifId) => {
      dispatch({ type: ACTIONS.MARK_NOTIFICATION_READ, payload: { notifId } });
    };
-@@ -488,6 +605,9 @@
+@@ -471,6 +596,26 @@
+     dispatch({ type: ACTIONS.MARK_ALL_NOTIFICATIONS_READ });
+   };
+ 
++  if (loadError) {
++    return (
++      <div style={{
++        minHeight: '100vh', display: 'flex', flexDirection: 'column',
++        alignItems: 'center', justifyContent: 'center', gap: '12px',
++        padding: '24px', textAlign: 'center',
++        background: '#fef2f2', color: '#7f1d1d',
++        fontFamily: 'Arial, Helvetica, sans-serif'
++      }}>
++        <div style={{ fontSize: '48px' }}>⚠️</div>
++        <h1 style={{ fontSize: '22px', fontWeight: 700, margin: 0 }}>
++          Could not load session from the state server.
++        </h1>
++        <p style={{ fontSize: '15px', margin: 0 }}>
++          Session <code style={{ fontWeight: 700 }}>{loadError}</code> has no stored state, or the state server is unreachable.
++        </p>
++      </div>
++    );
++  }
++
+   return (
+     <StoreContext.Provider value={{
+       state,
+@@ -488,6 +633,9 @@
        addToCart,
        removeFromCart,
        clearCart,
@@ -286,10 +5237,102 @@ diff -ruN a_ebay_mock/src/context/StoreContext.jsx b_ebay_mock/src/context/Store
        markNotificationRead,
        markAllNotificationsRead
      }}>
-diff -ruN a_ebay_mock/src/data/mockData.js b_ebay_mock/src/data/mockData.js
+diff -ruN a/websites/ebay_mock/src/data/mockData.js b/websites/ebay_mock/src/data/mockData.js
 --- a/websites/ebay_mock/src/data/mockData.js	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/data/mockData.js	2026-07-30 17:35:14
-@@ -137,7 +137,8 @@
++++ b/websites/ebay_mock/src/data/mockData.js	2026-07-31 15:06:31
+@@ -1,18 +1,29 @@
++// Self-contained inline-SVG placeholder helpers (no external hosts / picsum).
++const initialsAvatar = (initials, bg) =>
++  `data:image/svg+xml,${encodeURIComponent(
++    `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" rx="50" fill="${bg}"/><text x="50" y="50" dy=".35em" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="bold" fill="#ffffff">${initials}</text></svg>`
++  )}`;
++
++const productTile = (label, c1, c2) =>
++  `data:image/svg+xml,${encodeURIComponent(
++    `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs><rect width="400" height="400" fill="url(#g)"/><text x="200" y="205" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="bold" fill="#ffffff">${label}</text></svg>`
++  )}`;
++
+ export const INITIAL_STATE = {
+   currentUser: {
+     id: 'user_1',
+-    username: 'admin',
+-    email: 'admin@example.com',
+-    avatar: 'https://picsum.photos/100/100?random=user1',
++    username: 'Alice',
++    email: 'alice@shopgym.com',
++    avatar: initialsAvatar('AA', '#2563eb'),
+     feedbackScore: 154,
+     feedbackRating: 98.5
+   },
+   users: [
+     {
+       id: 'user_1',
+-      username: 'admin',
+-      email: 'admin@example.com',
+-      avatar: 'https://picsum.photos/100/100?random=user1',
++      username: 'Alice',
++      email: 'alice@shopgym.com',
++      avatar: initialsAvatar('AA', '#2563eb'),
+       feedbackScore: 154,
+       feedbackRating: 98.5
+     },
+@@ -20,7 +31,7 @@
+       id: 'user_2',
+       username: 'RetroGamer99',
+       email: 'retro@example.com',
+-      avatar: 'https://picsum.photos/100/100?random=user2',
++      avatar: initialsAvatar('R', '#16a34a'),
+       feedbackScore: 42,
+       feedbackRating: 100
+     },
+@@ -28,7 +39,7 @@
+       id: 'user_3',
+       username: 'CameraPro',
+       email: 'camera@example.com',
+-      avatar: 'https://picsum.photos/100/100?random=user3',
++      avatar: initialsAvatar('C', '#db2777'),
+       feedbackScore: 890,
+       feedbackRating: 99.2
+     }
+@@ -40,8 +51,8 @@
+       title: 'Vintage Nintendo Game Boy Color - Atomic Purple',
+       description: 'Authentic Nintendo Game Boy Color in Atomic Purple. Tested and working perfectly. Screen has minor scratches consistent with age. Comes with 2 AA batteries.',
+       images: [
+-        'https://picsum.photos/400/400?random=item1a',
+-        'https://picsum.photos/400/400?random=item1b'
++        productTile('Game Boy Color', '#7c3aed', '#4c1d95'),
++        productTile('Game Boy · Back', '#6d28d9', '#3b0764')
+       ],
+       type: 'auction',
+       startingBid: 40.00,
+@@ -65,7 +76,7 @@
+       title: 'Canon EOS R5 Mirrorless Camera Body',
+       description: 'Brand new in box. Never opened. Full warranty included.',
+       images: [
+-        'https://picsum.photos/400/400?random=item2'
++        productTile('Canon EOS R5', '#111827', '#374151')
+       ],
+       type: 'fixed',
+       price: 3200.00,
+@@ -85,7 +96,7 @@
+       title: 'Sony WH-1000XM5 Wireless Noise Canceling Headphones',
+       description: 'Used for one flight. Like new condition. Original box and cables included.',
+       images: [
+-        'https://picsum.photos/400/400?random=item3'
++        productTile('Sony WH-1000XM5', '#1f2937', '#4b5563')
+       ],
+       type: 'auction',
+       startingBid: 150.00,
+@@ -106,7 +117,7 @@
+       title: 'Rare First Edition Book - The Hobbit',
+       description: 'A collector\'s dream. Good condition considering age. Binding is tight.',
+       images: [
+-        'https://picsum.photos/400/400?random=item4'
++        productTile('The Hobbit', '#b45309', '#78350f')
+       ],
+       type: 'auction',
+       startingBid: 500.00,
+@@ -137,7 +148,8 @@
    ],
    notifications: [],
    feedbacks: [],
@@ -299,7 +5342,7 @@ diff -ruN a_ebay_mock/src/data/mockData.js b_ebay_mock/src/data/mockData.js
  };
  
  // --- Session-based state isolation ---
-diff -ruN a_ebay_mock/src/lib/bridge.js b_ebay_mock/src/lib/bridge.js
+diff -ruN a/websites/ebay_mock/src/lib/bridge.js b/websites/ebay_mock/src/lib/bridge.js
 --- a/websites/ebay_mock/src/lib/bridge.js	1969-12-31 16:00:00
 +++ b/websites/ebay_mock/src/lib/bridge.js	2026-07-30 19:22:19
 @@ -0,0 +1,54 @@
@@ -357,7 +5400,7 @@ diff -ruN a_ebay_mock/src/lib/bridge.js b_ebay_mock/src/lib/bridge.js
 +  setTimeout(tick, ms);
 +  return () => { live = false; };
 +}
-diff -ruN a_ebay_mock/src/pages/Cart.jsx b_ebay_mock/src/pages/Cart.jsx
+diff -ruN a/websites/ebay_mock/src/pages/Cart.jsx b/websites/ebay_mock/src/pages/Cart.jsx
 --- a/websites/ebay_mock/src/pages/Cart.jsx	1969-12-31 16:00:00
 +++ b/websites/ebay_mock/src/pages/Cart.jsx	2026-07-30 18:43:43
 @@ -0,0 +1,183 @@
@@ -544,7 +5587,7 @@ diff -ruN a_ebay_mock/src/pages/Cart.jsx b_ebay_mock/src/pages/Cart.jsx
 +    </div>
 +  );
 +}
-diff -ruN a_ebay_mock/src/pages/CreateListing.jsx b_ebay_mock/src/pages/CreateListing.jsx
+diff -ruN a/websites/ebay_mock/src/pages/CreateListing.jsx b/websites/ebay_mock/src/pages/CreateListing.jsx
 --- a/websites/ebay_mock/src/pages/CreateListing.jsx	2026-07-28 11:01:47
 +++ b/websites/ebay_mock/src/pages/CreateListing.jsx	2026-07-30 17:35:14
 @@ -4,7 +4,7 @@
@@ -556,7 +5599,7 @@ diff -ruN a_ebay_mock/src/pages/CreateListing.jsx b_ebay_mock/src/pages/CreateLi
    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="400" height="400" fill="#f5f5f5"/><rect x="28" y="28" width="344" height="344" rx="18" fill="#ffffff" stroke="#e5e7eb" stroke-width="6"/><circle cx="200" cy="150" r="54" fill="#e53238"/><rect x="96" y="232" width="208" height="18" rx="9" fill="#0064d2"/><rect x="128" y="266" width="144" height="14" rx="7" fill="#86b817"/><text x="200" y="330" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#333333">${label.replace(/[&<>"']/g, '')}</text></svg>`;
    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
  }
-diff -ruN a_ebay_mock/src/pages/Dashboard.jsx b_ebay_mock/src/pages/Dashboard.jsx
+diff -ruN a/websites/ebay_mock/src/pages/Dashboard.jsx b/websites/ebay_mock/src/pages/Dashboard.jsx
 --- a/websites/ebay_mock/src/pages/Dashboard.jsx	2026-07-28 11:01:47
 +++ b/websites/ebay_mock/src/pages/Dashboard.jsx	2026-07-30 17:35:14
 @@ -141,7 +141,7 @@
@@ -568,7 +5611,48 @@ diff -ruN a_ebay_mock/src/pages/Dashboard.jsx b_ebay_mock/src/pages/Dashboard.js
  
        <div className="flex gap-8 border-b border-gray-200 mb-8 overflow-x-auto">
          {[
-diff -ruN a_ebay_mock/src/pages/ProductDetails.jsx b_ebay_mock/src/pages/ProductDetails.jsx
+diff -ruN a/websites/ebay_mock/src/pages/Home.jsx b/websites/ebay_mock/src/pages/Home.jsx
+--- a/websites/ebay_mock/src/pages/Home.jsx	2026-07-28 11:01:47
++++ b/websites/ebay_mock/src/pages/Home.jsx	2026-07-31 15:06:52
+@@ -4,6 +4,16 @@
+ import ListingCard from '../components/ListingCard';
+ import { ArrowRight } from 'lucide-react';
+ 
++// Each tile targets a category/query that actually has active listings in the seed.
++const CATEGORIES = [
++  { label: 'Electronics', to: '/search?c=electronics', c1: '#2563eb', c2: '#1e40af' },
++  { label: 'Cameras', to: '/search?c=cameras', c1: '#111827', c2: '#374151' },
++  { label: 'Books', to: '/search?c=books', c1: '#b45309', c2: '#78350f' },
++  { label: 'Nintendo', to: '/search?q=Nintendo', c1: '#7c3aed', c2: '#4c1d95' },
++  { label: 'Headphones', to: '/search?q=Headphones', c1: '#0891b2', c2: '#155e75' },
++  { label: 'Canon', to: '/search?q=Canon', c1: '#059669', c2: '#065f46' },
++];
++
+ export default function Home() {
+   const { state } = useStore();
+   const featuredListings = state.listings.filter(l => l.status === 'active').slice(0, 4);
+@@ -26,12 +36,15 @@
+       <div className="mb-12">
+         <h2 className="text-2xl font-bold mb-6 text-gray-900">Explore Popular Categories</h2>
+         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+-          {['Sneakers', 'Watches', 'Trading Cards', 'Handbags', 'Gaming', 'Cameras'].map((cat) => (
+-            <Link key={cat} to={`/search?q=${cat}`} className="group block text-center">
+-              <div className="aspect-square rounded-full bg-gray-100 mb-3 overflow-hidden mx-auto w-32 h-32 flex items-center justify-center">
+-                <img src={`https://picsum.photos/200/200?random=${cat}`} alt={cat} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
++          {CATEGORIES.map((cat) => (
++            <Link key={cat.label} to={cat.to} className="group block text-center">
++              <div
++                className="aspect-square rounded-full mb-3 overflow-hidden mx-auto w-32 h-32 flex items-center justify-center group-hover:scale-110 transition-transform"
++                style={{ background: `linear-gradient(135deg, ${cat.c1}, ${cat.c2})` }}
++              >
++                <span className="text-white text-4xl font-bold">{cat.label.charAt(0)}</span>
+               </div>
+-              <span className="font-medium group-hover:underline">{cat}</span>
++              <span className="font-medium group-hover:underline">{cat.label}</span>
+             </Link>
+           ))}
+         </div>
+diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock/src/pages/ProductDetails.jsx
 --- a/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-07-28 11:01:47
 +++ b/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-07-30 17:35:14
 @@ -7,7 +7,7 @@
