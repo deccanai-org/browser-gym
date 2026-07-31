@@ -279,7 +279,7 @@ diff -ruN a_gmail_mock/src/components/ThreadView.jsx b_gmail_mock/src/components
    }, [threadId]);
 diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/StoreContext.jsx
 --- a/websites/gmail_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/context/StoreContext.jsx	2026-07-30 20:22:55
++++ b/websites/gmail_mock/src/context/StoreContext.jsx	2026-07-30 20:29:34
 @@ -1,7 +1,17 @@
  import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
  import { INITIAL_STATE, DEFAULT_SETTINGS, getSessionId, fetchCustomState, saveState, initializeData } from '../data/mockData';
@@ -400,13 +400,18 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
      setState(prev => {
        const snapshot = prev.emails;
        showToast('Conversation archived', () => setState(s => ({ ...s, emails: snapshot })));
-@@ -151,6 +227,15 @@
+@@ -151,6 +227,20 @@
    };
  
    const sendEmail = (emailData) => {
 +    if (bridged()) {
++      // Cc/Bcc render in the composer and were being dropped on the floor, so
++      // "copy Dana" was unsatisfiable.
++      const flat = (v) => (Array.isArray(v) ? v.join(',') : (v || ''));
 +      bridgeAct('mail.send', {
-+        to: Array.isArray(emailData.to) ? emailData.to.join(',') : (emailData.to || ''),
++        to: flat(emailData.to),
++        cc: flat(emailData.cc),
++        bcc: flat(emailData.bcc),
 +        subject: emailData.subject || '',
 +        body: emailData.body || emailData.text || '',
 +      }).then(r => applyEngine(setState, r));
@@ -416,13 +421,16 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
      const newEmail = {
        id: generateId(),
        threadId: generateId(),
-@@ -243,6 +328,14 @@
+@@ -243,6 +333,17 @@
    }
  
    const replyToEmail = (originalEmail, body, isReplyAll = false, attachments = []) => {
 +    if (bridged()) {
++      // Reply-all has to carry the other recipients, or it is just a reply.
++      const addrs = (list) => (list || []).map(r => r.email || r).filter(Boolean).join(',');
 +      bridgeAct('mail.send', {
-+        to: originalEmail.from || originalEmail.fromEmail || '',
++        to: originalEmail.from?.email || originalEmail.from || originalEmail.fromEmail || '',
++        cc: isReplyAll ? [addrs(originalEmail.to), addrs(originalEmail.cc)].filter(Boolean).join(',') : '',
 +        subject: 'Re: ' + (originalEmail.subject || ''),
 +        body: body || '',
 +      }).then(r => applyEngine(setState, r));
@@ -431,7 +439,7 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
       const newEmail = {
        id: generateId(),
        threadId: originalEmail.threadId,
-@@ -269,20 +362,41 @@
+@@ -269,20 +370,41 @@
      }));
    }
  
@@ -475,7 +483,7 @@ diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/Sto
    const addLabel = (emailId, labelId) => {
      const email = state.emails.find(e => e.id === emailId);
      if (email && !email.labels.includes(labelId)) {
-@@ -442,6 +556,7 @@
+@@ -442,6 +564,7 @@
        toggleStar,
        toggleImportant,
        toggleRead,

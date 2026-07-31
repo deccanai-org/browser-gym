@@ -154,7 +154,7 @@ diff -ruN a_google_calendar_mock/src/components/WeekView.jsx b_google_calendar_m
  
 diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_mock/src/context/StoreContext.jsx
 --- a/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-30 20:21:06
++++ b/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-30 20:28:47
 @@ -1,7 +1,26 @@
  import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react';
  import { MOCK_USER, DEFAULT_CALENDARS, generateMockEvents, getSessionId, fetchCustomState, saveState, initializeData, getInitialState } from '../utils/helpers';
@@ -214,14 +214,14 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
      fetchCustomState(sid).then(customState => {
        if (customState) {
          const data = initializeData(sid, customState);
-@@ -139,6 +183,46 @@
+@@ -139,6 +183,66 @@
      saveState(state, sid);
    }, [state, readyToSave]);
  
-+  // In bridged mode, route the gym-backed reducer actions (ADD/UPDATE/DELETE_EVENT)
-+  // to the real engine, then adopt its authoritative state. Everything else
-+  // (view, date, sidebar, drag MOVE_EVENT, calendars, settings, notices) stays
-+  // local and dispatches unchanged — as does every action in legacy mode.
++  // In bridged mode, route the gym-backed reducer actions (ADD/UPDATE/DELETE and
++  // drag-MOVE) to the real engine, then adopt its authoritative state. Everything
++  // else (view, date, sidebar, calendars, settings, notices) stays local and
++  // dispatches unchanged — as does every action in legacy mode.
 +  const bridgedDispatch = (action) => {
 +    if (bridged() && action) {
 +      if (action.type === 'ADD_EVENT') {
@@ -249,6 +249,26 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
 +        }).then(r => applyEngine(dispatch, r));
 +        return;
 +      }
++      if (action.type === 'MOVE_EVENT') {
++        // Dragging a chip is just an update. It was left local, so a drag looked
++        // like it worked and the next 2.5s poll snapped the event back.
++        const { eventId, newStart } = action.payload || {};
++        const ev = state.events.find(e => e.id === eventId);
++        if (ev && newStart) {
++          const from = new Date(ev.start), to = new Date(newStart);
++          const mins = Math.round((new Date(ev.end) - from) / 60000);
++          const end = new Date(to.getTime() + mins * 60000);
++          const hhmm = (d) => String(d.getHours()).padStart(2, '0') + ':' +
++                              String(d.getMinutes()).padStart(2, '0');
++          const ymd = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-` +
++                             String(d.getDate()).padStart(2, '0');
++          bridgeAct('calendar.update', {
++            event_id: eventId, title: ev.title,
++            day: ymd(to), start: hhmm(to), end: hhmm(end),
++          }).then(r => applyEngine(dispatch, r));
++        }
++        return;
++      }
 +      if (action.type === 'DELETE_EVENT') {
 +        const id = (action.payload && action.payload.id) ? action.payload.id : action.payload;
 +        bridgeAct('calendar.delete', { event_id: id }).then(r => applyEngine(dispatch, r));
@@ -261,7 +281,7 @@ diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_
    const getDiff = () => {
      // Simple shallow diff for demonstration
      const diff = {};
-@@ -150,7 +234,7 @@
+@@ -150,7 +254,7 @@
  
    const value = {
      state,

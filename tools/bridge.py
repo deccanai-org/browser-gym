@@ -98,7 +98,7 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "calendar.view_event":   ("GET",  "/calendar/edit/{event_id}",       ()),
     "shop.cancel_subscription": ("POST", "/api/subscriptions/{subscription_id}/cancel", ()),
     # mail (Gmail)
-    "mail.send":             ("POST", "/mail/send",          ("to", "subject", "body")),
+    "mail.send":             ("POST", "/mail/send",          ("to", "subject", "body", "cc", "bcc")),
     # market (eBay) — a mock listingId IS the gym product_id, so no resolution
     "market.add_to_cart":    ("POST", "/market/cart/add",    ("product_id", "quantity")),
     "market.remove":         ("POST", "/market/cart/remove", ("product_id",)),
@@ -114,7 +114,7 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "food.checkout":         ("POST", "/food/checkout",      ("delivery_note",)),
     # calendar (Google Calendar)
     "calendar.create":       ("POST", "/calendar/create",    ("title", "day", "start", "end")),
-    "calendar.update":       ("POST", "/calendar/update",    ("event_id", "title", "start", "end")),
+    "calendar.update":       ("POST", "/calendar/update",    ("event_id", "title", "start", "end", "day")),
     "calendar.delete":       ("POST", "/calendar/delete",    ("event_id",)),
 }
 

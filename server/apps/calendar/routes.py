@@ -94,10 +94,11 @@ async def update(
     title: str = Form(""),
     start: str = Form(""),
     end: str = Form(""),
+    day: str = Form(""),
 ):
     world = _deps["get_world"]()
     r = C.update_event(world.calendar, event_id, start=start, end=end,
-                       title=title)
+                       title=title, day=day)
     if r.get("ok"):
         _deps["flash"](world.shop, "success", "Updated your calendar event.")
         return RedirectResponse("/calendar", 303)

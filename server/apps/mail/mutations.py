@@ -76,7 +76,7 @@ def toggle_label(mail: MailState, email_id: str, label: str) -> dict[str, Any]:
 
 
 def send_email(mail: MailState, *, to: str, subject: str,
-               body: str = "") -> dict[str, Any]:
+               body: str = "", cc: str = "", bcc: str = "") -> dict[str, Any]:
     """Compose-and-send. Lands a copy in the Sent folder. Validates a
     plausible recipient + non-empty subject so the agent gets a real error
     flash when it sends something malformed."""
@@ -87,8 +87,12 @@ def send_email(mail: MailState, *, to: str, subject: str,
     if not subject:
         return {"ok": False, "error": "A subject is required."}
     eid = mail.new_id()
+    # cc/bcc are recipients too: a task that says "copy Dana" is only satisfiable
+    # if they end up somewhere a verifier can read. Fold them into `to` so the
+    # existing recipient checks see them, and keep the raw fields as well.
+    all_to = ", ".join([x for x in (to, cc, bcc) if x and x.strip()])
     mail.sent[eid] = Email(
-        id=eid, sender=mail.account_email, to=to,
+        id=eid, sender=mail.account_email, to=all_to,
         subject=subject, body=body or "",
         received_at=f"{SEED_DATE}T12:00:00", received_label="now",
         read=True, folder="sent",

@@ -90,9 +90,11 @@ async def send(
     to: str = Form(""),
     subject: str = Form(""),
     body: str = Form(""),
+    cc: str = Form(""),
+    bcc: str = Form(""),
 ):
     world = _deps["get_world"]()
-    r = M.send_email(world.mail, to=to, subject=subject, body=body)
+    r = M.send_email(world.mail, to=to, subject=subject, body=body, cc=cc, bcc=bcc)
     if r.get("ok"):
         # Generic MailSent trigger (target_app=mail, no default subscriber — a pure
         # trigger that lands in world.events). Harmless for tasks that don't use it.

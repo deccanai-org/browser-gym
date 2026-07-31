@@ -53,10 +53,14 @@ def create_event(cal: CalendarState, *, title: str, day: str,
 
 
 def update_event(cal: CalendarState, event_id: str, *, start: str = "",
-                 end: str = "", title: str = "") -> dict[str, Any]:
+                 end: str = "", title: str = "", day: str = "") -> dict[str, Any]:
     """Move/retitle an existing event IN PLACE — the same event keeps its id.
     This is the path an agent takes to push a reminder to a new time WITHOUT
-    leaving the old one behind (the M16 'don't over-keep' negative action)."""
+    leaving the old one behind (the M16 'don't over-keep' negative action).
+
+    ``day`` moves it to another date, which is what dragging a chip onto a
+    different cell in the month grid means; without it a drag could only ever
+    shift the time."""
     e = cal.events.get(event_id)
     if e is None:
         return {"ok": False, "error": "no such event"}
@@ -64,9 +68,14 @@ def update_event(cal: CalendarState, event_id: str, *, start: str = "",
         e.start = start
     if end:
         e.end = end
+    if day:
+        e.day = day
+        # day_label is what the agenda groups on, so it has to move too.
+        if hasattr(e, "day_label"):
+            e.day_label = day
     if title.strip():
         e.title = title.strip()
-    return {"ok": True, "event_id": event_id, "start": e.start, "end": e.end}
+    return {"ok": True, "event_id": event_id, "day": e.day, "start": e.start, "end": e.end}
 
 
 def delete_event(cal: CalendarState, event_id: str) -> dict[str, Any]:
