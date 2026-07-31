@@ -232,8 +232,22 @@ _UBER_CATEGORIES = [
     {"id": "cat_13", "name": "Sandwich", "icon": "\U0001F96A"}, {"id": "cat_14", "name": "Korean", "icon": "\U0001F372"},
     {"id": "cat_15", "name": "Mediterranean", "icon": "\U0001F959"},
 ]
-_UBER_ADDR = {"id": "addr_1", "label": "Home", "street": "123 Main St", "apt": "", "city": "San Francisco",
-              "state": "CA", "zip": "94102", "instructions": "", "isDefault": True}
+# The one account holder, identical across all five apps. Verifiers key on
+# alice@shopgym.com (152 refs), so this is both the canonical and the safe value.
+ALICE_NAME = "Alice Anderson"
+ALICE_EMAIL = "alice@shopgym.com"
+
+
+def _acct_email(raw: str | None) -> str:
+    """Normalise the account email to the canonical address, but keep a genuinely
+    task-set one (e.g. a change-email task's alice.new@shopgym.com). The engine
+    seeds a bare @example.com placeholder that should read as alice@shopgym.com."""
+    if not raw or str(raw).endswith("@example.com"):
+        return ALICE_EMAIL
+    return raw
+
+_UBER_ADDR = {"id": "addr_1", "label": "Home", "street": "100 Park Avenue", "apt": "Apt 4B", "city": "Brooklyn",
+              "state": "NY", "zip": "11201", "instructions": "", "isDefault": True}
 _UBER_PAY = {"id": "pay_1", "type": "visa", "label": "Visa •••• 4242", "last4": "4242", "isDefault": True}
 # The gym has no courier model, but order tracking hides its driver card without
 # one — a fixed stand-in keeps the page complete and the runs deterministic.
@@ -335,8 +349,8 @@ def transform_shop(shop: dict) -> dict:
     # seeded order and an agent-placed one end up the same shape.
     pay_by_id = {p["id"]: p for p in pays}
     addr_by_id = {a["id"]: a for a in addrs}
-    user = {"id": (gu or {}).get("id", "u1"), "name": (gu or {}).get("full_name", "Alice Anderson"),
-            "email": (gu or {}).get("email", "alice@example.com"),
+    user = {"id": (gu or {}).get("id", "u1"), "name": (gu or {}).get("full_name") or ALICE_NAME,
+            "email": _acct_email((gu or {}).get("email")),
             "address": def_addr, "addresses": addrs, "paymentMethod": def_pay, "paymentMethods": pays}
 
     agg: dict = {}
@@ -405,8 +419,8 @@ def transform_market(m: dict) -> dict:
     """gym MarketState -> ebay_mock (listings[], users[], cart[])."""
     store = m.get("store_name") or "ValueMart"
     seller_id, buyer_id = "user_valuemart", "user_1"
-    buyer = {"id": buyer_id, "username": "admin", "email": "admin@example.com",
-             "avatar": _picsum("user1", "100/100"), "feedbackScore": 154, "feedbackRating": 98.5}
+    buyer = {"id": buyer_id, "username": ALICE_NAME, "email": ALICE_EMAIL,
+             "avatar": None, "feedbackScore": 154, "feedbackRating": 98.5}
     seller = {"id": seller_id, "username": store, "email": "store@valuemart.example.com",
               "avatar": _picsum("valuemart", "100/100"), "feedbackScore": 500, "feedbackRating": 99.0}
     # UTC-pinned: a naive datetime here made the projection (and therefore any
@@ -467,9 +481,9 @@ _CAL_OTHER = [
 
 def transform_calendar(cal: dict) -> dict:
     """gym CalendarState -> google_calendar_mock (events[] + fixed calendar scaffolding)."""
-    name = cal.get("account_name") or "Demo User"
-    email = ".".join(name.lower().split()) + "@example.com"
-    user = {"id": "u1", "username": name, "email": email, "avatar": _picsum("user1", "100/100")}
+    name = cal.get("account_name") or ALICE_NAME
+    email = ALICE_EMAIL
+    user = {"id": "u1", "username": name, "email": email, "avatar": None}
     ordered = sorted((cal.get("events") or {}).values(), key=lambda e: (e.get("day", ""), e.get("start", "")))
     events = []
     for e in ordered:
@@ -536,8 +550,8 @@ def transform_food(food: dict) -> dict:
                             "hours": "", "address": "", "phone": "", "isSponsored": False, "promotions": [],
                             "categories": [], "tags": [], "supportsPickup": True,
                             "pickupTimeMin": 10, "pickupTimeMax": 20})
-    user = {"id": "user_1", "name": "Alex Johnson", "email": "alex.johnson@email.com",
-            "phone": "(415) 555-0100", "avatarUrl": "",
+    user = {"id": "user_1", "name": ALICE_NAME, "email": ALICE_EMAIL,
+            "phone": "(718) 555-0100", "avatarUrl": "",
             "addresses": [dict(_UBER_ADDR)], "defaultAddressId": _UBER_ADDR["id"],
             "paymentMethods": [dict(_UBER_PAY)], "defaultPaymentId": _UBER_PAY["id"],
             "uberOneActive": False, "favoriteRestaurantIds": []}
