@@ -92,8 +92,14 @@ class _Pool:
 
     def _reap_locked(self) -> None:
         now = time.monotonic()
-        for sid in [s for s, x in self._sessions.items()
-                    if s != DEFAULT_SESSION and now - x.touched > TTL_SEC]:
+        stale = [s for s, x in self._sessions.items()
+                 if s != DEFAULT_SESSION and now - x.touched > TTL_SEC]
+        # The back-compat default session is created eagerly (module import binds
+        # BRIDGE), so on a one-gym pool it would otherwise hold the only slot and
+        # every real session would get a 503. An unopened default owns nothing.
+        if (d := self._sessions.get(DEFAULT_SESSION)) is not None and d.bridge.task_id is None:
+            stale.append(DEFAULT_SESSION)
+        for sid in stale:
             self._sessions.pop(sid, None)
 
     def get(self, sid: str, create: bool = False) -> _Session | None:

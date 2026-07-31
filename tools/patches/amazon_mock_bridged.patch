@@ -1,7 +1,6 @@
-diff --git a/websites/amazon_mock/index.html b/websites/amazon_mock/index.html
-index ce2629a..d92b42e 100644
---- a/websites/amazon_mock/index.html
-+++ b/websites/amazon_mock/index.html
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/index.html hubdev/websites/amazon_mock/index.html
+--- a/websites/amazon_mock/index.html	2026-07-28 11:01:47
++++ b/websites/amazon_mock/index.html	2026-07-30 17:17:43
 @@ -4,7 +4,7 @@
      <meta charset="UTF-8" />
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -11,11 +10,18 @@ index ce2629a..d92b42e 100644
    </head>
    <body>
      <div id="root"></div>
-diff --git a/websites/amazon_mock/src/App.jsx b/websites/amazon_mock/src/App.jsx
-index d4345c7..c294f8e 100644
---- a/websites/amazon_mock/src/App.jsx
-+++ b/websites/amazon_mock/src/App.jsx
-@@ -17,9 +17,9 @@ const Footer = () => {
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/App.jsx hubdev/websites/amazon_mock/src/App.jsx
+--- a/websites/amazon_mock/src/App.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/App.jsx	2026-07-30 17:21:49
+@@ -9,6 +9,7 @@
+ import { Checkout } from './pages/Checkout';
+ import { Orders } from './pages/Orders';
+ import { Wishlist } from './pages/Wishlist';
++import { Subscriptions } from './pages/Subscriptions';
+ import { Profile } from './pages/Profile';
+ import { OrderConfirmation } from './pages/OrderConfirmation';
+ import { Go } from './pages/Go';
+@@ -17,9 +18,9 @@
    const year = new Date().getFullYear();
    const [footerPanel, setFooterPanel] = React.useState(null);
    const footerLinks = {
@@ -28,7 +34,7 @@ index d4345c7..c294f8e 100644
      help: ['Shipping Rates & Policies', 'Returns & Replacements', 'Manage Your Content and Devices', 'Help'],
      legal: ['Conditions of Use', 'Privacy Notice', 'Consumer Health Data Privacy Disclosure', 'Your Ads Privacy Choices'],
    };
-@@ -55,7 +55,7 @@ const Footer = () => {
+@@ -55,7 +56,7 @@
              </ul>
            </div>
            <div>
@@ -37,7 +43,7 @@ index d4345c7..c294f8e 100644
              <ul className="space-y-2 text-[#ddd] text-[13px]">
                {footerLinks.payments.map(label => <li key={label}><FooterButton>{label}</FooterButton></li>)}
              </ul>
-@@ -74,13 +74,13 @@ const Footer = () => {
+@@ -74,13 +75,13 @@
        {/* Bottom bar */}
        <div className="bg-[#131a22] text-white border-t border-gray-700 py-6 px-8 text-center">
          <div className="flex items-center justify-center gap-2 mb-3">
@@ -54,7 +60,7 @@ index d4345c7..c294f8e 100644
        </div>
  
        {footerPanel && (
-@@ -91,7 +91,7 @@ const Footer = () => {
+@@ -91,7 +92,7 @@
                <button type="button" aria-label="Close footer information" onClick={() => setFooterPanel(null)} className="text-gray-500 hover:text-gray-700">×</button>
              </div>
              <p className="text-sm text-gray-700 leading-6">
@@ -63,11 +69,18 @@ index d4345c7..c294f8e 100644
              </p>
              <div className="flex justify-end mt-5">
                <button type="button" onClick={() => setFooterPanel(null)} className="bg-xmazon-yellow hover:bg-xmazon-darkYellow px-5 py-2 rounded text-sm font-bold">Done</button>
-diff --git a/websites/amazon_mock/src/components/layout/Header.jsx b/websites/amazon_mock/src/components/layout/Header.jsx
-index 9b3667e..f889a49 100644
---- a/websites/amazon_mock/src/components/layout/Header.jsx
-+++ b/websites/amazon_mock/src/components/layout/Header.jsx
-@@ -108,7 +108,7 @@ export const Header = () => {
+@@ -126,6 +127,7 @@
+             <Route path="checkout" element={<Checkout />} />
+             <Route path="order-confirmation/:orderId" element={<OrderConfirmation />} />
+             <Route path="orders" element={<Orders />} />
++            <Route path="subscriptions" element={<Subscriptions />} />
+             <Route path="wishlist" element={<Wishlist />} />
+             <Route path="profile" element={<Profile />} />
+           </Route>
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/components/layout/Header.jsx hubdev/websites/amazon_mock/src/components/layout/Header.jsx
+--- a/websites/amazon_mock/src/components/layout/Header.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/components/layout/Header.jsx	2026-07-30 17:22:12
+@@ -108,7 +108,7 @@
        {/* Top Bar */}
        <div className="bg-xmazon text-white px-4 py-2 flex items-center gap-4 h-[60px]">
          <Link to="/" className="flex items-center border border-transparent hover:border-white p-2 rounded-sm focus:outline-none focus:ring-2 focus:ring-white">
@@ -76,7 +89,7 @@ index 9b3667e..f889a49 100644
          </Link>
  
          <Link to="/profile" className="hidden md:flex flex-col text-xs border border-transparent hover:border-white p-2 rounded-sm leading-tight">
-@@ -138,7 +138,7 @@ export const Header = () => {
+@@ -138,7 +138,7 @@
                onChange={(e) => setSearchTerm(e.target.value)}
                onFocus={() => searchTerm.length > 1 && setShowSuggestions(true)}
                className="flex-1 px-3 text-black outline-none h-full"
@@ -85,11 +98,28 @@ index 9b3667e..f889a49 100644
              />
              <button type="submit" className="bg-xmazon-yellow hover:bg-xmazon-darkYellow px-4 text-black h-full flex items-center justify-center">
                <Search size={20} />
-diff --git a/websites/amazon_mock/src/components/product/ProductCard.jsx b/websites/amazon_mock/src/components/product/ProductCard.jsx
-index 5b012a8..62d4ac1 100644
---- a/websites/amazon_mock/src/components/product/ProductCard.jsx
-+++ b/websites/amazon_mock/src/components/product/ProductCard.jsx
-@@ -72,9 +72,9 @@ export const ProductCard = ({ product, layout = 'grid' }) => {
+@@ -201,6 +201,7 @@
+                     {[
+                       ['Account', '/profile'],
+                       ['Orders', '/orders'],
++                      ['Subscribe & Save', '/subscriptions'],
+                       ['Recommendations', '/'],
+                       ['Browsing History', '/'],
+                       ['Watchlist', '/wishlist'],
+@@ -293,6 +294,9 @@
+                   </li>
+                   <li>
+                     <Link to="/orders" onClick={() => setShowNavMenu(false)} className="text-sm text-xmazon-blue hover:underline block py-1">Your Orders</Link>
++                  </li>
++                  <li>
++                    <Link to="/subscriptions" onClick={() => setShowNavMenu(false)} className="text-sm text-xmazon-blue hover:underline block py-1">Subscribe &amp; Save</Link>
+                   </li>
+                   <li>
+                     <Link to="/wishlist" onClick={() => setShowNavMenu(false)} className="text-sm text-xmazon-blue hover:underline block py-1">Your Wishlist</Link>
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/components/product/ProductCard.jsx hubdev/websites/amazon_mock/src/components/product/ProductCard.jsx
+--- a/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-07-30 17:17:43
+@@ -72,9 +72,9 @@
        {product.badges && product.badges.includes('Best Seller') && (
          <span className="absolute top-0 left-0 bg-[#e47911] text-white text-[10px] font-bold px-1.5 py-0.5 z-10 rounded-br">Best Seller</span>
        )}
@@ -101,15 +131,14 @@ index 5b012a8..62d4ac1 100644
          </span>
        )}
  
-diff --git a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_mock/src/context/StoreContext.jsx
-index 39de525..8f7347c 100644
---- a/websites/amazon_mock/src/context/StoreContext.jsx
-+++ b/websites/amazon_mock/src/context/StoreContext.jsx
-@@ -1,5 +1,15 @@
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/context/StoreContext.jsx hubdev/websites/amazon_mock/src/context/StoreContext.jsx
+--- a/websites/amazon_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/context/StoreContext.jsx	2026-07-30 17:21:19
+@@ -1,6 +1,16 @@
  import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
  import { INITIAL_DATA, getSessionId, fetchCustomState, saveState, initializeData } from '../lib/mockData';
 +import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
-+
+ 
 +const APP = 'shop'; // bridge engine app key for this mock
 +// In bridged mode: run the gym action, then adopt the engine's authoritative
 +// per-app state (already in this mock's shape). Merge so UI-only fields survive.
@@ -118,10 +147,11 @@ index 39de525..8f7347c 100644
 +  // state matches the seeded shape — same path normal seeding uses.
 +  if (r && r.apps && r.apps[APP]) setState(prev => ({ ...prev, ...initializeData(null, r.apps[APP]) }));
 +};
- 
++
  const StoreContext = createContext();
  
-@@ -22,6 +32,17 @@ export const StoreProvider = ({ children }) => {
+ export const useStore = () => useContext(StoreContext);
+@@ -22,6 +32,17 @@
      initDone.current = true;
      const sid = sidRef.current;
  
@@ -139,7 +169,7 @@ index 39de525..8f7347c 100644
      if (sid) {
        const sessionKey = `${BASE_INITIAL_KEY}_${sid}`;
        const isRefresh = localStorage.getItem(sessionKey) !== null;
-@@ -55,6 +76,11 @@ export const StoreProvider = ({ children }) => {
+@@ -55,6 +76,11 @@
  
    // Actions
    const addToCart = (product, quantity = 1) => {
@@ -151,7 +181,7 @@ index 39de525..8f7347c 100644
      setState(prev => {
        const existing = prev.cart.find(item => item.productId === product.id);
        let newCart;
-@@ -72,6 +98,11 @@ export const StoreProvider = ({ children }) => {
+@@ -72,6 +98,11 @@
    };
  
    const removeFromCart = (productId) => {
@@ -163,7 +193,7 @@ index 39de525..8f7347c 100644
      setState(prev => ({
        ...prev,
        cart: prev.cart.filter(item => item.productId !== productId)
-@@ -80,6 +111,11 @@ export const StoreProvider = ({ children }) => {
+@@ -80,6 +111,11 @@
  
    const updateCartQty = (productId, quantity) => {
      if (quantity < 1) return removeFromCart(productId);
@@ -175,7 +205,7 @@ index 39de525..8f7347c 100644
      setState(prev => ({
        ...prev,
        cart: prev.cart.map(item =>
-@@ -157,6 +193,14 @@ export const StoreProvider = ({ children }) => {
+@@ -157,6 +193,14 @@
    };
  
    const placeOrder = (orderData) => {
@@ -190,7 +220,7 @@ index 39de525..8f7347c 100644
      const newOrder = {
        id: `ord-${Date.now()}`,
        date: new Date().toISOString(),
-@@ -204,6 +248,18 @@ export const StoreProvider = ({ children }) => {
+@@ -204,6 +248,18 @@
    };
  
    const addAddress = (address) => {
@@ -209,7 +239,7 @@ index 39de525..8f7347c 100644
      setState(prev => {
        const newAddr = { ...address, id: `addr-${Date.now()}` };
        const addresses = [...(prev.user.addresses || [prev.user.address]), newAddr];
-@@ -212,6 +268,11 @@ export const StoreProvider = ({ children }) => {
+@@ -212,6 +268,11 @@
    };
  
    const setDefaultAddress = (addressId) => {
@@ -221,7 +251,7 @@ index 39de525..8f7347c 100644
      setState(prev => {
        const addresses = (prev.user.addresses || [prev.user.address]).map(a => ({ ...a, isDefault: a.id === addressId }));
        const defaultAddr = addresses.find(a => a.isDefault) || addresses[0];
-@@ -220,6 +281,15 @@ export const StoreProvider = ({ children }) => {
+@@ -220,6 +281,15 @@
    };
  
    const addPaymentMethod = (pm) => {
@@ -237,7 +267,7 @@ index 39de525..8f7347c 100644
      setState(prev => {
        const newPm = { ...pm, id: `pm-${Date.now()}` };
        const paymentMethods = [...(prev.user.paymentMethods || [prev.user.paymentMethod]), newPm];
-@@ -228,6 +298,11 @@ export const StoreProvider = ({ children }) => {
+@@ -228,6 +298,11 @@
    };
  
    const setDefaultPaymentMethod = (pmId) => {
@@ -249,7 +279,7 @@ index 39de525..8f7347c 100644
      setState(prev => {
        const paymentMethods = (prev.user.paymentMethods || [prev.user.paymentMethod]).map(p => ({ ...p, isDefault: p.id === pmId }));
        const defaultPm = paymentMethods.find(p => p.isDefault) || paymentMethods[0];
-@@ -235,6 +310,41 @@ export const StoreProvider = ({ children }) => {
+@@ -235,6 +310,79 @@
      });
    };
  
@@ -264,6 +294,44 @@ index 39de525..8f7347c 100644
 +      cart: prev.cart.map(item =>
 +        item.productId === productId ? { ...item, ...opts } : item
 +      )
++    }));
++  };
++
++  // Cancelling is the ONLY state change a subscription supports — there is no
++  // pause, by design.
++  const cancelSubscription = (subscriptionId) => {
++    if (bridged()) {
++      bridgeAct('shop.cancel_subscription', { subscription_id: subscriptionId })
++        .then(r => applyEngine(setState, r));
++      return;
++    }
++    setState(prev => ({
++      ...prev,
++      _gym_subscriptions: (prev._gym_subscriptions || []).map(s =>
++        s.id === subscriptionId ? { ...s, status: 'cancelled' } : s),
++    }));
++  };
++
++  // Filing a return is an irreversible commit, so it has to leave a record —
++  // the stock modal only set component state, which meant a filed return was
++  // invisible to anything reading the session afterwards.
++  const createReturn = ({ orderId, productId, reason, refundMethod = 'original', notes = '' }) => {
++    if (bridged()) {
++      bridgeAct('shop.create_return', {
++        order_id: orderId, item_ids: productId, reason,
++        refund_method: refundMethod, notes,
++      }).then(r => applyEngine(setState, r));
++      return;
++    }
++    setState(prev => ({
++      ...prev,
++      returns: [...(prev.returns || []), {
++        id: `ret-${Date.now()}`, orderId, productId, reason,
++        refundMethod, notes, status: 'Requested',
++        createdAt: new Date().toISOString(),
++      }],
++      orders: (prev.orders || []).map(o =>
++        o.id === orderId ? { ...o, status: 'Returned' } : o),
 +    }));
 +  };
 +
@@ -291,20 +359,21 @@ index 39de525..8f7347c 100644
    // Helper to get diff for /go endpoint
    const getStateDiff = () => {
      const diff = {};
-@@ -272,6 +382,9 @@ export const StoreProvider = ({ children }) => {
+@@ -272,6 +420,11 @@
        setDefaultAddress,
        addPaymentMethod,
        setDefaultPaymentMethod,
 +      setLineOptions,
++      cancelSubscription,
++      createReturn,
 +      enableTwoFa,
 +      applyPromo,
      }}>
        {children}
      </StoreContext.Provider>
-diff --git a/websites/amazon_mock/src/index.css b/websites/amazon_mock/src/index.css
-index cbe2064..7ed3b34 100644
---- a/websites/amazon_mock/src/index.css
-+++ b/websites/amazon_mock/src/index.css
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/index.css hubdev/websites/amazon_mock/src/index.css
+--- a/websites/amazon_mock/src/index.css	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/index.css	2026-07-30 17:17:43
 @@ -4,7 +4,7 @@
  
  body {
@@ -314,11 +383,9 @@ index cbe2064..7ed3b34 100644
    color: #0F1111;
    margin: 0;
  }
-diff --git a/websites/amazon_mock/src/lib/bridge.js b/websites/amazon_mock/src/lib/bridge.js
-new file mode 100644
-index 0000000..10df18d
---- /dev/null
-+++ b/websites/amazon_mock/src/lib/bridge.js
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/lib/bridge.js hubdev/websites/amazon_mock/src/lib/bridge.js
+--- a/websites/amazon_mock/src/lib/bridge.js	1969-12-31 16:00:00
++++ b/websites/amazon_mock/src/lib/bridge.js	2026-07-30 17:17:43
 @@ -0,0 +1,47 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
@@ -367,11 +434,10 @@ index 0000000..10df18d
 +  setTimeout(tick, ms);
 +  return () => { live = false; };
 +}
-diff --git a/websites/amazon_mock/src/lib/mockData.js b/websites/amazon_mock/src/lib/mockData.js
-index 1ef4d1e..1c0d653 100644
---- a/websites/amazon_mock/src/lib/mockData.js
-+++ b/websites/amazon_mock/src/lib/mockData.js
-@@ -7,7 +7,7 @@ const HAND_CRAFTED_PRODUCTS = [
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/lib/mockData.js hubdev/websites/amazon_mock/src/lib/mockData.js
+--- a/websites/amazon_mock/src/lib/mockData.js	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/lib/mockData.js	2026-07-30 17:17:43
+@@ -7,7 +7,7 @@
    {
      id: "p1", category: "Electronics", brand: "Samsung", title: "Samsung Galaxy Buds Pro - True Wireless Bluetooth Noise Cancelling Earbuds",
      price: 149.99, originalPrice: 199.99, rating: 4.5, reviewCount: 12847, prime: true, inStock: true, stockCount: null,
@@ -380,7 +446,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p1/400/400",
      images: ["https://picsum.photos/seed/p1/400/400","https://picsum.photos/seed/p1b/400/400","https://picsum.photos/seed/p1c/400/400","https://picsum.photos/seed/p1d/400/400"],
      description: "Experience premium sound with Samsung Galaxy Buds Pro featuring Intelligent Active Noise Cancellation and immersive 360 Audio.",
-@@ -18,7 +18,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -18,7 +18,7 @@
    {
      id: "p2", category: "Electronics", brand: "Apple", title: "Apple MacBook Air 13-inch with M2 chip - 8GB RAM, 256GB SSD",
      price: 999.00, originalPrice: null, rating: 4.8, reviewCount: 8342, prime: true, inStock: true, stockCount: null,
@@ -389,7 +455,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p2/400/400",
      images: ["https://picsum.photos/seed/p2/400/400","https://picsum.photos/seed/p2b/400/400","https://picsum.photos/seed/p2c/400/400"],
      description: "The redesigned MacBook Air with the blazing-fast M2 chip delivers up to 18 hours of battery life in a strikingly thin design.",
-@@ -29,7 +29,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -29,7 +29,7 @@
    {
      id: "p3", category: "Electronics", brand: "Sony", title: "Sony WH-1000XM5 Wireless Industry Leading Noise Canceling Headphones",
      price: 348.00, originalPrice: 399.99, rating: 4.7, reviewCount: 21634, prime: true, inStock: true, stockCount: null,
@@ -398,7 +464,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p3/400/400",
      images: ["https://picsum.photos/seed/p3/400/400","https://picsum.photos/seed/p3b/400/400","https://picsum.photos/seed/p3c/400/400","https://picsum.photos/seed/p3d/400/400"],
      description: "Industry-leading noise canceling with two processors and 8 microphones for unparalleled sound quality and crystal-clear calls.",
-@@ -51,7 +51,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -51,7 +51,7 @@
    {
      id: "p5", category: "Electronics", brand: "Logitech", title: "Logitech MX Master 3S Wireless Performance Mouse with Ultra-fast Scrolling",
      price: 89.99, originalPrice: null, rating: 4.7, reviewCount: 18923, prime: true, inStock: true, stockCount: null,
@@ -407,7 +473,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p5/400/400",
      images: ["https://picsum.photos/seed/p5/400/400","https://picsum.photos/seed/p5b/400/400","https://picsum.photos/seed/p5c/400/400"],
      description: "The MX Master 3S features near-silent clicks, an 8K DPI sensor for pixel-precise tracking, and MagSpeed electromagnetic scrolling.",
-@@ -73,7 +73,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -73,7 +73,7 @@
    {
      id: "p7", category: "Electronics", brand: "Apple", title: "Apple iPad 10th Generation 10.9-inch Wi-Fi 64GB",
      price: 349.00, originalPrice: null, rating: 4.6, reviewCount: 14521, prime: true, inStock: true, stockCount: null,
@@ -416,7 +482,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p7/400/400",
      images: ["https://picsum.photos/seed/p7/400/400","https://picsum.photos/seed/p7b/400/400","https://picsum.photos/seed/p7c/400/400","https://picsum.photos/seed/p7d/400/400"],
      description: "The all-new iPad with a beautiful 10.9-inch Liquid Retina display, A14 Bionic chip, and the versatility of USB-C.",
-@@ -93,24 +93,24 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -93,24 +93,24 @@
      createdAt: "2024-01-10T00:00:00.000Z"
    },
    {
@@ -448,7 +514,7 @@ index 1ef4d1e..1c0d653 100644
      specs: {"Brand":"Ring","Video":"1080p HD","Field of View":"155° horizontal, 90° vertical","Night Vision":"Color","Power":"Battery or hardwired","Connectivity":"Wi-Fi 802.11n"},
      createdAt: "2024-02-05T00:00:00.000Z"
    },
-@@ -119,7 +119,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -119,7 +119,7 @@
    {
      id: "p11", category: "Books", brand: "Penguin Random House", title: "Atomic Habits: An Easy & Proven Way to Build Good Habits by James Clear",
      price: 16.99, originalPrice: 27.00, rating: 4.8, reviewCount: 94312, prime: true, inStock: true, stockCount: null,
@@ -457,7 +523,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p11/400/400",
      images: ["https://picsum.photos/seed/p11/400/400","https://picsum.photos/seed/p11b/400/400","https://picsum.photos/seed/p11c/400/400"],
      description: "The #1 New York Times bestseller. Over 15 million copies sold. Transform your life with tiny changes in behavior.",
-@@ -130,7 +130,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -130,7 +130,7 @@
    {
      id: "p12", category: "Books", brand: "Ballantine Books", title: "Project Hail Mary: A Novel by Andy Weir",
      price: 14.99, originalPrice: 28.00, rating: 4.9, reviewCount: 62145, prime: true, inStock: true, stockCount: null,
@@ -466,7 +532,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p12/400/400",
      images: ["https://picsum.photos/seed/p12/400/400","https://picsum.photos/seed/p12b/400/400","https://picsum.photos/seed/p12c/400/400"],
      description: "A lone astronaut must save the earth from disaster in this propulsive, near-future thriller from the #1 bestselling author of The Martian.",
-@@ -141,7 +141,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -141,7 +141,7 @@
    {
      id: "p13", category: "Books", brand: "Viking", title: "The Midnight Library: A Novel by Matt Haig",
      price: 13.99, originalPrice: 26.00, rating: 4.5, reviewCount: 41237, prime: true, inStock: true, stockCount: null,
@@ -475,7 +541,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p13/400/400",
      images: ["https://picsum.photos/seed/p13/400/400","https://picsum.photos/seed/p13b/400/400"],
      description: "Between life and death there is a library. Nora Seed discovers a library that contains books of lives she could have lived.",
-@@ -152,7 +152,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -152,7 +152,7 @@
    {
      id: "p14", category: "Books", brand: "Random House", title: "Educated: A Memoir by Tara Westover",
      price: 15.99, originalPrice: 18.00, rating: 4.7, reviewCount: 78432, prime: true, inStock: true, stockCount: null,
@@ -484,7 +550,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p14/400/400",
      images: ["https://picsum.photos/seed/p14/400/400","https://picsum.photos/seed/p14b/400/400"],
      description: "A memoir about a young girl who grows up in the mountains of Idaho, goes on to earn a PhD from Cambridge, and builds a life of her own.",
-@@ -163,7 +163,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -163,7 +163,7 @@
    {
      id: "p15", category: "Books", brand: "Ace", title: "Dune by Frank Herbert - The Sci-Fi Classic (Deluxe Edition)",
      price: 10.99, originalPrice: null, rating: 4.7, reviewCount: 103456, prime: true, inStock: true, stockCount: null,
@@ -493,7 +559,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p15/400/400",
      images: ["https://picsum.photos/seed/p15/400/400","https://picsum.photos/seed/p15b/400/400","https://picsum.photos/seed/p15c/400/400"],
      description: "The greatest science fiction novel of all time. Set in the far future amidst a feudal interstellar society, Dune tells the story of young Paul Atreides.",
-@@ -174,7 +174,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -174,7 +174,7 @@
    {
      id: "p16", category: "Books", brand: "O'Reilly Media", title: "JavaScript: The Good Parts by Douglas Crockford",
      price: 29.99, originalPrice: 34.99, rating: 4.5, reviewCount: 18743, prime: true, inStock: true, stockCount: 4,
@@ -502,7 +568,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p16/400/400",
      images: ["https://picsum.photos/seed/p16/400/400","https://picsum.photos/seed/p16b/400/400"],
      description: "Most programming languages contain good and bad parts, but JavaScript has more than its share of the bad. This book shows you the best.",
-@@ -185,7 +185,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -185,7 +185,7 @@
    {
      id: "p17", category: "Books", brand: "Harper Perennial", title: "Sapiens: A Brief History of Humankind by Yuval Noah Harari",
      price: 17.99, originalPrice: 26.99, rating: 4.6, reviewCount: 67234, prime: true, inStock: true, stockCount: null,
@@ -511,7 +577,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p17/400/400",
      images: ["https://picsum.photos/seed/p17/400/400","https://picsum.photos/seed/p17b/400/400"],
      description: "A groundbreaking narrative of humanity's creation and evolution that explores how biology and history have defined us.",
-@@ -196,7 +196,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -196,7 +196,7 @@
    {
      id: "p18", category: "Books", brand: "G.P. Putnam's Sons", title: "Where the Crawdads Sing by Delia Owens",
      price: 12.99, originalPrice: null, rating: 4.8, reviewCount: 221456, prime: true, inStock: true, stockCount: null,
@@ -520,7 +586,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p18/400/400",
      images: ["https://picsum.photos/seed/p18/400/400","https://picsum.photos/seed/p18b/400/400"],
      description: "The stunning coming-of-age story of Kya Clark, abandoned by her family in the wild marshes of North Carolina, becomes the center of a murder investigation.",
-@@ -207,7 +207,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -207,7 +207,7 @@
    {
      id: "p19", category: "Books", brand: "HarperOne", title: "The Alchemist by Paulo Coelho - 25th Anniversary Edition",
      price: 11.99, originalPrice: 17.99, rating: 4.7, reviewCount: 189234, prime: true, inStock: true, stockCount: null,
@@ -529,7 +595,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p19/400/400",
      images: ["https://picsum.photos/seed/p19/400/400","https://picsum.photos/seed/p19b/400/400"],
      description: "Paulo Coelho's masterpiece tells the mystical story of Santiago, an Andalusian shepherd boy who yearns to travel in search of a worldly treasure.",
-@@ -218,7 +218,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -218,7 +218,7 @@
    {
      id: "p20", category: "Books", brand: "Pearson Education", title: "Clean Code: A Handbook of Agile Software Craftsmanship by Robert C. Martin",
      price: 39.99, originalPrice: 49.99, rating: 4.6, reviewCount: 24567, prime: true, inStock: true, stockCount: 6,
@@ -538,7 +604,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p20/400/400",
      images: ["https://picsum.photos/seed/p20/400/400","https://picsum.photos/seed/p20b/400/400"],
      description: "Even bad code can function. But if code isn't clean, it can bring a development organization to its knees.",
-@@ -231,7 +231,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -231,7 +231,7 @@
    {
      id: "p21", category: "Home & Kitchen", brand: "Ninja", title: "Ninja AF101 Air Fryer that Cooks, Crisps and Dehydrates, 4 Quart",
      price: 89.99, originalPrice: 109.99, rating: 4.8, reviewCount: 67234, prime: true, inStock: true, stockCount: null,
@@ -547,7 +613,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p21/400/400",
      images: ["https://picsum.photos/seed/p21/400/400","https://picsum.photos/seed/p21b/400/400","https://picsum.photos/seed/p21c/400/400","https://picsum.photos/seed/p21d/400/400"],
      description: "Air fry, roast, reheat, and dehydrate with Ninja's 4-quart ceramic coated basket that holds up to 2 lbs of fries.",
-@@ -242,7 +242,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -242,7 +242,7 @@
    {
      id: "p22", category: "Home & Kitchen", brand: "Keurig", title: "Keurig K-Classic Coffee Maker K-Cup Pod, Single Serve, Programmable",
      price: 79.99, originalPrice: 109.99, rating: 4.5, reviewCount: 45678, prime: true, inStock: true, stockCount: null,
@@ -556,7 +622,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p22/400/400",
      images: ["https://picsum.photos/seed/p22/400/400","https://picsum.photos/seed/p22b/400/400","https://picsum.photos/seed/p22c/400/400"],
      description: "Brew the perfect cup with Keurig's K-Classic coffee maker. Compatible with all K-Cup pods for over 400 varieties of coffee, tea, hot cocoa, and more.",
-@@ -253,7 +253,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -253,7 +253,7 @@
    {
      id: "p23", category: "Home & Kitchen", brand: "Instant Pot", title: "Instant Pot Duo 7-in-1 Electric Pressure Cooker, 6 Quart",
      price: 69.99, originalPrice: 99.95, rating: 4.7, reviewCount: 123456, prime: true, inStock: true, stockCount: null,
@@ -565,7 +631,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p23/400/400",
      images: ["https://picsum.photos/seed/p23/400/400","https://picsum.photos/seed/p23b/400/400","https://picsum.photos/seed/p23c/400/400","https://picsum.photos/seed/p23d/400/400"],
      description: "The Instant Pot Duo is the #1 selling multi-cooker. 7-in-1 functionality: Pressure Cooker, Slow Cooker, Rice Cooker, Steamer, Saute, Yogurt Maker, Warmer.",
-@@ -264,18 +264,18 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -264,18 +264,18 @@
    {
      id: "p24", category: "Home & Kitchen", brand: "iRobot", title: "iRobot Roomba 694 Robot Vacuum with Wi-Fi Connectivity",
      price: 179.99, originalPrice: 274.99, rating: 4.4, reviewCount: 34521, prime: true, inStock: true, stockCount: null,
@@ -587,7 +653,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p25/400/400",
      images: ["https://picsum.photos/seed/p25/400/400","https://picsum.photos/seed/p25b/400/400"],
      description: "Cook hearty, flavorful meals with the Crock-Pot 7-Quart slow cooker. Large enough to feed a crowd with three heat settings.",
-@@ -286,7 +286,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -286,7 +286,7 @@
    {
      id: "p26", category: "Home & Kitchen", brand: "Mellanni", title: "Mellanni Queen Bed Sheet Set - 4 PC Brushed Microfiber 1800 Bedding",
      price: 49.99, originalPrice: null, rating: 4.5, reviewCount: 41235, prime: true, inStock: true, stockCount: null,
@@ -596,7 +662,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p26/400/400",
      images: ["https://picsum.photos/seed/p26/400/400","https://picsum.photos/seed/p26b/400/400","https://picsum.photos/seed/p26c/400/400"],
      description: "Ultra-soft luxury bed sheets made from premium 1800 thread count microfiber that resist wrinkles, stains, and fading.",
-@@ -319,7 +319,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -319,7 +319,7 @@
    {
      id: "p29", category: "Home & Kitchen", brand: "Lodge", title: "Lodge 10.25 Inch Cast Iron Pre-Seasoned Skillet",
      price: 34.99, originalPrice: null, rating: 4.8, reviewCount: 89234, prime: true, inStock: true, stockCount: null,
@@ -605,7 +671,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p29/400/400",
      images: ["https://picsum.photos/seed/p29/400/400","https://picsum.photos/seed/p29b/400/400","https://picsum.photos/seed/p29c/400/400"],
      description: "Lodge cast iron cookware has been made in South Pittsburg, Tennessee since 1896. Pre-seasoned with natural vegetable oil.",
-@@ -343,7 +343,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -343,7 +343,7 @@
    {
      id: "p31", category: "Fashion", brand: "Nike", title: "Nike Air Force 1 '07 Men's Shoe - Classic White Leather",
      price: 110.00, originalPrice: null, rating: 4.7, reviewCount: 34521, prime: true, inStock: true, stockCount: null,
@@ -614,7 +680,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p31/400/400",
      images: ["https://picsum.photos/seed/p31/400/400","https://picsum.photos/seed/p31b/400/400","https://picsum.photos/seed/p31c/400/400","https://picsum.photos/seed/p31d/400/400"],
      description: "Letting you ride in comfort every day, the Nike Air Force 1 '07 is a modern take on the iconic AF1 silhouette.",
-@@ -354,7 +354,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -354,7 +354,7 @@
    {
      id: "p32", category: "Fashion", brand: "Levi's", title: "Levi's Men's 501 Original Fit Jeans - Classic Straight Leg",
      price: 69.50, originalPrice: 79.50, rating: 4.5, reviewCount: 28765, prime: true, inStock: true, stockCount: null,
@@ -623,7 +689,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p32/400/400",
      images: ["https://picsum.photos/seed/p32/400/400","https://picsum.photos/seed/p32b/400/400","https://picsum.photos/seed/p32c/400/400"],
      description: "The original Levi's jean. Button fly, straight through the hip and thigh, with the original Levi's fit that's been around since 1873.",
-@@ -365,7 +365,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -365,7 +365,7 @@
    {
      id: "p33", category: "Fashion", brand: "Ray-Ban", title: "Ray-Ban RB3025 Aviator Classic Sunglasses",
      price: 161.00, originalPrice: null, rating: 4.7, reviewCount: 12345, prime: true, inStock: true, stockCount: null,
@@ -632,7 +698,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p33/400/400",
      images: ["https://picsum.photos/seed/p33/400/400","https://picsum.photos/seed/p33b/400/400","https://picsum.photos/seed/p33c/400/400"],
      description: "The original Ray-Ban Aviator Classic sunglasses, first introduced in 1937 for American military pilots. An icon of style.",
-@@ -376,7 +376,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -376,7 +376,7 @@
    {
      id: "p34", category: "Fashion", brand: "Champion", title: "Champion Men's Powerblend Fleece Pullover Hoodie",
      price: 45.00, originalPrice: 55.00, rating: 4.6, reviewCount: 23456, prime: true, inStock: true, stockCount: null,
@@ -641,7 +707,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p34/400/400",
      images: ["https://picsum.photos/seed/p34/400/400","https://picsum.photos/seed/p34b/400/400","https://picsum.photos/seed/p34c/400/400"],
      description: "Champion Powerblend fleece is pill-resistant and the logo won't crack or peel. A classic athletic look that's built to last.",
-@@ -420,7 +420,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -420,7 +420,7 @@
    {
      id: "p38", category: "Fashion", brand: "Timex", title: "Timex Men's Weekender 40mm Watch with Stainless Steel Expansion Band",
      price: 35.00, originalPrice: null, rating: 4.5, reviewCount: 21345, prime: true, inStock: true, stockCount: null,
@@ -650,7 +716,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p38/400/400",
      images: ["https://picsum.photos/seed/p38/400/400","https://picsum.photos/seed/p38b/400/400"],
      description: "Timex Weekender with 40mm brass case, white dial, and Timex's iconic INDIGLO night-light for clear time-reading in low light.",
-@@ -431,7 +431,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -431,7 +431,7 @@
    {
      id: "p39", category: "Fashion", brand: "The North Face", title: "The North Face Men's Aconcagua 2 Puffer Jacket",
      price: 199.00, originalPrice: null, rating: 4.7, reviewCount: 8765, prime: true, inStock: true, stockCount: null,
@@ -659,7 +725,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p39/400/400",
      images: ["https://picsum.photos/seed/p39/400/400","https://picsum.photos/seed/p39b/400/400","https://picsum.photos/seed/p39c/400/400"],
      description: "Lofty comfort meets environmental responsibility in The North Face Aconcagua 2 jacket made with recycled down insulation.",
-@@ -442,7 +442,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -442,7 +442,7 @@
    {
      id: "p40", category: "Fashion", brand: "New Balance", title: "New Balance Men's 574 V2 Evergreen Sneaker",
      price: 79.99, originalPrice: 89.99, rating: 4.6, reviewCount: 15678, prime: true, inStock: true, stockCount: null,
@@ -668,7 +734,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p40/400/400",
      images: ["https://picsum.photos/seed/p40/400/400","https://picsum.photos/seed/p40b/400/400","https://picsum.photos/seed/p40c/400/400"],
      description: "The New Balance 574 is a classic sneaker that's been in the lineup since 1988. The ENCAP midsole provides exceptional support and durability.",
-@@ -455,7 +455,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -455,7 +455,7 @@
    {
      id: "p41", category: "Toys & Games", brand: "LEGO", title: "LEGO Star Wars Millennium Falcon 75257 Building Kit (1353 Pieces)",
      price: 159.99, originalPrice: 169.99, rating: 4.9, reviewCount: 23456, prime: true, inStock: true, stockCount: null,
@@ -677,7 +743,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p41/400/400",
      images: ["https://picsum.photos/seed/p41/400/400","https://picsum.photos/seed/p41b/400/400","https://picsum.photos/seed/p41c/400/400","https://picsum.photos/seed/p41d/400/400"],
      description: "Build and display the iconic Millennium Falcon, the fastest ship in the galaxy, with this 1353-piece LEGO Star Wars set.",
-@@ -466,7 +466,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -466,7 +466,7 @@
    {
      id: "p42", category: "Toys & Games", brand: "Hasbro", title: "Monopoly Classic Board Game for 2-6 Players",
      price: 19.99, originalPrice: null, rating: 4.7, reviewCount: 54321, prime: true, inStock: true, stockCount: null,
@@ -686,7 +752,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p42/400/400",
      images: ["https://picsum.photos/seed/p42/400/400","https://picsum.photos/seed/p42b/400/400","https://picsum.photos/seed/p42c/400/400"],
      description: "The world's most popular board game! Buy, sell, and scheme your way to becoming the wealthiest player in classic Monopoly.",
-@@ -477,7 +477,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -477,7 +477,7 @@
    {
      id: "p43", category: "Toys & Games", brand: "Nintendo", title: "Nintendo Switch Joy-Con (L/R) - Neon Blue and Neon Red",
      price: 79.99, originalPrice: null, rating: 4.6, reviewCount: 18923, prime: true, inStock: true, stockCount: null,
@@ -695,7 +761,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p43/400/400",
      images: ["https://picsum.photos/seed/p43/400/400","https://picsum.photos/seed/p43b/400/400","https://picsum.photos/seed/p43c/400/400"],
      description: "Official Nintendo Switch Joy-Con controllers with HD Rumble, IR motion camera, and built-in motion sensors.",
-@@ -488,7 +488,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -488,7 +488,7 @@
    {
      id: "p44", category: "Toys & Games", brand: "Barbie", title: "Barbie Dreamhouse (2023) Dollhouse with Pool, Slide, and 75+ Accessories",
      price: 179.99, originalPrice: 209.99, rating: 4.6, reviewCount: 12456, prime: true, inStock: true, stockCount: null,
@@ -704,7 +770,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p44/400/400",
      images: ["https://picsum.photos/seed/p44/400/400","https://picsum.photos/seed/p44b/400/400","https://picsum.photos/seed/p44c/400/400"],
      description: "The ultimate Barbie Dreamhouse with 3 floors, 10 rooms, a working elevator, and over 75 pieces including furniture and accessories.",
-@@ -499,7 +499,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -499,7 +499,7 @@
    {
      id: "p45", category: "Toys & Games", brand: "Rubik's", title: "Rubik's Cube, The Original 3x3 Cube Classic Color Matching Puzzle",
      price: 9.99, originalPrice: null, rating: 4.7, reviewCount: 34521, prime: true, inStock: true, stockCount: null,
@@ -713,7 +779,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p45/400/400",
      images: ["https://picsum.photos/seed/p45/400/400","https://picsum.photos/seed/p45b/400/400"],
      description: "The Original Rubik's Cube — the classic 3x3 color-matching puzzle that has sold over 450 million units worldwide.",
-@@ -510,7 +510,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -510,7 +510,7 @@
    {
      id: "p46", category: "Toys & Games", brand: "Nerf", title: "Nerf N-Strike Elite AccuStrike AlphaHawk Blaster",
      price: 24.99, originalPrice: 34.99, rating: 4.5, reviewCount: 8765, prime: true, inStock: true, stockCount: null,
@@ -722,7 +788,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p46/400/400",
      images: ["https://picsum.photos/seed/p46/400/400","https://picsum.photos/seed/p46b/400/400"],
      description: "Fire AccuStrike darts for the most accurate Nerf shooting ever. Barrel-fed blaster fires darts one at a time.",
-@@ -521,7 +521,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -521,7 +521,7 @@
    {
      id: "p47", category: "Toys & Games", brand: "Play-Doh", title: "Play-Doh Modeling Compound 36-Pack Case of Colors Non-Toxic",
      price: 19.99, originalPrice: null, rating: 4.8, reviewCount: 21345, prime: true, inStock: true, stockCount: null,
@@ -731,7 +797,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p47/400/400",
      images: ["https://picsum.photos/seed/p47/400/400","https://picsum.photos/seed/p47b/400/400"],
      description: "36 cans of vibrant Play-Doh compound in a rainbow of colors for imaginative play and creative expression.",
-@@ -532,7 +532,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -532,7 +532,7 @@
    {
      id: "p48", category: "Toys & Games", brand: "Hot Wheels", title: "Hot Wheels Track Builder Unlimited Rapid Crash Pack",
      price: 29.99, originalPrice: 39.99, rating: 4.5, reviewCount: 7654, prime: true, inStock: true, stockCount: null,
@@ -740,7 +806,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p48/400/400",
      images: ["https://picsum.photos/seed/p48/400/400","https://picsum.photos/seed/p48b/400/400"],
      description: "Build the ultimate crash course with the Hot Wheels Track Builder System. Includes a loop, launcher, and 2 Hot Wheels cars.",
-@@ -543,7 +543,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -543,7 +543,7 @@
    {
      id: "p49", category: "Toys & Games", brand: "Catan Studio", title: "Catan Board Game (Base Game) for 3-4 Players",
      price: 44.99, originalPrice: null, rating: 4.7, reviewCount: 32456, prime: true, inStock: true, stockCount: null,
@@ -749,7 +815,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p49/400/400",
      images: ["https://picsum.photos/seed/p49/400/400","https://picsum.photos/seed/p49b/400/400","https://picsum.photos/seed/p49c/400/400"],
      description: "Trade, build, and settle the island of Catan in this award-winning strategy board game that's been captivating players since 1995.",
-@@ -554,7 +554,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -554,7 +554,7 @@
    {
      id: "p50", category: "Toys & Games", brand: "Melissa & Doug", title: "Melissa & Doug Wooden Farm Puzzle - 8-Piece Chunky",
      price: 12.99, originalPrice: null, rating: 4.8, reviewCount: 18765, prime: true, inStock: true, stockCount: null,
@@ -758,7 +824,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p50/400/400",
      images: ["https://picsum.photos/seed/p50/400/400","https://picsum.photos/seed/p50b/400/400"],
      description: "Chunky wooden puzzle with 8 farm-themed pieces sized perfectly for little hands. Features peg handles for easy lifting.",
-@@ -567,7 +567,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -567,7 +567,7 @@
    {
      id: "p51", category: "Beauty", brand: "CeraVe", title: "CeraVe Moisturizing Cream - Daily Face and Body Moisturizer for Dry Skin",
      price: 16.99, originalPrice: null, rating: 4.8, reviewCount: 123456, prime: true, inStock: true, stockCount: null,
@@ -767,7 +833,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p51/400/400",
      images: ["https://picsum.photos/seed/p51/400/400","https://picsum.photos/seed/p51b/400/400","https://picsum.photos/seed/p51c/400/400"],
      description: "Developed with dermatologists, CeraVe Moisturizing Cream has a unique formula that helps restore the protective skin barrier with three essential ceramides.",
-@@ -578,7 +578,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -578,7 +578,7 @@
    {
      id: "p52", category: "Beauty", brand: "Maybelline", title: "Maybelline Lash Sensational Sky High Washable Mascara",
      price: 11.99, originalPrice: null, rating: 4.5, reviewCount: 67234, prime: true, inStock: true, stockCount: null,
@@ -776,7 +842,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p52/400/400",
      images: ["https://picsum.photos/seed/p52/400/400","https://picsum.photos/seed/p52b/400/400"],
      description: "Sky High mascara with buildable volume and length for limitless lash looks. Flexible brush stretches lashes from root to tip.",
-@@ -589,7 +589,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -589,7 +589,7 @@
    {
      id: "p53", category: "Beauty", brand: "Olaplex", title: "Olaplex No. 3 Hair Perfector - Reduces Breakage & Strengthens Hair",
      price: 30.00, originalPrice: null, rating: 4.6, reviewCount: 34521, prime: true, inStock: true, stockCount: null,
@@ -785,7 +851,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p53/400/400",
      images: ["https://picsum.photos/seed/p53/400/400","https://picsum.photos/seed/p53b/400/400","https://picsum.photos/seed/p53c/400/400"],
      description: "The at-home treatment that reduces breakage and visibly strengthens hair, significantly improving hair's health from the inside out.",
-@@ -600,7 +600,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -600,7 +600,7 @@
    {
      id: "p54", category: "Beauty", brand: "Neutrogena", title: "Neutrogena Ultra Sheer Dry-Touch Sunscreen SPF 70, 3 oz",
      price: 12.99, originalPrice: null, rating: 4.7, reviewCount: 45678, prime: true, inStock: true, stockCount: null,
@@ -794,7 +860,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p54/400/400",
      images: ["https://picsum.photos/seed/p54/400/400","https://picsum.photos/seed/p54b/400/400"],
      description: "Ultra Sheer Dry-Touch sunscreen with Helioplex technology provides superior sun protection that's light, clean, and non-greasy.",
-@@ -611,7 +611,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -611,7 +611,7 @@
    {
      id: "p55", category: "Beauty", brand: "Revlon", title: "Revlon One-Step Volumizer Original 1.0 Hair Dryer and Hot Air Brush",
      price: 34.99, originalPrice: 49.99, rating: 4.5, reviewCount: 89234, prime: true, inStock: true, stockCount: null,
@@ -803,7 +869,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p55/400/400",
      images: ["https://picsum.photos/seed/p55/400/400","https://picsum.photos/seed/p55b/400/400","https://picsum.photos/seed/p55c/400/400"],
      description: "Dry and style your hair in one step with this salon-style oval brush dryer that creates bouncy blowout volume.",
-@@ -622,7 +622,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -622,7 +622,7 @@
    {
      id: "p56", category: "Beauty", brand: "The Ordinary", title: "The Ordinary Niacinamide 10% + Zinc 1% Face Serum, 30ml",
      price: 12.50, originalPrice: null, rating: 4.4, reviewCount: 56789, prime: true, inStock: true, stockCount: null,
@@ -812,7 +878,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p56/400/400",
      images: ["https://picsum.photos/seed/p56/400/400","https://picsum.photos/seed/p56b/400/400"],
      description: "High-strength vitamin and mineral blemish formula that reduces the appearance of skin blemishes and congestion.",
-@@ -633,7 +633,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -633,7 +633,7 @@
    {
      id: "p57", category: "Beauty", brand: "NYX", title: "NYX Professional Makeup Lip Lingerie Push-Up Long-Lasting Lipstick",
      price: 9.99, originalPrice: null, rating: 4.4, reviewCount: 23456, prime: true, inStock: true, stockCount: null,
@@ -821,7 +887,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p57/400/400",
      images: ["https://picsum.photos/seed/p57/400/400","https://picsum.photos/seed/p57b/400/400"],
      description: "Slide on the NYX Lip Lingerie liquid lipstick for an ultra-matte finish in 20 seductive shades that lasts all day long.",
-@@ -644,7 +644,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -644,7 +644,7 @@
    {
      id: "p58", category: "Beauty", brand: "Dove", title: "Dove Deep Moisture Body Wash with Skin Natural Nourishers, 22 oz (Pack of 3)",
      price: 14.99, originalPrice: 19.99, rating: 4.7, reviewCount: 78234, prime: true, inStock: true, stockCount: null,
@@ -830,7 +896,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p58/400/400",
      images: ["https://picsum.photos/seed/p58/400/400","https://picsum.photos/seed/p58b/400/400"],
      description: "Dove Deep Moisture body wash is formulated with 100% skin natural nourishers and Dove's signature 1/4 moisturizing cream.",
-@@ -655,7 +655,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -655,7 +655,7 @@
    {
      id: "p59", category: "Beauty", brand: "Bioderma", title: "Bioderma Sensibio H2O Micellar Water Makeup Remover, 16.9 fl oz",
      price: 14.99, originalPrice: null, rating: 4.8, reviewCount: 32145, prime: true, inStock: true, stockCount: null,
@@ -839,7 +905,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p59/400/400",
      images: ["https://picsum.photos/seed/p59/400/400","https://picsum.photos/seed/p59b/400/400"],
      description: "The #1 micellar water in France, Bioderma Sensibio H2O gently yet effectively cleanses, removes makeup, and soothes sensitive skin.",
-@@ -666,7 +666,7 @@ const HAND_CRAFTED_PRODUCTS = [
+@@ -666,7 +666,7 @@
    {
      id: "p60", category: "Beauty", brand: "OPI", title: "OPI Nail Lacquer 10-pc Nail Polish Set - Most Popular Colors",
      price: 24.99, originalPrice: 39.90, rating: 4.6, reviewCount: 14523, prime: true, inStock: true, stockCount: null,
@@ -848,7 +914,7 @@ index 1ef4d1e..1c0d653 100644
      image: "https://picsum.photos/seed/p60/400/400",
      images: ["https://picsum.photos/seed/p60/400/400","https://picsum.photos/seed/p60b/400/400","https://picsum.photos/seed/p60c/400/400"],
      description: "A curated set of 10 of OPI's most popular Nail Lacquer shades, featuring the iconic ProWide brush for a flawless, salon-perfect finish.",
-@@ -884,7 +884,7 @@ function normalizeProduct(product, index) {
+@@ -884,7 +884,7 @@
      prime: typeof p.prime === 'boolean' ? p.prime : !!p.prime,
      inStock: typeof p.inStock === 'boolean' ? p.inStock : true,
      stockCount: stockCount,
@@ -857,7 +923,7 @@ index 1ef4d1e..1c0d653 100644
      badges: Array.isArray(p.badges) ? p.badges : [],
      createdAt: p.createdAt || new Date().toISOString(),
    };
-@@ -943,7 +943,7 @@ function normalizeReview(review, index) {
+@@ -943,7 +943,7 @@
      id: r.id || `rev_custom_${index}`,
      productId: r.productId || r.product_id || '',
      userId: r.userId || r.user_id || 'anonymous',
@@ -866,20 +932,30 @@ index 1ef4d1e..1c0d653 100644
      rating: Math.min(Math.max(rating, 0), 5),
      title: r.title || r.headline || '',
      content: r.content || r.body || r.text || '',
-diff --git a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/pages/Cart.jsx
-index f07280a..f828328 100644
---- a/websites/amazon_mock/src/pages/Cart.jsx
-+++ b/websites/amazon_mock/src/pages/Cart.jsx
-@@ -5,7 +5,7 @@ import { Button } from '../components/ui/Button';
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/Cart.jsx hubdev/websites/amazon_mock/src/pages/Cart.jsx
+--- a/websites/amazon_mock/src/pages/Cart.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/Cart.jsx	2026-07-30 17:18:39
+@@ -4,8 +4,18 @@
+ import { Button } from '../components/ui/Button';
  import { Tag } from 'lucide-react';
  
++// set_line_options replaces the whole option set for a line, so every change has
++// to resend all four fields — patch just the one that moved.
++const lineOpts = (item, patch) => ({
++  gift_wrap: !!item.gift_wrap,
++  gift_message: item.gift_message || '',
++  ship_to_address_id: item.ship_to_address_id || '',
++  scheduled_delivery: item.scheduled_delivery || '',
++  ...patch,
++});
++
  export const Cart = () => {
 -  const { state, updateCartQty, removeFromCart, saveForLater, moveToCart, removeSavedItem, addToCart } = useStore();
 +  const { state, updateCartQty, removeFromCart, saveForLater, moveToCart, removeSavedItem, addToCart, setLineOptions, applyPromo } = useStore();
    const navigate = useNavigate();
    const [promoCode, setPromoCode] = useState('');
    const [appliedPromo, setAppliedPromo] = useState(null);
-@@ -22,7 +22,10 @@ export const Cart = () => {
+@@ -22,7 +32,10 @@
    const savedItems = state.savedForLater || [];
  
    const handleApplyPromo = () => {
@@ -891,7 +967,7 @@ index f07280a..f828328 100644
        setAppliedPromo('SAVE10');
        setPromoError('');
      } else {
-@@ -52,7 +55,7 @@ export const Cart = () => {
+@@ -52,7 +65,7 @@
              {state.cart.length === 0 ? (
                <div className="py-8 text-center">
                  <div className="text-4xl mb-4">🛒</div>
@@ -900,10 +976,11 @@ index f07280a..f828328 100644
                  <p className="text-sm text-gray-600 mb-4">Your shopping cart lives here. Add items you want to purchase.</p>
                  <Link to="/" className="text-xmazon-blue hover:underline text-sm font-bold">Shop today's deals</Link>
                </div>
-@@ -91,6 +94,52 @@ export const Cart = () => {
+@@ -90,6 +103,63 @@
+                           <button onClick={() => removeFromCart(item.productId)} className="text-xmazon-blue hover:underline text-xs">Delete</button>
                            <span className="text-gray-300">|</span>
                            <button onClick={() => saveForLater(item.productId)} className="text-xmazon-blue hover:underline text-xs">Save for later</button>
-                         </div>
++                        </div>
 +
 +                        {/* Gift options */}
 +                        <div className="mt-3 border-t pt-3 space-y-2">
@@ -913,11 +990,8 @@ index f07280a..f828328 100644
 +                              type="checkbox"
 +                              aria-label="Gift wrap this item"
 +                              checked={!!item.gift_wrap}
-+                              onChange={(e) => setLineOptions(item.productId, {
-+                                gift_wrap: e.target.checked,
-+                                gift_message: item.gift_message || '',
-+                                scheduled_delivery: item.scheduled_delivery || '',
-+                              })}
++                              onChange={(e) => setLineOptions(item.productId,
++                                lineOpts(item, { gift_wrap: e.target.checked }))}
 +                            />
 +                            <span>Gift wrap this item</span>
 +                          </label>
@@ -926,14 +1000,31 @@ index f07280a..f828328 100644
 +                            <textarea
 +                              aria-label="Gift message"
 +                              value={item.gift_message || ''}
-+                              onChange={(e) => setLineOptions(item.productId, {
-+                                gift_wrap: !!item.gift_wrap,
-+                                gift_message: e.target.value,
-+                                scheduled_delivery: item.scheduled_delivery || '',
-+                              })}
++                              onChange={(e) => setLineOptions(item.productId,
++                                lineOpts(item, { gift_message: e.target.value }))}
 +                              rows={2}
 +                              className="w-full border rounded px-2 py-1 text-sm focus:outline-none focus:border-xmazon-orange"
 +                            />
++                          </div>
++                          {/* Per-LINE destination. The order-level address still
++                              applies to anything left on "Default", so one order
++                              can ship its lines to different people. */}
++                          <div>
++                            <label className="block text-xs text-gray-600 mb-1">Ship this item to</label>
++                            <select
++                              aria-label="Ship this item to"
++                              value={item.ship_to_address_id || ''}
++                              onChange={(e) => setLineOptions(item.productId,
++                                lineOpts(item, { ship_to_address_id: e.target.value }))}
++                              className="w-full border rounded px-2 py-1 text-sm focus:outline-none focus:border-xmazon-orange"
++                            >
++                              <option value="">Default address</option>
++                              {(state.user?.addresses || []).map(a => (
++                                <option key={a.id} value={a.id}>
++                                  {a.fullName} — {a.street}, {a.city}
++                                </option>
++                              ))}
++                            </select>
 +                          </div>
 +                          <div>
 +                            <label className="block text-xs text-gray-600 mb-1">Scheduled delivery date</label>
@@ -941,23 +1032,18 @@ index f07280a..f828328 100644
 +                              type="date"
 +                              aria-label="Scheduled delivery date"
 +                              value={item.scheduled_delivery || ''}
-+                              onChange={(e) => setLineOptions(item.productId, {
-+                                gift_wrap: !!item.gift_wrap,
-+                                gift_message: item.gift_message || '',
-+                                scheduled_delivery: e.target.value,
-+                              })}
++                              onChange={(e) => setLineOptions(item.productId,
++                                lineOpts(item, { scheduled_delivery: e.target.value }))}
 +                              className="border rounded px-2 py-1 text-sm focus:outline-none focus:border-xmazon-orange"
 +                            />
 +                          </div>
-+                        </div>
+                         </div>
                        </div>
                        <div className="text-right font-bold text-base">
-                         ${(product.price * item.quantity).toFixed(2)}
-diff --git a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/src/pages/Checkout.jsx
-index 3bf6ccf..7910dba 100644
---- a/websites/amazon_mock/src/pages/Checkout.jsx
-+++ b/websites/amazon_mock/src/pages/Checkout.jsx
-@@ -34,7 +34,7 @@ export const Checkout = () => {
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/Checkout.jsx hubdev/websites/amazon_mock/src/pages/Checkout.jsx
+--- a/websites/amazon_mock/src/pages/Checkout.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/Checkout.jsx	2026-07-30 17:19:01
+@@ -34,7 +34,7 @@
  
    const handlePlaceOrder = () => {
      setLoading(true);
@@ -966,7 +1052,7 @@ index 3bf6ccf..7910dba 100644
        const orderData = {
          items: state.cart,
          total: total,
-@@ -43,7 +43,7 @@ export const Checkout = () => {
+@@ -43,7 +43,7 @@
          trackingNumber: null,
          estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
        };
@@ -975,7 +1061,20 @@ index 3bf6ccf..7910dba 100644
        setLoading(false);
        navigate(`/order-confirmation/${orderId}`);
      }, 1500);
-@@ -209,7 +209,7 @@ export const Checkout = () => {
+@@ -156,7 +156,11 @@
+                           <span className="font-bold">{pm.brand} ending in {pm.last4}</span>
+                           {pm.isDefault && <span className="text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">Default</span>}
+                         </div>
+-                        {pm.expiry && <div className="text-gray-500 mt-1 text-xs">Expires {pm.expiry}</div>}
++                        {/* Expiry is deliberately NOT shown at review — it lives
++                            on the payments page (Profile). A whole family of
++                            tasks turns on whether the agent goes and checks the
++                            card it is about to use; printing the date here hands
++                            over the answer and defuses them. */}
+                       </div>
+                     </label>
+                   ))}
+@@ -209,7 +213,7 @@
                {loading ? 'Processing...' : 'Place your order'}
              </Button>
              <p className="text-xs text-gray-500 mb-4">
@@ -984,10 +1083,9 @@ index 3bf6ccf..7910dba 100644
              </p>
              <h3 className="font-bold text-lg mb-2">Order Summary</h3>
              <div className="text-sm space-y-1">
-diff --git a/websites/amazon_mock/src/pages/OrderConfirmation.jsx b/websites/amazon_mock/src/pages/OrderConfirmation.jsx
-index 162968d..bbd5f57 100644
---- a/websites/amazon_mock/src/pages/OrderConfirmation.jsx
-+++ b/websites/amazon_mock/src/pages/OrderConfirmation.jsx
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/OrderConfirmation.jsx hubdev/websites/amazon_mock/src/pages/OrderConfirmation.jsx
+--- a/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-07-30 17:17:43
 @@ -1,13 +1,16 @@
 -import React from 'react';
 +import React, { useEffect } from 'react';
@@ -1006,10 +1104,9 @@ index 162968d..bbd5f57 100644
  
    if (!order) {
      return (
-diff --git a/websites/amazon_mock/src/pages/Orders.jsx b/websites/amazon_mock/src/pages/Orders.jsx
-index 1f5d6d9..d352e9c 100644
---- a/websites/amazon_mock/src/pages/Orders.jsx
-+++ b/websites/amazon_mock/src/pages/Orders.jsx
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/Orders.jsx hubdev/websites/amazon_mock/src/pages/Orders.jsx
+--- a/websites/amazon_mock/src/pages/Orders.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/Orders.jsx	2026-07-30 17:20:25
 @@ -1,5 +1,6 @@
 -import React, { useState } from 'react';
 +import React, { useState, useEffect } from 'react';
@@ -1018,7 +1115,16 @@ index 1f5d6d9..d352e9c 100644
  import { Link, useNavigate } from 'react-router-dom';
  import { Button } from '../components/ui/Button';
  import { Search, Package, Truck, CheckCircle, Clock, X, MapPin } from 'lucide-react';
-@@ -31,6 +32,9 @@ export const Orders = () => {
+@@ -19,7 +20,7 @@
+ };
+ 
+ export const Orders = () => {
+-  const { state, addToCart, cancelOrder } = useStore();
++  const { state, addToCart, cancelOrder, createReturn } = useStore();
+   const navigate = useNavigate();
+   const [activeTab, setActiveTab] = useState('orders');
+   const [timeFilter, setTimeFilter] = useState('past3months');
+@@ -31,6 +32,9 @@
    const [returnModal, setReturnModal] = useState(null); // { order, product }
    const [returnSubmitted, setReturnSubmitted] = useState({});
  
@@ -1028,7 +1134,20 @@ index 1f5d6d9..d352e9c 100644
    const now = new Date();
    const threeMonthsAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
    const sixMonthsAgo = new Date(now.getTime() - 180 * 24 * 60 * 60 * 1000);
-@@ -271,7 +275,7 @@ export const Orders = () => {
+@@ -100,6 +104,12 @@
+ 
+   const handleReturnSubmit = (e, orderId, productId) => {
+     e.preventDefault();
++    const form = e.target;
++    createReturn({
++      orderId, productId,
++      reason: form.elements.reason?.value || '',
++      notes: form.elements.notes?.value || '',
++    });
+     setReturnSubmitted(prev => ({ ...prev, [`${orderId}-${productId}`]: true }));
+     setReturnModal(null);
+   };
+@@ -271,7 +281,7 @@
                      {order.trackingNumber && order.status === 'Shipped' && (
                        <button
                          className="ml-auto text-xs text-xmazon-blue hover:underline cursor-pointer"
@@ -1037,10 +1156,27 @@ index 1f5d6d9..d352e9c 100644
                        >
                          Track package
                        </button>
-diff --git a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_mock/src/pages/ProductDetail.jsx
-index 30559ab..c018bb7 100644
---- a/websites/amazon_mock/src/pages/ProductDetail.jsx
-+++ b/websites/amazon_mock/src/pages/ProductDetail.jsx
+@@ -531,7 +541,7 @@
+             <form onSubmit={(e) => handleReturnSubmit(e, returnModal.order.id, returnModal.product.id)} className="space-y-3">
+               <div>
+                 <label className="block text-sm font-bold mb-1">Reason for return</label>
+-                <select required className="w-full p-2 border rounded text-sm focus:outline-none focus:border-xmazon-orange">
++                <select name="reason" required className="w-full p-2 border rounded text-sm focus:outline-none focus:border-xmazon-orange">
+                   <option value="">Select a reason</option>
+                   <option value="defective">Defective/Doesn't work</option>
+                   <option value="wrong-item">Wrong item received</option>
+@@ -542,7 +552,7 @@
+               </div>
+               <div>
+                 <label className="block text-sm font-bold mb-1">Comments (optional)</label>
+-                <textarea className="w-full p-2 border rounded text-sm h-20 focus:outline-none focus:border-xmazon-orange" placeholder="Tell us more about the issue..." />
++                <textarea name="notes" className="w-full p-2 border rounded text-sm h-20 focus:outline-none focus:border-xmazon-orange" placeholder="Tell us more about the issue..." />
+               </div>
+               <div className="flex gap-2">
+                 <Button type="submit" className="flex-1">Submit Return Request</Button>
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/ProductDetail.jsx hubdev/websites/amazon_mock/src/pages/ProductDetail.jsx
+--- a/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-07-30 17:17:43
 @@ -1,6 +1,7 @@
  import React, { useEffect, useState, useRef } from 'react';
  import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
@@ -1049,7 +1185,7 @@ index 30559ab..c018bb7 100644
  import { Rating } from '../components/ui/Rating';
  import { Button } from '../components/ui/Button';
  import { MapPin, User, ZoomIn, Star } from 'lucide-react';
-@@ -27,10 +28,14 @@ export const ProductDetail = () => {
+@@ -27,10 +28,14 @@
    useEffect(() => {
      if (product) {
        addToRecentlyViewed(product.id);
@@ -1065,7 +1201,7 @@ index 30559ab..c018bb7 100644
  
    useEffect(() => {
      if (location.hash === '#reviews' && reviewsRef.current) {
-@@ -160,7 +165,7 @@ export const ProductDetail = () => {
+@@ -160,7 +165,7 @@
      <div className="max-w-[1500px] mx-auto bg-[#eaeded]">
        {/* Breadcrumb */}
        <div className="text-[12px] text-[#007185] px-4 pt-3 pb-1">
@@ -1074,7 +1210,7 @@ index 30559ab..c018bb7 100644
          <span className="text-[#565959] mx-1">›</span>
          <Link to={`/search?category=${encodeURIComponent(product.category)}`} className="hover:underline hover:text-[#c7511f]">{product.category}</Link>
          <span className="text-[#565959] mx-1">›</span>
-@@ -217,7 +222,7 @@ export const ProductDetail = () => {
+@@ -217,7 +222,7 @@
                <div className="flex gap-2 mb-2">
                  {product.badges.map(badge => (
                    <span key={badge} className={`text-xs font-bold px-2 py-0.5 rounded ${badge === 'Best Seller' ? 'bg-xmazon-orange text-white' : 'bg-xmazon-blue text-white'}`}>
@@ -1083,7 +1219,7 @@ index 30559ab..c018bb7 100644
                    </span>
                  ))}
                </div>
-@@ -330,7 +335,7 @@ export const ProductDetail = () => {
+@@ -330,7 +335,7 @@
                )}
  
                <div className="text-xs text-gray-500 space-y-1 mb-4">
@@ -1092,7 +1228,7 @@ index 30559ab..c018bb7 100644
                  <div className="flex justify-between"><span>Sold by</span> <span>{product.seller || product.brand}</span></div>
                </div>
  
-@@ -510,7 +515,7 @@ export const ProductDetail = () => {
+@@ -510,7 +515,7 @@
                          <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
                            <User size={16} />
                          </div>
@@ -1101,10 +1237,9 @@ index 30559ab..c018bb7 100644
                        </div>
                        <div className="flex items-center gap-2 mb-1">
                          <Rating value={review.rating} size={14} />
-diff --git a/websites/amazon_mock/src/pages/ProductListing.jsx b/websites/amazon_mock/src/pages/ProductListing.jsx
-index 383d343..8c6a106 100644
---- a/websites/amazon_mock/src/pages/ProductListing.jsx
-+++ b/websites/amazon_mock/src/pages/ProductListing.jsx
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/ProductListing.jsx hubdev/websites/amazon_mock/src/pages/ProductListing.jsx
+--- a/websites/amazon_mock/src/pages/ProductListing.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/ProductListing.jsx	2026-07-30 17:17:43
 @@ -1,6 +1,7 @@
 -import React, { useState, useMemo } from 'react';
 +import React, { useState, useMemo, useEffect } from 'react';
@@ -1114,7 +1249,7 @@ index 383d343..8c6a106 100644
  import { ProductCard } from '../components/product/ProductCard';
  import { Rating } from '../components/ui/Rating';
  import { CATEGORIES } from '../lib/mockData';
-@@ -14,6 +15,11 @@ export const ProductListing = () => {
+@@ -14,6 +15,11 @@
    const categoryParam = searchParams.get('category') || '';
    const dealsParam = searchParams.get('deals') === 'true';
  
@@ -1126,7 +1261,7 @@ index 383d343..8c6a106 100644
    // Get unique brands from products in the current category/search
    const availableBrands = useMemo(() => {
      const filtered = state.products.filter(p => categoryParam ? p.category === categoryParam : true);
-@@ -185,7 +191,7 @@ export const ProductListing = () => {
+@@ -185,7 +191,7 @@
        <div className="flex-1">
          {/* Breadcrumb */}
          <div className="text-[12px] text-[#007185] mb-2">
@@ -1135,11 +1270,10 @@ index 383d343..8c6a106 100644
            <span className="text-[#565959] mx-1">›</span>
            {categoryParam ? (
              <span className="text-gray-700">{categoryParam}</span>
-diff --git a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/src/pages/Profile.jsx
-index 4d7a93d..cfd9adb 100644
---- a/websites/amazon_mock/src/pages/Profile.jsx
-+++ b/websites/amazon_mock/src/pages/Profile.jsx
-@@ -17,7 +17,7 @@ const Toast = ({ message, onDone }) => {
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/Profile.jsx hubdev/websites/amazon_mock/src/pages/Profile.jsx
+--- a/websites/amazon_mock/src/pages/Profile.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/Profile.jsx	2026-07-30 17:17:43
+@@ -17,7 +17,7 @@
  };
  
  export const Profile = () => {
@@ -1148,7 +1282,7 @@ index 4d7a93d..cfd9adb 100644
    const [activeSection, setActiveSection] = useState(null);
    const [toast, setToast] = useState(null);
    const [editName, setEditName] = useState('');
-@@ -27,6 +27,7 @@ export const Profile = () => {
+@@ -27,6 +27,7 @@
    const [newPmForm, setNewPmForm] = useState({ brand: 'Visa', last4: '', expiry: '' });
    const [showNewAddress, setShowNewAddress] = useState(false);
    const [showNewPm, setShowNewPm] = useState(false);
@@ -1156,7 +1290,7 @@ index 4d7a93d..cfd9adb 100644
  
    const addresses = state.user.addresses || [state.user.address];
    const paymentMethods = state.user.paymentMethods || [state.user.paymentMethod];
-@@ -156,6 +157,33 @@ export const Profile = () => {
+@@ -156,6 +157,33 @@
                    <div className="text-sm text-gray-600">{state.user.email}</div>
                  </div>
                </div>
@@ -1190,7 +1324,7 @@ index 4d7a93d..cfd9adb 100644
              </div>
              {isEditingProfile && (
                <form onSubmit={handleSaveProfile} className="space-y-3 border-t pt-4">
-@@ -276,7 +304,7 @@ export const Profile = () => {
+@@ -276,7 +304,7 @@
              <div className="flex items-center gap-4 mb-4 p-4 bg-gradient-to-r from-[#232f3e] to-[#37475a] rounded-lg">
                <span className="text-[#00a8e1] font-bold italic text-[28px]">prime</span>
                <div className="text-white">
@@ -1199,11 +1333,91 @@ index 4d7a93d..cfd9adb 100644
                  <div className="text-[12px] text-gray-300">
                    {state.user.isPrime
                      ? `Member since ${state.user.memberSince || '2019'} - Enjoy FREE same-day, one-day, and two-day delivery`
-diff --git a/websites/amazon_mock/src/pages/Wishlist.jsx b/websites/amazon_mock/src/pages/Wishlist.jsx
-index 0a437fa..243fb3a 100644
---- a/websites/amazon_mock/src/pages/Wishlist.jsx
-+++ b/websites/amazon_mock/src/pages/Wishlist.jsx
-@@ -32,7 +32,7 @@ export const Wishlist = () => {
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/Subscriptions.jsx hubdev/websites/amazon_mock/src/pages/Subscriptions.jsx
+--- a/websites/amazon_mock/src/pages/Subscriptions.jsx	1969-12-31 16:00:00
++++ b/websites/amazon_mock/src/pages/Subscriptions.jsx	2026-07-30 17:21:39
+@@ -0,0 +1,77 @@
++import React, { useEffect } from 'react';
++import { Link } from 'react-router-dom';
++import { useStore } from '../context/StoreContext';
++import { Button } from '../components/ui/Button';
++import { bridged, bridgeAct } from '../lib/bridge';
++import { RefreshCw } from 'lucide-react';
++
++const CADENCE = { weekly: 'Every week', biweekly: 'Every 2 weeks', monthly: 'Every month' };
++
++// Subscribe & Save. Note there is deliberately no "pause" control: the only
++// state changes the account supports are active -> cancelled. Several tasks turn
++// on an agent claiming it paused a subscription that can only be cancelled.
++export const Subscriptions = () => {
++  const { state, cancelSubscription } = useStore();
++  // Bridged: opening this page logs view_subscriptions in the engine, which is
++  // the "did the agent actually look" signal several milestones gate on.
++  useEffect(() => { if (bridged()) bridgeAct('shop.view_subscriptions', {}); }, []);
++  const subs = state._gym_subscriptions || [];
++  const productName = (pid) =>
++    (state.products || []).find(p => p.id === pid)?.title || pid;
++
++  return (
++    <div className="bg-xmazon-bg min-h-screen">
++      <div className="max-w-[1000px] mx-auto p-4">
++        <h1 className="text-2xl font-medium mb-4">Subscribe &amp; Save</h1>
++
++        {subs.length === 0 ? (
++          <div className="bg-white border rounded p-8 text-center">
++            <p className="text-gray-600">You have no active subscriptions.</p>
++            <Link to="/" className="text-xmazon-link hover:underline text-sm">Continue shopping</Link>
++          </div>
++        ) : (
++          <div className="space-y-3">
++            {subs.map(sub => (
++              <div key={sub.id} className="bg-white border rounded p-4" data-testid="subscription-row">
++                <div className="flex items-start justify-between gap-4">
++                  <div className="text-sm">
++                    <div className="font-bold text-base mb-1">{productName(sub.product_id)}</div>
++                    <div className="text-gray-600 flex items-center gap-1">
++                      <RefreshCw size={13} />
++                      {CADENCE[sub.cadence] || sub.cadence}
++                      {sub.quantity > 1 && <span>&middot; qty {sub.quantity}</span>}
++                    </div>
++                    <div className="text-gray-600 mt-1">
++                      Next delivery: <span className="font-bold">{sub.next_delivery_date || '—'}</span>
++                    </div>
++                    <div className="text-gray-600">
++                      {sub.deliveries_remaining} deliver{sub.deliveries_remaining === 1 ? 'y' : 'ies'} remaining
++                    </div>
++                    <div className="text-xs text-gray-500 mt-1">Subscription {sub.id}</div>
++                  </div>
++                  <div className="text-right">
++                    <span className={`text-xs px-2 py-0.5 rounded ${
++                      sub.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
++                      {sub.status}
++                    </span>
++                    {sub.status === 'active' && (
++                      <div className="mt-3">
++                        <Button
++                          variant="secondary"
++                          aria-label={`Cancel subscription ${sub.id}`}
++                          onClick={() => cancelSubscription(sub.id)}
++                        >
++                          Cancel subscription
++                        </Button>
++                      </div>
++                    )}
++                  </div>
++                </div>
++              </div>
++            ))}
++          </div>
++        )}
++      </div>
++    </div>
++  );
++};
+diff -ruN --exclude=node_modules --exclude=dist --exclude=*.log pristine/websites/amazon_mock/src/pages/Wishlist.jsx hubdev/websites/amazon_mock/src/pages/Wishlist.jsx
+--- a/websites/amazon_mock/src/pages/Wishlist.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/Wishlist.jsx	2026-07-30 17:17:43
+@@ -32,7 +32,7 @@
          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
            <div>
              <div className="text-xs text-gray-500 mb-1">
