@@ -19,8 +19,23 @@ Per-app overrides win over everything: CUA_UI_URL_SHOP, CUA_API_URL_SHOP, ...
 from __future__ import annotations
 
 import os
+import uuid
 
 from tools.seed_to_cuagym import APP_TO_MOCK
+
+# The hub stores state in Postgres and rejects any sid that isn't a real UUID, so
+# seed sids are UUIDv5: deterministic (the same task resolves to the same sid on
+# any machine, in any language) but legal for the `uuid` column.
+NS_GYM = uuid.uuid5(uuid.NAMESPACE_URL, "https://gym.deccanexperts.ai/cua-seed/v1")
+
+# Bump to mint a fresh sid family when a projection change means the frozen
+# initial_state must be re-cut: `set` will NOT re-freeze a non-NULL initial_state,
+# so a new rev is cheaper and safer than repairing every sid in place.
+SEED_REV = 1
+
+
+def seed_sid(task_id: str, seed: int, app: str, rev: int = SEED_REV) -> str:
+    return str(uuid.uuid5(NS_GYM, f"{task_id}|{seed}|{app}|r{rev}"))
 
 # The Postgres-backed hub. NOT cua-gym-hub.soulhq.ai — that one is a separate
 # file-backed instance that records no events and writes to no database.

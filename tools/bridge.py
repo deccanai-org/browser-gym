@@ -31,6 +31,7 @@ import urllib.request
 from dataclasses import dataclass, field
 from typing import Any
 
+from tools.cua_env import seed_sid
 from tools.seed_to_cuagym import APP_TO_MOCK, transform_world
 
 # app -> gym URL path prefix (shop is the root); used to land the primary tab.
@@ -217,20 +218,28 @@ class Bridge:
         """{app: (mock_key, mock_state)} for the LIVE world."""
         return transform_world(self.world(), apps)
 
-    def push(self, apps: list[str] | None = None) -> list[str]:
+    def push(self, apps: list[str] | None = None, *, baseline: bool = False) -> list[str]:
         """Project the live world and write it into each mock tab's session.
 
-        A tab's sid defaults to seed-<task>-<seed>-<app> (matches the gym seeder);
-        override per app via self.session. Returns the apps pushed."""
+        ``baseline`` (once, at reset) writes ``set``, which freezes the hub's
+        initial_state. Every later push writes ``set_current``, so the frozen
+        baseline survives and each action appends its own mock_state_events row —
+        that append-only trail IS the trajectory, and it lives in cua-gym.
+
+        A tab's sid comes from self.session, which start_session fills with the
+        attempt UUIDs; the fallback is the task's deterministic seed sid. Both are
+        real UUIDs — the hub's Postgres store rejects anything else.
+        """
+        action = "set" if baseline else "set_current"
         pushed = []
         for app, (_mock, state) in self.project(apps).items():
             base = self.mock_map.get(app)
             if not base:
                 continue
-            sid = self.session.get(app) or f"seed-{self.task_id}-{self.seed}-{app}"
+            sid = self.session.get(app) or seed_sid(self.task_id or "", self.seed, app)
             self.session.setdefault(app, sid)
             _http("POST", f"{base.rstrip('/')}/post?sid={urllib.parse.quote(sid)}",
-                  json_body={"action": "set", "state": state})
+                  json_body={"action": action, "state": state})
             pushed.append(app)
         return pushed
 

@@ -21,6 +21,7 @@ from harness.auth import HARNESS_TOKEN_ENV
 from server.main import app
 import tools.bridge as bridge
 from tools.bridge import Bridge
+from tools.cua_env import seed_sid
 
 TOKEN = "test-bridge-token"
 GYM = "http://gym"
@@ -34,14 +35,19 @@ def wired(monkeypatch):
     monkeypatch.setenv(HARNESS_TOKEN_ENV, TOKEN)
     client = TestClient(app)
     store: dict[str, dict] = {}
+    events: list[tuple[str, str]] = []   # (sid, action) — the hub's event journal
 
     def shim(method, url, *, form=None, json_body=None, headers=None, timeout=30):
         if url.startswith(MOCK):
             q = urllib.parse.urlparse(url).query
             sid = urllib.parse.parse_qs(q).get("sid", [""])[0]
             if url.startswith(MOCK + "/post"):
-                if (json_body or {}).get("action") == "set":
+                # the hub freezes initial_state on `set` and updates current on
+                # `set_current`; both write the live state the tab renders.
+                act = (json_body or {}).get("action")
+                if act in ("set", "set_current"):
                     store[sid] = (json_body or {}).get("state")
+                    events.append((sid, act))
                 return 200, {"ok": True}
             if url.startswith(MOCK + "/state"):
                 return 200, {"stored_state": store.get(sid)}
@@ -59,12 +65,13 @@ def wired(monkeypatch):
     b = Bridge(gym_url=GYM, mock_map={a: MOCK for a in
                ("shop", "mail", "market", "calendar", "food")},
                harness_token=TOKEN)
-    b._store = store  # for assertions
+    b._store = store    # for assertions
+    b._events = events
     return b
 
 
 def _tab(b, app_key):
-    sid = b.session.get(app_key) or f"seed-{b.task_id}-{b.seed}-{app_key}"
+    sid = b.session.get(app_key) or seed_sid(b.task_id or "", b.seed, app_key)
     return b._store.get(sid) or {}
 
 
@@ -305,3 +312,24 @@ def test_actions_cover_every_app(wired):
         for tok in re.findall(r"\{(\w+)\}", path):
             assert tok in ("address_id", "payment_id", "subscription_id", "order_id",
                            "product_id", "email_id", "event_id"), (name, tok)
+
+
+def test_actions_are_journalled_to_the_hub(wired):
+    """The hub write pattern IS the trajectory: one `set` baseline at reset, then
+    one `set_current` per app per action. If a later push wrote `set` again it
+    would overwrite the frozen initial_state and every diff-based verifier would
+    go blind."""
+    b = wired
+    b.reset(TASK, 0)
+    b.push(baseline=True)
+    assert {a for _sid, a in b._events} == {"set"}, "reset must freeze the baseline"
+
+    b._events.clear()
+    pid = next(iter(b.world()["shop"]["products"]))
+    b.act("shop.add_to_cart", product_id=pid, quantity=1)
+    actions = {a for _sid, a in b._events}
+    assert actions == {"set_current"}, f"actions must append, not re-baseline: {actions}"
+    # and it lands under a real UUID sid — the hub's Postgres store rejects others
+    import uuid
+    for sid, _a in b._events:
+        assert str(uuid.UUID(sid)) == sid, sid

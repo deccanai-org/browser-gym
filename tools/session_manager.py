@@ -41,7 +41,7 @@ import uuid
 from datetime import datetime, timedelta, timezone
 
 from harness.runner import hosted_app_url
-from tools.cua_env import api_map
+from tools.cua_env import SEED_REV, api_map, seed_sid
 from tools.seed_to_cuagym import APP_TO_MOCK, transformed_states
 
 DB = pathlib.Path(__file__).resolve().parent / ".pilot_sessions.sqlite"
@@ -49,19 +49,9 @@ DEFAULT_TTL_MIN = int(os.environ.get("PILOT_TTL_MIN", "90"))
 
 
 # --------------------------------------------------------------- helpers -------
-# The hosted hub stores state in Postgres and rejects any sid that isn't a real
-# UUID, so seed sids are UUIDv5: still deterministic (same task always resolves to
-# the same sid, on any machine, in any language) but legal for the `uuid` column.
-NS_GYM = uuid.uuid5(uuid.NAMESPACE_URL, "https://gym.deccanexperts.ai/cua-seed/v1")
-
-# Bump to mint a fresh sid family when a projection change means the frozen
-# initial_state must be re-cut. `set` will NOT re-freeze a non-NULL initial_state,
-# so a new rev is cheaper and safer than repairing in place.
-SEED_REV = 1
-
-
-def _seed_sid(task_id: str, seed: int, app: str, rev: int = SEED_REV) -> str:
-    return str(uuid.uuid5(NS_GYM, f"{task_id}|{seed}|{app}|r{rev}"))
+# seed_sid lives in cua_env so the bridge can mint the same sids without importing
+# this module (which would be circular).
+_seed_sid = seed_sid
 
 
 def _http(method: str, url: str, body: dict | None = None) -> dict:
