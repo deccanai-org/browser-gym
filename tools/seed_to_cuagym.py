@@ -617,7 +617,7 @@ def transform_food(food: dict) -> dict:
                                "customizationGroups": []})
         restaurants.append({"id": rid, "name": r.get("name"), "imageUrl": _rest_image(rid),
                             "cuisineType": [r.get("cuisine")] if r.get("cuisine") else [],
-                            "rating": r.get("rating"), "reviewCount": 0,
+                            "rating": r.get("rating"), "reviewCount": 60 + (len(rid) * 11) % 240,
                             "priceRange": _price_range(r.get("delivery_fee")), "deliveryFee": r.get("delivery_fee"),
                             # etaLabel is the gym's absolute arrival time ("7:20 PM"). The mock
                             # only has a generic min/max window, so tasks gated on "will it get
@@ -627,11 +627,28 @@ def transform_food(food: dict) -> dict:
                             "hours": "", "address": "", "phone": "", "isSponsored": False, "promotions": [],
                             "categories": [], "tags": [], "supportsPickup": True,
                             "pickupTimeMin": 10, "pickupTimeMax": 20})
+
+    # Ambient browse content so the cuisine categories aren't near-empty. Purely
+    # additive and projection-only (see tools/ambient_food.py) -> no verifier sees
+    # it. Real task restaurants also get a couple of reviews so their store page
+    # isn't blank.
+    from tools.ambient_food import (build_ambient, ambient_orders,
+                                    AMBIENT_FAVORITES, _REVIEW_POOL)
+    amb_rests, amb_menu, reviews = build_ambient(_food_img, _svg_tile)
+    for i, rr in enumerate(restaurants):
+        for j in range(2):
+            who, stars, text = _REVIEW_POOL[(i * 2 + j) % len(_REVIEW_POOL)]
+            reviews.append({"id": f"rev_{rr['id']}_{j}", "restaurantId": rr["id"],
+                            "userName": who, "rating": stars, "comment": text,
+                            "createdAt": "2026-05-1%dT12:00:00" % ((i + j) % 9 + 1)})
+    restaurants = restaurants + amb_rests
+    menu_items = menu_items + amb_menu
+
     user = {"id": "user_1", "name": ALICE_NAME, "email": ALICE_EMAIL,
             "phone": "(718) 555-0100", "avatarUrl": "",
             "addresses": [dict(_UBER_ADDR)], "defaultAddressId": _UBER_ADDR["id"],
             "paymentMethods": [dict(_UBER_PAY)], "defaultPaymentId": _UBER_PAY["id"],
-            "uberOneActive": False, "favoriteRestaurantIds": []}
+            "uberOneActive": False, "favoriteRestaurantIds": list(AMBIENT_FAVORITES)}
     # The mock's normalizeCartItem/normalizeOrderItem both want
     # {cartItemId, menuItem:{...}, quantity, modifiers, instructions} and nest the
     # dish as a whole object -- emitting a flat {menuItemId, name, price} made every
@@ -686,13 +703,16 @@ def transform_food(food: dict) -> dict:
                        "total": {"subtotal": sub, "fee": fee, "tax": tax,
                                  "serviceFee": service, "total": total}})
     active = orders[-1]["id"] if orders else None
+    # ambient past orders (delivered) fill the order history / reorder; appended
+    # AFTER active so they never become the active order.
+    orders = orders + ambient_orders(by_dish)
 
     # the checkout promo box needs real codes behind it, and the applied one
     promos = [{"code": c, "percentOff": pct, "description": f"{int(pct * 100)}% off your order"}
               for c, pct in (food.get("promos") or {}).items()]
     return {"user": user, "categories": list(_UBER_CATEGORIES), "restaurants": restaurants, "menuItems": menu_items,
             "cart": cart, "orders": orders, "activeOrderId": active,
-            "promotions": promos, "appliedPromoCode": (fc.get("promo_code") or ""), "reviews": [],
+            "promotions": promos, "appliedPromoCode": (fc.get("promo_code") or ""), "reviews": reviews,
             "ui": {"selectedAddressId": _UBER_ADDR["id"], "deliveryMode": "delivery", "searchQuery": "",
                    "recentSearches": [], "activeFilters": {"sort": "", "priceRange": [], "dietary": [],
                                                            "maxDeliveryFee": None, "deals": False}},
