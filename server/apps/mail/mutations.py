@@ -41,6 +41,40 @@ def mark_read(mail: MailState, email_id: str) -> dict[str, Any]:
     return {"ok": True, "email_id": email_id}
 
 
+def set_folder(mail: MailState, email_id: str, folder: str) -> dict[str, Any]:
+    """Move a message between folders — archive and delete are folder moves.
+
+    The message stays in whichever collection it lives in; `folder` is what the
+    mailbox filters on, so nothing is destroyed and a trashed mail can come back.
+    """
+    e = mail.get(email_id)
+    if e is None:
+        return {"ok": False, "error": "no such email"}
+    folder = (folder or "").strip().lower()
+    if folder not in ("inbox", "archive", "trash", "spam", "sent", "drafts"):
+        return {"ok": False, "error": "no such folder"}
+    e.folder = folder
+    return {"ok": True, "email_id": email_id, "folder": folder}
+
+
+def toggle_label(mail: MailState, email_id: str, label: str) -> dict[str, Any]:
+    """Add/remove a label. Starred and Important ride on labels rather than new
+    columns, which is also how the mock projection derives those two flags."""
+    e = mail.get(email_id)
+    if e is None:
+        return {"ok": False, "error": "no such email"}
+    label = (label or "").strip().lower()
+    if not label:
+        return {"ok": False, "error": "a label is required"}
+    labels = list(e.labels or [])
+    if label in labels:
+        labels.remove(label)
+    else:
+        labels.append(label)
+    e.labels = labels
+    return {"ok": True, "email_id": email_id, "labels": labels}
+
+
 def send_email(mail: MailState, *, to: str, subject: str,
                body: str = "") -> dict[str, Any]:
     """Compose-and-send. Lands a copy in the Sent folder. Validates a

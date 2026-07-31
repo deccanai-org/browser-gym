@@ -80,6 +80,8 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "shop.view_addresses":   ("GET",  "/account/addresses",              ()),
     "shop.view_payment_methods": ("GET", "/account/payments",            ()),
     "mail.open":             ("GET",  "/mail/message/{email_id}",         ()),
+    "mail.set_folder":       ("POST", "/mail/message/{email_id}/folder",  ("folder",)),
+    "mail.toggle_label":     ("POST", "/mail/message/{email_id}/label",   ("label",)),
     "shop.place_order":      ("POST", "/api/checkout/place", ("payment_id",)),
     "shop.add_address":      ("POST", "/api/account/addresses",
                               ("label", "full_name", "line1", "line2", "city", "state", "zip", "set_default")),

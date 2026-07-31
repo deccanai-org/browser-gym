@@ -66,6 +66,24 @@ async def message(request: Request, email_id: str):
     return _render(request, "mail/message.html", mail=mail, email=email)
 
 
+@router.post("/message/{email_id}/folder")
+async def set_folder(request: Request, email_id: str, folder: str = Form(...)):
+    world = _deps["get_world"]()
+    r = M.set_folder(world.mail, email_id, folder)
+    if not r.get("ok"):
+        _deps["flash"](world.shop, "error", "Could not move that email.")
+    return RedirectResponse("/mail", 303)
+
+
+@router.post("/message/{email_id}/label")
+async def toggle_label(request: Request, email_id: str, label: str = Form(...)):
+    world = _deps["get_world"]()
+    r = M.toggle_label(world.mail, email_id, label)
+    if not r.get("ok"):
+        _deps["flash"](world.shop, "error", "Could not update that email.")
+    return RedirectResponse("/mail", 303)
+
+
 @router.post("/send")
 async def send(
     request: Request,

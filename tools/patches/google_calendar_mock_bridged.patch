@@ -130,6 +130,28 @@ diff -ruN a_google_calendar_mock/src/components/SettingsModal.jsx b_google_calen
        'CALSCALE:GREGORIAN',
        ...state.events.flatMap(event => [
          'BEGIN:VEVENT',
+diff -ruN a_google_calendar_mock/src/components/WeekView.jsx b_google_calendar_mock/src/components/WeekView.jsx
+--- a/websites/google_calendar_mock/src/components/WeekView.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/WeekView.jsx	2026-07-30 18:56:43
+@@ -219,9 +219,17 @@
+ 
+       const created = dragCreateRef.current;
+       if (!isDraggingCreate.current) {
+-        // Was just a click, open quick-create via onDateClick
++        // A plain click (no drag) opens quick-create at the slot that was
++        // clicked. This used to just bail, so clicking an empty slot in Week or
++        // Day did nothing at all — only drag-to-create and the sidebar worked.
+         setDragCreate(null);
+         dragCreateRef.current = null;
++        if (created && onDateClick) {
++          const at = new Date(created.day);
++          at.setHours(Math.floor(created.startMinutes / 60),
++                      created.startMinutes % 60, 0, 0);
++          onDateClick(at);
++        }
+         return;
+       }
+ 
 diff -ruN a_google_calendar_mock/src/context/StoreContext.jsx b_google_calendar_mock/src/context/StoreContext.jsx
 --- a/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
 +++ b/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-30 17:35:14

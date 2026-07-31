@@ -1,7 +1,58 @@
-diff --git a/websites/gmail_mock/index.html b/websites/gmail_mock/index.html
-index bebe3d3..15708df 100644
---- a/websites/gmail_mock/index.html
-+++ b/websites/gmail_mock/index.html
+diff -ruN a_gmail_mock/.mock-files/_default/Benefits_Form.pdf b_gmail_mock/.mock-files/_default/Benefits_Form.pdf
+--- a/websites/gmail_mock/.mock-files/_default/Benefits_Form.pdf	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-files/_default/Benefits_Form.pdf	2026-07-30 17:35:49
+@@ -0,0 +1,21 @@
++%PDF-1.4
++1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
++2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj
++3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<</Font<</F1 4 0 R>>>>/Contents 5 0 R>>endobj
++4 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj
++5 0 obj<</Length 52>>stream
++BT /F1 24 Tf 100 700 Td (Benefits Form) Tj ET
++endstream
++endobj
++xref
++0 6
++0000000000 65535 f
++0000000009 00000 n
++0000000058 00000 n
++0000000115 00000 n
++0000000266 00000 n
++0000000340 00000 n
++trailer<</Size 6/Root 1 0 R>>
++startxref
++442
++%%EOF
+\ No newline at end of file
+diff -ruN a_gmail_mock/.mock-files/_default/roadmap_q4.pdf b_gmail_mock/.mock-files/_default/roadmap_q4.pdf
+--- a/websites/gmail_mock/.mock-files/_default/roadmap_q4.pdf	1969-12-31 16:00:00
++++ b/websites/gmail_mock/.mock-files/_default/roadmap_q4.pdf	2026-07-30 17:35:49
+@@ -0,0 +1,21 @@
++%PDF-1.4
++1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
++2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj
++3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<</Font<</F1 4 0 R>>>>/Contents 5 0 R>>endobj
++4 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj
++5 0 obj<</Length 44>>stream
++BT /F1 24 Tf 100 700 Td (Q4 Roadmap) Tj ET
++endstream
++endobj
++xref
++0 6
++0000000000 65535 f
++0000000009 00000 n
++0000000058 00000 n
++0000000115 00000 n
++0000000266 00000 n
++0000000340 00000 n
++trailer<</Size 6/Root 1 0 R>>
++startxref
++434
++%%EOF
+\ No newline at end of file
+diff -ruN a_gmail_mock/index.html b_gmail_mock/index.html
+--- a/websites/gmail_mock/index.html	2026-07-28 11:01:47
++++ b/websites/gmail_mock/index.html	2026-07-30 17:35:14
 @@ -2,16 +2,16 @@
  <html lang="en">
    <head>
@@ -23,11 +74,10 @@ index bebe3d3..15708df 100644
          </div>
        </div>
      </div>
-diff --git a/websites/gmail_mock/src/components/ComposeModal.jsx b/websites/gmail_mock/src/components/ComposeModal.jsx
-index b1c8bae..4c5ecfc 100644
---- a/websites/gmail_mock/src/components/ComposeModal.jsx
-+++ b/websites/gmail_mock/src/components/ComposeModal.jsx
-@@ -247,6 +247,7 @@ const ComposeModal = () => {
+diff -ruN a_gmail_mock/src/components/ComposeModal.jsx b_gmail_mock/src/components/ComposeModal.jsx
+--- a/websites/gmail_mock/src/components/ComposeModal.jsx	2026-07-28 11:01:47
++++ b/websites/gmail_mock/src/components/ComposeModal.jsx	2026-07-30 17:35:14
+@@ -247,6 +247,7 @@
      <button
        onMouseDown={(e) => { e.preventDefault(); onClick(); }}
        title={title}
@@ -35,7 +85,7 @@ index b1c8bae..4c5ecfc 100644
        className="w-7 h-7 flex items-center justify-center rounded hover:bg-gray-200 text-gray-600 text-xs font-medium"
      >
        {children}
-@@ -266,13 +267,13 @@ const ComposeModal = () => {
+@@ -266,13 +267,13 @@
        >
          <span className="font-medium text-sm text-gray-700">New Message</span>
          <div className="flex items-center gap-2">
@@ -52,7 +102,7 @@ index b1c8bae..4c5ecfc 100644
              <X size={14} />
            </button>
          </div>
-@@ -288,6 +289,7 @@ const ComposeModal = () => {
+@@ -288,6 +289,7 @@
                  <input
                    id="to-input"
                    type="text"
@@ -60,7 +110,7 @@ index b1c8bae..4c5ecfc 100644
                    className={`flex-1 outline-none text-sm py-1 ${toError ? 'border-b border-red-500' : ''}`}
                    value={to}
                    onChange={(e) => { setTo(e.target.value); if (e.target.value.trim()) setToError(false); }}
-@@ -305,14 +307,14 @@ const ComposeModal = () => {
+@@ -305,14 +307,14 @@
              {showCc && (
                <div className="px-4 py-2 border-b border-gray-100 flex items-center">
                  <span className="text-gray-500 text-sm w-12">Cc</span>
@@ -77,7 +127,7 @@ index b1c8bae..4c5ecfc 100644
                </div>
              )}
  
-@@ -320,6 +322,7 @@ const ComposeModal = () => {
+@@ -320,6 +322,7 @@
                <input
                  type="text"
                  placeholder="Subject"
@@ -85,7 +135,7 @@ index b1c8bae..4c5ecfc 100644
                  className="w-full outline-none text-sm py-1 placeholder-gray-500"
                  value={subject}
                  onChange={(e) => setSubject(e.target.value)}
-@@ -366,6 +369,9 @@ const ComposeModal = () => {
+@@ -366,6 +369,9 @@
                ref={bodyRef}
                contentEditable
                suppressContentEditableWarning
@@ -95,7 +145,7 @@ index b1c8bae..4c5ecfc 100644
                data-compose-body="true"
                className="flex-1 p-4 outline-none text-sm font-sans min-h-[80px]"
                onInput={() => setBody(bodyRef.current?.innerHTML || '')}
-@@ -441,12 +447,12 @@ const ComposeModal = () => {
+@@ -441,12 +447,12 @@
                <div className="h-6 w-px bg-gray-200 mx-1" />
  
                <input type="file" multiple className="hidden" ref={fileInputRef} onChange={handleFileSelect} />
@@ -111,7 +161,7 @@ index b1c8bae..4c5ecfc 100644
  
                <button
                  onClick={showSignature ? removeSignature : insertSignature}
-@@ -461,6 +467,7 @@ const ComposeModal = () => {
+@@ -461,6 +467,7 @@
                onClick={() => { if (currentDraftId) deleteDraft(currentDraftId); closeModal(); }}
                className="text-gray-500 hover:bg-gray-100 p-2 rounded"
                title="Discard draft"
@@ -119,11 +169,10 @@ index b1c8bae..4c5ecfc 100644
              >
                <Trash2 size={18} />
              </button>
-diff --git a/websites/gmail_mock/src/components/EmailList.jsx b/websites/gmail_mock/src/components/EmailList.jsx
-index 0efbcc3..ee149d6 100644
---- a/websites/gmail_mock/src/components/EmailList.jsx
-+++ b/websites/gmail_mock/src/components/EmailList.jsx
-@@ -284,7 +284,7 @@ const EMPTY_STATES = {
+diff -ruN a_gmail_mock/src/components/EmailList.jsx b_gmail_mock/src/components/EmailList.jsx
+--- a/websites/gmail_mock/src/components/EmailList.jsx	2026-07-28 11:01:47
++++ b/websites/gmail_mock/src/components/EmailList.jsx	2026-07-30 17:35:14
+@@ -284,7 +284,7 @@
      icon: null,
      svgPath: 'M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z',
      title: 'Nothing in Important',
@@ -132,7 +181,7 @@ index 0efbcc3..ee149d6 100644
    },
    sent: {
      icon: Send,
-@@ -304,7 +304,7 @@ const EMPTY_STATES = {
+@@ -304,7 +304,7 @@
    spam: {
      icon: ShieldCheck,
      title: 'Hooray, no spam here!',
@@ -141,11 +190,10 @@ index 0efbcc3..ee149d6 100644
    },
    trash: {
      icon: Trash2,
-diff --git a/websites/gmail_mock/src/components/Header.jsx b/websites/gmail_mock/src/components/Header.jsx
-index 6e8d113..213a479 100644
---- a/websites/gmail_mock/src/components/Header.jsx
-+++ b/websites/gmail_mock/src/components/Header.jsx
-@@ -87,7 +87,7 @@ const GoogleAppsPanel = ({ onClose }) => {
+diff -ruN a_gmail_mock/src/components/Header.jsx b_gmail_mock/src/components/Header.jsx
+--- a/websites/gmail_mock/src/components/Header.jsx	2026-07-28 11:01:47
++++ b/websites/gmail_mock/src/components/Header.jsx	2026-07-30 17:35:14
+@@ -87,7 +87,7 @@
      { name: 'YouTube', icon: '▶️' },
      { name: 'Play', icon: '🎮' },
      { name: 'News', icon: '📰' },
@@ -154,7 +202,7 @@ index 6e8d113..213a479 100644
      { name: 'Meet', icon: '📹' },
      { name: 'Chat', icon: '💬' },
      { name: 'Drive', icon: '📁' },
-@@ -101,7 +101,7 @@ const GoogleAppsPanel = ({ onClose }) => {
+@@ -101,7 +101,7 @@
        ref={ref}
        className="absolute top-12 right-0 bg-white border border-gray-200 rounded-xl shadow-xl z-50 w-72 p-3"
      >
@@ -163,7 +211,7 @@ index 6e8d113..213a479 100644
        <div className="grid grid-cols-3 gap-1">
          {apps.map(app => (
            <button
-@@ -146,7 +146,7 @@ const ProfileDropdown = ({ onClose }) => {
+@@ -146,7 +146,7 @@
            onClick={onClose}
            className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
          >
@@ -172,7 +220,7 @@ index 6e8d113..213a479 100644
          </button>
          <button
            onClick={onClose}
-@@ -176,7 +176,7 @@ const Header = () => {
+@@ -176,7 +176,7 @@
            <Menu size={24} className="text-gray-600" />
          </button>
          <div className="flex items-center gap-2">
@@ -181,7 +229,7 @@ index 6e8d113..213a479 100644
          </div>
        </div>
  
-@@ -204,7 +204,7 @@ const Header = () => {
+@@ -204,7 +204,7 @@
          <button
            className="p-2 hover:bg-gray-100 rounded-full"
            title="Support"
@@ -190,7 +238,7 @@ index 6e8d113..213a479 100644
          >
            <HelpCircle size={24} className="text-gray-600" />
          </button>
-@@ -214,7 +214,7 @@ const Header = () => {
+@@ -214,7 +214,7 @@
          <div className="relative">
            <button
              className="p-2 hover:bg-gray-100 rounded-full"
@@ -199,11 +247,10 @@ index 6e8d113..213a479 100644
              onClick={() => setShowAppsPanel(v => !v)}
            >
              <Grid size={24} className="text-gray-600" />
-diff --git a/websites/gmail_mock/src/components/ThreadView.jsx b/websites/gmail_mock/src/components/ThreadView.jsx
-index bd00442..a0d008f 100644
---- a/websites/gmail_mock/src/components/ThreadView.jsx
-+++ b/websites/gmail_mock/src/components/ThreadView.jsx
-@@ -27,7 +27,7 @@ const ThreadMoveToMenu = ({ emailIds, onClose }) => {
+diff -ruN a_gmail_mock/src/components/ThreadView.jsx b_gmail_mock/src/components/ThreadView.jsx
+--- a/websites/gmail_mock/src/components/ThreadView.jsx	2026-07-28 11:01:47
++++ b/websites/gmail_mock/src/components/ThreadView.jsx	2026-07-30 17:35:14
+@@ -27,7 +27,7 @@
  const ThreadView = () => {
    const { threadId } = useParams();
    const navigate = useNavigate();
@@ -212,7 +259,7 @@ index bd00442..a0d008f 100644
    const [replyBody, setReplyBody] = useState('');
    const [isReplying, setIsReplying] = useState(false);
    const [replyAttachments, setReplyAttachments] = useState([]);
-@@ -37,14 +37,10 @@ const ThreadView = () => {
+@@ -37,14 +37,10 @@
    const replyRef = useRef(null);
    const replyFileInputRef = useRef(null);
  
@@ -230,16 +277,15 @@ index bd00442..a0d008f 100644
      // Only run when the thread changes, not on every state update
      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [threadId]);
-diff --git a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mock/src/context/StoreContext.jsx
-index 88aa2ee..9ed13da 100644
---- a/websites/gmail_mock/src/context/StoreContext.jsx
-+++ b/websites/gmail_mock/src/context/StoreContext.jsx
-@@ -1,6 +1,16 @@
+diff -ruN a_gmail_mock/src/context/StoreContext.jsx b_gmail_mock/src/context/StoreContext.jsx
+--- a/websites/gmail_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
++++ b/websites/gmail_mock/src/context/StoreContext.jsx	2026-07-30 18:56:02
+@@ -1,7 +1,17 @@
  import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
  import { INITIAL_STATE, DEFAULT_SETTINGS, getSessionId, fetchCustomState, saveState, initializeData } from '../data/mockData';
  import { generateId, formatDate } from '../lib/utils';
 +import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
-+
+ 
 +const APP = 'mail'; // bridge engine app key for this mock
 +// In bridged mode: run the gym action, then adopt the engine's authoritative
 +// per-app state (already in this mock's shape). Merge so UI-only fields survive.
@@ -248,10 +294,11 @@ index 88aa2ee..9ed13da 100644
 +  // state matches the seeded shape — same path normal seeding uses.
 +  if (r && r.apps && r.apps[APP]) setState(prev => ({ ...prev, ...initializeData(null, r.apps[APP]) }));
 +};
- 
++
  const StoreContext = createContext();
  
-@@ -39,6 +49,18 @@ export const StoreProvider = ({ children }) => {
+ const INITIAL_KEY_PREFIX = 'xmail-clone-initialState';
+@@ -39,6 +49,18 @@
      if (initDone.current) return;
      initDone.current = true;
      const sid = sidRef.current;
@@ -270,7 +317,35 @@ index 88aa2ee..9ed13da 100644
      if (sid) {
        const sessionKey = `${INITIAL_KEY_PREFIX}_${sid}`;
        const isRefresh = localStorage.getItem(sessionKey) !== null;
-@@ -151,6 +173,15 @@ export const StoreProvider = ({ children }) => {
+@@ -102,6 +124,13 @@
+   };
+ 
+   const deleteEmails = (emailIds) => {
++    if (bridged()) {
++      Promise.all((emailIds || []).map(id =>
++        bridgeAct('mail.set_folder', { email_id: id, folder: 'trash' })))
++        .then(rs => applyEngine(setState, rs[rs.length - 1]));
++      showToast('Conversation moved to Trash');
++      return;
++    }
+     setState(prev => {
+       const emailsToUpdate = prev.emails.filter(e => emailIds.includes(e.id));
+       const trashIds = emailsToUpdate.filter(e => e.folder === 'trash').map(e => e.id);
+@@ -131,6 +160,13 @@
+   };
+ 
+   const archiveEmails = (emailIds) => {
++    if (bridged()) {
++      Promise.all((emailIds || []).map(id =>
++        bridgeAct('mail.set_folder', { email_id: id, folder: 'archive' })))
++        .then(rs => applyEngine(setState, rs[rs.length - 1]));
++      showToast('Conversation archived');
++      return;
++    }
+     setState(prev => {
+       const snapshot = prev.emails;
+       showToast('Conversation archived', () => setState(s => ({ ...s, emails: snapshot })));
+@@ -151,6 +187,15 @@
    };
  
    const sendEmail = (emailData) => {
@@ -286,7 +361,7 @@ index 88aa2ee..9ed13da 100644
      const newEmail = {
        id: generateId(),
        threadId: generateId(),
-@@ -243,6 +274,14 @@ export const StoreProvider = ({ children }) => {
+@@ -243,6 +288,14 @@
    }
  
    const replyToEmail = (originalEmail, body, isReplyAll = false, attachments = []) => {
@@ -301,7 +376,33 @@ index 88aa2ee..9ed13da 100644
       const newEmail = {
        id: generateId(),
        threadId: originalEmail.threadId,
-@@ -283,6 +322,24 @@ export const StoreProvider = ({ children }) => {
+@@ -269,12 +322,25 @@
+     }));
+   }
+ 
++  // Starred/Important are labels on the engine side — the same labels the seed
++  // projection reads back to set these flags — so a toggle round-trips instead
++  // of living only in this tab.
+   const toggleStar = (emailId) => {
++    if (bridged()) {
++      bridgeAct('mail.toggle_label', { email_id: emailId, label: 'starred' })
++        .then(r => applyEngine(setState, r));
++      return;
++    }
+     const email = state.emails.find(e => e.id === emailId);
+     if (email) updateEmail(emailId, { starred: !email.starred });
+   };
+ 
+   const toggleImportant = (emailId) => {
++    if (bridged()) {
++      bridgeAct('mail.toggle_label', { email_id: emailId, label: 'important' })
++        .then(r => applyEngine(setState, r));
++      return;
++    }
+     const email = state.emails.find(e => e.id === emailId);
+     if (email) updateEmail(emailId, { important: !email.important });
+   };
+@@ -283,6 +349,24 @@
        updateEmail(emailId, { read: status });
    }
  
@@ -326,7 +427,7 @@ index 88aa2ee..9ed13da 100644
    const addLabel = (emailId, labelId) => {
      const email = state.emails.find(e => e.id === emailId);
      if (email && !email.labels.includes(labelId)) {
-@@ -442,6 +499,7 @@ export const StoreProvider = ({ children }) => {
+@@ -442,6 +526,7 @@
        toggleStar,
        toggleImportant,
        toggleRead,
@@ -334,11 +435,10 @@ index 88aa2ee..9ed13da 100644
        addLabel,
        removeLabel,
        createLabel,
-diff --git a/websites/gmail_mock/src/data/mockData.js b/websites/gmail_mock/src/data/mockData.js
-index 9e16d33..9b5659b 100644
---- a/websites/gmail_mock/src/data/mockData.js
-+++ b/websites/gmail_mock/src/data/mockData.js
-@@ -356,7 +356,7 @@ Lisa`,
+diff -ruN a_gmail_mock/src/data/mockData.js b_gmail_mock/src/data/mockData.js
+--- a/websites/gmail_mock/src/data/mockData.js	2026-07-28 11:01:47
++++ b/websites/gmail_mock/src/data/mockData.js	2026-07-30 17:35:14
+@@ -356,7 +356,7 @@
    emails.push({
      id: 'email_promo_1',
      threadId: 'thread_promo_1',
@@ -347,7 +447,7 @@ index 9e16d33..9b5659b 100644
      to: [{ name: 'Demo User', email: 'demo@example.com' }],
      cc: [],
      bcc: [],
-@@ -460,11 +460,11 @@ Lisa`,
+@@ -460,11 +460,11 @@
    emails.push({
      id: 'email_promo_2',
      threadId: 'thread_promo_2',
@@ -361,7 +461,7 @@ index 9e16d33..9b5659b 100644
      body: 'Thanks for your order from Chipotle Mexican Grill. Your total was $23.45.',
      snippet: 'Thanks for your order from Chipotle Mexican Grill. Total: $23.45',
      timestamp: new Date(BASE_TIME - 1000 * 60 * 60 * 36).toISOString(),
-@@ -722,13 +722,13 @@ Mike`,
+@@ -722,13 +722,13 @@
    emails.push({
      id: 'email_updates_2',
      threadId: 'thread_updates_2',
@@ -378,11 +478,10 @@ index 9e16d33..9b5659b 100644
      timestamp: new Date(BASE_TIME - 1000 * 60 * 60 * 20).toISOString(), // 20 hours ago
      read: true,
      starred: false,
-diff --git a/websites/gmail_mock/src/index.css b/websites/gmail_mock/src/index.css
-index 80723b9..75db066 100644
---- a/websites/gmail_mock/src/index.css
-+++ b/websites/gmail_mock/src/index.css
-@@ -10,7 +10,7 @@ html, body, #root {
+diff -ruN a_gmail_mock/src/index.css b_gmail_mock/src/index.css
+--- a/websites/gmail_mock/src/index.css	2026-07-28 11:01:47
++++ b/websites/gmail_mock/src/index.css	2026-07-30 17:35:14
+@@ -10,7 +10,7 @@
  }
  
  body {
@@ -391,11 +490,9 @@ index 80723b9..75db066 100644
    -webkit-font-smoothing: antialiased;
    background-color: #f6f8fc;
  }
-diff --git a/websites/gmail_mock/src/lib/bridge.js b/websites/gmail_mock/src/lib/bridge.js
-new file mode 100644
-index 0000000..592181e
---- /dev/null
-+++ b/websites/gmail_mock/src/lib/bridge.js
+diff -ruN a_gmail_mock/src/lib/bridge.js b_gmail_mock/src/lib/bridge.js
+--- a/websites/gmail_mock/src/lib/bridge.js	1969-12-31 16:00:00
++++ b/websites/gmail_mock/src/lib/bridge.js	2026-07-30 17:35:14
 @@ -0,0 +1,45 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
@@ -442,11 +539,10 @@ index 0000000..592181e
 +  setTimeout(tick, ms);
 +  return () => { live = false; };
 +}
-diff --git a/websites/gmail_mock/src/pages/Settings.jsx b/websites/gmail_mock/src/pages/Settings.jsx
-index cce938c..5f8ae57 100644
---- a/websites/gmail_mock/src/pages/Settings.jsx
-+++ b/websites/gmail_mock/src/pages/Settings.jsx
-@@ -435,7 +435,7 @@ const SettingsPage = () => {
+diff -ruN a_gmail_mock/src/pages/Settings.jsx b_gmail_mock/src/pages/Settings.jsx
+--- a/websites/gmail_mock/src/pages/Settings.jsx	2026-07-28 11:01:47
++++ b/websites/gmail_mock/src/pages/Settings.jsx	2026-07-30 17:35:14
+@@ -435,7 +435,7 @@
                    <div>
                      <p className="font-medium text-gray-900 text-base">{state.user.username}</p>
                      <p className="text-sm text-gray-500">{state.user.email}</p>
@@ -455,7 +551,7 @@ index cce938c..5f8ae57 100644
                    </div>
                  </div>
  
-@@ -457,7 +457,7 @@ const SettingsPage = () => {
+@@ -457,7 +457,7 @@
                    <div className="flex items-center justify-between py-3 border-b border-gray-100">
                      <div>
                        <p className="text-sm font-medium text-gray-800">Language</p>
