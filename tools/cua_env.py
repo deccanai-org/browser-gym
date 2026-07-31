@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import os
 import uuid
+from urllib.parse import quote
 
 from tools.seed_to_cuagym import APP_TO_MOCK
 
@@ -78,11 +79,17 @@ def ui_base(app: str, env: str | None = None) -> str:
     return DELTA_UI_TMPL.format(slug=_slug(APP_TO_MOCK[app]))
 
 
-def ui_url(app: str, sid: str, path: str = "/", env: str | None = None) -> str:
+def ui_url(app: str, sid: str, path: str = "/", env: str | None = None,
+           bridge: str | None = None, session: str | None = None) -> str:
     """Openable URL for (app, sid).
 
     The query must precede any hash — gmail routes on the fragment, and a sid
     parked after '#' never reaches getSessionId().
+
+    Pass ``bridge`` to put the tab in bridged mode, where its clicks drive the
+    real gym engine (cross-app bus included) instead of the mock's local store.
+    ``session`` picks which episode: every tab of one session must carry the same
+    value or their cross-app effects land in different engines.
     """
     base = ui_base(app, env)
     path = path or "/"
@@ -92,8 +99,13 @@ def ui_url(app: str, sid: str, path: str = "/", env: str | None = None) -> str:
     if "#" in path:
         path, frag = path.split("#", 1)
         frag = "#" + frag
+    q = [f"sid={sid}"]
+    if bridge:
+        q.append(f"bridge={quote(bridge.rstrip('/'), safe='')}")
+    if session:
+        q.append(f"session={quote(session, safe='')}")
     sep = "&" if "?" in path else "?"
-    return f"{base}{path}{sep}sid={sid}{frag}"
+    return f"{base}{path}{sep}{'&'.join(q)}{frag}"
 
 
 def api_map(env: str | None = None) -> dict[str, str]:

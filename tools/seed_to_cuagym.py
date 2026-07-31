@@ -89,10 +89,6 @@ _GMAIL_LABELS = [
 ]
 
 
-# gym label -> gmail category tab, so a seeded promo lands under Promotions.
-_GMAIL_CATEGORY = {"promotions": "promotions", "social": "social", "updates": "updates",
-                   "forums": "forums", "orders": "updates"}
-
 _RE_PREFIX = re.compile(r"^\s*(?:re|fwd|fw)\s*:\s*", re.I)
 
 
@@ -154,7 +150,11 @@ def transform_mail(mail: dict) -> dict:
                 "starred": "starred" in labels or bool(e.get("order_id")),
                 "important": "important" in labels or bool(e.get("order_id")),
                 "labels": labels,
-                "category": _GMAIL_CATEGORY.get(next(iter(labels), ""), "primary"),
+                # Everything stays in Primary. Deriving the category from labels
+                # looked tidier but filed order mail under Updates — a tab this
+                # mailbox has switched OFF — so the mail a task depends on simply
+                # wasn't on screen. Labels still drive the sidebar filters.
+                "category": "primary",
                 "folder": e.get("folder") or folder,
                 "attachments": [],
             })

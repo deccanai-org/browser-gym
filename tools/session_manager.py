@@ -124,8 +124,13 @@ def seed_task(task_id: str, seed: int, mock_map: dict[str, str]) -> dict[str, st
 
 
 def start_session(task_id: str, seed: int, annotator: str, mock_map: dict[str, str],
-                  ttl_min: int = DEFAULT_TTL_MIN) -> dict:
-    """Clone each app's frozen seed into a fresh attempt_sid and record the session."""
+                  ttl_min: int = DEFAULT_TTL_MIN, bridge_url: str | None = None) -> dict:
+    """Clone each app's frozen seed into a fresh attempt_sid and record the session.
+
+    With ``bridge_url`` the session also leases a gym instance and the tab URLs
+    carry ?bridge=&session=, so clicks run through the real engine — cross-app
+    effects, engine-enforced rules and the live verifier all apply.
+    """
     seed_sids = seed_task(task_id, seed, mock_map)  # ensure the base exists
     session_id = str(uuid.uuid4())
     started = _now()
@@ -145,15 +150,27 @@ def start_session(task_id: str, seed: int, annotator: str, mock_map: dict[str, s
         attempt = str(uuid.uuid4())
         _post_state(url, attempt, state, "set")       # clone -> attempt's own initial+current
         # The SPA lives on a different host than the state API — handing out the
-        # api base would open raw JSON instead of the storefront.
-        open_url = hosted_app_url(app, attempt)
+        # api base would open raw JSON instead of the storefront. In bridged mode
+        # the tab also carries the session, so all five tabs drive ONE engine and
+        # a shop order's confirmation email lands in this session's Gmail.
+        open_url = hosted_app_url(app, attempt, bridge=bridge_url,
+                                  session=session_id if bridge_url else None)
         conn.execute("INSERT INTO session_app VALUES (?,?,?,?,?)",
                      (session_id, app, APP_TO_MOCK[app], attempt, url))
         apps.append({"app": app, "attempt_sid": attempt, "url": open_url})
     conn.commit()
     conn.close()
+
+    if bridge_url:
+        # Boot this session's engine on the task and freeze the hub baseline, so
+        # the first tab to load already sees a live world rather than racing it.
+        _http("POST", f"{bridge_url.rstrip('/')}/bridge/{session_id}/open",
+              {"task_id": task_id, "seed": seed,
+               "sids": {a["app"]: a["attempt_sid"] for a in apps}})
+
     return {"session_id": session_id, "task_id": task_id, "seed": seed,
-            "annotator": annotator, "expires_at": expires.isoformat(), "apps": apps}
+            "annotator": annotator, "expires_at": expires.isoformat(),
+            "bridge_url": bridge_url, "apps": apps}
 
 
 def _session_apps(conn, session_id):
@@ -246,6 +263,9 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--annotator", default="anon")
     p.add_argument("--mock-map", default=None, help="default: the live hub (CUA_ENV)")
     p.add_argument("--ttl-min", type=int, default=DEFAULT_TTL_MIN)
+    p.add_argument("--bridge-url", default=os.environ.get("BRIDGE_URL"),
+                   help="run the session through the gym engine (cross-app effects, "
+                        "engine rules, live verifier). Default: $BRIDGE_URL")
 
     for name in ("end", "golden", "diffs"):
         q = sub.add_parser(name)
@@ -258,7 +278,8 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.cmd == "start":
         res = start_session(args.task, args.seed, args.annotator,
-                            parse_mock_map(args.mock_map), args.ttl_min)
+                            parse_mock_map(args.mock_map), args.ttl_min,
+                            bridge_url=args.bridge_url)
         print(f"session {res['session_id']}  (expires {res['expires_at']})")
         for a in res["apps"]:
             print(f"  open: {a['url']}")

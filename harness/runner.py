@@ -77,14 +77,24 @@ def bridged_app_url(app_origins: dict, bridge_url: str, app: str,
     return _app_url(app_origins[app], app, {"bridge": bridge_url}, start_path)
 
 
-def hosted_app_url(app: str, sid: str, start_path: str | None = None) -> str:
+def hosted_app_url(app: str, sid: str, start_path: str | None = None,
+                   bridge: str | None = None, session: str | None = None) -> str:
     """Hosted mode: the deployed mock, seeded per ``?sid=``.
 
-    The mock reads its whole world from the hub for that sid and writes every
-    mutation straight back, so the DB is the trajectory — no bridge involved.
+    The mock reads its world from the hub for that sid and writes every mutation
+    straight back, so the DB is the trajectory.
+
+    Adding ``bridge``/``session`` puts the tab in bridged mode on top of that:
+    clicks run through the real gym engine, so cross-app effects and the engine's
+    own rules apply, and the re-projected state is still journalled to the hub.
     """
     from tools.cua_env import ui_base
-    return _app_url(ui_base(app), app, {"sid": sid}, start_path)
+    params = {"sid": sid}
+    if bridge:
+        params["bridge"] = bridge.rstrip("/")
+    if session:
+        params["session"] = session
+    return _app_url(ui_base(app), app, params, start_path)
 
 
 def _mock_start_path(app: str, gym_path: str | None) -> str | None:

@@ -403,8 +403,8 @@ diff -ruN a_amazon_mock/src/index.css b_amazon_mock/src/index.css
  }
 diff -ruN a_amazon_mock/src/lib/bridge.js b_amazon_mock/src/lib/bridge.js
 --- a/websites/amazon_mock/src/lib/bridge.js	1969-12-31 16:00:00
-+++ b/websites/amazon_mock/src/lib/bridge.js	2026-07-30 18:17:09
-@@ -0,0 +1,47 @@
++++ b/websites/amazon_mock/src/lib/bridge.js	2026-07-30 19:22:19
+@@ -0,0 +1,54 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
 +// verifiers) instead of this mock's local store. Cross-app effects (e.g. a shop
@@ -414,25 +414,30 @@ diff -ruN a_amazon_mock/src/lib/bridge.js b_amazon_mock/src/lib/bridge.js
 +// (e.g. ...?bridge=http://127.0.0.1:8090). No param -> the mock behaves exactly
 +// as upstream (legacy mode), so one build serves both.
 +//
-+// The bridge service holds ONE live episode (the harness/annotator resets it);
-+// the mock only reads state + dispatches actions. The engine's per-app state is
-+// already in this mock's own shape (gym-side transform), so setState needs no
-+// mapping — merge it over the previous state to keep UI-only fields.
++// ?session=<id> picks WHICH episode this tab belongs to. Each session leases its
++// own gym instance, so two annotators on the same task never share a world — and
++// every tab of one session (shop, mail, calendar, ...) must pass the same value
++// or their cross-app effects would land in different engines. Without it the
++// service falls back to a single default episode, which is fine for a solo run.
 +
 +const _params = new URLSearchParams(
 +  typeof window !== 'undefined' ? window.location.search : '');
 +const BASE = (_params.get('bridge') || '').replace(/\/$/, '');
++const SESSION = _params.get('session') || '';
++
++const _root = () => (SESSION ? `${BASE}/bridge/${encodeURIComponent(SESSION)}` : `${BASE}/bridge`);
 +
 +export const bridged = () => !!BASE;
++export const bridgeSession = () => SESSION;
 +
 +export async function bridgeState(app) {
-+  const r = await fetch(`${BASE}/bridge/state?app=${encodeURIComponent(app)}`);
++  const r = await fetch(`${_root()}/state?app=${encodeURIComponent(app)}`);
 +  if (!r.ok) return null;
 +  return (await r.json()).apps?.[app] || null;
 +}
 +
 +export async function bridgeAct(action, payload = {}) {
-+  const r = await fetch(`${BASE}/bridge/act`, {
++  const r = await fetch(`${_root()}/act`, {
 +    method: 'POST',
 +    headers: { 'Content-Type': 'application/json' },
 +    body: JSON.stringify({ action, payload }),
@@ -441,6 +446,8 @@ diff -ruN a_amazon_mock/src/lib/bridge.js b_amazon_mock/src/lib/bridge.js
 +}
 +
 +// Poll the engine so cross-app effects produced in OTHER tabs surface here too.
++// This is what makes a shop order's confirmation email appear in the Gmail tab
++// without the annotator reloading anything.
 +export function bridgePoll(app, onState, ms = 2500) {
 +  if (!bridged()) return () => {};
 +  let live = true;
