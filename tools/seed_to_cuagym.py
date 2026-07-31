@@ -526,6 +526,51 @@ _FOOD_EPOCH_MS = int(_dt.datetime(2026, 5, 21, 12, 0, 0,
                                   tzinfo=_dt.timezone.utc).timestamp() * 1000)
 
 
+# Food photos (Adobe Stock free collection) live at /assets/food/<key>.jpg in
+# the uber_eats mock. Restaurants map by id; dishes map by id, else by a keyword
+# on the dish name so a new dish still gets a plausible photo instead of blank.
+_REST_IMAGE = {"r_sushi": "rest_sushi", "r_burger": "rest_burger",
+               "r_bean": "rest_bean", "r_tony": "rest_pizza"}
+_DISH_IMAGE = {
+    "d_salmon_roll": "sushi", "d_av_roll": "sushi", "d_avocado_veg_roll": "sushi",
+    "d_veg_platter_342": "sushi", "d_party_platter": "sushi", "d_tuna_bowl": "poke_bowl",
+    "d_miso": "miso_soup", "d_classic": "cheeseburger", "d_veggie": "veggie_burger",
+    "d_veg_burger": "veggie_burger", "d_veggie_box_342": "veggie_burger", "d_fries": "fries",
+    "d_pods": "coffee_pods", "d_latte": "latte", "d_croissant": "croissant",
+    "d_vegan_platter": "vegan_platter", "d_welcome_veg_354": "vegan_platter",
+    "d_veg_dinner_343": "vegan_platter", "d_garden_dumplings": "dumplings",
+    "d_midnight_shake": "shake", "d_large_pizza": "rest_pizza", "d_garlic_knots": "garlic_knots",
+    "d_oat_breakfast_343": "breakfast_box", "d_family_feast": "lunch_box",
+    "d_interview_lunch_346": "lunch_box", "d_group_dinner_348": "lunch_box",
+    "d_lunch_box_349": "lunch_box", "d_m379_standard": "lunch_box",
+    "d_m379_vegetarian": "lunch_box", "d_m379_gluten_free": "lunch_box",
+}
+_DISH_KEYWORDS = [
+    ("pizza", "rest_pizza"), ("roll", "sushi"), ("sushi", "sushi"), ("burger", "cheeseburger"),
+    ("fries", "fries"), ("latte", "latte"), ("coffee", "coffee_pods"), ("croissant", "croissant"),
+    ("dumpling", "dumplings"), ("shake", "shake"), ("soup", "miso_soup"), ("bowl", "poke_bowl"),
+    ("vegan", "vegan_platter"), ("breakfast", "breakfast_box"), ("oat", "breakfast_box"),
+    ("box", "lunch_box"), ("platter", "lunch_box"), ("feast", "lunch_box"),
+    ("lunch", "lunch_box"), ("dinner", "lunch_box"),
+]
+
+
+def _food_img(key: str) -> str:
+    return f"/assets/food/{key}.jpg" if key else ""
+
+
+def _rest_image(rid: str) -> str:
+    return _food_img(_REST_IMAGE.get(rid, ""))
+
+
+def _dish_image(did: str, name: str) -> str:
+    key = _DISH_IMAGE.get(did)
+    if not key:
+        low = (name or "").lower()
+        key = next((k for kw, k in _DISH_KEYWORDS if kw in low), "")
+    return _food_img(key)
+
+
 def transform_food(food: dict) -> dict:
     """gym FoodState -> uber_eats_mock (restaurants[], menuItems[])."""
     restaurants, menu_items = [], []
@@ -535,10 +580,11 @@ def transform_food(food: dict) -> dict:
             menu_items.append({"id": d.get("id"), "restaurantId": rid,
                                "category": (tags[0].title() if tags else "Menu"), "name": d.get("name"),
                                "description": d.get("description") or "", "price": d.get("price"),
-                               "imageUrl": "", "isPopular": bool(d.get("popular")), "isAvailable": True,
+                               "imageUrl": _dish_image(d.get("id"), d.get("name")),
+                               "isPopular": bool(d.get("popular")), "isAvailable": True,
                                "dietaryTags": [_DIETARY[t.lower()] for t in tags if t.lower() in _DIETARY],
                                "customizationGroups": []})
-        restaurants.append({"id": rid, "name": r.get("name"), "imageUrl": "",
+        restaurants.append({"id": rid, "name": r.get("name"), "imageUrl": _rest_image(rid),
                             "cuisineType": [r.get("cuisine")] if r.get("cuisine") else [],
                             "rating": r.get("rating"), "reviewCount": 0,
                             "priceRange": _price_range(r.get("delivery_fee")), "deliveryFee": r.get("delivery_fee"),
