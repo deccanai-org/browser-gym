@@ -10,6 +10,21 @@ diff -ruN a/websites/uber_eats_mock/index.html b/websites/uber_eats_mock/index.h
    </head>
    <body>
      <div id="root"></div>
+diff -ruN a/websites/uber_eats_mock/src/App.jsx b/websites/uber_eats_mock/src/App.jsx
+--- a/websites/uber_eats_mock/src/App.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/App.jsx	2026-07-31 18:07:23
+@@ -69,6 +69,11 @@
+             <Route path="/favorites" element={<Favorites />} />
+             <Route path="/account" element={<Account />} />
+             <Route path="/go" element={<Go />} />
++            {/* The cart is a drawer, not a page; a /cart deep-link used to hit no
++                route and render a blank <main>. Send it to the full cart view. */}
++            <Route path="/cart" element={<Navigate to="/checkout" replace />} />
++            {/* Any stray gym path lands somewhere real instead of a blank page. */}
++            <Route path="*" element={<Navigate to="/" replace />} />
+           </Routes>
+         </Layout>
+       </BrowserRouter>
 diff -ruN a/websites/uber_eats_mock/src/components/CartDrawer.jsx b/websites/uber_eats_mock/src/components/CartDrawer.jsx
 --- a/websites/uber_eats_mock/src/components/CartDrawer.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/components/CartDrawer.jsx	1969-12-31 16:00:00
@@ -349,8 +364,8 @@ diff -ruN a/websites/uber_eats_mock/src/components/FilterBar.jsx b/websites/uber
        </button>
 diff -ruN a/websites/uber_eats_mock/src/components/Footer.jsx b/websites/uber_eats_mock/src/components/Footer.jsx
 --- a/websites/uber_eats_mock/src/components/Footer.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/components/Footer.jsx	2026-07-30 17:35:25
-@@ -3,7 +3,7 @@
++++ b/websites/uber_eats_mock/src/components/Footer.jsx	2026-07-31 18:08:37
+@@ -3,17 +3,17 @@
  import './Footer.css';
  
  const FOOTER_CONTENT = {
@@ -359,11 +374,12 @@ diff -ruN a/websites/uber_eats_mock/src/components/Footer.jsx b/websites/uber_ea
    gift: { title: 'Gift cards', body: 'Sandbox gift cards can be added at checkout with promo code SAVE5. No external purchase is required.' },
    restaurant: { title: 'Add your restaurant', body: 'Restaurant onboarding is simulated locally. Your draft is saved in this browser session for training tasks.' },
    deliver: { title: 'Sign up to deliver', body: 'Delivery partner signup opens a local information flow in this sandbox and never contacts external services.' },
-@@ -11,9 +11,9 @@
+   near: { title: 'Restaurants near you', body: 'The restaurant list is filtered to San Francisco seed data for deterministic RL tasks.' },
    cities: { title: 'Cities', body: 'This sandbox currently serves San Francisco neighborhoods with stable local fixtures.' },
    countries: { title: 'Countries', body: 'Country selection is fixed to the United States so prices, addresses, and taxes remain deterministic.' },
-   pickup: { title: 'Pickup near me', body: 'Use the Delivery/Pickup toggle in the header to switch the catalog and cart to pickup mode.' },
+-  pickup: { title: 'Pickup near me', body: 'Use the Delivery/Pickup toggle in the header to switch the catalog and cart to pickup mode.' },
 -  about: { title: 'About Xber Eats', body: 'This is a self-contained Xber Eats training mock with local restaurants, orders, account settings, and file endpoints.' },
++  pickup: { title: 'Pickup near me', body: 'This sandbox is delivery-only. Pickup ordering is not available and the catalog and cart always use delivery.' },
 +  about: { title: 'About GymEats', body: 'This is a self-contained GymEats training mock with local restaurants, orders, account settings, and file endpoints.' },
    appStore: { title: 'App Store', body: 'App installation is represented locally. Continue using this browser sandbox for all training workflows.' },
 -  playStore: { title: 'Google Play', body: 'App installation is represented locally. Continue using this browser sandbox for all training workflows.' },
@@ -409,8 +425,16 @@ diff -ruN a/websites/uber_eats_mock/src/components/Footer.jsx b/websites/uber_ea
              <span className="ue-footer__dot">&bull;</span>
 diff -ruN a/websites/uber_eats_mock/src/components/Header.jsx b/websites/uber_eats_mock/src/components/Header.jsx
 --- a/websites/uber_eats_mock/src/components/Header.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/components/Header.jsx	2026-07-31 15:08:28
-@@ -9,13 +9,13 @@
++++ b/websites/uber_eats_mock/src/components/Header.jsx	2026-07-31 18:08:50
+@@ -2,6 +2,7 @@
+ import { Link, useNavigate } from 'react-router-dom';
+ import { Search, ShoppingBag, ChevronDown, MapPin, X, Menu } from 'lucide-react';
+ import { useApp } from '../context/AppContext';
++import { bridged } from '../lib/bridge';
+ import './Header.css';
+ 
+ export default function Header({ onCartClick, onMenuClick }) {
+@@ -9,13 +10,13 @@
    const [searchValue, setSearchValue] = useState('');
    const [addressDropdownOpen, setAddressDropdownOpen] = useState(false);
    const [showAddAddressForm, setShowAddAddressForm] = useState(false);
@@ -426,7 +450,7 @@ diff -ruN a/websites/uber_eats_mock/src/components/Header.jsx b/websites/uber_ea
  
    const userInitials = state.user.name
      ? state.user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
-@@ -55,7 +55,7 @@
+@@ -55,7 +56,7 @@
    const handleAddNewAddress = () => {
      if (!newAddress.street.trim() || !newAddress.city.trim()) return;
      addAddress(newAddress);
@@ -435,7 +459,7 @@ diff -ruN a/websites/uber_eats_mock/src/components/Header.jsx b/websites/uber_ea
      setShowAddAddressForm(false);
    };
  
-@@ -69,8 +69,8 @@
+@@ -69,8 +70,8 @@
  
          {/* Logo */}
          <Link to="/" className="ue-header__logo">
@@ -446,7 +470,28 @@ diff -ruN a/websites/uber_eats_mock/src/components/Header.jsx b/websites/uber_ea
          </Link>
  
          {/* Delivery/Pickup Toggle */}
-@@ -194,7 +194,7 @@
+@@ -84,6 +85,8 @@
+           <button
+             className={`ue-header__mode-btn ${state.ui.deliveryMode === 'pickup' ? 'ue-header__mode-btn--active' : ''}`}
+             onClick={() => setDeliveryMode('pickup')}
++            disabled={bridged()}
++            title={bridged() ? 'Delivery only in this sandbox' : undefined}
+           >
+             Pickup
+           </button>
+@@ -139,6 +142,11 @@
+                     <strong>Add new address</strong>
+                     <button onClick={() => setShowAddAddressForm(false)}><X size={16} /></button>
+                   </div>
++                  {bridged() && (
++                    <p style={{ margin: '0 0 8px', fontSize: 11, color: '#6B6B6B', lineHeight: 1.4 }}>
++                      Saved locally, not synced to your account.
++                    </p>
++                  )}
+                   <input
+                     className="ue-header__add-address-input"
+                     type="text"
+@@ -194,7 +202,7 @@
            <Search size={18} className="ue-header__search-icon" />
            <input
              type="text"
@@ -614,8 +659,26 @@ diff -ruN a/websites/uber_eats_mock/src/components/RestaurantCard.jsx b/websites
              <span className="rest-card__promo-badge" style={{ background: promoBadge.color }}>
 diff -ruN a/websites/uber_eats_mock/src/components/Sidebar.jsx b/websites/uber_eats_mock/src/components/Sidebar.jsx
 --- a/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-07-30 17:35:25
-@@ -71,14 +71,14 @@
++++ b/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-07-31 18:08:07
+@@ -56,29 +56,29 @@
+             <CreditCard size={20} />
+             <span>Wallet</span>
+           </button>
+-          <button className="sidebar__nav-item" onClick={() => handleNav('/account')}>
++          <button className="sidebar__nav-item" onClick={() => openLocalDialog('Promotions', 'There are no account-wide promotions in this sandbox. Restaurant deals and promo codes are applied at checkout.')}>
+             <Tag size={20} />
+             <span>Promotions</span>
+           </button>
+-          <button className="sidebar__nav-item" onClick={() => handleNav('/account')}>
++          <button className="sidebar__nav-item" onClick={() => openLocalDialog('Help', 'This is a training sandbox with no live support desk. For order actions like cancelling, use Get Help on a specific order.')}>
+             <HelpCircle size={20} />
+             <span>Help</span>
+           </button>
+-          <button className="sidebar__nav-item" onClick={() => handleNav('/')}>
++          <button className="sidebar__nav-item" onClick={() => openLocalDialog('Get a ride', "Rides aren't available in this GymEats sandbox — there's no rides product to open.")}>
+             <ExternalLink size={20} />
+             <span>Get a ride</span>
+             <ExternalLink size={14} className="sidebar__ext-icon" />
            </button>
          </div>
  
@@ -1328,8 +1391,25 @@ diff -ruN a/websites/uber_eats_mock/src/lib/bridge.js b/websites/uber_eats_mock/
 +}
 diff -ruN a/websites/uber_eats_mock/src/pages/Account.jsx b/websites/uber_eats_mock/src/pages/Account.jsx
 --- a/websites/uber_eats_mock/src/pages/Account.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/pages/Account.jsx	2026-07-30 17:35:25
-@@ -54,11 +54,11 @@
++++ b/websites/uber_eats_mock/src/pages/Account.jsx	2026-07-31 18:09:20
+@@ -2,8 +2,16 @@
+ import { Link } from 'react-router-dom';
+ import { MapPin, CreditCard, Heart, Clock, Settings, ChevronRight, User, Phone, Mail, Shield, Edit2, Check, X } from 'lucide-react';
+ import { useApp } from '../context/AppContext';
++import { bridged } from '../lib/bridge';
+ import './Account.css';
+ 
++// Honest caption for controls that only touch local session state — the food
++// engine has no user/address/payment/favorites store, so edits here aren't
++// synced anywhere and no task is scored on them. Shown only in bridged mode.
++const localOnlyNote = (text) => bridged() ? (
++  <p style={{ margin: '4px 0 0', fontSize: 12, color: '#6B6B6B', lineHeight: 1.4 }}>{text}</p>
++) : null;
++
+ export default function Account() {
+   const { state, updateUser, activateUberOne } = useApp();
+   const user = state.user;
+@@ -54,11 +62,11 @@
          <p className="account-profile__email">{user.email}</p>
        </div>
  
@@ -1343,7 +1423,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Account.jsx b/websites/uber_eats_m
              <p>$0 Delivery Fee and 5% off eligible orders</p>
            </div>
            <button className="account-uber-one__btn" onClick={() => setShowUberOneModal(true)}>Try free for 1 month</button>
-@@ -67,7 +67,7 @@
+@@ -67,7 +75,7 @@
        {user.uberOneActive && (
          <div className="account-uber-one account-uber-one--active">
            <div className="account-uber-one__content">
@@ -1352,7 +1432,39 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Account.jsx b/websites/uber_eats_m
              <p>Enjoy $0 delivery and 5% off eligible orders</p>
            </div>
            <Shield size={24} />
-@@ -257,7 +257,7 @@
+@@ -112,6 +120,7 @@
+       {/* Personal Info */}
+       <section className="account-section">
+         <h2 className="account-section__title">Personal Info</h2>
++        {localOnlyNote('Saved locally, not synced to your account.')}
+         <div className="account-info-card">
+           <div className="account-info__row">
+             <User size={18} />
+@@ -206,6 +215,7 @@
+             <h2 className="account-section__title">Favorite Restaurants</h2>
+             <Link to="/favorites" className="account-section__link">See all</Link>
+           </div>
++          {localOnlyNote('Favorites are kept locally for this session only.')}
+           <div className="account-favs">
+             {favRestaurants.slice(0, 3).map(r => (
+               <Link key={r.id} to={`/store/${r.id}`} className="account-fav">
+@@ -224,6 +234,7 @@
+       {/* Addresses */}
+       <section id="addresses" className="account-section">
+         <h2 className="account-section__title">Saved Addresses</h2>
++        {localOnlyNote('Saved locally, not synced to your account.')}
+         <div className="account-addresses">
+           {user.addresses.map(addr => (
+             <div key={addr.id} className="account-address">
+@@ -242,6 +253,7 @@
+       {/* Payment Methods */}
+       <section id="payment" className="account-section">
+         <h2 className="account-section__title">Payment Methods</h2>
++        {localOnlyNote('Saved locally, not synced. No real payment method is stored or charged.')}
+         <div className="account-payments">
+           {user.paymentMethods.map(pm => (
+             <div key={pm.id} className="account-payment">
+@@ -257,7 +269,7 @@
          </div>
        </section>
  
@@ -1361,7 +1473,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Account.jsx b/websites/uber_eats_m
        {showUberOneModal && (
          <div className="uber-one-modal-overlay" onClick={() => setShowUberOneModal(false)}>
            <div className="uber-one-modal" onClick={(e) => e.stopPropagation()}>
-@@ -265,7 +265,7 @@
+@@ -265,7 +277,7 @@
                <X size={20} />
              </button>
              <div className="uber-one-modal__header">
@@ -1370,6 +1482,99 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Account.jsx b/websites/uber_eats_m
              </div>
              <div className="uber-one-modal__benefits">
                <div className="uber-one-modal__benefit">
+diff -ruN a/websites/uber_eats_mock/src/pages/Checkout.jsx b/websites/uber_eats_mock/src/pages/Checkout.jsx
+--- a/websites/uber_eats_mock/src/pages/Checkout.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/pages/Checkout.jsx	2026-07-31 18:07:52
+@@ -2,6 +2,7 @@
+ import { useNavigate, Link } from 'react-router-dom';
+ import { MapPin, Clock, CreditCard, Check } from 'lucide-react';
+ import { useApp } from '../context/AppContext';
++import { bridged } from '../lib/bridge';
+ import { formatCurrency } from '../utils/dataManager';
+ import './Checkout.css';
+ 
+@@ -33,9 +34,12 @@
+     const serviceFee = Math.min(Math.max(subtotal * 0.15, 0.99), 9.99);
+     const deliveryFee = restaurant ? restaurant.deliveryFee : 0;
+     const tax = subtotal * 0.09;
+-    const tipAmount = cart.tipPercentage
+-      ? subtotal * (cart.tipPercentage / 100)
+-      : cart.tipAmount;
++    // food.checkout has no tip field — the engine never records or charges a tip.
++    // In bridged mode force it to 0 so the displayed total isn't a figure the
++    // gym will never see (the tip selector is hidden below in the same mode).
++    const tipAmount = bridged()
++      ? 0
++      : (cart.tipPercentage ? subtotal * (cart.tipPercentage / 100) : cart.tipAmount);
+     const total = subtotal + serviceFee + deliveryFee + tax + tipAmount - (cart.promoDiscount || 0);
+     return {
+       subtotal,
+@@ -205,27 +209,30 @@
+             {promoError && <p className="checkout__promo-error">{promoError}</p>}
+           </section>
+ 
+-          {/* Tip */}
+-          <section className="checkout__section">
+-            <h2 className="checkout__section-title">Tip your courier</h2>
+-            <div className="checkout__tips">
+-              {TIP_OPTIONS.map(pct => (
++          {/* Tip — hidden in bridged mode: the gym engine's food.checkout has no
++              tip field, so a courier tip can't be recorded or charged there. */}
++          {!bridged() && (
++            <section className="checkout__section">
++              <h2 className="checkout__section-title">Tip your courier</h2>
++              <div className="checkout__tips">
++                {TIP_OPTIONS.map(pct => (
++                  <button
++                    key={pct}
++                    className={`checkout__tip-btn ${cart.tipPercentage === pct ? 'checkout__tip-btn--active' : ''}`}
++                    onClick={() => setTip(0, pct)}
++                  >
++                    {pct}%
++                  </button>
++                ))}
+                 <button
+-                  key={pct}
+-                  className={`checkout__tip-btn ${cart.tipPercentage === pct ? 'checkout__tip-btn--active' : ''}`}
+-                  onClick={() => setTip(0, pct)}
++                  className={`checkout__tip-btn ${cart.tipPercentage === 0 ? 'checkout__tip-btn--active' : ''}`}
++                  onClick={() => setTip(0, 0)}
+                 >
+-                  {pct}%
++                  Other
+                 </button>
+-              ))}
+-              <button
+-                className={`checkout__tip-btn ${cart.tipPercentage === 0 ? 'checkout__tip-btn--active' : ''}`}
+-                onClick={() => setTip(0, 0)}
+-              >
+-                Other
+-              </button>
+-            </div>
+-          </section>
++              </div>
++            </section>
++          )}
+ 
+           {/* Items */}
+           <section className="checkout__section">
+@@ -268,10 +275,12 @@
+               <span>Tax</span>
+               <span>{formatCurrency(totals.tax)}</span>
+             </div>
+-            <div className="checkout__total-row">
+-              <span>Tip</span>
+-              <span>{formatCurrency(totals.tipAmount)}</span>
+-            </div>
++            {!bridged() && (
++              <div className="checkout__total-row">
++                <span>Tip</span>
++                <span>{formatCurrency(totals.tipAmount)}</span>
++              </div>
++            )}
+             {totals.promoDiscount > 0 && (
+               <div className="checkout__total-row checkout__total-row--discount">
+                 <span>Promo</span>
 diff -ruN a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx
 --- a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx	1969-12-31 16:00:00
 +++ b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx	2026-07-30 17:35:25
@@ -1455,6 +1660,29 @@ diff -ruN a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx b/websites/uber_e
 +    </div>
 +  );
 +}
+diff -ruN a/websites/uber_eats_mock/src/pages/Favorites.jsx b/websites/uber_eats_mock/src/pages/Favorites.jsx
+--- a/websites/uber_eats_mock/src/pages/Favorites.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/pages/Favorites.jsx	2026-07-31 18:09:30
+@@ -2,6 +2,7 @@
+ import { Link } from 'react-router-dom';
+ import { Heart } from 'lucide-react';
+ import { useApp } from '../context/AppContext';
++import { bridged } from '../lib/bridge';
+ import RestaurantCard from '../components/RestaurantCard';
+ import './Favorites.css';
+ 
+@@ -28,6 +29,11 @@
+   return (
+     <div className="favorites-page">
+       <h1 className="favorites-page__title">Saved Restaurants</h1>
++      {bridged() && (
++        <p style={{ margin: '0 0 16px', fontSize: 13, color: '#6B6B6B', lineHeight: 1.4 }}>
++          Favorites are kept locally for this session only.
++        </p>
++      )}
+       <div className="favorites-grid">
+         {favoriteRestaurants.map(restaurant => (
+           <RestaurantCard
 diff -ruN a/websites/uber_eats_mock/src/pages/GoEndpoint.jsx b/websites/uber_eats_mock/src/pages/GoEndpoint.jsx
 --- a/websites/uber_eats_mock/src/pages/GoEndpoint.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/pages/GoEndpoint.jsx	1969-12-31 16:00:00
@@ -1681,7 +1909,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Homepage.jsx b/websites/uber_eats_
            </div>
 diff -ruN a/websites/uber_eats_mock/src/pages/OrderTracking.jsx b/websites/uber_eats_mock/src/pages/OrderTracking.jsx
 --- a/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-07-30 20:38:25
++++ b/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-07-31 18:08:15
 @@ -25,7 +25,7 @@
  
  export default function OrderTracking() {
@@ -1728,15 +1956,18 @@ diff -ruN a/websites/uber_eats_mock/src/pages/OrderTracking.jsx b/websites/uber_
    };
  
    return (
-@@ -321,7 +340,7 @@
+@@ -321,9 +340,9 @@
                <strong>{order.deliveryPerson.name}</strong>
                <span>{order.deliveryPerson.vehicleType === 'car' ? 'Car' : 'Bicycle'} &bull; {order.deliveryPerson.rating} ★</span>
              </div>
 -            <p className="tracking-modal__body">Your delivery person is on the way. For safety, messages are handled through the Xber Eats app.</p>
-+            <p className="tracking-modal__body">Your delivery person is on the way. For safety, messages are handled through the GymEats app.</p>
++            <p className="tracking-modal__body">Contacting or messaging your courier isn't available in this demo — nothing is sent.</p>
              <button className="tracking-modal__btn" onClick={() => setShowContactModal(false)}>
-               <Phone size={16} /> Send message
+-              <Phone size={16} /> Send message
++              Close
              </button>
+           </div>
+         </div>
 diff -ruN a/websites/uber_eats_mock/src/pages/Orders.jsx b/websites/uber_eats_mock/src/pages/Orders.jsx
 --- a/websites/uber_eats_mock/src/pages/Orders.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/pages/Orders.jsx	2026-07-30 20:23:39

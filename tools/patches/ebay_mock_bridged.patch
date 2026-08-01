@@ -38,12 +38,61 @@ diff -ruN a/websites/ebay_mock/src/App.jsx b/websites/ebay_mock/src/App.jsx
              <Route path="/go" element={<Go />} />
            </Routes>
          </Layout>
+diff -ruN a/websites/ebay_mock/src/components/ListingCard.jsx b/websites/ebay_mock/src/components/ListingCard.jsx
+--- a/websites/ebay_mock/src/components/ListingCard.jsx	2026-07-28 11:01:47
++++ b/websites/ebay_mock/src/components/ListingCard.jsx	2026-07-31 18:07:22
+@@ -2,6 +2,7 @@
+ import { Link } from 'react-router-dom';
+ import { Heart } from 'lucide-react';
+ import { useStore } from '../context/StoreContext';
++import { bridged } from '../lib/bridge';
+ import { formatDistanceToNow } from 'date-fns';
+ 
+ export default function ListingCard({ listing }) {
+@@ -14,15 +15,17 @@
+ 
+   return (
+     <div className="group relative bg-white rounded-lg p-4 hover:shadow-lg transition-shadow border border-transparent hover:border-gray-200">
+-      <button 
+-        onClick={(e) => {
+-          e.preventDefault();
+-          toggleWatchlist(listing.id);
+-        }}
+-        className="absolute top-4 right-4 z-10 p-1.5 rounded-full bg-white/80 hover:bg-white text-gray-600 hover:text-red-500 transition-colors"
+-      >
+-        <Heart size={18} fill={isWatched ? "currentColor" : "none"} className={isWatched ? "text-red-500" : ""} />
+-      </button>
++      {!bridged() && (
++        <button
++          onClick={(e) => {
++            e.preventDefault();
++            toggleWatchlist(listing.id);
++          }}
++          className="absolute top-4 right-4 z-10 p-1.5 rounded-full bg-white/80 hover:bg-white text-gray-600 hover:text-red-500 transition-colors"
++        >
++          <Heart size={18} fill={isWatched ? "currentColor" : "none"} className={isWatched ? "text-red-500" : ""} />
++        </button>
++      )}
+ 
+       <Link to={`/item/${listing.id}`} className="block">
+         <div className="aspect-square mb-3 overflow-hidden rounded-lg bg-gray-100">
 diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/src/components/Navbar.jsx
 --- a/websites/ebay_mock/src/components/Navbar.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/components/Navbar.jsx	2026-07-30 17:35:14
-@@ -120,14 +120,14 @@
++++ b/websites/ebay_mock/src/components/Navbar.jsx	2026-07-31 18:08:04
+@@ -2,6 +2,7 @@
+ import { Link, useNavigate } from 'react-router-dom';
+ import { Search, ShoppingCart, Bell, Menu, X, ChevronDown } from 'lucide-react';
+ import { useStore } from '../context/StoreContext';
++import { bridged } from '../lib/bridge';
+ 
+ const CATEGORIES = [
+   'Electronics', 'Fashion', 'Motors', 'Collectibles',
+@@ -118,16 +119,16 @@
+           >
+             Ship to
            </button>
-           <Link to="/sell" className="hover:underline">Sell</Link>
+-          <Link to="/sell" className="hover:underline">Sell</Link>
++          {!bridged() && <Link to="/sell" className="hover:underline">Sell</Link>}
            <Link to="/dashboard?tab=watchlist" className="hover:underline">Watchlist</Link>
 -          <Link to="/dashboard" className="hover:underline">My xBay</Link>
 +          <Link to="/dashboard" className="hover:underline">My ValueMart</Link>
@@ -58,7 +107,22 @@ diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/sr
          </Link>
  
          {/* Shop by Category */}
-@@ -264,6 +264,7 @@
+@@ -208,7 +209,8 @@
+         </form>
+ 
+         <div className="flex items-center gap-6 text-gray-600 shrink-0">
+-          {/* Notifications */}
++          {/* Notifications — no engine-backed notification store in bridged mode */}
++          {!bridged() && (
+           <div className="relative" ref={notifRef}>
+             <button
+               onClick={() => setShowNotifDropdown(v => !v)}
+@@ -260,10 +262,12 @@
+               </div>
+             )}
+           </div>
++          )}
+ 
            {/* Cart */}
            <div className="relative" ref={cartRef}>
              <button
@@ -66,7 +130,7 @@ diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/sr
                onClick={() => setShowCartDropdown(v => !v)}
                className="relative hover:text-xbay-blue"
              >
-@@ -312,17 +313,16 @@
+@@ -312,17 +316,16 @@
                      ))
                    )}
                  </div>
@@ -94,7 +158,19 @@ diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/sr
                </div>
              )}
            </div>
-@@ -357,7 +357,7 @@
+@@ -351,13 +354,18 @@
+                 <X size={18} />
+               </button>
+             </div>
+-            {helpSubmitted ? (
++            {bridged() ? (
+               <div className="p-6 text-center">
++                <p className="font-bold text-gray-900">Help &amp; Contact isn't available in this demo store.</p>
++                <button onClick={() => setShowHelpDialog(false)} className="mt-5 btn-primary text-sm">Close</button>
++              </div>
++            ) : helpSubmitted ? (
++              <div className="p-6 text-center">
+                 <div className="w-12 h-12 mx-auto rounded-full bg-green-100 text-green-700 flex items-center justify-center mb-3">
                    ✓
                  </div>
                  <p className="font-bold text-gray-900">Support request saved locally</p>
@@ -103,6 +179,25 @@ diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/sr
                  <button onClick={() => setShowHelpDialog(false)} className="mt-5 btn-primary text-sm">Done</button>
                </div>
              ) : (
+@@ -434,9 +442,15 @@
+                 />
+               </div>
+               {shippingSaved && (
+-                <div className="text-sm text-green-700 bg-green-50 border border-green-200 rounded p-2">
+-                  Shipping location set to {shipCountry} {shipZip}.
+-                </div>
++                bridged() ? (
++                  <div className="text-sm text-gray-600 bg-gray-100 border border-gray-200 rounded p-2">
++                    Demo only — shipping location isn't applied to orders.
++                  </div>
++                ) : (
++                  <div className="text-sm text-green-700 bg-green-50 border border-green-200 rounded p-2">
++                    Shipping location set to {shipCountry} {shipZip}.
++                  </div>
++                )
+               )}
+               <div className="flex justify-end gap-3">
+                 <button type="button" onClick={() => setShowShippingDialog(false)} className="px-4 py-2 font-bold text-gray-600 hover:bg-gray-100 rounded">
 diff -ruN a/websites/ebay_mock/src/context/StoreContext.jsx b/websites/ebay_mock/src/context/StoreContext.jsx
 --- a/websites/ebay_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
 +++ b/websites/ebay_mock/src/context/StoreContext.jsx	2026-07-31 15:07:11
@@ -500,8 +595,8 @@ diff -ruN a/websites/ebay_mock/src/lib/bridge.js b/websites/ebay_mock/src/lib/br
 +}
 diff -ruN a/websites/ebay_mock/src/pages/Cart.jsx b/websites/ebay_mock/src/pages/Cart.jsx
 --- a/websites/ebay_mock/src/pages/Cart.jsx	1969-12-31 16:00:00
-+++ b/websites/ebay_mock/src/pages/Cart.jsx	2026-07-30 18:43:43
-@@ -0,0 +1,183 @@
++++ b/websites/ebay_mock/src/pages/Cart.jsx	2026-07-31 18:06:39
+@@ -0,0 +1,198 @@
 +import React, { useState } from 'react';
 +import { Link, useNavigate } from 'react-router-dom';
 +import { useStore } from '../context/StoreContext';
@@ -509,7 +604,7 @@ diff -ruN a/websites/ebay_mock/src/pages/Cart.jsx b/websites/ebay_mock/src/pages
 +
 +export default function Cart() {
 +  const navigate = useNavigate();
-+  const { state, removeFromCart, applyCoupon, removeCoupon, checkout } = useStore();
++  const { state, removeFromCart, clearCart, applyCoupon, removeCoupon, checkout } = useStore();
 +  const [couponInput, setCouponInput] = useState('');
 +  const [checkedOut, setCheckedOut] = useState(false);
 +
@@ -562,6 +657,21 @@ diff -ruN a/websites/ebay_mock/src/pages/Cart.jsx b/websites/ebay_mock/src/pages
 +        {/* Cart items */}
 +        <div className="lg:col-span-2">
 +          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
++            {cartListings.length > 0 && (
++              <div className="flex justify-between items-center p-4 border-b border-gray-100">
++                <span className="text-sm font-bold text-gray-700">
++                  {cartListings.length} item{cartListings.length !== 1 ? 's' : ''} in cart
++                </span>
++                <button
++                  type="button"
++                  aria-label="Clear cart"
++                  onClick={() => clearCart()}
++                  className="text-sm font-bold text-gray-500 hover:text-red-500 flex items-center gap-1"
++                >
++                  <Trash2 size={16} /> Clear cart
++                </button>
++              </div>
++            )}
 +            {cartListings.length === 0 ? (
 +              <div className="p-10 text-center text-gray-500">
 +                <p className="mb-4">Your cart is empty.</p>
@@ -687,8 +797,12 @@ diff -ruN a/websites/ebay_mock/src/pages/Cart.jsx b/websites/ebay_mock/src/pages
 +}
 diff -ruN a/websites/ebay_mock/src/pages/CreateListing.jsx b/websites/ebay_mock/src/pages/CreateListing.jsx
 --- a/websites/ebay_mock/src/pages/CreateListing.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/pages/CreateListing.jsx	2026-07-30 17:35:14
-@@ -4,7 +4,7 @@
++++ b/websites/ebay_mock/src/pages/CreateListing.jsx	2026-07-31 18:09:04
+@@ -1,10 +1,11 @@
+ import React, { useState, useRef } from 'react';
+ import { useNavigate } from 'react-router-dom';
+ import { useStore } from '../context/StoreContext';
++import { bridged } from '../lib/bridge';
  import { Upload, X, Image } from 'lucide-react';
  
  function makeListingImage(title, category) {
@@ -697,10 +811,38 @@ diff -ruN a/websites/ebay_mock/src/pages/CreateListing.jsx b/websites/ebay_mock/
    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="400" height="400" fill="#f5f5f5"/><rect x="28" y="28" width="344" height="344" rx="18" fill="#ffffff" stroke="#e5e7eb" stroke-width="6"/><circle cx="200" cy="150" r="54" fill="#e53238"/><rect x="96" y="232" width="208" height="18" rx="9" fill="#0064d2"/><rect x="128" y="266" width="144" height="14" rx="7" fill="#86b817"/><text x="200" y="330" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#333333">${label.replace(/[&<>"']/g, '')}</text></svg>`;
    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
  }
+@@ -135,6 +136,20 @@
+     // Clear error for this field on change
+     if (errors[name]) setErrors(prev => ({ ...prev, [name]: undefined }));
+   };
++
++  // No engine-backed seller model in bridged mode — selling isn't part of this
++  // buyer-side demo store, so don't present a listing form that saves nothing.
++  if (bridged()) {
++    return (
++      <div className="container mx-auto px-4 py-8 max-w-2xl">
++        <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 text-center">
++          <h1 className="text-2xl font-bold mb-2">Selling isn't available in this demo store.</h1>
++          <p className="text-gray-500 mb-6">This is a buyer-only demo — listings can't be created here.</p>
++          <button onClick={() => navigate('/')} className="btn-primary">Back to store</button>
++        </div>
++      </div>
++    );
++  }
+ 
+   return (
+     <div className="container mx-auto px-4 py-8 max-w-2xl">
 diff -ruN a/websites/ebay_mock/src/pages/Dashboard.jsx b/websites/ebay_mock/src/pages/Dashboard.jsx
 --- a/websites/ebay_mock/src/pages/Dashboard.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/pages/Dashboard.jsx	2026-07-30 17:35:14
-@@ -141,7 +141,7 @@
++++ b/websites/ebay_mock/src/pages/Dashboard.jsx	2026-07-31 18:08:50
+@@ -1,5 +1,6 @@
+ import React, { useState, useEffect } from 'react';
+ import { useStore } from '../context/StoreContext';
++import { bridged } from '../lib/bridge';
+ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+ import ListingCard from '../components/ListingCard';
+ import { Package, Gavel, Heart, MessageSquare, ThumbsUp, ThumbsDown, Minus, Eye, Bell, X, Reply, ArrowLeft } from 'lucide-react';
+@@ -141,7 +142,7 @@
  
    return (
      <div className="container mx-auto px-4 py-8">
@@ -709,6 +851,68 @@ diff -ruN a/websites/ebay_mock/src/pages/Dashboard.jsx b/websites/ebay_mock/src/
  
        <div className="flex gap-8 border-b border-gray-200 mb-8 overflow-x-auto">
          {[
+@@ -149,7 +150,8 @@
+           { id: 'selling', label: 'Selling' },
+           { id: 'watchlist', label: 'Watchlist' },
+           { id: 'messages', label: `Messages${inboxMessages.filter(m => !m.read).length > 0 ? ` (${inboxMessages.filter(m => !m.read).length})` : ''}` }
+-        ].map(tab => (
++        // No engine-backed selling or messaging store in bridged mode — hide both tabs.
++        ].filter(tab => !bridged() || (tab.id !== 'selling' && tab.id !== 'messages')).map(tab => (
+           <button
+             key={tab.id}
+             onClick={() => setActiveTab(tab.id)}
+@@ -211,7 +213,9 @@
+                             </span>
+                           </td>
+                           <td className="p-4">
+-                            {!hasFeedback ? (
++                            {bridged() ? (
++                              <span className="text-gray-400">Feedback not available in demo</span>
++                            ) : !hasFeedback ? (
+                               <button
+                                 onClick={() => setFeedbackModal({ orderId: order.id, toUserId: item.sellerId })}
+                                 className="text-xbay-blue hover:underline font-medium"
+@@ -241,13 +245,15 @@
+             <h2 className="text-xl font-bold flex items-center gap-2">
+               <Heart size={20} /> Watchlist
+             </h2>
+-            <button
+-              onClick={() => setWatchlistNotifs(!watchlistNotifs)}
+-              className={`flex items-center gap-2 text-sm font-bold px-3 py-1.5 rounded-full border ${watchlistNotifs ? 'bg-blue-50 text-xbay-blue border-xbay-blue' : 'text-gray-500 border-gray-300'}`}
+-            >
+-              <Bell size={16} fill={watchlistNotifs ? "currentColor" : "none"} />
+-              {watchlistNotifs ? 'Notifications On' : 'Notifications Off'}
+-            </button>
++            {!bridged() && (
++              <button
++                onClick={() => setWatchlistNotifs(!watchlistNotifs)}
++                className={`flex items-center gap-2 text-sm font-bold px-3 py-1.5 rounded-full border ${watchlistNotifs ? 'bg-blue-50 text-xbay-blue border-xbay-blue' : 'text-gray-500 border-gray-300'}`}
++              >
++                <Bell size={16} fill={watchlistNotifs ? "currentColor" : "none"} />
++                {watchlistNotifs ? 'Notifications On' : 'Notifications Off'}
++              </button>
++            )}
+           </div>
+ 
+           {myWatchlist.length > 0 ? (
+@@ -260,7 +266,7 @@
+         </div>
+       )}
+ 
+-      {activeTab === 'selling' && (
++      {activeTab === 'selling' && !bridged() && (
+         <div className="space-y-8">
+           <div className="flex justify-between items-center">
+             <h2 className="text-xl font-bold">Active Listings</h2>
+@@ -333,7 +339,7 @@
+         </div>
+       )}
+ 
+-      {activeTab === 'messages' && (
++      {activeTab === 'messages' && !bridged() && (
+         <div>
+           <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+             <MessageSquare size={20} /> Messages
 diff -ruN a/websites/ebay_mock/src/pages/Home.jsx b/websites/ebay_mock/src/pages/Home.jsx
 --- a/websites/ebay_mock/src/pages/Home.jsx	2026-07-28 11:01:47
 +++ b/websites/ebay_mock/src/pages/Home.jsx	2026-07-31 15:06:52
@@ -752,8 +956,15 @@ diff -ruN a/websites/ebay_mock/src/pages/Home.jsx b/websites/ebay_mock/src/pages
          </div>
 diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock/src/pages/ProductDetails.jsx
 --- a/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-07-30 17:35:14
-@@ -7,7 +7,7 @@
++++ b/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-07-31 18:07:08
+@@ -1,13 +1,14 @@
+ import React, { useState, useEffect } from 'react';
+ import { useParams, useNavigate } from 'react-router-dom';
+ import { useStore } from '../context/StoreContext';
++import { bridged } from '../lib/bridge';
+ import { Heart, Share2, ShieldCheck, Truck, RotateCcw, ChevronDown, ChevronUp, X, Check } from 'lucide-react';
+ import { formatDistanceToNow } from 'date-fns';
+ 
  export default function ProductDetails() {
    const { id } = useParams();
    const navigate = useNavigate();
@@ -762,7 +973,7 @@ diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock
    const listing = state.listings.find(l => l.id === id);
    const [bidAmount, setBidAmount] = useState('');
    const [error, setError] = useState('');
-@@ -20,6 +20,7 @@
+@@ -20,6 +21,7 @@
    const [messageSent, setMessageSent] = useState(false);
    const [showBuyConfirm, setShowBuyConfirm] = useState(false);
    const [shareCopied, setShareCopied] = useState(false);
@@ -770,7 +981,7 @@ diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock
  
    // Increment views on mount
    useEffect(() => {
-@@ -90,6 +91,13 @@
+@@ -90,6 +92,13 @@
      setShowBuyConfirm(true);
    };
  
@@ -784,7 +995,18 @@ diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock
    const confirmBuyNow = () => {
      setShowBuyConfirm(false);
      buyNow(listing.id);
-@@ -259,6 +267,14 @@
+@@ -220,6 +229,10 @@
+                       <div className="bg-yellow-50 border border-yellow-200 rounded p-3 text-sm text-yellow-800 mb-2">
+                         This is your listing. You cannot bid on your own items.
+                       </div>
++                    ) : bridged() ? (
++                      <div className="bg-gray-100 border border-gray-200 rounded p-3 text-sm text-gray-600 mb-2">
++                        Bidding isn't available in this demo store.
++                      </div>
+                     ) : (
+                       <form onSubmit={handleBid} className="space-y-2">
+                         <div className="flex gap-2">
+@@ -259,6 +272,14 @@
                      >
                        Buy It Now
                      </button>
@@ -799,7 +1021,31 @@ diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock
                    </div>
                  )}
  
-@@ -312,7 +328,7 @@
+@@ -276,14 +297,16 @@
+                 )}
+ 
+                 <div className="flex gap-2 mt-4">
++                  {!bridged() && (
++                    <button
++                      onClick={() => toggleWatchlist(listing.id)}
++                      className={`flex-1 flex items-center justify-center gap-2 border px-4 py-2 rounded text-sm font-medium transition-colors ${isWatched ? 'border-xbay-blue text-xbay-blue bg-blue-50' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`}
++                    >
++                      <Heart size={16} fill={isWatched ? "currentColor" : "none"} />
++                      {isWatched ? 'Watching' : 'Add to Watchlist'}
++                    </button>
++                  )}
+                   <button
+-                    onClick={() => toggleWatchlist(listing.id)}
+-                    className={`flex-1 flex items-center justify-center gap-2 border px-4 py-2 rounded text-sm font-medium transition-colors ${isWatched ? 'border-xbay-blue text-xbay-blue bg-blue-50' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`}
+-                  >
+-                    <Heart size={16} fill={isWatched ? "currentColor" : "none"} />
+-                    {isWatched ? 'Watching' : 'Add to Watchlist'}
+-                  </button>
+-                  <button
+                     onClick={handleShare}
+                     className="flex items-center justify-center gap-2 border border-gray-300 px-4 py-2 rounded text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                   >
+@@ -312,7 +335,7 @@
                <div className="flex gap-3">
                  <ShieldCheck size={20} className="text-gray-400" />
                  <div>
@@ -808,3 +1054,23 @@ diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock
                    <div className="text-gray-500">Get the item you ordered or get your money back.</div>
                  </div>
                </div>
+@@ -404,7 +427,18 @@
+                 <X size={20} />
+               </button>
+             </div>
+-            {messageSent ? (
++            {bridged() ? (
++              <div className="text-center py-6">
++                <p className="text-gray-600 font-medium">Messaging isn't available in this demo store.</p>
++                <button
++                  type="button"
++                  onClick={() => setShowContactModal(false)}
++                  className="mt-4 px-4 py-2 text-gray-600 font-bold hover:bg-gray-100 rounded"
++                >
++                  Close
++                </button>
++              </div>
++            ) : messageSent ? (
+               <div className="text-center py-6">
+                 <Check size={40} className="text-green-500 mx-auto mb-2" />
+                 <p className="text-green-700 font-bold">Message sent successfully!</p>
