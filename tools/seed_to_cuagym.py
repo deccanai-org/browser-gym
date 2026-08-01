@@ -32,6 +32,7 @@ import os
 import pathlib
 
 from tools import ambient_catalog as _amb
+from tools.ambient_calendar import build_calendar as _ambient_calendar_events
 import re
 import sys
 import uuid
@@ -537,6 +538,9 @@ def transform_calendar(cal: dict) -> dict:
                        "color": "#039BE5", "recurring": e.get("recurring") or "none",
                        "reminderMinutes": e.get("reminder_minutes"),
                        "source": e.get("source") or "seed"})
+    # Browse-only ambient events so the week isn't near-empty. Off the two frozen
+    # gym-gate days, source='seed', new ids — invisible to the calendar verifiers.
+    events = events + _ambient_calendar_events()
     return {"user": user, "calendars": _CAL_DEFAULTS, "otherCalendars": _CAL_OTHER, "events": events,
             # The frozen gym clock, NOT the earliest event -- deriving it from the
             # events opened 23 tasks on the wrong "today".

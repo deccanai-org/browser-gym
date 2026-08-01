@@ -8,6 +8,14 @@ with any task's product / listing / email id. Deterministic — no randomness.
 
 from __future__ import annotations
 
+import json as _json
+import pathlib as _pathlib
+
+# A larger batch of generated browse-only filler (products / listings / emails /
+# events), validated to use only real image keys, no monitors and no
+# premise-conflicting content. Kept as data next to the code.
+_BULK = _json.loads((_pathlib.Path(__file__).with_name("ambient_bulk.json")).read_text())
+
 
 def _img(key: str) -> str:
     return f"/assets/products/{key}.jpg"
@@ -82,6 +90,22 @@ def build_shop():
                 "seller": "ShopGym", "badges": (["Best Seller"] if orig else []),
                 "createdAt": "2024-01-01T00:00:00.000Z",
             })
+    for j, p in enumerate(_BULK.get("shop", [])):
+        key, title, brand = p["image_key"], p["title"], p.get("brand", "ShopGym")
+        orig = p.get("originalPrice")
+        out.append({
+            "id": f"amb_bp_{j}", "title": title, "price": p["price"], "originalPrice": orig,
+            "rating": round(4.0 + ((len(title) * 7) % 10) / 10, 1),
+            "reviewCount": 30 + (len(title) * 13) % 900,
+            "image": _img(key), "images": [_img(key)],
+            "description": f"{title} — a customer favorite. Fast, reliable and built to last.",
+            "bulletPoints": ["Top rated in its category", "Ships with Prime", "1-year warranty"],
+            "specs": {"Brand": brand, "Weight": "0.8 kg", "Emoji": ""},
+            "category": p.get("category", "Electronics"), "brand": brand, "prime": True,
+            "inStock": True, "stockCount": 20 + (j * 7) % 80,
+            "seller": "ShopGym", "badges": (["Best Seller"] if orig else []),
+            "createdAt": "2024-01-01T00:00:00.000Z",
+        })
     return out
 
 
@@ -112,7 +136,9 @@ _MARKET: list = [
     ("Pro Eyeshadow Palette", 29.99, "amb_makeup", "Health & Beauty", "New", False),
     ("Vintage Film Camera", 210.00, "amb_camera", "Collectibles", "Used", True),
     ("Mechanical Keyboard (RGB)", 89.99, "p_kb_mech", "Electronics", "New", False),
-    ("24-inch Monitor", 149.00, "p_monitor_24", "Electronics", "Refurbished", False),
+    # NB: no monitors here on purpose — breakers M40 (bogus price-match on the
+    # 24" monitor) and M142 (no in-stock high-rated monitor) require monitor
+    # scarcity/pricing to stay intact, so ambient never lists one.
 ]
 
 _SELLERS = [
@@ -147,6 +173,26 @@ def build_market(svg_tile):
             "condition": cond, "shippingCost": 0.0 if i % 3 else 4.99,
             "location": "United States", "status": "active",
             "quantity": 1, "category": cat,
+        })
+    off = len(_MARKET)
+    for j, l in enumerate(_BULK.get("market", [])):
+        key, price = l["image_key"], l["price"]
+        auction = bool(l.get("is_auction"))
+        sid = _SELLERS[j % len(_SELLERS)][0]
+        end = base + (off + j + 1) * 86_400_000
+        listings.append({
+            "id": f"amb_bl_{j}", "sellerId": sid, "title": l["title"],
+            "description": f"{l['title']}. Ships fast from a top-rated seller.",
+            "images": [_img(key)],
+            "type": "auction" if auction else "fixed",
+            "startingBid": round(price * 0.5, 2) if auction else None,
+            "currentBid": round(price * 0.82, 2) if auction else None,
+            "price": price, "buyItNowPrice": price, "bids": [],
+            "watchers": [f"w{n}" for n in range((j % 10) + 1)],
+            "views": 40 + (len(l["title"]) * 17) % 900, "endTime": end,
+            "condition": l.get("condition", "New"), "shippingCost": 0.0 if j % 3 else 4.99,
+            "location": "United States", "status": "active",
+            "quantity": 1, "category": l.get("category", "Other"),
         })
     return listings, sellers
 
@@ -214,4 +260,16 @@ def build_mail(iso_date):
         e = em(i, "inbox", frm, _ALICE, subj, body, read=(i % 2 == 0), labels=labels)
         e["category"] = cat
         out.append(e)
+    # Larger generated batch across folders/categories.
+    for j, m in enumerate(_BULK.get("mail", [])):
+        frm = _person(m["from_name"], m["from_email"])
+        to = _person(m["to_name"], m["to_email"])
+        out.append({
+            "id": f"amb_bmail_{j}", "threadId": f"amb_bthread_{j}",
+            "from": frm, "to": [to], "cc": [], "bcc": [],
+            "subject": m["subject"], "body": (m.get("body") or "").replace("\n", "<br>"),
+            "timestamp": iso_date((j % 20) + 1), "read": bool(m.get("read", True)),
+            "starred": False, "important": False,
+            "labels": [], "category": m.get("category", "primary"),
+            "folder": m.get("folder", "inbox"), "attachments": []})
     return out
