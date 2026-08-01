@@ -55,7 +55,7 @@ diff -ruN a/websites/google_calendar_mock/src/App.jsx b/websites/google_calendar
        const rect = e.currentTarget.getBoundingClientRect();
 diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websites/google_calendar_mock/src/components/EventModal.jsx
 --- a/websites/google_calendar_mock/src/components/EventModal.jsx	2026-07-28 11:01:47
-+++ b/websites/google_calendar_mock/src/components/EventModal.jsx	2026-07-31 17:29:14
++++ b/websites/google_calendar_mock/src/components/EventModal.jsx	2026-07-31 18:06:50
 @@ -1,19 +1,10 @@
  import React, { useState, useEffect, useRef } from 'react';
 -import { X, Clock, MapPin, AlignLeft, Users, Bell, Trash2, Copy, Repeat, Check } from 'lucide-react';
@@ -102,7 +102,13 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
            recurring: event.recurring || 'none',
            reminders: event.reminders || []
          });
-@@ -68,24 +54,11 @@
+@@ -62,30 +48,16 @@
+           location: '',
+           description: '',
+           calendarId: state.calendars[0]?.id || '',
+-          guests: [],
+           color: 'bg-blue-500',
+           recurring: 'none',
            reminders: [{ type: 'popup', minutes: 10 }]
          });
        }
@@ -127,7 +133,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
      if (!isOpen) return;
      const handleEscape = (e) => {
        if (e.key !== 'Escape') return;
-@@ -103,15 +76,25 @@
+@@ -103,15 +75,25 @@
      const newEvent = {
        ...formData,
        id: event ? event.id : generateId(),
@@ -156,7 +162,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
      }
      onClose();
    };
-@@ -135,9 +118,13 @@
+@@ -135,9 +117,13 @@
          title: `${formData.title} (Copy)`,
          start: new Date(formData.start).toISOString(),
          end: new Date(formData.end).toISOString(),
@@ -172,7 +178,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
        onClose();
      }
    };
-@@ -203,30 +190,6 @@
+@@ -203,30 +189,6 @@
      updateReminder(index, 'minutes', newMinutes);
    };
  
@@ -203,7 +209,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
    return (
      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
        <div className="bg-white rounded-lg shadow-xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
-@@ -388,75 +351,6 @@
+@@ -388,75 +350,6 @@
                value={formData.description}
                onChange={e => setFormData({ ...formData, description: e.target.value })}
              />
@@ -281,16 +287,43 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
            <div className="flex justify-end pt-4">
 diff -ruN a/websites/google_calendar_mock/src/components/EventPopover.jsx b/websites/google_calendar_mock/src/components/EventPopover.jsx
 --- a/websites/google_calendar_mock/src/components/EventPopover.jsx	2026-07-28 11:01:47
-+++ b/websites/google_calendar_mock/src/components/EventPopover.jsx	2026-07-30 17:35:14
-@@ -135,7 +135,7 @@
-               onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
-               onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
-             >
--              Join Google Meet
-+              Join GymCal Meet
-             </a>
++++ b/websites/google_calendar_mock/src/components/EventPopover.jsx	2026-07-31 18:07:09
+@@ -123,32 +123,9 @@
            </div>
          )}
+ 
+-        {/* Meet Link */}
+-        {event.meetLink && (
+-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+-            <Video size={16} style={{ color: '#5F6368', flexShrink: 0 }} />
+-            <a
+-              href={event.meetLink}
+-              target="_blank"
+-              rel="noopener noreferrer"
+-              style={{ fontSize: '13px', color: '#1A73E8', textDecoration: 'none' }}
+-              onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
+-              onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
+-            >
+-              Join Google Meet
+-            </a>
+-          </div>
+-        )}
+-
+-        {/* Guests */}
+-        {event.guests && event.guests.length > 0 && (
+-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '8px' }}>
+-            <Users size={16} style={{ color: '#5F6368', flexShrink: 0, marginTop: '2px' }} />
+-            <div style={{ fontSize: '13px', color: '#3C4043' }}>
+-              {event.guests.length} guest{event.guests.length !== 1 ? 's' : ''}
+-            </div>
+-          </div>
+-        )}
++        {/* Meet links and guest lists are intentionally omitted — the gym
++            engine models neither, and a guest/invite affordance would create a
++            fake "I invited them" success (see the no-invite breaker M239). */}
+ 
+         {/* Calendar */}
+         {calendar && (
 diff -ruN a/websites/google_calendar_mock/src/components/Header.jsx b/websites/google_calendar_mock/src/components/Header.jsx
 --- a/websites/google_calendar_mock/src/components/Header.jsx	2026-07-28 11:01:47
 +++ b/websites/google_calendar_mock/src/components/Header.jsx	2026-07-31 15:10:37
