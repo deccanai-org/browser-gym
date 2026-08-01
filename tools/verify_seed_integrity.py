@@ -65,10 +65,18 @@ def check_task(task_id: str) -> tuple[dict, list[tuple[str, str, str]]]:
     rec = {"task_id": task_id, "start_path": START_PATHS.get(task_id, "/"), "apps": {}}
 
     for app, (mock, st) in states.items():
+        blob = canonical(st)
         rec["apps"][app] = {"mock": mock, "sid": seed_sid(task_id, 0, app),
-                            "sha256": hashlib.sha256(canonical(st).encode()).hexdigest()}
+                            "sha256": hashlib.sha256(blob.encode()).hexdigest()}
         if (st.get("_gym_meta") or {}).get("task_id") != task_id:
             problems.append((task_id, app, "missing/incorrect _gym_meta"))
+        # A gym seed's images must be self-contained: local /assets or inline
+        # data: URIs, never a placeholder-image CDN (picsum is non-deterministic
+        # and breaks offline). Everything renders from a real, stable asset.
+        for cdn in ("picsum.photos", "placekitten", "placehold", "loremflickr",
+                    "source.unsplash", "via.placeholder", "dummyimage"):
+            if cdn in blob:
+                problems.append((task_id, app, f"{blob.count(cdn)} {cdn} image URL(s) — no placeholder CDNs allowed"))
         if app == "shop":
             if not st.get("products"):
                 problems.append((task_id, app, "empty catalog"))

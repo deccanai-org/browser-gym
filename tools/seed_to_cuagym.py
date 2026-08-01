@@ -177,15 +177,12 @@ def transform_mail(mail: dict) -> dict:
     }
 
 
-def _picsum(key: str, size: str = "400/400") -> str:
-    return f"https://picsum.photos/seed/{key}/{size}"
-
-
 # Realistic licensed product photos (Adobe Stock free collection) live in each
 # mock's public/assets/products/<id>.jpg. The manifest lists which product ids
-# have one; anything not yet sourced falls back to picsum so nothing renders
-# blank. Relative URL so it resolves on both the local preview and the hosted
-# deployments.
+# have one; anything not yet sourced gets a deterministic gradient tile (a
+# self-contained data URI) instead of an external host — the gym seed must never
+# depend on picsum.photos, which is non-deterministic and offline-fragile.
+# Relative URL so it resolves on both the local preview and the hosted deployments.
 _IMG_MANIFEST = pathlib.Path(__file__).with_name("product_images.json")
 try:
     _PRODUCT_IMAGES = set(json.loads(_IMG_MANIFEST.read_text())) if _IMG_MANIFEST.exists() else set()
@@ -193,10 +190,10 @@ except Exception:
     _PRODUCT_IMAGES = set()
 
 
-def _product_image(pid: str, size: str = "400/400") -> str:
+def _product_image(pid: str, name: str | None = None) -> str:
     if pid in _PRODUCT_IMAGES:
         return f"/assets/products/{pid}.jpg"
-    return _picsum(pid, size)
+    return _svg_tile(name or pid, pid)
 
 
 def _svg_tile(text: str, seed: str) -> str:
@@ -352,7 +349,8 @@ def transform_shop(shop: dict) -> dict:
         products.append({
             "id": p["id"], "title": p.get("name"), "price": p.get("base_price"),
             "originalPrice": None, "rating": p.get("rating"), "reviewCount": p.get("review_count"),
-            "image": _product_image(p["id"]), "images": [_product_image(p["id"])],
+            "image": _product_image(p["id"], p.get("name")),
+            "images": [_product_image(p["id"], p.get("name"))],
             "description": p.get("long_description") or p.get("short_description") or "",
             "bulletPoints": p.get("tags") or [],
             "specs": {"Brand": p.get("brand"), "Weight": f"{p.get('weight_kg')} kg", "Emoji": p.get("image_emoji")},
