@@ -39,6 +39,11 @@ from playwright.async_api import (
 )
 from harness.auth import harness_headers
 
+# Milliseconds to let the post-action UI settle before the step screenshot, so a
+# freshly-opened dropdown/portal or an SPA route change is actually captured
+# (React re-renders + CSS transitions fire no load event). See _record().
+_SCREENSHOT_SETTLE_MS = 250
+
 
 # --------------------------------------------------------------------------- #
 # Realistic-UI (bridged) navigation
@@ -934,6 +939,16 @@ class BrowserCtx:
         """
         t0 = time.monotonic()
         err: str | None = None
+        # The eval browser is headless Chromium on Linux, where select-all / copy /
+        # paste use Control, not Meta. A model that sends the macOS chord
+        # (Cmd/Command/Meta+a) would otherwise no-op — so "select all, then
+        # overwrite" silently failed and the agent looped trying to clear a field.
+        # Normalize any Meta-family modifier to Control.
+        name = "+".join(
+            "Control" if p.strip().lower() in ("meta", "cmd", "command", "super", "os")
+            else p.strip()
+            for p in name.split("+")
+        )
         try:
             await self.page.keyboard.press(name)
             # Some keys (Enter on a form) trigger navigation — wait briefly
@@ -1112,6 +1127,22 @@ class BrowserCtx:
         shot_w: int | None = None
         shot_h: int | None = None
         dpr: float | None = None
+        # Let the POST-action UI settle BEFORE capturing, or the shot catches the
+        # PRE-action frame. Two reported failure modes this fixes: (a) a click that
+        # opens a dropdown / account menu / portal renders on a later React tick, so
+        # an immediate screenshot misses it and the agent loops; (b) an SPA route
+        # change (e.g. "Proceed to checkout") swaps the page client-side, so an
+        # immediate shot still shows the previous step's button/text. wait_for_load
+        # covers real navigations; the short fixed settle covers React re-renders,
+        # dropdown mounts and CSS transitions that fire no load event.
+        try:
+            await self.page.wait_for_load_state("load", timeout=1500)
+        except Exception:
+            pass
+        try:
+            await self.page.wait_for_timeout(_SCREENSHOT_SETTLE_MS)
+        except Exception:
+            pass
         try:
             await self.page.screenshot(path=str(shot_path), full_page=False)
             try:
