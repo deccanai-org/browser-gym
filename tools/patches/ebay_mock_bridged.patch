@@ -1,6 +1,6 @@
 diff -ruN a/websites/ebay_mock/index.html b/websites/ebay_mock/index.html
---- a/websites/ebay_mock/index.html	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/index.html	2026-07-30 17:35:14
+--- a/websites/ebay_mock/index.html	2026-08-03 15:55:58
++++ b/websites/ebay_mock/index.html	2026-08-03 15:55:58
 @@ -4,7 +4,7 @@
      <meta charset="UTF-8" />
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -11,8 +11,8 @@ diff -ruN a/websites/ebay_mock/index.html b/websites/ebay_mock/index.html
    <body>
      <div id="root"></div>
 diff -ruN a/websites/ebay_mock/src/App.jsx b/websites/ebay_mock/src/App.jsx
---- a/websites/ebay_mock/src/App.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/App.jsx	2026-07-30 17:35:14
+--- a/websites/ebay_mock/src/App.jsx	2026-08-03 15:55:58
++++ b/websites/ebay_mock/src/App.jsx	2026-08-03 15:55:58
 @@ -7,6 +7,7 @@
  import ProductDetails from './pages/ProductDetails';
  import Dashboard from './pages/Dashboard';
@@ -39,8 +39,8 @@ diff -ruN a/websites/ebay_mock/src/App.jsx b/websites/ebay_mock/src/App.jsx
            </Routes>
          </Layout>
 diff -ruN a/websites/ebay_mock/src/components/ListingCard.jsx b/websites/ebay_mock/src/components/ListingCard.jsx
---- a/websites/ebay_mock/src/components/ListingCard.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/components/ListingCard.jsx	2026-07-31 18:07:22
+--- a/websites/ebay_mock/src/components/ListingCard.jsx	2026-08-03 15:55:58
++++ b/websites/ebay_mock/src/components/ListingCard.jsx	2026-08-03 15:55:58
 @@ -2,6 +2,7 @@
  import { Link } from 'react-router-dom';
  import { Heart } from 'lucide-react';
@@ -77,8 +77,8 @@ diff -ruN a/websites/ebay_mock/src/components/ListingCard.jsx b/websites/ebay_mo
        <Link to={`/item/${listing.id}`} className="block">
          <div className="aspect-square mb-3 overflow-hidden rounded-lg bg-gray-100">
 diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/src/components/Navbar.jsx
---- a/websites/ebay_mock/src/components/Navbar.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/components/Navbar.jsx	2026-07-31 18:08:04
+--- a/websites/ebay_mock/src/components/Navbar.jsx	2026-08-03 15:55:58
++++ b/websites/ebay_mock/src/components/Navbar.jsx	2026-08-03 15:55:58
 @@ -2,6 +2,7 @@
  import { Link, useNavigate } from 'react-router-dom';
  import { Search, ShoppingCart, Bell, Menu, X, ChevronDown } from 'lucide-react';
@@ -199,8 +199,8 @@ diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/sr
                <div className="flex justify-end gap-3">
                  <button type="button" onClick={() => setShowShippingDialog(false)} className="px-4 py-2 font-bold text-gray-600 hover:bg-gray-100 rounded">
 diff -ruN a/websites/ebay_mock/src/context/StoreContext.jsx b/websites/ebay_mock/src/context/StoreContext.jsx
---- a/websites/ebay_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/context/StoreContext.jsx	2026-08-03 08:19:59
+--- a/websites/ebay_mock/src/context/StoreContext.jsx	2026-08-03 15:55:58
++++ b/websites/ebay_mock/src/context/StoreContext.jsx	2026-08-03 15:55:58
 @@ -1,6 +1,15 @@
  import React, { createContext, useContext, useReducer, useEffect, useRef, useState } from 'react';
  import { INITIAL_STATE, getSessionId, fetchCustomState, saveState, initializeData } from '../data/mockData';
@@ -444,8 +444,8 @@ diff -ruN a/websites/ebay_mock/src/context/StoreContext.jsx b/websites/ebay_mock
        markAllNotificationsRead
      }}>
 diff -ruN a/websites/ebay_mock/src/data/mockData.js b/websites/ebay_mock/src/data/mockData.js
---- a/websites/ebay_mock/src/data/mockData.js	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/data/mockData.js	2026-07-31 15:06:31
+--- a/websites/ebay_mock/src/data/mockData.js	2026-08-03 15:55:58
++++ b/websites/ebay_mock/src/data/mockData.js	2026-08-03 15:55:58
 @@ -1,18 +1,29 @@
 +// Self-contained inline-SVG placeholder helpers (no external hosts / picsum).
 +const initialsAvatar = (initials, bg) =>
@@ -550,8 +550,8 @@ diff -ruN a/websites/ebay_mock/src/data/mockData.js b/websites/ebay_mock/src/dat
  // --- Session-based state isolation ---
 diff -ruN a/websites/ebay_mock/src/lib/bridge.js b/websites/ebay_mock/src/lib/bridge.js
 --- a/websites/ebay_mock/src/lib/bridge.js	1969-12-31 16:00:00
-+++ b/websites/ebay_mock/src/lib/bridge.js	2026-07-30 19:22:19
-@@ -0,0 +1,54 @@
++++ b/websites/ebay_mock/src/lib/bridge.js	2026-08-03 15:55:58
+@@ -0,0 +1,62 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
 +// verifiers) instead of this mock's local store. Cross-app effects (e.g. a shop
@@ -569,8 +569,16 @@ diff -ruN a/websites/ebay_mock/src/lib/bridge.js b/websites/ebay_mock/src/lib/br
 +
 +const _params = new URLSearchParams(
 +  typeof window !== 'undefined' ? window.location.search : '');
-+const BASE = (_params.get('bridge') || '').replace(/\/$/, '');
-+const SESSION = _params.get('session') || '';
++// Bridged mode must survive an in-app search or an F5 that drops the ?bridge=
++// &session= query params, or the mock silently reverts to its stale hardcoded
++// demo data. Persist them per-tab: a URL carrying them refreshes the store; a
++// URL missing them recovers from it.
++const _ss = (k, v) => {
++  try { if (v) { sessionStorage.setItem(k, v); return v; } return sessionStorage.getItem(k) || ''; }
++  catch (_) { return v || ''; }
++};
++const BASE = _ss('gym_bridge', (_params.get('bridge') || '').replace(/\/$/, ''));
++const SESSION = _ss('gym_session', _params.get('session') || '');
 +
 +const _root = () => (SESSION ? `${BASE}/bridge/${encodeURIComponent(SESSION)}` : `${BASE}/bridge`);
 +
@@ -608,7 +616,7 @@ diff -ruN a/websites/ebay_mock/src/lib/bridge.js b/websites/ebay_mock/src/lib/br
 +}
 diff -ruN a/websites/ebay_mock/src/pages/Cart.jsx b/websites/ebay_mock/src/pages/Cart.jsx
 --- a/websites/ebay_mock/src/pages/Cart.jsx	1969-12-31 16:00:00
-+++ b/websites/ebay_mock/src/pages/Cart.jsx	2026-07-31 18:06:39
++++ b/websites/ebay_mock/src/pages/Cart.jsx	2026-08-03 15:55:58
 @@ -0,0 +1,198 @@
 +import React, { useState } from 'react';
 +import { Link, useNavigate } from 'react-router-dom';
@@ -809,8 +817,8 @@ diff -ruN a/websites/ebay_mock/src/pages/Cart.jsx b/websites/ebay_mock/src/pages
 +  );
 +}
 diff -ruN a/websites/ebay_mock/src/pages/CreateListing.jsx b/websites/ebay_mock/src/pages/CreateListing.jsx
---- a/websites/ebay_mock/src/pages/CreateListing.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/pages/CreateListing.jsx	2026-07-31 18:09:04
+--- a/websites/ebay_mock/src/pages/CreateListing.jsx	2026-08-03 15:55:58
++++ b/websites/ebay_mock/src/pages/CreateListing.jsx	2026-08-03 15:55:58
 @@ -1,10 +1,11 @@
  import React, { useState, useRef } from 'react';
  import { useNavigate } from 'react-router-dom';
@@ -846,8 +854,8 @@ diff -ruN a/websites/ebay_mock/src/pages/CreateListing.jsx b/websites/ebay_mock/
    return (
      <div className="container mx-auto px-4 py-8 max-w-2xl">
 diff -ruN a/websites/ebay_mock/src/pages/Dashboard.jsx b/websites/ebay_mock/src/pages/Dashboard.jsx
---- a/websites/ebay_mock/src/pages/Dashboard.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/pages/Dashboard.jsx	2026-07-31 18:08:50
+--- a/websites/ebay_mock/src/pages/Dashboard.jsx	2026-08-03 15:55:58
++++ b/websites/ebay_mock/src/pages/Dashboard.jsx	2026-08-03 15:55:58
 @@ -1,5 +1,6 @@
  import React, { useState, useEffect } from 'react';
  import { useStore } from '../context/StoreContext';
@@ -927,8 +935,8 @@ diff -ruN a/websites/ebay_mock/src/pages/Dashboard.jsx b/websites/ebay_mock/src/
            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
              <MessageSquare size={20} /> Messages
 diff -ruN a/websites/ebay_mock/src/pages/Home.jsx b/websites/ebay_mock/src/pages/Home.jsx
---- a/websites/ebay_mock/src/pages/Home.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/pages/Home.jsx	2026-07-31 15:06:52
+--- a/websites/ebay_mock/src/pages/Home.jsx	2026-08-03 15:55:58
++++ b/websites/ebay_mock/src/pages/Home.jsx	2026-08-03 15:55:58
 @@ -4,6 +4,16 @@
  import ListingCard from '../components/ListingCard';
  import { ArrowRight } from 'lucide-react';
@@ -968,8 +976,8 @@ diff -ruN a/websites/ebay_mock/src/pages/Home.jsx b/websites/ebay_mock/src/pages
            ))}
          </div>
 diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock/src/pages/ProductDetails.jsx
---- a/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-07-31 18:07:08
+--- a/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-08-03 15:55:58
++++ b/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-08-03 15:55:58
 @@ -1,13 +1,14 @@
  import React, { useState, useEffect } from 'react';
  import { useParams, useNavigate } from 'react-router-dom';
