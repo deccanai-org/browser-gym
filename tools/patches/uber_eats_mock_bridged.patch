@@ -1,6 +1,6 @@
 diff -ruN a/websites/uber_eats_mock/index.html b/websites/uber_eats_mock/index.html
---- a/websites/uber_eats_mock/index.html	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/index.html	2026-07-30 17:35:25
+--- a/websites/uber_eats_mock/index.html	2026-08-03 13:39:45
++++ b/websites/uber_eats_mock/index.html	2026-08-03 13:39:45
 @@ -4,7 +4,7 @@
      <meta charset="UTF-8" />
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -11,8 +11,8 @@ diff -ruN a/websites/uber_eats_mock/index.html b/websites/uber_eats_mock/index.h
    <body>
      <div id="root"></div>
 diff -ruN a/websites/uber_eats_mock/src/App.jsx b/websites/uber_eats_mock/src/App.jsx
---- a/websites/uber_eats_mock/src/App.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/App.jsx	2026-07-31 18:07:23
+--- a/websites/uber_eats_mock/src/App.jsx	2026-08-03 13:39:45
++++ b/websites/uber_eats_mock/src/App.jsx	2026-08-03 13:39:45
 @@ -69,6 +69,11 @@
              <Route path="/favorites" element={<Favorites />} />
              <Route path="/account" element={<Account />} />
@@ -26,7 +26,7 @@ diff -ruN a/websites/uber_eats_mock/src/App.jsx b/websites/uber_eats_mock/src/Ap
          </Layout>
        </BrowserRouter>
 diff -ruN a/websites/uber_eats_mock/src/components/CartDrawer.jsx b/websites/uber_eats_mock/src/components/CartDrawer.jsx
---- a/websites/uber_eats_mock/src/components/CartDrawer.jsx	2026-07-28 11:01:47
+--- a/websites/uber_eats_mock/src/components/CartDrawer.jsx	2026-08-03 13:39:45
 +++ b/websites/uber_eats_mock/src/components/CartDrawer.jsx	1969-12-31 16:00:00
 @@ -1,144 +0,0 @@
 -
@@ -174,8 +174,8 @@ diff -ruN a/websites/uber_eats_mock/src/components/CartDrawer.jsx b/websites/ube
 -    }
 -  
 diff -ruN a/websites/uber_eats_mock/src/components/CartPanel.jsx b/websites/uber_eats_mock/src/components/CartPanel.jsx
---- a/websites/uber_eats_mock/src/components/CartPanel.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/components/CartPanel.jsx	2026-07-30 20:24:05
+--- a/websites/uber_eats_mock/src/components/CartPanel.jsx	2026-08-03 13:39:45
++++ b/websites/uber_eats_mock/src/components/CartPanel.jsx	2026-08-03 13:39:45
 @@ -6,7 +6,7 @@
  import './CartPanel.css';
  
@@ -270,7 +270,7 @@ diff -ruN a/websites/uber_eats_mock/src/components/CartPanel.jsx b/websites/uber
              </div>
            </>
 diff -ruN a/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx b/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx
---- a/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx	2026-07-28 11:01:47
+--- a/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx	2026-08-03 13:39:45
 +++ b/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx	1969-12-31 16:00:00
 @@ -1,55 +0,0 @@
 -import React, { useEffect } from 'react';
@@ -329,8 +329,8 @@ diff -ruN a/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx b/websit
 -  );
 -}
 diff -ruN a/websites/uber_eats_mock/src/components/FilterBar.jsx b/websites/uber_eats_mock/src/components/FilterBar.jsx
---- a/websites/uber_eats_mock/src/components/FilterBar.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/components/FilterBar.jsx	2026-07-31 15:10:17
+--- a/websites/uber_eats_mock/src/components/FilterBar.jsx	2026-08-03 13:39:45
++++ b/websites/uber_eats_mock/src/components/FilterBar.jsx	2026-08-03 13:39:45
 @@ -27,7 +27,8 @@
      filters.priceRange.length > 0 ||
      filters.dietary.length > 0 ||
@@ -363,8 +363,8 @@ diff -ruN a/websites/uber_eats_mock/src/components/FilterBar.jsx b/websites/uber
          Under 30 min
        </button>
 diff -ruN a/websites/uber_eats_mock/src/components/Footer.jsx b/websites/uber_eats_mock/src/components/Footer.jsx
---- a/websites/uber_eats_mock/src/components/Footer.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/components/Footer.jsx	2026-07-31 18:08:37
+--- a/websites/uber_eats_mock/src/components/Footer.jsx	2026-08-03 13:39:45
++++ b/websites/uber_eats_mock/src/components/Footer.jsx	2026-08-03 13:39:45
 @@ -3,17 +3,17 @@
  import './Footer.css';
  
@@ -424,8 +424,8 @@ diff -ruN a/websites/uber_eats_mock/src/components/Footer.jsx b/websites/uber_ea
              <button className="ue-footer__legal-link" onClick={() => setModalKey('privacy')}>Privacy Policy</button>
              <span className="ue-footer__dot">&bull;</span>
 diff -ruN a/websites/uber_eats_mock/src/components/Header.jsx b/websites/uber_eats_mock/src/components/Header.jsx
---- a/websites/uber_eats_mock/src/components/Header.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/components/Header.jsx	2026-07-31 18:08:50
+--- a/websites/uber_eats_mock/src/components/Header.jsx	2026-08-03 13:39:45
++++ b/websites/uber_eats_mock/src/components/Header.jsx	2026-08-03 13:39:45
 @@ -2,6 +2,7 @@
  import { Link, useNavigate } from 'react-router-dom';
  import { Search, ShoppingBag, ChevronDown, MapPin, X, Menu } from 'lucide-react';
@@ -501,8 +501,8 @@ diff -ruN a/websites/uber_eats_mock/src/components/Header.jsx b/websites/uber_ea
              value={searchValue}
              onChange={(e) => setSearchValue(e.target.value)}
 diff -ruN a/websites/uber_eats_mock/src/components/ItemModal.jsx b/websites/uber_eats_mock/src/components/ItemModal.jsx
---- a/websites/uber_eats_mock/src/components/ItemModal.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/components/ItemModal.jsx	2026-07-31 15:09:10
+--- a/websites/uber_eats_mock/src/components/ItemModal.jsx	2026-08-03 13:39:45
++++ b/websites/uber_eats_mock/src/components/ItemModal.jsx	2026-08-03 13:39:45
 @@ -100,6 +100,14 @@
          </button>
  
@@ -519,7 +519,7 @@ diff -ruN a/websites/uber_eats_mock/src/components/ItemModal.jsx b/websites/uber
              <h2 className="item-modal__name">{item.name}</h2>
              {item.description && <p className="item-modal__desc">{item.description}</p>}
 diff -ruN a/websites/uber_eats_mock/src/components/Navbar.jsx b/websites/uber_eats_mock/src/components/Navbar.jsx
---- a/websites/uber_eats_mock/src/components/Navbar.jsx	2026-07-28 11:01:47
+--- a/websites/uber_eats_mock/src/components/Navbar.jsx	2026-08-03 13:39:45
 +++ b/websites/uber_eats_mock/src/components/Navbar.jsx	1969-12-31 16:00:00
 @@ -1,114 +0,0 @@
 -
@@ -637,8 +637,8 @@ diff -ruN a/websites/uber_eats_mock/src/components/Navbar.jsx b/websites/uber_ea
 -    }
 -  
 diff -ruN a/websites/uber_eats_mock/src/components/RestaurantCard.jsx b/websites/uber_eats_mock/src/components/RestaurantCard.jsx
---- a/websites/uber_eats_mock/src/components/RestaurantCard.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/components/RestaurantCard.jsx	2026-07-31 15:08:50
+--- a/websites/uber_eats_mock/src/components/RestaurantCard.jsx	2026-08-03 13:39:45
++++ b/websites/uber_eats_mock/src/components/RestaurantCard.jsx	2026-08-03 13:39:45
 @@ -72,7 +72,16 @@
            className="rest-card__image"
            style={{ background: getCardColor(restaurant.id) }}
@@ -658,8 +658,8 @@ diff -ruN a/websites/uber_eats_mock/src/components/RestaurantCard.jsx b/websites
            {promoBadge && (
              <span className="rest-card__promo-badge" style={{ background: promoBadge.color }}>
 diff -ruN a/websites/uber_eats_mock/src/components/Sidebar.jsx b/websites/uber_eats_mock/src/components/Sidebar.jsx
---- a/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-07-31 18:08:07
+--- a/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-08-03 13:39:45
++++ b/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-08-03 13:39:45
 @@ -56,29 +56,29 @@
              <CreditCard size={20} />
              <span>Wallet</span>
@@ -713,9 +713,9 @@ diff -ruN a/websites/uber_eats_mock/src/components/Sidebar.jsx b/websites/uber_e
            <span className="sidebar__app-text">There's more to love in the app.</span>
          </div>
 diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_eats_mock/src/context/AppContext.jsx
---- a/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-08-03 08:22:40
-@@ -1,21 +1,102 @@
+--- a/websites/uber_eats_mock/src/context/AppContext.jsx	2026-08-03 13:39:45
++++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-08-03 13:39:45
+@@ -1,21 +1,119 @@
  import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
  import { getSessionId, fetchCustomState, saveState, initializeData, initialKey, generateId } from '../utils/dataManager';
  import { computeStateDiff } from '../utils/stateTracker';
@@ -809,7 +809,24 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
 +            ? { ...(base.cart || {}), ...engineOwned.cart,
 +                deliveryInstructions: base.cart?.deliveryInstructions ?? engineOwned.cart.deliveryInstructions }
 +            : base.cart;
-+          return { ...base, ...engineOwned, cart, ui: base.ui ?? ui };
++          // The food engine owns none of the user profile -- addresses, favorite
++          // restaurants, saved cards, name/phone, and membership are all seed +
++          // client edits (no food.* action records them). So once loaded the user
++          // is ours; keep it whole or the 2.5s poll wipes every add-address,
++          // heart, profile edit, and membership activation.
++          const user = base.user || engineOwned.user;
++          // Orders ARE engine-owned (real, from checkout), but the star rating /
++          // review a user leaves on a delivered order is client-only -- carry it
++          // onto the matching engine order by id so the poll doesn't erase it.
++          const orders = engineOwned.orders
++            ? engineOwned.orders.map(o => {
++                const p = (base.orders || []).find(x => x && x.id === o.id);
++                return p && (p.rating != null || p.review)
++                  ? { ...o, rating: p.rating ?? o.rating, review: p.review ?? o.review }
++                  : o;
++              })
++            : base.orders;
++          return { ...base, ...engineOwned, cart, user, orders, ui: base.ui ?? ui };
 +        });
 +      });
 +      return () => stop();
@@ -818,7 +835,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
      const ik = initialKey(sid);
      const isRefresh = localStorage.getItem(ik) !== null;
  
-@@ -26,7 +107,17 @@
+@@ -26,7 +124,17 @@
        setInitialStateSnapshot(initial);
        setLoading(false);
      } else {
@@ -836,7 +853,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
          const data = initializeData(sid, custom);
          setState(data);
          setInitialStateSnapshot(JSON.parse(JSON.stringify(data)));
-@@ -36,7 +127,9 @@
+@@ -36,7 +144,9 @@
    }, []);
  
    useEffect(() => {
@@ -847,7 +864,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
        saveState(state, sidRef.current);
      }
    }, [state, loading]);
-@@ -44,6 +137,16 @@
+@@ -44,6 +154,16 @@
    // --- Actions ---
  
    const addToCart = useCallback((menuItem, restaurant, quantity, selectedOptions, specialInstructions) => {
@@ -864,7 +881,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
      setState(prev => {
        if (!prev) return prev;
        const modifierTotal = selectedOptions.reduce((s, o) => s + o.priceModifier, 0);
-@@ -90,10 +193,24 @@
+@@ -90,10 +210,24 @@
      });
    }, []);
  
@@ -890,7 +907,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
        return {
          ...prev,
          cart: {
-@@ -109,8 +226,14 @@
+@@ -109,8 +243,14 @@
    const updateCartItemQuantity = useCallback((cartItemId, newQuantity) => {
      setState(prev => {
        if (!prev) return prev;
@@ -906,7 +923,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
          return {
            ...prev,
            cart: {
-@@ -126,12 +249,12 @@
+@@ -126,12 +266,12 @@
          cart: {
            ...prev.cart,
            items: prev.cart.items.map(item => {
@@ -922,7 +939,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
              };
            })
          }
-@@ -140,6 +263,13 @@
+@@ -140,6 +280,13 @@
    }, []);
  
    const clearCart = useCallback(() => {
@@ -936,7 +953,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
      setState(prev => {
        if (!prev) return prev;
        return {
-@@ -155,6 +285,17 @@
+@@ -155,6 +302,17 @@
    }, []);
  
    const placeOrder = useCallback((orderData) => {
@@ -954,7 +971,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
      const orderId = 'ord_' + Date.now().toString(36);
      setState(prev => {
        if (!prev) return prev;
-@@ -228,7 +369,7 @@
+@@ -228,7 +386,7 @@
        };
      });
      return orderId;
@@ -963,7 +980,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
  
    const toggleFavorite = useCallback((restaurantId) => {
      setState(prev => {
-@@ -332,46 +473,62 @@
+@@ -332,46 +490,62 @@
      });
    }, []);
  
@@ -1064,7 +1081,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
    const updateUser = useCallback((fields) => {
      setState(prev => {
        if (!prev) return prev;
-@@ -439,12 +596,28 @@
+@@ -439,12 +613,28 @@
      };
    }, [state, initialStateSnapshot]);
  
@@ -1094,7 +1111,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
              <span style={{ color: '#06C167' }}>Eats</span>
            </div>
            <p style={{ color: '#6B6B6B', marginTop: '12px' }}>Loading...</p>
-@@ -471,6 +644,7 @@
+@@ -471,6 +661,7 @@
        updateDefaultPayment,
        setTip,
        applyPromoCode,
@@ -1103,7 +1120,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
        getDebugState,
        updateUser,
 diff -ruN a/websites/uber_eats_mock/src/context/StoreContext.jsx b/websites/uber_eats_mock/src/context/StoreContext.jsx
---- a/websites/uber_eats_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
+--- a/websites/uber_eats_mock/src/context/StoreContext.jsx	2026-08-03 13:39:45
 +++ b/websites/uber_eats_mock/src/context/StoreContext.jsx	1969-12-31 16:00:00
 @@ -1,281 +0,0 @@
 -
@@ -1389,7 +1406,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/StoreContext.jsx b/websites/uber
 -    }
 diff -ruN a/websites/uber_eats_mock/src/lib/bridge.js b/websites/uber_eats_mock/src/lib/bridge.js
 --- a/websites/uber_eats_mock/src/lib/bridge.js	1969-12-31 16:00:00
-+++ b/websites/uber_eats_mock/src/lib/bridge.js	2026-07-30 19:22:19
++++ b/websites/uber_eats_mock/src/lib/bridge.js	2026-08-03 13:39:45
 @@ -0,0 +1,54 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
@@ -1446,8 +1463,8 @@ diff -ruN a/websites/uber_eats_mock/src/lib/bridge.js b/websites/uber_eats_mock/
 +  return () => { live = false; };
 +}
 diff -ruN a/websites/uber_eats_mock/src/pages/Account.jsx b/websites/uber_eats_mock/src/pages/Account.jsx
---- a/websites/uber_eats_mock/src/pages/Account.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/pages/Account.jsx	2026-07-31 18:09:20
+--- a/websites/uber_eats_mock/src/pages/Account.jsx	2026-08-03 13:39:45
++++ b/websites/uber_eats_mock/src/pages/Account.jsx	2026-08-03 13:39:45
 @@ -2,8 +2,16 @@
  import { Link } from 'react-router-dom';
  import { MapPin, CreditCard, Heart, Clock, Settings, ChevronRight, User, Phone, Mail, Shield, Edit2, Check, X } from 'lucide-react';
@@ -1539,8 +1556,8 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Account.jsx b/websites/uber_eats_m
              <div className="uber-one-modal__benefits">
                <div className="uber-one-modal__benefit">
 diff -ruN a/websites/uber_eats_mock/src/pages/Checkout.jsx b/websites/uber_eats_mock/src/pages/Checkout.jsx
---- a/websites/uber_eats_mock/src/pages/Checkout.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/pages/Checkout.jsx	2026-08-03 08:22:48
+--- a/websites/uber_eats_mock/src/pages/Checkout.jsx	2026-08-03 13:39:46
++++ b/websites/uber_eats_mock/src/pages/Checkout.jsx	2026-08-03 13:39:46
 @@ -2,6 +2,7 @@
  import { useNavigate, Link } from 'react-router-dom';
  import { MapPin, Clock, CreditCard, Check } from 'lucide-react';
@@ -1650,7 +1667,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Checkout.jsx b/websites/uber_eats_
                  <span>Promo</span>
 diff -ruN a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx
 --- a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx	1969-12-31 16:00:00
-+++ b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx	2026-07-30 17:35:25
++++ b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx	2026-08-03 13:39:46
 @@ -0,0 +1,81 @@
 +import React from 'react';
 +import { useNavigate } from 'react-router-dom';
@@ -1734,8 +1751,8 @@ diff -ruN a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx b/websites/uber_e
 +  );
 +}
 diff -ruN a/websites/uber_eats_mock/src/pages/Favorites.jsx b/websites/uber_eats_mock/src/pages/Favorites.jsx
---- a/websites/uber_eats_mock/src/pages/Favorites.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/pages/Favorites.jsx	2026-07-31 18:09:30
+--- a/websites/uber_eats_mock/src/pages/Favorites.jsx	2026-08-03 13:39:46
++++ b/websites/uber_eats_mock/src/pages/Favorites.jsx	2026-08-03 13:39:46
 @@ -2,6 +2,7 @@
  import { Link } from 'react-router-dom';
  import { Heart } from 'lucide-react';
@@ -1757,7 +1774,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Favorites.jsx b/websites/uber_eats
          {favoriteRestaurants.map(restaurant => (
            <RestaurantCard
 diff -ruN a/websites/uber_eats_mock/src/pages/GoEndpoint.jsx b/websites/uber_eats_mock/src/pages/GoEndpoint.jsx
---- a/websites/uber_eats_mock/src/pages/GoEndpoint.jsx	2026-07-28 11:01:47
+--- a/websites/uber_eats_mock/src/pages/GoEndpoint.jsx	2026-08-03 13:39:46
 +++ b/websites/uber_eats_mock/src/pages/GoEndpoint.jsx	1969-12-31 16:00:00
 @@ -1,30 +0,0 @@
 -import React, { useEffect, useState } from 'react';
@@ -1791,7 +1808,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/GoEndpoint.jsx b/websites/uber_eat
 -  );
 -}
 diff -ruN a/websites/uber_eats_mock/src/pages/Home.jsx b/websites/uber_eats_mock/src/pages/Home.jsx
---- a/websites/uber_eats_mock/src/pages/Home.jsx	2026-07-28 11:01:47
+--- a/websites/uber_eats_mock/src/pages/Home.jsx	2026-08-03 13:39:46
 +++ b/websites/uber_eats_mock/src/pages/Home.jsx	1969-12-31 16:00:00
 @@ -1,122 +0,0 @@
 -
@@ -1917,8 +1934,8 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Home.jsx b/websites/uber_eats_mock
 -    }
 -  
 diff -ruN a/websites/uber_eats_mock/src/pages/Homepage.jsx b/websites/uber_eats_mock/src/pages/Homepage.jsx
---- a/websites/uber_eats_mock/src/pages/Homepage.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/pages/Homepage.jsx	2026-07-31 15:10:24
+--- a/websites/uber_eats_mock/src/pages/Homepage.jsx	2026-08-03 13:39:46
++++ b/websites/uber_eats_mock/src/pages/Homepage.jsx	2026-08-03 13:39:46
 @@ -37,6 +37,10 @@
        );
      }
@@ -1981,8 +1998,8 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Homepage.jsx b/websites/uber_eats_
              </div>
            </div>
 diff -ruN a/websites/uber_eats_mock/src/pages/OrderTracking.jsx b/websites/uber_eats_mock/src/pages/OrderTracking.jsx
---- a/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-07-31 18:08:15
+--- a/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-08-03 13:39:46
++++ b/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-08-03 13:39:46
 @@ -25,7 +25,7 @@
  
  export default function OrderTracking() {
@@ -2042,8 +2059,8 @@ diff -ruN a/websites/uber_eats_mock/src/pages/OrderTracking.jsx b/websites/uber_
            </div>
          </div>
 diff -ruN a/websites/uber_eats_mock/src/pages/Orders.jsx b/websites/uber_eats_mock/src/pages/Orders.jsx
---- a/websites/uber_eats_mock/src/pages/Orders.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/pages/Orders.jsx	2026-07-30 20:23:39
+--- a/websites/uber_eats_mock/src/pages/Orders.jsx	2026-08-03 13:39:46
++++ b/websites/uber_eats_mock/src/pages/Orders.jsx	2026-08-03 13:39:46
 @@ -168,9 +168,12 @@
      }
      clearCart();
@@ -2061,7 +2078,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Orders.jsx b/websites/uber_eats_mo
        };
        addToCart(menuItem, restaurant, item.quantity, [], item.specialInstructions || '');
 diff -ruN a/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx b/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx
---- a/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx	2026-07-28 11:01:47
+--- a/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx	2026-08-03 13:39:46
 +++ b/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx	1969-12-31 16:00:00
 @@ -1,178 +0,0 @@
 -
@@ -2243,8 +2260,8 @@ diff -ruN a/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx b/websites/u
 -}
 -  
 diff -ruN a/websites/uber_eats_mock/src/pages/StorePage.jsx b/websites/uber_eats_mock/src/pages/StorePage.jsx
---- a/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-07-31 15:09:02
+--- a/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-08-03 13:39:46
++++ b/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-08-03 13:39:46
 @@ -119,6 +119,14 @@
      <div className="store-page">
        {/* Banner */}
@@ -2287,8 +2304,8 @@ diff -ruN a/websites/uber_eats_mock/src/pages/StorePage.jsx b/websites/uber_eats
            onClose={() => setSelectedItem(null)}
            onAdd={handleAddToCart}
 diff -ruN a/websites/uber_eats_mock/src/utils/dataManager.js b/websites/uber_eats_mock/src/utils/dataManager.js
---- a/websites/uber_eats_mock/src/utils/dataManager.js	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/utils/dataManager.js	2026-07-31 15:09:57
+--- a/websites/uber_eats_mock/src/utils/dataManager.js	2026-08-03 13:39:46
++++ b/websites/uber_eats_mock/src/utils/dataManager.js	2026-08-03 13:39:46
 @@ -132,30 +132,30 @@
    return {
      user: {

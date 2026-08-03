@@ -1,6 +1,6 @@
 diff -ruN a/websites/gmail_mock/.mock-files/_default/Benefits_Form.pdf b/websites/gmail_mock/.mock-files/_default/Benefits_Form.pdf
 --- a/websites/gmail_mock/.mock-files/_default/Benefits_Form.pdf	1969-12-31 16:00:00
-+++ b/websites/gmail_mock/.mock-files/_default/Benefits_Form.pdf	2026-07-30 17:35:49
++++ b/websites/gmail_mock/.mock-files/_default/Benefits_Form.pdf	2026-08-03 13:39:45
 @@ -0,0 +1,21 @@
 +%PDF-1.4
 +1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
@@ -26,7 +26,7 @@ diff -ruN a/websites/gmail_mock/.mock-files/_default/Benefits_Form.pdf b/website
 \ No newline at end of file
 diff -ruN a/websites/gmail_mock/.mock-files/_default/roadmap_q4.pdf b/websites/gmail_mock/.mock-files/_default/roadmap_q4.pdf
 --- a/websites/gmail_mock/.mock-files/_default/roadmap_q4.pdf	1969-12-31 16:00:00
-+++ b/websites/gmail_mock/.mock-files/_default/roadmap_q4.pdf	2026-07-30 17:35:49
++++ b/websites/gmail_mock/.mock-files/_default/roadmap_q4.pdf	2026-08-03 13:39:45
 @@ -0,0 +1,21 @@
 +%PDF-1.4
 +1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
@@ -52,7 +52,7 @@ diff -ruN a/websites/gmail_mock/.mock-files/_default/roadmap_q4.pdf b/websites/g
 \ No newline at end of file
 diff -ruN a/websites/gmail_mock/.mock-state.initial.json b/websites/gmail_mock/.mock-state.initial.json
 --- a/websites/gmail_mock/.mock-state.initial.json	1969-12-31 16:00:00
-+++ b/websites/gmail_mock/.mock-state.initial.json	2026-08-02 19:19:01
++++ b/websites/gmail_mock/.mock-state.initial.json	2026-08-03 13:39:45
 @@ -0,0 +1,1032 @@
 +{
 +  "user": {
@@ -1089,13 +1089,13 @@ diff -ruN a/websites/gmail_mock/.mock-state.initial.json b/websites/gmail_mock/.
 \ No newline at end of file
 diff -ruN a/websites/gmail_mock/.mock-state.json b/websites/gmail_mock/.mock-state.json
 --- a/websites/gmail_mock/.mock-state.json	1969-12-31 16:00:00
-+++ b/websites/gmail_mock/.mock-state.json	2026-08-02 19:19:01
++++ b/websites/gmail_mock/.mock-state.json	2026-08-03 13:39:45
 @@ -0,0 +1 @@
 +{}
 \ No newline at end of file
 diff -ruN a/websites/gmail_mock/index.html b/websites/gmail_mock/index.html
---- a/websites/gmail_mock/index.html	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/index.html	2026-07-30 17:35:14
+--- a/websites/gmail_mock/index.html	2026-08-03 13:39:45
++++ b/websites/gmail_mock/index.html	2026-08-03 13:39:45
 @@ -2,16 +2,16 @@
  <html lang="en">
    <head>
@@ -1119,7 +1119,7 @@ diff -ruN a/websites/gmail_mock/index.html b/websites/gmail_mock/index.html
      </div>
 diff -ruN a/websites/gmail_mock/src/components/Avatar.jsx b/websites/gmail_mock/src/components/Avatar.jsx
 --- a/websites/gmail_mock/src/components/Avatar.jsx	1969-12-31 16:00:00
-+++ b/websites/gmail_mock/src/components/Avatar.jsx	2026-07-31 15:07:27
++++ b/websites/gmail_mock/src/components/Avatar.jsx	2026-08-03 13:39:45
 @@ -0,0 +1,38 @@
 +import React from 'react';
 +
@@ -1160,8 +1160,8 @@ diff -ruN a/websites/gmail_mock/src/components/Avatar.jsx b/websites/gmail_mock/
 +
 +export default Avatar;
 diff -ruN a/websites/gmail_mock/src/components/ComposeModal.jsx b/websites/gmail_mock/src/components/ComposeModal.jsx
---- a/websites/gmail_mock/src/components/ComposeModal.jsx	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/components/ComposeModal.jsx	2026-08-03 08:21:09
+--- a/websites/gmail_mock/src/components/ComposeModal.jsx	2026-08-03 13:39:45
++++ b/websites/gmail_mock/src/components/ComposeModal.jsx	2026-08-03 13:39:45
 @@ -2,8 +2,13 @@
  import { X, Minimize2, Paperclip, Link as LinkIcon, Smile, Image, Trash2, Maximize2, ChevronDown, List, Type } from 'lucide-react';
  import { useStore } from '../context/StoreContext';
@@ -1344,8 +1344,8 @@ diff -ruN a/websites/gmail_mock/src/components/ComposeModal.jsx b/websites/gmail
                <Trash2 size={18} />
              </button>
 diff -ruN a/websites/gmail_mock/src/components/EmailList.jsx b/websites/gmail_mock/src/components/EmailList.jsx
---- a/websites/gmail_mock/src/components/EmailList.jsx	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/components/EmailList.jsx	2026-08-03 08:20:55
+--- a/websites/gmail_mock/src/components/EmailList.jsx	2026-08-03 13:39:45
++++ b/websites/gmail_mock/src/components/EmailList.jsx	2026-08-03 13:39:45
 @@ -60,8 +60,11 @@
    }, [onClose]);
  
@@ -1440,8 +1440,8 @@ diff -ruN a/websites/gmail_mock/src/components/EmailList.jsx b/websites/gmail_mo
              </button>
              <div className="relative">
 diff -ruN a/websites/gmail_mock/src/components/Header.jsx b/websites/gmail_mock/src/components/Header.jsx
---- a/websites/gmail_mock/src/components/Header.jsx	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/components/Header.jsx	2026-07-31 18:11:30
+--- a/websites/gmail_mock/src/components/Header.jsx	2026-08-03 13:39:45
++++ b/websites/gmail_mock/src/components/Header.jsx	2026-08-03 13:39:45
 @@ -2,6 +2,7 @@
  import { Menu, Search, Settings, HelpCircle, Grid, SlidersHorizontal, X } from 'lucide-react';
  import { useStore } from '../context/StoreContext';
@@ -1567,8 +1567,8 @@ diff -ruN a/websites/gmail_mock/src/components/Header.jsx b/websites/gmail_mock/
            </button>
            {showProfileDropdown && (
 diff -ruN a/websites/gmail_mock/src/components/Sidebar.jsx b/websites/gmail_mock/src/components/Sidebar.jsx
---- a/websites/gmail_mock/src/components/Sidebar.jsx	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/components/Sidebar.jsx	2026-07-31 18:11:55
+--- a/websites/gmail_mock/src/components/Sidebar.jsx	2026-08-03 13:39:45
++++ b/websites/gmail_mock/src/components/Sidebar.jsx	2026-08-03 13:39:45
 @@ -50,25 +50,31 @@
  };
  
@@ -1623,8 +1623,8 @@ diff -ruN a/websites/gmail_mock/src/components/Sidebar.jsx b/websites/gmail_mock
                key={label.id}
                to={`/label/${label.id}`}
 diff -ruN a/websites/gmail_mock/src/components/ThreadView.jsx b/websites/gmail_mock/src/components/ThreadView.jsx
---- a/websites/gmail_mock/src/components/ThreadView.jsx	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/components/ThreadView.jsx	2026-07-31 18:10:29
+--- a/websites/gmail_mock/src/components/ThreadView.jsx	2026-08-03 13:39:45
++++ b/websites/gmail_mock/src/components/ThreadView.jsx	2026-08-03 13:39:45
 @@ -3,6 +3,7 @@
  import { ArrowLeft, Star, Printer, ExternalLink, MoreVertical, Reply, ReplyAll, Forward, Trash2, Archive, CornerUpLeft, Mail, MailOpen, Download, Paperclip, X, ShieldAlert, FolderInput, Clock } from 'lucide-react';
  import { useStore } from '../context/StoreContext';
@@ -1694,8 +1694,8 @@ diff -ruN a/websites/gmail_mock/src/components/ThreadView.jsx b/websites/gmail_m
                  className={cn("flex-1 border border-gray-300 rounded-lg shadow-sm transition-all", isReplying ? "h-auto" : "h-12 overflow-hidden")}
                  onClick={() => setIsReplying(true)}
 diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mock/src/context/StoreContext.jsx
---- a/websites/gmail_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/context/StoreContext.jsx	2026-08-03 08:20:39
+--- a/websites/gmail_mock/src/context/StoreContext.jsx	2026-08-03 13:39:45
++++ b/websites/gmail_mock/src/context/StoreContext.jsx	2026-08-03 13:39:45
 @@ -1,7 +1,17 @@
  import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
  import { INITIAL_STATE, DEFAULT_SETTINGS, getSessionId, fetchCustomState, saveState, initializeData } from '../data/mockData';
@@ -1725,7 +1725,7 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
    const sidRef = useRef(getSessionId());
    const initDone = useRef(false);
  
-@@ -39,6 +53,25 @@
+@@ -39,6 +53,35 @@
      if (initDone.current) return;
      initDone.current = true;
      const sid = sidRef.current;
@@ -1742,8 +1742,18 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
 +      // (which month you were on, your filters, saved-for-later) mid-interaction.
 +      const stop = bridgePoll(APP, s => setState(prev => {
 +        if (!s) return prev;
-+        const { settings, ...engineOwned } = initializeData(sid, s);
-+        return { ...prev, ...engineOwned };
++        const { settings, labels, ...engineOwned } = initializeData(sid, s);
++        // The mail engine carries no label DEFINITIONS and no draft authoring, so
++        // adopting engineOwned wholesale wiped a just-created label and a draft
++        // being composed every 2.5s. Keep both client-owned: per-email label
++        // membership still round-trips via mail.toggle_label; drafts are ours
++        // until sent. A discarded draft stays gone because it's dropped from prev.
++        const keepLabels = prev?.labels ?? labels;
++        const localDrafts = (prev?.emails || []).filter(e => e && e.folder === 'drafts');
++        const engineEmails = engineOwned.emails || [];
++        const engineIds = new Set(engineEmails.map(e => e && e.id));
++        const emails = [...engineEmails, ...localDrafts.filter(d => !engineIds.has(d.id))];
++        return { ...prev, ...engineOwned, emails, labels: keepLabels };
 +      }));
 +      return () => stop();
 +    }
@@ -1751,7 +1761,7 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
      if (sid) {
        const sessionKey = `${INITIAL_KEY_PREFIX}_${sid}`;
        const isRefresh = localStorage.getItem(sessionKey) !== null;
-@@ -50,6 +83,13 @@
+@@ -50,6 +93,13 @@
          setLoading(false);
        } else {
          fetchCustomState(sid).then(customState => {
@@ -1765,7 +1775,7 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
            const data = initializeData(sid, customState);
            setState(data);
            setInitialState(JSON.parse(JSON.stringify(data)));
-@@ -74,7 +114,7 @@
+@@ -74,7 +124,7 @@
  
    // Save state on changes (session-aware)
    useEffect(() => {
@@ -1774,7 +1784,7 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
      try {
        saveState(state, sidRef.current, initialState);
      } catch (e) {
-@@ -82,7 +122,54 @@
+@@ -82,7 +132,54 @@
      }
    }, [state, loading]);
  
@@ -1829,7 +1839,7 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
      setState(prev => ({
        ...prev,
        emails: prev.emails.map(email =>
-@@ -92,6 +179,12 @@
+@@ -92,6 +189,12 @@
    };
  
    const bulkUpdateEmails = (emailIds, updates) => {
@@ -1842,7 +1852,7 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
      setState(prev => ({
        ...prev,
        emails: prev.emails.map(email =>
-@@ -102,6 +195,13 @@
+@@ -102,6 +205,13 @@
    };
  
    const deleteEmails = (emailIds) => {
@@ -1856,7 +1866,7 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
      setState(prev => {
        const emailsToUpdate = prev.emails.filter(e => emailIds.includes(e.id));
        const trashIds = emailsToUpdate.filter(e => e.folder === 'trash').map(e => e.id);
-@@ -131,6 +231,13 @@
+@@ -131,6 +241,13 @@
    };
  
    const archiveEmails = (emailIds) => {
@@ -1870,7 +1880,7 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
      setState(prev => {
        const snapshot = prev.emails;
        showToast('Conversation archived', () => setState(s => ({ ...s, emails: snapshot })));
-@@ -151,6 +258,20 @@
+@@ -151,6 +268,20 @@
    };
  
    const sendEmail = (emailData) => {
@@ -1891,7 +1901,7 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
      const newEmail = {
        id: generateId(),
        threadId: generateId(),
-@@ -243,6 +364,17 @@
+@@ -243,6 +374,17 @@
    }
  
    const replyToEmail = (originalEmail, body, isReplyAll = false, attachments = []) => {
@@ -1909,7 +1919,7 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
       const newEmail = {
        id: generateId(),
        threadId: originalEmail.threadId,
-@@ -269,20 +401,41 @@
+@@ -269,20 +411,41 @@
      }));
    }
  
@@ -1953,7 +1963,7 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
    const addLabel = (emailId, labelId) => {
      const email = state.emails.find(e => e.id === emailId);
      if (email && !email.labels.includes(labelId)) {
-@@ -373,6 +526,12 @@
+@@ -373,6 +536,12 @@
    };
  
    const snoozeEmail = (emailId, snoozedUntil) => {
@@ -1966,7 +1976,7 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
      setState(prev => {
        const snapshot = prev.emails;
        showToast('Conversation snoozed', () => setState(s => ({ ...s, emails: snapshot })));
-@@ -409,12 +568,42 @@
+@@ -409,12 +578,42 @@
    }, [loading]);
  
    const emptyTrash = () => {
@@ -2009,7 +2019,7 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
    return (
      <StoreContext.Provider value={{
        state,
-@@ -442,6 +631,7 @@
+@@ -442,6 +641,7 @@
        toggleStar,
        toggleImportant,
        toggleRead,
@@ -2018,8 +2028,8 @@ diff -ruN a/websites/gmail_mock/src/context/StoreContext.jsx b/websites/gmail_mo
        removeLabel,
        createLabel,
 diff -ruN a/websites/gmail_mock/src/data/mockData.js b/websites/gmail_mock/src/data/mockData.js
---- a/websites/gmail_mock/src/data/mockData.js	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/data/mockData.js	2026-07-31 18:12:53
+--- a/websites/gmail_mock/src/data/mockData.js	2026-08-03 13:39:45
++++ b/websites/gmail_mock/src/data/mockData.js	2026-08-03 13:39:45
 @@ -111,9 +111,9 @@
  
  export const CURRENT_USER = {
@@ -2390,8 +2400,8 @@ diff -ruN a/websites/gmail_mock/src/data/mockData.js b/websites/gmail_mock/src/d
    replyBehavior: 'Reply',
    language: 'English (US)',
 diff -ruN a/websites/gmail_mock/src/index.css b/websites/gmail_mock/src/index.css
---- a/websites/gmail_mock/src/index.css	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/index.css	2026-07-30 17:35:14
+--- a/websites/gmail_mock/src/index.css	2026-08-03 13:39:45
++++ b/websites/gmail_mock/src/index.css	2026-08-03 13:39:45
 @@ -10,7 +10,7 @@
  }
  
@@ -2403,7 +2413,7 @@ diff -ruN a/websites/gmail_mock/src/index.css b/websites/gmail_mock/src/index.cs
  }
 diff -ruN a/websites/gmail_mock/src/lib/bridge.js b/websites/gmail_mock/src/lib/bridge.js
 --- a/websites/gmail_mock/src/lib/bridge.js	1969-12-31 16:00:00
-+++ b/websites/gmail_mock/src/lib/bridge.js	2026-07-30 19:22:19
++++ b/websites/gmail_mock/src/lib/bridge.js	2026-08-03 13:39:45
 @@ -0,0 +1,54 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
@@ -2460,8 +2470,8 @@ diff -ruN a/websites/gmail_mock/src/lib/bridge.js b/websites/gmail_mock/src/lib/
 +  return () => { live = false; };
 +}
 diff -ruN a/websites/gmail_mock/src/pages/Settings.jsx b/websites/gmail_mock/src/pages/Settings.jsx
---- a/websites/gmail_mock/src/pages/Settings.jsx	2026-07-28 11:01:47
-+++ b/websites/gmail_mock/src/pages/Settings.jsx	2026-07-31 18:12:47
+--- a/websites/gmail_mock/src/pages/Settings.jsx	2026-08-03 13:39:45
++++ b/websites/gmail_mock/src/pages/Settings.jsx	2026-08-03 13:39:45
 @@ -3,6 +3,7 @@
  import { ArrowLeft, AlertTriangle } from 'lucide-react';
  import { useStore } from '../context/StoreContext';

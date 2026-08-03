@@ -515,6 +515,10 @@ _CAL_OTHER = [
     {"id": "oc2", "name": "Birthdays", "color": "#E67C73", "visible": True},
 ]
 
+# calendar id -> chip color, so a projected event shows its own calendar's color
+# instead of everything rendering default-blue.
+_CAL_COLOR = {c["id"]: c["color"] for c in _CAL_DEFAULTS}
+
 
 def transform_calendar(cal: dict) -> dict:
     """gym CalendarState -> google_calendar_mock (events[] + fixed calendar scaffolding)."""
@@ -531,11 +535,15 @@ def transform_calendar(cal: dict) -> dict:
         # LOCAL wall-clock, no Z. The gym stores "09:00 on 2026-05-21" as a wall
         # time; stamping it Zulu meant a browser behind UTC parsed it as the
         # previous day, so Day view came up empty while Week/Month looked right.
-        events.append({"id": e.get("id"), "calendarId": "c1", "title": e.get("title") or "(No Title)",
+        # Honor the event's real calendar_id (the engine stores it when a user
+        # picks Work/Family/... in the event modal). Hardcoding "c1" here snapped
+        # every event back to the default calendar on the next bridge poll.
+        cid = e.get("calendar_id") or "c1"
+        events.append({"id": e.get("id"), "calendarId": cid, "title": e.get("title") or "(No Title)",
                        "start": f"{day}T{e.get('start')}:00", "end": f"{day}T{e.get('end')}:00",
                        "allDay": bool(e.get("all_day")), "location": e.get("location") or "",
                        "description": e.get("description") or "",
-                       "color": "#039BE5", "recurring": e.get("recurring") or "none",
+                       "color": _CAL_COLOR.get(cid, "#039BE5"), "recurring": e.get("recurring") or "none",
                        "reminderMinutes": e.get("reminder_minutes"),
                        "source": e.get("source") or "seed"})
     # Browse-only ambient events so the week isn't near-empty. Off the two frozen
