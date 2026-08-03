@@ -1,6 +1,6 @@
 diff -ruN a/websites/amazon_mock/index.html b/websites/amazon_mock/index.html
---- a/websites/amazon_mock/index.html	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/index.html	2026-07-30 18:17:09
+--- a/websites/amazon_mock/index.html	2026-08-03 15:26:54
++++ b/websites/amazon_mock/index.html	2026-08-03 15:26:54
 @@ -4,7 +4,7 @@
      <meta charset="UTF-8" />
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -11,8 +11,8 @@ diff -ruN a/websites/amazon_mock/index.html b/websites/amazon_mock/index.html
    <body>
      <div id="root"></div>
 diff -ruN a/websites/amazon_mock/src/App.jsx b/websites/amazon_mock/src/App.jsx
---- a/websites/amazon_mock/src/App.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/App.jsx	2026-07-30 20:08:36
+--- a/websites/amazon_mock/src/App.jsx	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/App.jsx	2026-08-03 15:26:54
 @@ -9,6 +9,8 @@
  import { Checkout } from './pages/Checkout';
  import { Orders } from './pages/Orders';
@@ -80,8 +80,8 @@ diff -ruN a/websites/amazon_mock/src/App.jsx b/websites/amazon_mock/src/App.jsx
              <Route path="profile" element={<Profile />} />
            </Route>
 diff -ruN a/websites/amazon_mock/src/components/layout/Header.jsx b/websites/amazon_mock/src/components/layout/Header.jsx
---- a/websites/amazon_mock/src/components/layout/Header.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/components/layout/Header.jsx	2026-07-30 20:08:36
+--- a/websites/amazon_mock/src/components/layout/Header.jsx	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/components/layout/Header.jsx	2026-08-03 15:26:54
 @@ -108,7 +108,7 @@
        {/* Top Bar */}
        <div className="bg-xmazon text-white px-4 py-2 flex items-center gap-4 h-[60px]">
@@ -123,8 +123,8 @@ diff -ruN a/websites/amazon_mock/src/components/layout/Header.jsx b/websites/ama
                    <li>
                      <Link to="/wishlist" onClick={() => setShowNavMenu(false)} className="text-sm text-xmazon-blue hover:underline block py-1">Your Wishlist</Link>
 diff -ruN a/websites/amazon_mock/src/components/product/ProductCard.jsx b/websites/amazon_mock/src/components/product/ProductCard.jsx
---- a/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-07-30 18:17:09
+--- a/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-08-03 15:26:54
 @@ -72,9 +72,9 @@
        {product.badges && product.badges.includes('Best Seller') && (
          <span className="absolute top-0 left-0 bg-[#e47911] text-white text-[10px] font-bold px-1.5 py-0.5 z-10 rounded-br">Best Seller</span>
@@ -138,8 +138,8 @@ diff -ruN a/websites/amazon_mock/src/components/product/ProductCard.jsx b/websit
        )}
  
 diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_mock/src/context/StoreContext.jsx
---- a/websites/amazon_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/context/StoreContext.jsx	2026-08-03 08:21:18
+--- a/websites/amazon_mock/src/context/StoreContext.jsx	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/context/StoreContext.jsx	2026-08-03 15:26:54
 @@ -1,6 +1,16 @@
  import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
  import { INITIAL_DATA, getSessionId, fetchCustomState, saveState, initializeData } from '../lib/mockData';
@@ -535,8 +535,8 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
        {children}
      </StoreContext.Provider>
 diff -ruN a/websites/amazon_mock/src/index.css b/websites/amazon_mock/src/index.css
---- a/websites/amazon_mock/src/index.css	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/index.css	2026-07-30 18:17:09
+--- a/websites/amazon_mock/src/index.css	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/index.css	2026-08-03 15:26:54
 @@ -4,7 +4,7 @@
  
  body {
@@ -548,7 +548,7 @@ diff -ruN a/websites/amazon_mock/src/index.css b/websites/amazon_mock/src/index.
  }
 diff -ruN a/websites/amazon_mock/src/lib/bridge.js b/websites/amazon_mock/src/lib/bridge.js
 --- a/websites/amazon_mock/src/lib/bridge.js	1969-12-31 16:00:00
-+++ b/websites/amazon_mock/src/lib/bridge.js	2026-07-30 19:22:19
++++ b/websites/amazon_mock/src/lib/bridge.js	2026-08-03 15:26:54
 @@ -0,0 +1,54 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
@@ -605,8 +605,8 @@ diff -ruN a/websites/amazon_mock/src/lib/bridge.js b/websites/amazon_mock/src/li
 +  return () => { live = false; };
 +}
 diff -ruN a/websites/amazon_mock/src/lib/mockData.js b/websites/amazon_mock/src/lib/mockData.js
---- a/websites/amazon_mock/src/lib/mockData.js	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/lib/mockData.js	2026-07-31 15:07:14
+--- a/websites/amazon_mock/src/lib/mockData.js	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/lib/mockData.js	2026-08-03 15:26:54
 @@ -7,7 +7,7 @@
    {
      id: "p1", category: "Electronics", brand: "Samsung", title: "Samsung Galaxy Buds Pro - True Wireless Bluetooth Noise Cancelling Earbuds",
@@ -1162,7 +1162,7 @@ diff -ruN a/websites/amazon_mock/src/lib/mockData.js b/websites/amazon_mock/src/
      content: r.content || r.body || r.text || '',
 diff -ruN a/websites/amazon_mock/src/pages/BrowsingHistory.jsx b/websites/amazon_mock/src/pages/BrowsingHistory.jsx
 --- a/websites/amazon_mock/src/pages/BrowsingHistory.jsx	1969-12-31 16:00:00
-+++ b/websites/amazon_mock/src/pages/BrowsingHistory.jsx	2026-07-30 20:08:20
++++ b/websites/amazon_mock/src/pages/BrowsingHistory.jsx	2026-08-03 15:26:54
 @@ -0,0 +1,59 @@
 +import React from 'react';
 +import { Link } from 'react-router-dom';
@@ -1224,8 +1224,8 @@ diff -ruN a/websites/amazon_mock/src/pages/BrowsingHistory.jsx b/websites/amazon
 +  );
 +};
 diff -ruN a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/pages/Cart.jsx
---- a/websites/amazon_mock/src/pages/Cart.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Cart.jsx	2026-07-31 18:02:45
+--- a/websites/amazon_mock/src/pages/Cart.jsx	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/pages/Cart.jsx	2026-08-03 15:26:54
 @@ -1,11 +1,22 @@
  import React, { useState } from 'react';
  import { Link, useNavigate } from 'react-router-dom';
@@ -1415,8 +1415,8 @@ diff -ruN a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/p
                </div>
              </div>
 diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/src/pages/Checkout.jsx
---- a/websites/amazon_mock/src/pages/Checkout.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Checkout.jsx	2026-08-03 08:21:48
+--- a/websites/amazon_mock/src/pages/Checkout.jsx	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/pages/Checkout.jsx	2026-08-03 15:26:54
 @@ -3,6 +3,7 @@
  import { useStore } from '../context/StoreContext';
  import { Button } from '../components/ui/Button';
@@ -1458,7 +1458,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
        const orderData = {
          items: state.cart,
          total: total,
-@@ -43,7 +61,7 @@
+@@ -43,12 +61,36 @@
          trackingNumber: null,
          estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
        };
@@ -1467,24 +1467,45 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
        setLoading(false);
        navigate(`/order-confirmation/${orderId}`);
      }, 1500);
-@@ -115,7 +133,15 @@
+   };
+ 
++  // One CTA drives the whole flow so the sidebar MIRRORS the current step instead
++  // of showing a premature "Place your order": step 1 confirms the address, step 2
++  // the payment, step 3 places the order. Keeps the real engine actions intact.
++  const advance = () => {
++    if (loading) return;
++    if (step === 1) {
++      // placeOrder only posts payment_id, so the engine resolves ship-to from the
++      // account default — commit the chosen address before moving on.
++      if (bridged() && selectedAddressId) {
++        bridgeAct('shop.set_default_address', { address_id: selectedAddressId });
++      }
++      setStep(2);
++    } else if (step === 2) {
++      setStep(3);
++    } else {
++      handlePlaceOrder();
++    }
++  };
++  const ctaLabel = loading
++    ? (step === 3 ? 'Placing Order...' : 'Working...')
++    : step === 1 ? 'Use this address'
++      : step === 2 ? 'Use this payment method'
++        : 'Place your order';
++
+   if (state.cart.length === 0) {
+     return (
+       <div className="max-w-[600px] mx-auto p-8 text-center">
+@@ -115,7 +157,7 @@
                      </label>
                    ))}
                  </div>
 -                <Button onClick={() => setStep(2)}>Use this address</Button>
-+                <Button onClick={() => {
-+                  // placeOrder only posts payment_id, so the engine resolved the
-+                  // ship-to from the account default and the address chosen here
-+                  // was thrown away. Commit the choice before moving on.
-+                  if (bridged() && selectedAddressId) {
-+                    bridgeAct('shop.set_default_address', { address_id: selectedAddressId });
-+                  }
-+                  setStep(2);
-+                }}>Use this address</Button>
++                <Button onClick={advance}>Use this address</Button>
                </div>
              ) : (
                <div className="text-sm text-gray-600 flex items-center gap-2">
-@@ -156,7 +182,11 @@
+@@ -156,12 +198,16 @@
                            <span className="font-bold">{pm.brand} ending in {pm.last4}</span>
                            {pm.isDefault && <span className="text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">Default</span>}
                          </div>
@@ -1497,13 +1518,48 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
                        </div>
                      </label>
                    ))}
-@@ -209,12 +239,17 @@
-               {loading ? 'Processing...' : 'Place your order'}
+                 </div>
+-                <Button onClick={() => setStep(3)}>Use this payment method</Button>
++                <Button onClick={advance}>Use this payment method</Button>
+               </div>
+             ) : (
+               step > 2 && (
+@@ -193,7 +239,7 @@
+                   );
+                 })}
+                 <div className="border-t pt-4 mt-4">
+-                  <Button onClick={handlePlaceOrder} className="w-full md:w-auto" disabled={loading}>
++                  <Button onClick={advance} className="w-full md:w-auto" disabled={loading}>
+                     {loading ? 'Placing Order...' : 'Place your order'}
+                   </Button>
+                 </div>
+@@ -205,16 +251,33 @@
+         {/* Order Summary Sidebar */}
+         <div className="w-full md:w-72">
+           <div className="bg-white p-4 border rounded sticky top-4">
+-            <Button onClick={handlePlaceOrder} className="w-full mb-4" disabled={step < 3 || loading}>
+-              {loading ? 'Processing...' : 'Place your order'}
++            {/* Contextual step CTA — mirrors the current step, so "Place your
++                order" only appears at review (steps 1/2 show Use this address /
++                Use this payment method) instead of a persistent grayed button. */}
++            <Button onClick={advance} className="w-full mb-4" disabled={loading}>
++              {ctaLabel}
              </Button>
-             <p className="text-xs text-gray-500 mb-4">
+-            <p className="text-xs text-gray-500 mb-4">
 -              By placing your order, you agree to Xmazon.mock's privacy notice and conditions of use.
-+              By placing your order, you agree to ShopGym's privacy notice and conditions of use.
-             </p>
+-            </p>
++            <div className="flex items-center justify-center gap-1 text-[11px] text-gray-500 mb-3">
++              <span className={step >= 1 ? 'font-bold text-xmazon-darkYellow' : ''}>Address</span>
++              <span>›</span>
++              <span className={step >= 2 ? 'font-bold text-xmazon-darkYellow' : ''}>Payment</span>
++              <span>›</span>
++              <span className={step >= 3 ? 'font-bold text-xmazon-darkYellow' : ''}>Place order</span>
++            </div>
++            {step === 3 && (
++              <p className="text-xs text-gray-500 mb-4">
++                By placing your order, you agree to ShopGym's privacy notice and conditions of use.
++              </p>
++            )}
              <h3 className="font-bold text-lg mb-2">Order Summary</h3>
              <div className="text-sm space-y-1">
                <div className="flex justify-between"><span>Items:</span> <span>${subtotal.toFixed(2)}</span></div>
@@ -1517,8 +1573,8 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
                <div className="flex justify-between border-t pt-1 font-bold text-red-700 text-lg">
                  <span>Order Total:</span> <span>${total.toFixed(2)}</span>
 diff -ruN a/websites/amazon_mock/src/pages/Home.jsx b/websites/amazon_mock/src/pages/Home.jsx
---- a/websites/amazon_mock/src/pages/Home.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Home.jsx	2026-07-31 15:08:05
+--- a/websites/amazon_mock/src/pages/Home.jsx	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/pages/Home.jsx	2026-08-03 15:26:54
 @@ -5,10 +5,22 @@
  import { CATEGORIES } from '../lib/mockData';
  import { ChevronLeft, ChevronRight, Zap } from 'lucide-react';
@@ -1640,8 +1696,8 @@ diff -ruN a/websites/amazon_mock/src/pages/Home.jsx b/websites/amazon_mock/src/p
              <Link to="/search?category=Home+%26+Kitchen" className="text-[13px] text-xmazon-blue hover:text-xmazon-orange hover:underline">Explore now</Link>
            </div>
 diff -ruN a/websites/amazon_mock/src/pages/OrderConfirmation.jsx b/websites/amazon_mock/src/pages/OrderConfirmation.jsx
---- a/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-07-30 18:17:09
+--- a/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-08-03 15:26:54
 @@ -1,13 +1,16 @@
 -import React from 'react';
 +import React, { useEffect } from 'react';
@@ -1661,8 +1717,8 @@ diff -ruN a/websites/amazon_mock/src/pages/OrderConfirmation.jsx b/websites/amaz
    if (!order) {
      return (
 diff -ruN a/websites/amazon_mock/src/pages/Orders.jsx b/websites/amazon_mock/src/pages/Orders.jsx
---- a/websites/amazon_mock/src/pages/Orders.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Orders.jsx	2026-07-31 17:31:05
+--- a/websites/amazon_mock/src/pages/Orders.jsx	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/pages/Orders.jsx	2026-08-03 15:26:54
 @@ -1,5 +1,6 @@
 -import React, { useState } from 'react';
 +import React, { useState, useEffect } from 'react';
@@ -1787,8 +1843,8 @@ diff -ruN a/websites/amazon_mock/src/pages/Orders.jsx b/websites/amazon_mock/src
                <div className="flex gap-2">
                  <Button type="submit" className="flex-1">Submit Return Request</Button>
 diff -ruN a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_mock/src/pages/ProductDetail.jsx
---- a/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-07-31 17:32:03
+--- a/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-08-03 15:26:54
 @@ -1,6 +1,7 @@
  import React, { useEffect, useState, useRef } from 'react';
  import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
@@ -1934,8 +1990,8 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_m
                      </div>
                    );
 diff -ruN a/websites/amazon_mock/src/pages/ProductListing.jsx b/websites/amazon_mock/src/pages/ProductListing.jsx
---- a/websites/amazon_mock/src/pages/ProductListing.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/ProductListing.jsx	2026-07-30 18:17:09
+--- a/websites/amazon_mock/src/pages/ProductListing.jsx	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/pages/ProductListing.jsx	2026-08-03 15:26:54
 @@ -1,6 +1,7 @@
 -import React, { useState, useMemo } from 'react';
 +import React, { useState, useMemo, useEffect } from 'react';
@@ -1967,8 +2023,8 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductListing.jsx b/websites/amazon_
            {categoryParam ? (
              <span className="text-gray-700">{categoryParam}</span>
 diff -ruN a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/src/pages/Profile.jsx
---- a/websites/amazon_mock/src/pages/Profile.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Profile.jsx	2026-08-03 08:21:27
+--- a/websites/amazon_mock/src/pages/Profile.jsx	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/pages/Profile.jsx	2026-08-03 15:26:54
 @@ -1,8 +1,9 @@
 -import React, { useState } from 'react';
 +import React, { useState, useEffect } from 'react';
@@ -2074,7 +2130,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/sr
                      ? `Member since ${state.user.memberSince || '2019'} - Enjoy FREE same-day, one-day, and two-day delivery`
 diff -ruN a/websites/amazon_mock/src/pages/Subscriptions.jsx b/websites/amazon_mock/src/pages/Subscriptions.jsx
 --- a/websites/amazon_mock/src/pages/Subscriptions.jsx	1969-12-31 16:00:00
-+++ b/websites/amazon_mock/src/pages/Subscriptions.jsx	2026-07-30 18:17:09
++++ b/websites/amazon_mock/src/pages/Subscriptions.jsx	2026-08-03 15:26:54
 @@ -0,0 +1,77 @@
 +import React, { useEffect } from 'react';
 +import { Link } from 'react-router-dom';
@@ -2154,8 +2210,8 @@ diff -ruN a/websites/amazon_mock/src/pages/Subscriptions.jsx b/websites/amazon_m
 +  );
 +};
 diff -ruN a/websites/amazon_mock/src/pages/Wishlist.jsx b/websites/amazon_mock/src/pages/Wishlist.jsx
---- a/websites/amazon_mock/src/pages/Wishlist.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Wishlist.jsx	2026-07-30 18:17:09
+--- a/websites/amazon_mock/src/pages/Wishlist.jsx	2026-08-03 15:26:54
++++ b/websites/amazon_mock/src/pages/Wishlist.jsx	2026-08-03 15:26:54
 @@ -32,7 +32,7 @@
          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
            <div>
