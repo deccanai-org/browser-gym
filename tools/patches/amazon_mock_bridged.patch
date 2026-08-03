@@ -139,7 +139,7 @@ diff -ruN a/websites/amazon_mock/src/components/product/ProductCard.jsx b/websit
  
 diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_mock/src/context/StoreContext.jsx
 --- a/websites/amazon_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/context/StoreContext.jsx	2026-07-31 17:54:37
++++ b/websites/amazon_mock/src/context/StoreContext.jsx	2026-08-03 08:21:18
 @@ -1,6 +1,16 @@
  import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
  import { INITIAL_DATA, getSessionId, fetchCustomState, saveState, initializeData } from '../lib/mockData';
@@ -168,7 +168,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
  
    // Session ID
    const sidRef = useRef(getSessionId());
-@@ -22,7 +36,26 @@
+@@ -22,7 +36,28 @@
      initDone.current = true;
      const sid = sidRef.current;
  
@@ -184,7 +184,9 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
 +      // (which month you were on, your filters, saved-for-later) mid-interaction.
 +      const stop = bridgePoll(APP, s => setState(prev => {
 +        if (!s) return prev;
-+        const { savedForLater, recentlyViewed, recentSearches, ...engineOwned } = initializeData(sid, s);
++        // wishlist is a session-only UI shelf the engine doesn't own; keep it out
++        // of engineOwned so a locally-added item survives the poll re-projection.
++        const { savedForLater, recentlyViewed, recentSearches, wishlist, ...engineOwned } = initializeData(sid, s);
 +        return { ...prev, ...engineOwned };
 +      }));
 +      return () => stop();
@@ -195,7 +197,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
        const sessionKey = `${BASE_INITIAL_KEY}_${sid}`;
        const isRefresh = localStorage.getItem(sessionKey) !== null;
        if (isRefresh) {
-@@ -32,6 +65,14 @@
+@@ -32,6 +67,14 @@
          setHydrated(true);
        } else {
          fetchCustomState(sid).then(customState => {
@@ -210,7 +212,20 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
            const data = initializeData(sid, customState);
            setState(data);
            setInitialState(JSON.parse(JSON.stringify(data)));
-@@ -55,6 +96,11 @@
+@@ -46,15 +89,20 @@
+     }
+   }, []);
+ 
+-  // Save to localStorage
++  // Save to localStorage. In bridged mode the engine is the source of truth and
++  // the 2.5s poll re-projects it, so persisting every local setState here just
++  // floods localStorage with soon-to-be-overwritten copies — gate it off.
+   useEffect(() => {
+-    if (hydrated) {
+-      saveState(state, sidRef.current);
+-    }
++    if (hydrated && !bridged()) saveState(state, sidRef.current);
+   }, [state, hydrated]);
  
    // Actions
    const addToCart = (product, quantity = 1) => {
@@ -222,7 +237,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
      setState(prev => {
        const existing = prev.cart.find(item => item.productId === product.id);
        let newCart;
-@@ -72,6 +118,11 @@
+@@ -72,6 +120,11 @@
    };
  
    const removeFromCart = (productId) => {
@@ -234,7 +249,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
      setState(prev => ({
        ...prev,
        cart: prev.cart.filter(item => item.productId !== productId)
-@@ -80,6 +131,11 @@
+@@ -80,6 +133,11 @@
  
    const updateCartQty = (productId, quantity) => {
      if (quantity < 1) return removeFromCart(productId);
@@ -246,7 +261,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
      setState(prev => ({
        ...prev,
        cart: prev.cart.map(item =>
-@@ -100,7 +156,20 @@
+@@ -100,7 +158,20 @@
      });
    };
  
@@ -267,7 +282,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
      setState(prev => {
        const cartItem = prev.cart.find(item => item.productId === productId);
        if (!cartItem) return prev;
-@@ -113,6 +182,16 @@
+@@ -113,6 +184,16 @@
    };
  
    const moveToCart = (productId) => {
@@ -284,7 +299,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
      setState(prev => {
        const savedItem = prev.savedForLater.find(item => item.productId === productId);
        if (!savedItem) return prev;
-@@ -149,6 +228,10 @@
+@@ -149,6 +230,10 @@
      });
    };
  
@@ -295,7 +310,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
    const addToRecentlyViewed = (productId) => {
      setState(prev => {
        const filtered = prev.recentlyViewed.filter(id => id !== productId);
-@@ -157,6 +240,14 @@
+@@ -157,6 +242,14 @@
    };
  
    const placeOrder = (orderData) => {
@@ -310,7 +325,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
      const newOrder = {
        id: `ord-${Date.now()}`,
        date: new Date().toISOString(),
-@@ -204,6 +295,18 @@
+@@ -204,6 +297,18 @@
    };
  
    const addAddress = (address) => {
@@ -329,7 +344,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
      setState(prev => {
        const newAddr = { ...address, id: `addr-${Date.now()}` };
        const addresses = [...(prev.user.addresses || [prev.user.address]), newAddr];
-@@ -212,6 +315,11 @@
+@@ -212,6 +317,11 @@
    };
  
    const setDefaultAddress = (addressId) => {
@@ -341,7 +356,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
      setState(prev => {
        const addresses = (prev.user.addresses || [prev.user.address]).map(a => ({ ...a, isDefault: a.id === addressId }));
        const defaultAddr = addresses.find(a => a.isDefault) || addresses[0];
-@@ -220,6 +328,15 @@
+@@ -220,6 +330,15 @@
    };
  
    const addPaymentMethod = (pm) => {
@@ -357,7 +372,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
      setState(prev => {
        const newPm = { ...pm, id: `pm-${Date.now()}` };
        const paymentMethods = [...(prev.user.paymentMethods || [prev.user.paymentMethod]), newPm];
-@@ -228,6 +345,11 @@
+@@ -228,6 +347,11 @@
    };
  
    const setDefaultPaymentMethod = (pmId) => {
@@ -369,7 +384,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
      setState(prev => {
        const paymentMethods = (prev.user.paymentMethods || [prev.user.paymentMethod]).map(p => ({ ...p, isDefault: p.id === pmId }));
        const defaultPm = paymentMethods.find(p => p.isDefault) || paymentMethods[0];
-@@ -235,6 +357,100 @@
+@@ -235,6 +359,100 @@
      });
    };
  
@@ -470,7 +485,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
    // Helper to get diff for /go endpoint
    const getStateDiff = () => {
      const diff = {};
-@@ -249,6 +465,27 @@
+@@ -249,6 +467,27 @@
      return diff;
    };
  
@@ -498,7 +513,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
    return (
      <StoreContext.Provider value={{
        state,
-@@ -263,6 +500,7 @@
+@@ -263,6 +502,7 @@
        removeSavedItem,
        addToRecentSearches,
        addToRecentlyViewed,
@@ -506,7 +521,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
        placeOrder,
        addReview,
        cancelOrder,
-@@ -272,6 +510,12 @@
+@@ -272,6 +512,12 @@
        setDefaultAddress,
        addPaymentMethod,
        setDefaultPaymentMethod,
@@ -1401,7 +1416,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/p
              </div>
 diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/src/pages/Checkout.jsx
 --- a/websites/amazon_mock/src/pages/Checkout.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Checkout.jsx	2026-07-30 20:24:53
++++ b/websites/amazon_mock/src/pages/Checkout.jsx	2026-08-03 08:21:48
 @@ -3,6 +3,7 @@
  import { useStore } from '../context/StoreContext';
  import { Button } from '../components/ui/Button';
@@ -1410,7 +1425,31 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
  
  export const Checkout = () => {
    const { state, placeOrder } = useStore();
-@@ -34,7 +35,7 @@
+@@ -29,12 +30,29 @@
+     const product = state.products.find(p => p.id === item.productId);
+     return acc + (product ? product.price * item.quantity : 0);
+   }, 0);
+-  const tax = subtotal * 0.08;
+-  const total = subtotal + tax;
++  // Mirror the Cart's promo math so the two pages agree: the engine owns which
++  // code is applied and how much it takes off (_gym_cart_detail.applied_promo +
++  // _gym_promotions). Ignoring it and taxing the full subtotal made Checkout
++  // quote a higher total than the Cart for the same cart.
++  const promoDefs = state._gym_promotions || [];
++  const enginePromoRaw = state._gym_cart_detail && state._gym_cart_detail.applied_promo;
++  const appliedPromoCode = enginePromoRaw
++    ? (typeof enginePromoRaw === 'string' ? enginePromoRaw : (enginePromoRaw.code || null))
++    : null;
++  const promoDef = appliedPromoCode
++    ? promoDefs.find(p => (p.code || '').toUpperCase() === appliedPromoCode.toUpperCase())
++    : null;
++  const discount = !appliedPromoCode ? 0
++    : promoDef
++      ? (promoDef.discount_flat ? Math.min(promoDef.discount_flat, subtotal) : subtotal * (promoDef.discount_pct || 0))
++      : subtotal * 0.10; // demo fallback, same as the Cart
++  const discountedSubtotal = subtotal - discount;
++  const tax = discountedSubtotal * 0.08;
++  const total = discountedSubtotal + tax;
  
    const handlePlaceOrder = () => {
      setLoading(true);
@@ -1419,7 +1458,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
        const orderData = {
          items: state.cart,
          total: total,
-@@ -43,7 +44,7 @@
+@@ -43,7 +61,7 @@
          trackingNumber: null,
          estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
        };
@@ -1428,7 +1467,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
        setLoading(false);
        navigate(`/order-confirmation/${orderId}`);
      }, 1500);
-@@ -115,7 +116,15 @@
+@@ -115,7 +133,15 @@
                      </label>
                    ))}
                  </div>
@@ -1445,7 +1484,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
                </div>
              ) : (
                <div className="text-sm text-gray-600 flex items-center gap-2">
-@@ -156,7 +165,11 @@
+@@ -156,7 +182,11 @@
                            <span className="font-bold">{pm.brand} ending in {pm.last4}</span>
                            {pm.isDefault && <span className="text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">Default</span>}
                          </div>
@@ -1458,7 +1497,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
                        </div>
                      </label>
                    ))}
-@@ -209,7 +222,7 @@
+@@ -209,12 +239,17 @@
                {loading ? 'Processing...' : 'Place your order'}
              </Button>
              <p className="text-xs text-gray-500 mb-4">
@@ -1467,6 +1506,16 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
              </p>
              <h3 className="font-bold text-lg mb-2">Order Summary</h3>
              <div className="text-sm space-y-1">
+               <div className="flex justify-between"><span>Items:</span> <span>${subtotal.toFixed(2)}</span></div>
+               <div className="flex justify-between"><span>Shipping:</span> <span>$0.00</span></div>
++              {discount > 0 && (
++                <div className="flex justify-between text-green-700">
++                  <span>Promo{appliedPromoCode ? ` (${appliedPromoCode})` : ''}:</span> <span>-${discount.toFixed(2)}</span>
++                </div>
++              )}
+               <div className="flex justify-between"><span>Tax:</span> <span>${tax.toFixed(2)}</span></div>
+               <div className="flex justify-between border-t pt-1 font-bold text-red-700 text-lg">
+                 <span>Order Total:</span> <span>${total.toFixed(2)}</span>
 diff -ruN a/websites/amazon_mock/src/pages/Home.jsx b/websites/amazon_mock/src/pages/Home.jsx
 --- a/websites/amazon_mock/src/pages/Home.jsx	2026-07-28 11:01:47
 +++ b/websites/amazon_mock/src/pages/Home.jsx	2026-07-31 15:08:05
@@ -1919,7 +1968,7 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductListing.jsx b/websites/amazon_
              <span className="text-gray-700">{categoryParam}</span>
 diff -ruN a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/src/pages/Profile.jsx
 --- a/websites/amazon_mock/src/pages/Profile.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Profile.jsx	2026-07-30 18:17:36
++++ b/websites/amazon_mock/src/pages/Profile.jsx	2026-08-03 08:21:27
 @@ -1,8 +1,9 @@
 -import React, { useState } from 'react';
 +import React, { useState, useEffect } from 'react';
@@ -1955,7 +2004,32 @@ diff -ruN a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/sr
  
    const addresses = state.user.addresses || [state.user.address];
    const paymentMethods = state.user.paymentMethods || [state.user.paymentMethod];
-@@ -156,6 +165,33 @@
+@@ -143,12 +152,18 @@
+                   <div className="text-sm font-bold">Name</div>
+                   <div className="text-sm text-gray-600">{state.user.name}</div>
+                 </div>
+-                <button
+-                  className="text-xmazon-blue hover:underline text-sm"
+-                  onClick={() => { setEditName(state.user.name); setEditEmail(state.user.email); setIsEditingProfile(true); }}
+-                >
+-                  Edit
+-                </button>
++                {bridged() ? (
++                  /* Editing name/email isn't backed by an engine action here, so
++                     don't offer a Save affordance that would fake success. */
++                  <span className="text-xs text-gray-500">Read-only in this store</span>
++                ) : (
++                  <button
++                    className="text-xmazon-blue hover:underline text-sm"
++                    onClick={() => { setEditName(state.user.name); setEditEmail(state.user.email); setIsEditingProfile(true); }}
++                  >
++                    Edit
++                  </button>
++                )}
+               </div>
+               <div className="flex justify-between items-center py-3 border-b">
+                 <div>
+@@ -156,6 +171,33 @@
                    <div className="text-sm text-gray-600">{state.user.email}</div>
                  </div>
                </div>
@@ -1989,7 +2063,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/sr
              </div>
              {isEditingProfile && (
                <form onSubmit={handleSaveProfile} className="space-y-3 border-t pt-4">
-@@ -276,7 +312,7 @@
+@@ -276,7 +318,7 @@
              <div className="flex items-center gap-4 mb-4 p-4 bg-gradient-to-r from-[#232f3e] to-[#37475a] rounded-lg">
                <span className="text-[#00a8e1] font-bold italic text-[28px]">prime</span>
                <div className="text-white">

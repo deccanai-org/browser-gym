@@ -482,7 +482,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/SettingsModal.jsx b/web
          'BEGIN:VEVENT',
 diff -ruN a/websites/google_calendar_mock/src/components/Sidebar.jsx b/websites/google_calendar_mock/src/components/Sidebar.jsx
 --- a/websites/google_calendar_mock/src/components/Sidebar.jsx	2026-07-28 11:01:47
-+++ b/websites/google_calendar_mock/src/components/Sidebar.jsx	2026-07-31 15:10:12
++++ b/websites/google_calendar_mock/src/components/Sidebar.jsx	2026-08-03 08:19:52
 @@ -3,13 +3,27 @@
  import { Plus, Eye, EyeOff, Trash2, Database } from 'lucide-react';
  import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, startOfWeek, endOfWeek } from 'date-fns';
@@ -572,7 +572,25 @@ diff -ruN a/websites/google_calendar_mock/src/components/Sidebar.jsx b/websites/
            <div className="space-y-1">
              {state.calendars.map(cal => (
                <div key={cal.id} className="group flex items-center justify-between px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">
-@@ -164,6 +148,63 @@
+@@ -127,10 +111,13 @@
+                   className="flex items-center gap-3 flex-1"
+                   onClick={() => dispatch({ type: 'TOGGLE_CALENDAR', payload: cal.id })}
+                 >
+-                  <div className={clsx(
+-                    "w-4 h-4 rounded border flex items-center justify-center",
+-                    cal.visible ? cal.color : "border-text-secondary"
+-                  )}>
++                  <div
++                    className="w-4 h-4 rounded border flex items-center justify-center"
++                    style={{
++                      backgroundColor: cal.visible ? swatchColor(cal.color) : 'transparent',
++                      borderColor: cal.visible ? swatchColor(cal.color) : '#70757A',
++                    }}
++                  >
+                     {cal.visible && <div className="w-2 h-2 bg-white rounded-full opacity-0" />}
+                     {cal.visible && <span className="text-white text-xs">✓</span>}
+                   </div>
+@@ -164,6 +151,63 @@
                </div>
              ))}
            </div>
@@ -636,7 +654,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/Sidebar.jsx b/websites/
            {calendarToDelete && (
              <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40">
                <div className="w-full max-w-sm rounded-lg bg-white p-5 shadow-xl border border-gray-200">
-@@ -196,6 +237,12 @@
+@@ -196,6 +240,12 @@
            </div>
          </div>
        </div>
@@ -673,7 +691,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/WeekView.jsx b/websites
  
 diff -ruN a/websites/google_calendar_mock/src/context/StoreContext.jsx b/websites/google_calendar_mock/src/context/StoreContext.jsx
 --- a/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-31 15:09:02
++++ b/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-08-03 08:19:49
 @@ -1,7 +1,41 @@
  import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react';
  import { MOCK_USER, DEFAULT_CALENDARS, generateMockEvents, getSessionId, fetchCustomState, saveState, initializeData, getInitialState } from '../utils/helpers';
@@ -742,7 +760,7 @@ diff -ruN a/websites/google_calendar_mock/src/context/StoreContext.jsx b/website
  
    const [state, dispatch] = useReducer(reducer, defaultState, (initial) => {
      // Session-aware: check localStorage with session key BEFORE any async fetch
-@@ -114,22 +160,65 @@
+@@ -114,31 +160,137 @@
      initDone.current = true;
  
      const sid = sidRef.current;
@@ -816,7 +834,10 @@ diff -ruN a/websites/google_calendar_mock/src/context/StoreContext.jsx b/website
      });
    }, []);
  
-@@ -139,6 +228,69 @@
+   useEffect(() => {
+-    if (!readyToSave) return;
++    if (!readyToSave || bridged()) return;
+     const sid = sidRef.current;
      saveState(state, sid);
    }, [state, readyToSave]);
  

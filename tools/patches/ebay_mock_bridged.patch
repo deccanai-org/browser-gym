@@ -200,7 +200,7 @@ diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/sr
                  <button type="button" onClick={() => setShowShippingDialog(false)} className="px-4 py-2 font-bold text-gray-600 hover:bg-gray-100 rounded">
 diff -ruN a/websites/ebay_mock/src/context/StoreContext.jsx b/websites/ebay_mock/src/context/StoreContext.jsx
 --- a/websites/ebay_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/context/StoreContext.jsx	2026-07-31 15:07:11
++++ b/websites/ebay_mock/src/context/StoreContext.jsx	2026-08-03 08:19:59
 @@ -1,6 +1,15 @@
  import React, { createContext, useContext, useReducer, useEffect, useRef, useState } from 'react';
  import { INITIAL_STATE, getSessionId, fetchCustomState, saveState, initializeData } from '../data/mockData';
@@ -320,12 +320,25 @@ diff -ruN a/websites/ebay_mock/src/context/StoreContext.jsx b/websites/ebay_mock
            const data = initializeData(sid, customState);
            dispatch({ type: ACTIONS.SET_STATE, payload: data });
            setHydrated(true);
-@@ -405,6 +482,12 @@
+@@ -395,7 +472,7 @@
+ 
+   // Save to localStorage
+   useEffect(() => {
+-    if (hydrated) {
++    if (hydrated && !bridged()) {
+       saveState(state, sidRef.current);
+     }
+   }, [state, hydrated]);
+@@ -405,6 +482,16 @@
    };
  
    const buyNow = (listingId) => {
 +    if (bridged()) {
-+      bridgeAct('market.add_to_cart', { product_id: listingId, quantity: 1 })
++      // market.checkout has no per-item param — it checks out the ENTIRE cart.
++      // Clear first so Buy It Now purchases only this item, never sweeping in
++      // whatever else the user happened to have in the cart.
++      bridgeAct('market.clear_cart', {})
++        .then(() => bridgeAct('market.add_to_cart', { product_id: listingId, quantity: 1 }))
 +        .then(() => bridgeAct('market.checkout', {}))
 +        .then(r => applyEngine(dispatch, r));
 +      return;
@@ -333,7 +346,7 @@ diff -ruN a/websites/ebay_mock/src/context/StoreContext.jsx b/websites/ebay_mock
      dispatch({ type: ACTIONS.BUY_NOW, payload: { listingId, userId: state.currentUser.id } });
    };
  
-@@ -452,17 +535,59 @@
+@@ -452,17 +539,59 @@
    };
  
    const addToCart = (listingId) => {
@@ -393,7 +406,7 @@ diff -ruN a/websites/ebay_mock/src/context/StoreContext.jsx b/websites/ebay_mock
    const markNotificationRead = (notifId) => {
      dispatch({ type: ACTIONS.MARK_NOTIFICATION_READ, payload: { notifId } });
    };
-@@ -471,6 +596,26 @@
+@@ -471,6 +600,26 @@
      dispatch({ type: ACTIONS.MARK_ALL_NOTIFICATIONS_READ });
    };
  
@@ -420,7 +433,7 @@ diff -ruN a/websites/ebay_mock/src/context/StoreContext.jsx b/websites/ebay_mock
    return (
      <StoreContext.Provider value={{
        state,
-@@ -488,6 +633,9 @@
+@@ -488,6 +637,9 @@
        addToCart,
        removeFromCart,
        clearCart,

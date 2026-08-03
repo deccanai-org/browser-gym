@@ -714,14 +714,47 @@ diff -ruN a/websites/uber_eats_mock/src/components/Sidebar.jsx b/websites/uber_e
          </div>
 diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_eats_mock/src/context/AppContext.jsx
 --- a/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-31 15:11:12
-@@ -1,21 +1,57 @@
++++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-08-03 08:22:40
+@@ -1,21 +1,102 @@
  import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
  import { getSessionId, fetchCustomState, saveState, initializeData, initialKey, generateId } from '../utils/dataManager';
  import { computeStateDiff } from '../utils/stateTracker';
 +import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
  
 +const APP = 'food'; // bridge engine app key for this mock
++
++// The engine projects cart/order lines as {cartItemId, menuItem:{...}, quantity}
++// with NO flat name/totalPrice/selectedOptions, and order.total as an object.
++// The readers (CartPanel.jsx:15, Orders.jsx:37, OrderTracking.jsx:266/303) want
++// the flat fields, so fill them in ONCE at adoption rather than shape-guarding
++// every reader — otherwise the UI shows "N× undefined" and "$NaN".
++const _optDelta = (opts) => (opts || []).reduce((s, o) => s + (o.priceModifier || 0), 0);
++const _normLine = (item) => {
++  if (!item || typeof item !== 'object') return item;
++  const mi = item.menuItem;
++  const quantity = item.quantity ?? 1;
++  const selectedOptions = item.selectedOptions || [];
++  const unit = mi?.price ?? item.basePrice ?? 0;
++  return {
++    ...item,
++    name: item.name ?? mi?.name,
++    quantity,
++    selectedOptions,
++    totalPrice: item.totalPrice ?? (unit + _optDelta(selectedOptions)) * quantity,
++  };
++};
++const normalizeEngineData = (data) => {
++  if (!data) return data;
++  return {
++    ...data,
++    cart: data.cart ? { ...data.cart, items: (data.cart.items || []).map(_normLine) } : data.cart,
++    orders: (data.orders || []).map(o => ({
++      ...o,
++      items: (o.items || []).map(_normLine),
++      total: o?.total?.total ?? o?.total,
++    })),
++  };
++};
 +
  const AppContext = createContext(null);
  
@@ -739,7 +772,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
 +  // replaces, not merges). Guard against a null engine state.
 +  const applyEngine = useCallback((engineState) => {
 +    if (!engineState) return;
-+    setState(initializeData(sidRef.current, engineState));
++    setState(normalizeEngineData(initializeData(sidRef.current, engineState)));
 +  }, []);
 +
    useEffect(() => {
@@ -753,7 +786,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
 +    if (bridged()) {
 +      bridgeState(APP).then(s => {
 +        if (s) {
-+          const data = initializeData(sid, s);
++          const data = normalizeEngineData(initializeData(sid, s));
 +          setState(data);
 +          setInitialStateSnapshot(JSON.parse(JSON.stringify(data)));
 +        }
@@ -764,8 +797,20 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
 +      // (which month you were on, your filters, saved-for-later) mid-interaction.
 +      const stop = bridgePoll(APP, s => {
 +        if (!s) return;
-+        const { ui, ...engineOwned } = initializeData(sid, s);
-+        setState(prev => ({ ...(prev || {}), ...engineOwned, ui: prev?.ui ?? ui }));
++        const { ui, ...engineOwned } = normalizeEngineData(initializeData(sid, s));
++        setState(prev => {
++          const base = prev || {};
++          // The engine projection doesn't carry the delivery note (it's ours
++          // until checkout), so a wholesale cart swap wiped it every 2.5s.
++          // Spread base.cart first to keep any locally-owned field the engine
++          // omits, then explicitly protect deliveryInstructions from an
++          // engine-carried empty value.
++          const cart = engineOwned.cart
++            ? { ...(base.cart || {}), ...engineOwned.cart,
++                deliveryInstructions: base.cart?.deliveryInstructions ?? engineOwned.cart.deliveryInstructions }
++            : base.cart;
++          return { ...base, ...engineOwned, cart, ui: base.ui ?? ui };
++        });
 +      });
 +      return () => stop();
 +    }
@@ -773,7 +818,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
      const ik = initialKey(sid);
      const isRefresh = localStorage.getItem(ik) !== null;
  
-@@ -26,7 +62,17 @@
+@@ -26,7 +107,17 @@
        setInitialStateSnapshot(initial);
        setLoading(false);
      } else {
@@ -791,7 +836,18 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
          const data = initializeData(sid, custom);
          setState(data);
          setInitialStateSnapshot(JSON.parse(JSON.stringify(data)));
-@@ -44,6 +90,16 @@
+@@ -36,7 +127,9 @@
+   }, []);
+ 
+   useEffect(() => {
+-    if (!loading && state) {
++    // In bridged mode the gym engine owns the state; persisting our projection
++    // back to localStorage on every 2.5s poll floods storage with churn.
++    if (!loading && state && !bridged()) {
+       saveState(state, sidRef.current);
+     }
+   }, [state, loading]);
+@@ -44,6 +137,16 @@
    // --- Actions ---
  
    const addToCart = useCallback((menuItem, restaurant, quantity, selectedOptions, specialInstructions) => {
@@ -808,7 +864,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
      setState(prev => {
        if (!prev) return prev;
        const modifierTotal = selectedOptions.reduce((s, o) => s + o.priceModifier, 0);
-@@ -90,10 +146,24 @@
+@@ -90,10 +193,24 @@
      });
    }, []);
  
@@ -834,7 +890,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
        return {
          ...prev,
          cart: {
-@@ -109,8 +179,14 @@
+@@ -109,8 +226,14 @@
    const updateCartItemQuantity = useCallback((cartItemId, newQuantity) => {
      setState(prev => {
        if (!prev) return prev;
@@ -850,7 +906,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
          return {
            ...prev,
            cart: {
-@@ -126,12 +202,12 @@
+@@ -126,12 +249,12 @@
          cart: {
            ...prev.cart,
            items: prev.cart.items.map(item => {
@@ -866,7 +922,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
              };
            })
          }
-@@ -140,6 +216,13 @@
+@@ -140,6 +263,13 @@
    }, []);
  
    const clearCart = useCallback(() => {
@@ -880,7 +936,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
      setState(prev => {
        if (!prev) return prev;
        return {
-@@ -155,6 +238,17 @@
+@@ -155,6 +285,17 @@
    }, []);
  
    const placeOrder = useCallback((orderData) => {
@@ -898,7 +954,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
      const orderId = 'ord_' + Date.now().toString(36);
      setState(prev => {
        if (!prev) return prev;
-@@ -228,7 +322,7 @@
+@@ -228,7 +369,7 @@
        };
      });
      return orderId;
@@ -907,7 +963,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
  
    const toggleFavorite = useCallback((restaurantId) => {
      setState(prev => {
-@@ -332,46 +426,62 @@
+@@ -332,46 +473,62 @@
      });
    }, []);
  
@@ -1008,7 +1064,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
    const updateUser = useCallback((fields) => {
      setState(prev => {
        if (!prev) return prev;
-@@ -439,12 +549,28 @@
+@@ -439,12 +596,28 @@
      };
    }, [state, initialStateSnapshot]);
  
@@ -1038,7 +1094,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
              <span style={{ color: '#06C167' }}>Eats</span>
            </div>
            <p style={{ color: '#6B6B6B', marginTop: '12px' }}>Loading...</p>
-@@ -471,6 +597,7 @@
+@@ -471,6 +644,7 @@
        updateDefaultPayment,
        setTip,
        applyPromoCode,
@@ -1484,7 +1540,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Account.jsx b/websites/uber_eats_m
                <div className="uber-one-modal__benefit">
 diff -ruN a/websites/uber_eats_mock/src/pages/Checkout.jsx b/websites/uber_eats_mock/src/pages/Checkout.jsx
 --- a/websites/uber_eats_mock/src/pages/Checkout.jsx	2026-07-28 11:01:47
-+++ b/websites/uber_eats_mock/src/pages/Checkout.jsx	2026-07-31 18:07:52
++++ b/websites/uber_eats_mock/src/pages/Checkout.jsx	2026-08-03 08:22:48
 @@ -2,6 +2,7 @@
  import { useNavigate, Link } from 'react-router-dom';
  import { MapPin, Clock, CreditCard, Check } from 'lucide-react';
@@ -1509,7 +1565,24 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Checkout.jsx b/websites/uber_eats_
      const total = subtotal + serviceFee + deliveryFee + tax + tipAmount - (cart.promoDiscount || 0);
      return {
        subtotal,
-@@ -205,27 +209,30 @@
+@@ -67,11 +71,13 @@
+     }
+   };
+ 
+-  const handlePlaceOrder = () => {
++  const handlePlaceOrder = async () => {
+     if (!selectedAddress) return;
+     setPlacing(true);
+-    const orderId = placeOrder({});
+-    navigate(`/orders/${orderId}`);
++    // placeOrder is async in bridged mode; awaiting a plain value is a no-op
++    // in legacy mode. Without the await we navigated to /orders/undefined.
++    const orderId = await placeOrder({});
++    navigate(orderId ? `/orders/${orderId}` : '/orders');
+   };
+ 
+   return (
+@@ -205,27 +211,30 @@
              {promoError && <p className="checkout__promo-error">{promoError}</p>}
            </section>
  
@@ -1558,7 +1631,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Checkout.jsx b/websites/uber_eats_
  
            {/* Items */}
            <section className="checkout__section">
-@@ -268,10 +275,12 @@
+@@ -268,10 +277,12 @@
                <span>Tax</span>
                <span>{formatCurrency(totals.tax)}</span>
              </div>
