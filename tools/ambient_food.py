@@ -176,43 +176,53 @@ def _slug(name: str) -> str:
     return "".join(c if c.isalnum() else "_" for c in name.lower()).strip("_")
 
 
+import json as _json
+import pathlib as _pathlib
+
+# Each ambient restaurant now has its OWN unique menu — unique dish names and a
+# unique generated photo per dish (gf_<restaurant>_<i>). No two restaurants share
+# a dish or an image, so the app stops looking like a copy-paste. Authored offline
+# (see tools/ambient_food_menus.json); ids stay amb_r_<slug>/amb_d_<slug>_<i> so
+# ambient orders + favourites below keep resolving.
+_MENUS = _json.loads((_pathlib.Path(__file__).with_name("ambient_food_menus.json")).read_text())
+
+
 def build_ambient(_food_img, _svg_tile):
     """Return (restaurants, menu_items, reviews). Images resolved via the passed
     projection helpers so there's a single source of truth for asset paths."""
     restaurants, menu_items, reviews = [], [], []
     rev_i = 0
-    for cuisine, spec in _CUISINES.items():
-        for rname, rating, fee, eta in spec["restaurants"]:
-            rid = f"amb_r_{_slug(rname)}"
-            for di, (dname, price, key, diet) in enumerate(spec["dishes"]):
-                menu_items.append({
-                    "id": f"amb_d_{_slug(rname)}_{di}", "restaurantId": rid,
-                    "category": cuisine, "name": dname, "description": f"{dname} from {rname}.",
-                    "price": price, "imageUrl": _food_img(_DISH_NAME_IMAGE.get(dname, key)),
-                    "isPopular": di == 0, "isAvailable": True,
-                    "dietaryTags": diet, "customizationGroups": [],
-                })
-            _first = spec["dishes"][0]
-            restaurants.append({
-                "id": rid, "name": rname,
-                "imageUrl": _food_img(_DISH_NAME_IMAGE.get(_first[0], _first[2])),
-                "cuisineType": [cuisine], "rating": rating,
-                "reviewCount": 40 + (len(rname) * 7) % 260,
-                "priceRange": "$$", "deliveryFee": fee, "etaLabel": eta,
-                "deliveryTimeMin": int(eta.split("-")[0]), "deliveryTimeMax": int(eta.split("-")[1].split()[0]),
-                "distance": round(0.5 + (len(rname) % 5) * 0.4, 1), "isOpen": True,
-                "hours": "10:00 AM - 10:00 PM", "address": "", "phone": "", "isSponsored": False,
-                "promotions": (["$0 Delivery Fee"] if fee == 0 else []),
-                "categories": [cuisine], "tags": [], "supportsPickup": True,
-                "pickupTimeMin": 10, "pickupTimeMax": 20,
+    for r in _MENUS:
+        rname = r["name"]; cuisine = r["cuisine"]; rid = f"amb_r_{_slug(rname)}"
+        fee = r["fee"]; eta = r["eta"]
+        for di, d in enumerate(r["dishes"]):
+            menu_items.append({
+                "id": f"amb_d_{_slug(rname)}_{di}", "restaurantId": rid,
+                "category": cuisine, "name": d["name"], "description": f"{d['name']} from {rname}.",
+                "price": d["price"], "imageUrl": _food_img(d["image_key"]),
+                "isPopular": di == 0, "isAvailable": True,
+                "dietaryTags": d.get("tags", []), "customizationGroups": [],
             })
-            # two deterministic reviews per restaurant
-            for _ in range(2):
-                who, stars, text = _REVIEW_POOL[rev_i % len(_REVIEW_POOL)]
-                reviews.append({"id": f"amb_rev_{_slug(rname)}_{rev_i}", "restaurantId": rid,
-                                "userName": who, "rating": stars, "comment": text,
-                                "createdAt": "2026-05-1%dT12:00:00" % (rev_i % 9 + 1)})
-                rev_i += 1
+        restaurants.append({
+            "id": rid, "name": rname,
+            "imageUrl": _food_img(r["dishes"][0]["image_key"]),
+            "cuisineType": [cuisine], "rating": r["rating"],
+            "reviewCount": 40 + (len(rname) * 7) % 260,
+            "priceRange": "$$", "deliveryFee": fee, "etaLabel": eta,
+            "deliveryTimeMin": int(eta.split("-")[0]), "deliveryTimeMax": int(eta.split("-")[1].split()[0]),
+            "distance": round(0.5 + (len(rname) % 5) * 0.4, 1), "isOpen": True,
+            "hours": "10:00 AM - 10:00 PM", "address": "", "phone": "", "isSponsored": False,
+            "promotions": (["$0 Delivery Fee"] if fee == 0 else []),
+            "categories": [cuisine], "tags": [], "supportsPickup": True,
+            "pickupTimeMin": 10, "pickupTimeMax": 20,
+        })
+        # two deterministic reviews per restaurant
+        for _ in range(2):
+            who, stars, text = _REVIEW_POOL[rev_i % len(_REVIEW_POOL)]
+            reviews.append({"id": f"amb_rev_{_slug(rname)}_{rev_i}", "restaurantId": rid,
+                            "userName": who, "rating": stars, "comment": text,
+                            "createdAt": "2026-05-1%dT12:00:00" % (rev_i % 9 + 1)})
+            rev_i += 1
     return restaurants, menu_items, reviews
 
 

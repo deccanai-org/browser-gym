@@ -87,11 +87,15 @@ def build_shop():
     for cat, items in _SHOP.items():
         for i, (title, price, orig, key, brand) in enumerate(items):
             pid = f"amb_p_{key}_{i}"
+            # each named product prefers its OWN generated photo (keyed by id) so
+            # two "perfume" products don't share one type image; falls back to the
+            # type image only if the per-product one isn't in the manifest.
+            pimg = _uimg(pid, key)
             out.append({
                 "id": pid, "title": title, "price": price, "originalPrice": orig,
                 "rating": round(4.0 + ((len(title) * 7) % 10) / 10, 1),
                 "reviewCount": 30 + (len(title) * 13) % 900,
-                "image": _img(key), "images": [_img(key)],
+                "image": pimg, "images": [pimg],
                 "description": f"{title} — a customer favorite. Fast, reliable and built to last.",
                 "bulletPoints": ["Top rated in its category", "Ships with Prime", "1-year warranty"],
                 "specs": {"Brand": brand, "Weight": "0.8 kg", "Emoji": ""},
@@ -174,7 +178,7 @@ def build_market(svg_tile):
         listings.append({
             "id": f"amb_l_{key}_{i}", "sellerId": sid, "title": title,
             "description": f"{title}. Ships fast from a top-rated seller.",
-            "images": [_img(key)],
+            "images": [_uimg(f"amb_l_{key}_{i}", key)],
             "type": "auction" if auction else "fixed",
             "startingBid": round(price * 0.5, 2) if auction else None,
             "currentBid": round(price * 0.82, 2) if auction else None,

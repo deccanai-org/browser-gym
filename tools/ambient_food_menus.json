@@ -1,0 +1,1566 @@
+[
+ {
+  "name": "Napoli Slice",
+  "cuisine": "Pizza",
+  "tagline": "Wood-fired Neapolitan, Naples-style",
+  "rating": 4.7,
+  "fee": 1.99,
+  "eta": "25-35 min",
+  "dishes": [
+   {
+    "name": "Napoli's Classic Margherita",
+    "price": 13.5,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_napoli_slice_0"
+   },
+   {
+    "name": "Diavola Piccante",
+    "price": 15,
+    "tags": [],
+    "image_key": "gf_napoli_slice_1"
+   },
+   {
+    "name": "Marinara Verace",
+    "price": 10.5,
+    "tags": [
+     "vegan"
+    ],
+    "image_key": "gf_napoli_slice_2"
+   },
+   {
+    "name": "Prosciutto e Rucola",
+    "price": 16.5,
+    "tags": [],
+    "image_key": "gf_napoli_slice_3"
+   },
+   {
+    "name": "Nonna's Garlic Knots",
+    "price": 6.5,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_napoli_slice_4"
+   }
+  ]
+ },
+ {
+  "name": "Crust & Co.",
+  "cuisine": "Pizza",
+  "tagline": "Artisan pan pies, small-batch dough",
+  "rating": 4.5,
+  "fee": 2.49,
+  "eta": "30-40 min",
+  "dishes": [
+   {
+    "name": "Motor City Pepperoni Pan",
+    "price": 15.5,
+    "tags": [],
+    "image_key": "gf_crust_co_0"
+   },
+   {
+    "name": "Wild Mushroom Truffle Bianca",
+    "price": 17.5,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_crust_co_1"
+   },
+   {
+    "name": "Fig & Prosciutto Flatbread",
+    "price": 16,
+    "tags": [],
+    "image_key": "gf_crust_co_2"
+   },
+   {
+    "name": "Smoked Brisket BBQ Pie",
+    "price": 18.5,
+    "tags": [],
+    "image_key": "gf_crust_co_3"
+   },
+   {
+    "name": "Garden Harvest Vegan Pan",
+    "price": 14,
+    "tags": [
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_crust_co_4"
+   }
+  ]
+ },
+ {
+  "name": "Slice House",
+  "cuisine": "Pizza",
+  "tagline": "Giant foldable New York slices",
+  "rating": 4.3,
+  "fee": 0.0,
+  "eta": "20-30 min",
+  "dishes": [
+   {
+    "name": "The Big Cheese Slice",
+    "price": 3.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_slice_house_0"
+   },
+   {
+    "name": "Pepperoni Cup & Char Slice",
+    "price": 4.99,
+    "tags": [],
+    "image_key": "gf_slice_house_1"
+   },
+   {
+    "name": "Grandma's Sicilian Square",
+    "price": 5.5,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_slice_house_2"
+   },
+   {
+    "name": "Buffalo Chicken Ranch Slice",
+    "price": 6.99,
+    "tags": [],
+    "image_key": "gf_slice_house_3"
+   },
+   {
+    "name": "Spinach & Ricotta White Slice",
+    "price": 5.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_slice_house_4"
+   }
+  ]
+ },
+ {
+  "name": "Patty Palace",
+  "cuisine": "Burgers",
+  "tagline": "Classic diner royalty since '74",
+  "rating": 4.6,
+  "fee": 2.99,
+  "eta": "20-30 min",
+  "dishes": [
+   {
+    "name": "The Crown Royale Double",
+    "price": 13.49,
+    "tags": [],
+    "image_key": "gf_patty_palace_0"
+   },
+   {
+    "name": "Monarch Bacon & Blue",
+    "price": 13.99,
+    "tags": [],
+    "image_key": "gf_patty_palace_1"
+   },
+   {
+    "name": "Court Jester Crispy Chicken",
+    "price": 11.49,
+    "tags": [],
+    "image_key": "gf_patty_palace_2"
+   },
+   {
+    "name": "Regent's Garden Veggie Burger",
+    "price": 10.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_patty_palace_3"
+   },
+   {
+    "name": "Palace Vanilla Malt Shake",
+    "price": 6.49,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_patty_palace_4"
+   }
+  ]
+ },
+ {
+  "name": "The Grind House",
+  "cuisine": "Burgers",
+  "tagline": "House-ground, butcher-crafted daily",
+  "rating": 4.4,
+  "fee": 1.49,
+  "eta": "25-35 min",
+  "dishes": [
+   {
+    "name": "The Butcher's Blend",
+    "price": 15.49,
+    "tags": [],
+    "image_key": "gf_the_grind_house_0"
+   },
+   {
+    "name": "Grind House Smokestack",
+    "price": 14.99,
+    "tags": [],
+    "image_key": "gf_the_grind_house_1"
+   },
+   {
+    "name": "The Dry-Aged Ribeye Burger",
+    "price": 18.49,
+    "tags": [],
+    "image_key": "gf_the_grind_house_2"
+   },
+   {
+    "name": "Ember Portobello Melt",
+    "price": 12.49,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_the_grind_house_3"
+   },
+   {
+    "name": "Loaded Brisket Poutine",
+    "price": 8.99,
+    "tags": [],
+    "image_key": "gf_the_grind_house_4"
+   }
+  ]
+ },
+ {
+  "name": "Smash Shack",
+  "cuisine": "Burgers",
+  "tagline": "Crispy-edged smash burgers, fast",
+  "rating": 4.8,
+  "fee": 0.0,
+  "eta": "15-25 min",
+  "dishes": [
+   {
+    "name": "The OG Smash",
+    "price": 8.49,
+    "tags": [],
+    "image_key": "gf_smash_shack_0"
+   },
+   {
+    "name": "Double Stack Attack",
+    "price": 11.99,
+    "tags": [],
+    "image_key": "gf_smash_shack_1"
+   },
+   {
+    "name": "Nashville Heat Smash",
+    "price": 10.49,
+    "tags": [],
+    "image_key": "gf_smash_shack_2"
+   },
+   {
+    "name": "Beyond Smash Deluxe",
+    "price": 12.49,
+    "tags": [
+     "vegan"
+    ],
+    "image_key": "gf_smash_shack_3"
+   },
+   {
+    "name": "Crispy Shack Tots",
+    "price": 3.99,
+    "tags": [
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_smash_shack_4"
+   }
+  ]
+ },
+ {
+  "name": "Tokyo Bay",
+  "cuisine": "Sushi",
+  "tagline": "Edomae tradition, Tsukiji-fresh daily",
+  "rating": 4.7,
+  "fee": 3.49,
+  "eta": "30-45 min",
+  "dishes": [
+   {
+    "name": "Tokyo Bay Otoro Nigiri Duo",
+    "price": 16.99,
+    "tags": [],
+    "image_key": "gf_tokyo_bay_0"
+   },
+   {
+    "name": "Ginza Deluxe Chirashi",
+    "price": 17.99,
+    "tags": [],
+    "image_key": "gf_tokyo_bay_1"
+   },
+   {
+    "name": "Edomae Anago Nigiri",
+    "price": 9.49,
+    "tags": [],
+    "image_key": "gf_tokyo_bay_2"
+   },
+   {
+    "name": "Tsukiji Tamago Nigiri",
+    "price": 5.49,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_tokyo_bay_3"
+   },
+   {
+    "name": "Harbor Edamame with Yuzu Salt",
+    "price": 4.99,
+    "tags": [
+     "vegetarian",
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_tokyo_bay_4"
+   }
+  ]
+ },
+ {
+  "name": "Wasabi Grove",
+  "cuisine": "Sushi",
+  "tagline": "Playful rolls, garden-fresh flavor",
+  "rating": 4.5,
+  "fee": 2.49,
+  "eta": "25-40 min",
+  "dishes": [
+   {
+    "name": "Grove Dragon Roll",
+    "price": 15.99,
+    "tags": [],
+    "image_key": "gf_wasabi_grove_0"
+   },
+   {
+    "name": "Emerald Garden Maki",
+    "price": 6.49,
+    "tags": [
+     "vegetarian",
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_wasabi_grove_1"
+   },
+   {
+    "name": "Spicy Tuna Crunch Roll",
+    "price": 12.49,
+    "tags": [],
+    "image_key": "gf_wasabi_grove_2"
+   },
+   {
+    "name": "Rainbow Grove Roll",
+    "price": 14.99,
+    "tags": [],
+    "image_key": "gf_wasabi_grove_3"
+   },
+   {
+    "name": "Mango Tango Veggie Roll",
+    "price": 8.99,
+    "tags": [
+     "vegetarian",
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_wasabi_grove_4"
+   }
+  ]
+ },
+ {
+  "name": "Golden Dragon",
+  "cuisine": "Chinese",
+  "tagline": "Hong Kong Cantonese since 1988",
+  "rating": 4.4,
+  "fee": 1.99,
+  "eta": "30-40 min",
+  "dishes": [
+   {
+    "name": "Golden Dragon Roast Duck",
+    "price": 18.99,
+    "tags": [],
+    "image_key": "gf_golden_dragon_0"
+   },
+   {
+    "name": "Emperor's Honey Walnut Prawns",
+    "price": 16.5,
+    "tags": [],
+    "image_key": "gf_golden_dragon_1"
+   },
+   {
+    "name": "Steamed Sea Bass with Ginger & Scallion",
+    "price": 17.99,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_golden_dragon_2"
+   },
+   {
+    "name": "Imperial Yang Chow Fried Rice",
+    "price": 13.5,
+    "tags": [],
+    "image_key": "gf_golden_dragon_3"
+   },
+   {
+    "name": "Jade Garden Vegetable Chow Mein",
+    "price": 11.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_golden_dragon_4"
+   }
+  ]
+ },
+ {
+  "name": "Panda Garden",
+  "cuisine": "Chinese",
+  "tagline": "Sichuan spice, family style",
+  "rating": 4.2,
+  "fee": 0.0,
+  "eta": "25-35 min",
+  "dishes": [
+   {
+    "name": "Panda's Mala Mapo Tofu",
+    "price": 12.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_panda_garden_0"
+   },
+   {
+    "name": "Chengdu Fire Kung Pao Chicken",
+    "price": 13.99,
+    "tags": [],
+    "image_key": "gf_panda_garden_1"
+   },
+   {
+    "name": "Sichuan Dan Dan Noodles",
+    "price": 11.5,
+    "tags": [],
+    "image_key": "gf_panda_garden_2"
+   },
+   {
+    "name": "Twice-Cooked Pork Belly",
+    "price": 14.5,
+    "tags": [],
+    "image_key": "gf_panda_garden_3"
+   },
+   {
+    "name": "Garlic Garden Baby Bok Choy",
+    "price": 9.99,
+    "tags": [
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_panda_garden_4"
+   }
+  ]
+ },
+ {
+  "name": "Wok This Way",
+  "cuisine": "Chinese",
+  "tagline": "Fast fire, fresh wok",
+  "rating": 4.6,
+  "fee": 2.49,
+  "eta": "20-30 min",
+  "dishes": [
+   {
+    "name": "Wok This Way Beef Chow Fun",
+    "price": 13.99,
+    "tags": [],
+    "image_key": "gf_wok_this_way_0"
+   },
+   {
+    "name": "Sizzling Black Pepper Beef",
+    "price": 15.5,
+    "tags": [],
+    "image_key": "gf_wok_this_way_1"
+   },
+   {
+    "name": "Wok Star General's Chicken",
+    "price": 12.99,
+    "tags": [],
+    "image_key": "gf_wok_this_way_2"
+   },
+   {
+    "name": "Salt & Pepper Crispy Tofu",
+    "price": 10.5,
+    "tags": [
+     "vegan"
+    ],
+    "image_key": "gf_wok_this_way_3"
+   },
+   {
+    "name": "Singapore Street Vermicelli",
+    "price": 12.5,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_wok_this_way_4"
+   }
+  ]
+ },
+ {
+  "name": "El Sombrero",
+  "cuisine": "Mexican",
+  "tagline": "Old-school cantina classics",
+  "rating": 4.6,
+  "fee": 2.49,
+  "eta": "25-35 min",
+  "dishes": [
+   {
+    "name": "Abuela's Slow-Braised Carnitas Plate",
+    "price": 15.49,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_el_sombrero_0"
+   },
+   {
+    "name": "El Sombrero Chicken Mole Poblano",
+    "price": 16.99,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_el_sombrero_1"
+   },
+   {
+    "name": "Cantina Cheese & Chorizo Enchiladas",
+    "price": 13.49,
+    "tags": [],
+    "image_key": "gf_el_sombrero_2"
+   },
+   {
+    "name": "Sizzling Steak Fajitas de la Casa",
+    "price": 17.99,
+    "tags": [],
+    "image_key": "gf_el_sombrero_3"
+   },
+   {
+    "name": "Classic Flan de la Abuela",
+    "price": 6.49,
+    "tags": [
+     "vegetarian",
+     "gluten_free"
+    ],
+    "image_key": "gf_el_sombrero_4"
+   }
+  ]
+ },
+ {
+  "name": "Taco Fiesta",
+  "cuisine": "Mexican",
+  "tagline": "Street tacos, loud and fresh",
+  "rating": 4.5,
+  "fee": 1.49,
+  "eta": "20-30 min",
+  "dishes": [
+   {
+    "name": "Fiesta Al Pastor Street Tacos (3)",
+    "price": 10.99,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_taco_fiesta_0"
+   },
+   {
+    "name": "Baja Crispy Fish Taco Trio",
+    "price": 12.49,
+    "tags": [],
+    "image_key": "gf_taco_fiesta_1"
+   },
+   {
+    "name": "Loaded Carne Asada Fries",
+    "price": 11.99,
+    "tags": [],
+    "image_key": "gf_taco_fiesta_2"
+   },
+   {
+    "name": "Elote Callejero Grilled Street Corn",
+    "price": 5.49,
+    "tags": [
+     "vegetarian",
+     "gluten_free"
+    ],
+    "image_key": "gf_taco_fiesta_3"
+   },
+   {
+    "name": "Churros Fiesta with Chocolate Dip",
+    "price": 6.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_taco_fiesta_4"
+   }
+  ]
+ },
+ {
+  "name": "Casa Verde",
+  "cuisine": "Mexican",
+  "tagline": "Fresh, coastal & plant-forward",
+  "rating": 4.3,
+  "fee": 0.0,
+  "eta": "30-40 min",
+  "dishes": [
+   {
+    "name": "Casa Verde Green Chilaquiles Verdes",
+    "price": 12.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_casa_verde_0"
+   },
+   {
+    "name": "Grilled Shrimp & Avocado Ceviche Bowl",
+    "price": 14.49,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_casa_verde_1"
+   },
+   {
+    "name": "Roasted Poblano & Black Bean Vegan Bowl",
+    "price": 11.49,
+    "tags": [
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_casa_verde_2"
+   },
+   {
+    "name": "Jackfruit Tinga Soft Tacos (3)",
+    "price": 12.49,
+    "tags": [
+     "vegan"
+    ],
+    "image_key": "gf_casa_verde_3"
+   },
+   {
+    "name": "Mango Coconut Paletas",
+    "price": 3.99,
+    "tags": [
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_casa_verde_4"
+   }
+  ]
+ },
+ {
+  "name": "Taj Spice",
+  "cuisine": "Indian",
+  "tagline": "Royal Mughlai kitchen since 1994",
+  "rating": 4.7,
+  "fee": 2.99,
+  "eta": "35-45 min",
+  "dishes": [
+   {
+    "name": "Taj Shahi Butter Chicken",
+    "price": 14.99,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_taj_spice_0"
+   },
+   {
+    "name": "Dum Lamb Rogan Josh",
+    "price": 16.99,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_taj_spice_1"
+   },
+   {
+    "name": "Nawabi Paneer Pasanda",
+    "price": 12.99,
+    "tags": [
+     "vegetarian",
+     "gluten_free"
+    ],
+    "image_key": "gf_taj_spice_2"
+   },
+   {
+    "name": "Peshawari Garlic Naan Basket",
+    "price": 5.49,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_taj_spice_3"
+   },
+   {
+    "name": "Awadhi Mutton Biryani",
+    "price": 17.99,
+    "tags": [],
+    "image_key": "gf_taj_spice_4"
+   }
+  ]
+ },
+ {
+  "name": "Curry Leaf",
+  "cuisine": "Indian",
+  "tagline": "Coastal South Indian home cooking",
+  "rating": 4.5,
+  "fee": 1.99,
+  "eta": "30-40 min",
+  "dishes": [
+   {
+    "name": "Curry Leaf Ghee Roast Masala Dosa",
+    "price": 9.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_curry_leaf_0"
+   },
+   {
+    "name": "Chettinad Pepper Chicken",
+    "price": 13.49,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_curry_leaf_1"
+   },
+   {
+    "name": "Malabar Prawn Coconut Curry",
+    "price": 15.99,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_curry_leaf_2"
+   },
+   {
+    "name": "Podi Idli Bites",
+    "price": 6.49,
+    "tags": [
+     "vegetarian",
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_curry_leaf_3"
+   },
+   {
+    "name": "Hyderabadi Bagara Baingan",
+    "price": 11.49,
+    "tags": [
+     "vegetarian",
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_curry_leaf_4"
+   }
+  ]
+ },
+ {
+  "name": "Mumbai Masala",
+  "cuisine": "Indian",
+  "tagline": "Bombay street eats, fast and fiery",
+  "rating": 4.4,
+  "fee": 0.0,
+  "eta": "30-45 min",
+  "dishes": [
+   {
+    "name": "Mumbai Bombay Pav Bhaji",
+    "price": 8.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_mumbai_masala_0"
+   },
+   {
+    "name": "Vada Pav Double Trouble",
+    "price": 4.99,
+    "tags": [
+     "vegetarian",
+     "vegan"
+    ],
+    "image_key": "gf_mumbai_masala_1"
+   },
+   {
+    "name": "Sev Puri Chaat Platter",
+    "price": 6.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_mumbai_masala_2"
+   },
+   {
+    "name": "Schezwan Gobi Manchurian",
+    "price": 10.49,
+    "tags": [
+     "vegetarian",
+     "vegan"
+    ],
+    "image_key": "gf_mumbai_masala_3"
+   },
+   {
+    "name": "Kolhapuri Tambda Rassa Thali",
+    "price": 13.99,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_mumbai_masala_4"
+   }
+  ]
+ },
+ {
+  "name": "Bangkok Street",
+  "cuisine": "Thai",
+  "tagline": "Bold flavors from the night market",
+  "rating": 4.6,
+  "fee": 2.49,
+  "eta": "30-40 min",
+  "dishes": [
+   {
+    "name": "Chinatown Boat Noodles",
+    "price": 13.49,
+    "tags": [],
+    "image_key": "gf_bangkok_street_0"
+   },
+   {
+    "name": "Yaowarat Grilled Pork Skewers",
+    "price": 8.99,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_bangkok_street_1"
+   },
+   {
+    "name": "Night Market Pad Kee Mao",
+    "price": 12.99,
+    "tags": [],
+    "image_key": "gf_bangkok_street_2"
+   },
+   {
+    "name": "Sukhumvit Papaya Salad",
+    "price": 9.49,
+    "tags": [
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_bangkok_street_3"
+   },
+   {
+    "name": "Mango Sticky Rice Parcel",
+    "price": 7.49,
+    "tags": [
+     "vegetarian",
+     "gluten_free"
+    ],
+    "image_key": "gf_bangkok_street_4"
+   }
+  ]
+ },
+ {
+  "name": "Thai Orchid",
+  "cuisine": "Thai",
+  "tagline": "Refined Thai classics, gently spiced",
+  "rating": 4.4,
+  "fee": 1.99,
+  "eta": "25-35 min",
+  "dishes": [
+   {
+    "name": "Orchid Royal Massaman Curry",
+    "price": 15.99,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_thai_orchid_0"
+   },
+   {
+    "name": "Emerald Green Curry with Chicken",
+    "price": 14.49,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_thai_orchid_1"
+   },
+   {
+    "name": "Orchid Signature Pad Thai",
+    "price": 12.49,
+    "tags": [],
+    "image_key": "gf_thai_orchid_2"
+   },
+   {
+    "name": "Golden Tom Kha Coconut Soup",
+    "price": 10.99,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_thai_orchid_3"
+   },
+   {
+    "name": "Crispy Golden Curry Puffs",
+    "price": 6.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_thai_orchid_4"
+   }
+  ]
+ },
+ {
+  "name": "Bella Napoli",
+  "cuisine": "Italian",
+  "tagline": "Wood-fired Naples classics since 1987",
+  "rating": 4.7,
+  "fee": 2.99,
+  "eta": "30-45 min",
+  "dishes": [
+   {
+    "name": "Napoli's Classic Margherita DOP",
+    "price": 12.5,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_bella_napoli_0"
+   },
+   {
+    "name": "Spaghetti allo Scoglio",
+    "price": 17.99,
+    "tags": [],
+    "image_key": "gf_bella_napoli_1"
+   },
+   {
+    "name": "Montanara Fritta",
+    "price": 8.5,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_bella_napoli_2"
+   },
+   {
+    "name": "Parmigiana di Melanzane della Nonna",
+    "price": 13.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_bella_napoli_3"
+   },
+   {
+    "name": "Sfogliatella Riccia",
+    "price": 4.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_bella_napoli_4"
+   }
+  ]
+ },
+ {
+  "name": "Trattoria Roma",
+  "cuisine": "Italian",
+  "tagline": "Roman soul food, family-run",
+  "rating": 4.5,
+  "fee": 1.99,
+  "eta": "35-45 min",
+  "dishes": [
+   {
+    "name": "Rigatoni Cacio e Pepe",
+    "price": 13.5,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_trattoria_roma_0"
+   },
+   {
+    "name": "Bucatini all'Amatriciana",
+    "price": 14.99,
+    "tags": [],
+    "image_key": "gf_trattoria_roma_1"
+   },
+   {
+    "name": "Saltimbocca alla Romana",
+    "price": 18.5,
+    "tags": [],
+    "image_key": "gf_trattoria_roma_2"
+   },
+   {
+    "name": "Carciofi alla Romana",
+    "price": 9.5,
+    "tags": [
+     "vegetarian",
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_trattoria_roma_3"
+   },
+   {
+    "name": "Maritozzo con Panna",
+    "price": 5.5,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_trattoria_roma_4"
+   }
+  ]
+ },
+ {
+  "name": "Pasta Fresca",
+  "cuisine": "Italian",
+  "tagline": "Handmade pasta, rolled fresh daily",
+  "rating": 4.6,
+  "fee": 0.0,
+  "eta": "25-40 min",
+  "dishes": [
+   {
+    "name": "Tagliatelle al Rag\u00f9 Bolognese",
+    "price": 15.5,
+    "tags": [],
+    "image_key": "gf_pasta_fresca_0"
+   },
+   {
+    "name": "Ravioli di Ricotta e Spinaci",
+    "price": 14,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_pasta_fresca_1"
+   },
+   {
+    "name": "Trofie al Pesto Genovese",
+    "price": 13,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_pasta_fresca_2"
+   },
+   {
+    "name": "Pappardelle al Cinghiale",
+    "price": 16.99,
+    "tags": [],
+    "image_key": "gf_pasta_fresca_3"
+   },
+   {
+    "name": "Gnocchi al Gorgonzola e Noci",
+    "price": 13.5,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_pasta_fresca_4"
+   }
+  ]
+ },
+ {
+  "name": "Green Bowl",
+  "cuisine": "Healthy",
+  "tagline": "Grain bowls, made fresh daily",
+  "rating": 4.6,
+  "fee": 1.99,
+  "eta": "20-30 min",
+  "dishes": [
+   {
+    "name": "Green Bowl Signature Buddha Bowl",
+    "price": 13.49,
+    "tags": [
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_green_bowl_0"
+   },
+   {
+    "name": "Emerald Kale Caesar Bowl",
+    "price": 11.99,
+    "tags": [
+     "vegetarian",
+     "gluten_free"
+    ],
+    "image_key": "gf_green_bowl_1"
+   },
+   {
+    "name": "Sesame Ahi Poke Bowl",
+    "price": 15.99,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_green_bowl_2"
+   },
+   {
+    "name": "Roasted Sweet Potato & Farro Bowl",
+    "price": 12.49,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_green_bowl_3"
+   },
+   {
+    "name": "Sunrise Acai Berry Bowl",
+    "price": 10.49,
+    "tags": [
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_green_bowl_4"
+   }
+  ]
+ },
+ {
+  "name": "Fresh & Fit",
+  "cuisine": "Healthy",
+  "tagline": "Lean, clean, protein-packed",
+  "rating": 4.5,
+  "fee": 0.0,
+  "eta": "20-30 min",
+  "dishes": [
+   {
+    "name": "Lean Machine Grilled Chicken Plate",
+    "price": 12.99,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_fresh_fit_0"
+   },
+   {
+    "name": "Mediterranean Falafel Wrap",
+    "price": 9.49,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_fresh_fit_1"
+   },
+   {
+    "name": "Zucchini Noodle Pesto Bowl",
+    "price": 11.49,
+    "tags": [
+     "vegetarian",
+     "gluten_free"
+    ],
+    "image_key": "gf_fresh_fit_2"
+   },
+   {
+    "name": "Smoked Salmon Avocado Toast",
+    "price": 10.99,
+    "tags": [],
+    "image_key": "gf_fresh_fit_3"
+   },
+   {
+    "name": "Tropical Recovery Smoothie",
+    "price": 6.99,
+    "tags": [
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_fresh_fit_4"
+   }
+  ]
+ },
+ {
+  "name": "Sweet Tooth",
+  "cuisine": "Dessert",
+  "tagline": "Fresh-baked cakes & pies daily",
+  "rating": 4.8,
+  "fee": 1.49,
+  "eta": "20-30 min",
+  "dishes": [
+   {
+    "name": "Velvet Sunrise Red Velvet Layer Cake",
+    "price": 8.99,
+    "tags": [],
+    "image_key": "gf_sweet_tooth_0"
+   },
+   {
+    "name": "Bourbon Street Pecan Pie",
+    "price": 6.49,
+    "tags": [],
+    "image_key": "gf_sweet_tooth_1"
+   },
+   {
+    "name": "Flourless Dark Chocolate Truffle Torte",
+    "price": 7.99,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_sweet_tooth_2"
+   },
+   {
+    "name": "Meyer Lemon Cream Tart",
+    "price": 5.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_sweet_tooth_3"
+   },
+   {
+    "name": "Salted Caramel Apple Crumble",
+    "price": 5.49,
+    "tags": [],
+    "image_key": "gf_sweet_tooth_4"
+   }
+  ]
+ },
+ {
+  "name": "Sugar Rush",
+  "cuisine": "Dessert",
+  "tagline": "Loaded shakes & candy-piled treats",
+  "rating": 4.6,
+  "fee": 0.0,
+  "eta": "15-25 min",
+  "dishes": [
+   {
+    "name": "Birthday Cake Freakshake",
+    "price": 9.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_sugar_rush_0"
+   },
+   {
+    "name": "Rainbow Sprinkle Glazed Donut Stack",
+    "price": 6.99,
+    "tags": [],
+    "image_key": "gf_sugar_rush_1"
+   },
+   {
+    "name": "Cookie Dough Overload Sundae",
+    "price": 8.49,
+    "tags": [],
+    "image_key": "gf_sugar_rush_2"
+   },
+   {
+    "name": "Nutella Churro Waffle Bites",
+    "price": 7.49,
+    "tags": [],
+    "image_key": "gf_sugar_rush_3"
+   },
+   {
+    "name": "Cotton Candy Cloud Cupcake",
+    "price": 4.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_sugar_rush_4"
+   }
+  ]
+ },
+ {
+  "name": "Scoops",
+  "cuisine": "Dessert",
+  "tagline": "Small-batch ice cream & sundaes",
+  "rating": 4.7,
+  "fee": 2.49,
+  "eta": "20-30 min",
+  "dishes": [
+   {
+    "name": "Madagascar Vanilla Bean Gelato",
+    "price": 4.99,
+    "tags": [
+     "vegetarian",
+     "gluten_free"
+    ],
+    "image_key": "gf_scoops_0"
+   },
+   {
+    "name": "Toasted Pistachio Stracciatella Scoop",
+    "price": 5.99,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_scoops_1"
+   },
+   {
+    "name": "Dark Chocolate Sorbet",
+    "price": 4.49,
+    "tags": [
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_scoops_2"
+   },
+   {
+    "name": "Salted Honeycomb Brittle Sundae",
+    "price": 8.99,
+    "tags": [],
+    "image_key": "gf_scoops_3"
+   },
+   {
+    "name": "Strawberry Basil Sorbetto",
+    "price": 5.49,
+    "tags": [
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_scoops_4"
+   }
+  ]
+ },
+ {
+  "name": "The Daily Grind",
+  "cuisine": "Coffee",
+  "tagline": "Neighborhood roasts, poured with heart",
+  "rating": 4.7,
+  "fee": 0.99,
+  "eta": "15-25 min",
+  "dishes": [
+   {
+    "name": "Old Faithful House Drip",
+    "price": 3.99,
+    "tags": [
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_the_daily_grind_0"
+   },
+   {
+    "name": "Grind House Vanilla Bean Latte",
+    "price": 5.49,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_the_daily_grind_1"
+   },
+   {
+    "name": "Farmhouse Egg & Cheddar Biscuit",
+    "price": 7.99,
+    "tags": [],
+    "image_key": "gf_the_daily_grind_2"
+   },
+   {
+    "name": "Blueberry Streusel Muffin",
+    "price": 4.49,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_the_daily_grind_3"
+   },
+   {
+    "name": "Maple Oat Cold Brew",
+    "price": 5.99,
+    "tags": [
+     "vegan"
+    ],
+    "image_key": "gf_the_daily_grind_4"
+   }
+  ]
+ },
+ {
+  "name": "Brew Lab",
+  "cuisine": "Coffee",
+  "tagline": "Single-origin science in every cup",
+  "rating": 4.6,
+  "fee": 0.0,
+  "eta": "15-20 min",
+  "dishes": [
+   {
+    "name": "Ethiopia Yirgacheffe Pour-Over",
+    "price": 6.49,
+    "tags": [
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_brew_lab_0"
+   },
+   {
+    "name": "Nitro Cascara Fizz",
+    "price": 6.99,
+    "tags": [
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_brew_lab_1"
+   },
+   {
+    "name": "Deconstructed Espresso Flight",
+    "price": 8.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_brew_lab_2"
+   },
+   {
+    "name": "Lavender Honey Cortado",
+    "price": 5.49,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_brew_lab_3"
+   },
+   {
+    "name": "Brown Butter Miso Cookie",
+    "price": 4.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_brew_lab_4"
+   }
+  ]
+ },
+ {
+  "name": "Sunny Side Up",
+  "cuisine": "Breakfast",
+  "tagline": "Griddle classics, cracked fresh daily",
+  "rating": 4.6,
+  "fee": 1.99,
+  "eta": "20-30 min",
+  "dishes": [
+   {
+    "name": "The Sunny Stack Buttermilk Pancakes",
+    "price": 11.49,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_sunny_side_up_0"
+   },
+   {
+    "name": "Classic Two-Egg Diner Skillet",
+    "price": 13.99,
+    "tags": [],
+    "image_key": "gf_sunny_side_up_1"
+   },
+   {
+    "name": "Maple-Bacon Belgian Waffle",
+    "price": 12.49,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_sunny_side_up_2"
+   },
+   {
+    "name": "Farmhouse Sausage Gravy Biscuits",
+    "price": 10.99,
+    "tags": [],
+    "image_key": "gf_sunny_side_up_3"
+   },
+   {
+    "name": "Diner Corned Beef Hash & Eggs",
+    "price": 14.49,
+    "tags": [
+     "gluten_free"
+    ],
+    "image_key": "gf_sunny_side_up_4"
+   }
+  ]
+ },
+ {
+  "name": "Morning Glory",
+  "cuisine": "Breakfast",
+  "tagline": "Bright, wholesome starts made fresh",
+  "rating": 4.5,
+  "fee": 0.0,
+  "eta": "20-30 min",
+  "dishes": [
+   {
+    "name": "Avocado Smash Sourdough Toast",
+    "price": 12.99,
+    "tags": [
+     "vegetarian",
+     "vegan"
+    ],
+    "image_key": "gf_morning_glory_0"
+   },
+   {
+    "name": "Sunrise Acai Berry Bowl (2)",
+    "price": 11.99,
+    "tags": [
+     "vegetarian",
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_morning_glory_1"
+   },
+   {
+    "name": "Garden Veggie Egg-White Omelette",
+    "price": 13.49,
+    "tags": [
+     "vegetarian",
+     "gluten_free"
+    ],
+    "image_key": "gf_morning_glory_2"
+   },
+   {
+    "name": "Cinnamon Vanilla Overnight Oats",
+    "price": 8.49,
+    "tags": [
+     "vegetarian",
+     "vegan",
+     "gluten_free"
+    ],
+    "image_key": "gf_morning_glory_3"
+   },
+   {
+    "name": "Honey-Whipped Ricotta Berry Pancakes",
+    "price": 13.99,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_morning_glory_4"
+   }
+  ]
+ },
+ {
+  "name": "The Deli Counter",
+  "cuisine": "Sandwiches",
+  "tagline": "Piled-high New York deli classics",
+  "rating": 4.5,
+  "fee": 1.49,
+  "eta": "20-30 min",
+  "dishes": [
+   {
+    "name": "Sky-High Pastrami on Rye",
+    "price": 15.49,
+    "tags": [],
+    "image_key": "gf_the_deli_counter_0"
+   },
+   {
+    "name": "The Reuben Melt",
+    "price": 14.25,
+    "tags": [],
+    "image_key": "gf_the_deli_counter_1"
+   },
+   {
+    "name": "Turkey Club Triple-Decker",
+    "price": 12.99,
+    "tags": [],
+    "image_key": "gf_the_deli_counter_2"
+   },
+   {
+    "name": "Chopped Liver on Challah",
+    "price": 10.75,
+    "tags": [],
+    "image_key": "gf_the_deli_counter_3"
+   },
+   {
+    "name": "Garden Egg Salad on Wheat",
+    "price": 8.49,
+    "tags": [
+     "vegetarian"
+    ],
+    "image_key": "gf_the_deli_counter_4"
+   }
+  ]
+ },
+ {
+  "name": "Sub Culture",
+  "cuisine": "Sandwiches",
+  "tagline": "Fresh-baked hoagies, stacked to order",
+  "rating": 4.4,
+  "fee": 0.0,
+  "eta": "20-30 min",
+  "dishes": [
+   {
+    "name": "The Full Italian Hoagie",
+    "price": 11.99,
+    "tags": [],
+    "image_key": "gf_sub_culture_0"
+   },
+   {
+    "name": "Philly Cheesesteak Supreme",
+    "price": 13.49,
+    "tags": [],
+    "image_key": "gf_sub_culture_1"
+   },
+   {
+    "name": "Chicken Bacon Ranch Grinder",
+    "price": 12.25,
+    "tags": [],
+    "image_key": "gf_sub_culture_2"
+   },
+   {
+    "name": "Meatball Parm Sub",
+    "price": 10.99,
+    "tags": [],
+    "image_key": "gf_sub_culture_3"
+   },
+   {
+    "name": "Roasted Veggie & Hummus Sub",
+    "price": 9.49,
+    "tags": [
+     "vegetarian",
+     "vegan"
+    ],
+    "image_key": "gf_sub_culture_4"
+   }
+  ]
+ }
+]
