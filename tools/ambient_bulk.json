@@ -1,9 +1,9 @@
 {
  "counts": {
   "shop": 157,
-  "market": 92,
-  "mail": 25,
-  "calendar": 25
+  "market": 134,
+  "mail": 51,
+  "calendar": 49
  },
  "shop": [
   {
@@ -1999,6 +1999,342 @@
    "category": "Collectibles",
    "condition": "Used",
    "is_auction": true
+  },
+  {
+   "title": "Sony Alpha a6400 Mirrorless Camera Body (Black, Body Only)",
+   "price": 618.5,
+   "image_key": "amb_camera",
+   "category": "Electronics",
+   "condition": "Used",
+   "is_auction": true
+  },
+  {
+   "title": "Apple iPad Air (4th Generation) 64GB Wi-Fi - Sky Blue",
+   "price": 329.99,
+   "image_key": "amb_camera",
+   "category": "Electronics",
+   "condition": "Refurbished",
+   "is_auction": false
+  },
+  {
+   "title": "Bose QuietComfort 45 Wireless Noise Cancelling Headphones - Triple Black",
+   "price": 179,
+   "image_key": "amb_camera",
+   "category": "Electronics",
+   "condition": "Open Box",
+   "is_auction": false
+  },
+  {
+   "title": "Nintendo Switch OLED Model Console - White Joy-Con",
+   "price": 214,
+   "image_key": "amb_camera",
+   "category": "Electronics",
+   "condition": "Used",
+   "is_auction": true
+  },
+  {
+   "title": "DJI Mini 3 Drone (Aircraft Only, No Remote Controller)",
+   "price": 289,
+   "image_key": "amb_camera",
+   "category": "Electronics",
+   "condition": "Used",
+   "is_auction": false
+  },
+  {
+   "title": "Anker 737 Power Bank (PowerCore 24K) 24,000mAh 140W",
+   "price": 99.99,
+   "image_key": "amb_camera",
+   "category": "Electronics",
+   "condition": "Open Box",
+   "is_auction": false
+  },
+  {
+   "title": "Logitech MX Master 3S Wireless Mouse - Graphite",
+   "price": 59.99,
+   "image_key": "amb_camera",
+   "category": "Electronics",
+   "condition": "Used",
+   "is_auction": false
+  },
+  {
+   "title": "LEGO Star Wars 75192 Millennium Falcon UCS Ultimate Collector Series",
+   "price": 749.99,
+   "image_key": "amb_vinyl",
+   "category": "Collectibles",
+   "condition": "Open Box",
+   "is_auction": false
+  },
+  {
+   "title": "Pokemon Base Set Shadowless Charizard #4 PSA 7 Graded Holo",
+   "price": 2600,
+   "image_key": "amb_vinyl",
+   "category": "Collectibles",
+   "condition": "Used",
+   "is_auction": true
+  },
+  {
+   "title": "Retro Robot Bobblehead Vinyl Figure #01 (Collector Boxed)",
+   "price": 165,
+   "image_key": "amb_vinyl",
+   "category": "Collectibles",
+   "condition": "Used",
+   "is_auction": true
+  },
+  {
+   "title": "Hot Wheels Redline 1969 Custom Charger Spectraflame Lime Die-Cast",
+   "price": 135,
+   "image_key": "amb_vinyl",
+   "category": "Collectibles",
+   "condition": "Used",
+   "is_auction": true
+  },
+  {
+   "title": "Ty Beanie Babies Princess Diana Memorial Bear 1997 P.E. Pellets",
+   "price": 39.99,
+   "image_key": "amb_vinyl",
+   "category": "Collectibles",
+   "condition": "Used",
+   "is_auction": false
+  },
+  {
+   "title": "Medieval Knight Premium 1:4 Scale Resin Statue (Collector Edition)",
+   "price": 649.99,
+   "image_key": "amb_vinyl",
+   "category": "Collectibles",
+   "condition": "Open Box",
+   "is_auction": false
+  },
+  {
+   "title": "Franklin Mint 1:24 1965 Shelby Cobra 427 S/C Die-Cast Restored",
+   "price": 119,
+   "image_key": "amb_vinyl",
+   "category": "Collectibles",
+   "condition": "Refurbished",
+   "is_auction": false
+  },
+  {
+   "title": "Levi's 501 Original Fit Straight Leg Jeans, Dark Stonewash, Men's W34 L32",
+   "price": 28.5,
+   "image_key": "amb_shoes",
+   "category": "Fashion",
+   "condition": "Used",
+   "is_auction": true
+  },
+  {
+   "title": "Ray-Ban RB2140 Original Wayfarer Sunglasses, Tortoise Frame, Green G-15 Lens, 50mm",
+   "price": 74,
+   "image_key": "amb_shoes",
+   "category": "Fashion",
+   "condition": "Used",
+   "is_auction": false
+  },
+  {
+   "title": "Nike Air Force 1 '07 Low Triple White Leather Sneakers, Men's US 10",
+   "price": 82,
+   "image_key": "amb_shoes",
+   "category": "Fashion",
+   "condition": "Open Box",
+   "is_auction": false
+  },
+  {
+   "title": "Coach Willow Tote 24 Pebbled Leather Shoulder Bag, Chalk White",
+   "price": 149.99,
+   "image_key": "amb_shoes",
+   "category": "Fashion",
+   "condition": "Used",
+   "is_auction": false
+  },
+  {
+   "title": "Patagonia Nano Puff Insulated Full-Zip Jacket, Men's Medium, Black",
+   "price": 61,
+   "image_key": "amb_shoes",
+   "category": "Fashion",
+   "condition": "Used",
+   "is_auction": true
+  },
+  {
+   "title": "Michael Kors Lexington Chronograph Watch, Gold-Tone Stainless Steel, MK8281",
+   "price": 89.5,
+   "image_key": "amb_shoes",
+   "category": "Fashion",
+   "condition": "Refurbished",
+   "is_auction": false
+  },
+  {
+   "title": "Burberry Classic Check Cashmere Scarf, Camel Beige, 168cm",
+   "price": 195,
+   "image_key": "amb_shoes",
+   "category": "Fashion",
+   "condition": "Used",
+   "is_auction": false
+  },
+  {
+   "title": "Dyson V11 Torque Drive Cordless Stick Vacuum - Refurbished",
+   "price": 289.99,
+   "image_key": "amb_blender",
+   "category": "Home & Garden",
+   "condition": "Refurbished",
+   "is_auction": false
+  },
+  {
+   "title": "Weber Spirit II E-310 3-Burner Propane Gas Grill (Black)",
+   "price": 419,
+   "image_key": "amb_blender",
+   "category": "Home & Garden",
+   "condition": "Open Box",
+   "is_auction": false
+  },
+  {
+   "title": "Nest Learning Thermostat 3rd Generation - Stainless Steel",
+   "price": 129.5,
+   "image_key": "amb_blender",
+   "category": "Home & Garden",
+   "condition": "Used",
+   "is_auction": true
+  },
+  {
+   "title": "KitchenAid Artisan 5-Qt Tilt-Head Stand Mixer (Empire Red)",
+   "price": 234.99,
+   "image_key": "amb_blender",
+   "category": "Home & Garden",
+   "condition": "Used",
+   "is_auction": false
+  },
+  {
+   "title": "Fiskars PowerGear2 Bypass Lopper 32-Inch Tree Pruner",
+   "price": 27.95,
+   "image_key": "amb_blender",
+   "category": "Home & Garden",
+   "condition": "New",
+   "is_auction": false
+  },
+  {
+   "title": "Ring Video Doorbell 4 with Quick Replies - Satin Nickel",
+   "price": 74,
+   "image_key": "amb_blender",
+   "category": "Home & Garden",
+   "condition": "Open Box",
+   "is_auction": false
+  },
+  {
+   "title": "Vintage Cast Iron 3-Tier Round Garden Plant Stand",
+   "price": 44.5,
+   "image_key": "amb_blender",
+   "category": "Home & Garden",
+   "condition": "Used",
+   "is_auction": true
+  },
+  {
+   "title": "Peloton Bike+ Indoor Cycle with 23.8\" Rotating HD Touchscreen",
+   "price": 1195,
+   "image_key": "amb_basketball",
+   "category": "Sports",
+   "condition": "Refurbished",
+   "is_auction": false
+  },
+  {
+   "title": "Wilson Pro Staff RF97 v14 Tennis Racket Grip 4 3/8 with Cover",
+   "price": 149.99,
+   "image_key": "amb_basketball",
+   "category": "Sports",
+   "condition": "Used",
+   "is_auction": true
+  },
+  {
+   "title": "Hydrow Wave Rowing Machine with 16\" HD Touchscreen",
+   "price": 899,
+   "image_key": "amb_basketball",
+   "category": "Sports",
+   "condition": "Open Box",
+   "is_auction": false
+  },
+  {
+   "title": "Trek Marlin 7 Gen 3 29\" Mountain Bike Matte Blue Frame Size L",
+   "price": 525,
+   "image_key": "amb_basketball",
+   "category": "Sports",
+   "condition": "Used",
+   "is_auction": false
+  },
+  {
+   "title": "Callaway Rogue ST Max Driver 10.5\u00b0 Right-Hand Stiff Flex",
+   "price": 189,
+   "image_key": "amb_basketball",
+   "category": "Sports",
+   "condition": "Used",
+   "is_auction": true
+  },
+  {
+   "title": "Bowflex SelectTech 552 Adjustable Dumbbell Set 5-52.5 lb Pair",
+   "price": 279.99,
+   "image_key": "amb_basketball",
+   "category": "Sports",
+   "condition": "Open Box",
+   "is_auction": false
+  },
+  {
+   "title": "Garmin Forerunner 955 Solar GPS Running Watch Black",
+   "price": 269,
+   "image_key": "amb_basketball",
+   "category": "Sports",
+   "condition": "Refurbished",
+   "is_auction": true
+  },
+  {
+   "title": "Bilstein B8 5100 Shock Absorber Set of 4 \u2014 2015-2020 Ford F-150 4WD",
+   "price": 244.99,
+   "image_key": "amb_camera",
+   "category": "Motors",
+   "condition": "Used",
+   "is_auction": false
+  },
+  {
+   "title": "K&N 63-2599 AirCharger Cold Air Intake Kit \u2014 Chevy Silverado 1500 5.3L",
+   "price": 298.5,
+   "image_key": "amb_camera",
+   "category": "Motors",
+   "condition": "Open Box",
+   "is_auction": false
+  },
+  {
+   "title": "Brembo GT 4-Piston Front Big Brake Kit 355mm \u2014 BMW 3-Series F30",
+   "price": 1789,
+   "image_key": "amb_camera",
+   "category": "Motors",
+   "condition": "New",
+   "is_auction": true
+  },
+  {
+   "title": "Shoei RF-1400 Full-Face Motorcycle Helmet \u2014 Matte Black, Size L",
+   "price": 279.95,
+   "image_key": "amb_camera",
+   "category": "Motors",
+   "condition": "Used",
+   "is_auction": false
+  },
+  {
+   "title": "NOCO Genius5 5-Amp Smart Battery Charger & Maintainer",
+   "price": 52,
+   "image_key": "amb_camera",
+   "category": "Motors",
+   "condition": "Refurbished",
+   "is_auction": false
+  },
+  {
+   "title": "BBS CH-R 19x8.5 Satin Black Forged Wheels \u2014 Set of 4",
+   "price": 1425,
+   "image_key": "amb_camera",
+   "category": "Motors",
+   "condition": "Used",
+   "is_auction": true
+  },
+  {
+   "title": "Garmin Dash Cam Mini 2 1080p with Voice Control",
+   "price": 119.99,
+   "image_key": "amb_camera",
+   "category": "Motors",
+   "condition": "New",
+   "is_auction": false
   }
  ],
  "mail": [
@@ -2276,6 +2612,292 @@
    "body": "Catch up on what happened around town last week \u2014 a new mural downtown, the summer concert lineup, and a roundup of weekend markets. See you out there.",
    "category": "updates",
    "read": true
+  },
+  {
+   "folder": "inbox",
+   "from_name": "ValueMart",
+   "from_email": "orders@valuemart.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Your ValueMart order #8842193 is confirmed",
+   "body": "Thanks for your order, Alice! We've received your payment of $64.20 and your items are being packed right now. You'll get another email the moment everything ships.",
+   "category": "updates",
+   "read": true
+  },
+  {
+   "folder": "inbox",
+   "from_name": "GymEats",
+   "from_email": "no-reply@gymeats.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Your order from Green Bowl Kitchen is on the way",
+   "body": "Your driver Marcus just picked up your order and is heading your way. Estimated arrival is 7:15 PM. You can track the delivery in real time from the app.",
+   "category": "updates",
+   "read": false
+  },
+  {
+   "folder": "inbox",
+   "from_name": "SwiftShip Tracking",
+   "from_email": "tracking@swiftship.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Your package has shipped",
+   "body": "Good news, your order is on its way and expected to arrive Thursday. Your tracking number is 1Z9X8842QK. No signature is required for this delivery.",
+   "category": "updates",
+   "read": true
+  },
+  {
+   "folder": "inbox",
+   "from_name": "Carol Anderson",
+   "from_email": "carol.anderson58@gmail.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Sunday dinner?",
+   "body": "Hi sweetheart, are you free to come over for dinner this Sunday around six? Dad keeps asking and I'm making the lasagna you like. Let me know soon so I can pick up enough groceries.",
+   "category": "primary",
+   "read": false
+  },
+  {
+   "folder": "inbox",
+   "from_name": "Priya Nair",
+   "from_email": "priya.nair@gmail.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Farmers market Saturday morning?",
+   "body": "Want to hit the farmers market Saturday before it gets crowded? I'm after some peaches and that sourdough you keep raving about. We could grab coffee after.",
+   "category": "primary",
+   "read": true
+  },
+  {
+   "folder": "inbox",
+   "from_name": "LinkedIn",
+   "from_email": "notifications@linkedin.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "You have 3 new profile views this week",
+   "body": "Your profile is getting noticed. Three people in your industry viewed your profile over the last seven days. See who's been checking out your work.",
+   "category": "social",
+   "read": false
+  },
+  {
+   "folder": "inbox",
+   "from_name": "Instagram",
+   "from_email": "no-reply@mail.instagram.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "jordan_bakes and 5 others liked your photo",
+   "body": "Your recent post is getting some love. jordan_bakes, m.torres, and four others liked your photo. Tap through to see all the activity on your account.",
+   "category": "social",
+   "read": true
+  },
+  {
+   "folder": "inbox",
+   "from_name": "ValueMart Deals",
+   "from_email": "deals@valuemart.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Flash Sale: 30% off home & kitchen ends tonight",
+   "body": "Today only, take 30% off everything in home and kitchen. From cookware to bedding, the deals are stacked but they disappear at midnight. Use code HOME30 at checkout.",
+   "category": "promotions",
+   "read": false
+  },
+  {
+   "folder": "inbox",
+   "from_name": "GymEats",
+   "from_email": "offers@gymeats.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "We miss you \u2014 here's $10 off your next order",
+   "body": "It's been a little while since your last order, so here's $10 to welcome you back. Just spend $25 or more and the discount applies automatically at checkout. The offer expires in five days.",
+   "category": "promotions",
+   "read": true
+  },
+  {
+   "folder": "inbox",
+   "from_name": "The Daily Grind",
+   "from_email": "hello@thedailygrind.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "This week: 5 pantry staples worth the splurge",
+   "body": "In this issue we break down which pantry upgrades are actually worth the extra money. Plus a 20-minute weeknight pasta and our readers' favorite olive oils. Happy cooking!",
+   "category": "promotions",
+   "read": false
+  },
+  {
+   "folder": "inbox",
+   "from_name": "Spotify",
+   "from_email": "no-reply@spotify.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Your receipt from Spotify Premium",
+   "body": "Thanks for being a Premium member. We've charged $10.99 to your card ending in 4419 for this month's subscription. Your next billing date is September 3.",
+   "category": "updates",
+   "read": true
+  },
+  {
+   "folder": "inbox",
+   "from_name": "Northbridge Bank",
+   "from_email": "alerts@northbridgebank.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Your July statement is ready to view",
+   "body": "Your monthly statement is now available in online banking. Please sign in directly through our website or app to review your activity. For your security, we never include account details in email.",
+   "category": "updates",
+   "read": false
+  },
+  {
+   "folder": "inbox",
+   "from_name": "Riverside Dental",
+   "from_email": "frontdesk@riversidedental.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Appointment reminder for August 11",
+   "body": "This is a friendly reminder that you have a cleaning scheduled for Tuesday, August 11 at 9:30 AM. Please reply or give us a call if you need to reschedule. We look forward to seeing you!",
+   "category": "primary",
+   "read": true
+  },
+  {
+   "folder": "inbox",
+   "from_name": "PulseFit Gym",
+   "from_email": "members@pulsefit.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Your membership payment went through",
+   "body": "We've successfully processed your monthly membership fee of $39. Your access continues uninterrupted through the next billing cycle. Thanks for being part of the PulseFit community!",
+   "category": "updates",
+   "read": true
+  },
+  {
+   "folder": "inbox",
+   "from_name": "City Power & Light",
+   "from_email": "billing@citypowerlight.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Your electricity bill is due August 15",
+   "body": "Your balance of $87.43 is due on August 15. You can pay online, by phone, or set up autopay so you never miss a due date. Thank you for being a valued customer.",
+   "category": "updates",
+   "read": false
+  },
+  {
+   "folder": "inbox",
+   "from_name": "Dana Whitfield",
+   "from_email": "dana.whitfield@gmail.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "August pick + meeting spot",
+   "body": "Hi all, this month we're reading The Midnight Library and meeting at my place on the 24th. I'll have snacks and tea, so just bring yourselves and your thoughts. Let me know if you can make it!",
+   "category": "social",
+   "read": false
+  },
+  {
+   "folder": "sent",
+   "from_name": "Alice Anderson",
+   "from_email": "alice@shopgym.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Re: Sunday dinner?",
+   "body": "Hi Mom, Sunday works great and I'd never turn down your lasagna. I'll head over around six and can bring a salad or dessert, whichever you'd rather. Tell Dad I said hi!",
+   "category": "primary",
+   "read": true
+  },
+  {
+   "folder": "sent",
+   "from_name": "Alice Anderson",
+   "from_email": "alice@shopgym.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Question about my recent order #8842193",
+   "body": "Hi, I placed an order yesterday but realized I need to change the shipping address before it goes out. Could you let me know if that's still possible? The order number is 8842193. Thanks so much!",
+   "category": "primary",
+   "read": true
+  },
+  {
+   "folder": "sent",
+   "from_name": "Alice Anderson",
+   "from_email": "alice@shopgym.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Re: Notes from this morning's sync",
+   "body": "Thanks for pulling these together, Sam. I dropped a couple of comments in the doc about the timeline. Let's touch base tomorrow before the client call.",
+   "category": "primary",
+   "read": true
+  },
+  {
+   "folder": "sent",
+   "from_name": "Alice Anderson",
+   "from_email": "alice@shopgym.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Re: Farmers market Saturday morning?",
+   "body": "Yes! Let's meet at the entrance at 9 so we beat the crowd. I'm happy to drive, just text me when you're up. Can't wait for those peaches.",
+   "category": "primary",
+   "read": true
+  },
+  {
+   "folder": "sent",
+   "from_name": "Alice Anderson",
+   "from_email": "alice@shopgym.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Return request for order #8817640",
+   "body": "Hi, I'd like to return the blender from order 8817640, as it arrived with a cracked lid. Could you send me a prepaid return label? I'm happy to share photos if that helps.",
+   "category": "updates",
+   "read": true
+  },
+  {
+   "folder": "archive",
+   "from_name": "SwiftShip Tracking",
+   "from_email": "tracking@swiftship.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Delivered: your package arrived",
+   "body": "Your package was delivered today and left at your front door. We hope everything arrived in great shape. Thanks for shipping with SwiftShip!",
+   "category": "updates",
+   "read": true
+  },
+  {
+   "folder": "archive",
+   "from_name": "BrightMart Pharmacy",
+   "from_email": "receipts@brightmart.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Your BrightMart receipt",
+   "body": "Thanks for shopping with us. Your total was $23.87, paid with the card ending in 4419. Keep this email for your records in case you need to make a return.",
+   "category": "updates",
+   "read": true
+  },
+  {
+   "folder": "archive",
+   "from_name": "Cozy Threads",
+   "from_email": "news@cozythreads.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "Last chance: summer styles up to 50% off",
+   "body": "Our summer clearance is almost over and sizes are selling out fast. Take up to half off dresses, tees, and lightweight layers while they last. Free shipping on orders over $40.",
+   "category": "promotions",
+   "read": true
+  },
+  {
+   "folder": "inbox",
+   "from_name": "Facebook",
+   "from_email": "notification@facebookmail.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "You have 4 new notifications",
+   "body": "Since you last logged in, your friends have been busy. You have four new notifications, including a comment on your photo and two event invites. Log in to catch up.",
+   "category": "social",
+   "read": false
+  },
+  {
+   "folder": "inbox",
+   "from_name": "YouTube",
+   "from_email": "no-reply@youtube.com",
+   "to_name": "Alice Anderson",
+   "to_email": "alice@shopgym.com",
+   "subject": "New from channels you follow",
+   "body": "The creators you're subscribed to have posted fresh videos this week. Catch up on the latest uploads from your favorite channels. Tap to start watching.",
+   "category": "social",
+   "read": true
   }
  ],
  "calendar": [
@@ -2464,6 +3086,198 @@
    "calendar": "Birthdays",
    "day_offset": 19,
    "all_day": true
+  },
+  {
+   "title": "Q3 Planning Kickoff",
+   "calendar": "Work",
+   "day_offset": -12,
+   "all_day": false,
+   "start_hhmm": "10:00",
+   "end_hhmm": "11:30"
+  },
+  {
+   "title": "Dentist Appointment",
+   "calendar": "Personal",
+   "day_offset": -10,
+   "all_day": false,
+   "start_hhmm": "08:30",
+   "end_hhmm": "09:15"
+  },
+  {
+   "title": "Mom's Birthday Dinner",
+   "calendar": "Family",
+   "day_offset": -9,
+   "all_day": false,
+   "start_hhmm": "18:30",
+   "end_hhmm": "21:00"
+  },
+  {
+   "title": "Sprint Retrospective",
+   "calendar": "Work",
+   "day_offset": -6,
+   "all_day": false,
+   "start_hhmm": "15:00",
+   "end_hhmm": "16:00"
+  },
+  {
+   "title": "Morning Yoga Class",
+   "calendar": "Personal",
+   "day_offset": -5,
+   "all_day": false,
+   "start_hhmm": "07:00",
+   "end_hhmm": "08:00"
+  },
+  {
+   "title": "Swiss National Day",
+   "calendar": "Holidays",
+   "day_offset": -2,
+   "all_day": true,
+   "start_hhmm": "00:00",
+   "end_hhmm": "23:59"
+  },
+  {
+   "title": "Farmers Market Run",
+   "calendar": "Personal",
+   "day_offset": -1,
+   "all_day": false,
+   "start_hhmm": "09:00",
+   "end_hhmm": "10:30"
+  },
+  {
+   "title": "1:1 with Manager",
+   "calendar": "Work",
+   "day_offset": 2,
+   "all_day": false,
+   "start_hhmm": "14:00",
+   "end_hhmm": "14:30"
+  },
+  {
+   "title": "Kids' Swim Lessons",
+   "calendar": "Family",
+   "day_offset": 3,
+   "all_day": false,
+   "start_hhmm": "16:30",
+   "end_hhmm": "17:15"
+  },
+  {
+   "title": "Book Club",
+   "calendar": "Personal",
+   "day_offset": 4,
+   "all_day": false,
+   "start_hhmm": "19:00",
+   "end_hhmm": "20:30"
+  },
+  {
+   "title": "Weekend Camping Trip",
+   "calendar": "Family",
+   "day_offset": 5,
+   "all_day": true,
+   "start_hhmm": "00:00",
+   "end_hhmm": "23:59"
+  },
+  {
+   "title": "Sunday Meal Prep",
+   "calendar": "Personal",
+   "day_offset": 6,
+   "all_day": false,
+   "start_hhmm": "11:00",
+   "end_hhmm": "12:30"
+  },
+  {
+   "title": "Client Product Demo",
+   "calendar": "Work",
+   "day_offset": 7,
+   "all_day": false,
+   "start_hhmm": "13:00",
+   "end_hhmm": "14:00"
+  },
+  {
+   "title": "Design Review",
+   "calendar": "Work",
+   "day_offset": 8,
+   "all_day": false,
+   "start_hhmm": "11:00",
+   "end_hhmm": "12:00"
+  },
+  {
+   "title": "Haircut",
+   "calendar": "Personal",
+   "day_offset": 9,
+   "all_day": false,
+   "start_hhmm": "17:30",
+   "end_hhmm": "18:15"
+  },
+  {
+   "title": "Parent-Teacher Conference",
+   "calendar": "Family",
+   "day_offset": 10,
+   "all_day": false,
+   "start_hhmm": "16:00",
+   "end_hhmm": "16:30"
+  },
+  {
+   "title": "Date Night",
+   "calendar": "Personal",
+   "day_offset": 11,
+   "all_day": false,
+   "start_hhmm": "19:30",
+   "end_hhmm": "22:00"
+  },
+  {
+   "title": "Assumption Day",
+   "calendar": "Holidays",
+   "day_offset": 12,
+   "all_day": true,
+   "start_hhmm": "00:00",
+   "end_hhmm": "23:59"
+  },
+  {
+   "title": "Family Picnic in the Park",
+   "calendar": "Family",
+   "day_offset": 13,
+   "all_day": false,
+   "start_hhmm": "12:00",
+   "end_hhmm": "15:00"
+  },
+  {
+   "title": "All-Hands Meeting",
+   "calendar": "Work",
+   "day_offset": 14,
+   "all_day": false,
+   "start_hhmm": "10:00",
+   "end_hhmm": "11:00"
+  },
+  {
+   "title": "Quarterly Business Review",
+   "calendar": "Work",
+   "day_offset": 17,
+   "all_day": false,
+   "start_hhmm": "09:00",
+   "end_hhmm": "12:00"
+  },
+  {
+   "title": "Marathon Training Run",
+   "calendar": "Personal",
+   "day_offset": 19,
+   "all_day": false,
+   "start_hhmm": "06:30",
+   "end_hhmm": "08:30"
+  },
+  {
+   "title": "Brunch with Grandparents",
+   "calendar": "Family",
+   "day_offset": 20,
+   "all_day": false,
+   "start_hhmm": "10:30",
+   "end_hhmm": "12:00"
+  },
+  {
+   "title": "Annual Physical Checkup",
+   "calendar": "Personal",
+   "day_offset": 24,
+   "all_day": false,
+   "start_hhmm": "08:00",
+   "end_hhmm": "09:00"
   }
  ]
 }
