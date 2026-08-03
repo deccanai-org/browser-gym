@@ -16,9 +16,19 @@ import pathlib as _pathlib
 # premise-conflicting content. Kept as data next to the code.
 _BULK = _json.loads((_pathlib.Path(__file__).with_name("ambient_bulk.json")).read_text())
 
+# Product ids that have their OWN dedicated photo (sourced to break up same-type
+# image reuse). A bulk product uses amb_bp_<j> / amb_bl_<j> when that key is
+# present here, otherwise it falls back to its shared type photo.
+_IMG_SET = set(_json.loads((_pathlib.Path(__file__).with_name("product_images.json")).read_text()))
+
 
 def _img(key: str) -> str:
     return f"/assets/products/{key}.jpg"
+
+
+def _uimg(unique_key: str, type_key: str) -> str:
+    """Dedicated per-product photo if we sourced one, else the shared type photo."""
+    return _img(unique_key if unique_key in _IMG_SET else type_key)
 
 
 # ---------------------------------------------------------------- ShopGym ------
@@ -93,11 +103,12 @@ def build_shop():
     for j, p in enumerate(_BULK.get("shop", [])):
         key, title, brand = p["image_key"], p["title"], p.get("brand", "ShopGym")
         orig = p.get("originalPrice")
+        pimg = _uimg(f"amb_bp_{j}", key)
         out.append({
             "id": f"amb_bp_{j}", "title": title, "price": p["price"], "originalPrice": orig,
             "rating": round(4.0 + ((len(title) * 7) % 10) / 10, 1),
             "reviewCount": 30 + (len(title) * 13) % 900,
-            "image": _img(key), "images": [_img(key)],
+            "image": pimg, "images": [pimg],
             "description": f"{title} — a customer favorite. Fast, reliable and built to last.",
             "bulletPoints": ["Top rated in its category", "Ships with Prime", "1-year warranty"],
             "specs": {"Brand": brand, "Weight": "0.8 kg", "Emoji": ""},
@@ -183,7 +194,7 @@ def build_market(svg_tile):
         listings.append({
             "id": f"amb_bl_{j}", "sellerId": sid, "title": l["title"],
             "description": f"{l['title']}. Ships fast from a top-rated seller.",
-            "images": [_img(key)],
+            "images": [_uimg(f"amb_bl_{j}", key)],
             "type": "auction" if auction else "fixed",
             "startingBid": round(price * 0.5, 2) if auction else None,
             "currentBid": round(price * 0.82, 2) if auction else None,

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>AuthorizationQueryParametersError</Code><Message>Error parsing the X-Amz-Credential parameter; the region 'ew-west-1' is wrong; expecting 'eu-west-1'</Message><Region>eu-west-1</Region><RequestId>TK223EEPKSJC7SPJ</RequestId><HostId>AD1lurln7oVfKXQLHYj4avCMm7F5QpHyu4mDnbE3jEV38K6ZevRq/sN8FElj5oKfCYFqdcObHaw9jCjLT3ZjU91g2HrpdyQK</HostId></Error>
