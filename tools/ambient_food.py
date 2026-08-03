@@ -140,6 +140,27 @@ _CUISINES: dict[str, dict] = {
     },
 }
 
+# Per-dish-name photo override. The cuisine tables above reuse ~32 generic keys,
+# so different dishes (e.g. Mango Lassi + Chocolate Shake) collapsed onto one
+# photo. These give every DISTINCT dish name its own image; the same dish served
+# at several restaurants still shares its photo (which is realistic). Keys resolve
+# to /assets/food/<key>.jpg like any other. Projection-only -> no verifier sees it.
+_DISH_NAME_IMAGE = {
+    "Veggie Burrito": "dish_veggie_burrito", "Veggie Wrap": "dish_veggie_wrap",
+    "Blueberry Muffin": "dish_blueberry_muffin", "Chocolate Cake Slice": "dish_chocolate_cake",
+    "Fortune Cookie Cheesecake": "dish_cheesecake", "Mango Sticky Rice": "dish_mango_sticky_rice",
+    "Bacon Deluxe Burger": "dish_bacon_burger", "Paneer Tikka Masala": "dish_paneer_tikka",
+    "Churros": "dish_churros", "Cappuccino": "dish_cappuccino", "Fresh Latte": "dish_fresh_latte",
+    "Tom Yum Soup": "dish_tom_yum", "Kung Pao Noodles": "dish_kung_pao",
+    "Salmon Poke Bowl": "dish_salmon_poke", "Pepperoni Pizza": "dish_pepperoni_pizza",
+    "Caprese Salad": "dish_caprese", "Chips & Guacamole": "dish_guacamole",
+    "Edamame Salad": "dish_edamame", "Chocolate Shake": "dish_chocolate_shake",
+    "Green Smoothie": "dish_green_smoothie", "Mango Lassi": "dish_mango_lassi",
+    "Avocado Toast": "dish_avocado_toast", "Thai Spring Rolls": "dish_thai_spring_rolls",
+    "Vegetable Samosas": "dish_samosas", "Quinoa Power Bowl": "dish_quinoa_bowl",
+}
+
+
 # A few short reviews reused (deterministically) across restaurants.
 _REVIEW_POOL = [
     ("Jordan M.", 5, "Fast delivery and everything was still hot. Will order again!"),
@@ -167,12 +188,14 @@ def build_ambient(_food_img, _svg_tile):
                 menu_items.append({
                     "id": f"amb_d_{_slug(rname)}_{di}", "restaurantId": rid,
                     "category": cuisine, "name": dname, "description": f"{dname} from {rname}.",
-                    "price": price, "imageUrl": _food_img(key),
+                    "price": price, "imageUrl": _food_img(_DISH_NAME_IMAGE.get(dname, key)),
                     "isPopular": di == 0, "isAvailable": True,
                     "dietaryTags": diet, "customizationGroups": [],
                 })
+            _first = spec["dishes"][0]
             restaurants.append({
-                "id": rid, "name": rname, "imageUrl": _food_img(spec["dishes"][0][2]),
+                "id": rid, "name": rname,
+                "imageUrl": _food_img(_DISH_NAME_IMAGE.get(_first[0], _first[2])),
                 "cuisineType": [cuisine], "rating": rating,
                 "reviewCount": 40 + (len(rname) * 7) % 260,
                 "priceRange": "$$", "deliveryFee": fee, "etaLabel": eta,
