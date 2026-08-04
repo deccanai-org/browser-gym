@@ -21,7 +21,8 @@
 #   -> prints one URL per app, each carrying ?sid=&bridge=&session=
 set -euo pipefail
 
-HUB="${1:?usage: run_bridged_stack.sh <hub-checkout> [n_gyms]}"
+# Default HUB to this repo root — the mock UIs are vendored under ./websites.
+HUB="${1:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 NGYMS="${2:-2}"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$HERE/.." && pwd)"

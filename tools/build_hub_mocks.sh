@@ -16,10 +16,15 @@
 # Output: <hub-checkout>/websites/<mock>/dist per app.
 set -euo pipefail
 
-HUB="${1:?usage: build_hub_mocks.sh <hub-checkout> [api-base]}"
+# Default HUB to this repo root — the mock UIs are vendored under ./websites.
+HUB="${1:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 API_BASE="${2-https://cua-gym-hub.delta.soulhq.ai}"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MOCKS="amazon_mock gmail_mock ebay_mock google_calendar_mock uber_eats_mock"
+ROOT="$(cd "$HERE/.." && pwd)"
+# Vendored self-build (HUB == this repo root): websites/ is already the final
+# source, so skip the legacy pristine-hub *_bridged.patch step.
+if [ "$(cd "$HUB" && pwd)" = "$ROOT" ]; then VENDORED=1; else VENDORED=0; fi
 
 [ -d "$HUB/websites" ] || { echo "!! $HUB is not a hub checkout (no websites/)" >&2; exit 1; }
 [ -d "$HUB/shared" ]   || { echo "!! $HUB/shared missing — vite.config.js imports it" >&2; exit 1; }
@@ -30,7 +35,7 @@ for m in $MOCKS; do
   echo "==> $m"
 
   p="$HERE/patches/${m}_bridged.patch"
-  if [ -f "$p" ]; then
+  if [ "$VENDORED" != 1 ] && [ -f "$p" ]; then
     # --forward alone is NOT idempotent here: these patches create new files, and
     # re-running appends a second copy of each. Reverse-dry-run first — if that
     # succeeds the patch is already in, so skip.
