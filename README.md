@@ -89,6 +89,9 @@ server/          FastAPI gym world + verifier engine
   state.py, catalog.py
   apps/          the other tabs: mail, calendar, market, food (+ world.py, bus, scheduler)
 ui/pages/        Jinja templates for every page (shop + mail/ calendar/ market/ food/)
+websites/        the 5 realistic React mock UIs (ShopGym/ValueMart/ShopMail/GymCal/GymEats),
+                 vendored from cua-gym-hub — see "Realistic mock UIs" below
+shared/          secureMockApiPlugin.mjs — same-origin state API for the vendored mocks
 agents/          oracle_agent.py (hand-coded gold gates), openai_pixel_agent.py (gpt-5.x),
                  pixel_agent.py (sonnet/haiku), qwen_agent.py — Set-of-Mark screenshot agents
 harness/         runner.py (drive loop + per-step verify), facts.py, som.py
@@ -97,6 +100,29 @@ tests/           test_cross_app_verifiers.py (env_truth/success/break/do-nothing
 trajectories/    ALL outputs: the CSVs, dashboards, generators, spec files, per-run *.jsonl
 PROJECT_CONTEXT.md   the full handoff (read this first)
 ```
+
+---
+
+## Realistic mock UIs (`websites/`)
+
+The 5 storefronts (ShopGym · ValueMart · ShopMail · GymCal · GymEats) are React/Vite
+apps vendored into this repo, so a fresh clone runs the full realistic stack with no
+extra checkout:
+
+```bash
+tools/run_bridged_stack.sh      # builds + serves the 5 UIs + gym engine + bridge
+```
+
+Product/food images are copied from `tools/product_assets/` at build time, so
+`websites/*/{public/assets,dist,node_modules}` are gitignored (never commit them).
+A plain visit (`http://127.0.0.1:5201…5205`) shows the full baked seed world; a
+`?sid=<session>` URL (from `tools/session_manager start …`) shows the engine-driven
+world with cross-app effects + live verifiers.
+
+> ⚠️ **Two homes — keep them in sync.** These same UIs also live in the **cua-gym-hub**
+> Bitbucket repo (`deccan-ai/cua-gym-hub`, branch `shopgym-ui-update`), which is the
+> **hosting** source. Edit the UI **here** for local/RL dev, then mirror it to
+> cua-gym-hub with `tools/push_to_hub.sh` (or pull the other way). Don't let them drift.
 
 ---
 
