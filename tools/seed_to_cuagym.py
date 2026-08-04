@@ -250,7 +250,8 @@ _AMZ_STATUS = {
 _FOOD_STATUS = {
     "placed": "placed", "pending": "placed", "confirmed": "placed",
     "preparing": "preparing", "cooking": "preparing",
-    "on_the_way": "on_the_way", "out_for_delivery": "on_the_way",
+    # emit the status the uber mock's Orders/OrderTracking readers recognize
+    "on_the_way": "out_for_delivery", "out_for_delivery": "out_for_delivery",
     "delivered": "delivered", "completed": "delivered", "cancelled": "cancelled",
 }
 
@@ -281,7 +282,15 @@ def _acct_email(raw: str | None) -> str:
 
 _UBER_ADDR = {"id": "addr_1", "label": "Home", "street": "100 Park Avenue", "apt": "Apt 4B", "city": "Brooklyn",
               "state": "NY", "zip": "11201", "instructions": "", "isDefault": True}
-_UBER_PAY = {"id": "pay_1", "type": "visa", "label": "Visa •••• 4242", "last4": "4242", "isDefault": True}
+_UBER_PAY = {"id": "pay_1", "type": "visa", "label": "Visa •••• 4242", "last4": "4242", "expiry": "08/27", "isDefault": True}
+# A couple more cards so the checkout "Choose payment" actually has options to
+# pick between (the food user profile is client-side; no verifier reads it).
+# expiry so the Account page can show it (model identifies cards there).
+_UBER_PAYS = [
+    dict(_UBER_PAY),
+    {"id": "pay_2", "type": "mastercard", "label": "Mastercard •••• 5309", "last4": "5309", "expiry": "03/26", "isDefault": False},
+    {"id": "pay_3", "type": "paypal", "label": "PayPal", "last4": "", "expiry": "", "isDefault": False},
+]
 # The gym has no courier model, but order tracking hides its driver card without
 # one — a fixed stand-in keeps the page complete and the runs deterministic.
 _UBER_COURIER = {"id": "courier_1", "name": "Jordan Lee", "vehicleType": "car",
@@ -385,13 +394,31 @@ def transform_shop(shop: dict) -> dict:
     addr_by_id = {a["id"]: a for a in addrs}
     user = {"id": (gu or {}).get("id", "u1"), "name": (gu or {}).get("full_name") or ALICE_NAME,
             "email": _acct_email((gu or {}).get("email")),
+            # Profile's 2FA section reads user.two_fa_enabled; without it the UI
+            # never showed the enabled state even after a successful engine enable.
+            "two_fa_enabled": bool((gu or {}).get("two_fa_enabled")),
             "address": def_addr, "addresses": addrs, "paymentMethod": def_pay, "paymentMethods": pays}
 
     agg: dict = {}
+    lopts: dict = {}
     for it in ((shop.get("cart") or {}).get("items") or []):
         pid = it.get("product_id")
         agg[pid] = agg.get(pid, 0) + (it.get("quantity") or 1)
-    cart = [{"productId": pid, "quantity": q} for pid, q in agg.items()]
+        # Carry each line's gift-wrap / gift-message / ship-to / scheduled-date
+        # onto the projected line. The engine owns them, but the old projection
+        # dropped them so the Cart's gift controls always rendered empty and a
+        # typed message never round-tripped. Last non-empty value wins per pid.
+        o = lopts.setdefault(pid, {})
+        for k in ("gift_wrap", "gift_message", "ship_to_address_id", "scheduled_delivery"):
+            v = it.get(k)
+            if v not in (None, "", False) or k not in o:
+                o[k] = v
+    cart = [{"productId": pid, "quantity": q,
+             "gift_wrap": bool(lopts.get(pid, {}).get("gift_wrap")),
+             "gift_message": lopts.get(pid, {}).get("gift_message") or "",
+             "ship_to_address_id": lopts.get(pid, {}).get("ship_to_address_id") or "",
+             "scheduled_delivery": lopts.get(pid, {}).get("scheduled_delivery") or ""}
+            for pid, q in agg.items()]
 
     # returns: a gym ReturnRequest flips its order's amazon status to "Returned"
     returned_order_ids = {r.get("order_id") for r in (shop.get("returns") or {}).values()}
@@ -401,7 +428,10 @@ def transform_shop(shop: dict) -> dict:
             _AMZ_STATUS.get((o.get("status") or "").lower(), "Delivered")
         orders.append({"id": o.get("id"), "date": o.get("placed_at") or "2024-01-01T00:00:00.000Z",
                        "status": status, "total": o.get("total"),
-                       "items": [{"productId": i.get("product_id"), "quantity": i.get("quantity") or 1}
+                       # keep the real order-ITEM id (initiate_return validates
+                       # against it, not the product id) so returns can succeed.
+                       "items": [{"id": i.get("id"), "productId": i.get("product_id"),
+                                  "quantity": i.get("quantity") or 1}
                                  for i in (o.get("items") or [])],
                        # gym ship-to is per LINE; order level = the first line's.
                        "shippingAddress": addr_by_id.get(
@@ -495,6 +525,13 @@ def transform_market(m: dict) -> dict:
     listings = listings + amb_listings
     return {"currentUser": buyer, "users": [buyer, seller] + amb_sellers, "listings": listings, "orders": orders,
             "messages": [], "notifications": [], "feedbacks": [], "cart": cart,
+            # the applied coupon so Cart.jsx can show the "coupon applied" banner +
+            # discount (the engine stores + charges it, but it wasn't projected).
+            "coupon": (m.get("cart") or {}).get("applied_coupon"),
+            # the gym's frozen "now" (ms) so auction time-left is computed against
+            # the frozen clock, not the real Date.now() (which marks all "Ended").
+            "_gym_now": int(_dt.datetime(2026, 5, 21, 12, 0, 0,
+                                         tzinfo=_dt.timezone.utc).timestamp() * 1000),
             # eBay has no coupon UI -> preserved (not dropped), plus the priced cart detail.
             "_gym_coupons": list((m.get("coupons") or {}).values()),
             "_gym_cart_detail": (m.get("cart") or {}).get("items") or [],
@@ -550,6 +587,10 @@ def transform_calendar(cal: dict) -> dict:
     # gym-gate days, source='seed', new ids — invisible to the calendar verifiers.
     events = events + _ambient_calendar_events()
     return {"user": user, "calendars": _CAL_DEFAULTS, "otherCalendars": _CAL_OTHER, "events": events,
+            # the gym's FROZEN today (stable, unlike currentDate which the user
+            # navigates) so "Today"/create-defaults/today-highlight don't jump to
+            # the real system date where there are no seed events.
+            "_gym_today": f"{TODAY}T00:00:00",
             # The frozen gym clock, NOT the earliest event -- deriving it from the
             # events opened 23 tasks on the wrong "today".
             "view": "week", "currentDate": f"{TODAY}T00:00:00", "sidebarOpen": True,
@@ -560,7 +601,8 @@ def transform_calendar(cal: dict) -> dict:
 
 
 # --- uber eats (gym food) ----------------------------------------------------
-_DIETARY = {"vegetarian": "Vegetarian", "vegan": "Vegan", "gluten-free": "Gluten-Free", "gluten_free": "Gluten-Free"}
+_DIETARY = {"vegetarian": "Vegetarian", "vegan": "Vegan", "gluten-free": "Gluten-Free",
+            "gluten_free": "Gluten-Free", "halal": "Halal", "kosher": "Kosher"}
 
 
 def _price_range(fee) -> str:
@@ -664,7 +706,7 @@ def transform_food(food: dict) -> dict:
     user = {"id": "user_1", "name": ALICE_NAME, "email": ALICE_EMAIL,
             "phone": "(718) 555-0100", "avatarUrl": "",
             "addresses": [dict(_UBER_ADDR)], "defaultAddressId": _UBER_ADDR["id"],
-            "paymentMethods": [dict(_UBER_PAY)], "defaultPaymentId": _UBER_PAY["id"],
+            "paymentMethods": [dict(p) for p in _UBER_PAYS], "defaultPaymentId": _UBER_PAY["id"],
             "uberOneActive": False, "favoriteRestaurantIds": list(AMBIENT_FAVORITES)}
     # The mock's normalizeCartItem/normalizeOrderItem both want
     # {cartItemId, menuItem:{...}, quantity, modifiers, instructions} and nest the
@@ -717,6 +759,9 @@ def transform_food(food: dict) -> dict:
                        "deliveryPerson": dict(_UBER_COURIER),
                        "deliveryDetails": {"note": o.get("delivery_note") or "",
                                            "address": dict(_UBER_ADDR)},
+                       # Tracking + receipt read order.paymentMethod; without it they
+                       # printed "Paid with undefined".
+                       "paymentMethod": _UBER_PAY["label"],
                        "total": {"subtotal": sub, "fee": fee, "tax": tax,
                                  "serviceFee": service, "total": total}})
     active = orders[-1]["id"] if orders else None
@@ -731,7 +776,7 @@ def transform_food(food: dict) -> dict:
             "cart": cart, "orders": orders, "activeOrderId": active,
             "promotions": promos, "appliedPromoCode": (fc.get("promo_code") or ""), "reviews": reviews,
             "ui": {"selectedAddressId": _UBER_ADDR["id"], "deliveryMode": "delivery", "searchQuery": "",
-                   "recentSearches": [], "activeFilters": {"sort": "", "priceRange": [], "dietary": [],
+                   "recentSearches": [], "activeFilters": {"sort": "recommended", "priceRange": [], "dietary": [],
                                                            "maxDeliveryFee": None, "deals": False}},
             # delivery_note is the whole harm surface of the delivery-disclosure
             # breakers and the mock drops it on both cart and order.

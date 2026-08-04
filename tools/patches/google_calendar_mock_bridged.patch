@@ -1,6 +1,6 @@
 diff -ruN a/websites/google_calendar_mock/index.css b/websites/google_calendar_mock/index.css
---- a/websites/google_calendar_mock/index.css	2026-08-03 15:55:58
-+++ b/websites/google_calendar_mock/index.css	2026-08-03 15:55:58
+--- a/websites/google_calendar_mock/index.css	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/index.css	2026-07-30 17:43:50
 @@ -1,4 +1,6 @@
 -@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap');
 +/* No webfont import: the only external request this app made, it leaked a real
@@ -19,8 +19,8 @@ diff -ruN a/websites/google_calendar_mock/index.css b/websites/google_calendar_m
    font-size: 14px;
  }
 diff -ruN a/websites/google_calendar_mock/index.html b/websites/google_calendar_mock/index.html
---- a/websites/google_calendar_mock/index.html	2026-08-03 15:55:58
-+++ b/websites/google_calendar_mock/index.html	2026-08-03 15:55:58
+--- a/websites/google_calendar_mock/index.html	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/index.html	2026-07-30 17:35:14
 @@ -4,7 +4,7 @@
      <meta charset="UTF-8" />
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -31,17 +31,18 @@ diff -ruN a/websites/google_calendar_mock/index.html b/websites/google_calendar_
    <body>
      <div id="root"></div>
 diff -ruN a/websites/google_calendar_mock/src/App.jsx b/websites/google_calendar_mock/src/App.jsx
---- a/websites/google_calendar_mock/src/App.jsx	2026-08-03 15:55:58
-+++ b/websites/google_calendar_mock/src/App.jsx	2026-08-03 15:55:58
-@@ -8,6 +8,7 @@
+--- a/websites/google_calendar_mock/src/App.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/App.jsx	2026-08-03 17:52:30
+@@ -8,6 +8,8 @@
  import EventModal from './components/EventModal';
  import EventPopover from './components/EventPopover';
  import GoEndpoint from './components/GoEndpoint';
 +import { bridged, bridgeAct } from './lib/bridge';
++import { gymNow } from './utils/helpers';
  
  // Simple router component since we can't use React Router easily in this constrained env without more setup
  const Router = () => {
-@@ -39,6 +40,11 @@
+@@ -39,6 +41,11 @@
    const [deleteTarget, setDeleteTarget] = useState(null);
  
    const handleEventClick = (event, e) => {
@@ -53,10 +54,39 @@ diff -ruN a/websites/google_calendar_mock/src/App.jsx b/websites/google_calendar
      // If e is provided, show popover at click position
      if (e) {
        const rect = e.currentTarget.getBoundingClientRect();
+@@ -58,7 +65,7 @@
+   };
+ 
+   const handleCreateClick = () => {
+-    setSelectedDate(new Date());
++    setSelectedDate(gymNow());
+     setSelectedEvent(null);
+     setIsModalOpen(true);
+   };
+diff -ruN a/websites/google_calendar_mock/src/components/AgendaView.jsx b/websites/google_calendar_mock/src/components/AgendaView.jsx
+--- a/websites/google_calendar_mock/src/components/AgendaView.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/AgendaView.jsx	2026-08-03 17:52:30
+@@ -1,6 +1,7 @@
+ import React from 'react';
+ import { useStore } from '../context/StoreContext';
+ import { format, isSameDay, compareAsc, addDays, addWeeks, addMonths, addYears, startOfDay, endOfDay } from 'date-fns';
++import { gymNow } from '../utils/helpers';
+ 
+ // Show events for the next 90 days from the current date
+ const AGENDA_DAYS = 90;
+@@ -82,7 +83,7 @@
+         Object.keys(groupedEvents).map(dateKey => {
+           const date = new Date(dateKey);
+           const dayEvents = groupedEvents[dateKey];
+-          const isToday = isSameDay(date, new Date());
++          const isToday = isSameDay(date, gymNow());
+ 
+           return (
+             <div key={dateKey} className="flex gap-4 mb-6">
 diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websites/google_calendar_mock/src/components/EventModal.jsx
---- a/websites/google_calendar_mock/src/components/EventModal.jsx	2026-08-03 15:55:58
-+++ b/websites/google_calendar_mock/src/components/EventModal.jsx	2026-08-03 15:55:58
-@@ -1,19 +1,10 @@
+--- a/websites/google_calendar_mock/src/components/EventModal.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/EventModal.jsx	2026-08-03 17:52:30
+@@ -1,19 +1,11 @@
  import React, { useState, useEffect, useRef } from 'react';
 -import { X, Clock, MapPin, AlignLeft, Users, Bell, Trash2, Copy, Repeat, Check } from 'lucide-react';
 +import { X, Clock, MapPin, AlignLeft, Bell, Trash2, Copy, Repeat } from 'lucide-react';
@@ -64,6 +94,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
  import { generateId } from '../utils/helpers';
  import { format } from 'date-fns';
  import clsx from 'clsx';
++import { gymNow } from '../utils/helpers';
  
 -// Mock users for the picker
 -const MOCK_USERS = [
@@ -77,7 +108,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
  export default function EventModal({ isOpen, onClose, event, selectedDate }) {
    const { state, dispatch } = useStore();
    const [formData, setFormData] = useState({
-@@ -24,16 +15,12 @@
+@@ -24,16 +16,12 @@
      location: '',
      description: '',
      calendarId: '',
@@ -94,7 +125,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
  
    useEffect(() => {
      if (isOpen) {
-@@ -43,7 +30,6 @@
+@@ -43,14 +31,13 @@
            ...event,
            start: event.start.slice(0, 16), // Format for datetime-local
            end: event.end.slice(0, 16),
@@ -102,7 +133,16 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
            recurring: event.recurring || 'none',
            reminders: event.reminders || []
          });
-@@ -62,30 +48,16 @@
+       } else {
+         // Create mode
+-        const defaultStart = selectedDate ? new Date(selectedDate) : new Date();
+-        defaultStart.setHours(new Date().getHours() + 1, 0, 0, 0);
++        const defaultStart = selectedDate ? new Date(selectedDate) : gymNow();
++        defaultStart.setHours(gymNow().getHours() + 1, 0, 0, 0);
+         const defaultEnd = new Date(defaultStart);
+         defaultEnd.setMinutes(defaultStart.getMinutes() + (state.settings.defaultDuration || 60));
+ 
+@@ -62,30 +49,16 @@
            location: '',
            description: '',
            calendarId: state.calendars[0]?.id || '',
@@ -133,7 +173,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
      if (!isOpen) return;
      const handleEscape = (e) => {
        if (e.key !== 'Escape') return;
-@@ -103,15 +75,25 @@
+@@ -103,15 +76,25 @@
      const newEvent = {
        ...formData,
        id: event ? event.id : generateId(),
@@ -162,7 +202,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
      }
      onClose();
    };
-@@ -135,9 +117,13 @@
+@@ -135,9 +118,13 @@
          title: `${formData.title} (Copy)`,
          start: new Date(formData.start).toISOString(),
          end: new Date(formData.end).toISOString(),
@@ -178,7 +218,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
        onClose();
      }
    };
-@@ -203,30 +189,6 @@
+@@ -203,30 +190,6 @@
      updateReminder(index, 'minutes', newMinutes);
    };
  
@@ -209,7 +249,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
    return (
      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
        <div className="bg-white rounded-lg shadow-xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
-@@ -388,75 +350,6 @@
+@@ -388,75 +351,6 @@
                value={formData.description}
                onChange={e => setFormData({ ...formData, description: e.target.value })}
              />
@@ -286,8 +326,8 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventModal.jsx b/websit
  
            <div className="flex justify-end pt-4">
 diff -ruN a/websites/google_calendar_mock/src/components/EventPopover.jsx b/websites/google_calendar_mock/src/components/EventPopover.jsx
---- a/websites/google_calendar_mock/src/components/EventPopover.jsx	2026-08-03 15:55:58
-+++ b/websites/google_calendar_mock/src/components/EventPopover.jsx	2026-08-03 15:55:58
+--- a/websites/google_calendar_mock/src/components/EventPopover.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/EventPopover.jsx	2026-07-31 18:07:09
 @@ -123,32 +123,9 @@
            </div>
          )}
@@ -325,17 +365,18 @@ diff -ruN a/websites/google_calendar_mock/src/components/EventPopover.jsx b/webs
          {/* Calendar */}
          {calendar && (
 diff -ruN a/websites/google_calendar_mock/src/components/Header.jsx b/websites/google_calendar_mock/src/components/Header.jsx
---- a/websites/google_calendar_mock/src/components/Header.jsx	2026-08-03 15:55:58
-+++ b/websites/google_calendar_mock/src/components/Header.jsx	2026-08-03 15:55:58
-@@ -3,6 +3,7 @@
+--- a/websites/google_calendar_mock/src/components/Header.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/Header.jsx	2026-08-03 17:52:30
+@@ -3,6 +3,8 @@
  import { Menu, ChevronLeft, ChevronRight, Search, Settings, HelpCircle, User, ChevronDown, Plus, Database } from 'lucide-react';
  import { format, addMonths, subMonths, addWeeks, subWeeks, addDays, subDays, addHours, startOfTomorrow } from 'date-fns';
  import { generateId, getSessionId } from '../utils/helpers';
 +import SettingsModal from './SettingsModal';
++import { gymNow } from '../utils/helpers';
  
  export default function Header({ onSearch }) {
    const { state, dispatch } = useStore();
-@@ -25,9 +26,9 @@
+@@ -25,9 +27,9 @@
        if (quickAddRef.current && !quickAddRef.current.contains(event.target)) {
          setQuickAddOpen(false);
        }
@@ -348,7 +389,25 @@ diff -ruN a/websites/google_calendar_mock/src/components/Header.jsx b/websites/g
      };
      const handleEscape = (event) => {
        if (event.key === 'Escape') {
-@@ -165,7 +166,7 @@
+@@ -61,7 +63,7 @@
+   };
+ 
+   const handleToday = () => {
+-    dispatch({ type: 'SET_DATE', payload: new Date().toISOString() });
++    dispatch({ type: 'SET_DATE', payload: gymNow().toISOString() });
+   };
+ 
+   const handleViewChange = (view) => {
+@@ -76,7 +78,7 @@
+     if (!quickAddText.trim()) return;
+ 
+     // Simple parser logic for demo
+-    let start = new Date();
++    let start = gymNow();
+     let title = quickAddText;
+ 
+     // Basic date parsing
+@@ -165,7 +167,7 @@
            <div className="w-8 h-8 bg-primary rounded text-white flex items-center justify-center font-bold text-lg">
              31
            </div>
@@ -357,7 +416,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/Header.jsx b/websites/g
          </div>
        </div>
  
-@@ -285,45 +286,30 @@
+@@ -285,45 +287,30 @@
          </div>
  
          <div className="flex items-center gap-2 ml-2">
@@ -419,9 +478,17 @@ diff -ruN a/websites/google_calendar_mock/src/components/Header.jsx b/websites/g
        </div>
      </header>
 diff -ruN a/websites/google_calendar_mock/src/components/MonthView.jsx b/websites/google_calendar_mock/src/components/MonthView.jsx
---- a/websites/google_calendar_mock/src/components/MonthView.jsx	2026-08-03 15:55:58
-+++ b/websites/google_calendar_mock/src/components/MonthView.jsx	2026-08-03 15:55:58
-@@ -55,6 +55,33 @@
+--- a/websites/google_calendar_mock/src/components/MonthView.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/MonthView.jsx	2026-08-03 17:52:30
+@@ -2,6 +2,7 @@
+ import { useStore } from '../context/StoreContext';
+ import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInterval, isSameMonth, isSameDay, format, isWithinInterval, parseISO, setHours, setMinutes, addDays, addWeeks, addMonths, addYears } from 'date-fns';
+ import clsx from 'clsx';
++import { gymNow } from '../utils/helpers';
+ 
+ export default function MonthView({ onEventClick, onDateClick }) {
+   const { state, dispatch } = useStore();
+@@ -55,6 +56,33 @@
      }
    });
  
@@ -455,7 +522,16 @@ diff -ruN a/websites/google_calendar_mock/src/components/MonthView.jsx b/website
    const getEventsForDay = (day) => {
      return events.filter(event => {
        const start = new Date(event.start);
-@@ -157,10 +184,9 @@
+@@ -120,7 +148,7 @@
+       <div className="flex-1 grid grid-cols-7 grid-rows-5 lg:grid-rows-6">
+         {days.map((day, idx) => {
+           const dayEvents = getEventsForDay(day);
+-          const isToday = isSameDay(day, new Date());
++          const isToday = isSameDay(day, gymNow());
+           
+           return (
+             <div 
+@@ -157,10 +185,9 @@
                          : event;
                        onEventClick(targetEvent, e);
                      }}
@@ -469,8 +545,8 @@ diff -ruN a/websites/google_calendar_mock/src/components/MonthView.jsx b/website
                      )}
                    >
 diff -ruN a/websites/google_calendar_mock/src/components/SettingsModal.jsx b/websites/google_calendar_mock/src/components/SettingsModal.jsx
---- a/websites/google_calendar_mock/src/components/SettingsModal.jsx	2026-08-03 15:55:58
-+++ b/websites/google_calendar_mock/src/components/SettingsModal.jsx	2026-08-03 15:55:58
+--- a/websites/google_calendar_mock/src/components/SettingsModal.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/SettingsModal.jsx	2026-07-30 17:35:14
 @@ -36,7 +36,7 @@
      const lines = [
        'BEGIN:VCALENDAR',
@@ -481,15 +557,16 @@ diff -ruN a/websites/google_calendar_mock/src/components/SettingsModal.jsx b/web
        ...state.events.flatMap(event => [
          'BEGIN:VEVENT',
 diff -ruN a/websites/google_calendar_mock/src/components/Sidebar.jsx b/websites/google_calendar_mock/src/components/Sidebar.jsx
---- a/websites/google_calendar_mock/src/components/Sidebar.jsx	2026-08-03 15:55:58
-+++ b/websites/google_calendar_mock/src/components/Sidebar.jsx	2026-08-03 15:55:58
-@@ -3,13 +3,27 @@
+--- a/websites/google_calendar_mock/src/components/Sidebar.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/Sidebar.jsx	2026-08-03 17:52:30
+@@ -3,13 +3,28 @@
  import { Plus, Eye, EyeOff, Trash2, Database } from 'lucide-react';
  import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, startOfWeek, endOfWeek } from 'date-fns';
  import clsx from 'clsx';
 -import { generateId, getSessionId } from '../utils/helpers';
 +import { getSessionId } from '../utils/helpers';
 +import AddCalendarModal from './AddCalendarModal';
++import { gymNow } from '../utils/helpers';
  
 +// Named Tailwind color -> hex so a swatch renders whether a calendar carries a
 +// hex ("#039BE5") or a class ("bg-green-500").
@@ -514,7 +591,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/Sidebar.jsx b/websites/
    const sid = getSessionId();
    const goHref = sid ? `/go?sid=${encodeURIComponent(sid)}` : '/go';
  
-@@ -31,25 +45,6 @@
+@@ -31,25 +46,6 @@
    
    const calendarDays = eachDayOfInterval({ start: startDate, end: endDate });
  
@@ -540,7 +617,18 @@ diff -ruN a/websites/google_calendar_mock/src/components/Sidebar.jsx b/websites/
    return (
      <aside className={clsx(
        "w-64 flex-shrink-0 flex flex-col border-r border-google-border bg-white transition-all duration-300 overflow-y-auto",
-@@ -99,27 +94,16 @@
+@@ -86,8 +82,8 @@
+                 className={clsx(
+                   "h-7 w-7 rounded-full flex items-center justify-center mx-auto hover:bg-gray-100",
+                   !isSameMonth(day, miniDate) && "text-gray-300",
+-                  isSameDay(day, new Date()) && "bg-primary text-white hover:bg-primary-hover",
+-                  isSameDay(day, miniDate) && !isSameDay(day, new Date()) && "bg-blue-100 text-primary"
++                  isSameDay(day, gymNow()) && "bg-primary text-white hover:bg-primary-hover",
++                  isSameDay(day, miniDate) && !isSameDay(day, gymNow()) && "bg-blue-100 text-primary"
+                 )}
+               >
+                 {format(day, 'd')}
+@@ -99,27 +95,16 @@
          <div className="border-t border-google-border pt-4">
            <div className="flex items-center justify-between mb-2 px-2">
              <h3 className="text-sm font-medium text-text-primary">My calendars</h3>
@@ -572,7 +660,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/Sidebar.jsx b/websites/
            <div className="space-y-1">
              {state.calendars.map(cal => (
                <div key={cal.id} className="group flex items-center justify-between px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">
-@@ -127,10 +111,13 @@
+@@ -127,10 +112,13 @@
                    className="flex items-center gap-3 flex-1"
                    onClick={() => dispatch({ type: 'TOGGLE_CALENDAR', payload: cal.id })}
                  >
@@ -590,7 +678,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/Sidebar.jsx b/websites/
                      {cal.visible && <div className="w-2 h-2 bg-white rounded-full opacity-0" />}
                      {cal.visible && <span className="text-white text-xs">✓</span>}
                    </div>
-@@ -164,6 +151,63 @@
+@@ -164,6 +152,63 @@
                </div>
              ))}
            </div>
@@ -654,7 +742,7 @@ diff -ruN a/websites/google_calendar_mock/src/components/Sidebar.jsx b/websites/
            {calendarToDelete && (
              <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40">
                <div className="w-full max-w-sm rounded-lg bg-white p-5 shadow-xl border border-gray-200">
-@@ -196,6 +240,12 @@
+@@ -196,6 +241,12 @@
            </div>
          </div>
        </div>
@@ -668,9 +756,17 @@ diff -ruN a/websites/google_calendar_mock/src/components/Sidebar.jsx b/websites/
    );
  }
 diff -ruN a/websites/google_calendar_mock/src/components/WeekView.jsx b/websites/google_calendar_mock/src/components/WeekView.jsx
---- a/websites/google_calendar_mock/src/components/WeekView.jsx	2026-08-03 15:55:58
-+++ b/websites/google_calendar_mock/src/components/WeekView.jsx	2026-08-03 15:55:58
-@@ -219,9 +219,17 @@
+--- a/websites/google_calendar_mock/src/components/WeekView.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/components/WeekView.jsx	2026-08-03 17:52:30
+@@ -1,6 +1,7 @@
+ import React, { useRef, useEffect, useState } from 'react';
+ import { useStore } from '../context/StoreContext';
+ import { startOfWeek, endOfWeek, eachDayOfInterval, format, isSameDay, addMinutes, startOfDay, endOfDay, differenceInMinutes, addDays, addWeeks, addMonths, addYears } from 'date-fns';
++import { gymNow } from '../utils/helpers';
+ 
+ const HOUR_HEIGHT = 60; // px per hour
+ 
+@@ -219,9 +220,17 @@
  
        const created = dragCreateRef.current;
        if (!isDraggingCreate.current) {
@@ -689,10 +785,28 @@ diff -ruN a/websites/google_calendar_mock/src/components/WeekView.jsx b/websites
          return;
        }
  
+@@ -245,7 +254,7 @@
+       {/* Day headers */}
+       <div className="flex flex-shrink-0" style={{ borderBottom: '1px solid #DADCE0', marginLeft: labelWidth }}>
+         {days.map(day => {
+-          const isToday = isSameDay(day, new Date());
++          const isToday = isSameDay(day, gymNow());
+           return (
+             <div
+               key={day.toString()}
+@@ -392,7 +401,7 @@
+ 
+             {days.map((day, dayIndex) => {
+               const dayStart = startOfDay(day);
+-              const isToday = isSameDay(day, new Date());
++              const isToday = isSameDay(day, gymNow());
+               const dayTimedEvents = timedEvents.filter(e => isSameDay(new Date(e.start), day));
+               const layoutItems = computeEventLayout(dayTimedEvents);
+ 
 diff -ruN a/websites/google_calendar_mock/src/context/StoreContext.jsx b/websites/google_calendar_mock/src/context/StoreContext.jsx
---- a/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-08-03 15:55:58
-+++ b/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-08-03 15:55:58
-@@ -1,7 +1,46 @@
+--- a/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/context/StoreContext.jsx	2026-08-03 17:50:01
+@@ -1,7 +1,53 @@
  import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react';
  import { MOCK_USER, DEFAULT_CALENDARS, generateMockEvents, getSessionId, fetchCustomState, saveState, initializeData, getInitialState } from '../utils/helpers';
  import { addMinutes, differenceInMinutes } from 'date-fns';
@@ -702,8 +816,15 @@ diff -ruN a/websites/google_calendar_mock/src/context/StoreContext.jsx b/website
 +// In bridged mode: run the gym action, then adopt the engine's authoritative
 +// per-app state (already in this mock's shape) via the existing LOAD_STATE case.
 +const applyEngine = (dispatch, r) => {
-+  // Normalize through initializeData so the adopted state matches the seeded shape.
-+  if (r && r.apps && r.apps[APP]) dispatch({ type: 'LOAD_STATE', payload: initializeData(null, r.apps[APP]) });
++  // Adopt ONLY engine-owned keys (events/user). Dispatching the full projection
++  // snapped the user's view back to Week/2026-05-21, re-showed every calendar, and
++  // dropped locally-added calendars + settings after every create/edit/delete/drag.
++  // Strip the same client-owned keys the 2.5s poll strips.
++  if (r && r.apps && r.apps[APP]) {
++    const { view, currentDate, sidebarOpen, calendars, otherCalendars, settings,
++            notices, ...engineOwned } = initializeData(null, r.apps[APP]);
++    dispatch({ type: 'LOAD_STATE', payload: engineOwned });
++  }
 +};
 +
 +// Fallback HH:MM extraction from a full ISO datetime, used only when the modal
@@ -739,7 +860,7 @@ diff -ruN a/websites/google_calendar_mock/src/context/StoreContext.jsx b/website
  const StoreContext = createContext();
  
  const defaultState = {
-@@ -74,6 +113,15 @@
+@@ -74,6 +120,15 @@
        return { ...state, calendars: [...state.calendars, action.payload] };
      case 'DELETE_CALENDAR':
        return { ...state, calendars: state.calendars.filter(c => c.id !== action.payload) };
@@ -755,7 +876,7 @@ diff -ruN a/websites/google_calendar_mock/src/context/StoreContext.jsx b/website
      case 'UPDATE_SETTINGS':
        return { ...state, settings: { ...state.settings, ...action.payload } };
      case 'ADD_NOTICE':
-@@ -95,6 +143,9 @@
+@@ -95,6 +150,9 @@
    const sidRef = useRef(getSessionId());
    const initDone = useRef(false);
    const [readyToSave, setReadyToSave] = React.useState(false);
@@ -765,7 +886,7 @@ diff -ruN a/websites/google_calendar_mock/src/context/StoreContext.jsx b/website
  
    const [state, dispatch] = useReducer(reducer, defaultState, (initial) => {
      // Session-aware: check localStorage with session key BEFORE any async fetch
-@@ -114,31 +165,137 @@
+@@ -114,31 +172,137 @@
      initDone.current = true;
  
      const sid = sidRef.current;
@@ -912,7 +1033,7 @@ diff -ruN a/websites/google_calendar_mock/src/context/StoreContext.jsx b/website
    const getDiff = () => {
      // Simple shallow diff for demonstration
      const diff = {};
-@@ -150,10 +307,34 @@
+@@ -150,10 +314,34 @@
  
    const value = {
      state,
@@ -950,7 +1071,7 @@ diff -ruN a/websites/google_calendar_mock/src/context/StoreContext.jsx b/website
      <StoreContext.Provider value={value}>
 diff -ruN a/websites/google_calendar_mock/src/lib/bridge.js b/websites/google_calendar_mock/src/lib/bridge.js
 --- a/websites/google_calendar_mock/src/lib/bridge.js	1969-12-31 16:00:00
-+++ b/websites/google_calendar_mock/src/lib/bridge.js	2026-08-03 15:55:58
++++ b/websites/google_calendar_mock/src/lib/bridge.js	2026-08-03 15:53:36
 @@ -0,0 +1,62 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
@@ -1015,8 +1136,8 @@ diff -ruN a/websites/google_calendar_mock/src/lib/bridge.js b/websites/google_ca
 +  return () => { live = false; };
 +}
 diff -ruN a/websites/google_calendar_mock/src/utils/helpers.js b/websites/google_calendar_mock/src/utils/helpers.js
---- a/websites/google_calendar_mock/src/utils/helpers.js	2026-08-03 15:55:58
-+++ b/websites/google_calendar_mock/src/utils/helpers.js	2026-08-03 15:55:58
+--- a/websites/google_calendar_mock/src/utils/helpers.js	2026-07-28 11:01:47
++++ b/websites/google_calendar_mock/src/utils/helpers.js	2026-08-03 17:51:47
 @@ -5,9 +5,9 @@
  
  export const MOCK_USER = {
@@ -1049,7 +1170,24 @@ diff -ruN a/websites/google_calendar_mock/src/utils/helpers.js b/websites/google
  export const generateMockEvents = () => {
    const today = startOfToday();
  
-@@ -173,7 +185,11 @@
+@@ -156,11 +168,14 @@
+   };
+ }
+ 
+-const VALID_CALENDAR_IDS = new Set(['c1', 'c2', 'c3', 'c4']);
++// Includes c5 (Birthdays) + a few spares; the projection ships a 5th calendar
++// and force-reassigning its events to c1 silently moved them to Personal.
++const VALID_CALENDAR_IDS = new Set(['c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c7', 'c8']);
+ 
+ function normalizeEvent(event, index) {
+   const calendarId = VALID_CALENDAR_IDS.has(event.calendarId) ? event.calendarId : 'c1';
+-  const calendarColors = { c1: 'bg-blue-500', c2: 'bg-green-500', c3: 'bg-purple-500', c4: 'bg-yellow-500' };
++  const calendarColors = { c1: 'bg-blue-500', c2: 'bg-green-500', c3: 'bg-purple-500', c4: 'bg-yellow-500',
++    c5: 'bg-pink-500', c6: 'bg-red-500', c7: 'bg-indigo-500', c8: 'bg-teal-500' };
+   return {
+     id: event.id || generateId(),
+     calendarId,
+@@ -173,7 +188,11 @@
      guests: Array.isArray(event.guests) ? event.guests : [],
      color: event.color || calendarColors[calendarId] || 'bg-blue-500',
      recurring: event.recurring || 'none',
@@ -1062,3 +1200,36 @@ diff -ruN a/websites/google_calendar_mock/src/utils/helpers.js b/websites/google
    };
  }
  
+@@ -194,12 +213,20 @@
+   return result;
+ }
+ 
++// The gym's frozen "today". Captured from the projection's _gym_today so every
++// today()/now() reference uses the frozen clock (2026-05-21, where the seed
++// events live) instead of the real system date. Falls back to real time in demo.
++let _gymTodayIso = null;
++export const setGymToday = (iso) => { if (iso) _gymTodayIso = iso; };
++export const gymNow = () => (_gymTodayIso ? new Date(_gymTodayIso) : new Date());
++
+ export const initializeData = (sid = null, customState = null) => {
+   const sk = storageKey(sid);
+   const ik = initialKey(sid);
+ 
+   if (customState) {
+     const data = deepMergeWithDefaults(createDefaultData(), customState);
++    setGymToday(data._gym_today);
+     localStorage.setItem(sk, JSON.stringify(data));
+     localStorage.setItem(ik, JSON.stringify(data));
+     return data;
+@@ -207,8 +234,10 @@
+ 
+   const stored = localStorage.getItem(sk);
+   if (stored) {
++    const p = JSON.parse(stored);
++    setGymToday(p._gym_today);
+     if (!localStorage.getItem(ik)) localStorage.setItem(ik, stored);
+-    return JSON.parse(stored);
++    return p;
+   }
+ 
+   const data = createDefaultData();

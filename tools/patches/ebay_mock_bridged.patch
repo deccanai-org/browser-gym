@@ -1,6 +1,6 @@
 diff -ruN a/websites/ebay_mock/index.html b/websites/ebay_mock/index.html
---- a/websites/ebay_mock/index.html	2026-08-03 15:55:58
-+++ b/websites/ebay_mock/index.html	2026-08-03 15:55:58
+--- a/websites/ebay_mock/index.html	2026-07-28 11:01:47
++++ b/websites/ebay_mock/index.html	2026-07-30 17:35:14
 @@ -4,7 +4,7 @@
      <meta charset="UTF-8" />
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -11,8 +11,8 @@ diff -ruN a/websites/ebay_mock/index.html b/websites/ebay_mock/index.html
    <body>
      <div id="root"></div>
 diff -ruN a/websites/ebay_mock/src/App.jsx b/websites/ebay_mock/src/App.jsx
---- a/websites/ebay_mock/src/App.jsx	2026-08-03 15:55:58
-+++ b/websites/ebay_mock/src/App.jsx	2026-08-03 15:55:58
+--- a/websites/ebay_mock/src/App.jsx	2026-07-28 11:01:47
++++ b/websites/ebay_mock/src/App.jsx	2026-07-30 17:35:14
 @@ -7,6 +7,7 @@
  import ProductDetails from './pages/ProductDetails';
  import Dashboard from './pages/Dashboard';
@@ -39,9 +39,9 @@ diff -ruN a/websites/ebay_mock/src/App.jsx b/websites/ebay_mock/src/App.jsx
            </Routes>
          </Layout>
 diff -ruN a/websites/ebay_mock/src/components/ListingCard.jsx b/websites/ebay_mock/src/components/ListingCard.jsx
---- a/websites/ebay_mock/src/components/ListingCard.jsx	2026-08-03 15:55:58
-+++ b/websites/ebay_mock/src/components/ListingCard.jsx	2026-08-03 15:55:58
-@@ -2,6 +2,7 @@
+--- a/websites/ebay_mock/src/components/ListingCard.jsx	2026-07-28 11:01:47
++++ b/websites/ebay_mock/src/components/ListingCard.jsx	2026-08-03 17:59:16
+@@ -2,27 +2,32 @@
  import { Link } from 'react-router-dom';
  import { Heart } from 'lucide-react';
  import { useStore } from '../context/StoreContext';
@@ -49,7 +49,17 @@ diff -ruN a/websites/ebay_mock/src/components/ListingCard.jsx b/websites/ebay_mo
  import { formatDistanceToNow } from 'date-fns';
  
  export default function ListingCard({ listing }) {
-@@ -14,15 +15,17 @@
+   const { state, toggleWatchlist } = useStore();
+   const isWatched = listing.watchers.includes(state.currentUser.id);
+   const isAuction = listing.type === 'auction';
+-  const timeLeft = listing.endTime > Date.now() 
+-    ? formatDistanceToNow(listing.endTime) 
+-    : 'Ended';
++  // Compare against the gym's FROZEN now (bridged) so auctions aren't all "Ended"
++  // just because the real clock is months past the seeded end times.
++  const now = state._gym_now || Date.now();
++  const ended = !(listing.endTime > now);
++  const timeLeft = ended ? 'Ended' : formatDistanceToNow(listing.endTime);
  
    return (
      <div className="group relative bg-white rounded-lg p-4 hover:shadow-lg transition-shadow border border-transparent hover:border-gray-200">
@@ -76,18 +86,34 @@ diff -ruN a/websites/ebay_mock/src/components/ListingCard.jsx b/websites/ebay_mo
  
        <Link to={`/item/${listing.id}`} className="block">
          <div className="aspect-square mb-3 overflow-hidden rounded-lg bg-gray-100">
+@@ -43,7 +48,7 @@
+           {isAuction ? (
+             <>
+               <div className="font-bold text-lg">${listing.currentBid.toFixed(2)}</div>
+-              <div className="text-xs text-gray-500">{listing.bids.length} bids · {timeLeft} left</div>
++              <div className="text-xs text-gray-500">{listing.bids.length} bids · {ended ? 'Ended' : `${timeLeft} left`}</div>
+             </>
+           ) : (
+             <>
 diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/src/components/Navbar.jsx
---- a/websites/ebay_mock/src/components/Navbar.jsx	2026-08-03 15:55:58
-+++ b/websites/ebay_mock/src/components/Navbar.jsx	2026-08-03 15:55:58
-@@ -2,6 +2,7 @@
+--- a/websites/ebay_mock/src/components/Navbar.jsx	2026-07-28 11:01:47
++++ b/websites/ebay_mock/src/components/Navbar.jsx	2026-08-03 18:00:40
+@@ -2,10 +2,12 @@
  import { Link, useNavigate } from 'react-router-dom';
  import { Search, ShoppingCart, Bell, Menu, X, ChevronDown } from 'lucide-react';
  import { useStore } from '../context/StoreContext';
 +import { bridged } from '../lib/bridge';
  
++// Only categories that actually populate the projection (Cameras had 0, Home had 1).
  const CATEGORIES = [
-   'Electronics', 'Fashion', 'Motors', 'Collectibles',
-@@ -118,16 +119,16 @@
+-  'Electronics', 'Fashion', 'Motors', 'Collectibles',
+-  'Sports', 'Home', 'Books', 'Cameras', 'Other'
++  'Electronics', 'Home & Garden', 'Fashion', 'Collectibles',
++  'Sporting Goods', 'Toys & Hobbies', 'Motors', 'Books'
+ ];
+ 
+ export default function Navbar() {
+@@ -118,16 +120,16 @@
            >
              Ship to
            </button>
@@ -107,7 +133,16 @@ diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/sr
          </Link>
  
          {/* Shop by Category */}
-@@ -208,7 +209,8 @@
+@@ -145,7 +147,7 @@
+               {CATEGORIES.map(cat => (
+                 <Link
+                   key={cat}
+-                  to={`/search?c=${cat}`}
++                  to={`/search?c=${encodeURIComponent(cat)}`}
+                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-xbay-blue"
+                   onClick={() => setShowShopByCategory(false)}
+                 >
+@@ -208,7 +210,8 @@
          </form>
  
          <div className="flex items-center gap-6 text-gray-600 shrink-0">
@@ -117,7 +152,7 @@ diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/sr
            <div className="relative" ref={notifRef}>
              <button
                onClick={() => setShowNotifDropdown(v => !v)}
-@@ -260,10 +262,12 @@
+@@ -260,10 +263,12 @@
                </div>
              )}
            </div>
@@ -130,7 +165,7 @@ diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/sr
                onClick={() => setShowCartDropdown(v => !v)}
                className="relative hover:text-xbay-blue"
              >
-@@ -312,17 +316,16 @@
+@@ -312,17 +317,16 @@
                      ))
                    )}
                  </div>
@@ -158,7 +193,18 @@ diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/sr
                </div>
              )}
            </div>
-@@ -351,13 +354,18 @@
+@@ -337,8 +341,8 @@
+           <Link to="/search?c=Motors" className="hover:text-xbay-blue hover:underline">Motors</Link>
+           <Link to="/search?c=Fashion" className="hover:text-xbay-blue hover:underline">Fashion</Link>
+           <Link to="/search?c=Collectibles" className="hover:text-xbay-blue hover:underline">Collectibles</Link>
+-          <Link to="/search?c=Sports" className="hover:text-xbay-blue hover:underline">Sports</Link>
+-          <Link to="/search?c=Home" className="hover:text-xbay-blue hover:underline">Home &amp; Garden</Link>
++          <Link to={`/search?c=${encodeURIComponent('Sporting Goods')}`} className="hover:text-xbay-blue hover:underline">Sporting Goods</Link>
++          <Link to={`/search?c=${encodeURIComponent('Home & Garden')}`} className="hover:text-xbay-blue hover:underline">Home &amp; Garden</Link>
+         </div>
+       </div>
+ 
+@@ -351,13 +355,18 @@
                  <X size={18} />
                </button>
              </div>
@@ -179,7 +225,7 @@ diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/sr
                  <button onClick={() => setShowHelpDialog(false)} className="mt-5 btn-primary text-sm">Done</button>
                </div>
              ) : (
-@@ -434,9 +442,15 @@
+@@ -434,9 +443,15 @@
                  />
                </div>
                {shippingSaved && (
@@ -199,8 +245,8 @@ diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/sr
                <div className="flex justify-end gap-3">
                  <button type="button" onClick={() => setShowShippingDialog(false)} className="px-4 py-2 font-bold text-gray-600 hover:bg-gray-100 rounded">
 diff -ruN a/websites/ebay_mock/src/context/StoreContext.jsx b/websites/ebay_mock/src/context/StoreContext.jsx
---- a/websites/ebay_mock/src/context/StoreContext.jsx	2026-08-03 15:55:58
-+++ b/websites/ebay_mock/src/context/StoreContext.jsx	2026-08-03 15:55:58
+--- a/websites/ebay_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
++++ b/websites/ebay_mock/src/context/StoreContext.jsx	2026-08-03 08:19:59
 @@ -1,6 +1,15 @@
  import React, { createContext, useContext, useReducer, useEffect, useRef, useState } from 'react';
  import { INITIAL_STATE, getSessionId, fetchCustomState, saveState, initializeData } from '../data/mockData';
@@ -444,8 +490,8 @@ diff -ruN a/websites/ebay_mock/src/context/StoreContext.jsx b/websites/ebay_mock
        markAllNotificationsRead
      }}>
 diff -ruN a/websites/ebay_mock/src/data/mockData.js b/websites/ebay_mock/src/data/mockData.js
---- a/websites/ebay_mock/src/data/mockData.js	2026-08-03 15:55:58
-+++ b/websites/ebay_mock/src/data/mockData.js	2026-08-03 15:55:58
+--- a/websites/ebay_mock/src/data/mockData.js	2026-07-28 11:01:47
++++ b/websites/ebay_mock/src/data/mockData.js	2026-08-03 17:59:47
 @@ -1,18 +1,29 @@
 +// Self-contained inline-SVG placeholder helpers (no external hosts / picsum).
 +const initialsAvatar = (initials, bg) =>
@@ -548,9 +594,18 @@ diff -ruN a/websites/ebay_mock/src/data/mockData.js b/websites/ebay_mock/src/dat
  };
  
  // --- Session-based state isolation ---
+@@ -215,7 +227,7 @@
+     views: typeof listing.views === 'number' ? listing.views : 0,
+     endTime: listing.endTime || (Date.now() + 86400000 * 7),
+     condition: listing.condition || 'Used',
+-    shipping: typeof listing.shipping === 'number' ? listing.shipping : (typeof listing.shipping === 'object' && listing.shipping?.cost != null ? listing.shipping.cost : 0),
++    shipping: typeof listing.shipping === 'number' ? listing.shipping : (typeof listing.shippingCost === 'number' ? listing.shippingCost : (typeof listing.shipping === 'object' && listing.shipping?.cost != null ? listing.shipping.cost : 0)),
+     category: listing.category || 'Other',
+     status: listing.status || 'active',
+   };
 diff -ruN a/websites/ebay_mock/src/lib/bridge.js b/websites/ebay_mock/src/lib/bridge.js
 --- a/websites/ebay_mock/src/lib/bridge.js	1969-12-31 16:00:00
-+++ b/websites/ebay_mock/src/lib/bridge.js	2026-08-03 15:55:58
++++ b/websites/ebay_mock/src/lib/bridge.js	2026-08-03 15:53:36
 @@ -0,0 +1,62 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
@@ -616,7 +671,7 @@ diff -ruN a/websites/ebay_mock/src/lib/bridge.js b/websites/ebay_mock/src/lib/br
 +}
 diff -ruN a/websites/ebay_mock/src/pages/Cart.jsx b/websites/ebay_mock/src/pages/Cart.jsx
 --- a/websites/ebay_mock/src/pages/Cart.jsx	1969-12-31 16:00:00
-+++ b/websites/ebay_mock/src/pages/Cart.jsx	2026-08-03 15:55:58
++++ b/websites/ebay_mock/src/pages/Cart.jsx	2026-07-31 18:06:39
 @@ -0,0 +1,198 @@
 +import React, { useState } from 'react';
 +import { Link, useNavigate } from 'react-router-dom';
@@ -817,8 +872,8 @@ diff -ruN a/websites/ebay_mock/src/pages/Cart.jsx b/websites/ebay_mock/src/pages
 +  );
 +}
 diff -ruN a/websites/ebay_mock/src/pages/CreateListing.jsx b/websites/ebay_mock/src/pages/CreateListing.jsx
---- a/websites/ebay_mock/src/pages/CreateListing.jsx	2026-08-03 15:55:58
-+++ b/websites/ebay_mock/src/pages/CreateListing.jsx	2026-08-03 15:55:58
+--- a/websites/ebay_mock/src/pages/CreateListing.jsx	2026-07-28 11:01:47
++++ b/websites/ebay_mock/src/pages/CreateListing.jsx	2026-07-31 18:09:04
 @@ -1,10 +1,11 @@
  import React, { useState, useRef } from 'react';
  import { useNavigate } from 'react-router-dom';
@@ -854,8 +909,8 @@ diff -ruN a/websites/ebay_mock/src/pages/CreateListing.jsx b/websites/ebay_mock/
    return (
      <div className="container mx-auto px-4 py-8 max-w-2xl">
 diff -ruN a/websites/ebay_mock/src/pages/Dashboard.jsx b/websites/ebay_mock/src/pages/Dashboard.jsx
---- a/websites/ebay_mock/src/pages/Dashboard.jsx	2026-08-03 15:55:58
-+++ b/websites/ebay_mock/src/pages/Dashboard.jsx	2026-08-03 15:55:58
+--- a/websites/ebay_mock/src/pages/Dashboard.jsx	2026-07-28 11:01:47
++++ b/websites/ebay_mock/src/pages/Dashboard.jsx	2026-07-31 18:08:50
 @@ -1,5 +1,6 @@
  import React, { useState, useEffect } from 'react';
  import { useStore } from '../context/StoreContext';
@@ -935,49 +990,132 @@ diff -ruN a/websites/ebay_mock/src/pages/Dashboard.jsx b/websites/ebay_mock/src/
            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
              <MessageSquare size={20} /> Messages
 diff -ruN a/websites/ebay_mock/src/pages/Home.jsx b/websites/ebay_mock/src/pages/Home.jsx
---- a/websites/ebay_mock/src/pages/Home.jsx	2026-08-03 15:55:58
-+++ b/websites/ebay_mock/src/pages/Home.jsx	2026-08-03 15:55:58
-@@ -4,6 +4,16 @@
+--- a/websites/ebay_mock/src/pages/Home.jsx	2026-07-28 11:01:47
++++ b/websites/ebay_mock/src/pages/Home.jsx	2026-08-03 16:47:37
+@@ -1,37 +1,89 @@
+-import React from 'react';
++import React, { useMemo } from 'react';
+ import { Link } from 'react-router-dom';
+ import { useStore } from '../context/StoreContext';
  import ListingCard from '../components/ListingCard';
  import { ArrowRight } from 'lucide-react';
  
-+// Each tile targets a category/query that actually has active listings in the seed.
++// Each tile targets a category that actually has active listings in the seed
++// (verified against the projection) and carries a real photo.
 +const CATEGORIES = [
-+  { label: 'Electronics', to: '/search?c=electronics', c1: '#2563eb', c2: '#1e40af' },
-+  { label: 'Cameras', to: '/search?c=cameras', c1: '#111827', c2: '#374151' },
-+  { label: 'Books', to: '/search?c=books', c1: '#b45309', c2: '#78350f' },
-+  { label: 'Nintendo', to: '/search?q=Nintendo', c1: '#7c3aed', c2: '#4c1d95' },
-+  { label: 'Headphones', to: '/search?q=Headphones', c1: '#0891b2', c2: '#155e75' },
-+  { label: 'Canon', to: '/search?q=Canon', c1: '#059669', c2: '#065f46' },
++  { label: 'Electronics', c: 'Electronics', img: '/assets/categories/electronics.jpg' },
++  { label: 'Home & Garden', c: 'Home & Garden', img: '/assets/categories/home_garden.jpg' },
++  { label: 'Fashion', c: 'Fashion', img: '/assets/categories/fashion.jpg' },
++  { label: 'Collectibles', c: 'Collectibles', img: '/assets/categories/collectibles.jpg' },
++  { label: 'Sporting Goods', c: 'Sporting Goods', img: '/assets/categories/sporting_goods.jpg' },
++  { label: 'Toys & Hobbies', c: 'Toys & Hobbies', img: '/assets/categories/toys_hobbies.jpg' },
++  { label: 'Health & Beauty', c: 'Health & Beauty', img: '/assets/categories/health_beauty.jpg' },
++  { label: 'Books', c: 'Books', img: '/assets/categories/books.jpg' },
 +];
++
++function Rail({ title, to, listings }) {
++  if (!listings.length) return null;
++  return (
++    <div className="mb-12">
++      <div className="flex justify-between items-center mb-6">
++        <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
++        {to && (
++          <Link to={to} className="text-xbay-blue font-medium hover:underline flex items-center">
++            See all <ArrowRight size={16} className="ml-1" />
++          </Link>
++        )}
++      </div>
++      <div className="flex gap-6 overflow-x-auto pb-2 -mx-1 px-1">
++        {listings.map(listing => (
++          <div key={listing.id} className="flex-shrink-0 w-60">
++            <ListingCard listing={listing} />
++          </div>
++        ))}
++      </div>
++    </div>
++  );
++}
 +
  export default function Home() {
    const { state } = useStore();
-   const featuredListings = state.listings.filter(l => l.status === 'active').slice(0, 4);
-@@ -26,12 +36,15 @@
+-  const featuredListings = state.listings.filter(l => l.status === 'active').slice(0, 4);
++  const active = useMemo(() => state.listings.filter(l => l.status === 'active'), [state.listings]);
++  const featured = active.slice(0, 8);
++  const dealsUnder50 = useMemo(
++    () => active.filter(l => Number(l.price) > 0 && Number(l.price) < 50).slice(0, 10),
++    [active]
++  );
++  const electronics = useMemo(
++    () => active.filter(l => (l.category || '').toLowerCase() === 'electronics').slice(0, 10),
++    [active]
++  );
+ 
+   return (
+     <div className="container mx-auto px-4 py-8">
+       {/* Hero Banner */}
+-      <div className="bg-xbay-blue text-white rounded-xl p-8 mb-12 flex items-center justify-between overflow-hidden relative">
++      <div
++        className="text-white rounded-xl p-8 mb-12 flex items-center justify-between overflow-hidden relative bg-xbay-blue"
++        style={{
++          backgroundImage: "linear-gradient(90deg, rgba(15,23,42,0.85) 0%, rgba(15,23,42,0.55) 45%, rgba(15,23,42,0.15) 100%), url('/assets/hero.jpg')",
++          backgroundSize: 'cover',
++          backgroundPosition: 'center',
++          minHeight: '260px',
++        }}
++      >
+         <div className="relative z-10 max-w-lg">
+-          <h1 className="text-4xl font-bold mb-4">Score the best deals on electronics</h1>
+-          <p className="text-lg mb-6 text-blue-100">From vintage consoles to the latest cameras, find it all here.</p>
++          <h1 className="text-4xl font-bold mb-4">Score the best deals, every day</h1>
++          <p className="text-lg mb-6 text-blue-100">From vintage finds to the latest tech — millions of listings, one marketplace.</p>
+           <Link to="/search?c=electronics" className="inline-block bg-white text-xbay-blue font-bold px-6 py-3 rounded-full hover:bg-blue-50 transition-colors">
+             Shop Electronics
+           </Link>
+         </div>
+-        <div className="absolute right-0 top-0 h-full w-1/2 bg-gradient-to-l from-blue-600 to-transparent opacity-50"></div>
+       </div>
+ 
+       {/* Categories Grid */}
        <div className="mb-12">
          <h2 className="text-2xl font-bold mb-6 text-gray-900">Explore Popular Categories</h2>
-         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
 -          {['Sneakers', 'Watches', 'Trading Cards', 'Handbags', 'Gaming', 'Cameras'].map((cat) => (
 -            <Link key={cat} to={`/search?q=${cat}`} className="group block text-center">
 -              <div className="aspect-square rounded-full bg-gray-100 mb-3 overflow-hidden mx-auto w-32 h-32 flex items-center justify-center">
 -                <img src={`https://picsum.photos/200/200?random=${cat}`} alt={cat} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
++        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
 +          {CATEGORIES.map((cat) => (
-+            <Link key={cat.label} to={cat.to} className="group block text-center">
-+              <div
-+                className="aspect-square rounded-full mb-3 overflow-hidden mx-auto w-32 h-32 flex items-center justify-center group-hover:scale-110 transition-transform"
-+                style={{ background: `linear-gradient(135deg, ${cat.c1}, ${cat.c2})` }}
-+              >
-+                <span className="text-white text-4xl font-bold">{cat.label.charAt(0)}</span>
++            <Link key={cat.label} to={`/search?c=${encodeURIComponent(cat.c)}`} className="group block text-center">
++              <div className="rounded-full mb-3 overflow-hidden mx-auto w-32 h-32 bg-gray-100 ring-1 ring-gray-200 group-hover:scale-105 group-hover:ring-xbay-blue transition-transform">
++                <img src={cat.img} alt={cat.label} className="w-full h-full object-cover" />
                </div>
 -              <span className="font-medium group-hover:underline">{cat}</span>
 +              <span className="font-medium group-hover:underline">{cat.label}</span>
              </Link>
            ))}
          </div>
+@@ -46,11 +98,15 @@
+           </Link>
+         </div>
+         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+-          {featuredListings.map(listing => (
++          {featured.map(listing => (
+             <ListingCard key={listing.id} listing={listing} />
+           ))}
+         </div>
+       </div>
++
++      {/* Deal + category rails */}
++      <Rail title="Deals under $50" to="/search" listings={dealsUnder50} />
++      <Rail title="More in Electronics" to="/search?c=electronics" listings={electronics} />
+     </div>
+   );
+-}
+\ No newline at end of file
++}
 diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock/src/pages/ProductDetails.jsx
---- a/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-08-03 15:55:58
-+++ b/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-08-03 15:55:58
+--- a/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-07-28 11:01:47
++++ b/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-08-03 18:17:46
 @@ -1,13 +1,14 @@
  import React, { useState, useEffect } from 'react';
  import { useParams, useNavigate } from 'react-router-dom';
@@ -1002,7 +1140,41 @@ diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock
  
    // Increment views on mount
    useEffect(() => {
-@@ -90,6 +92,13 @@
+@@ -34,11 +36,15 @@
+     setSelectedImage(0);
+   }, [id]);
+ 
++  // The gym's frozen "now" (bridged); else the real clock (demo). Without this the
++  // detail page marked EVERY seeded listing "ended" (end times ~May, real clock Aug).
++  const gymNow = state._gym_now || Date.now();
++
+   // Timer Effect
+   useEffect(() => {
+     if (!listing) return;
+     const updateTimer = () => {
+-      if (listing.endTime < Date.now()) {
++      if (listing.endTime < gymNow) {
+         setTimeLeft('Ended');
+       } else {
+         setTimeLeft(formatDistanceToNow(listing.endTime));
+@@ -47,14 +53,14 @@
+     updateTimer();
+     const interval = setInterval(updateTimer, 60000);
+     return () => clearInterval(interval);
+-  }, [listing]);
++  }, [listing, gymNow]);
+ 
+   if (!listing) return <div className="p-8">Listing not found</div>;
+ 
+   const seller = state.users.find(u => u.id === listing.sellerId);
+   const isAuction = listing.type === 'auction';
+   const isWatched = listing.watchers.includes(state.currentUser.id);
+-  const isEnded = listing.status !== 'active' || listing.endTime < Date.now();
++  const isEnded = listing.status !== 'active' || listing.endTime < gymNow;
+   const isSeller = listing.sellerId === state.currentUser.id;
+ 
+   // Rating: derive from feedbacks if available
+@@ -90,6 +96,13 @@
      setShowBuyConfirm(true);
    };
  
@@ -1016,7 +1188,27 @@ diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock
    const confirmBuyNow = () => {
      setShowBuyConfirm(false);
      buyNow(listing.id);
-@@ -220,6 +229,10 @@
+@@ -203,11 +216,15 @@
+                         <div className="text-xs font-bold text-gray-600 p-2 bg-gray-50 border-b border-gray-200">Bid History</div>
+                         <div className="max-h-48 overflow-y-auto">
+                           {listing.bids.map((bid, i) => {
+-                            const bidder = state.users.find(u => u.id === bid.userId);
++                            // Ambient bids are shaped {bidderId, amount} with no
++                            // userId/id/timestamp — guard so they don't render
++                            // "Invalid Date" + a blank bidder.
++                            const bidder = state.users.find(u => u.id === (bid.userId || bid.bidderId));
++                            const ts = bid.timestamp ? new Date(bid.timestamp) : null;
+                             return (
+-                              <div key={bid.id} className="flex justify-between items-center px-3 py-2 border-b border-gray-100 last:border-0 text-sm">
+-                                <span className="font-medium text-gray-800">{bidder?.username || bid.userId}</span>
+-                                <span className="text-gray-500 text-xs">{new Date(bid.timestamp).toLocaleString()}</span>
++                              <div key={bid.id || i} className="flex justify-between items-center px-3 py-2 border-b border-gray-100 last:border-0 text-sm">
++                                <span className="font-medium text-gray-800">{bidder?.username || 'Bidder'}</span>
++                                <span className="text-gray-500 text-xs">{ts && !isNaN(ts.getTime()) ? ts.toLocaleString() : ''}</span>
+                                 <span className="font-bold text-gray-900">${bid.amount.toFixed(2)}</span>
+                               </div>
+                             );
+@@ -220,6 +237,10 @@
                        <div className="bg-yellow-50 border border-yellow-200 rounded p-3 text-sm text-yellow-800 mb-2">
                          This is your listing. You cannot bid on your own items.
                        </div>
@@ -1027,7 +1219,7 @@ diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock
                      ) : (
                        <form onSubmit={handleBid} className="space-y-2">
                          <div className="flex gap-2">
-@@ -259,6 +272,14 @@
+@@ -259,6 +280,14 @@
                      >
                        Buy It Now
                      </button>
@@ -1042,7 +1234,7 @@ diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock
                    </div>
                  )}
  
-@@ -276,14 +297,16 @@
+@@ -276,14 +305,16 @@
                  )}
  
                  <div className="flex gap-2 mt-4">
@@ -1066,7 +1258,7 @@ diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock
                      onClick={handleShare}
                      className="flex items-center justify-center gap-2 border border-gray-300 px-4 py-2 rounded text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                    >
-@@ -312,7 +335,7 @@
+@@ -312,7 +343,7 @@
                <div className="flex gap-3">
                  <ShieldCheck size={20} className="text-gray-400" />
                  <div>
@@ -1075,7 +1267,7 @@ diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock
                    <div className="text-gray-500">Get the item you ordered or get your money back.</div>
                  </div>
                </div>
-@@ -404,7 +427,18 @@
+@@ -404,7 +435,18 @@
                  <X size={20} />
                </button>
              </div>

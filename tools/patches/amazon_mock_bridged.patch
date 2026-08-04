@@ -1,6 +1,6 @@
 diff -ruN a/websites/amazon_mock/index.html b/websites/amazon_mock/index.html
---- a/websites/amazon_mock/index.html	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/index.html	2026-08-03 15:55:57
+--- a/websites/amazon_mock/index.html	2026-07-28 11:01:47
++++ b/websites/amazon_mock/index.html	2026-07-30 18:17:09
 @@ -4,7 +4,7 @@
      <meta charset="UTF-8" />
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -11,8 +11,8 @@ diff -ruN a/websites/amazon_mock/index.html b/websites/amazon_mock/index.html
    <body>
      <div id="root"></div>
 diff -ruN a/websites/amazon_mock/src/App.jsx b/websites/amazon_mock/src/App.jsx
---- a/websites/amazon_mock/src/App.jsx	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/App.jsx	2026-08-03 15:55:57
+--- a/websites/amazon_mock/src/App.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/App.jsx	2026-07-30 20:08:36
 @@ -9,6 +9,8 @@
  import { Checkout } from './pages/Checkout';
  import { Orders } from './pages/Orders';
@@ -80,9 +80,84 @@ diff -ruN a/websites/amazon_mock/src/App.jsx b/websites/amazon_mock/src/App.jsx
              <Route path="profile" element={<Profile />} />
            </Route>
 diff -ruN a/websites/amazon_mock/src/components/layout/Header.jsx b/websites/amazon_mock/src/components/layout/Header.jsx
---- a/websites/amazon_mock/src/components/layout/Header.jsx	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/components/layout/Header.jsx	2026-08-03 15:55:57
-@@ -108,7 +108,7 @@
+--- a/websites/amazon_mock/src/components/layout/Header.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/components/layout/Header.jsx	2026-08-03 16:10:41
+@@ -1,4 +1,4 @@
+-import React, { useState, useEffect, useRef } from 'react';
++import React, { useState, useEffect, useRef, useMemo } from 'react';
+ import { Link, useNavigate } from 'react-router-dom';
+ import { Search, ShoppingCart, MapPin, Menu, X, ChevronRight } from 'lucide-react';
+ import { useStore } from '../../context/StoreContext';
+@@ -27,6 +27,24 @@
+ 
+   const cartCount = state.cart.reduce((acc, item) => acc + item.quantity, 0);
+ 
++  // The department list must reflect the ACTUAL catalog. The old hardcoded 6
++  // hid every product in the other departments (Sports & Outdoors, Pet Supplies,
++  // Office Products, Grocery, Health & Household) — selecting them was impossible.
++  const categories = useMemo(() => {
++    const fromProducts = [...new Set((state.products || []).map(p => p.category).filter(Boolean))].sort();
++    return fromProducts.length ? fromProducts : CATEGORIES;
++  }, [state.products]);
++
++  // One place that builds the /search URL so the input, the Enter key, the search
++  // button and the category dropdown all navigate identically.
++  const goSearch = (term, cat) => {
++    const parts = [];
++    if (term && term.trim()) parts.push(`q=${encodeURIComponent(term.trim())}`);
++    if (cat && cat !== 'All') parts.push(`category=${encodeURIComponent(cat)}`);
++    setShowSuggestions(false);
++    navigate(`/search${parts.length ? '?' + parts.join('&') : ''}`);
++  };
++
+   // Close dropdowns when clicking outside
+   useEffect(() => {
+     const handleClickOutside = (event) => {
+@@ -69,7 +87,7 @@
+         .slice(0, 5)
+         .map(p => ({ type: 'product', text: p.title, id: p.id }));
+ 
+-      const categoryMatches = CATEGORIES
++      const categoryMatches = categories
+         .filter(c => c.toLowerCase().includes(term))
+         .map(c => ({ type: 'category', text: c }));
+ 
+@@ -82,17 +100,25 @@
+   }, [searchTerm, searchCategory, state.products]);
+ 
+   const handleSearch = (e) => {
+-    e.preventDefault();
+-    if (searchTerm.trim()) {
+-      addToRecentSearches(searchTerm);
+-      setShowSuggestions(false);
+-      const catParam = searchCategory !== 'All' ? `&category=${encodeURIComponent(searchCategory)}` : '';
+-      navigate(`/search?q=${encodeURIComponent(searchTerm)}${catParam}`);
+-    } else if (searchCategory !== 'All') {
+-      navigate(`/search?category=${encodeURIComponent(searchCategory)}`);
+-    }
++    if (e && e.preventDefault) e.preventDefault();
++    if (searchTerm.trim()) addToRecentSearches(searchTerm);
++    goSearch(searchTerm, searchCategory);
+   };
+ 
++  // Defensive: implicit form submission on Enter is flaky under some automation
++  // (and the eval harness drives this box), so submit explicitly on Enter too.
++  const handleSearchKeyDown = (e) => {
++    if (e.key === 'Enter') { e.preventDefault(); handleSearch(e); }
++  };
++
++  // Picking a department should filter immediately — it read as broken when the
++  // dropdown only changed state and waited for a separate search click.
++  const handleCategoryChange = (e) => {
++    const cat = e.target.value;
++    setSearchCategory(cat);
++    goSearch(searchTerm, cat);
++  };
++
+   const handleSuggestionClick = (suggestion) => {
+     if (suggestion.type === 'product') {
+       navigate(`/product/${suggestion.id}`);
+@@ -108,7 +134,7 @@
        {/* Top Bar */}
        <div className="bg-xmazon text-white px-4 py-2 flex items-center gap-4 h-[60px]">
          <Link to="/" className="flex items-center border border-transparent hover:border-white p-2 rounded-sm focus:outline-none focus:ring-2 focus:ring-white">
@@ -91,8 +166,25 @@ diff -ruN a/websites/amazon_mock/src/components/layout/Header.jsx b/websites/ama
          </Link>
  
          <Link to="/profile" className="hidden md:flex flex-col text-xs border border-transparent hover:border-white p-2 rounded-sm leading-tight">
-@@ -138,7 +138,7 @@
+@@ -124,11 +150,11 @@
+           <form onSubmit={handleSearch} className="flex h-10 rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-xmazon-orange">
+             <select
+               value={searchCategory}
+-              onChange={e => setSearchCategory(e.target.value)}
++              onChange={handleCategoryChange}
+               className="bg-gray-100 text-gray-600 text-xs px-2 border-r border-gray-300 w-auto max-w-[150px] cursor-pointer hover:bg-gray-200 outline-none border-none h-full"
+             >
+               <option value="All">All</option>
+-              {CATEGORIES.map(cat => (
++              {categories.map(cat => (
+                 <option key={cat} value={cat}>{cat}</option>
+               ))}
+             </select>
+@@ -136,9 +162,10 @@
+               type="text"
+               value={searchTerm}
                onChange={(e) => setSearchTerm(e.target.value)}
++              onKeyDown={handleSearchKeyDown}
                onFocus={() => searchTerm.length > 1 && setShowSuggestions(true)}
                className="flex-1 px-3 text-black outline-none h-full"
 -              placeholder="Search Xmazon Mock"
@@ -100,7 +192,7 @@ diff -ruN a/websites/amazon_mock/src/components/layout/Header.jsx b/websites/ama
              />
              <button type="submit" className="bg-xmazon-yellow hover:bg-xmazon-darkYellow px-4 text-black h-full flex items-center justify-center">
                <Search size={20} />
-@@ -201,8 +201,9 @@
+@@ -201,8 +228,9 @@
                      {[
                        ['Account', '/profile'],
                        ['Orders', '/orders'],
@@ -112,7 +204,16 @@ diff -ruN a/websites/amazon_mock/src/components/layout/Header.jsx b/websites/ama
                        ['Watchlist', '/wishlist'],
                        ['Wish List', '/wishlist'],
                      ].map(([label, to]) => (
-@@ -293,6 +294,9 @@
+@@ -272,7 +300,7 @@
+               <div className="p-4">
+                 <h3 className="font-bold text-sm mb-2 uppercase text-gray-500">Shop by Category</h3>
+                 <ul className="divide-y divide-gray-100">
+-                  {CATEGORIES.map(cat => (
++                  {categories.map(cat => (
+                     <li key={cat}>
+                       <button
+                         onClick={() => { navigate(`/search?category=${encodeURIComponent(cat)}`); setShowNavMenu(false); }}
+@@ -293,6 +321,9 @@
                    </li>
                    <li>
                      <Link to="/orders" onClick={() => setShowNavMenu(false)} className="text-sm text-xmazon-blue hover:underline block py-1">Your Orders</Link>
@@ -123,8 +224,8 @@ diff -ruN a/websites/amazon_mock/src/components/layout/Header.jsx b/websites/ama
                    <li>
                      <Link to="/wishlist" onClick={() => setShowNavMenu(false)} className="text-sm text-xmazon-blue hover:underline block py-1">Your Wishlist</Link>
 diff -ruN a/websites/amazon_mock/src/components/product/ProductCard.jsx b/websites/amazon_mock/src/components/product/ProductCard.jsx
---- a/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-08-03 15:55:57
+--- a/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-07-30 18:17:09
 @@ -72,9 +72,9 @@
        {product.badges && product.badges.includes('Best Seller') && (
          <span className="absolute top-0 left-0 bg-[#e47911] text-white text-[10px] font-bold px-1.5 py-0.5 z-10 rounded-br">Best Seller</span>
@@ -138,8 +239,8 @@ diff -ruN a/websites/amazon_mock/src/components/product/ProductCard.jsx b/websit
        )}
  
 diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_mock/src/context/StoreContext.jsx
---- a/websites/amazon_mock/src/context/StoreContext.jsx	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/context/StoreContext.jsx	2026-08-03 15:55:57
+--- a/websites/amazon_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/context/StoreContext.jsx	2026-08-03 17:55:14
 @@ -1,6 +1,16 @@
  import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
  import { INITIAL_DATA, getSessionId, fetchCustomState, saveState, initializeData } from '../lib/mockData';
@@ -384,7 +485,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
      setState(prev => {
        const paymentMethods = (prev.user.paymentMethods || [prev.user.paymentMethod]).map(p => ({ ...p, isDefault: p.id === pmId }));
        const defaultPm = paymentMethods.find(p => p.isDefault) || paymentMethods[0];
-@@ -235,6 +359,100 @@
+@@ -235,6 +359,112 @@
      });
    };
  
@@ -439,9 +540,16 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
 +  // invisible to anything reading the session afterwards.
 +  const createReturn = ({ orderId, productId, reason, refundMethod = 'original', notes = '' }) => {
 +    if (bridged()) {
++      // The engine validates item_ids against ORDER-ITEM ids (the projected
++      // order.items[].id), not product ids, and only accepts 'original_payment'
++      // or 'store_credit'. Map both so a filed return actually persists.
++      const order = (state.orders || []).find(o => o.id === orderId);
++      const item = order && (order.items || []).find(i => i.productId === productId);
++      const itemId = (item && item.id) || productId;
++      const rm = refundMethod === 'original' ? 'original_payment' : refundMethod;
 +      bridgeAct('shop.create_return', {
-+        order_id: orderId, item_ids: productId, reason,
-+        refund_method: refundMethod, notes,
++        order_id: orderId, item_ids: itemId, reason,
++        refund_method: rm, notes,
 +      }).then(r => applyEngine(setState, r));
 +      return;
 +    }
@@ -459,14 +567,19 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
 +
 +  const enableTwoFa = (code) => {
 +    if (bridged()) {
-+      bridgeAct('shop.enable_two_fa', { code })
-+        .then(r => applyEngine(setState, r));
-+      return;
++      // Return the engine's real verdict (it only accepts code '123456') so the
++      // caller can show success/failure instead of an unconditional toast.
++      return bridgeAct('shop.enable_two_fa', { code })
++        .then(r => {
++          applyEngine(setState, r);
++          return !!(r && r.apps && r.apps.shop && r.apps.shop.user && r.apps.shop.user.two_fa_enabled);
++        });
 +    }
 +    setState(prev => ({
 +      ...prev,
 +      user: { ...prev.user, two_fa_enabled: true }
 +    }));
++    return Promise.resolve(true);
 +  };
 +
 +  const applyPromo = (code) => {
@@ -485,7 +598,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
    // Helper to get diff for /go endpoint
    const getStateDiff = () => {
      const diff = {};
-@@ -249,6 +467,27 @@
+@@ -249,6 +479,27 @@
      return diff;
    };
  
@@ -513,7 +626,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
    return (
      <StoreContext.Provider value={{
        state,
-@@ -263,6 +502,7 @@
+@@ -263,6 +514,7 @@
        removeSavedItem,
        addToRecentSearches,
        addToRecentlyViewed,
@@ -521,7 +634,7 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
        placeOrder,
        addReview,
        cancelOrder,
-@@ -272,6 +512,12 @@
+@@ -272,6 +524,12 @@
        setDefaultAddress,
        addPaymentMethod,
        setDefaultPaymentMethod,
@@ -535,8 +648,8 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
        {children}
      </StoreContext.Provider>
 diff -ruN a/websites/amazon_mock/src/index.css b/websites/amazon_mock/src/index.css
---- a/websites/amazon_mock/src/index.css	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/index.css	2026-08-03 15:55:57
+--- a/websites/amazon_mock/src/index.css	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/index.css	2026-07-30 18:17:09
 @@ -4,7 +4,7 @@
  
  body {
@@ -548,7 +661,7 @@ diff -ruN a/websites/amazon_mock/src/index.css b/websites/amazon_mock/src/index.
  }
 diff -ruN a/websites/amazon_mock/src/lib/bridge.js b/websites/amazon_mock/src/lib/bridge.js
 --- a/websites/amazon_mock/src/lib/bridge.js	1969-12-31 16:00:00
-+++ b/websites/amazon_mock/src/lib/bridge.js	2026-08-03 15:55:57
++++ b/websites/amazon_mock/src/lib/bridge.js	2026-08-03 15:53:36
 @@ -0,0 +1,62 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
@@ -613,8 +726,8 @@ diff -ruN a/websites/amazon_mock/src/lib/bridge.js b/websites/amazon_mock/src/li
 +  return () => { live = false; };
 +}
 diff -ruN a/websites/amazon_mock/src/lib/mockData.js b/websites/amazon_mock/src/lib/mockData.js
---- a/websites/amazon_mock/src/lib/mockData.js	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/lib/mockData.js	2026-08-03 15:55:57
+--- a/websites/amazon_mock/src/lib/mockData.js	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/lib/mockData.js	2026-08-03 16:12:03
 @@ -7,7 +7,7 @@
    {
      id: "p1", category: "Electronics", brand: "Samsung", title: "Samsung Galaxy Buds Pro - True Wireless Bluetooth Noise Cancelling Earbuds",
@@ -1159,7 +1272,21 @@ diff -ruN a/websites/amazon_mock/src/lib/mockData.js b/websites/amazon_mock/src/
      badges: Array.isArray(p.badges) ? p.badges : [],
      createdAt: p.createdAt || new Date().toISOString(),
    };
-@@ -943,7 +956,7 @@
+@@ -896,6 +909,13 @@
+   return {
+     productId: it.productId || it.product_id || it.id || `prod_custom_${index}`,
+     quantity: Math.max(quantity, 1),
++    // Per-line gift / split-ship / scheduled-delivery options (engine-owned).
++    // Preserved so the Cart can render + edit them; previously dropped here,
++    // which left the gift-message box dead and the gift-wrap box un-persisting.
++    gift_wrap: !!it.gift_wrap,
++    gift_message: it.gift_message || '',
++    ship_to_address_id: it.ship_to_address_id || '',
++    scheduled_delivery: it.scheduled_delivery || '',
+   };
+ }
+ 
+@@ -943,7 +963,7 @@
      id: r.id || `rev_custom_${index}`,
      productId: r.productId || r.product_id || '',
      userId: r.userId || r.user_id || 'anonymous',
@@ -1170,7 +1297,7 @@ diff -ruN a/websites/amazon_mock/src/lib/mockData.js b/websites/amazon_mock/src/
      content: r.content || r.body || r.text || '',
 diff -ruN a/websites/amazon_mock/src/pages/BrowsingHistory.jsx b/websites/amazon_mock/src/pages/BrowsingHistory.jsx
 --- a/websites/amazon_mock/src/pages/BrowsingHistory.jsx	1969-12-31 16:00:00
-+++ b/websites/amazon_mock/src/pages/BrowsingHistory.jsx	2026-08-03 15:55:57
++++ b/websites/amazon_mock/src/pages/BrowsingHistory.jsx	2026-07-30 20:08:20
 @@ -0,0 +1,59 @@
 +import React from 'react';
 +import { Link } from 'react-router-dom';
@@ -1232,10 +1359,11 @@ diff -ruN a/websites/amazon_mock/src/pages/BrowsingHistory.jsx b/websites/amazon
 +  );
 +};
 diff -ruN a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/pages/Cart.jsx
---- a/websites/amazon_mock/src/pages/Cart.jsx	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/pages/Cart.jsx	2026-08-03 15:55:57
-@@ -1,11 +1,22 @@
- import React, { useState } from 'react';
+--- a/websites/amazon_mock/src/pages/Cart.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/Cart.jsx	2026-08-03 18:27:40
+@@ -1,11 +1,50 @@
+-import React, { useState } from 'react';
++import React, { useState, useEffect, useRef } from 'react';
  import { Link, useNavigate } from 'react-router-dom';
  import { useStore } from '../context/StoreContext';
 +import { bridged } from '../lib/bridge';
@@ -1252,13 +1380,41 @@ diff -ruN a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/p
 +  ...patch,
 +});
 +
++// The gift message is free text, so it needs a LOCAL draft: committing every
++// keystroke to the engine round-trips per character (dead-feeling box) and the
++// 2.5s re-projection would yank half-typed text back. Keep the draft here, and
++// only push to the engine on blur. Adopt engine updates only while unfocused so
++// the poll can't overwrite what the user is mid-typing.
++const GiftMessageField = ({ item, onCommit }) => {
++  const [draft, setDraft] = useState(item.gift_message || '');
++  const editing = useRef(false);
++  useEffect(() => {
++    if (!editing.current) setDraft(item.gift_message || '');
++  }, [item.gift_message]);
++  return (
++    <textarea
++      aria-label="Gift message"
++      value={draft}
++      placeholder="Add a gift message (optional)"
++      onFocus={() => { editing.current = true; }}
++      onChange={(e) => setDraft(e.target.value)}
++      onBlur={() => {
++        editing.current = false;
++        if ((item.gift_message || '') !== draft) onCommit(draft);
++      }}
++      rows={2}
++      className="w-full border rounded px-2 py-1 text-sm focus:outline-none focus:border-xmazon-orange"
++    />
++  );
++};
++
  export const Cart = () => {
 -  const { state, updateCartQty, removeFromCart, saveForLater, moveToCart, removeSavedItem, addToCart } = useStore();
 +  const { state, updateCartQty, removeFromCart, saveForLater, moveToCart, removeSavedItem, addToCart, setLineOptions, applyPromo } = useStore();
    const navigate = useNavigate();
    const [promoCode, setPromoCode] = useState('');
    const [appliedPromo, setAppliedPromo] = useState(null);
-@@ -16,18 +27,47 @@
+@@ -16,18 +55,47 @@
      return acc + (product ? product.price * item.quantity : 0);
    }, 0);
  
@@ -1312,7 +1468,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/p
      }
    };
  
-@@ -52,7 +92,7 @@
+@@ -52,7 +120,7 @@
              {state.cart.length === 0 ? (
                <div className="py-8 text-center">
                  <div className="text-4xl mb-4">🛒</div>
@@ -1321,7 +1477,18 @@ diff -ruN a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/p
                  <p className="text-sm text-gray-600 mb-4">Your shopping cart lives here. Add items you want to purchase.</p>
                  <Link to="/" className="text-xmazon-blue hover:underline text-sm font-bold">Shop today's deals</Link>
                </div>
-@@ -91,6 +131,63 @@
+@@ -82,7 +150,9 @@
+                             onChange={(e) => updateCartQty(item.productId, Number(e.target.value))}
+                             className="p-1 border rounded bg-gray-50 shadow-sm text-sm"
+                           >
+-                            {[...Array(10)].map((_, i) => (
++                            {/* Always offer headroom above the current qty so the
++                                selector can INCREASE past 10, not just cap there. */}
++                            {[...Array(Math.max(10, (Number(item.quantity) || 1) + 5))].map((_, i) => (
+                               <option key={i+1} value={i+1}>Qty: {i+1}</option>
+                             ))}
+                           </select>
+@@ -91,6 +161,60 @@
                            <span className="text-gray-300">|</span>
                            <button onClick={() => saveForLater(item.productId)} className="text-xmazon-blue hover:underline text-xs">Save for later</button>
                          </div>
@@ -1341,13 +1508,10 @@ diff -ruN a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/p
 +                          </label>
 +                          <div>
 +                            <label className="block text-xs text-gray-600 mb-1">Gift message</label>
-+                            <textarea
-+                              aria-label="Gift message"
-+                              value={item.gift_message || ''}
-+                              onChange={(e) => setLineOptions(item.productId,
-+                                lineOpts(item, { gift_message: e.target.value }))}
-+                              rows={2}
-+                              className="w-full border rounded px-2 py-1 text-sm focus:outline-none focus:border-xmazon-orange"
++                            <GiftMessageField
++                              item={item}
++                              onCommit={(msg) => setLineOptions(item.productId,
++                                lineOpts(item, { gift_message: msg }))}
 +                            />
 +                          </div>
 +                          {/* Per-LINE destination. The order-level address still
@@ -1385,7 +1549,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/p
                        </div>
                        <div className="text-right font-bold text-base">
                          ${(product.price * item.quantity).toFixed(2)}
-@@ -171,21 +268,21 @@
+@@ -171,21 +295,21 @@
          {state.cart.length > 0 && (
            <div className="w-full md:w-80">
              <div className="bg-white p-4 shadow-sm sticky top-4">
@@ -1411,7 +1575,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/p
                  <div className="text-base font-bold mb-3">
                    Total: ${finalSubtotal.toFixed(2)}
                  </div>
-@@ -215,8 +312,8 @@
+@@ -215,8 +339,8 @@
                    </button>
                  </div>
                  {promoError && <div className="text-red-600 text-xs mt-1">{promoError}</div>}
@@ -1423,8 +1587,8 @@ diff -ruN a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/p
                </div>
              </div>
 diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/src/pages/Checkout.jsx
---- a/websites/amazon_mock/src/pages/Checkout.jsx	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/pages/Checkout.jsx	2026-08-03 15:55:57
+--- a/websites/amazon_mock/src/pages/Checkout.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/Checkout.jsx	2026-08-03 18:25:16
 @@ -3,6 +3,7 @@
  import { useStore } from '../context/StoreContext';
  import { Button } from '../components/ui/Button';
@@ -1433,7 +1597,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
  
  export const Checkout = () => {
    const { state, placeOrder } = useStore();
-@@ -29,12 +30,29 @@
+@@ -29,12 +30,36 @@
      const product = state.products.find(p => p.id === item.productId);
      return acc + (product ? product.price * item.quantity : 0);
    }, 0);
@@ -1456,8 +1620,15 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
 +      ? (promoDef.discount_flat ? Math.min(promoDef.discount_flat, subtotal) : subtotal * (promoDef.discount_pct || 0))
 +      : subtotal * 0.10; // demo fallback, same as the Cart
 +  const discountedSubtotal = subtotal - discount;
-+  const tax = discountedSubtotal * 0.08;
-+  const total = discountedSubtotal + tax;
++  // Mirror the engine's place_order math so the quoted total == the amount
++  // actually charged (was: 8% tax, $0 shipping, no gift-wrap fee).
++  const SHIPPING_FLAT = 5.99;
++  const GIFT_WRAP_FEE = 4.99;
++  const shipping = subtotal > 0 ? SHIPPING_FLAT : 0;
++  const giftWrapCount = state.cart.filter(i => i.gift_wrap).length;
++  const giftWrapFee = giftWrapCount * GIFT_WRAP_FEE;
++  const tax = discountedSubtotal * 0.085;
++  const total = discountedSubtotal + shipping + giftWrapFee + tax;
  
    const handlePlaceOrder = () => {
      setLoading(true);
@@ -1466,7 +1637,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
        const orderData = {
          items: state.cart,
          total: total,
-@@ -43,12 +61,36 @@
+@@ -43,12 +68,36 @@
          trackingNumber: null,
          estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
        };
@@ -1504,7 +1675,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
    if (state.cart.length === 0) {
      return (
        <div className="max-w-[600px] mx-auto p-8 text-center">
-@@ -115,7 +157,7 @@
+@@ -115,7 +164,7 @@
                      </label>
                    ))}
                  </div>
@@ -1513,8 +1684,12 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
                </div>
              ) : (
                <div className="text-sm text-gray-600 flex items-center gap-2">
-@@ -156,12 +198,16 @@
-                           <span className="font-bold">{pm.brand} ending in {pm.last4}</span>
+@@ -153,21 +202,25 @@
+                       <div className="text-sm">
+                         <div className="flex items-center gap-2">
+                           <CreditCard size={14} className="text-gray-500" />
+-                          <span className="font-bold">{pm.brand} ending in {pm.last4}</span>
++                          <span className="font-bold">{pm.brand}{(pm.brand !== 'PayPal' && pm.last4 && pm.last4 !== '0000') ? ` ending in ${pm.last4}` : ''}</span>
                            {pm.isDefault && <span className="text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">Default</span>}
                          </div>
 -                        {pm.expiry && <div className="text-gray-500 mt-1 text-xs">Expires {pm.expiry}</div>}
@@ -1532,7 +1707,14 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
                </div>
              ) : (
                step > 2 && (
-@@ -193,7 +239,7 @@
+                 <div className="text-sm text-gray-600 flex items-center gap-2">
+                   <CreditCard size={14} className="text-gray-400" />
+-                  {selectedPm.brand} ending in {selectedPm.last4}
++                  {selectedPm.brand}{(selectedPm.brand !== 'PayPal' && selectedPm.last4 && selectedPm.last4 !== '0000') ? ` ending in ${selectedPm.last4}` : ''}
+                 </div>
+               )
+             )}
+@@ -193,7 +246,7 @@
                    );
                  })}
                  <div className="border-t pt-4 mt-4">
@@ -1541,7 +1723,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
                      {loading ? 'Placing Order...' : 'Place your order'}
                    </Button>
                  </div>
-@@ -205,16 +251,33 @@
+@@ -205,16 +258,36 @@
          {/* Order Summary Sidebar */}
          <div className="w-full md:w-72">
            <div className="bg-white p-4 border rounded sticky top-4">
@@ -1571,7 +1753,11 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
              <h3 className="font-bold text-lg mb-2">Order Summary</h3>
              <div className="text-sm space-y-1">
                <div className="flex justify-between"><span>Items:</span> <span>${subtotal.toFixed(2)}</span></div>
-               <div className="flex justify-between"><span>Shipping:</span> <span>$0.00</span></div>
+-              <div className="flex justify-between"><span>Shipping:</span> <span>$0.00</span></div>
++              <div className="flex justify-between"><span>Shipping:</span> <span>${shipping.toFixed(2)}</span></div>
++              {giftWrapFee > 0 && (
++                <div className="flex justify-between"><span>Gift wrap ({giftWrapCount}):</span> <span>${giftWrapFee.toFixed(2)}</span></div>
++              )}
 +              {discount > 0 && (
 +                <div className="flex justify-between text-green-700">
 +                  <span>Promo{appliedPromoCode ? ` (${appliedPromoCode})` : ''}:</span> <span>-${discount.toFixed(2)}</span>
@@ -1581,8 +1767,8 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
                <div className="flex justify-between border-t pt-1 font-bold text-red-700 text-lg">
                  <span>Order Total:</span> <span>${total.toFixed(2)}</span>
 diff -ruN a/websites/amazon_mock/src/pages/Home.jsx b/websites/amazon_mock/src/pages/Home.jsx
---- a/websites/amazon_mock/src/pages/Home.jsx	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/pages/Home.jsx	2026-08-03 15:55:57
+--- a/websites/amazon_mock/src/pages/Home.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/Home.jsx	2026-07-31 15:08:05
 @@ -5,10 +5,22 @@
  import { CATEGORIES } from '../lib/mockData';
  import { ChevronLeft, ChevronRight, Zap } from 'lucide-react';
@@ -1704,8 +1890,8 @@ diff -ruN a/websites/amazon_mock/src/pages/Home.jsx b/websites/amazon_mock/src/p
              <Link to="/search?category=Home+%26+Kitchen" className="text-[13px] text-xmazon-blue hover:text-xmazon-orange hover:underline">Explore now</Link>
            </div>
 diff -ruN a/websites/amazon_mock/src/pages/OrderConfirmation.jsx b/websites/amazon_mock/src/pages/OrderConfirmation.jsx
---- a/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-08-03 15:55:57
+--- a/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-07-30 18:17:09
 @@ -1,13 +1,16 @@
 -import React from 'react';
 +import React, { useEffect } from 'react';
@@ -1725,8 +1911,8 @@ diff -ruN a/websites/amazon_mock/src/pages/OrderConfirmation.jsx b/websites/amaz
    if (!order) {
      return (
 diff -ruN a/websites/amazon_mock/src/pages/Orders.jsx b/websites/amazon_mock/src/pages/Orders.jsx
---- a/websites/amazon_mock/src/pages/Orders.jsx	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/pages/Orders.jsx	2026-08-03 15:55:57
+--- a/websites/amazon_mock/src/pages/Orders.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/Orders.jsx	2026-07-31 17:31:05
 @@ -1,5 +1,6 @@
 -import React, { useState } from 'react';
 +import React, { useState, useEffect } from 'react';
@@ -1851,8 +2037,8 @@ diff -ruN a/websites/amazon_mock/src/pages/Orders.jsx b/websites/amazon_mock/src
                <div className="flex gap-2">
                  <Button type="submit" className="flex-1">Submit Return Request</Button>
 diff -ruN a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_mock/src/pages/ProductDetail.jsx
---- a/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-08-03 15:55:57
+--- a/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-08-03 18:27:21
 @@ -1,6 +1,7 @@
  import React, { useEffect, useState, useRef } from 'react';
  import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
@@ -1872,7 +2058,15 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_m
    const [newReview, setNewReview] = useState({ rating: 5, title: '', content: '' });
    const [showReviewForm, setShowReviewForm] = useState(false);
    const [reviewError, setReviewError] = useState('');
-@@ -27,10 +29,14 @@
+@@ -19,6 +21,7 @@
+   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
+   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
+   const [votedReviews, setVotedReviews] = useState(new Set());
++  const [addedMsg, setAddedMsg] = useState('');
+   const reviewsRef = useRef(null);
+ 
+   const product = state.products.find(p => p.id === id);
+@@ -27,10 +30,14 @@
    useEffect(() => {
      if (product) {
        addToRecentlyViewed(product.id);
@@ -1888,7 +2082,23 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_m
  
    useEffect(() => {
      if (location.hash === '#reviews' && reviewsRef.current) {
-@@ -160,7 +166,7 @@
+@@ -50,6 +57,15 @@
+     navigate('/checkout');
+   };
+ 
++  // Add-to-cart had NO visible feedback (only the tiny cart-badge number changed),
++  // so it read as "not working". Show a clear confirmation.
++  const handleAddToCart = () => {
++    addToCart(product, qty);
++    setAddedMsg(`Added ${qty} to cart`);
++    clearTimeout(handleAddToCart._t);
++    handleAddToCart._t = setTimeout(() => setAddedMsg(''), 3000);
++  };
++
+   const handleSubmitReview = (e) => {
+     e.preventDefault();
+     if (!newReview.title.trim()) { setReviewError('Please enter a review headline.'); return; }
+@@ -160,7 +176,7 @@
      <div className="max-w-[1500px] mx-auto bg-[#eaeded]">
        {/* Breadcrumb */}
        <div className="text-[12px] text-[#007185] px-4 pt-3 pb-1">
@@ -1897,7 +2107,7 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_m
          <span className="text-[#565959] mx-1">›</span>
          <Link to={`/search?category=${encodeURIComponent(product.category)}`} className="hover:underline hover:text-[#c7511f]">{product.category}</Link>
          <span className="text-[#565959] mx-1">›</span>
-@@ -217,7 +223,7 @@
+@@ -217,7 +233,7 @@
                <div className="flex gap-2 mb-2">
                  {product.badges.map(badge => (
                    <span key={badge} className={`text-xs font-bold px-2 py-0.5 rounded ${badge === 'Best Seller' ? 'bg-xmazon-orange text-white' : 'bg-xmazon-blue text-white'}`}>
@@ -1906,10 +2116,17 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_m
                    </span>
                  ))}
                </div>
-@@ -325,12 +331,36 @@
+@@ -324,13 +340,42 @@
+                     {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>Qty: {n}</option>)}
                    </select>
  
-                   <Button className="w-full mb-2 text-sm" onClick={() => addToCart(product, qty)}>Add to Cart</Button>
+-                  <Button className="w-full mb-2 text-sm" onClick={() => addToCart(product, qty)}>Add to Cart</Button>
++                  <Button className="w-full mb-2 text-sm" onClick={handleAddToCart}>Add to Cart</Button>
++                  {addedMsg && (
++                    <div className="mb-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded px-2 py-1.5 flex items-center gap-1">
++                      <span className="font-bold">✓</span> {addedMsg}
++                    </div>
++                  )}
 +
 +                  {/* Subscribe & Save: a recurring order rather than a one-off. */}
 +                  <div className="mb-2 border rounded p-2 text-xs bg-gray-50">
@@ -1944,7 +2161,7 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_m
                  <div className="flex justify-between"><span>Sold by</span> <span>{product.seller || product.brand}</span></div>
                </div>
  
-@@ -452,10 +482,18 @@
+@@ -452,10 +497,18 @@
              </div>
  
              <h3 className="font-bold mb-2 text-sm">Review this product</h3>
@@ -1967,7 +2184,7 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_m
            </div>
  
            {/* Right column - reviews */}
-@@ -510,7 +548,7 @@
+@@ -510,7 +563,7 @@
                          <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
                            <User size={16} />
                          </div>
@@ -1976,7 +2193,7 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_m
                        </div>
                        <div className="flex items-center gap-2 mb-1">
                          <Rating value={review.rating} size={14} />
-@@ -527,7 +565,10 @@
+@@ -527,7 +580,10 @@
                          {(helpfulCount > 0 || votedReviews.has(review.id)) && (
                            <span>{helpfulCount} {helpfulCount === 1 ? 'person' : 'people'} found this helpful</span>
                          )}
@@ -1988,7 +2205,7 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_m
                            <button
                              disabled
                              className="border rounded px-3 py-1 text-xs text-gray-400 border-gray-300 bg-gray-50 cursor-not-allowed"
-@@ -544,7 +585,7 @@
+@@ -544,7 +600,7 @@
                            >
                              Helpful
                            </button>
@@ -1998,8 +2215,8 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_m
                      </div>
                    );
 diff -ruN a/websites/amazon_mock/src/pages/ProductListing.jsx b/websites/amazon_mock/src/pages/ProductListing.jsx
---- a/websites/amazon_mock/src/pages/ProductListing.jsx	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/pages/ProductListing.jsx	2026-08-03 15:55:57
+--- a/websites/amazon_mock/src/pages/ProductListing.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/ProductListing.jsx	2026-08-03 17:54:20
 @@ -1,6 +1,7 @@
 -import React, { useState, useMemo } from 'react';
 +import React, { useState, useMemo, useEffect } from 'react';
@@ -2009,7 +2226,7 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductListing.jsx b/websites/amazon_
  import { ProductCard } from '../components/product/ProductCard';
  import { Rating } from '../components/ui/Rating';
  import { CATEGORIES } from '../lib/mockData';
-@@ -14,6 +15,11 @@
+@@ -14,12 +15,23 @@
    const categoryParam = searchParams.get('category') || '';
    const dealsParam = searchParams.get('deals') === 'true';
  
@@ -2021,7 +2238,39 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductListing.jsx b/websites/amazon_
    // Get unique brands from products in the current category/search
    const availableBrands = useMemo(() => {
      const filtered = state.products.filter(p => categoryParam ? p.category === categoryParam : true);
-@@ -185,7 +191,7 @@
+     return [...new Set(filtered.map(p => p.brand))].sort();
+   }, [state.products, categoryParam]);
+ 
++  // Department list must reflect the real catalog (all 11), not a hardcoded 6.
++  const availableCategories = useMemo(() => {
++    const cats = [...new Set(state.products.map(p => p.category).filter(Boolean))].sort();
++    return cats.length ? cats : CATEGORIES;
++  }, [state.products]);
++
+   // Filter States
+   const [priceRange, setPriceRange] = useState([0, 1000]);
+   const [selectedBrands, setSelectedBrands] = useState([]);
+@@ -38,7 +50,9 @@
+       const matchesSearch = product.title.toLowerCase().includes(query.toLowerCase()) ||
+                             product.description.toLowerCase().includes(query.toLowerCase());
+       const matchesCategory = categoryParam ? product.category === categoryParam : true;
+-      const matchesPrice = priceRange[1] >= 1000 ? true : (product.price >= priceRange[0] && product.price <= priceRange[1]);
++      // 1000 = "no upper bound", but the lower bound must STILL apply (the old
++      // `>=1000 ? true` short-circuit made "$200 & Above" match everything).
++      const matchesPrice = product.price >= priceRange[0] && (priceRange[1] >= 1000 ? true : product.price <= priceRange[1]);
+       const matchesBrand = selectedBrands.length === 0 || selectedBrands.includes(product.brand);
+       const matchesPrime = !primeOnly || product.prime;
+       const matchesRating = product.rating >= minRating;
+@@ -85,7 +99,7 @@
+           >
+             Any Department
+           </li>
+-          {CATEGORIES.map(cat => (
++          {availableCategories.map(cat => (
+             <li
+               key={cat}
+               className={`cursor-pointer py-0.5 pl-3 ${categoryParam === cat ? 'font-bold text-[#c7511f]' : 'text-[#0F1111] hover:text-[#c7511f]'}`}
+@@ -185,7 +199,7 @@
        <div className="flex-1">
          {/* Breadcrumb */}
          <div className="text-[12px] text-[#007185] mb-2">
@@ -2031,8 +2280,8 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductListing.jsx b/websites/amazon_
            {categoryParam ? (
              <span className="text-gray-700">{categoryParam}</span>
 diff -ruN a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/src/pages/Profile.jsx
---- a/websites/amazon_mock/src/pages/Profile.jsx	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/pages/Profile.jsx	2026-08-03 15:55:57
+--- a/websites/amazon_mock/src/pages/Profile.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/Profile.jsx	2026-08-03 18:25:27
 @@ -1,8 +1,9 @@
 -import React, { useState } from 'react';
 +import React, { useState, useEffect } from 'react';
@@ -2044,7 +2293,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/sr
  
  const Toast = ({ message, onDone }) => {
    React.useEffect(() => {
-@@ -17,7 +18,14 @@
+@@ -17,16 +18,24 @@
  };
  
  export const Profile = () => {
@@ -2060,15 +2309,34 @@ diff -ruN a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/sr
    const [activeSection, setActiveSection] = useState(null);
    const [toast, setToast] = useState(null);
    const [editName, setEditName] = useState('');
-@@ -27,6 +35,7 @@
-   const [newPmForm, setNewPmForm] = useState({ brand: 'Visa', last4: '', expiry: '' });
+   const [editEmail, setEditEmail] = useState('');
+   const [isEditingProfile, setIsEditingProfile] = useState(false);
+   const [newAddressForm, setNewAddressForm] = useState({ fullName: '', street: '', city: '', state: '', zip: '', country: 'United States', phone: '' });
+-  const [newPmForm, setNewPmForm] = useState({ brand: 'Visa', last4: '', expiry: '' });
++  const [newPmForm, setNewPmForm] = useState({ brand: 'Visa', cardNumber: '', expiry: '', cvv: '' });
    const [showNewAddress, setShowNewAddress] = useState(false);
    const [showNewPm, setShowNewPm] = useState(false);
 +  const [twoFaCode, setTwoFaCode] = useState('');
  
    const addresses = state.user.addresses || [state.user.address];
    const paymentMethods = state.user.paymentMethods || [state.user.paymentMethod];
-@@ -143,12 +152,18 @@
+@@ -50,9 +59,12 @@
+ 
+   const handleAddPm = (e) => {
+     e.preventDefault();
+-    if (!newPmForm.last4 || newPmForm.last4.length !== 4 || !newPmForm.expiry) return;
+-    addPaymentMethod(newPmForm);
+-    setNewPmForm({ brand: 'Visa', last4: '', expiry: '' });
++    const digits = (newPmForm.cardNumber || '').replace(/\D/g, '');
++    // The engine rejects a credit card without a number/expiry/CVV, so require
++    // them (previously only last4 was collected and the add silently failed).
++    if (digits.length < 12 || !newPmForm.expiry || (newPmForm.cvv || '').length < 3) return;
++    addPaymentMethod({ ...newPmForm, cardNumber: digits, last4: digits.slice(-4) });
++    setNewPmForm({ brand: 'Visa', cardNumber: '', expiry: '', cvv: '' });
+     setShowNewPm(false);
+     setToast('Payment method added successfully.');
+   };
+@@ -143,12 +155,18 @@
                    <div className="text-sm font-bold">Name</div>
                    <div className="text-sm text-gray-600">{state.user.name}</div>
                  </div>
@@ -2093,7 +2361,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/sr
                </div>
                <div className="flex justify-between items-center py-3 border-b">
                  <div>
-@@ -156,6 +171,33 @@
+@@ -156,6 +174,37 @@
                    <div className="text-sm text-gray-600">{state.user.email}</div>
                  </div>
                </div>
@@ -2117,7 +2385,11 @@ diff -ruN a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/sr
 +                    </div>
 +                    <Button
 +                      type="button"
-+                      onClick={() => { enableTwoFa(twoFaCode); setTwoFaCode(''); setToast('Two-step verification enabled.'); }}
++                      onClick={() => {
++                        const res = enableTwoFa(twoFaCode); setTwoFaCode('');
++                        if (res && res.then) res.then(ok => setToast(ok ? 'Two-step verification enabled.' : 'That verification code is not valid.'));
++                        else setToast('Two-step verification enabled.');
++                      }}
 +                    >
 +                      Enable two-step verification
 +                    </Button>
@@ -2127,7 +2399,7 @@ diff -ruN a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/sr
              </div>
              {isEditingProfile && (
                <form onSubmit={handleSaveProfile} className="space-y-3 border-t pt-4">
-@@ -276,7 +318,7 @@
+@@ -276,7 +325,7 @@
              <div className="flex items-center gap-4 mb-4 p-4 bg-gradient-to-r from-[#232f3e] to-[#37475a] rounded-lg">
                <span className="text-[#00a8e1] font-bold italic text-[28px]">prime</span>
                <div className="text-white">
@@ -2136,9 +2408,57 @@ diff -ruN a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/sr
                  <div className="text-[12px] text-gray-300">
                    {state.user.isPrime
                      ? `Member since ${state.user.memberSince || '2019'} - Enjoy FREE same-day, one-day, and two-day delivery`
+@@ -335,17 +384,26 @@
+                   </select>
+                 </div>
+                 <div>
+-                  <label className="block text-xs font-bold mb-1">Last 4 digits</label>
+-                  <input required type="text" maxLength={4} minLength={4} pattern="\d{4}" value={newPmForm.last4}
+-                    onChange={e => setNewPmForm({...newPmForm, last4: e.target.value.replace(/\D/g, '').slice(0, 4)})}
+-                    placeholder="1234"
++                  <label className="block text-xs font-bold mb-1">Card number</label>
++                  <input required type="text" inputMode="numeric" maxLength={19} value={newPmForm.cardNumber}
++                    onChange={e => setNewPmForm({...newPmForm, cardNumber: e.target.value.replace(/[^\d ]/g, '').slice(0, 19)})}
++                    placeholder="4111 1111 1111 1111"
+                     className="w-full border rounded p-2 text-sm focus:outline-none focus:border-xmazon-orange" />
+                 </div>
+-                <div>
+-                  <label className="block text-xs font-bold mb-1">Expiry (MM/YY)</label>
+-                  <input required type="text" placeholder="12/28" value={newPmForm.expiry}
+-                    onChange={e => setNewPmForm({...newPmForm, expiry: e.target.value})}
+-                    className="w-full border rounded p-2 text-sm focus:outline-none focus:border-xmazon-orange" />
++                <div className="flex gap-3">
++                  <div className="flex-1">
++                    <label className="block text-xs font-bold mb-1">Expiry (MM/YY)</label>
++                    <input required type="text" placeholder="12/28" value={newPmForm.expiry}
++                      onChange={e => setNewPmForm({...newPmForm, expiry: e.target.value})}
++                      className="w-full border rounded p-2 text-sm focus:outline-none focus:border-xmazon-orange" />
++                  </div>
++                  <div className="w-24">
++                    <label className="block text-xs font-bold mb-1">CVV</label>
++                    <input required type="text" inputMode="numeric" maxLength={4} value={newPmForm.cvv}
++                      onChange={e => setNewPmForm({...newPmForm, cvv: e.target.value.replace(/\D/g, '').slice(0, 4)})}
++                      placeholder="123"
++                      className="w-full border rounded p-2 text-sm focus:outline-none focus:border-xmazon-orange" />
++                  </div>
+                 </div>
+                 <div className="flex gap-2">
+                   <Button type="submit">Add card</Button>
+@@ -362,9 +420,9 @@
+                   )}
+                   <div className="flex items-center gap-2 font-bold">
+                     <CreditCard size={16} className="text-gray-500" />
+-                    {pm.brand} ending in {pm.last4}
++                    {pm.brand}{(pm.brand !== 'PayPal' && pm.last4 && pm.last4 !== '0000') ? ` ending in ${pm.last4}` : ''}
+                   </div>
+-                  <div className="text-gray-500 text-xs mt-1">Expires {pm.expiry}</div>
++                  {pm.expiry && <div className="text-gray-500 text-xs mt-1">Expires {pm.expiry}</div>}
+                   {!pm.isDefault && pm.id && (
+                     <button
+                       onClick={() => { setDefaultPaymentMethod(pm.id); setToast('Default payment method updated.'); }}
 diff -ruN a/websites/amazon_mock/src/pages/Subscriptions.jsx b/websites/amazon_mock/src/pages/Subscriptions.jsx
 --- a/websites/amazon_mock/src/pages/Subscriptions.jsx	1969-12-31 16:00:00
-+++ b/websites/amazon_mock/src/pages/Subscriptions.jsx	2026-08-03 15:55:57
++++ b/websites/amazon_mock/src/pages/Subscriptions.jsx	2026-07-30 18:17:09
 @@ -0,0 +1,77 @@
 +import React, { useEffect } from 'react';
 +import { Link } from 'react-router-dom';
@@ -2218,8 +2538,8 @@ diff -ruN a/websites/amazon_mock/src/pages/Subscriptions.jsx b/websites/amazon_m
 +  );
 +};
 diff -ruN a/websites/amazon_mock/src/pages/Wishlist.jsx b/websites/amazon_mock/src/pages/Wishlist.jsx
---- a/websites/amazon_mock/src/pages/Wishlist.jsx	2026-08-03 15:55:57
-+++ b/websites/amazon_mock/src/pages/Wishlist.jsx	2026-08-03 15:55:57
+--- a/websites/amazon_mock/src/pages/Wishlist.jsx	2026-07-28 11:01:47
++++ b/websites/amazon_mock/src/pages/Wishlist.jsx	2026-07-30 18:17:09
 @@ -32,7 +32,7 @@
          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
            <div>

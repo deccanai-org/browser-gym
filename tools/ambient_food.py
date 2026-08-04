@@ -186,6 +186,24 @@ import pathlib as _pathlib
 # ambient orders + favourites below keep resolving.
 _MENUS = _json.loads((_pathlib.Path(__file__).with_name("ambient_food_menus.json")).read_text())
 
+# Ambient dish tags were passed through raw ("gluten_free"), while task-restaurant
+# dishes are normalized to "Gluten-Free" (seed_to_cuagym._DIETARY). The GymEats
+# dietary filter compares case-insensitively but NOT separator-insensitively, so
+# an underscore tag never matched the "gluten-free" the filter emits. Canonicalize
+# ambient tags the same way so every dietary filter (veg/vegan/gluten-free/halal)
+# matches ambient and task dishes identically.
+_DIETARY_CANON = {
+    "vegetarian": "Vegetarian", "vegan": "Vegan",
+    "gluten-free": "Gluten-Free", "gluten_free": "Gluten-Free", "glutenfree": "Gluten-Free",
+    "halal": "Halal", "kosher": "Kosher",
+    "dairy-free": "Dairy-Free", "dairy_free": "Dairy-Free",
+    "nut-free": "Nut-Free", "nut_free": "Nut-Free", "keto": "Keto", "pescatarian": "Pescatarian",
+}
+
+
+def _canon_diet(tags):
+    return [_DIETARY_CANON.get((t or "").strip().lower(), t) for t in (tags or [])]
+
 
 def build_ambient(_food_img, _svg_tile):
     """Return (restaurants, menu_items, reviews). Images resolved via the passed
@@ -201,7 +219,7 @@ def build_ambient(_food_img, _svg_tile):
                 "category": cuisine, "name": d["name"], "description": f"{d['name']} from {rname}.",
                 "price": d["price"], "imageUrl": _food_img(d["image_key"]),
                 "isPopular": di == 0, "isAvailable": True,
-                "dietaryTags": d.get("tags", []), "customizationGroups": [],
+                "dietaryTags": _canon_diet(d.get("tags", [])), "customizationGroups": [],
             })
         restaurants.append({
             "id": rid, "name": rname,
@@ -239,13 +257,15 @@ def ambient_orders(menu_by_id):
          "items": [line("amb_d_patty_palace_0", 1), line("amb_d_patty_palace_3", 1)],
          "subtotal": 16.48, "deliveryFee": 2.99, "serviceFee": 1.50, "tax": 1.60,
          "tip": 3.00, "total": 25.57, "placedAt": "2026-05-18T19:20:00",
-         "deliveryAddress": None, "etaLabel": "Delivered", "deliveryPerson": None},
+         "deliveryAddress": None, "etaLabel": "Delivered", "deliveryPerson": None,
+         "paymentMethod": "Visa •••• 4242"},
         {"id": "amb_order_2", "restaurantId": "amb_r_the_daily_grind",
          "restaurantName": "The Daily Grind", "status": "delivered",
          "items": [line("amb_d_the_daily_grind_0", 2)],
          "subtotal": 10.50, "deliveryFee": 0.99, "serviceFee": 1.00, "tax": 1.05,
          "tip": 2.00, "total": 15.54, "placedAt": "2026-05-20T08:45:00",
-         "deliveryAddress": None, "etaLabel": "Delivered", "deliveryPerson": None},
+         "deliveryAddress": None, "etaLabel": "Delivered", "deliveryPerson": None,
+         "paymentMethod": "Visa •••• 4242"},
     ]
 
 

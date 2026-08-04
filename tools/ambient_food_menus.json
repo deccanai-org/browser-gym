@@ -652,7 +652,8 @@
     "name": "Taj Shahi Butter Chicken",
     "price": 14.99,
     "tags": [
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_taj_spice_0"
    },
@@ -660,7 +661,8 @@
     "name": "Dum Lamb Rogan Josh",
     "price": 16.99,
     "tags": [
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_taj_spice_1"
    },
@@ -669,7 +671,8 @@
     "price": 12.99,
     "tags": [
      "vegetarian",
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_taj_spice_2"
    },
@@ -677,14 +680,17 @@
     "name": "Peshawari Garlic Naan Basket",
     "price": 5.49,
     "tags": [
-     "vegetarian"
+     "vegetarian",
+     "halal"
     ],
     "image_key": "gf_taj_spice_3"
    },
    {
     "name": "Awadhi Mutton Biryani",
     "price": 17.99,
-    "tags": [],
+    "tags": [
+     "halal"
+    ],
     "image_key": "gf_taj_spice_4"
    }
   ]
@@ -701,7 +707,8 @@
     "name": "Curry Leaf Ghee Roast Masala Dosa",
     "price": 9.99,
     "tags": [
-     "vegetarian"
+     "vegetarian",
+     "halal"
     ],
     "image_key": "gf_curry_leaf_0"
    },
@@ -709,7 +716,8 @@
     "name": "Chettinad Pepper Chicken",
     "price": 13.49,
     "tags": [
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_curry_leaf_1"
    },
@@ -717,7 +725,8 @@
     "name": "Malabar Prawn Coconut Curry",
     "price": 15.99,
     "tags": [
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_curry_leaf_2"
    },
@@ -727,7 +736,8 @@
     "tags": [
      "vegetarian",
      "vegan",
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_curry_leaf_3"
    },
@@ -737,7 +747,8 @@
     "tags": [
      "vegetarian",
      "vegan",
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_curry_leaf_4"
    }
@@ -755,7 +766,8 @@
     "name": "Mumbai Bombay Pav Bhaji",
     "price": 8.99,
     "tags": [
-     "vegetarian"
+     "vegetarian",
+     "halal"
     ],
     "image_key": "gf_mumbai_masala_0"
    },
@@ -764,7 +776,8 @@
     "price": 4.99,
     "tags": [
      "vegetarian",
-     "vegan"
+     "vegan",
+     "halal"
     ],
     "image_key": "gf_mumbai_masala_1"
    },
@@ -772,7 +785,8 @@
     "name": "Sev Puri Chaat Platter",
     "price": 6.99,
     "tags": [
-     "vegetarian"
+     "vegetarian",
+     "halal"
     ],
     "image_key": "gf_mumbai_masala_2"
    },
@@ -781,7 +795,8 @@
     "price": 10.49,
     "tags": [
      "vegetarian",
-     "vegan"
+     "vegan",
+     "halal"
     ],
     "image_key": "gf_mumbai_masala_3"
    },
@@ -789,7 +804,8 @@
     "name": "Kolhapuri Tambda Rassa Thali",
     "price": 13.99,
     "tags": [
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_mumbai_masala_4"
    }
@@ -996,7 +1012,7 @@
   "eta": "25-40 min",
   "dishes": [
    {
-    "name": "Tagliatelle al Rag\u00f9 Bolognese",
+    "name": "Tagliatelle al Ragù Bolognese",
     "price": 15.5,
     "tags": [],
     "image_key": "gf_pasta_fresca_0"
@@ -1621,7 +1637,9 @@
    {
     "name": "Aegean Lamb Kofta Skewers",
     "price": 17.99,
-    "tags": [],
+    "tags": [
+     "halal"
+    ],
     "image_key": "gf_olive_thyme_0"
    },
    {
@@ -1630,7 +1648,8 @@
     "tags": [
      "vegetarian",
      "vegan",
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_olive_thyme_1"
    },
@@ -1638,7 +1657,8 @@
     "name": "Charcoal Chicken Shawarma Plate",
     "price": 14.49,
     "tags": [
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_olive_thyme_2"
    },
@@ -1647,7 +1667,8 @@
     "price": 11.49,
     "tags": [
      "vegetarian",
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_olive_thyme_3"
    },
@@ -1655,7 +1676,8 @@
     "name": "Honey-Rosewater Baklava",
     "price": 4.99,
     "tags": [
-     "vegetarian"
+     "vegetarian",
+     "halal"
     ],
     "image_key": "gf_olive_thyme_4"
    }
@@ -1764,7 +1786,8 @@
     "name": "Kleftiko Slow-Roast Lamb",
     "price": 18.99,
     "tags": [
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_aegean_grill_0"
    },
@@ -1772,7 +1795,8 @@
     "name": "Athenian Chicken Souvlaki",
     "price": 13.49,
     "tags": [
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_aegean_grill_1"
    },
@@ -1780,7 +1804,8 @@
     "name": "Spanakopita Triangles",
     "price": 9.49,
     "tags": [
-     "vegetarian"
+     "vegetarian",
+     "halal"
     ],
     "image_key": "gf_aegean_grill_2"
    },
@@ -1789,7 +1814,8 @@
     "price": 8.99,
     "tags": [
      "vegan",
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_aegean_grill_3"
    },
@@ -1797,7 +1823,8 @@
     "name": "Honey-Soaked Loukoumades",
     "price": 6.49,
     "tags": [
-     "vegetarian"
+     "vegetarian",
+     "halal"
     ],
     "image_key": "gf_aegean_grill_4"
    }
@@ -1814,7 +1841,9 @@
    {
     "name": "Kingston Beef Patty",
     "price": 3.99,
-    "tags": [],
+    "tags": [
+     "halal"
+    ],
     "image_key": "gf_island_spice_0"
    },
    {
@@ -1822,7 +1851,8 @@
     "price": 5.49,
     "tags": [
      "vegetarian",
-     "vegan"
+     "vegan",
+     "halal"
     ],
     "image_key": "gf_island_spice_1"
    },
@@ -1830,7 +1860,8 @@
     "name": "Sunrise Ackee & Saltfish",
     "price": 12.99,
     "tags": [
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_island_spice_2"
    },
@@ -1838,7 +1869,8 @@
     "name": "Scotch Bonnet Jerk Chicken",
     "price": 14.99,
     "tags": [
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_island_spice_3"
    },
@@ -1846,7 +1878,8 @@
     "name": "Bella's Braised Oxtail",
     "price": 18.99,
     "tags": [
-     "gluten_free"
+     "gluten_free",
+     "halal"
     ],
     "image_key": "gf_island_spice_4"
    }

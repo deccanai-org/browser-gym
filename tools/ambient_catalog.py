@@ -283,8 +283,16 @@ def build_mail(iso_date):
             "id": f"amb_bmail_{j}", "threadId": f"amb_bthread_{j}",
             "from": frm, "to": [to], "cc": [], "bcc": [],
             "subject": m["subject"], "body": (m.get("body") or "").replace("\n", "<br>"),
-            "timestamp": iso_date((j % 20) + 1), "read": bool(m.get("read", True)),
-            "starred": False, "important": False,
-            "labels": [], "category": m.get("category", "primary"),
-            "folder": m.get("folder", "inbox"), "attachments": []})
+            # Honor optional per-entry starred/important/labels/timestamp so the
+            # authored emails carry their real emphasis; fall back to the old
+            # defaults when a bulk entry omits them (backward compatible).
+            "timestamp": m.get("timestamp") or iso_date((j % 20) + 1),
+            "read": bool(m.get("read", True)),
+            "starred": bool(m.get("starred", False)),
+            "important": bool(m.get("important", False)),
+            "labels": m.get("labels") or [], "category": m.get("category", "primary"),
+            "folder": m.get("folder", "inbox"), "attachments": [],
+            # Snoozed rows need a wake time or the Snoozed view has nothing to show.
+            "snoozedUntil": m.get("snoozedUntil")
+                or (f"2026-06-{(j % 27) + 1:02d}T09:00:00" if m.get("folder") == "snoozed" else None)})
     return out

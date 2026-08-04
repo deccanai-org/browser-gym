@@ -1,6 +1,6 @@
 diff -ruN a/websites/uber_eats_mock/index.html b/websites/uber_eats_mock/index.html
---- a/websites/uber_eats_mock/index.html	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/index.html	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/index.html	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/index.html	2026-07-30 17:35:25
 @@ -4,7 +4,7 @@
      <meta charset="UTF-8" />
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -11,8 +11,8 @@ diff -ruN a/websites/uber_eats_mock/index.html b/websites/uber_eats_mock/index.h
    <body>
      <div id="root"></div>
 diff -ruN a/websites/uber_eats_mock/src/App.jsx b/websites/uber_eats_mock/src/App.jsx
---- a/websites/uber_eats_mock/src/App.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/App.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/App.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/App.jsx	2026-07-31 18:07:23
 @@ -69,6 +69,11 @@
              <Route path="/favorites" element={<Favorites />} />
              <Route path="/account" element={<Account />} />
@@ -26,7 +26,7 @@ diff -ruN a/websites/uber_eats_mock/src/App.jsx b/websites/uber_eats_mock/src/Ap
          </Layout>
        </BrowserRouter>
 diff -ruN a/websites/uber_eats_mock/src/components/CartDrawer.jsx b/websites/uber_eats_mock/src/components/CartDrawer.jsx
---- a/websites/uber_eats_mock/src/components/CartDrawer.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/components/CartDrawer.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/components/CartDrawer.jsx	1969-12-31 16:00:00
 @@ -1,144 +0,0 @@
 -
@@ -174,8 +174,8 @@ diff -ruN a/websites/uber_eats_mock/src/components/CartDrawer.jsx b/websites/ube
 -    }
 -  
 diff -ruN a/websites/uber_eats_mock/src/components/CartPanel.jsx b/websites/uber_eats_mock/src/components/CartPanel.jsx
---- a/websites/uber_eats_mock/src/components/CartPanel.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/components/CartPanel.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/components/CartPanel.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/CartPanel.jsx	2026-07-30 20:24:05
 @@ -6,7 +6,7 @@
  import './CartPanel.css';
  
@@ -270,7 +270,7 @@ diff -ruN a/websites/uber_eats_mock/src/components/CartPanel.jsx b/websites/uber
              </div>
            </>
 diff -ruN a/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx b/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx
---- a/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx	1969-12-31 16:00:00
 @@ -1,55 +0,0 @@
 -import React, { useEffect } from 'react';
@@ -328,10 +328,34 @@ diff -ruN a/websites/uber_eats_mock/src/components/CartSwitchDialog.jsx b/websit
 -    </div>
 -  );
 -}
+diff -ruN a/websites/uber_eats_mock/src/components/FilterBar.css b/websites/uber_eats_mock/src/components/FilterBar.css
+--- a/websites/uber_eats_mock/src/components/FilterBar.css	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/FilterBar.css	2026-08-03 16:53:26
+@@ -1,9 +1,14 @@
+ .filter-bar {
+   display: flex;
+   gap: 8px;
+-  overflow-x: auto;
++  /* Was overflow-x:auto, which forced overflow-y:auto and CLIPPED the dropdowns
++     (they showed behind the promo banner). Wrap instead so nothing is clipped. */
++  flex-wrap: wrap;
+   padding: 8px 0 20px;
+   align-items: center;
++  /* Own stacking context above the promo banner below. */
++  position: relative;
++  z-index: 40;
+ }
+ 
+ .filter-bar__pill {
 diff -ruN a/websites/uber_eats_mock/src/components/FilterBar.jsx b/websites/uber_eats_mock/src/components/FilterBar.jsx
---- a/websites/uber_eats_mock/src/components/FilterBar.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/components/FilterBar.jsx	2026-08-03 15:55:57
-@@ -27,7 +27,8 @@
+--- a/websites/uber_eats_mock/src/components/FilterBar.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/FilterBar.jsx	2026-08-03 17:46:53
+@@ -23,11 +23,12 @@
+   const [priceOpen, setPriceOpen] = useState(false);
+   const [dietaryOpen, setDietaryOpen] = useState(false);
+ 
+-  const hasActiveFilters = filters.sort !== 'recommended' ||
++  const hasActiveFilters = (filters.sort || 'recommended') !== 'recommended' ||
      filters.priceRange.length > 0 ||
      filters.dietary.length > 0 ||
      filters.maxDeliveryFee !== null ||
@@ -363,8 +387,8 @@ diff -ruN a/websites/uber_eats_mock/src/components/FilterBar.jsx b/websites/uber
          Under 30 min
        </button>
 diff -ruN a/websites/uber_eats_mock/src/components/Footer.jsx b/websites/uber_eats_mock/src/components/Footer.jsx
---- a/websites/uber_eats_mock/src/components/Footer.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/components/Footer.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/components/Footer.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/Footer.jsx	2026-07-31 18:08:37
 @@ -3,17 +3,17 @@
  import './Footer.css';
  
@@ -424,25 +448,53 @@ diff -ruN a/websites/uber_eats_mock/src/components/Footer.jsx b/websites/uber_ea
              <button className="ue-footer__legal-link" onClick={() => setModalKey('privacy')}>Privacy Policy</button>
              <span className="ue-footer__dot">&bull;</span>
 diff -ruN a/websites/uber_eats_mock/src/components/Header.jsx b/websites/uber_eats_mock/src/components/Header.jsx
---- a/websites/uber_eats_mock/src/components/Header.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/components/Header.jsx	2026-08-03 15:55:57
-@@ -2,6 +2,7 @@
+--- a/websites/uber_eats_mock/src/components/Header.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/Header.jsx	2026-08-03 16:46:20
+@@ -1,21 +1,46 @@
+-import React, { useState, useRef, useEffect } from 'react';
++import React, { useState, useRef, useEffect, useMemo } from 'react';
  import { Link, useNavigate } from 'react-router-dom';
- import { Search, ShoppingBag, ChevronDown, MapPin, X, Menu } from 'lucide-react';
+-import { Search, ShoppingBag, ChevronDown, MapPin, X, Menu } from 'lucide-react';
++import { Search, ShoppingBag, ChevronDown, MapPin, X, Menu, Clock } from 'lucide-react';
  import { useApp } from '../context/AppContext';
 +import { bridged } from '../lib/bridge';
  import './Header.css';
  
  export default function Header({ onCartClick, onMenuClick }) {
-@@ -9,13 +10,13 @@
+-  const { state, setDeliveryMode, updateAddress, addAddress } = useApp();
++  const { state, setDeliveryMode, setScheduledTime, updateAddress, addAddress } = useApp();
    const [searchValue, setSearchValue] = useState('');
    const [addressDropdownOpen, setAddressDropdownOpen] = useState(false);
    const [showAddAddressForm, setShowAddAddressForm] = useState(false);
 -  const [newAddress, setNewAddress] = useState({ label: 'Home', street: '', apt: '', city: '', state: 'CA', zip: '', instructions: '', isDefault: false });
++  const [scheduleOpen, setScheduleOpen] = useState(false);
 +  const [newAddress, setNewAddress] = useState({ label: 'Home', street: '', apt: '', city: '', state: 'NY', zip: '', instructions: '', isDefault: false });
    const navigate = useNavigate();
    const addressRef = useRef(null);
++  const scheduleRef = useRef(null);
  
++  // "Now / Schedule" affordance — a real picker (was a dead <span> nested inside
++  // the address button). Slots are the next few half-hours + tomorrow noon.
++  const scheduledTime = state.ui.scheduledTime;
++  const scheduleLabel = scheduledTime?.label || 'Now';
++  const scheduleSlots = useMemo(() => {
++    const two = (n) => (n < 10 ? '0' + n : '' + n);
++    const fmt = (dt) => { let h = dt.getHours(); const m = dt.getMinutes(); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return `${h}:${two(m)} ${ap}`; };
++    const now = new Date();
++    const base = new Date(now.getTime());
++    base.setSeconds(0, 0);
++    base.setMinutes(base.getMinutes() <= 30 ? 30 : 60);
++    const slots = [];
++    for (let i = 0; i < 5; i++) {
++      const s = new Date(base.getTime() + i * 30 * 60000);
++      const day = s.getDate() === now.getDate() ? 'Today' : 'Tomorrow';
++      slots.push({ label: `${day}, ${fmt(s)}`, iso: s.toISOString() });
++    }
++    const tmr = new Date(now.getTime() + 24 * 3600 * 1000); tmr.setHours(12, 0, 0, 0);
++    slots.push({ label: `Tomorrow, ${fmt(tmr)}`, iso: tmr.toISOString() });
++    return slots;
++  }, []);
++
    const cartCount = state.cart.items.reduce((sum, item) => sum + item.quantity, 0);
    const selectedAddress = state.user.addresses.find(a => a.id === state.ui.selectedAddressId) || state.user.addresses[0];
 -  const addressText = selectedAddress ? `${selectedAddress.street}` : '123 Main St';
@@ -450,7 +502,23 @@ diff -ruN a/websites/uber_eats_mock/src/components/Header.jsx b/websites/uber_ea
  
    const userInitials = state.user.name
      ? state.user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
-@@ -55,7 +56,7 @@
+@@ -35,6 +60,15 @@
+     return () => document.removeEventListener('mousedown', handleClickOutside);
+   }, [addressDropdownOpen]);
+ 
++  // Close schedule popover on outside click
++  useEffect(() => {
++    function handle(e) {
++      if (scheduleRef.current && !scheduleRef.current.contains(e.target)) setScheduleOpen(false);
++    }
++    if (scheduleOpen) document.addEventListener('mousedown', handle);
++    return () => document.removeEventListener('mousedown', handle);
++  }, [scheduleOpen]);
++
+   const handleSearch = (e) => {
+     e.preventDefault();
+     if (searchValue.trim()) {
+@@ -55,7 +89,7 @@
    const handleAddNewAddress = () => {
      if (!newAddress.street.trim() || !newAddress.city.trim()) return;
      addAddress(newAddress);
@@ -459,7 +527,7 @@ diff -ruN a/websites/uber_eats_mock/src/components/Header.jsx b/websites/uber_ea
      setShowAddAddressForm(false);
    };
  
-@@ -69,8 +70,8 @@
+@@ -69,8 +103,8 @@
  
          {/* Logo */}
          <Link to="/" className="ue-header__logo">
@@ -470,16 +538,17 @@ diff -ruN a/websites/uber_eats_mock/src/components/Header.jsx b/websites/uber_ea
          </Link>
  
          {/* Delivery/Pickup Toggle */}
-@@ -84,6 +85,8 @@
-           <button
-             className={`ue-header__mode-btn ${state.ui.deliveryMode === 'pickup' ? 'ue-header__mode-btn--active' : ''}`}
-             onClick={() => setDeliveryMode('pickup')}
-+            disabled={bridged()}
-+            title={bridged() ? 'Delivery only in this sandbox' : undefined}
-           >
-             Pickup
+@@ -98,9 +132,6 @@
+             <MapPin size={16} />
+             <span className="ue-header__address-text">{addressText}</span>
+             <ChevronDown size={14} className={addressDropdownOpen ? 'ue-header__chevron--open' : ''} />
+-            <span className="ue-header__address-sep">&bull;</span>
+-            <span className="ue-header__address-time">Now</span>
+-            <ChevronDown size={14} />
            </button>
-@@ -139,6 +142,11 @@
+ 
+           {addressDropdownOpen && (
+@@ -139,6 +170,11 @@
                      <strong>Add new address</strong>
                      <button onClick={() => setShowAddAddressForm(false)}><X size={16} /></button>
                    </div>
@@ -491,7 +560,55 @@ diff -ruN a/websites/uber_eats_mock/src/components/Header.jsx b/websites/uber_ea
                    <input
                      className="ue-header__add-address-input"
                      type="text"
-@@ -194,7 +202,7 @@
+@@ -189,12 +225,55 @@
+           )}
+         </div>
+ 
++        {/* Schedule (Now / Later) */}
++        <div className="ue-header__address-wrapper" ref={scheduleRef}>
++          <button
++            type="button"
++            className="ue-header__address"
++            onClick={() => setScheduleOpen(o => !o)}
++            aria-haspopup="true"
++            aria-expanded={scheduleOpen}
++          >
++            <Clock size={16} />
++            <span className="ue-header__address-text">{scheduleLabel}</span>
++            <ChevronDown size={14} className={scheduleOpen ? 'ue-header__chevron--open' : ''} />
++          </button>
++          {scheduleOpen && (
++            <div className="ue-header__address-dropdown" style={{ minWidth: 240 }}>
++              <div className="ue-header__dropdown-title">When</div>
++              <button
++                className={`ue-header__dropdown-item ${!scheduledTime ? 'ue-header__dropdown-item--active' : ''}`}
++                onClick={() => { setScheduledTime(null); setScheduleOpen(false); }}
++              >
++                <Clock size={16} />
++                <div className="ue-header__dropdown-item-info">
++                  <strong>Deliver now</strong>
++                  <span>In {state.ui.deliveryMode === 'pickup' ? '10-20' : '25-40'} min</span>
++                </div>
++                {!scheduledTime && <span className="ue-header__dropdown-check">&#10003;</span>}
++              </button>
++              <div className="ue-header__dropdown-divider" />
++              {scheduleSlots.map(slot => (
++                <button
++                  key={slot.iso}
++                  className={`ue-header__dropdown-item ${scheduledTime?.iso === slot.iso ? 'ue-header__dropdown-item--active' : ''}`}
++                  onClick={() => { setScheduledTime(slot); setScheduleOpen(false); }}
++                >
++                  <Clock size={16} />
++                  <div className="ue-header__dropdown-item-info"><span>{slot.label}</span></div>
++                  {scheduledTime?.iso === slot.iso && <span className="ue-header__dropdown-check">&#10003;</span>}
++                </button>
++              ))}
++            </div>
++          )}
++        </div>
++
+         {/* Search */}
+         <form className="ue-header__search" onSubmit={handleSearch}>
            <Search size={18} className="ue-header__search-icon" />
            <input
              type="text"
@@ -501,8 +618,8 @@ diff -ruN a/websites/uber_eats_mock/src/components/Header.jsx b/websites/uber_ea
              value={searchValue}
              onChange={(e) => setSearchValue(e.target.value)}
 diff -ruN a/websites/uber_eats_mock/src/components/ItemModal.jsx b/websites/uber_eats_mock/src/components/ItemModal.jsx
---- a/websites/uber_eats_mock/src/components/ItemModal.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/components/ItemModal.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/components/ItemModal.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/ItemModal.jsx	2026-07-31 15:09:10
 @@ -100,6 +100,14 @@
          </button>
  
@@ -519,7 +636,7 @@ diff -ruN a/websites/uber_eats_mock/src/components/ItemModal.jsx b/websites/uber
              <h2 className="item-modal__name">{item.name}</h2>
              {item.description && <p className="item-modal__desc">{item.description}</p>}
 diff -ruN a/websites/uber_eats_mock/src/components/Navbar.jsx b/websites/uber_eats_mock/src/components/Navbar.jsx
---- a/websites/uber_eats_mock/src/components/Navbar.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/components/Navbar.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/components/Navbar.jsx	1969-12-31 16:00:00
 @@ -1,114 +0,0 @@
 -
@@ -637,9 +754,21 @@ diff -ruN a/websites/uber_eats_mock/src/components/Navbar.jsx b/websites/uber_ea
 -    }
 -  
 diff -ruN a/websites/uber_eats_mock/src/components/RestaurantCard.jsx b/websites/uber_eats_mock/src/components/RestaurantCard.jsx
---- a/websites/uber_eats_mock/src/components/RestaurantCard.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/components/RestaurantCard.jsx	2026-08-03 15:55:57
-@@ -72,7 +72,16 @@
+--- a/websites/uber_eats_mock/src/components/RestaurantCard.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/RestaurantCard.jsx	2026-08-03 16:46:51
+@@ -57,6 +57,11 @@
+   const { state, toggleFavorite } = useApp();
+   const isFav = state.user.favoriteRestaurantIds.includes(restaurant.id);
+   const promoBadge = getPromoBadge(restaurant);
++  // Pickup mode (header toggle) shows pickup ETA + a "Pickup" label instead of
++  // the delivery-fee copy, so the Delivery/Pickup switch has a visible effect.
++  const isPickup = state.ui.deliveryMode === 'pickup';
++  const timeMin = isPickup ? (restaurant.pickupTimeMin ?? restaurant.deliveryTimeMin) : restaurant.deliveryTimeMin;
++  const timeMax = isPickup ? (restaurant.pickupTimeMax ?? restaurant.deliveryTimeMax) : restaurant.deliveryTimeMax;
+   const deliveryInfo = restaurant.deliveryFee === 0
+     ? 'Lowest Delivery Fee'
+     : restaurant.deliveryFee <= 1.99
+@@ -72,7 +77,16 @@
            className="rest-card__image"
            style={{ background: getCardColor(restaurant.id) }}
          >
@@ -657,9 +786,30 @@ diff -ruN a/websites/uber_eats_mock/src/components/RestaurantCard.jsx b/websites
  
            {promoBadge && (
              <span className="rest-card__promo-badge" style={{ background: promoBadge.color }}>
+@@ -100,17 +114,16 @@
+         </div>
+         <div className="rest-card__row2">
+           <span className="rest-card__delivery-info">
+-            {restaurant.deliveryFee === 0 && <span className="rest-card__uber-one-icon">&#9913;</span>}
+-            {deliveryInfo}
++            {isPickup ? 'Pickup available' : (<>{restaurant.deliveryFee === 0 && <span className="rest-card__uber-one-icon">&#9913;</span>}{deliveryInfo}</>)}
+           </span>
+           <span className="rest-card__dot">&bull;</span>
+-          <span>{restaurant.deliveryTimeMin} min</span>
++          <span>{timeMin} min</span>
+         </div>
+         <div className="rest-card__row3">
+           <span className="rest-card__stars">{restaurant.rating} &#9733;</span>
+           <span className="rest-card__reviews">({restaurant.reviewCount}+)</span>
+           <span className="rest-card__dot">&bull;</span>
+-          <span className="rest-card__time">{restaurant.deliveryTimeMin}-{restaurant.deliveryTimeMax} min</span>
++          <span className="rest-card__time">{isPickup ? 'Pickup ' : ''}{timeMin}-{timeMax} min</span>
+         </div>
+       </Link>
+     </div>
 diff -ruN a/websites/uber_eats_mock/src/components/Sidebar.jsx b/websites/uber_eats_mock/src/components/Sidebar.jsx
---- a/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/components/Sidebar.jsx	2026-07-31 18:08:07
 @@ -56,29 +56,29 @@
              <CreditCard size={20} />
              <span>Wallet</span>
@@ -713,9 +863,9 @@ diff -ruN a/websites/uber_eats_mock/src/components/Sidebar.jsx b/websites/uber_e
            <span className="sidebar__app-text">There's more to love in the app.</span>
          </div>
 diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_eats_mock/src/context/AppContext.jsx
---- a/websites/uber_eats_mock/src/context/AppContext.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-08-03 15:55:57
-@@ -1,21 +1,119 @@
+--- a/websites/uber_eats_mock/src/context/AppContext.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/context/AppContext.jsx	2026-08-03 17:46:42
+@@ -1,21 +1,144 @@
  import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
  import { getSessionId, fetchCustomState, saveState, initializeData, initialKey, generateId } from '../utils/dataManager';
  import { computeStateDiff } from '../utils/stateTracker';
@@ -770,10 +920,35 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
 +  // SAME way the normal load path does — initializeData(sid, engineState) deep-
 +  // merges it onto the seeded defaults — then REPLACE state (uber's setState
 +  // replaces, not merges). Guard against a null engine state.
++  // Merge the engine projection onto local state the SAME way the 2.5s poll does
++  // (below): adopt engine-owned keys but preserve the client-owned ui (delivery
++  // mode, scheduled time, filters) and user profile (added cards, addresses,
++  // favorites) + local cart note + order ratings. A wholesale replace here wiped
++  // all of those on every add_to_cart / place_order.
++  const mergeEngine = useCallback((prev, raw) => {
++    const { ui, ...engineOwned } = normalizeEngineData(initializeData(sidRef.current, raw));
++    if (!prev) return { ...engineOwned, ui };
++    const base = prev;
++    const cart = engineOwned.cart
++      ? { ...(base.cart || {}), ...engineOwned.cart,
++          deliveryInstructions: base.cart?.deliveryInstructions ?? engineOwned.cart.deliveryInstructions }
++      : base.cart;
++    const user = base.user || engineOwned.user;
++    const orders = engineOwned.orders
++      ? engineOwned.orders.map(o => {
++          const p = (base.orders || []).find(x => x && x.id === o.id);
++          return p && (p.rating != null || p.review)
++            ? { ...o, rating: p.rating ?? o.rating, review: p.review ?? o.review }
++            : o;
++        })
++      : base.orders;
++    return { ...base, ...engineOwned, cart, user, orders, ui: base.ui ?? ui };
++  }, []);
++
 +  const applyEngine = useCallback((engineState) => {
 +    if (!engineState) return;
-+    setState(normalizeEngineData(initializeData(sidRef.current, engineState)));
-+  }, []);
++    setState(prev => mergeEngine(prev, engineState));
++  }, [mergeEngine]);
 +
    useEffect(() => {
      if (initDone.current) return;
@@ -835,7 +1010,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
      const ik = initialKey(sid);
      const isRefresh = localStorage.getItem(ik) !== null;
  
-@@ -26,7 +124,17 @@
+@@ -26,7 +149,17 @@
        setInitialStateSnapshot(initial);
        setLoading(false);
      } else {
@@ -853,7 +1028,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
          const data = initializeData(sid, custom);
          setState(data);
          setInitialStateSnapshot(JSON.parse(JSON.stringify(data)));
-@@ -36,7 +144,9 @@
+@@ -36,7 +169,9 @@
    }, []);
  
    useEffect(() => {
@@ -864,7 +1039,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
        saveState(state, sidRef.current);
      }
    }, [state, loading]);
-@@ -44,6 +154,16 @@
+@@ -44,6 +179,16 @@
    // --- Actions ---
  
    const addToCart = useCallback((menuItem, restaurant, quantity, selectedOptions, specialInstructions) => {
@@ -881,7 +1056,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
      setState(prev => {
        if (!prev) return prev;
        const modifierTotal = selectedOptions.reduce((s, o) => s + o.priceModifier, 0);
-@@ -90,10 +210,24 @@
+@@ -90,10 +235,24 @@
      });
    }, []);
  
@@ -907,7 +1082,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
        return {
          ...prev,
          cart: {
-@@ -109,8 +243,14 @@
+@@ -109,8 +268,14 @@
    const updateCartItemQuantity = useCallback((cartItemId, newQuantity) => {
      setState(prev => {
        if (!prev) return prev;
@@ -923,7 +1098,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
          return {
            ...prev,
            cart: {
-@@ -126,12 +266,12 @@
+@@ -126,12 +291,12 @@
          cart: {
            ...prev.cart,
            items: prev.cart.items.map(item => {
@@ -939,7 +1114,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
              };
            })
          }
-@@ -140,6 +280,13 @@
+@@ -140,6 +305,13 @@
    }, []);
  
    const clearCart = useCallback(() => {
@@ -953,7 +1128,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
      setState(prev => {
        if (!prev) return prev;
        return {
-@@ -155,6 +302,17 @@
+@@ -155,6 +327,18 @@
    }, []);
  
    const placeOrder = useCallback((orderData) => {
@@ -964,14 +1139,15 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
 +      }).then(r => {
 +        const es = r && r.apps && r.apps[APP];
 +        applyEngine(es);
-+        const os = (es && es.orders) || [];
-+        return os.length ? os[os.length - 1].id : undefined;
++        // activeOrderId points at the just-placed real order; os[last] is an
++        // ambient "delivered" filler order appended after it (wrong redirect).
++        return (es && es.activeOrderId) || undefined;
 +      });
 +    }
      const orderId = 'ord_' + Date.now().toString(36);
      setState(prev => {
        if (!prev) return prev;
-@@ -228,7 +386,7 @@
+@@ -228,7 +412,7 @@
        };
      });
      return orderId;
@@ -980,13 +1156,38 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
  
    const toggleFavorite = useCallback((restaurantId) => {
      setState(prev => {
-@@ -332,46 +490,62 @@
+@@ -258,6 +442,20 @@
+     });
+   }, []);
+ 
++  // Schedule for later. `scheduled` is null (== "Now") or { label, iso }. Stored
++  // on ui (preserved across the 2.5s engine re-projection) + cart so a chosen
++  // time survives and is visible; null clears back to "Deliver now".
++  const setScheduledTime = useCallback((scheduled) => {
++    setState(prev => {
++      if (!prev) return prev;
++      return {
++        ...prev,
++        ui: { ...prev.ui, scheduledTime: scheduled },
++        cart: { ...prev.cart, scheduledTime: scheduled ? scheduled.iso : null },
++      };
++    });
++  }, []);
++
+   const updateFilters = useCallback((filters) => {
+     setState(prev => {
+       if (!prev) return prev;
+@@ -332,46 +530,84 @@
      });
    }, []);
  
 -  const applyPromoCode = useCallback((code) => {
--    setState(prev => {
--      if (!prev) return prev;
++  // Add a card. The food user profile is entirely client-side (the poll keeps
++  // base.user whole — same as add-address/favorite), so this persists in both
++  // demo and bridged mode. New card becomes the selected default.
++  const addPaymentMethod = useCallback((card) => {
+     setState(prev => {
+       if (!prev) return prev;
 -      const promo = prev.promotions.find(p => p.code && p.code.toLowerCase() === code.toLowerCase());
 -      if (!promo) {
 -        return prev; // Invalid code
@@ -1013,15 +1214,27 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
 -      } else if (promo.discountPercent > 0) {
 -        discount = subtotal * (promo.discountPercent / 100);
 -      }
--      return {
--        ...prev,
++      const id = `pay_${(prev.user.paymentMethods?.length || 0) + 1}_${(card.last4 || 'x')}`;
++      const last4 = (card.last4 || card.cardNumber || '').replace(/\D/g, '').slice(-4);
++      const type = card.type || (/^4/.test(last4) ? 'visa' : /^5/.test(last4) ? 'mastercard' : 'card');
++      const label = card.label || (type === 'paypal' ? 'PayPal' : `${type[0].toUpperCase()}${type.slice(1)} •••• ${last4 || '0000'}`);
++      const nu = { id, type, label, last4, expiry: card.expiry || '', isDefault: true };
+       return {
+         ...prev,
 -        cart: {
 -          ...prev.cart,
 -          promoCode: code,
 -          promoDiscount: Math.round(discount * 100) / 100
 -        }
--      };
--    });
++        user: {
++          ...prev.user,
++          defaultPaymentId: id,
++          paymentMethods: [...(prev.user.paymentMethods || []).map(p => ({ ...p, isDefault: false })), nu],
++        },
+       };
+     });
+   }, []);
+ 
 +  const cancelOrder = useCallback((orderId) => {
 +    if (bridged()) {
 +      bridgeAct('food.cancel_order', { order_id: orderId })
@@ -1033,8 +1246,8 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
 +      orders: (prev.orders || []).map(o =>
 +        o.id === orderId ? { ...o, status: 'cancelled' } : o),
 +    }));
-   }, []);
- 
++  }, []);
++
 +  const applyPromoCode = useCallback((code) => {
 +    if (bridged()) {
 +      // the engine owns the code list and the discount; the box used to look
@@ -1081,7 +1294,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
    const updateUser = useCallback((fields) => {
      setState(prev => {
        if (!prev) return prev;
-@@ -439,12 +613,28 @@
+@@ -439,12 +675,28 @@
      };
    }, [state, initialStateSnapshot]);
  
@@ -1111,8 +1324,17 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
              <span style={{ color: '#06C167' }}>Eats</span>
            </div>
            <p style={{ color: '#6B6B6B', marginTop: '12px' }}>Loading...</p>
-@@ -471,6 +661,7 @@
+@@ -464,13 +716,16 @@
+       placeOrder,
+       toggleFavorite,
+       setDeliveryMode,
++      setScheduledTime,
+       updateFilters,
+       setSearchQuery,
+       rateOrder,
+       updateAddress,
        updateDefaultPayment,
++      addPaymentMethod,
        setTip,
        applyPromoCode,
 +      cancelOrder,
@@ -1120,7 +1342,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/AppContext.jsx b/websites/uber_e
        getDebugState,
        updateUser,
 diff -ruN a/websites/uber_eats_mock/src/context/StoreContext.jsx b/websites/uber_eats_mock/src/context/StoreContext.jsx
---- a/websites/uber_eats_mock/src/context/StoreContext.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/context/StoreContext.jsx	1969-12-31 16:00:00
 @@ -1,281 +0,0 @@
 -
@@ -1406,7 +1628,7 @@ diff -ruN a/websites/uber_eats_mock/src/context/StoreContext.jsx b/websites/uber
 -    }
 diff -ruN a/websites/uber_eats_mock/src/lib/bridge.js b/websites/uber_eats_mock/src/lib/bridge.js
 --- a/websites/uber_eats_mock/src/lib/bridge.js	1969-12-31 16:00:00
-+++ b/websites/uber_eats_mock/src/lib/bridge.js	2026-08-03 15:55:57
++++ b/websites/uber_eats_mock/src/lib/bridge.js	2026-08-03 15:53:36
 @@ -0,0 +1,62 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
@@ -1471,8 +1693,8 @@ diff -ruN a/websites/uber_eats_mock/src/lib/bridge.js b/websites/uber_eats_mock/
 +  return () => { live = false; };
 +}
 diff -ruN a/websites/uber_eats_mock/src/pages/Account.jsx b/websites/uber_eats_mock/src/pages/Account.jsx
---- a/websites/uber_eats_mock/src/pages/Account.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/pages/Account.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/pages/Account.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/pages/Account.jsx	2026-08-03 18:26:00
 @@ -2,8 +2,16 @@
  import { Link } from 'react-router-dom';
  import { MapPin, CreditCard, Heart, Clock, Settings, ChevronRight, User, Phone, Mail, Shield, Edit2, Check, X } from 'lucide-react';
@@ -1545,7 +1767,17 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Account.jsx b/websites/uber_eats_m
          <div className="account-payments">
            {user.paymentMethods.map(pm => (
              <div key={pm.id} className="account-payment">
-@@ -257,7 +269,7 @@
+@@ -249,7 +261,9 @@
+               <div className="account-payment__info">
+                 <strong>{pm.label}</strong>
+                 {pm.type === 'visa' && <span className="account-payment__type">Visa</span>}
++                {pm.type === 'mastercard' && <span className="account-payment__type">Mastercard</span>}
+                 {pm.type === 'paypal' && <span className="account-payment__type">PayPal</span>}
++                {pm.expiry && <span className="account-payment__type">Expires {pm.expiry}</span>}
+               </div>
+               {pm.isDefault && <span className="account-address__badge">Default</span>}
+             </div>
+@@ -257,7 +271,7 @@
          </div>
        </section>
  
@@ -1554,7 +1786,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Account.jsx b/websites/uber_eats_m
        {showUberOneModal && (
          <div className="uber-one-modal-overlay" onClick={() => setShowUberOneModal(false)}>
            <div className="uber-one-modal" onClick={(e) => e.stopPropagation()}>
-@@ -265,7 +277,7 @@
+@@ -265,7 +279,7 @@
                <X size={20} />
              </button>
              <div className="uber-one-modal__header">
@@ -1564,8 +1796,8 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Account.jsx b/websites/uber_eats_m
              <div className="uber-one-modal__benefits">
                <div className="uber-one-modal__benefit">
 diff -ruN a/websites/uber_eats_mock/src/pages/Checkout.jsx b/websites/uber_eats_mock/src/pages/Checkout.jsx
---- a/websites/uber_eats_mock/src/pages/Checkout.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/pages/Checkout.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/pages/Checkout.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/pages/Checkout.jsx	2026-08-03 17:48:36
 @@ -2,6 +2,7 @@
  import { useNavigate, Link } from 'react-router-dom';
  import { MapPin, Clock, CreditCard, Check } from 'lucide-react';
@@ -1574,23 +1806,85 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Checkout.jsx b/websites/uber_eats_
  import { formatCurrency } from '../utils/dataManager';
  import './Checkout.css';
  
-@@ -33,9 +34,12 @@
+@@ -15,6 +16,7 @@
+     applyPromoCode,
+     updateAddress,
+     updateDefaultPayment,
++    addPaymentMethod,
+     updateDeliveryInstructions,
+   } = useApp();
+   const navigate = useNavigate();
+@@ -22,31 +24,62 @@
+   const [promoError, setPromoError] = useState('');
+   const [editing, setEditing] = useState(null);
+   const [placing, setPlacing] = useState(false);
++  const [addingCard, setAddingCard] = useState(false);
++  const [newCard, setNewCard] = useState({ label: '', cardNumber: '', expiry: '' });
++  const [showCustomTip, setShowCustomTip] = useState(false);
++  const [customTip, setCustomTip] = useState('');
+ 
+   const { cart, user, restaurants } = state;
+   const restaurant = restaurants.find(r => r.id === cart.restaurantId);
++  // Pickup makes it a pickup order: no delivery address/instructions, no delivery
++  // fee, pickup ETA. Scheduled time (from the header Now/Later picker) shows here.
++  const isPickup = state.ui.deliveryMode === 'pickup';
++  const scheduledTime = state.ui.scheduledTime;
+   const selectedAddress = user.addresses.find(a => a.id === state.ui.selectedAddressId) || user.addresses[0];
+   const selectedPayment = user.paymentMethods.find(p => p.id === user.defaultPaymentId) || user.paymentMethods[0];
+ 
++  const handleAddCard = () => {
++    const digits = (newCard.cardNumber || '').replace(/\D/g, '');
++    if (digits.length < 4 && !newCard.label.trim()) return;
++    addPaymentMethod({ label: newCard.label.trim(), cardNumber: digits, expiry: newCard.expiry.trim() });
++    setNewCard({ label: '', cardNumber: '', expiry: '' });
++    setAddingCard(false);
++    setEditing(null);
++  };
++
++  // The engine stores the applied promo in state.appliedPromoCode and the code
++  // list (with percentOff) in state.promotions — derive the chip + discount from
++  // those so an applied code actually shows and reduces the total.
++  const appliedCode = state.appliedPromoCode || cart.promoCode || '';
++  const appliedPromo = appliedCode
++    ? (state.promotions || []).find(p => (p.code || '').toUpperCase() === appliedCode.toUpperCase())
++    : null;
++
+   const totals = useMemo(() => {
+     const subtotal = cart.items.reduce((s, item) => s + item.totalPrice, 0);
      const serviceFee = Math.min(Math.max(subtotal * 0.15, 0.99), 9.99);
-     const deliveryFee = restaurant ? restaurant.deliveryFee : 0;
+-    const deliveryFee = restaurant ? restaurant.deliveryFee : 0;
++    const deliveryFee = (restaurant && !isPickup) ? restaurant.deliveryFee : 0;
      const tax = subtotal * 0.09;
 -    const tipAmount = cart.tipPercentage
 -      ? subtotal * (cart.tipPercentage / 100)
 -      : cart.tipAmount;
+-    const total = subtotal + serviceFee + deliveryFee + tax + tipAmount - (cart.promoDiscount || 0);
++    const promoDiscount = appliedPromo
++      ? Math.round(subtotal * (appliedPromo.percentOff || 0) * 100) / 100
++      : (cart.promoDiscount || 0);
 +    // food.checkout has no tip field — the engine never records or charges a tip.
 +    // In bridged mode force it to 0 so the displayed total isn't a figure the
 +    // gym will never see (the tip selector is hidden below in the same mode).
 +    const tipAmount = bridged()
 +      ? 0
 +      : (cart.tipPercentage ? subtotal * (cart.tipPercentage / 100) : cart.tipAmount);
-     const total = subtotal + serviceFee + deliveryFee + tax + tipAmount - (cart.promoDiscount || 0);
++    const total = subtotal + serviceFee + deliveryFee + tax + tipAmount - promoDiscount;
      return {
        subtotal,
-@@ -67,11 +71,13 @@
+       serviceFee,
+       deliveryFee,
+       tax,
+       tipAmount,
+-      promoDiscount: cart.promoDiscount || 0,
++      promoDiscount,
+       total,
+     };
+-  }, [cart, restaurant]);
++  }, [cart, restaurant, isPickup, appliedPromo]);
+ 
+   if (!cart.items.length) {
+     return (
+@@ -67,11 +100,13 @@
      }
    };
  
@@ -1607,7 +1901,216 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Checkout.jsx b/websites/uber_eats_
    };
  
    return (
-@@ -205,27 +211,30 @@
+@@ -80,71 +115,91 @@
+ 
+       <div className="checkout__layout">
+         <div className="checkout__main">
+-          {/* Delivery address */}
++          {/* Delivery / Pickup details */}
+           <section className="checkout__section">
+-            <h2 className="checkout__section-title">Delivery details</h2>
+-            <div className="checkout__card">
+-              <div className="checkout__row">
+-                <MapPin size={20} />
+-                <div className="checkout__row-content">
+-                  <strong>{selectedAddress?.label || 'Address'}</strong>
+-                  <span className="checkout__row-sub">
+-                    {selectedAddress
+-                      ? `${selectedAddress.street}${selectedAddress.apt ? `, ${selectedAddress.apt}` : ''}, ${selectedAddress.city}`
+-                      : 'No address selected'}
+-                  </span>
++            <h2 className="checkout__section-title">{isPickup ? 'Pickup details' : 'Delivery details'}</h2>
++
++            {isPickup ? (
++              <div className="checkout__card">
++                <div className="checkout__row">
++                  <MapPin size={20} />
++                  <div className="checkout__row-content">
++                    <strong>{restaurant ? `Pick up at ${restaurant.name}` : 'Pickup'}</strong>
++                    <span className="checkout__row-sub">
++                      {restaurant?.address ? restaurant.address : 'Show this order at the counter when you arrive'}
++                    </span>
++                  </div>
+                 </div>
+-                <button className="checkout__edit-btn" onClick={() => setEditing(editing === 'address' ? null : 'address')}>
+-                  Edit
+-                </button>
+               </div>
+-              {editing === 'address' && (
+-                <div className="checkout__picker">
+-                  <div className="checkout__picker-title">Choose address</div>
+-                  {user.addresses.map(addr => (
+-                    <button
+-                      key={addr.id}
+-                      className={`checkout__picker-option ${addr.id === selectedAddress?.id ? 'checkout__picker-option--active' : ''}`}
+-                      onClick={() => { updateAddress(addr.id); setEditing(null); }}
+-                    >
+-                      {addr.id === selectedAddress?.id && <Check size={16} />}
+-                      <div className="checkout__picker-info">
+-                        <strong>{addr.label}</strong>
+-                        <span>{addr.street}{addr.apt ? `, ${addr.apt}` : ''}, {addr.city}</span>
+-                      </div>
+-                    </button>
+-                  ))}
++            ) : (
++              <div className="checkout__card">
++                <div className="checkout__row">
++                  <MapPin size={20} />
++                  <div className="checkout__row-content">
++                    <strong>{selectedAddress?.label || 'Address'}</strong>
++                    <span className="checkout__row-sub">
++                      {selectedAddress
++                        ? `${selectedAddress.street}${selectedAddress.apt ? `, ${selectedAddress.apt}` : ''}, ${selectedAddress.city}`
++                        : 'No address selected'}
++                    </span>
++                  </div>
++                  <button className="checkout__edit-btn" onClick={() => setEditing(editing === 'address' ? null : 'address')}>
++                    Edit
++                  </button>
+                 </div>
+-              )}
+-            </div>
++                {editing === 'address' && (
++                  <div className="checkout__picker">
++                    <div className="checkout__picker-title">Choose address</div>
++                    {user.addresses.map(addr => (
++                      <button
++                        key={addr.id}
++                        className={`checkout__picker-option ${addr.id === selectedAddress?.id ? 'checkout__picker-option--active' : ''}`}
++                        onClick={() => { updateAddress(addr.id); setEditing(null); }}
++                      >
++                        {addr.id === selectedAddress?.id && <Check size={16} />}
++                        <div className="checkout__picker-info">
++                          <strong>{addr.label}</strong>
++                          <span>{addr.street}{addr.apt ? `, ${addr.apt}` : ''}, {addr.city}</span>
++                        </div>
++                      </button>
++                    ))}
++                  </div>
++                )}
++              </div>
++            )}
+ 
++            {/* When: reflects the header Now/Later choice, else ASAP / pickup ETA */}
+             <div className="checkout__card">
+               <div className="checkout__row">
+                 <Clock size={20} />
+                 <div className="checkout__row-content">
+-                  <strong>ASAP</strong>
++                  <strong>{scheduledTime ? 'Scheduled' : (isPickup ? 'Ready for pickup' : 'ASAP')}</strong>
+                   <span className="checkout__row-sub">
+-                    {restaurant
+-                      ? `${restaurant.deliveryTimeMin}-${restaurant.deliveryTimeMax} min`
+-                      : '25-40 min'}
++                    {scheduledTime
++                      ? scheduledTime.label
++                      : isPickup
++                        ? `${restaurant?.pickupTimeMin ?? 10}-${restaurant?.pickupTimeMax ?? 20} min`
++                        : (restaurant ? `${restaurant.deliveryTimeMin}-${restaurant.deliveryTimeMax} min` : '25-40 min')}
+                   </span>
+                 </div>
+               </div>
+             </div>
+ 
+-            <div className="checkout__card">
+-              <label className="checkout__instructions-label" htmlFor="delivery-instructions">
+-                Delivery instructions
+-              </label>
+-              <textarea
+-                id="delivery-instructions"
+-                className="checkout__instructions-input"
+-                placeholder="Gate code, landmark, etc."
+-                value={cart.deliveryInstructions || ''}
+-                onChange={(e) => updateDeliveryInstructions(e.target.value)}
+-                rows={2}
+-              />
+-            </div>
++            {!isPickup && (
++              <div className="checkout__card">
++                <label className="checkout__instructions-label" htmlFor="delivery-instructions">
++                  Delivery instructions
++                </label>
++                <textarea
++                  id="delivery-instructions"
++                  className="checkout__instructions-input"
++                  placeholder="Gate code, landmark, etc."
++                  value={cart.deliveryInstructions || ''}
++                  onChange={(e) => updateDeliveryInstructions(e.target.value)}
++                  rows={2}
++                />
++              </div>
++            )}
+           </section>
+ 
+           {/* Payment */}
+@@ -175,9 +230,52 @@
+                       {pm.id === selectedPayment?.id && <Check size={16} />}
+                       <div className="checkout__picker-info">
+                         <strong>{pm.label}</strong>
++                        {pm.last4 ? <span>•••• {pm.last4}</span> : null}
+                       </div>
+                     </button>
+                   ))}
++                  {!addingCard ? (
++                    <button
++                      onClick={() => setAddingCard(true)}
++                      style={{ width: '100%', textAlign: 'left', padding: '10px 12px', marginTop: 4, border: '1px dashed #cbd5e1', borderRadius: 8, background: 'transparent', color: '#06803a', fontWeight: 600, cursor: 'pointer' }}
++                    >
++                      + Add payment method
++                    </button>
++                  ) : (
++                    <div style={{ padding: 12, border: '1px solid #e5e7eb', borderRadius: 8, marginTop: 4, display: 'flex', flexDirection: 'column', gap: 8 }}>
++                      <input
++                        placeholder="Card number" inputMode="numeric"
++                        value={newCard.cardNumber}
++                        onChange={e => setNewCard(c => ({ ...c, cardNumber: e.target.value }))}
++                        style={{ padding: '8px 10px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14 }}
++                      />
++                      <div style={{ display: 'flex', gap: 8 }}>
++                        <input
++                          placeholder="MM/YY"
++                          value={newCard.expiry}
++                          onChange={e => setNewCard(c => ({ ...c, expiry: e.target.value }))}
++                          style={{ flex: 1, padding: '8px 10px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14 }}
++                        />
++                        <input
++                          placeholder="Label (optional)"
++                          value={newCard.label}
++                          onChange={e => setNewCard(c => ({ ...c, label: e.target.value }))}
++                          style={{ flex: 1, padding: '8px 10px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14 }}
++                        />
++                      </div>
++                      <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
++                        <button
++                          onClick={() => { setAddingCard(false); setNewCard({ label: '', cardNumber: '', expiry: '' }); }}
++                          style={{ padding: '8px 14px', border: '1px solid #d1d5db', borderRadius: 999, background: '#fff', cursor: 'pointer' }}
++                        >Cancel</button>
++                        <button
++                          onClick={handleAddCard}
++                          disabled={(newCard.cardNumber || '').replace(/\D/g, '').length < 4 && !newCard.label.trim()}
++                          style={{ padding: '8px 14px', border: 'none', borderRadius: 999, background: '#000', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
++                        >Add card</button>
++                      </div>
++                    </div>
++                  )}
+                 </div>
+               )}
+             </div>
+@@ -186,10 +284,10 @@
+           {/* Promo */}
+           <section className="checkout__section">
+             <h2 className="checkout__section-title">Promo code</h2>
+-            {cart.promoCode ? (
++            {appliedCode ? (
+               <div className="checkout__promo-applied">
+-                <span className="checkout__promo-code">{cart.promoCode}</span>
+-                <span className="checkout__promo-save">−{formatCurrency(cart.promoDiscount)}</span>
++                <span className="checkout__promo-code">{appliedCode}</span>
++                <span className="checkout__promo-save">−{formatCurrency(totals.promoDiscount)}</span>
+               </div>
+             ) : (
+               <form className="checkout__promo-form" onSubmit={handleApplyPromo}>
+@@ -205,27 +303,48 @@
              {promoError && <p className="checkout__promo-error">{promoError}</p>}
            </section>
  
@@ -1625,8 +2128,8 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Checkout.jsx b/websites/uber_eats_
 +                {TIP_OPTIONS.map(pct => (
 +                  <button
 +                    key={pct}
-+                    className={`checkout__tip-btn ${cart.tipPercentage === pct ? 'checkout__tip-btn--active' : ''}`}
-+                    onClick={() => setTip(0, pct)}
++                    className={`checkout__tip-btn ${!showCustomTip && cart.tipPercentage === pct ? 'checkout__tip-btn--active' : ''}`}
++                    onClick={() => { setShowCustomTip(false); setTip(0, pct); }}
 +                  >
 +                    {pct}%
 +                  </button>
@@ -1635,8 +2138,8 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Checkout.jsx b/websites/uber_eats_
 -                  key={pct}
 -                  className={`checkout__tip-btn ${cart.tipPercentage === pct ? 'checkout__tip-btn--active' : ''}`}
 -                  onClick={() => setTip(0, pct)}
-+                  className={`checkout__tip-btn ${cart.tipPercentage === 0 ? 'checkout__tip-btn--active' : ''}`}
-+                  onClick={() => setTip(0, 0)}
++                  className={`checkout__tip-btn ${showCustomTip ? 'checkout__tip-btn--active' : ''}`}
++                  onClick={() => { setShowCustomTip(v => !v); if (!showCustomTip) { const v = parseFloat(customTip); setTip(isNaN(v) ? 0 : v, null); } }}
                  >
 -                  {pct}%
 +                  Other
@@ -1650,13 +2153,45 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Checkout.jsx b/websites/uber_eats_
 -              </button>
 -            </div>
 -          </section>
++                <button
++                  className={`checkout__tip-btn ${!showCustomTip && !cart.tipPercentage && !cart.tipAmount ? 'checkout__tip-btn--active' : ''}`}
++                  onClick={() => { setShowCustomTip(false); setCustomTip(''); setTip(0, null); }}
++                >
++                  None
++                </button>
 +              </div>
++              {showCustomTip && (
++                <div style={{ display: 'flex', gap: 8, marginTop: 10, alignItems: 'center' }}>
++                  <span style={{ fontWeight: 700 }}>$</span>
++                  <input
++                    type="number" min="0" step="0.5" inputMode="decimal" autoFocus
++                    placeholder="Custom tip amount"
++                    value={customTip}
++                    onChange={e => { setCustomTip(e.target.value); const v = parseFloat(e.target.value); setTip(isNaN(v) ? 0 : v, null); }}
++                    style={{ flex: 1, padding: '8px 10px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14 }}
++                  />
++                </div>
++              )}
 +            </section>
 +          )}
  
            {/* Items */}
            <section className="checkout__section">
-@@ -268,10 +277,12 @@
+@@ -260,18 +379,22 @@
+               <span>Service fee</span>
+               <span>{formatCurrency(totals.serviceFee)}</span>
+             </div>
++            {!isPickup && (
++              <div className="checkout__total-row">
++                <span>Delivery fee</span>
++                <span>{formatCurrency(totals.deliveryFee)}</span>
++              </div>
++            )}
+             <div className="checkout__total-row">
+-              <span>Delivery fee</span>
+-              <span>{formatCurrency(totals.deliveryFee)}</span>
+-            </div>
+-            <div className="checkout__total-row">
                <span>Tax</span>
                <span>{formatCurrency(totals.tax)}</span>
              </div>
@@ -1675,7 +2210,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Checkout.jsx b/websites/uber_eats_
                  <span>Promo</span>
 diff -ruN a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx
 --- a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx	1969-12-31 16:00:00
-+++ b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx	2026-08-03 15:55:57
++++ b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx	2026-07-30 17:35:25
 @@ -0,0 +1,81 @@
 +import React from 'react';
 +import { useNavigate } from 'react-router-dom';
@@ -1759,8 +2294,8 @@ diff -ruN a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx b/websites/uber_e
 +  );
 +}
 diff -ruN a/websites/uber_eats_mock/src/pages/Favorites.jsx b/websites/uber_eats_mock/src/pages/Favorites.jsx
---- a/websites/uber_eats_mock/src/pages/Favorites.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/pages/Favorites.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/pages/Favorites.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/pages/Favorites.jsx	2026-07-31 18:09:30
 @@ -2,6 +2,7 @@
  import { Link } from 'react-router-dom';
  import { Heart } from 'lucide-react';
@@ -1782,7 +2317,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Favorites.jsx b/websites/uber_eats
          {favoriteRestaurants.map(restaurant => (
            <RestaurantCard
 diff -ruN a/websites/uber_eats_mock/src/pages/GoEndpoint.jsx b/websites/uber_eats_mock/src/pages/GoEndpoint.jsx
---- a/websites/uber_eats_mock/src/pages/GoEndpoint.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/pages/GoEndpoint.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/pages/GoEndpoint.jsx	1969-12-31 16:00:00
 @@ -1,30 +0,0 @@
 -import React, { useEffect, useState } from 'react';
@@ -1816,7 +2351,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/GoEndpoint.jsx b/websites/uber_eat
 -  );
 -}
 diff -ruN a/websites/uber_eats_mock/src/pages/Home.jsx b/websites/uber_eats_mock/src/pages/Home.jsx
---- a/websites/uber_eats_mock/src/pages/Home.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/pages/Home.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/pages/Home.jsx	1969-12-31 16:00:00
 @@ -1,122 +0,0 @@
 -
@@ -1942,9 +2477,39 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Home.jsx b/websites/uber_eats_mock
 -    }
 -  
 diff -ruN a/websites/uber_eats_mock/src/pages/Homepage.jsx b/websites/uber_eats_mock/src/pages/Homepage.jsx
---- a/websites/uber_eats_mock/src/pages/Homepage.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/pages/Homepage.jsx	2026-08-03 15:55:57
-@@ -37,6 +37,10 @@
+--- a/websites/uber_eats_mock/src/pages/Homepage.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/pages/Homepage.jsx	2026-08-03 16:42:09
+@@ -1,13 +1,18 @@
+ import React, { useMemo, useState, useRef } from 'react';
+-import { Link } from 'react-router-dom';
++import { Link, useNavigate } from 'react-router-dom';
+ import { ChevronLeft, ChevronRight } from 'lucide-react';
+ import { useApp } from '../context/AppContext';
+ import RestaurantCard from '../components/RestaurantCard';
+ import FilterBar from '../components/FilterBar';
+ import './Homepage.css';
+ 
++// Dietary tags are compared case- AND separator-insensitively: ambient dishes
++// historically carried "gluten_free" while the filter emits "gluten-free".
++const dnorm = (s) => (s || '').toLowerCase().replace(/[\s_]+/g, '-');
++
+ export default function Homepage() {
+-  const { state } = useApp();
++  const { state, applyPromoCode } = useApp();
++  const navigate = useNavigate();
+   const [promoBannerIdx, setPromoBannerIdx] = useState(0);
+ 
+   const filteredRestaurants = useMemo(() => {
+@@ -22,7 +27,7 @@
+       results = results.filter(r => {
+         const menuItems = state.menuItems.filter(m => m.restaurantId === r.id);
+         return filters.dietary.some(d =>
+-          menuItems.some(m => m.dietaryTags && m.dietaryTags.some(t => t.toLowerCase() === d.toLowerCase()))
++          menuItems.some(m => m.dietaryTags && m.dietaryTags.some(t => dnorm(t) === dnorm(d)))
+         );
+       });
+     }
+@@ -37,6 +42,10 @@
        );
      }
  
@@ -1955,16 +2520,63 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Homepage.jsx b/websites/uber_eats_
      switch (filters.sort) {
        case 'popular':
          results.sort((a, b) => b.reviewCount - a.reviewCount);
-@@ -73,7 +77,7 @@
-   const promoBanners = [
-     { id: 'pb1', title: '$0 Delivery Fee', subtitle: 'Spend $15+ on select restaurants', bg: '#06C167', accent: 'rgba(255,255,255,0.15)' },
-     { id: 'pb2', title: '$5 off $25+', subtitle: 'Use code SAVE5 at checkout', bg: '#000000', accent: 'rgba(255,255,255,0.08)' },
--    { id: 'pb3', title: '20% off first order', subtitle: 'New to Xber Eats? Use code FIRST20', bg: '#276E50', accent: 'rgba(255,255,255,0.12)' },
-+    { id: 'pb3', title: '20% off first order', subtitle: 'New to GymEats? Use code FIRST20', bg: '#276E50', accent: 'rgba(255,255,255,0.12)' },
-   ];
+@@ -70,12 +79,36 @@
+   const newRestaurants = filteredRestaurants.filter(r => (r.tags || []).includes('New'));
+   const dealsRestaurants = filteredRestaurants.filter(r => r.promotions && r.promotions.length > 0);
  
+-  const promoBanners = [
+-    { id: 'pb1', title: '$0 Delivery Fee', subtitle: 'Spend $15+ on select restaurants', bg: '#06C167', accent: 'rgba(255,255,255,0.15)' },
+-    { id: 'pb2', title: '$5 off $25+', subtitle: 'Use code SAVE5 at checkout', bg: '#000000', accent: 'rgba(255,255,255,0.08)' },
+-    { id: 'pb3', title: '20% off first order', subtitle: 'New to Xber Eats? Use code FIRST20', bg: '#276E50', accent: 'rgba(255,255,255,0.12)' },
+-  ];
++  // Build banners from the REAL promo codes the engine will actually accept
++  // (state.promotions), so we never advertise a code checkout will reject. Each
++  // banner is clickable: it stages the code (applyPromoCode) and routes to the
++  // Offers view. A leading $0-delivery banner is honest (many restaurants have
++  // deliveryFee 0). Falls back to code-free banners in demo mode.
++  const BANNER_BG = ['#06C167', '#276E50', '#000000', '#1F6FEB'];
++  const promoBanners = useMemo(() => {
++    const promos = state.promotions || [];
++    const list = [{ id: 'pb_delivery', title: '$0 Delivery Fee', subtitle: 'On select restaurants near you', bg: BANNER_BG[0], accent: 'rgba(255,255,255,0.15)', to: '/search?q=deals' }];
++    promos.forEach((p, i) => {
++      const pct = p.percentOff ? Math.round(p.percentOff * 100) : null;
++      list.push({
++        id: p.code || `pb${i}`,
++        title: pct ? `${pct}% off your order` : (p.description || 'Special offer'),
++        subtitle: p.code ? `Use code ${p.code} at checkout` : (p.description || ''),
++        bg: BANNER_BG[(i + 1) % BANNER_BG.length], accent: 'rgba(255,255,255,0.12)',
++        code: p.code, to: '/search?q=deals',
++      });
++    });
++    return list;
++  }, [state.promotions]);
+ 
++  const handleBannerClick = (banner) => {
++    // Only stage the code when there's already a cart to apply it to; otherwise
++    // the code is shown on the banner and works at checkout. Always route to the
++    // Offers view so the click does something visible.
++    if (banner.code && applyPromoCode && (state.cart?.items?.length > 0)) applyPromoCode(banner.code);
++    if (banner.to) navigate(banner.to);
++  };
++
    const handlePrevBanner = () => {
-@@ -159,7 +163,7 @@
+     setPromoBannerIdx(prev => (prev === 0 ? promoBanners.length - 1 : prev - 1));
+   };
+@@ -113,8 +146,12 @@
+           {promoBanners.map((banner, idx) => (
+             <div
+               key={banner.id}
++              role="button"
++              tabIndex={idx === promoBannerIdx ? 0 : -1}
++              onClick={() => handleBannerClick(banner)}
++              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleBannerClick(banner); } }}
+               className={`homepage__promo-banner ${idx === promoBannerIdx ? 'homepage__promo-banner--active' : ''}`}
+-              style={{ background: banner.bg }}
++              style={{ background: banner.bg, cursor: 'pointer' }}
+             >
+               <div className="homepage__promo-banner-inner">
+                 <h3 className="homepage__promo-banner-title">{banner.title}</h3>
+@@ -159,7 +196,7 @@
        {featured.length > 0 && (
          <section className="homepage__section">
            <div className="homepage__section-header">
@@ -1973,7 +2585,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Homepage.jsx b/websites/uber_eats_
              <Link to="/search?q=popular" className="homepage__see-all">See all</Link>
            </div>
            <div className="homepage__grid">
-@@ -197,11 +201,11 @@
+@@ -197,11 +234,11 @@
          </div>
        </section>
  
@@ -1987,7 +2599,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Homepage.jsx b/websites/uber_eats_
            </div>
            <div className="homepage__grid">
              {newRestaurants.map(r => (
-@@ -211,7 +215,7 @@
+@@ -211,7 +248,7 @@
          </section>
        )}
  
@@ -1996,7 +2608,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Homepage.jsx b/websites/uber_eats_
        {!state.user.uberOneActive && (
          <div className="homepage__uber-one-banner">
            <div className="homepage__uber-one-content">
-@@ -219,7 +223,7 @@
+@@ -219,7 +256,7 @@
                <span style={{ fontWeight: 700, fontSize: 14, color: '#fff' }}>1</span>
              </div>
              <div>
@@ -2006,9 +2618,17 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Homepage.jsx b/websites/uber_eats_
              </div>
            </div>
 diff -ruN a/websites/uber_eats_mock/src/pages/OrderTracking.jsx b/websites/uber_eats_mock/src/pages/OrderTracking.jsx
---- a/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-08-03 15:55:57
-@@ -25,7 +25,7 @@
+--- a/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/pages/OrderTracking.jsx	2026-08-03 17:47:39
+@@ -2,6 +2,7 @@
+ import { useParams, useNavigate, Link } from 'react-router-dom';
+ import { CheckCircle, Clock, Truck, MapPin, Phone, Star, ArrowLeft, Package, HelpCircle, X, Download } from 'lucide-react';
+ import { useApp } from '../context/AppContext';
++import { bridged } from '../lib/bridge';
+ import { formatCurrency } from '../utils/dataManager';
+ import './OrderTracking.css';
+ 
+@@ -25,7 +26,7 @@
  
  export default function OrderTracking() {
    const { orderId } = useParams();
@@ -2017,7 +2637,17 @@ diff -ruN a/websites/uber_eats_mock/src/pages/OrderTracking.jsx b/websites/uber_
    const navigate = useNavigate();
    const [showContactModal, setShowContactModal] = useState(false);
    const [showHelpModal, setShowHelpModal] = useState(false);
-@@ -83,7 +83,7 @@
+@@ -36,6 +37,9 @@
+   // Simulate order status progression for newly placed orders
+   useEffect(() => {
+     if (!order) return;
++    // In bridged mode the engine owns order status and the 2.5s poll re-adopts
++    // it, so a local timer-driven progression just flip-flops the UI.
++    if (bridged()) return;
+     if (order.status === 'delivered' || order.status === 'cancelled') return;
+ 
+     const statusProgression = [
+@@ -83,7 +87,7 @@
  
    const downloadReceipt = () => {
      const receipt = [
@@ -2026,7 +2656,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/OrderTracking.jsx b/websites/uber_
        `Restaurant: ${order.restaurantName}`,
        `Placed: ${new Date(order.placedAt).toLocaleString()}`,
        '',
-@@ -111,7 +111,26 @@
+@@ -111,7 +115,26 @@
    };
  
    const handleHelpOption = (label) => {
@@ -2054,7 +2684,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/OrderTracking.jsx b/websites/uber_
    };
  
    return (
-@@ -321,9 +340,9 @@
+@@ -321,9 +344,9 @@
                <strong>{order.deliveryPerson.name}</strong>
                <span>{order.deliveryPerson.vehicleType === 'car' ? 'Car' : 'Bicycle'} &bull; {order.deliveryPerson.rating} ★</span>
              </div>
@@ -2067,8 +2697,8 @@ diff -ruN a/websites/uber_eats_mock/src/pages/OrderTracking.jsx b/websites/uber_
            </div>
          </div>
 diff -ruN a/websites/uber_eats_mock/src/pages/Orders.jsx b/websites/uber_eats_mock/src/pages/Orders.jsx
---- a/websites/uber_eats_mock/src/pages/Orders.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/pages/Orders.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/pages/Orders.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/pages/Orders.jsx	2026-07-30 20:23:39
 @@ -168,9 +168,12 @@
      }
      clearCart();
@@ -2086,7 +2716,7 @@ diff -ruN a/websites/uber_eats_mock/src/pages/Orders.jsx b/websites/uber_eats_mo
        };
        addToCart(menuItem, restaurant, item.quantity, [], item.specialInstructions || '');
 diff -ruN a/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx b/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx
---- a/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx	2026-07-28 11:01:47
 +++ b/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx	1969-12-31 16:00:00
 @@ -1,178 +0,0 @@
 -
@@ -2268,8 +2898,8 @@ diff -ruN a/websites/uber_eats_mock/src/pages/RestaurantDetails.jsx b/websites/u
 -}
 -  
 diff -ruN a/websites/uber_eats_mock/src/pages/StorePage.jsx b/websites/uber_eats_mock/src/pages/StorePage.jsx
---- a/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-08-03 15:55:57
+--- a/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/pages/StorePage.jsx	2026-07-31 15:09:02
 @@ -119,6 +119,14 @@
      <div className="store-page">
        {/* Banner */}
@@ -2312,9 +2942,9 @@ diff -ruN a/websites/uber_eats_mock/src/pages/StorePage.jsx b/websites/uber_eats
            onClose={() => setSelectedItem(null)}
            onAdd={handleAddToCart}
 diff -ruN a/websites/uber_eats_mock/src/utils/dataManager.js b/websites/uber_eats_mock/src/utils/dataManager.js
---- a/websites/uber_eats_mock/src/utils/dataManager.js	2026-08-03 15:55:57
-+++ b/websites/uber_eats_mock/src/utils/dataManager.js	2026-08-03 15:55:57
-@@ -132,30 +132,30 @@
+--- a/websites/uber_eats_mock/src/utils/dataManager.js	2026-07-28 11:01:47
++++ b/websites/uber_eats_mock/src/utils/dataManager.js	2026-08-03 18:26:16
+@@ -132,38 +132,38 @@
    return {
      user: {
        id: 'user_1',
@@ -2356,6 +2986,16 @@ diff -ruN a/websites/uber_eats_mock/src/utils/dataManager.js b/websites/uber_eat
            instructions: 'Leave at front desk',
            isDefault: false
          }
+       ],
+       defaultAddressId: 'addr_1',
+       paymentMethods: [
+-        { id: 'pay_1', type: 'visa', label: 'Visa \u2022\u2022\u2022\u2022 4242', last4: '4242', isDefault: true },
+-        { id: 'pay_2', type: 'paypal', label: 'PayPal', last4: '', isDefault: false }
++        { id: 'pay_1', type: 'visa', label: 'Visa \u2022\u2022\u2022\u2022 4242', last4: '4242', expiry: '08/27', isDefault: true },
++        { id: 'pay_2', type: 'paypal', label: 'PayPal', last4: '', expiry: '', isDefault: false }
+       ],
+       defaultPaymentId: 'pay_1',
+       uberOneActive: false,
 @@ -794,7 +794,7 @@
          estimatedDeliveryMin: new Date(new Date(twoDaysAgo).getTime() + 30 * 60000).toISOString(),
          estimatedDeliveryMax: new Date(new Date(twoDaysAgo).getTime() + 45 * 60000).toISOString(),
