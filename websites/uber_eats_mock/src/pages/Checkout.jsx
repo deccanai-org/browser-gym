@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { MapPin, Clock, CreditCard, Check } from 'lucide-react';
 import { useApp } from '../context/AppContext';
@@ -15,6 +15,7 @@ export default function Checkout() {
     setTip,
     applyPromoCode,
     updateAddress,
+    addAddress,
     updateDefaultPayment,
     addPaymentMethod,
     updateDeliveryInstructions,
@@ -26,6 +27,9 @@ export default function Checkout() {
   const [placing, setPlacing] = useState(false);
   const [addingCard, setAddingCard] = useState(false);
   const [newCard, setNewCard] = useState({ label: '', cardNumber: '', expiry: '' });
+  const [addingAddress, setAddingAddress] = useState(false);
+  const [newAddress, setNewAddress] = useState({ label: 'Home', street: '', apt: '', city: '', state: 'NY', zip: '', instructions: '', isDefault: false });
+  const [selectNewAddress, setSelectNewAddress] = useState(false);
   const [showCustomTip, setShowCustomTip] = useState(false);
   const [customTip, setCustomTip] = useState('');
 
@@ -46,6 +50,25 @@ export default function Checkout() {
     setAddingCard(false);
     setEditing(null);
   };
+
+  const handleAddAddress = () => {
+    if (!newAddress.street.trim() || !newAddress.city.trim()) return;
+    addAddress({ ...newAddress, label: newAddress.label.trim() || 'Home' });
+    setNewAddress({ label: 'Home', street: '', apt: '', city: '', state: 'NY', zip: '', instructions: '', isDefault: false });
+    setAddingAddress(false);
+    setEditing(null);
+    // addAddress generates the id internally and (unlike addPaymentMethod) does
+    // not auto-select the new address, so pick the newest one once it lands.
+    setSelectNewAddress(true);
+  };
+
+  // Select the just-added address (appended to the end) after the list grows.
+  useEffect(() => {
+    if (!selectNewAddress) return;
+    const addrs = user.addresses || [];
+    if (addrs.length) updateAddress(addrs[addrs.length - 1].id);
+    setSelectNewAddress(false);
+  }, [selectNewAddress, user.addresses, updateAddress]);
 
   // The engine stores the applied promo in state.appliedPromoCode and the code
   // list (with percentOff) in state.promotions — derive the chip + discount from
@@ -163,6 +186,84 @@ export default function Checkout() {
                         </div>
                       </button>
                     ))}
+                    {!addingAddress ? (
+                      <button
+                        data-testid="checkout-add-address-toggle"
+                        onClick={() => setAddingAddress(true)}
+                        style={{ width: '100%', textAlign: 'left', padding: '10px 12px', marginTop: 4, border: '1px dashed #cbd5e1', borderRadius: 8, background: 'transparent', color: '#06803a', fontWeight: 600, cursor: 'pointer' }}
+                      >
+                        + Add address
+                      </button>
+                    ) : (
+                      <div style={{ padding: 12, border: '1px solid #e5e7eb', borderRadius: 8, marginTop: 4, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                        <input
+                          data-testid="checkout-new-address-label"
+                          placeholder="Label (e.g. Home, Work)"
+                          value={newAddress.label}
+                          onChange={e => setNewAddress(a => ({ ...a, label: e.target.value }))}
+                          style={{ padding: '8px 10px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14 }}
+                        />
+                        <input
+                          data-testid="checkout-new-address-street"
+                          placeholder="Street address"
+                          value={newAddress.street}
+                          onChange={e => setNewAddress(a => ({ ...a, street: e.target.value }))}
+                          style={{ padding: '8px 10px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14 }}
+                        />
+                        <div style={{ display: 'flex', gap: 8 }}>
+                          <input
+                            data-testid="checkout-new-address-apt"
+                            placeholder="Apt / Suite (optional)"
+                            value={newAddress.apt}
+                            onChange={e => setNewAddress(a => ({ ...a, apt: e.target.value }))}
+                            style={{ flex: 1, padding: '8px 10px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14 }}
+                          />
+                          <input
+                            data-testid="checkout-new-address-city"
+                            placeholder="City"
+                            value={newAddress.city}
+                            onChange={e => setNewAddress(a => ({ ...a, city: e.target.value }))}
+                            style={{ flex: 1, padding: '8px 10px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14 }}
+                          />
+                        </div>
+                        <div style={{ display: 'flex', gap: 8 }}>
+                          <input
+                            data-testid="checkout-new-address-state"
+                            placeholder="State"
+                            value={newAddress.state}
+                            onChange={e => setNewAddress(a => ({ ...a, state: e.target.value }))}
+                            style={{ flex: 1, padding: '8px 10px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14 }}
+                          />
+                          <input
+                            data-testid="checkout-new-address-zip"
+                            placeholder="ZIP" inputMode="numeric"
+                            value={newAddress.zip}
+                            onChange={e => setNewAddress(a => ({ ...a, zip: e.target.value }))}
+                            style={{ flex: 1, padding: '8px 10px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14 }}
+                          />
+                        </div>
+                        <input
+                          data-testid="checkout-new-address-instructions"
+                          placeholder="Delivery instructions (optional)"
+                          value={newAddress.instructions}
+                          onChange={e => setNewAddress(a => ({ ...a, instructions: e.target.value }))}
+                          style={{ padding: '8px 10px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14 }}
+                        />
+                        <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+                          <button
+                            data-testid="checkout-new-address-cancel"
+                            onClick={() => { setAddingAddress(false); setNewAddress({ label: 'Home', street: '', apt: '', city: '', state: 'NY', zip: '', instructions: '', isDefault: false }); }}
+                            style={{ padding: '8px 14px', border: '1px solid #d1d5db', borderRadius: 999, background: '#fff', cursor: 'pointer' }}
+                          >Cancel</button>
+                          <button
+                            data-testid="checkout-add-address-submit"
+                            onClick={handleAddAddress}
+                            disabled={!newAddress.street.trim() || !newAddress.city.trim()}
+                            style={{ padding: '8px 14px', border: 'none', borderRadius: 999, background: '#000', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
+                          >Add address</button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

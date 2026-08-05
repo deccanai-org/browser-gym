@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { ChevronDown, X, Star, Tag, Zap } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import './FilterBar.css';
@@ -12,12 +12,53 @@ const SORT_OPTIONS = [
   { value: 'price_high', label: 'Price: High to Low' },
 ];
 
-const PRICE_OPTIONS = ['$', '$$', '$$$', '$$$$'];
-const DIETARY_OPTIONS = ['Vegetarian', 'Vegan', 'Gluten-Free', 'Halal'];
+const PRICE_TIERS = ['$', '$$', '$$$', '$$$$'];
+
+// Compare dietary tags case- and separator-insensitively (data has "Gluten-Free",
+// filter state stores "gluten-free"); mirrors Homepage's dnorm.
+const dnorm = (s) => (s || '').toLowerCase().replace(/[\s_]+/g, '-');
+
+// The menu feed labels a tag inconsistently ("Vegetarian", "gluten_free",
+// "vegan") depending on whether it comes from the demo seed or the live engine;
+// present them uniformly Title-Cased and hyphenated regardless of source.
+const prettyDiet = (s) =>
+  (s || '')
+    .trim()
+    .split(/[\s_-]+/)
+    .filter(Boolean)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join('-');
 
 export default function FilterBar() {
   const { state, updateFilters } = useApp();
   const filters = state.ui.activeFilters;
+
+  // Derive the DIETARY options from the actual menu data instead of a hardcoded
+  // list that can drift from the seed: one entry per dietary tag that really
+  // exists, labelled with how many restaurants offer it, sorted most-available
+  // first (ties alphabetical). A tag no restaurant serves never appears.
+  const dietaryOptions = useMemo(() => {
+    const byTag = {};
+    for (const m of state.menuItems || []) {
+      for (const t of (m.dietaryTags || [])) {
+        const key = dnorm(t);
+        if (!key) continue;
+        if (!byTag[key]) byTag[key] = { key, label: prettyDiet(t), rests: new Set() };
+        if (m.restaurantId) byTag[key].rests.add(m.restaurantId);
+      }
+    }
+    return Object.values(byTag)
+      .map(o => ({ key: o.key, label: o.label, count: o.rests.size }))
+      .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+  }, [state.menuItems]);
+
+  // Only offer PRICE tiers that actually exist in the catalog, in ascending
+  // order — the old fixed $/$$/$$$/$$$$ listed tiers ($$$, $$$$) that matched
+  // zero restaurants, so selecting them silently emptied the results.
+  const priceOptions = useMemo(() => {
+    const present = new Set((state.restaurants || []).map(r => r.priceRange).filter(Boolean));
+    return PRICE_TIERS.filter(p => present.has(p));
+  }, [state.restaurants]);
   const [sortOpen, setSortOpen] = useState(false);
   const [ratingOpen, setRatingOpen] = useState(false);
   const [priceOpen, setPriceOpen] = useState(false);
@@ -126,7 +167,7 @@ export default function FilterBar() {
             <div className="filter-bar__dropdown-backdrop" onClick={() => setPriceOpen(false)} />
             <div className="filter-bar__dropdown filter-bar__dropdown--price">
               <div className="filter-bar__price-grid">
-                {PRICE_OPTIONS.map(p => (
+                {priceOptions.map(p => (
                   <button
                     key={p}
                     className={`filter-bar__price-btn ${filters.priceRange.includes(p) ? 'filter-bar__price-btn--active' : ''}`}
@@ -154,16 +195,23 @@ export default function FilterBar() {
           <>
             <div className="filter-bar__dropdown-backdrop" onClick={() => setDietaryOpen(false)} />
             <div className="filter-bar__dropdown">
-              {DIETARY_OPTIONS.map(d => (
-                <button
-                  key={d}
-                  className={`filter-bar__dropdown-item ${filters.dietary.includes(d.toLowerCase()) ? 'filter-bar__dropdown-item--active' : ''}`}
-                  onClick={() => toggleDietary(d.toLowerCase())}
-                >
-                  {d}
-                  {filters.dietary.includes(d.toLowerCase()) && <span className="filter-bar__check">&#10003;</span>}
-                </button>
-              ))}
+              {dietaryOptions.length === 0 && (
+                <div className="filter-bar__dropdown-empty">No dietary options available</div>
+              )}
+              {dietaryOptions.map(o => {
+                const active = filters.dietary.includes(o.key);
+                return (
+                  <button
+                    key={o.key}
+                    className={`filter-bar__dropdown-item ${active ? 'filter-bar__dropdown-item--active' : ''}`}
+                    onClick={() => toggleDietary(o.key)}
+                  >
+                    <span className="filter-bar__dietary-label">{o.label}</span>
+                    <span className="filter-bar__dietary-count">{o.count}</span>
+                    {active && <span className="filter-bar__check">&#10003;</span>}
+                  </button>
+                );
+              })}
             </div>
           </>
         )}

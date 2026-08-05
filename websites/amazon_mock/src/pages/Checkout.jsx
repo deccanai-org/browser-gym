@@ -4,11 +4,15 @@ import { useStore } from '../context/StoreContext';
 import { Button } from '../components/ui/Button';
 import { MapPin, CreditCard, Check } from 'lucide-react';
 import { bridged, bridgeAct } from '../lib/bridge';
+import { gymNow } from '../lib/mockData';
 
 export const Checkout = () => {
   const { state, placeOrder } = useStore();
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
+  // Skip the redundant address-selection step when a default address is already
+  // on file (the shopper can still click "Change" to revisit it).
+  const _hasDefaultAddr = (state.user.addresses || []).some(a => a.isDefault);
+  const [step, setStep] = useState(_hasDefaultAddr ? 2 : 1);
   const [loading, setLoading] = useState(false);
   const [selectedAddressId, setSelectedAddressId] = useState(
     (state.user.addresses && state.user.addresses.length > 0
@@ -60,13 +64,24 @@ export const Checkout = () => {
   const handlePlaceOrder = () => {
     setLoading(true);
     setTimeout(async () => {
+      // Honor a scheduled delivery date the customer picked in the cart (the
+      // latest, since the order arrives when the last item does), ignoring any
+      // in the past; otherwise default to the frozen-clock now + 5 days.
+      const today = new Date(gymNow(state)).toISOString().split('T')[0];
+      const scheduled = state.cart
+        .map(i => i.scheduled_delivery)
+        .filter(d => d && d >= today)
+        .sort();
+      const estimatedDelivery = scheduled.length
+        ? scheduled[scheduled.length - 1]
+        : new Date(gymNow(state) + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
       const orderData = {
         items: state.cart,
         total: total,
         shippingAddress: selectedAddress,
         paymentMethod: selectedPm,
         trackingNumber: null,
-        estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+        estimatedDelivery
       };
       const orderId = await placeOrder(orderData);
       setLoading(false);

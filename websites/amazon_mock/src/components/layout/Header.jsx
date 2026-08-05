@@ -6,10 +6,10 @@ import { CATEGORIES } from '../../lib/mockData';
 
 const NAV_ITEMS = [
   { label: "Today's Deals", to: '/search?deals=true' },
-  { label: 'Customer Service', to: '/profile' },
+  { label: 'Customer Service', to: '/customer-service' },
   { label: 'Registry', to: '/wishlist' },
-  { label: 'Gift Cards', to: '/search?category=Beauty' },
-  { label: 'Sell', to: '/profile' },
+  { label: 'Gift Cards', to: '/gift-cards' },
+  { label: 'Sell', to: '/sell' },
 ];
 
 export const Header = () => {
@@ -82,8 +82,9 @@ export const Header = () => {
         ? state.products.filter(p => p.category === searchCategory)
         : state.products;
 
+      const wordRe = term ? new RegExp('\\b' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') : null;
       const productMatches = filtered
-        .filter(p => p.title.toLowerCase().includes(term))
+        .filter(p => wordRe && (wordRe.test(p.title) || (p.category || '').toLowerCase().includes(term)))
         .slice(0, 5)
         .map(p => ({ type: 'product', text: p.title, id: p.id }));
 
@@ -137,7 +138,7 @@ export const Header = () => {
           <span className="text-2xl font-bold tracking-tighter">ShopGym<span className="text-xmazon-orange"></span></span>
         </Link>
 
-        <Link to="/profile" className="hidden md:flex flex-col text-xs border border-transparent hover:border-white p-2 rounded-sm leading-tight">
+        <Link to="/profile#addresses" className="hidden md:flex flex-col text-xs border border-transparent hover:border-white p-2 rounded-sm leading-tight">
           <span className="text-gray-300">Deliver to {state.user.name.split(' ')[0]}</span>
           <div className="flex items-center font-bold">
             <MapPin size={14} className="mr-1" />
@@ -229,9 +230,8 @@ export const Header = () => {
                       ['Account', '/profile'],
                       ['Orders', '/orders'],
                       ['Subscribe & Save', '/subscriptions'],
-                      ['Recommendations', '/wishlist'],
+                      ['Recommendations', '/recommendations'],
                       ['Browsing History', '/browsing-history'],
-                      ['Watchlist', '/wishlist'],
                       ['Wish List', '/wishlist'],
                     ].map(([label, to]) => (
                       <Link

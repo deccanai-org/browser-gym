@@ -2,15 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Rating } from '../ui/Rating';
 import { useStore } from '../../context/StoreContext';
+import { gymNow } from '../../lib/mockData';
 
 export const ProductCard = ({ product, layout = 'grid' }) => {
-  const { addToCart } = useStore();
+  const { addToCart, state } = useStore();
   const hasOriginalPrice = product.originalPrice && product.originalPrice > product.price;
   const discountPct = hasOriginalPrice ? Math.round((1 - product.price / product.originalPrice) * 100) : null;
 
-  // Compute delivery date
+  // Compute delivery date against the gym's frozen clock, not the wall clock.
   const getDeliveryDate = () => {
-    const d = new Date();
+    const d = new Date(gymNow(state));
     d.setDate(d.getDate() + (product.prime ? 1 : 3));
     while (d.getDay() === 0 || d.getDay() === 6) d.setDate(d.getDate() + 1);
     return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });

@@ -47,8 +47,14 @@ export const ProductListing = () => {
   // Filter Logic
   const filteredProducts = useMemo(() => {
     return state.products.filter(product => {
-      const matchesSearch = product.title.toLowerCase().includes(query.toLowerCase()) ||
-                            product.description.toLowerCase().includes(query.toLowerCase());
+      // Word-boundary + category-aware: "book" matches the Books category and
+      // products with "book" as a whole word, NOT "MacBook".
+      const q = (query || '').trim().toLowerCase();
+      const wordRe = q ? new RegExp('\\b' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') : null;
+      const matchesSearch = !q ||
+                            wordRe.test(product.title) ||
+                            wordRe.test(product.description) ||
+                            (product.category || '').toLowerCase().includes(q);
       const matchesCategory = categoryParam ? product.category === categoryParam : true;
       // 1000 = "no upper bound", but the lower bound must STILL apply (the old
       // `>=1000 ? true` short-circuit made "$200 & Above" match everything).

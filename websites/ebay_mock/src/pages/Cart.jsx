@@ -7,6 +7,7 @@ export default function Cart() {
   const navigate = useNavigate();
   const { state, removeFromCart, clearCart, applyCoupon, removeCoupon, checkout } = useStore();
   const [couponInput, setCouponInput] = useState('');
+  const [couponMsg, setCouponMsg] = useState('');
   const [checkedOut, setCheckedOut] = useState(false);
 
   const cartIds = state.cart || [];
@@ -38,6 +39,16 @@ export default function Cart() {
     e.preventDefault();
     const code = couponInput.trim();
     if (!code) return;
+    // Validate against the coupon catalog before applying, so an unknown/expired
+    // code shows an error instead of a green "applied" banner with no discount.
+    const def = (state._gym_coupons || []).find(
+      c => String(c.code).toUpperCase() === code.toUpperCase());
+    if (!def) { setCouponMsg('That code is not valid.'); return; }
+    if (def.expired) { setCouponMsg('That coupon has expired.'); return; }
+    if (subtotal < (def.min_subtotal || 0)) {
+      setCouponMsg(`Spend at least $${def.min_subtotal} to use this coupon.`); return;
+    }
+    setCouponMsg('');
     applyCoupon(code);
     setCouponInput('');
   };
@@ -129,7 +140,7 @@ export default function Cart() {
 
             {/* Coupon */}
             <div className="border-t border-gray-100 mt-4 pt-4">
-              {couponCode ? (
+              {(couponCode && coupon) ? (
                 <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded px-3 py-2 text-sm">
                   <span className="text-green-800 font-medium flex items-center gap-1">
                     <Check size={14} /> Coupon “{couponCode}” applied
@@ -161,6 +172,9 @@ export default function Cart() {
                     Apply coupon
                   </button>
                 </form>
+              )}
+              {couponMsg && (
+                <div className="text-red-600 text-xs mt-2" role="alert">{couponMsg}</div>
               )}
             </div>
 

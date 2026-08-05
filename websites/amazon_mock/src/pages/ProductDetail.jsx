@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
+import { gymNow, GYM_NOW_MS } from '../lib/mockData';
 import { bridged, bridgeAct } from '../lib/bridge';
 import { Rating } from '../components/ui/Rating';
 import { Button } from '../components/ui/Button';
@@ -136,7 +137,7 @@ export const ProductDetail = () => {
 
   // Compute delivery date: next weekday + 1 if prime, else + 3
   const getDeliveryDate = () => {
-    const d = new Date();
+    const d = new Date(gymNow(state));
     const daysToAdd = product.prime ? 1 : 3;
     d.setDate(d.getDate() + daysToAdd);
     // Skip weekends
@@ -337,7 +338,7 @@ export const ProductDetail = () => {
                     onChange={(e) => setQty(Number(e.target.value))}
                     className="w-full mb-3 p-1 border rounded bg-gray-50 shadow-sm text-sm"
                   >
-                    {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>Qty: {n}</option>)}
+                    {Array.from({length: Math.min(10, product.stockCount ?? 10)}, (_, i) => i + 1).map(n => <option key={n} value={n}>Qty: {n}</option>)}
                   </select>
 
                   <Button className="w-full mb-2 text-sm" onClick={handleAddToCart}>Add to Cart</Button>
@@ -570,7 +571,7 @@ export const ProductDetail = () => {
                         <span className="font-bold text-sm">{review.title}</span>
                       </div>
                       <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
-                        <span>Reviewed on {new Date(review.date || Date.now()).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                        <span>Reviewed on {new Date(review.date || GYM_NOW_MS).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                         {review.verifiedPurchase && (
                           <span className="text-orange-600 font-medium">Verified Purchase</span>
                         )}

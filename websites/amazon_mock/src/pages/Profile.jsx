@@ -37,6 +37,13 @@ export const Profile = () => {
   const [showNewPm, setShowNewPm] = useState(false);
   const [twoFaCode, setTwoFaCode] = useState('');
 
+  // Deep-link support: /profile#addresses (from the header "Deliver to" link) or
+  // #payment opens that section directly instead of the generic account landing.
+  useEffect(() => {
+    const h = (window.location.hash || '').replace('#', '');
+    if (h) setActiveSection(h);
+  }, []);
+
   const addresses = state.user.addresses || [state.user.address];
   const paymentMethods = state.user.paymentMethods || [state.user.paymentMethod];
 

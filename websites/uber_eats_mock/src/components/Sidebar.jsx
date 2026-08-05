@@ -52,7 +52,7 @@ export default function Sidebar({ isOpen, onClose }) {
             <Heart size={20} />
             <span>Favorites</span>
           </button>
-          <button className="sidebar__nav-item" onClick={() => handleNav('/account')}>
+          <button className="sidebar__nav-item" onClick={() => openLocalDialog('Wallet', 'Your GymEats credits balance is $0.00. Saved payment methods are managed in your Account under Payment.')}>
             <CreditCard size={20} />
             <span>Wallet</span>
           </button>
@@ -85,7 +85,7 @@ export default function Sidebar({ isOpen, onClose }) {
         )}
 
         {/* Invite */}
-        <button className="sidebar__nav-item sidebar__invite" onClick={() => handleNav('/account')}>
+        <button className="sidebar__nav-item sidebar__invite" onClick={() => openLocalDialog('Invite friends', 'Share your referral link to give a friend $15 off their first order — you get $15 in credits when they order.')}>
           <Users size={20} />
           <div>
             <span>Invite friends</span>

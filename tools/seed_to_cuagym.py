@@ -271,6 +271,14 @@ _UBER_CATEGORIES = [
 ALICE_NAME = "Alice Anderson"
 ALICE_EMAIL = "alice@shopgym.com"
 
+# The gym's frozen "now" (ms), 2026-05-21 12:00 UTC — the same instant the
+# calendar/market/food projections freeze to. Projected so every app computes
+# dates against the gym clock instead of the real Date.now(); without it a
+# date-dependent ShopGym task (delivery windows, "arrives by", deal countdowns)
+# drifts with the wall clock and stops reproducing. Mirrors market's inline
+# literal at transform_market and _FOOD_EPOCH_MS.
+_GYM_NOW_MS = int(_dt.datetime(2026, 5, 21, 12, 0, 0, tzinfo=_dt.timezone.utc).timestamp() * 1000)
+
 
 def _acct_email(raw: str | None) -> str:
     """Normalise the account email to the canonical address, but keep a genuinely
@@ -456,6 +464,9 @@ def transform_shop(shop: dict) -> dict:
 
     products = products + _amb.build_shop()   # browse-only filler (projection-only)
     return {"products": products, "user": user, "cart": cart,
+            # The gym's frozen clock, so the mock computes "today", delivery
+            # windows and deal countdowns against it instead of real Date.now().
+            "_gym_now": _GYM_NOW_MS,
             # recentlyViewed/recentSearches are the mock's only native engagement
             # signal (ProductDetail + Header write them as the agent browses), so
             # they MUST start empty -- pre-filling them forges "the agent looked".

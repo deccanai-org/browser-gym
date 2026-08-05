@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { bridged } from '../lib/bridge';
+import { gymNow, DEMO_PROMOS } from '../lib/mockData';
 import { Button } from '../components/ui/Button';
 import { Tag } from 'lucide-react';
 
@@ -58,7 +59,7 @@ export const Cart = () => {
   // The gym engine owns which promo code is valid and how much it takes off, so
   // derive the applied promo + discount from the adopted engine state instead of
   // a hardcoded SAVE10/10%. (Demo mode with no engine keeps the local code.)
-  const promoDefs = state._gym_promotions || [];
+  const promoDefs = (state._gym_promotions && state._gym_promotions.length) ? state._gym_promotions : DEMO_PROMOS;
   const enginePromoRaw = state._gym_cart_detail && state._gym_cart_detail.applied_promo;
   const enginePromoCode = enginePromoRaw
     ? (typeof enginePromoRaw === 'string' ? enginePromoRaw : (enginePromoRaw.code || null))
@@ -94,8 +95,11 @@ export const Cart = () => {
         else { setAppliedPromo(null); setPromoError('That code is not valid for this cart.'); }
       });
     } else {
-      // Demo (no engine): accept the code so the UX still demonstrates a discount.
-      setAppliedPromo(code); setPromoError('');
+      // Demo (no engine): validate against the known promo list; reject unknown
+      // codes instead of silently "applying" one that never changes the price.
+      const def = (DEMO_PROMOS || []).find(p => (p.code || '').toUpperCase() === code.toUpperCase());
+      if (def) { setAppliedPromo(code); setPromoError(''); }
+      else { setAppliedPromo(null); setPromoError('That code is not valid.'); }
     }
   };
 
@@ -152,7 +156,7 @@ export const Cart = () => {
                           >
                             {/* Always offer headroom above the current qty so the
                                 selector can INCREASE past 10, not just cap there. */}
-                            {[...Array(Math.max(10, (Number(item.quantity) || 1) + 5))].map((_, i) => (
+                            {[...Array(Math.max(Number(item.quantity) || 1, Math.min(product.stockCount ?? 99, Math.max(10, (Number(item.quantity) || 1) + 5))))].map((_, i) => (
                               <option key={i+1} value={i+1}>Qty: {i+1}</option>
                             ))}
                           </select>
@@ -208,6 +212,7 @@ export const Cart = () => {
                             <input
                               type="date"
                               aria-label="Scheduled delivery date"
+                              min={new Date(gymNow(state)).toISOString().split('T')[0]}
                               value={item.scheduled_delivery || ''}
                               onChange={(e) => setLineOptions(item.productId,
                                 lineOpts(item, { scheduled_delivery: e.target.value }))}

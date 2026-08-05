@@ -117,6 +117,24 @@
 .filter-bar__check {
   color: var(--color-primary);
   font-weight: 700;
+  margin-left: 8px;
+}
+
+.filter-bar__dietary-label {
+  margin-right: auto;
+}
+
+.filter-bar__dietary-count {
+  color: var(--color-gray-500);
+  font-size: var(--fs-xs, 12px);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.filter-bar__dropdown-empty {
+  padding: 10px 16px;
+  font-size: var(--fs-sm);
+  color: var(--color-gray-500);
 }
 
 .filter-bar__clear {

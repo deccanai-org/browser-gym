@@ -1,5 +1,22 @@
 import SEED_DEFAULT from './seedDefault.json';
 
+// The gym's frozen "now" — 2026-05-21 12:00 UTC, the same instant the
+// calendar/market/food projections freeze to (see tools/seed_to_cuagym.py).
+// In bridged mode the engine projection supplies `state._gym_now`; this constant
+// is the standalone-demo fallback so the demo build is frozen to the same
+// instant instead of drifting with the wall clock — which is what silently broke
+// date-dependent ShopGym tasks (delivery windows, "arrives by", deal timers).
+export const GYM_NOW_MS = 1779364800000; // Date.UTC(2026, 4, 21, 12, 0, 0)
+export const gymNow = (state) => (state && state._gym_now) || GYM_NOW_MS;
+
+// Demo-mode promo codes. In bridged mode the engine supplies (and validates)
+// promotions via state._gym_promotions; these are the standalone-build fallback
+// so an unknown code is rejected instead of silently "working".
+export const DEMO_PROMOS = [
+  { code: 'SAVE10', discount_pct: 0.10 },
+  { code: 'WELCOME5', discount_flat: 5 },
+];
+
 export const CATEGORIES = [
   "Electronics", "Books", "Home & Kitchen", "Fashion", "Toys & Games", "Beauty"
 ];
@@ -737,9 +754,9 @@ export const INITIAL_USER = {
   ]
 };
 
-const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
-const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
-const today = new Date().toISOString();
+const twoWeeksAgo = new Date(GYM_NOW_MS - 14 * 24 * 60 * 60 * 1000).toISOString();
+const threeDaysAgo = new Date(GYM_NOW_MS - 3 * 24 * 60 * 60 * 1000).toISOString();
+const today = new Date(GYM_NOW_MS).toISOString();
 
 const SEED_ORDERS = [
   {
@@ -762,7 +779,7 @@ const SEED_ORDERS = [
     shippingAddress: { ...INITIAL_USER.address },
     paymentMethod: { ...INITIAL_USER.paymentMethod },
     trackingNumber: "9400111899223404793357",
-    estimatedDelivery: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+    estimatedDelivery: new Date(GYM_NOW_MS + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
   },
   {
     id: "ord-seed-3",
@@ -773,7 +790,7 @@ const SEED_ORDERS = [
     shippingAddress: { ...INITIAL_USER.address },
     paymentMethod: { ...INITIAL_USER.paymentMethod },
     trackingNumber: null,
-    estimatedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+    estimatedDelivery: new Date(GYM_NOW_MS + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
   }
 ];
 
@@ -901,7 +918,7 @@ function normalizeProduct(product, index) {
     stockCount: stockCount,
     seller: p.seller || 'ShopGym',
     badges: Array.isArray(p.badges) ? p.badges : [],
-    createdAt: p.createdAt || new Date().toISOString(),
+    createdAt: p.createdAt || new Date(GYM_NOW_MS).toISOString(),
   };
 }
 
@@ -935,7 +952,7 @@ function normalizeOrder(order, index) {
   const payment = (typeof o.paymentMethod === 'object' && o.paymentMethod !== null) ? o.paymentMethod : {};
   return {
     id: o.id || `ord_custom_${index}`,
-    date: o.date || new Date().toISOString(),
+    date: o.date || new Date(GYM_NOW_MS).toISOString(),
     status: o.status || 'Processing',
     total,
     shippingAddress: {
@@ -969,7 +986,7 @@ function normalizeReview(review, index) {
     rating: Math.min(Math.max(rating, 0), 5),
     title: r.title || r.headline || '',
     content: r.content || r.body || r.text || '',
-    date: r.date || new Date().toISOString(),
+    date: r.date || new Date(GYM_NOW_MS).toISOString(),
     helpful: Math.max(helpful, 0),
     verifiedPurchase: typeof r.verifiedPurchase === 'boolean' ? r.verifiedPurchase : true,
   };

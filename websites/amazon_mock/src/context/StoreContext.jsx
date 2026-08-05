@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import { INITIAL_DATA, getSessionId, fetchCustomState, saveState, initializeData } from '../lib/mockData';
+import { INITIAL_DATA, getSessionId, fetchCustomState, saveState, initializeData, gymNow } from '../lib/mockData';
 import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
 
 const APP = 'shop'; // bridge engine app key for this mock
@@ -252,22 +252,33 @@ export const StoreProvider = ({ children }) => {
     }
     const newOrder = {
       id: `ord-${Date.now()}`,
-      date: new Date().toISOString(),
+      date: new Date(gymNow(state)).toISOString(),
       status: 'Processing',
       ...orderData
     };
-    setState(prev => ({
-      ...prev,
-      orders: [newOrder, ...prev.orders],
-      cart: [] // Clear cart
-    }));
+    setState(prev => {
+      // Decrement stock for each ordered line so "Only N left" stays truthful
+      // after the order (the engine does this in bridged mode).
+      const ordered = {};
+      (orderData.items || prev.cart || []).forEach(it => {
+        ordered[it.productId] = (ordered[it.productId] || 0) + (it.quantity || 1);
+      });
+      return {
+        ...prev,
+        products: (prev.products || []).map(p => ordered[p.id]
+          ? { ...p, stockCount: Math.max(0, (p.stockCount ?? 0) - ordered[p.id]) }
+          : p),
+        orders: [newOrder, ...prev.orders],
+        cart: []
+      };
+    });
     return newOrder.id;
   };
 
   const addReview = (review) => {
     setState(prev => ({
       ...prev,
-      reviews: [...prev.reviews, { ...review, id: `rev-${Date.now()}`, date: new Date().toISOString(), helpful: 0 }]
+      reviews: [...prev.reviews, { ...review, id: `rev-${Date.now()}`, date: new Date(gymNow(state)).toISOString(), helpful: 0 }]
     }));
   };
 
@@ -428,7 +439,7 @@ export const StoreProvider = ({ children }) => {
       returns: [...(prev.returns || []), {
         id: `ret-${Date.now()}`, orderId, productId, reason,
         refundMethod, notes, status: 'Requested',
-        createdAt: new Date().toISOString(),
+        createdAt: new Date(gymNow(state)).toISOString(),
       }],
       orders: (prev.orders || []).map(o =>
         o.id === orderId ? { ...o, status: 'Returned' } : o),

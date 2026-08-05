@@ -18,17 +18,36 @@ export default function Homepage() {
   const filteredRestaurants = useMemo(() => {
     let results = [...state.restaurants];
     const filters = state.ui.activeFilters;
+    const selectedDiets = filters.dietary || [];
+
+    // Index menu items by restaurant once, so the dietary filter and the
+    // relevance sort below don't rescan the whole menu list per restaurant.
+    const menuByRestaurant = {};
+    for (const m of state.menuItems) {
+      (menuByRestaurant[m.restaurantId] || (menuByRestaurant[m.restaurantId] = [])).push(m);
+    }
+    const itemMatchesDiet = (m, d) =>
+      (m.dietaryTags || []).some(t => dnorm(t) === dnorm(d));
+    // How many dishes at a restaurant a diner could actually order given the
+    // selected dietary needs — used to surface the most accommodating spots
+    // first when a dietary filter is on ("display accordingly").
+    const dietaryScore = (r) => {
+      if (selectedDiets.length === 0) return 0;
+      const items = menuByRestaurant[r.id] || [];
+      return items.filter(m => selectedDiets.some(d => itemMatchesDiet(m, d))).length;
+    };
 
     if (filters.priceRange && filters.priceRange.length > 0) {
       results = results.filter(r => filters.priceRange.includes(r.priceRange));
     }
 
-    if (filters.dietary && filters.dietary.length > 0) {
+    if (selectedDiets.length > 0) {
+      // A restaurant qualifies only if it offers at least one dish for EVERY
+      // selected dietary need — someone who is both vegan and gluten-free needs
+      // both covered, not merely one of the two.
       results = results.filter(r => {
-        const menuItems = state.menuItems.filter(m => m.restaurantId === r.id);
-        return filters.dietary.some(d =>
-          menuItems.some(m => m.dietaryTags && m.dietaryTags.some(t => dnorm(t) === dnorm(d)))
-        );
+        const items = menuByRestaurant[r.id] || [];
+        return selectedDiets.every(d => items.some(m => itemMatchesDiet(m, d)));
       });
     }
 
@@ -64,6 +83,12 @@ export default function Homepage() {
         break;
       default:
         results.sort((a, b) => {
+          // With a dietary filter on and no explicit sort, lead with the
+          // restaurants offering the most suitable dishes.
+          if (selectedDiets.length > 0) {
+            const diff = dietaryScore(b) - dietaryScore(a);
+            if (diff !== 0) return diff;
+          }
           if (a.isSponsored && !b.isSponsored) return -1;
           if (!a.isSponsored && b.isSponsored) return 1;
           return b.rating - a.rating;

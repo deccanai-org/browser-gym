@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../context/StoreContext';
+import { gymNow } from '../lib/mockData';
 import { bridged, bridgeAct } from '../lib/bridge';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
@@ -38,7 +39,7 @@ export const Orders = () => {
   // Bridged: opening the orders page logs view_orders in the engine (milestones).
   useEffect(() => { if (bridged()) bridgeAct('shop.view_orders', {}); }, []);
 
-  const now = new Date();
+  const now = new Date(gymNow(state));
   const threeMonthsAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
   const sixMonthsAgo = new Date(now.getTime() - 180 * 24 * 60 * 60 * 1000);
   const oneYearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);

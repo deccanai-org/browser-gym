@@ -14,9 +14,14 @@ import { BrowsingHistory } from './pages/BrowsingHistory';
 import { Profile } from './pages/Profile';
 import { OrderConfirmation } from './pages/OrderConfirmation';
 import { Go } from './pages/Go';
+import { Recommendations } from './pages/Recommendations';
+import { GiftCards } from './pages/GiftCards';
+import { CustomerService } from './pages/CustomerService';
+import { Sell } from './pages/Sell';
+import { GYM_NOW_MS } from './lib/mockData';
 
 const Footer = () => {
-  const year = new Date().getFullYear();
+  const year = new Date(GYM_NOW_MS).getFullYear();
   const [footerPanel, setFooterPanel] = React.useState(null);
   const footerLinks = {
     company: ['Careers', 'Blog', 'About ShopGym', 'Investor Relations', 'ShopGym Devices', 'ShopGym Science'],
@@ -131,6 +136,10 @@ function App() {
             <Route path="subscriptions" element={<Subscriptions />} />
             <Route path="browsing-history" element={<BrowsingHistory />} />
             <Route path="wishlist" element={<Wishlist />} />
+            <Route path="recommendations" element={<Recommendations />} />
+            <Route path="gift-cards" element={<GiftCards />} />
+            <Route path="customer-service" element={<CustomerService />} />
+            <Route path="sell" element={<Sell />} />
             <Route path="profile" element={<Profile />} />
           </Route>
           <Route path="/go" element={<Go />} />

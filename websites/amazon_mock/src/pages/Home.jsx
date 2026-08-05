@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { ProductCard } from '../components/product/ProductCard';
-import { CATEGORIES } from '../lib/mockData';
+import { CATEGORIES, gymNow } from '../lib/mockData';
 import { ChevronLeft, ChevronRight, Zap } from 'lucide-react';
 
 // Self-contained banner generator — a diagonal two-tone gradient panel with an
@@ -129,24 +129,23 @@ const HeroCarousel = () => {
 };
 
 const DealCountdown = () => {
+  const { state } = useStore();
   const [timeLeft, setTimeLeft] = useState({});
 
   useEffect(() => {
-    const endTime = new Date();
+    // Frozen world: count down from the gym's clock to the end of the gym's
+    // "today", computed once. A live wall-clock tick here would drift the deal
+    // timer away from the frozen date the rest of the app shows.
+    const now = new Date(gymNow(state));
+    const endTime = new Date(gymNow(state));
     endTime.setHours(23, 59, 59, 999);
-    const tick = () => {
-      const diff = endTime - new Date();
-      if (diff <= 0) return;
-      setTimeLeft({
-        hours: Math.floor(diff / (1000 * 60 * 60)),
-        minutes: Math.floor((diff / (1000 * 60)) % 60),
-        seconds: Math.floor((diff / 1000) % 60)
-      });
-    };
-    tick();
-    const interval = setInterval(tick, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    const diff = Math.max(0, endTime - now);
+    setTimeLeft({
+      hours: Math.floor(diff / (1000 * 60 * 60)),
+      minutes: Math.floor((diff / (1000 * 60)) % 60),
+      seconds: Math.floor((diff / 1000) % 60)
+    });
+  }, [state]);
 
   return (
     <div className="flex items-center gap-1.5 text-[13px]">
@@ -350,7 +349,7 @@ export const Home = () => {
             </Link>
             <Link to="/search?category=Home+%26+Kitchen" className="text-[13px] text-xmazon-blue hover:text-xmazon-orange hover:underline">Explore now</Link>
           </div>
-          <div className="bg-white p-5 shadow-sm">
+          {!state.user && <div className="bg-white p-5 shadow-sm">
             <h2 className="text-[16px] font-bold mb-3">Sign in for the best experience</h2>
             <p className="text-[13px] text-gray-600 mb-4">Sign in securely to get personalized recommendations.</p>
             <Link to="/profile" className="block bg-[#ffd814] hover:bg-[#f7ca00] text-center text-[13px] py-1.5 rounded-lg border border-[#fcd200] font-medium text-[#0F1111] mb-3">
@@ -359,7 +358,7 @@ export const Home = () => {
             <p className="text-[12px] text-xmazon-blue hover:text-xmazon-orange hover:underline cursor-pointer">
               <Link to="/profile">New customer? Start here</Link>
             </p>
-          </div>
+          </div>}
         </div>
 
         {/* Top rated products */}

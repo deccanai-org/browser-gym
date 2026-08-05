@@ -13,6 +13,16 @@ const STEPS = [
   { key: 'delivered', label: 'Delivered', icon: Package }
 ];
 
+// Pickup orders have no courier and no delivery leg, so they get their own step
+// copy. Positions map 1:1 onto the same STATUS_ORDER indices (0-3) the delivery
+// flow uses, so the engine-owned status still drives the stepper in both modes.
+const PICKUP_STEPS = [
+  { key: 'placed', label: 'Order Received', icon: CheckCircle },
+  { key: 'preparing', label: 'Preparing', icon: Clock },
+  { key: 'ready', label: 'Ready for Pickup', icon: Package },
+  { key: 'picked_up', label: 'Picked Up', icon: CheckCircle }
+];
+
 const STATUS_ORDER = {
   placed: 0,
   confirmed: 0,
@@ -76,6 +86,8 @@ export default function OrderTracking() {
   const isActive = !['delivered', 'cancelled'].includes(order.status);
   const currentStepIndex = STATUS_ORDER[order.status] ?? -1;
   const restaurant = state.restaurants.find(r => r.id === order.restaurantId);
+  const isPickup = order.deliveryMode === 'pickup';
+  const steps = isPickup ? PICKUP_STEPS : STEPS;
 
   const estimatedArrivalMin = order.estimatedDeliveryMin ? new Date(order.estimatedDeliveryMin) : null;
   const estimatedArrivalMax = order.estimatedDeliveryMax ? new Date(order.estimatedDeliveryMax) : null;
@@ -107,7 +119,7 @@ export default function OrderTracking() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `uber-eats-receipt-${order.id}.txt`;
+    link.download = `gymeats-receipt-${order.id}.txt`;
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -153,7 +165,7 @@ export default function OrderTracking() {
       {order.status !== 'cancelled' && (
         <div className="tracking-stepper">
           <div className="tracking-stepper__bar">
-            {STEPS.map((step, index) => {
+            {steps.map((step, index) => {
               const isCompleted = index <= currentStepIndex;
               const isCurrent = index === currentStepIndex;
               const StepIcon = step.icon;
@@ -166,7 +178,7 @@ export default function OrderTracking() {
                   <span className={`tracking-step__label ${isCompleted ? 'tracking-step__label--done' : ''} ${isCurrent ? 'tracking-step__label--current' : ''}`}>
                     {step.label}
                   </span>
-                  {index < STEPS.length - 1 && (
+                  {index < steps.length - 1 && (
                     <div className={`tracking-step__line ${index < currentStepIndex ? 'tracking-step__line--done' : ''}`} />
                   )}
                 </div>
@@ -176,13 +188,13 @@ export default function OrderTracking() {
 
           {isActive && estimatedArrivalMin && estimatedArrivalMax && (
             <p className="tracking-stepper__eta">
-              Estimated arrival: <strong>{formatTime(estimatedArrivalMin)} - {formatTime(estimatedArrivalMax)}</strong>
+              {isPickup ? 'Estimated pickup' : 'Estimated arrival'}: <strong>{formatTime(estimatedArrivalMin)} - {formatTime(estimatedArrivalMax)}</strong>
             </p>
           )}
 
           {order.status === 'delivered' && order.deliveredAt && (
             <p className="tracking-stepper__eta">
-              Delivered at <strong>{formatTime(new Date(order.deliveredAt))}</strong>
+              {isPickup ? 'Picked up at' : 'Delivered at'} <strong>{formatTime(new Date(order.deliveredAt))}</strong>
             </p>
           )}
         </div>
@@ -195,24 +207,8 @@ export default function OrderTracking() {
         </div>
       )}
 
-      {/* Local live tracking map */}
-      {isActive && (
-        <div className="tracking-map">
-          <div className="tracking-map__route">
-            <div className="tracking-map__pin tracking-map__pin--restaurant">R</div>
-            <div className="tracking-map__road" />
-            <div className="tracking-map__courier" style={{ left: `${Math.max(12, Math.min(82, currentStepIndex * 26 + 14))}%` }}>
-              <Truck size={18} />
-            </div>
-            <div className="tracking-map__pin tracking-map__pin--home"><MapPin size={16} /></div>
-          </div>
-          <p className="tracking-map__text">{restaurant?.name || 'Restaurant'} to {order.deliveryAddress?.label || 'delivery address'}</p>
-          <p className="tracking-map__sub">{order.status === 'placed' ? 'Waiting for restaurant confirmation' : order.status === 'preparing' ? 'Restaurant is preparing your order' : 'Courier is heading your way'}</p>
-        </div>
-      )}
-
-      {/* Delivery person card */}
-      {order.deliveryPerson && (currentStepIndex >= 2 || order.status === 'delivered') && (
+      {/* Delivery person card (delivery orders only) */}
+      {!isPickup && order.deliveryPerson && (currentStepIndex >= 2 || order.status === 'delivered') && (
         <div className="tracking-driver">
           <div className="tracking-driver__avatar">
             {order.deliveryPerson.name.charAt(0)}
@@ -251,6 +247,39 @@ export default function OrderTracking() {
           <div>
             <strong>{order.restaurantName}</strong>
             {restaurant && <p className="tracking-details__rest-addr">{restaurant.address}</p>}
+          </div>
+        </div>
+
+        {/* Delivery / pickup address — always visible, independent of map or status */}
+        <div className="tracking-details__restaurant" data-testid="tracking-address">
+          <div className="tracking-details__rest-avatar">
+            <MapPin size={18} />
+          </div>
+          <div>
+            <strong>{isPickup ? 'Pickup Location' : 'Delivery Address'}</strong>
+            {isPickup ? (
+              <p className="tracking-details__rest-addr">
+                {restaurant?.address || order.restaurantName || 'Pick up at the restaurant'}
+              </p>
+            ) : order.deliveryAddress ? (
+              <>
+                {order.deliveryAddress.label && (
+                  <p className="tracking-details__rest-addr">{order.deliveryAddress.label}</p>
+                )}
+                <p className="tracking-details__rest-addr">
+                  {[order.deliveryAddress.street, order.deliveryAddress.apt].filter(Boolean).join(', ')}
+                </p>
+                <p className="tracking-details__rest-addr">
+                  {[order.deliveryAddress.city, order.deliveryAddress.state].filter(Boolean).join(', ')}
+                  {order.deliveryAddress.zip ? ` ${order.deliveryAddress.zip}` : ''}
+                </p>
+                {order.deliveryAddress.instructions && (
+                  <p className="tracking-details__rest-addr">{order.deliveryAddress.instructions}</p>
+                )}
+              </>
+            ) : (
+              <p className="tracking-details__rest-addr">Address not available</p>
+            )}
           </div>
         </div>
 
