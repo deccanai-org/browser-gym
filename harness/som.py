@@ -55,6 +55,10 @@ class Mark:
     name: str = ""                         # accessible name (the visible label)
     value: str = ""                        # for textbox: current text content
     disabled: bool = False
+    # For a native <select>: its option labels (selected one prefixed "*"). The
+    # OS-drawn popup never appears in a screenshot, so without this the model is
+    # blind to the choices; listing them in the manifest lets it read and plan.
+    options: list[str] = field(default_factory=list)
     # Bounding box in viewport coordinates (origin top-left, pixels)
     x: int = 0
     y: int = 0
@@ -227,10 +231,21 @@ async def extract_marks(page) -> list[Mark]:
                 if (style.display === 'none' || style.visibility === 'hidden' ||
                     parseFloat(style.opacity) < 0.05) return;
 
+                // Native <select>: capture its option labels (marking the
+                // selected one) so the model can read choices it can never see in
+                // the screenshot, since the OS popup renders outside the page.
+                let options = [];
+                if (el.tagName.toLowerCase() === 'select' && el.options) {
+                    options = Array.from(el.options).slice(0, 40).map(o =>
+                        (o.selected ? '*' : '') + (o.label || o.text || o.value || '').trim()
+                    ).filter(s => s.replace('*', ''));
+                }
+
                 out.push({
                     role: role,
                     name: accessibleName(el).slice(0, 200),
                     value: (el.value || '').slice(0, 100),
+                    options: options,
                     disabled: el.disabled || el.getAttribute('aria-disabled') === 'true',
                     x: Math.round(rect.left),
                     y: Math.round(rect.top),
@@ -250,7 +265,7 @@ async def extract_marks(page) -> list[Mark]:
         Mark(
             mark_id=0,  # assigned after sort/dedupe
             role=r["role"], name=r["name"], value=r["value"],
-            disabled=r["disabled"],
+            disabled=r["disabled"], options=r.get("options") or [],
             x=r["x"], y=r["y"], w=r["w"], h=r["h"],
         )
         for r in raw
@@ -373,5 +388,11 @@ def marks_to_manifest(marks: list[Mark]) -> str:
             bits.append(f'value="{m.value[:40]}"')
         if m.disabled:
             bits.append("(disabled)")
+        if m.options:
+            # The native <select>'s choices (selected one starred). Lets the model
+            # read the list without the OS popup ever appearing in the screenshot.
+            shown = " | ".join(o[:30] for o in m.options[:20])
+            more = f" …(+{len(m.options) - 20} more)" if len(m.options) > 20 else ""
+            bits.append(f"options: {shown}{more}")
         lines.append("  ".join(bits))
     return "\n".join(lines)

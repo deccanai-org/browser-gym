@@ -298,15 +298,19 @@ Dropdown selection — TWO KINDS, pick the right pattern:
   like "combobox" with a small ▼ chevron, e.g. the cadence /
   address / payment dropdowns on subscription forms): clicking it
   opens an OS-native option list that does NOT appear in your
-  screenshot as new marks. Instead use keyboard cycling:
+  screenshot as new marks. But you do NOT need to open it to know the
+  choices: the mark's manifest line lists them as
+  `options: A | B | *C | …` (the `*` marks the current selection). Read
+  that list, then pick with keyboard cycling — you already know how many
+  steps and in which direction:
       Step 1: click(combobox_mark)  — focuses the control
-      Step 2: key("ArrowDown")      — advances to the next option;
-                                       the displayed value updates
-      Step 3: key("ArrowDown") more — keep cycling until you see the
-                                       value you want in the combobox
+      Step 2: key("ArrowDown")/key("ArrowUp") — advances/rewinds one
+                                       option; the displayed value updates
+      Step 3: repeat until the combobox shows the option you read in the
+                                       manifest
       Step 4: optional key("Enter") to confirm focus elsewhere
-  This is THE workaround. Don't waste turns waiting for option marks
-  on a native combobox — they never appear.
+  Don't wait for option MARKS on a native combobox — they never appear;
+  use the `options:` list in the manifest instead.
 
 Form submission:
   - Either: click(submit_button_mark)
