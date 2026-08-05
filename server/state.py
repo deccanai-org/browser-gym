@@ -344,6 +344,24 @@ class GymState:
             "flash_messages": list(self.flash_messages),
         }
 
+    def stock_map(self) -> dict[str, Any]:
+        """Per-product (and per-variant) stock — mutable catalog state.
+
+        Deliberately NOT part of `to_json()`: that snapshot is a published
+        contract (verifier paths, seed goldens, the db-vs-factory byte-equality
+        tests), and widening it churns all three. But stock IS mutated — placing
+        an order decrements it (`mutations.py`) — so a world restored without it
+        silently restocks everything the annotator bought. Suspend/resume asks
+        for this separately and overlays it via `statecodec`.
+        """
+        return {
+            p.id: (
+                p.stock if not p.variants
+                else {"_": p.stock, **{v.id: v.stock for v in p.variants}}
+            )
+            for p in self.products.values()
+        }
+
 
 # --------------------------------------------------------------------------- #
 # Logging helpers

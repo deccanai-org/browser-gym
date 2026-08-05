@@ -245,10 +245,47 @@ async def test_the_resolved_selector_is_reported_back():
 
 
 # --------------------------------------------------------------------------- vocabulary completeness
+class FakeCDPSession:
+    """The CDP session `_bind` attaches per tab.
+
+    Binding is per-PAGE, not per-context: the screencast, the mouse and the
+    keyboard all ride this session, so switching tabs detaches and re-attaches
+    one. The fake records what it was told to do so a test can assert the
+    screencast actually followed the tab.
+    """
+
+    def __init__(self, page):
+        self.page = page
+        self.handlers: dict = {}
+        self.sent: list = []
+        self.detached = False
+
+    def on(self, event, handler):
+        self.handlers[event] = handler
+
+    async def send(self, method, params=None):
+        self.sent.append((method, params or {}))
+        return {}
+
+    async def detach(self):
+        self.detached = True
+
+
 class FakeContext:
     def __init__(self, pages):
         self.pages = pages
         self.opened = []
+        self.cdp_sessions: list = []
+
+    async def new_cdp_session(self, page):
+        s = FakeCDPSession(page)
+        self.cdp_sessions.append(s)
+        return s
+
+    def on(self, event, handler):
+        """`context.on("page")` — popup adoption. Nothing in these tests opens
+        one, so recording it is enough."""
+        return None
 
     async def new_page(self):
         # A new tab loads the same app, so it sees the same elements — the real
@@ -338,7 +375,11 @@ async def test_switch_tab_out_of_range_is_refused_not_clamped():
     assert (await s.act("switch_tab", None, {"tab_index": 1}))["ok"]
     assert s.page is pages[1]
     bad = await s.act("switch_tab", None, {"tab_index": 7})
-    assert bad["ok"] is False and "out of range" in bad["error"]
+    # The refusal must NAME what could not be found. Tabs are addressable by
+    # index or by stable id now, so the message reports both rather than the
+    # older index-only "out of range".
+    assert bad["ok"] is False
+    assert "no such tab" in bad["error"] and "7" in bad["error"], bad["error"]
     assert s.page is pages[1], "a refused switch must not move the active tab"
 
 

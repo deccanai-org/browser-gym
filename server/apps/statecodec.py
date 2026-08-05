@@ -99,6 +99,84 @@ def _apply_account_edits(shop: Any, current_user_json: dict | None) -> None:
             setattr(user, name, _coerce(hints.get(name, Any), current_user_json[name]))
 
 
+# Where each sub-app's minted ids live, and how to read the counter back out of
+# one. Ids are minted `f"{prefix}{offset + _next}"`, so the counter is recoverable
+# from the records themselves.
+_ID_COUNTERS = {
+    "mail": (("inbox", "sent", "drafts"), "em_", 0),
+    "food": (("orders",), "FOOD-", 1040),
+    "calendar": (("events",), "ev_", 0),
+    "market": (("orders",), "VM-", 2200),
+}
+
+
+def _restore_id_counters(world: Any) -> None:
+    """Put each sub-app's `_next` back, derived from the records just restored.
+
+    `_next` is minted state, not catalog, but it is absent from `to_json()` — so
+    a restored world restarts its ids at 1 and the next email minted **overwrites
+    an existing one**. Deriving it from the restored records rather than
+    persisting it keeps the snapshot shape (and therefore every recorded world
+    hash) unchanged, and self-heals worlds captured before this existed.
+    """
+    for app, (fields, prefix, offset) in _ID_COUNTERS.items():
+        store = getattr(world, app, None)
+        if store is None or not hasattr(store, "_next"):
+            continue
+        high = 0
+        for field in fields:
+            for key in (getattr(store, field, None) or {}):
+                text = str(key)
+                if not text.startswith(prefix):
+                    continue
+                tail = text[len(prefix):]
+                if tail.isdigit():
+                    high = max(high, int(tail) - offset)
+        if high:
+            store._next = high + 1
+
+
+def _apply_catalog_deltas(shop: Any, shop_json: dict) -> None:
+    """Put back the catalog fields the ENGINE mutates — currently stock.
+
+    Only the mutated leaves are overlaid, onto the existing seed objects, matched
+    by id. The catalog itself is never rebuilt from the snapshot, so
+    ``SESSION.initial``/``initial_world`` stay pristine and the delta and
+    cross-app verifiers keep comparing against the seed exactly as before.
+
+    Accepts either shape, so it works with whichever snapshot the caller has:
+      * ``stock`` — the compact map from ``GymState.stock_map()``
+      * ``products`` — the full catalog from ``dataclasses.asdict`` (world_full)
+
+    Tolerant of a snapshot that carries neither: no key, no change.
+    """
+    stock = shop_json.get("stock")
+    if not isinstance(stock, dict):
+        products = shop_json.get("products")
+        if not isinstance(products, dict):
+            return
+        stock = {
+            pid: (
+                {"_": pj.get("stock"), **{v.get("id"): v.get("stock")
+                                          for v in (pj.get("variants") or []) if v.get("id")}}
+                if pj.get("variants") else pj.get("stock")
+            )
+            for pid, pj in products.items() if isinstance(pj, dict)
+        }
+    for pid, value in stock.items():
+        product = (getattr(shop, "products", None) or {}).get(pid)
+        if product is None:
+            continue
+        if isinstance(value, dict):
+            if isinstance(value.get("_"), int):
+                product.stock = value["_"]
+            for variant in getattr(product, "variants", None) or []:
+                if isinstance(value.get(variant.id), int):
+                    variant.stock = value[variant.id]
+        elif isinstance(value, int):
+            product.stock = value
+
+
 def apply_snapshot(world: Any, snap: dict) -> None:
     """Overlay a captured snapshot onto an already-reset (seed-baseline) world.
 
@@ -122,3 +200,7 @@ def apply_snapshot(world: Any, snap: dict) -> None:
     sched_json = snap.get("schedule")
     if isinstance(sched_json, dict):
         _overlay(world.schedule, sched_json, ["now", "queue"])
+
+    # After the records are back, so it can be read off them.
+    _restore_id_counters(world)
+    _apply_catalog_deltas(shop, shop_json)

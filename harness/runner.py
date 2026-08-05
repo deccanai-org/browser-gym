@@ -120,10 +120,18 @@ def _mock_start_path(app: str, gym_path: str | None) -> str | None:
             return "/search" + q                       # keep ?q= & category
         if len(segs) == 2 and segs[0] == "product":
             return f"/product/{segs[1]}"
-        if p == "/account/orders":
+        if segs[:2] == ["account", "orders"]:
+            # A deep link to ONE order has no mock route (order-confirmation/:id
+            # is a different page), so the orders list is the closest safe landing.
             return "/orders"
         if p == "/wishlist":
             return "/wishlist"
+        if p == "/account/subscriptions":
+            return "/subscriptions"
+        # Account settings — including the security page the 2FA tasks start on —
+        # all live under the mock's profile route.
+        if p in ("/account", "/account/security"):
+            return "/profile"
     elif app == "market":                              # gym /market/... -> ebay mock
         if segs[:1] == ["market"]:
             rest = segs[1:]

@@ -29,6 +29,7 @@ from __future__ import annotations
 import asyncio
 import base64
 import contextlib
+import functools
 import hashlib
 import hmac
 import json
@@ -106,6 +107,41 @@ def origin_ok(origin: str | None) -> bool:
     return bool(origin) and origin in ALLOWED_ORIGINS
 
 
+# ONE descriptor shape, shared by /describe, /focused and every ack. Two shapes
+# was a real bug: `describe` included `text` and `focused` did not, so the same
+# element compared unequal depending on which call produced it, and a single
+# typing run split into two separate fills.
+#
+# `value` is what makes a recorded fill correct — the client only knows the keys
+# it sent, so Backspace, autocomplete or a rejected keystroke made its idea of the
+# field wrong. `targetKey` is a stable identity for coalescing.
+_DESCRIBE_EL_JS = """(el) => {
+    if (!el || el === document.body) return {};
+    const attr = (n) => el.getAttribute(n) || '';
+    const tag = el.tagName.toLowerCase();
+    const testId = attr('data-test-id');
+    const name = attr('name');
+    const d = {
+        testId, id: el.id || '', name,
+        role: attr('role') || tag,
+        type: attr('type'), autocomplete: attr('autocomplete'),
+        label: attr('aria-label').slice(0, 120),
+        tag,
+        text: (el.innerText || el.textContent || '').trim().slice(0, 120),
+    };
+    if ('value' in el) d.value = el.value;
+    if (el.type === 'checkbox' || el.type === 'radio') d.checked = !!el.checked;
+    if (tag === 'select' && el.selectedIndex >= 0)
+        d.selectedText = (el.options[el.selectedIndex] || {}).text || '';
+    const r = el.getBoundingClientRect();
+    d.bbox = {x: r.x, y: r.y, w: r.width, h: r.height};
+    d.targetKey = testId || el.id || name || tag + ':' + (d.label || d.text).slice(0, 40);
+    return d;
+}"""
+
+_FOCUS_JS = f"() => ({_DESCRIBE_EL_JS})(document.activeElement)"
+
+
 # --------------------------------------------------------------------------- session
 @dataclass
 class LiveSession:
@@ -130,6 +166,18 @@ class LiveSession:
     attached: set = field(default_factory=set)
     last_input_id: int = 0
     closed: bool = False
+    # Which page the screencast and mouse are currently bound to. Bumped on every
+    # rebind so a frame emitted by a superseded tab can be dropped instead of
+    # painting over the tab the annotator just switched to.
+    epoch: int = 0
+    # Stable per-tab identity. Indices are NOT identity — closing tab 0 renumbers
+    # every tab after it, and a recorded step's `tab_id` has to survive that.
+    tab_ids: dict = field(default_factory=dict)
+    _next_tab_no: int = 0
+    # Things that happened in the browser without the annotator asking (a popup,
+    # a JS redirect). Drained by the socket pump so the client can record them.
+    notices: list = field(default_factory=list)
+    notice_seq: int = 0
 
     async def start(self) -> None:
         from playwright.async_api import async_playwright
@@ -140,16 +188,82 @@ class LiveSession:
             viewport={"width": VIEWPORT_W, "height": VIEWPORT_H},
             device_scale_factor=1,
         )
-        self.page = await self.context.new_page()
-        await self.page.goto(self.url, wait_until="load")
-        self.cdp = await self.context.new_cdp_session(self.page)
-        self.cdp.on("Page.screencastFrame", self._on_frame)
+        # A target=_blank click creates a page nobody asked for. Without this the
+        # popup is invisible: the stream keeps showing the opener and the click
+        # looks like it did nothing.
+        self.context.on("page", self._on_new_page)
+        page = await self.context.new_page()
+        await page.goto(self.url, wait_until="load")
+        await self._bind(page)
+
+    # --- tab binding --------------------------------------------------------
+    def tab_id(self, page) -> str:
+        """Stable id for a page, minted on first sight."""
+        tid = self.tab_ids.get(page)
+        if tid is None:
+            self._next_tab_no += 1
+            tid = f"t{self._next_tab_no}"
+            self.tab_ids[page] = tid
+        return tid
+
+    async def _bind(self, page) -> None:
+        """Point the screencast AND the mouse at `page`.
+
+        This is the multi-tab fix. The CDP session used to be created once, at
+        start, and never rebound — while `self.page` (keyboard, describe,
+        navigate) did move on a tab switch. The result was a session split in
+        half: pixels and mouse went to the ORIGINAL tab, keyboard and locators to
+        the new one. A cross-app task was impossible, and the failure looked like
+        a seeding bug rather than a binding one.
+
+        The old session is torn down BEFORE the new one is attached, and the epoch
+        is bumped first, so in-flight frames from the old tab are discarded.
+        """
+        old = self.cdp
+        self.epoch += 1
+        epoch = self.epoch
+        if old is not None:
+            with contextlib.suppress(Exception):
+                await old.send("Page.stopScreencast")
+            with contextlib.suppress(Exception):
+                await old.detach()
+        self.page = page
+        self.tab_id(page)
+        with contextlib.suppress(Exception):
+            await page.bring_to_front()
+        self.cdp = await self.context.new_cdp_session(page)
+        self.cdp.on("Page.screencastFrame", functools.partial(self._on_frame, epoch))
         await self.cdp.send("Page.startScreencast", {
             "format": "jpeg", "quality": 60,
             "maxWidth": VIEWPORT_W, "maxHeight": VIEWPORT_H, "everyNthFrame": 1,
         })
 
-    def _on_frame(self, params: dict) -> None:
+    def _notice(self, event: str, payload: dict) -> None:
+        """Queue a server-originated event for the client to record."""
+        self.notice_seq += 1
+        self.notices.append({"type": "notice", "seq": self.notice_seq, "event": event, **payload})
+        del self.notices[:-50]          # a client that never drains must not grow this
+        self.frame_event.set()
+
+    def _on_new_page(self, page) -> None:
+        asyncio.create_task(self._adopt_page(page))
+
+    async def _adopt_page(self, page) -> None:
+        """Follow a popup the page opened itself, and tell the client."""
+        with contextlib.suppress(Exception):
+            await page.wait_for_load_state()
+        if self.closed or page not in self._tabs():
+            return
+        await self._bind(page)
+        self._notice("popup", {"tabId": self.tab_id(page), "url": page.url,
+                               "tabIndex": self._tabs().index(page)})
+
+    def _on_frame(self, epoch: int, params: dict) -> None:
+        # A frame from a binding we have already replaced would paint the OLD tab
+        # over the new one — drop it, and do not ack it either (that CDP session
+        # is being detached).
+        if epoch != self.epoch:
+            return
         # Ack FIRST — Chromium stops emitting until the previous frame is
         # acknowledged, so an un-acked frame silently freezes the stream.
         sid = params.get("sessionId")
@@ -189,14 +303,75 @@ class LiveSession:
         await self.cdp.send("Input.dispatchMouseEvent", {
             "type": "mouseWheel", "x": x, "y": y, "deltaX": dx, "deltaY": dy})
 
+    async def mouse(self, phase: str, nx: float, ny: float,
+                    button: str = "left", clicks: int = 1) -> None:
+        """One pointer PHASE — down, up or move.
+
+        Separate from `click` on purpose: only the client knows where a press
+        ended, so only a real down/up pair can tell a drag from a click.
+        """
+        x, y = self.to_page_xy(nx, ny)
+        cdp_type = {"down": "mousePressed", "up": "mouseReleased"}.get(phase, "mouseMoved")
+        payload = {"type": cdp_type, "x": x, "y": y,
+                   "button": button if cdp_type != "mouseMoved" else "none"}
+        if cdp_type != "mouseMoved":
+            payload["clickCount"] = clicks
+        await self.cdp.send("Input.dispatchMouseEvent", payload)
+
     async def type_text(self, text: str) -> None:
         await self.page.keyboard.type(text)
 
-    async def key(self, key: str) -> None:
-        await self.page.keyboard.press(key)
+    async def key(self, key: str, modifiers: list | None = None) -> None:
+        """A key press, optionally with modifiers.
+
+        Modifiers matter: the pane used to swallow every Cmd/Ctrl combination, so
+        an annotator could not paste, select-all, or use any shortcut the task
+        might legitimately need.
+        """
+        combo = "+".join([*(modifiers or []), key]) if modifiers else key
+        await self.page.keyboard.press(combo)
+
+    async def paste(self, text: str) -> None:
+        """Insert text as a paste would.
+
+        `Input.insertText` rather than typing: a paste is one atomic change, and
+        typing it character by character produces a different event stream (and a
+        very different recorded trajectory) from what actually happened.
+        """
+        await self.cdp.send("Input.insertText", {"text": text})
 
     async def navigate(self, url: str) -> None:
         await self.page.goto(url, wait_until="load")
+
+    async def go_back(self) -> None:
+        with contextlib.suppress(Exception):
+            await self.page.go_back(wait_until="load")
+
+    async def go_forward(self) -> None:
+        with contextlib.suppress(Exception):
+            await self.page.go_forward(wait_until="load")
+
+    async def reload(self) -> None:
+        with contextlib.suppress(Exception):
+            await self.page.reload(wait_until="load")
+
+    async def post_state(self) -> dict:
+        """What is true AFTER an action — the client records from this.
+
+        Returns the landed URL, the active tab, and the focused control's REAL
+        value. That last one is why fills can be recorded correctly: the client
+        only ever knows the keys it sent, so a Backspace (or an autocomplete, or a
+        rejected keystroke) made its idea of the value wrong.
+        """
+        state: dict = {"url": "", "tabId": "", "tabIndex": 0, "frameSeq": self.frame_seq}
+        with contextlib.suppress(Exception):
+            pages = self._tabs()
+            state["url"] = self.page.url
+            state["tabId"] = self.tab_id(self.page)
+            state["tabIndex"] = pages.index(self.page) if self.page in pages else 0
+        with contextlib.suppress(Exception):
+            state["focus"] = await self.page.evaluate(_FOCUS_JS)
+        return state
 
     # --- structured actions ------------------------------------------------
     # Raw pointer input is how a HUMAN drives the browser; a committed trajectory
@@ -283,36 +458,70 @@ class LiveSession:
     def _tabs(self) -> list:
         return list(self.context.pages) if self.context else []
 
+    def _resolve_tab(self, index: int | None, tab_id: str | None):
+        """A tab by stable id (preferred) or by index (positional, legacy)."""
+        pages = self._tabs()
+        if tab_id:
+            for p in pages:
+                if self.tab_ids.get(p) == tab_id:
+                    return p
+            return None
+        if index is None or not (0 <= index < len(pages)):
+            return None
+        return pages[index]
+
+    async def goto_app(self, url: str) -> dict:
+        """Show the app at `url`: switch to its existing tab, else open one.
+
+        The five realistic apps live on five origins, and only the task's primary
+        app is open when a session starts. Resolving by ORIGIN here (rather than
+        making the client remember which app it already opened) keeps a second
+        click on the same app from stacking duplicate tabs, and keeps that app's
+        scroll position and in-page state — which an annotator mid-task notices
+        the moment it is lost.
+        """
+        from urllib.parse import urlsplit
+        want = urlsplit(url)
+        for p in self._tabs():
+            if urlsplit(p.url).netloc == want.netloc:
+                return await self._switch_tab(index=self._tabs().index(p))
+        return await self._open_tab(url)
+
     async def _open_tab(self, url: str) -> dict:
         page = await self.context.new_page()
         await page.goto(url, wait_until="load")
-        self.page = page
-        await page.bring_to_front()
+        await self._bind(page)          # rebind: pixels AND mouse follow the new tab
         return {"ok": True, "kind": "open_tab",
-                "resolved": {"url": page.url, "tabIndex": self._tabs().index(page)}}
+                "resolved": {"url": page.url, "tabId": self.tab_id(page),
+                             "tabIndex": self._tabs().index(page)}}
 
-    async def _switch_tab(self, index: int) -> dict:
-        pages = self._tabs()
-        if not (0 <= index < len(pages)):
+    async def _switch_tab(self, index: int | None = None, tab_id: str | None = None) -> dict:
+        page = self._resolve_tab(index, tab_id)
+        if page is None:
             return {"ok": False, "kind": "switch_tab",
-                    "error": f"tab index {index} out of range (0..{len(pages) - 1})", "resolved": {}}
-        self.page = pages[index]
-        await self.page.bring_to_front()
-        return {"ok": True, "kind": "switch_tab", "resolved": {"url": self.page.url, "tabIndex": index}}
+                    "error": f"no such tab (index={index}, tabId={tab_id})", "resolved": {}}
+        await self._bind(page)
+        return {"ok": True, "kind": "switch_tab",
+                "resolved": {"url": page.url, "tabId": self.tab_id(page),
+                             "tabIndex": self._tabs().index(page)}}
 
-    async def _close_tab(self, index: int) -> dict:
+    async def _close_tab(self, index: int | None = None, tab_id: str | None = None) -> dict:
         pages = self._tabs()
         if len(pages) <= 1:
             return {"ok": False, "kind": "close_tab", "error": "cannot close the last remaining tab", "resolved": {}}
-        if not (0 <= index < len(pages)):
+        closing = self._resolve_tab(index, tab_id)
+        if closing is None:
             return {"ok": False, "kind": "close_tab",
-                    "error": f"tab index {index} out of range (0..{len(pages) - 1})", "resolved": {}}
-        closing = pages[index]
+                    "error": f"no such tab (index={index}, tabId={tab_id})", "resolved": {}}
+        was_active = self.page is closing
         await closing.close()
-        if self.page is closing:
-            self.page = self._tabs()[0]
-            await self.page.bring_to_front()
-        return {"ok": True, "kind": "close_tab", "resolved": {"url": self.page.url}}
+        self.tab_ids.pop(closing, None)
+        if was_active:
+            # Rebind, don't just reassign: `self.cdp` was attached to the page we
+            # just closed, so every subsequent mouse event would throw.
+            await self._bind(self._tabs()[0])
+        return {"ok": True, "kind": "close_tab",
+                "resolved": {"url": self.page.url, "tabId": self.tab_id(self.page)}}
 
     async def act(self, kind: str, locator: dict | None = None, args: dict | None = None) -> dict:
         """Execute ONE structured action. Returns what actually happened —
@@ -337,9 +546,13 @@ class LiveSession:
         if kind == "open_tab":
             return await self._open_tab(self._abs(args.get("url", "/")))
         if kind == "switch_tab":
-            return await self._switch_tab(int(args.get("tab_index", args.get("index", 0))))
+            return await self._switch_tab(
+                index=(None if args.get("tab_id") else int(args.get("tab_index", args.get("index", 0)))),
+                tab_id=args.get("tab_id"))
         if kind == "close_tab":
-            return await self._close_tab(int(args.get("tab_index", args.get("index", 0))))
+            return await self._close_tab(
+                index=(None if args.get("tab_id") else int(args.get("tab_index", args.get("index", 0)))),
+                tab_id=args.get("tab_id"))
         if kind == "scroll":
             await self.scroll(0.5, 0.5, float(args.get("amount_px", args.get("dy", 400)))
                               * (-1 if str(args.get("direction", "down")) == "up" else 1))
@@ -400,53 +613,37 @@ class LiveSession:
         instead, which silently defeats redaction at record time. Only the page
         knows, so ask the page.
         """
-        return await self.page.evaluate(
-            """() => {
-                const el = document.activeElement;
-                if (!el || el === document.body) return {};
-                return {
-                    testId: el.getAttribute('data-test-id') || '',
-                    id: el.id || '',
-                    name: el.getAttribute('name') || '',
-                    role: el.getAttribute('role') || el.tagName.toLowerCase(),
-                    type: el.getAttribute('type') || '',
-                    autocomplete: el.getAttribute('autocomplete') || '',
-                    label: (el.getAttribute('aria-label') || '').slice(0, 120),
-                    tag: el.tagName.toLowerCase(),
-                };
-            }"""
-        )
+        return await self.page.evaluate(_FOCUS_JS)
 
     async def describe(self, nx: float, ny: float) -> dict:
         """Locator candidates for whatever is at this point, captured BEFORE an
-        action is dispatched — afterwards the element may not exist."""
+        action is dispatched — afterwards the element may not exist.
+
+        Uses the SAME descriptor as `focused()` and every ack, so the identity of
+        an element never depends on which call observed it.
+        """
         x, y = self.to_page_xy(nx, ny)
         return await self.page.evaluate(
-            """([x, y]) => {
-                const el = document.elementFromPoint(x, y);
-                if (!el) return {};
-                const t = el.closest('[data-test-id],button,a,input,select,textarea,[role]') || el;
-                return {
-                    testId: t.getAttribute('data-test-id') || '',
-                    id: t.id || '',
-                    name: t.getAttribute('name') || '',
-                    role: t.getAttribute('role') || t.tagName.toLowerCase(),
-                    type: t.getAttribute('type') || '',
-                    autocomplete: t.getAttribute('autocomplete') || '',
-                    label: (t.getAttribute('aria-label') || '').slice(0, 120),
-                    text: (t.textContent || '').trim().slice(0, 120),
-                    tag: t.tagName.toLowerCase(),
-                };
-            }""",
+            "([x, y]) => {"
+            "  const el = document.elementFromPoint(x, y);"
+            "  if (!el) return {};"
+            "  const t = el.closest('[data-test-id],button,a,input,select,textarea,[role]') || el;"
+            f"  return ({_DESCRIBE_EL_JS})(t);"
+            "}",
             [x, y],
         )
 
     async def info(self) -> dict:
-        pages = self.context.pages if self.context else []
+        pages = list(self.context.pages) if self.context else []
         return {
             "url": self.page.url if self.page else "",
+            # Both shapes: `tabs` stays a list of URLs for existing callers, and
+            # `tabList` carries the stable ids a recorded step is keyed on.
             "tabs": [p.url for p in pages],
+            "tabList": [{"tabId": self.tab_id(p), "url": p.url, "index": i}
+                        for i, p in enumerate(pages)],
             "activeTab": pages.index(self.page) if self.page in pages else 0,
+            "activeTabId": self.tab_id(self.page) if self.page is not None else "",
             "viewport": {"width": VIEWPORT_W, "height": VIEWPORT_H},
             "frameSeq": self.frame_seq,
         }
@@ -547,6 +744,43 @@ async def session_focused(sid: str, body: FocusBody) -> dict:
     return await s.focused()
 
 
+@app.get("/live/sessions/{sid}/frame")
+async def session_frame(sid: str) -> dict:
+    """The most recent frame, as base64 JPEG.
+
+    The screencast already keeps it in memory; exposing it lets a caller that is
+    NOT the pane (the annotator backend, capturing a per-step screenshot) get the
+    pixels without a second capture that would compete with the stream.
+    """
+    s = SESSIONS.get(sid)
+    if not s or s.closed:
+        raise HTTPException(404, "unknown session")
+    return {"seq": s.frame_seq, "data": s.latest_frame or "",
+            "viewport": {"width": VIEWPORT_W, "height": VIEWPORT_H}}
+
+
+@app.get("/live/sessions/{sid}/context")
+async def session_context(sid: str) -> dict:
+    """Everything a checkpoint needs that the gym world cannot know: the URL, the
+    full tab list, cookies, storage and scroll position.
+
+    `checkpoints.capture` already accepts all of this and nothing has ever
+    supplied it, so a restored checkpoint came back with the right world behind a
+    browser sitting on the wrong page.
+    """
+    s = SESSIONS.get(sid)
+    if not s or s.closed:
+        raise HTTPException(404, "unknown session")
+    out = await s.info()
+    with contextlib.suppress(Exception):
+        out["cookies"] = await s.context.cookies()
+    with contextlib.suppress(Exception):
+        out["storageState"] = await s.context.storage_state()
+    with contextlib.suppress(Exception):
+        out["scroll"] = await s.page.evaluate("() => ({x: window.scrollX, y: window.scrollY})")
+    return out
+
+
 @app.post("/live/sessions/{sid}/close")
 async def close_session(sid: str) -> dict:
     s = SESSIONS.pop(sid, None)
@@ -614,7 +848,16 @@ async def stream(ws: WebSocket, sid: str, ticket: str = Query(default=""), contr
 
     async def pump_frames() -> None:
         last = -1
+        last_notice = 0
         while not s.closed:
+            # Notices first: a popup the page opened itself has no ack to ride on,
+            # and the client must be able to record it as an event like any other.
+            pending = [n for n in s.notices if n["seq"] > last_notice]
+            if pending:
+                last_notice = pending[-1]["seq"]
+                for n in pending:
+                    await ws.send_text(json.dumps(n))
+                continue
             if s.frame_seq != last and s.latest_frame:
                 last = s.frame_seq
                 await ws.send_text(json.dumps({"type": "frame", "seq": last, "data": s.latest_frame}))
@@ -648,13 +891,53 @@ async def stream(ws: WebSocket, sid: str, ticket: str = Query(default=""), contr
             elif kind == "type":
                 await s.type_text(msg.get("text", ""))
             elif kind == "key":
-                await s.key(msg.get("key", ""))
+                await s.key(msg.get("key", ""), msg.get("modifiers") or [])
             elif kind == "navigate":
                 await s.navigate(msg.get("url", ""))
+            # Raw pointer phases. A press/release pair the CLIENT sends is the only
+            # way a drag can be distinguished from a click — synthesising both ends
+            # from one pointerdown (what the pane used to do) makes every drag look
+            # like a click at the start point.
+            elif kind == "mouse":
+                await s.mouse(msg.get("phase", "move"), msg["nx"], msg["ny"],
+                              msg.get("button", "left"), int(msg.get("clicks", 1)))
+            elif kind == "paste":
+                await s.paste(msg.get("text", ""))
+            elif kind == "back":
+                await s.go_back()
+            elif kind == "forward":
+                await s.go_forward()
+            elif kind == "reload":
+                await s.reload()
+            elif kind == "switch_tab" and msg.get("url") and not msg.get("tab_id"):
+                # The pane's app strip addresses an app by URL; it does not track
+                # which of them already has a tab.
+                out = await s.goto_app(msg["url"])
+                await ws.send_text(json.dumps({
+                    "type": "ack", "id": input_id, "applied": bool(out.get("ok")),
+                    "reason": out.get("error", ""), "state": await s.post_state(),
+                }))
+                continue
+            elif kind in ("open_tab", "switch_tab", "close_tab"):
+                out = await s.act(kind, None, {k: v for k, v in msg.items()
+                                               if k in ("url", "tab_id", "tab_index", "index")})
+                await ws.send_text(json.dumps({
+                    "type": "ack", "id": input_id, "applied": bool(out.get("ok")),
+                    "reason": out.get("error", ""), "state": await s.post_state(),
+                }))
+                continue
             else:
                 await ws.send_text(json.dumps({"type": "ack", "id": input_id, "applied": False, "reason": "unknown"}))
                 continue
-            await ws.send_text(json.dumps({"type": "ack", "id": input_id, "applied": True}))
+            # The ack carries the state AFTER the action — the url actually landed
+            # on, the tab it happened in, and the focused field's real value. The
+            # client records from this rather than from what it believes it sent,
+            # which is what keeps the recorded trajectory honest (a click that
+            # navigates, a value corrected by Backspace, an input that never applied).
+            await ws.send_text(json.dumps({
+                "type": "ack", "id": input_id, "applied": True,
+                "state": None if kind == "move" else await s.post_state(),
+            }))
     except WebSocketDisconnect:
         pass
     except Exception as exc:  # noqa: BLE001
