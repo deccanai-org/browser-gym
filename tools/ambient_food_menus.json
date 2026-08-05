@@ -252,7 +252,7 @@
     "name": "Beyond Smash Deluxe",
     "price": 12.49,
     "tags": [
-     "vegan"
+     "vegetarian"
     ],
     "image_key": "gf_smash_shack_3"
    },
@@ -260,7 +260,7 @@
     "name": "Crispy Shack Tots",
     "price": 3.99,
     "tags": [
-     "vegan",
+     "vegetarian",
      "gluten_free"
     ],
     "image_key": "gf_smash_shack_4"
@@ -1417,9 +1417,7 @@
    {
     "name": "Maple-Bacon Belgian Waffle",
     "price": 12.49,
-    "tags": [
-     "vegetarian"
-    ],
+    "tags": [],
     "image_key": "gf_sunny_side_up_2"
    },
    {
