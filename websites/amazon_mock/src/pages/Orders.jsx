@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../context/StoreContext';
-import { gymNow } from '../lib/mockData';
+import { gymNow, fmtDeliveryDate } from '../lib/mockData';
 import { bridged, bridgeAct } from '../lib/bridge';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
@@ -286,7 +286,7 @@ export const Orders = () => {
                     <h3 className={`font-bold text-base ${STATUS_COLORS[order.status] || ''}`}>{order.status}</h3>
                     {order.estimatedDelivery && order.status !== 'Delivered' && order.status !== 'Cancelled' && (
                       <span className="text-sm text-gray-600">
-                        — Expected {new Date(order.estimatedDelivery).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                        — Expected {fmtDeliveryDate(order.estimatedDelivery, { weekday: 'short', month: 'short', day: 'numeric' })}
                       </span>
                     )}
                     {order.trackingNumber && order.status === 'Shipped' && (

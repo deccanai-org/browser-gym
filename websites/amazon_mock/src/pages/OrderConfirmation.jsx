@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { CheckCircle, Package } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
+import { fmtDeliveryDate } from '../lib/mockData';
 import { bridged, bridgeAct } from '../lib/bridge';
 import { Button } from '../components/ui/Button';
 
@@ -37,7 +38,7 @@ export const OrderConfirmation = () => {
             <p className="text-sm text-gray-600 mt-1">Confirmation number: <span className="font-mono">{order.id}</span></p>
             {order.estimatedDelivery && (
               <p className="text-sm text-gray-700 mt-2">
-                Estimated delivery: <span className="font-bold">{new Date(order.estimatedDelivery).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</span>
+                Estimated delivery: <span className="font-bold">{fmtDeliveryDate(order.estimatedDelivery)}</span>
               </p>
             )}
           </div>

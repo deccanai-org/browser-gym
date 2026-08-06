@@ -9,6 +9,15 @@ import SEED_DEFAULT from './seedDefault.json';
 export const GYM_NOW_MS = 1779364800000; // Date.UTC(2026, 4, 21, 12, 0, 0)
 export const gymNow = (state) => (state && state._gym_now) || GYM_NOW_MS;
 
+// Format a delivery date for display. A date-only string ("2026-05-28") must be
+// parsed at LOCAL noon, or `new Date("2026-05-28")` (UTC midnight) renders a day
+// early in any behind-UTC timezone — so a customer's picked date shows wrong.
+export const fmtDeliveryDate = (d, opts = { weekday: 'long', month: 'long', day: 'numeric' }) => {
+  if (!d) return '';
+  const dt = (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)) ? new Date(d + 'T12:00:00') : new Date(d);
+  return dt.toLocaleDateString('en-US', opts);
+};
+
 // Demo-mode promo codes. In bridged mode the engine supplies (and validates)
 // promotions via state._gym_promotions; these are the standalone-build fallback
 // so an unknown code is rejected instead of silently "working".
