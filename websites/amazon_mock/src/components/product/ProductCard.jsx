@@ -20,12 +20,12 @@ export const ProductCard = ({ product, layout = 'grid' }) => {
   if (layout === 'list') {
     return (
       <div className="flex gap-4 border border-gray-200 rounded p-4 bg-white hover:shadow-md transition-shadow">
-        <div className="w-[180px] h-[180px] shrink-0 bg-white flex items-center justify-center relative p-2">
+        <Link to={`/product/${product.id}`} className="w-[180px] h-[180px] shrink-0 bg-white flex items-center justify-center relative p-2" aria-label={product.title}>
           <img src={product.image} alt={product.title} className="max-h-full max-w-full object-contain" />
           {product.badges && product.badges.includes('Best Seller') && (
             <span className="absolute top-0 left-0 bg-[#e47911] text-white text-[11px] font-bold px-1.5 py-0.5">Best Seller</span>
           )}
-        </div>
+        </Link>
         <div className="flex-1 min-w-0">
           <Link to={`/product/${product.id}`} className="text-[15px] font-medium hover:text-xmazon-orange line-clamp-2 text-[#0066c0] leading-snug">
             {product.title}
@@ -79,9 +79,9 @@ export const ProductCard = ({ product, layout = 'grid' }) => {
         </span>
       )}
 
-      <div className="h-[200px] bg-white flex items-center justify-center mb-3 p-2">
+      <Link to={`/product/${product.id}`} className="h-[200px] bg-white flex items-center justify-center mb-3 p-2" aria-label={product.title}>
         <img src={product.image} alt={product.title} className="max-h-full max-w-full object-contain" />
-      </div>
+      </Link>
 
       <Link to={`/product/${product.id}`} className="text-[13px] text-[#0F1111] hover:text-xmazon-orange line-clamp-2 mb-1 leading-snug">
         {product.title}
