@@ -104,6 +104,11 @@ def make_mailstate(seed: int = 0) -> MailState:
     """
     m = MailState()
     for e in [
+        # These three are generic "so the mailbox isn't empty" filler. They used
+        # to all land on SEED_DATE morning, which put them at rows 1-3 of the
+        # inbox — an agent saw the seeded mail before any of the ambient
+        # mailbox. Dated back to when each would plausibly have arrived, so the
+        # ambient corpus sits above them and the inbox reads like a real one.
         Email(
             id=m.new_id(), sender="welcome@shopgym.com", to=m.account_email,
             subject="Welcome to ShopGym",
@@ -112,7 +117,8 @@ def make_mailstate(seed: int = 0) -> MailState:
                 "Browse today's deals and enjoy free shipping on orders "
                 "over $50."
             ),
-            received_at=f"{SEED_DATE}T08:00:00", received_label="8:00 AM",
+            # A welcome note is from when the account was opened, not this morning.
+            received_at="2026-04-24T08:00:00", received_label="Apr 24",
             read=True, labels=["updates"],
         ),
         Email(
@@ -122,7 +128,8 @@ def make_mailstate(seed: int = 0) -> MailState:
                 "Up to 40% off electronics this weekend only. "
                 "Don't miss out!"
             ),
-            received_at=f"{SEED_DATE}T09:30:00", received_label="9:30 AM",
+            # SEED_DATE is a Thursday; weekend deals go out on the Friday before.
+            received_at="2026-05-15T09:30:00", received_label="May 15",
             read=False, labels=["promotions"],
         ),
         Email(
@@ -132,7 +139,10 @@ def make_mailstate(seed: int = 0) -> MailState:
                 "Hey! Are you free for dinner one evening this week? "
                 "Let me know what works.\n\n- Alex"
             ),
-            received_at=f"{SEED_DATE}T10:15:00", received_label="10:15 AM",
+            # Asking about "this week" reads better sent earlier in that week.
+            # M10 replaces this note wholesale (subject, body and time), so its
+            # own placement is unaffected by this date.
+            received_at="2026-05-19T10:15:00", received_label="May 19",
             read=False, labels=[],
         ),
     ]:

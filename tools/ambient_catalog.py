@@ -235,52 +235,23 @@ def build_mail(iso_date):
                 "folder": folder, "attachments": []}
 
     out = []
-    # Sent
-    sent = [
-        (_person("Maya Patel", "maya.patel@example.com"), "Re: Weekend hike plans",
-         "Sounds great — let's meet at the trailhead at 9. I'll bring snacks!"),
-        (_person("Book Club", "bookclub@example.com"), "This month's pick",
-         "Hi all, I finished chapter 4 — loving it so far. See everyone Thursday."),
-        (_person("Dad", "dad@example.com"), "Re: Dinner Sunday",
-         "Yes, 6pm works for us. Looking forward to it. Love, Alice"),
-        (_person("Landlord", "property@example.com"), "Maintenance request follow-up",
-         "Thanks for scheduling the repair. Tuesday afternoon works fine."),
-    ]
-    for i, (to, subj, body) in enumerate(sent):
-        out.append(em(i, "sent", _ALICE, to, subj, body))
-    # Drafts
-    drafts = [
-        (_person("Team", "team@shopgym.com"), "Notes from today's sync",
-         "Draft — will add the action items before sending..."),
-        (_person("Sarah Kim", "sarah.kim@example.com"), "Thank you!",
-         "Hi Sarah, just wanted to say thanks for "),
-    ]
-    for i, (to, subj, body) in enumerate(drafts):
-        out.append(em(i, "drafts", _ALICE, to, subj, body, read=False))
-    # Snoozed
-    out.append(em(0, "snoozed", _person("Newsletter", "news@techweekly.example.com"),
-                  _ALICE, "Your weekly tech digest", "Top stories in tech this week...", read=False))
-    # A few extra inbox items across categories so the tabs aren't bare
-    inbox = [
-        (_person("ShopGym Deals", "deals@shopgym.com"), "Weekend flash sale — up to 40% off",
-         "Big savings this weekend on electronics and home goods.", ["promotions"], "promotions"),
-        (_person("Social Club", "noreply@social.example.com"), "Priya tagged you in a photo",
-         "See what your friends are up to.", ["social"], "social"),
-        (_person("GymCal", "calendar@shopgym.com"), "Reminder: Team Standup tomorrow 9am",
-         "This is a reminder for your upcoming event.", ["updates"], "updates"),
-        (_person("Riley Chen", "riley.chen@example.com"), "Coffee next week?",
-         "Would love to catch up — are you free Tuesday or Wednesday?", [], "primary"),
-    ]
-    for i, (frm, subj, body, labels, cat) in enumerate(inbox):
-        e = em(i, "inbox", frm, _ALICE, subj, body, read=(i % 2 == 0), labels=labels)
-        e["category"] = cat
-        out.append(e)
-    # Larger generated batch across folders/categories.
+    # There used to be a dozen hand-written one-liners here to keep Sent /
+    # Drafts / Snoozed and the category tabs from rendering empty. The authored
+    # corpus below now covers every folder and category with full-length mail,
+    # and those stubs were the most obviously synthetic thing in the mailbox —
+    # two-sentence notes sitting next to real correspondence. Dropped.
+    #
+    # The authored corpus (tools/ambient_bulk.json, built by
+    # tools/build_mail_corpus.py) across folders/categories.
     for j, m in enumerate(_BULK.get("mail", [])):
         frm = _person(m["from_name"], m["from_email"])
         to = _person(m["to_name"], m["to_email"])
         out.append({
-            "id": f"amb_bmail_{j}", "threadId": f"amb_bthread_{j}",
+            # Honor the authored id/threadId so a conversation actually threads.
+            # Keying the thread on the row index gave every message its own
+            # thread, which turned every reply into a separate inbox row.
+            "id": m.get("id") or f"amb_bmail_{j}",
+            "threadId": m.get("threadId") or f"amb_bthread_{j}",
             "from": frm, "to": [to], "cc": [], "bcc": [],
             "subject": m["subject"], "body": (m.get("body") or "").replace("\n", "<br>"),
             # Honor optional per-entry starred/important/labels/timestamp so the
