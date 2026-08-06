@@ -41,6 +41,10 @@ export default function Dashboard() {
     l.sellerId === state.currentUser.id && l.status === 'sold'
   );
 
+  const myEndedListings = state.listings.filter(l =>
+    l.sellerId === state.currentUser.id && l.status === 'ended'
+  );
+
   const myOrders = state.orders.filter(o =>
     o.buyerId === state.currentUser.id
   );
@@ -336,6 +340,23 @@ export default function Dashboard() {
               <p className="text-gray-500">No sold items yet.</p>
             )}
           </section>
+
+          {myEndedListings.length > 0 && (
+            <section>
+              <h2 className="text-xl font-bold mb-4">Ended Items</h2>
+              <div className="space-y-4">
+                {myEndedListings.map(l => (
+                  <div key={l.id} className="bg-white p-4 rounded-lg border border-gray-200 flex gap-4 items-center opacity-75">
+                    <img src={l.images[0]} alt={l.title} className="w-16 h-16 object-cover rounded bg-gray-100" />
+                    <div>
+                      <div className="font-bold text-gray-900">{l.title}</div>
+                      <div className="text-sm text-gray-500 font-bold">Ended by seller</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       )}
 

@@ -25,6 +25,7 @@ const ACTIONS = {
   LEAVE_FEEDBACK: 'LEAVE_FEEDBACK',
   INCREMENT_VIEWS: 'INCREMENT_VIEWS',
   ADD_TO_CART: 'ADD_TO_CART',
+  UPDATE_QTY: 'UPDATE_QTY',
   REMOVE_FROM_CART: 'REMOVE_FROM_CART',
   CLEAR_CART: 'CLEAR_CART',
   APPLY_COUPON: 'APPLY_COUPON',
@@ -329,20 +330,39 @@ function reducer(state, action) {
     }
 
     case ACTIONS.ADD_TO_CART: {
-      const { listingId } = action.payload;
+      const { listingId, quantity = 1 } = action.payload;
+      const qty = Math.max(1, parseInt(quantity, 10) || 1);
       const cart = state.cart || [];
-      if (cart.includes(listingId)) return state;
-      return { ...state, cart: [...cart, listingId] };
+      const cartQty = state.cartQty || {};
+      // Already in cart -> accumulate the quantity, matching the engine's
+      // add_to_cart. Otherwise append the id and record its quantity.
+      if (cart.includes(listingId)) {
+        return { ...state, cartQty: { ...cartQty, [listingId]: (cartQty[listingId] || 1) + qty } };
+      }
+      return {
+        ...state,
+        cart: [...cart, listingId],
+        cartQty: { ...cartQty, [listingId]: qty }
+      };
+    }
+
+    case ACTIONS.UPDATE_QTY: {
+      const { listingId, quantity } = action.payload;
+      const cart = state.cart || [];
+      if (!cart.includes(listingId)) return state;
+      const qty = Math.max(1, parseInt(quantity, 10) || 1);
+      return { ...state, cartQty: { ...(state.cartQty || {}), [listingId]: qty } };
     }
 
     case ACTIONS.REMOVE_FROM_CART: {
       const { listingId } = action.payload;
       const cart = state.cart || [];
-      return { ...state, cart: cart.filter(id => id !== listingId) };
+      const { [listingId]: _dropped, ...cartQty } = state.cartQty || {};
+      return { ...state, cart: cart.filter(id => id !== listingId), cartQty };
     }
 
     case ACTIONS.CLEAR_CART: {
-      return { ...state, cart: [] };
+      return { ...state, cart: [], cartQty: {} };
     }
 
     case ACTIONS.APPLY_COUPON: {
@@ -378,6 +398,7 @@ function reducer(state, action) {
         listings: newListings,
         orders: [...state.orders, ...newOrders],
         cart: [],
+        cartQty: {},
         coupon: null
       };
     }
@@ -538,13 +559,22 @@ export const StoreProvider = ({ children }) => {
     dispatch({ type: ACTIONS.EDIT_LISTING, payload: { listingId, updates, userId: state.currentUser.id } });
   };
 
-  const addToCart = (listingId) => {
+  const addToCart = (listingId, quantity = 1) => {
     if (bridged()) {
-      bridgeAct('market.add_to_cart', { product_id: listingId, quantity: 1 })
+      bridgeAct('market.add_to_cart', { product_id: listingId, quantity })
         .then(r => applyEngine(dispatch, r));
       return;
     }
-    dispatch({ type: ACTIONS.ADD_TO_CART, payload: { listingId } });
+    dispatch({ type: ACTIONS.ADD_TO_CART, payload: { listingId, quantity } });
+  };
+
+  const updateQty = (listingId, quantity) => {
+    if (bridged()) {
+      bridgeAct('market.set_qty', { product_id: listingId, quantity })
+        .then(r => applyEngine(dispatch, r));
+      return;
+    }
+    dispatch({ type: ACTIONS.UPDATE_QTY, payload: { listingId, quantity } });
   };
 
   const removeFromCart = (listingId) => {
@@ -635,6 +665,7 @@ export const StoreProvider = ({ children }) => {
       leaveFeedback,
       incrementViews,
       addToCart,
+      updateQty,
       removeFromCart,
       clearCart,
       applyCoupon,

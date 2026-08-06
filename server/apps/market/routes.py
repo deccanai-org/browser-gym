@@ -77,6 +77,18 @@ async def cart_add(request: Request, product_id: str = Form(...),
     return RedirectResponse(f"/market/product/{product_id}", 303)
 
 
+@router.post("/cart/update")
+async def cart_update(request: Request, product_id: str = Form(...),
+                      quantity: int = Form(...)):
+    world = _deps["get_world"]()
+    r = M.update_qty(world.market, product_id, quantity)
+    if r.get("ok"):
+        _deps["flash"](world.shop, "success", "Cart updated.")
+    else:
+        _deps["flash"](world.shop, "error", "Could not update that item.")
+    return RedirectResponse("/market/cart", 303)
+
+
 @router.post("/cart/remove")
 async def cart_remove(request: Request, product_id: str = Form(...)):
     world = _deps["get_world"]()

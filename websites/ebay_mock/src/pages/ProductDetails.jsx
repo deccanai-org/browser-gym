@@ -22,6 +22,7 @@ export default function ProductDetails() {
   const [showBuyConfirm, setShowBuyConfirm] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
   // Increment views on mount
   useEffect(() => {
@@ -98,7 +99,7 @@ export default function ProductDetails() {
 
   const handleAddToCart = () => {
     if (isSeller) return;
-    addToCart(listing.id);
+    addToCart(listing.id, quantity);
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
   };
@@ -273,6 +274,36 @@ export default function ProductDetails() {
                     <div className="text-sm text-gray-600 mb-1">Buy It Now Price:</div>
                     <div className="text-2xl font-bold text-gray-900 mb-3">
                       ${(listing.buyItNowPrice || listing.price).toFixed(2)}
+                    </div>
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-sm font-bold text-gray-700">Quantity</span>
+                      <div className="flex items-center border border-gray-300 rounded">
+                        <button
+                          type="button"
+                          aria-label="Decrease quantity"
+                          onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                          disabled={quantity <= 1}
+                          className="px-3 py-1.5 text-lg font-bold text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          −
+                        </button>
+                        <input
+                          type="number"
+                          min="1"
+                          aria-label="Quantity"
+                          value={quantity}
+                          onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value, 10) || 1))}
+                          className="w-12 text-center border-x border-gray-300 py-1.5 text-sm font-medium focus:outline-none"
+                        />
+                        <button
+                          type="button"
+                          aria-label="Increase quantity"
+                          onClick={() => setQuantity(q => q + 1)}
+                          className="px-3 py-1.5 text-lg font-bold text-gray-600 hover:bg-gray-100"
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
                     <button
                       onClick={handleBuyNow}

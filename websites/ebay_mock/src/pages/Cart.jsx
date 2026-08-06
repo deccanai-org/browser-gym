@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
+import { bridged } from '../lib/bridge';
 import { Trash2, X, Check, ShoppingCart } from 'lucide-react';
 
 export default function Cart() {
   const navigate = useNavigate();
-  const { state, removeFromCart, clearCart, applyCoupon, removeCoupon, checkout } = useStore();
+  const { state, removeFromCart, clearCart, updateQty, applyCoupon, removeCoupon, checkout } = useStore();
   const [couponInput, setCouponInput] = useState('');
   const [couponMsg, setCouponMsg] = useState('');
   const [checkedOut, setCheckedOut] = useState(false);
@@ -22,8 +23,20 @@ export default function Cart() {
     ? (typeof rawCoupon === 'string' ? rawCoupon : (rawCoupon.code || rawCoupon.id || 'Applied'))
     : null;
 
+  // Per-line quantity. In bridged mode the authoritative qty lives in the
+  // engine's cart detail (items keyed by product_id); in demo it's the cartQty
+  // map on state. Either way default to 1.
+  const gymDetail = state._gym_cart_detail || [];
+  const qtyOf = (id) => {
+    if (bridged()) {
+      const d = gymDetail.find(it => it.product_id === id);
+      return d ? d.quantity : 1;
+    }
+    return (state.cartQty && state.cartQty[id]) || 1;
+  };
+
   const priceOf = (l) => (l.buyItNowPrice || l.price || l.currentBid || 0);
-  const subtotal = cartListings.reduce((sum, l) => sum + priceOf(l), 0);
+  const subtotal = cartListings.reduce((sum, l) => sum + priceOf(l) * qtyOf(l.id), 0);
 
   // The banner used to say "applied" while Total stayed at the full subtotal.
   // Resolve the applied code against the coupon catalog and actually discount it;
@@ -109,9 +122,37 @@ export default function Cart() {
                         {item.title}
                       </Link>
                       <div className="text-sm text-gray-500">Condition: {item.condition}</div>
+                      <div className="text-sm text-gray-500">${priceOf(item).toFixed(2)} each</div>
                     </div>
-                    <div className="font-bold text-gray-900 shrink-0">
-                      ${priceOf(item).toFixed(2)}
+                    <div className="flex items-center border border-gray-300 rounded shrink-0">
+                      <button
+                        type="button"
+                        aria-label={`Decrease quantity of ${item.title}`}
+                        onClick={() => updateQty(item.id, qtyOf(item.id) - 1)}
+                        disabled={qtyOf(item.id) <= 1}
+                        className="px-2.5 py-1 text-lg font-bold text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
+                      >
+                        −
+                      </button>
+                      <input
+                        type="number"
+                        min="1"
+                        aria-label={`Quantity of ${item.title}`}
+                        value={qtyOf(item.id)}
+                        onChange={(e) => updateQty(item.id, Math.max(1, parseInt(e.target.value, 10) || 1))}
+                        className="w-10 text-center border-x border-gray-300 py-1 text-sm font-medium focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        aria-label={`Increase quantity of ${item.title}`}
+                        onClick={() => updateQty(item.id, qtyOf(item.id) + 1)}
+                        className="px-2.5 py-1 text-lg font-bold text-gray-600 hover:bg-gray-100"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <div className="font-bold text-gray-900 shrink-0 w-20 text-right">
+                      ${(priceOf(item) * qtyOf(item.id)).toFixed(2)}
                     </div>
                     <button
                       type="button"

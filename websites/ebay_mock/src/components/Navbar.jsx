@@ -96,7 +96,7 @@ export default function Navbar() {
         <div>
           Hi! <Link to="/dashboard" className="text-xbay-blue hover:underline font-bold">{state.currentUser.username}</Link>
           <span className="mx-2">|</span>
-          <Link to="/search?c=Electronics" className="hover:underline">Daily Deals</Link>
+          <Link to="/deals" className="hover:underline">Daily Deals</Link>
           <span className="mx-2">|</span>
           <button
             type="button"

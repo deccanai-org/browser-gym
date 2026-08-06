@@ -101,6 +101,7 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "mail.send":             ("POST", "/mail/send",          ("to", "subject", "body", "cc", "bcc")),
     # market (eBay) — a mock listingId IS the gym product_id, so no resolution
     "market.add_to_cart":    ("POST", "/market/cart/add",    ("product_id", "quantity")),
+    "market.set_qty":        ("POST", "/market/cart/update", ("product_id", "quantity")),
     "market.remove":         ("POST", "/market/cart/remove", ("product_id",)),
     "market.clear_cart":     ("POST", "/market/cart/clear",  ()),
     "market.apply_coupon":   ("POST", "/market/apply-coupon", ("code",)),

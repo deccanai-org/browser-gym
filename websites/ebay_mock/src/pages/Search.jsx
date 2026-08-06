@@ -56,7 +56,13 @@ export default function Search() {
   const results = useMemo(() => {
     let filtered = state.listings.filter(item => {
       if (item.status !== 'active') return false;
-      if (query && !item.title.toLowerCase().includes(query.toLowerCase())) return false;
+      if (query) {
+        // Search title + description + category (was title-only), and match every
+        // whitespace token, so "wireless mouse" or a category name still finds it.
+        const hay = `${item.title || ''} ${item.description || ''} ${item.category || ''}`.toLowerCase();
+        const toks = query.toLowerCase().split(/\s+/).filter(Boolean);
+        if (!toks.every(t => hay.includes(t))) return false;
+      }
       if (category && item.category.toLowerCase() !== category.toLowerCase()) return false;
       if (sellerFilter && item.sellerId !== sellerFilter) return false;
       if (selectedConditions.length > 0 && !selectedConditions.includes(item.condition)) return false;
