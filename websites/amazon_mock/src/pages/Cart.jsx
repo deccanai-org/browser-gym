@@ -2,9 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { bridged } from '../lib/bridge';
-import { gymNow, DEMO_PROMOS } from '../lib/mockData';
+import { DEMO_PROMOS } from '../lib/mockData';
 import { Button } from '../components/ui/Button';
 import { Tag } from 'lucide-react';
+
+// The scheduled-delivery floor deliberately tracks the REAL calendar date (not
+// the gym's frozen 2026-05-21 clock): a delivery must not be schedulable before
+// the actual current day. Local date, so it matches the shopper's own calendar.
+const realTodayISO = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+};
 
 // set_line_options replaces the whole option set for a line, so every change has
 // to resend all four fields — patch just the one that moved.
@@ -211,13 +219,13 @@ export const Cart = () => {
                             <input
                               type="date"
                               aria-label="Scheduled delivery date"
-                              min={new Date(gymNow(state)).toISOString().split('T')[0]}
+                              min={realTodayISO()}
                               value={item.scheduled_delivery || ''}
                               onChange={(e) => {
                                 // The native `min` only soft-warns, so a date
-                                // typed before the gym's current day (2026-05-21)
-                                // is hard-rejected here — clamped up to today.
-                                const today = new Date(gymNow(state)).toISOString().split('T')[0];
+                                // typed before the real current day is hard-
+                                // rejected here — clamped up to today.
+                                const today = realTodayISO();
                                 const picked = e.target.value;
                                 const val = picked && picked < today ? today : picked;
                                 setLineOptions(item.productId, lineOpts(item, { scheduled_delivery: val }));
