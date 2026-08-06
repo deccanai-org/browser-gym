@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, Bell, Menu, X, ChevronDown } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { bridged } from '../lib/bridge';
+import { cartQtyOf, cartUnitCount, unitPriceOf, money } from '../lib/cart';
 
 // Only categories that actually populate the projection (Cameras had 0, Home had 1).
 const CATEGORIES = [
@@ -29,7 +30,8 @@ export default function Navbar() {
   const { state, markNotificationRead, markAllNotificationsRead, removeFromCart } = useStore();
 
   const cartIds = state.cart || [];
-  const cartCount = cartIds.length;
+  // Count UNITS, not lines: 3 of one item is "3" in the badge, not "1".
+  const cartCount = cartUnitCount(state);
   const cartListings = cartIds.map(id => state.listings.find(l => l.id === id)).filter(Boolean);
   const notifCount = state.notifications.filter(n => !n.read).length;
   const userNotifs = state.notifications.filter(n => n.userId === state.currentUser.id);
@@ -303,7 +305,16 @@ export default function Navbar() {
                             {item.title}
                           </Link>
                           <div className="text-xs font-bold text-gray-700 mt-0.5">
-                            ${(item.buyItNowPrice || item.price || item.currentBid || 0).toFixed(2)}
+                            {cartQtyOf(state, item.id) > 1 ? (
+                              <>
+                                {cartQtyOf(state, item.id)} × ${unitPriceOf(item).toFixed(2)}
+                                <span className="text-gray-500 font-medium">
+                                  {' '}= ${money(unitPriceOf(item) * cartQtyOf(state, item.id)).toFixed(2)}
+                                </span>
+                              </>
+                            ) : (
+                              <>${unitPriceOf(item).toFixed(2)}</>
+                            )}
                           </div>
                         </div>
                         <button

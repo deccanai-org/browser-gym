@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useReducer, useEffect, useRef, useState } from 'react';
 import { INITIAL_STATE, getSessionId, fetchCustomState, saveState, initializeData } from '../data/mockData';
 import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
+import { cartQtyOf, unitPriceOf, money, priceCart, allocate, deliveryFor } from '../lib/cart';
 
 const APP = 'market'; // bridge engine app key for this mock
 // In bridged mode: run the gym action, then adopt the engine's authoritative
@@ -144,30 +145,51 @@ function reducer(state, action) {
     }
 
     case ACTIONS.BUY_NOW: {
-      const { listingId, userId } = action.payload;
+      const { listingId, userId, quantity } = action.payload;
       const listingIndex = state.listings.findIndex(l => l.id === listingId);
       if (listingIndex === -1) return state;
 
       const listing = state.listings[listingIndex];
+      if (listing.status !== 'active') return state;
+
       const updatedListing = { ...listing, status: 'sold', endTime: Date.now() };
 
       const newListings = [...state.listings];
       newListings[listingIndex] = updatedListing;
+
+      // Honor the quantity picked on the product page, and charge delivery the
+      // same way checkout does — Buy It Now is a purchase, not a free pass.
+      const qty = Math.max(1, parseInt(quantity, 10) || 1);
+      const unitPrice = unitPriceOf(listing);
+      const lineTotal = money(unitPrice * qty);
+      const delivery = deliveryFor(state, lineTotal);
 
       const newOrder = {
         id: `order_${Date.now()}`,
         listingId,
         buyerId: userId,
         sellerId: listing.sellerId,
-        amount: listing.buyItNowPrice || listing.price,
+        quantity: qty,
+        unitPrice,
+        discount: 0,
+        delivery,
+        amount: money(lineTotal + delivery),
+        shippingAddressId: state.defaultAddressId || null,
+        paymentId: state.defaultPaymentId || null,
         date: Date.now(),
         status: 'paid'
       };
 
+      // The item is sold now, so it must not linger in the cart where checkout
+      // would happily order it a second time.
+      const { [listingId]: _boughtQty, ...restQty } = state.cartQty || {};
+
       return {
         ...state,
         listings: newListings,
-        orders: [...state.orders, newOrder]
+        orders: [...state.orders, newOrder],
+        cart: (state.cart || []).filter(id => id !== listingId),
+        cartQty: restQty
       };
     }
 
@@ -382,22 +404,42 @@ function reducer(state, action) {
       // Ship-to + payment chosen at checkout; fall back to the account defaults.
       const addrId = (action.payload && action.payload.addressId) || state.defaultAddressId || null;
       const payId = (action.payload && action.payload.paymentId) || state.defaultPaymentId || null;
-      const newOrders = [];
-      const newListings = state.listings.map(l => {
-        if (!cart.includes(l.id)) return l;
-        newOrders.push({
-          id: `order_${Date.now()}_${l.id}`,
-          listingId: l.id,
-          buyerId: userId,
-          sellerId: l.sellerId,
-          amount: l.buyItNowPrice || l.price || l.currentBid || 0,
-          shippingAddressId: addrId,
-          paymentId: payId,
-          date: Date.now(),
-          status: 'paid'
-        });
-        return { ...l, status: 'sold', endTime: Date.now() };
-      });
+      // Price the cart exactly the way the cart page displayed it: line total =
+      // unit price x quantity, then the coupon discount spread across the lines
+      // so the sum of the orders equals the total the shopper agreed to.
+      // Only active listings can be bought — a line already sold (e.g. via Buy
+      // It Now) must not be ordered a second time.
+      const buying = cart
+        .map(id => state.listings.find(x => x.id === id))
+        .filter(l => l && l.status === 'active');
+      if (buying.length === 0) return { ...state, cart: [], cartQty: {}, coupon: null };
+
+      const lineTotals = buying.map(l => money(unitPriceOf(l) * cartQtyOf(state, l.id)));
+      const subtotal = money(lineTotals.reduce((s, v) => s + v, 0));
+      const { discount, delivery } = priceCart(state, subtotal);
+      // Spread the cart-level discount and delivery over the lines in exact
+      // cents, so the orders sum to the total shown on the cart page.
+      const discShares = allocate(discount, lineTotals);
+      const shipShares = allocate(delivery, lineTotals);
+
+      const boughtIds = new Set(buying.map(l => l.id));
+      const newOrders = buying.map((l, i) => ({
+        id: `order_${Date.now()}_${l.id}`,
+        listingId: l.id,
+        buyerId: userId,
+        sellerId: l.sellerId,
+        quantity: cartQtyOf(state, l.id),
+        unitPrice: unitPriceOf(l),
+        discount: discShares[i],
+        delivery: shipShares[i],
+        amount: money(lineTotals[i] - discShares[i] + shipShares[i]),
+        shippingAddressId: addrId,
+        paymentId: payId,
+        date: Date.now(),
+        status: 'paid'
+      }));
+      const newListings = state.listings.map(l =>
+        boughtIds.has(l.id) ? { ...l, status: 'sold', endTime: Date.now() } : l);
       return {
         ...state,
         listings: newListings,
@@ -507,18 +549,41 @@ export const StoreProvider = ({ children }) => {
     dispatch({ type: ACTIONS.PLACE_BID, payload: { listingId, amount, userId: state.currentUser.id } });
   };
 
-  const buyNow = (listingId) => {
+  const buyNow = (listingId, quantity = 1) => {
+    const qty = Math.max(1, parseInt(quantity, 10) || 1);
     if (bridged()) {
       // market.checkout has no per-item param — it checks out the ENTIRE cart.
-      // Clear first so Buy It Now purchases only this item, never sweeping in
-      // whatever else the user happened to have in the cart.
+      // So Buy It Now has to empty the cart to buy just this one item. Snapshot
+      // what was in there first and put it back afterwards: on a real store Buy
+      // It Now leaves your cart untouched, and silently discarding it loses the
+      // shopper's work.
+      const saved = (state._gym_cart_detail || [])
+        .map(it => ({ product_id: it.product_id, quantity: Math.max(1, it.quantity || 1) }))
+        .filter(it => it.product_id !== listingId);
+      // Clearing the cart also drops any coupon the shopper had applied, so put
+      // that back too.
+      const savedCoupon = state.coupon
+        ? (typeof state.coupon === 'string' ? state.coupon : state.coupon.code)
+        : null;
+      const restore = (r) => {
+        let chain = saved.reduce(
+          (c, it) => c.then(() => bridgeAct('market.add_to_cart', it)),
+          Promise.resolve()
+        );
+        if (savedCoupon) {
+          chain = chain.then(() => bridgeAct('market.apply_coupon', { code: savedCoupon }));
+        }
+        return chain.then(res => ((saved.length || savedCoupon) ? res : r));
+      };
+
       bridgeAct('market.clear_cart', {})
-        .then(() => bridgeAct('market.add_to_cart', { product_id: listingId, quantity: 1 }))
+        .then(() => bridgeAct('market.add_to_cart', { product_id: listingId, quantity: qty }))
         .then(() => bridgeAct('market.checkout', {}))
+        .then(r => restore(r))
         .then(r => applyEngine(dispatch, r));
       return;
     }
-    dispatch({ type: ACTIONS.BUY_NOW, payload: { listingId, userId: state.currentUser.id } });
+    dispatch({ type: ACTIONS.BUY_NOW, payload: { listingId, userId: state.currentUser.id, quantity: qty } });
   };
 
   const toggleWatchlist = (listingId) => {

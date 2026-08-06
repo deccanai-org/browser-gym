@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
-import { bridged } from '../lib/bridge';
+import { cartQtyOf, unitPriceOf, money, priceCart } from '../lib/cart';
 import { Trash2, X, Check, ShoppingCart } from 'lucide-react';
 
 export default function Cart() {
@@ -32,30 +32,20 @@ export default function Cart() {
     ? (typeof rawCoupon === 'string' ? rawCoupon : (rawCoupon.code || rawCoupon.id || 'Applied'))
     : null;
 
-  // Per-line quantity. In bridged mode the authoritative qty lives in the
-  // engine's cart detail (items keyed by product_id); in demo it's the cartQty
-  // map on state. Either way default to 1.
-  const gymDetail = state._gym_cart_detail || [];
-  const qtyOf = (id) => {
-    if (bridged()) {
-      const d = gymDetail.find(it => it.product_id === id);
-      return d ? d.quantity : 1;
-    }
-    return (state.cartQty && state.cartQty[id]) || 1;
-  };
+  // Per-line quantity, from the one shared helper so the cart page, the navbar
+  // badge and the dropdown can never disagree.
+  const qtyOf = (id) => cartQtyOf(state, id);
 
-  const priceOf = (l) => (l.buyItNowPrice || l.price || l.currentBid || 0);
-  const subtotal = cartListings.reduce((sum, l) => sum + priceOf(l) * qtyOf(l.id), 0);
+  const priceOf = (l) => unitPriceOf(l);
+  const subtotal = money(cartListings.reduce((sum, l) => sum + priceOf(l) * qtyOf(l.id), 0));
+  // Units, not lines — "3 items in cart" when one item is in the cart 3 times.
+  const unitCount = cartListings.reduce((n, l) => n + qtyOf(l.id), 0);
 
   // The banner used to say "applied" while Total stayed at the full subtotal.
-  // Resolve the applied code against the coupon catalog and actually discount it;
-  // a code that is unknown, expired, or under its minimum discounts nothing.
-  const coupon = (state._gym_coupons || []).find(
-    c => couponCode && String(c.code).toUpperCase() === String(couponCode).toUpperCase());
-  const discount = (coupon && !coupon.expired && subtotal >= (coupon.min_subtotal || 0))
-    ? Math.round(subtotal * (coupon.percent_off || 0) * 100) / 100
-    : 0;
-  const total = Math.max(0, subtotal - discount);
+  // Price the cart through the shared function the checkout reducer also uses,
+  // so the order is written for exactly the total shown here — including the
+  // delivery fee the engine charges on carts under the free-shipping threshold.
+  const { coupon, valid: couponValid, discount, delivery, total } = priceCart(state, subtotal);
 
   const handleApplyCoupon = (e) => {
     e.preventDefault();
@@ -94,7 +84,7 @@ export default function Cart() {
             {cartListings.length > 0 && (
               <div className="flex justify-between items-center p-4 border-b border-gray-100">
                 <span className="text-sm font-bold text-gray-700">
-                  {cartListings.length} item{cartListings.length !== 1 ? 's' : ''} in cart
+                  {unitCount} item{unitCount !== 1 ? 's' : ''} in cart
                 </span>
                 <button
                   type="button"
@@ -184,13 +174,13 @@ export default function Cart() {
             <h2 className="font-bold text-gray-900 mb-4">Order Summary</h2>
 
             <div className="flex justify-between text-sm text-gray-700 mb-2">
-              <span>Items ({cartListings.length})</span>
+              <span>Items ({unitCount})</span>
               <span>${subtotal.toFixed(2)}</span>
             </div>
 
             {/* Coupon */}
             <div className="border-t border-gray-100 mt-4 pt-4">
-              {(couponCode && coupon) ? (
+              {(couponCode && coupon && couponValid) ? (
                 <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded px-3 py-2 text-sm">
                   <span className="text-green-800 font-medium flex items-center gap-1">
                     <Check size={14} /> Coupon “{couponCode}” applied
@@ -232,6 +222,14 @@ export default function Cart() {
               <div className="flex justify-between text-sm text-green-700 mt-2">
                 <span>Discount ({couponCode})</span>
                 <span>-${discount.toFixed(2)}</span>
+              </div>
+            )}
+            {cartListings.length > 0 && (
+              <div className="flex justify-between text-sm text-gray-700 mt-2">
+                <span>Delivery</span>
+                {delivery > 0
+                  ? <span>${delivery.toFixed(2)}</span>
+                  : <span className="text-green-700 font-medium">Free</span>}
               </div>
             )}
             <div className="border-t border-gray-100 mt-4 pt-4 flex justify-between font-bold text-gray-900 mb-4">

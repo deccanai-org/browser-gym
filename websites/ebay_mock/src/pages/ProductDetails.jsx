@@ -32,9 +32,11 @@ export default function ProductDetails() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  // Reset selected image when listing changes
+  // Reset selected image and the quantity picker when the listing changes —
+  // a "3" left over from the previous item must not follow you to the next one.
   useEffect(() => {
     setSelectedImage(0);
+    setQuantity(1);
   }, [id]);
 
   // The gym's frozen "now" (bridged); else the real clock (demo). Without this the
@@ -98,15 +100,20 @@ export default function ProductDetails() {
   };
 
   const handleAddToCart = () => {
-    if (isSeller) return;
+    // Don't claim "Added to cart" for something that can't be added — the
+    // seller's own listing, or one that has already ended or sold.
+    if (isSeller || listing.status !== 'active') return;
     addToCart(listing.id, quantity);
     setAddedToCart(true);
+    setQuantity(1);
     setTimeout(() => setAddedToCart(false), 2000);
   };
 
   const confirmBuyNow = () => {
     setShowBuyConfirm(false);
-    buyNow(listing.id);
+    // The Quantity stepper sits above both buttons, so it has to govern Buy It
+    // Now too — it used to always buy exactly one.
+    buyNow(listing.id, quantity);
     navigate('/dashboard');
   };
 
@@ -431,8 +438,15 @@ export default function ProductDetails() {
             <h3 className="text-xl font-bold mb-2">Confirm Purchase</h3>
             <p className="text-gray-600 mb-1">Are you sure you want to buy this item now?</p>
             <p className="font-bold text-gray-900 mb-1">{listing.title}</p>
+            {/* Show what will actually be charged — the stepper above governs
+                this purchase, so a quantity of 2 must not confirm at 1x price. */}
+            {quantity > 1 && (
+              <p className="text-sm text-gray-600 mb-1">
+                {quantity} × ${(listing.buyItNowPrice || listing.price).toFixed(2)}
+              </p>
+            )}
             <p className="text-2xl font-bold text-gray-900 mb-4">
-              ${(listing.buyItNowPrice || listing.price).toFixed(2)}
+              ${((listing.buyItNowPrice || listing.price) * quantity).toFixed(2)}
             </p>
             {isAuction && (
               <p className="text-sm text-orange-600 mb-4">This will end the auction immediately.</p>

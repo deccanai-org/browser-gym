@@ -562,6 +562,11 @@ def transform_market(m: dict) -> dict:
             # the frozen clock, not the real Date.now() (which marks all "Ended").
             "_gym_now": int(_dt.datetime(2026, 5, 21, 12, 0, 0,
                                          tzinfo=_dt.timezone.utc).timestamp() * 1000),
+            # Delivery pricing, so the cart's Total matches what the engine
+            # actually charges (subtotal - discount + delivery). Without these
+            # the mock showed a total $5.99 short on every sub-threshold cart.
+            "deliveryFee": m.get("delivery_fee"),
+            "freeDeliveryOver": m.get("free_delivery_over"),
             # eBay has no coupon UI -> preserved (not dropped), plus the priced cart detail.
             "_gym_coupons": list((m.get("coupons") or {}).values()),
             "_gym_cart_detail": (m.get("cart") or {}).get("items") or [],

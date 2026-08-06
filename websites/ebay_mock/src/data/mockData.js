@@ -163,7 +163,11 @@ export const INITIAL_STATE = {
     { id: 'vm_pay_paypal', brand: 'PayPal', last4: '', expiry: '', label: 'PayPal', isDefault: false },
   ],
   defaultAddressId: 'vm_addr_home',
-  defaultPaymentId: 'vm_pay_visa'
+  defaultPaymentId: 'vm_pay_visa',
+  // Delivery pricing, mirroring the gym engine so demo and bridged charge the
+  // same thing: free over the threshold, otherwise the flat fee.
+  deliveryFee: 5.99,
+  freeDeliveryOver: 35.0
 };
 
 // --- Session-based state isolation ---

@@ -208,6 +208,9 @@ export default function Dashboard() {
                             <Link to={`/item/${item.id}`} className="font-medium text-xbay-blue hover:underline">
                               {item.title}
                             </Link>
+                            {order.quantity > 1 && (
+                              <span className="text-gray-500"> × {order.quantity}</span>
+                            )}
                           </td>
                           <td className="p-4 text-gray-500">{new Date(order.date).toLocaleDateString()}</td>
                           <td className="p-4 font-bold">${order.amount.toFixed(2)}</td>
