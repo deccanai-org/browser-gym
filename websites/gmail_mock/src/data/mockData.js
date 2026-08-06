@@ -49,21 +49,44 @@ export const getInitialStateBySid = (sid = null) => {
   return s ? JSON.parse(s) : null;
 };
 
+// Identifies WHICH seed a cached mailbox was built from. A browser that has
+// been open across a re-seed used to keep serving whatever it cached the first
+// time — including the hardcoded demo mailbox from before this mock was ever
+// seeded — because the cache was returned without ever being checked. An agent
+// then ran against 29 demo emails instead of the seeded inbox with nothing on
+// screen to say so. Cheap and deterministic: size plus the end ids.
+const seedFingerprint = (s) => {
+  const em = (s && s.emails) || [];
+  const first = em[0] ? em[0].id : '';
+  const last = em.length ? em[em.length - 1].id : '';
+  return `${em.length}:${first}:${last}`;
+};
+
 export const initializeData = (sid = null, customState = null) => {
   const sk = storageKey(sid);
   const ik = initialKeyFn(sid);
   if (customState) {
     const data = { ...createDefaultData(), ...customState };
+    data._seedFp = seedFingerprint(customState);
     localStorage.setItem(sk, JSON.stringify(data));
     localStorage.setItem(ik, JSON.stringify(data));
     return data;
   }
   const stored = localStorage.getItem(sk);
   if (stored) {
-    if (!localStorage.getItem(ik)) localStorage.setItem(ik, stored);
-    return JSON.parse(stored);
+    const parsed = JSON.parse(stored);
+    // Keep the cache only while it belongs to the seed this build ships. When
+    // they disagree the seed moved under us, so the cache is dropped and
+    // rebuilt rather than silently overriding the new mailbox.
+    if (parsed._seedFp === seedFingerprint(SEED_DEFAULT)) {
+      if (!localStorage.getItem(ik)) localStorage.setItem(ik, stored);
+      return parsed;
+    }
+    localStorage.removeItem(sk);
+    localStorage.removeItem(ik);
   }
   const data = { ...createDefaultData(), ...SEED_DEFAULT };
+  data._seedFp = seedFingerprint(SEED_DEFAULT);
   localStorage.setItem(sk, JSON.stringify(data));
   localStorage.setItem(ik, JSON.stringify(data));
   return data;

@@ -212,17 +212,37 @@ function createDefaultData() {
   return { ...INITIAL_STATE };
 }
 
+// Identifies WHICH seed a cached store was built from. A browser open across a
+// re-seed used to keep serving whatever it cached first — including the
+// hardcoded demo listings from before this mock was ever seeded — because the
+// cache was returned without being checked, and nothing on screen said so.
+const seedFingerprint = (s) => {
+  const l = (s && s.listings) || [];
+  return `${l.length}:${l[0] ? l[0].id : ''}:${l.length ? l[l.length - 1].id : ''}`;
+};
+
 export const initializeData = (sid = null, customState = null) => {
   const sk = storageKey(sid), ik = initialKey(sid);
   if (customState) {
     const data = deepMergeWithDefaults(createDefaultData(), customState);
+    data._seedFp = seedFingerprint(customState);
     localStorage.setItem(sk, JSON.stringify(data));
     localStorage.setItem(ik, JSON.stringify(data));
     return data;
   }
   const stored = localStorage.getItem(sk);
-  if (stored) { if (!localStorage.getItem(ik)) localStorage.setItem(ik, stored); return JSON.parse(stored); }
+  if (stored) {
+    const parsed = JSON.parse(stored);
+    // Keep the cache only while it belongs to the seed this build ships.
+    if (parsed._seedFp === seedFingerprint(SEED_DEFAULT)) {
+      if (!localStorage.getItem(ik)) localStorage.setItem(ik, stored);
+      return parsed;
+    }
+    localStorage.removeItem(sk);
+    localStorage.removeItem(ik);
+  }
   const data = deepMergeWithDefaults(createDefaultData(), SEED_DEFAULT);
+  data._seedFp = seedFingerprint(SEED_DEFAULT);
   localStorage.setItem(sk, JSON.stringify(data));
   localStorage.setItem(ik, JSON.stringify(data));
   return data;

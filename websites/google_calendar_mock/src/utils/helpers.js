@@ -221,12 +221,21 @@ let _gymTodayIso = null;
 export const setGymToday = (iso) => { if (iso) _gymTodayIso = iso; };
 export const gymNow = () => (_gymTodayIso ? new Date(_gymTodayIso) : new Date());
 
+// Identifies WHICH seed a cached calendar was built from — see the cache check
+// below. Keyed on the events plus the frozen day, since a re-seed can move
+// "today" without changing the event count.
+const seedFingerprint = (s) => {
+  const e = (s && s.events) || [];
+  return `${e.length}:${e[0] ? e[0].id : ''}:${(s && s._gym_today) || ''}`;
+};
+
 export const initializeData = (sid = null, customState = null) => {
   const sk = storageKey(sid);
   const ik = initialKey(sid);
 
   if (customState) {
     const data = deepMergeWithDefaults(createDefaultData(), customState);
+    data._seedFp = seedFingerprint(customState);
     setGymToday(data._gym_today);
     localStorage.setItem(sk, JSON.stringify(data));
     localStorage.setItem(ik, JSON.stringify(data));
@@ -236,12 +245,20 @@ export const initializeData = (sid = null, customState = null) => {
   const stored = localStorage.getItem(sk);
   if (stored) {
     const p = JSON.parse(stored);
-    setGymToday(p._gym_today);
-    if (!localStorage.getItem(ik)) localStorage.setItem(ik, stored);
-    return p;
+    // Keep the cache only while it belongs to the seed this build ships. A
+    // browser open across a re-seed used to keep serving its first cache —
+    // including the demo calendar from before this mock was ever seeded.
+    if (p._seedFp === seedFingerprint(SEED_DEFAULT)) {
+      setGymToday(p._gym_today);
+      if (!localStorage.getItem(ik)) localStorage.setItem(ik, stored);
+      return p;
+    }
+    localStorage.removeItem(sk);
+    localStorage.removeItem(ik);
   }
 
   const data = deepMergeWithDefaults(createDefaultData(), SEED_DEFAULT);
+  data._seedFp = seedFingerprint(SEED_DEFAULT);
   setGymToday(data._gym_today);
   localStorage.setItem(sk, JSON.stringify(data));
   localStorage.setItem(ik, JSON.stringify(data));

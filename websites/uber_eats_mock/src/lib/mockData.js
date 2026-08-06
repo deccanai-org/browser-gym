@@ -247,12 +247,24 @@
       return result;
     }
 
+    // Identifies WHICH seed a cached store was built from. Unlike the other
+    // mocks there is no stable bundled seed to compare against here —
+    // generateInitialState() is random demo filler — so the check is whether the
+    // cache carries a fingerprint at all. A cache written before this existed
+    // predates seeding, and returning it silently served demo restaurants in
+    // place of the seeded ones.
+    const seedFingerprint = (s) => {
+      const r = (s && s.restaurants) || [];
+      return `${r.length}:${r[0] ? r[0].id : ''}:${r.length ? r[r.length - 1].id : ''}`;
+    };
+
     export const initializeData = (sid = null, customState = null) => {
       const sk = storageKey(sid);
       const ik = initialKey(sid);
 
       if (customState) {
         const initialData = deepMergeWithDefaults(generateInitialState(), customState);
+        initialData._seedFp = seedFingerprint(customState);
         localStorage.setItem(sk, JSON.stringify(initialData));
         localStorage.setItem(ik, JSON.stringify(initialData));
         return initialData;
@@ -260,11 +272,17 @@
 
       const stored = localStorage.getItem(sk);
       if (stored) {
-        if (!localStorage.getItem(ik)) localStorage.setItem(ik, stored);
-        return JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        if (parsed._seedFp) {
+          if (!localStorage.getItem(ik)) localStorage.setItem(ik, stored);
+          return parsed;
+        }
+        localStorage.removeItem(sk);
+        localStorage.removeItem(ik);
       }
 
       const initialData = generateInitialState();
+      initialData._seedFp = seedFingerprint(initialData);
       localStorage.setItem(sk, JSON.stringify(initialData));
       localStorage.setItem(ik, JSON.stringify(initialData));
       return initialData;
