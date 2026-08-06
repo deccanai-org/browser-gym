@@ -54,6 +54,12 @@ GIFT_WRAP_FEE = 4.99
 # back as zero and remint ids that already exist.
 _EPOCH = datetime(2026, 1, 1, tzinfo=timezone.utc)
 
+# The world's frozen "today" (== mail SEED_DATE, 2026-05-21). Delivery estimates
+# and subscription dates must be derived from THIS, never the real wall clock, or
+# a placed order shows a delivery date days from whenever the run happens.
+_WORLD_TODAY = datetime(2026, 5, 21, tzinfo=timezone.utc)
+_WORLD_TODAY_ISO = _WORLD_TODAY.date().isoformat()
+
 
 def _mint_seq(state: GymState, key: str) -> int:
     """A counter scoped to (step, key), so two orders placed in one step differ
@@ -506,8 +512,16 @@ def place_order(state: GymState, payment_id: str,
         by_addr.setdefault(oi.ship_to_address_id, []).append(oi.id)
 
     order_id = _new_id(state, "ord").upper()
+    # Default estimate: 3 days off the FROZEN world clock (never the wall clock).
+    _default_eta = (_WORLD_TODAY + timedelta(days=3)).date().isoformat()
     shipments: list[Shipment] = []
     for addr_id, item_ids in by_addr.items():
+        # Honor a customer-picked scheduled delivery date — the latest among this
+        # shipment's items (it arrives when the last item does), and only if it's
+        # not in the past. Otherwise fall back to the frozen-clock default.
+        _sched = [oi.scheduled_delivery for oi in items_resolved
+                  if oi.id in item_ids and oi.scheduled_delivery
+                  and oi.scheduled_delivery >= _WORLD_TODAY_ISO]
         sh = Shipment(
             id=_new_id(state, "sh"),
             # Also derived: a tracking number is embedded in the shipment record
@@ -517,9 +531,7 @@ def place_order(state: GymState, payment_id: str,
             carrier="USPS",
             item_ids=item_ids,
             status="confirmed",
-            estimated_delivery=(
-                datetime.now(timezone.utc) + timedelta(days=3)
-            ).date().isoformat(),
+            estimated_delivery=max(_sched) if _sched else _default_eta,
             events=[ShipmentEvent(
                 timestamp=_now(state),
                 status="label_created",
@@ -648,7 +660,7 @@ def create_subscription(state: GymState, product_id: str,
         cadence=cadence,                       # type: ignore[arg-type]
         deliveries_remaining=deliveries,
         next_delivery_date=(
-            datetime.now(timezone.utc) + timedelta(days=7)
+            _WORLD_TODAY + timedelta(days=7)
         ).date().isoformat(),
         address_id=address_id, payment_id=payment_id,
         loyalty_discount_pct=loyalty,
