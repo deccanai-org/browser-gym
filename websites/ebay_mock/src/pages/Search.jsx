@@ -6,6 +6,35 @@ import ListingCard from '../components/ListingCard';
 const CONDITIONS = ['New', 'Open Box', 'Used', 'Refurbished', 'For Parts'];
 const FORMATS = ['Auction', 'Buy It Now'];
 
+// Brand facet: use a real listing.brand when present, else infer one from the
+// title (keyword map) and finally a per-category store brand — so the Brand
+// filter is populated without baking arbitrary brand data into every listing.
+const _BRAND_KW = [
+  [/\bcamera\b/i, 'Optiq'], [/\bdrone\b/i, 'AeroLift'], [/vinyl|record/i, 'Blue Note'],
+  [/\bwatch\b/i, 'TimeCraft'], [/handbag|purse/i, 'UrbanLux'], [/earbud/i, 'SoundCore'],
+  [/tablet/i, 'ProSlate'], [/headphone|speaker|audio/i, 'AudioTech'],
+  [/keyboard|mouse/i, 'KeyCraft'], [/monitor/i, 'ViewMax'], [/laptop/i, 'NoteWorks'],
+  [/blender|fryer|espresso|coffee|kitchen/i, 'HomeChef'],
+  [/dumbbell|yoga|basketball|sneaker|shoe/i, 'FitGear'],
+  [/lego|block|board game|teddy|plush|puzzle/i, 'PlayCo'],
+  [/perfume|eyeshadow|makeup|lipstick/i, 'GlowLab'], [/chair/i, 'ErgoSeat'],
+  [/cable|usb|power bank|charger/i, 'ValueTech'],
+];
+const _CAT_BRAND = {
+  Electronics: 'ValueTech', Fashion: 'UrbanStyle', 'Home & Garden': 'HomeChef',
+  'Sporting Goods': 'FitGear', 'Toys & Hobbies': 'PlayCo', 'Health & Beauty': 'GlowLab',
+  Collectibles: 'Heritage',
+};
+const brandOf = (item) => {
+  if (item.brand) return item.brand;
+  const t = item.title || '';
+  for (const [rx, b] of _BRAND_KW) if (rx.test(t)) return b;
+  return _CAT_BRAND[item.category] || 'ValueMart';
+};
+const shippingCostOf = (item) =>
+  Number(item.shipping != null ? item.shipping : (item.shippingCost != null ? item.shippingCost : 0));
+const isFreeShipping = (item) => shippingCostOf(item) === 0;
+
 export default function Search() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
@@ -16,6 +45,8 @@ export default function Search() {
   // Filter state
   const [selectedConditions, setSelectedConditions] = useState([]);
   const [selectedFormats, setSelectedFormats] = useState([]);
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectedDelivery, setSelectedDelivery] = useState([]);
   const [priceMin, setPriceMin] = useState('');
   const [priceMax, setPriceMax] = useState('');
   const [appliedPriceMin, setAppliedPriceMin] = useState('');
@@ -38,6 +69,16 @@ export default function Search() {
     );
   };
 
+  const toggleBrand = (brand) => {
+    setSelectedBrands(prev =>
+      prev.includes(brand) ? prev.filter(b => b !== brand) : [...prev, brand]);
+  };
+
+  const toggleDelivery = (opt) => {
+    setSelectedDelivery(prev =>
+      prev.includes(opt) ? prev.filter(d => d !== opt) : [...prev, opt]);
+  };
+
   const handleApplyPrice = () => {
     setAppliedPriceMin(priceMin);
     setAppliedPriceMax(priceMax);
@@ -46,6 +87,8 @@ export default function Search() {
   const handleClearFilters = () => {
     setSelectedConditions([]);
     setSelectedFormats([]);
+    setSelectedBrands([]);
+    setSelectedDelivery([]);
     setPriceMin('');
     setPriceMax('');
     setAppliedPriceMin('');
@@ -71,6 +114,8 @@ export default function Search() {
                             (selectedFormats.includes('Buy It Now') && (item.type === 'fixed' || item.buyItNowPrice != null));
         if (!formatMatch) return false;
       }
+      if (selectedBrands.length > 0 && !selectedBrands.includes(brandOf(item))) return false;
+      if (selectedDelivery.includes('free') && !isFreeShipping(item)) return false;
       const effectivePrice = item.type === 'auction' ? item.currentBid : (item.price || item.buyItNowPrice);
       if (appliedPriceMin !== '' && !isNaN(parseFloat(appliedPriceMin)) && effectivePrice < parseFloat(appliedPriceMin)) return false;
       if (appliedPriceMax !== '' && !isNaN(parseFloat(appliedPriceMax)) && effectivePrice > parseFloat(appliedPriceMax)) return false;
@@ -97,9 +142,22 @@ export default function Search() {
     }
 
     return filtered;
-  }, [query, category, sellerFilter, state.listings, selectedConditions, selectedFormats, appliedPriceMin, appliedPriceMax, sortBy]);
+  }, [query, category, sellerFilter, state.listings, selectedConditions, selectedFormats, selectedBrands, selectedDelivery, appliedPriceMin, appliedPriceMax, sortBy]);
 
-  const hasActiveFilters = selectedConditions.length > 0 || selectedFormats.length > 0 || appliedPriceMin !== '' || appliedPriceMax !== '';
+  // Brand facet options: unique brands across the active listings (in this
+  // category/query context), most-common first.
+  const brandOptions = useMemo(() => {
+    const counts = {};
+    state.listings.forEach(l => {
+      if (l.status !== 'active') return;
+      if (category && (l.category || '').toLowerCase() !== category.toLowerCase()) return;
+      const b = brandOf(l);
+      counts[b] = (counts[b] || 0) + 1;
+    });
+    return Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b));
+  }, [state.listings, category]);
+
+  const hasActiveFilters = selectedConditions.length > 0 || selectedFormats.length > 0 || selectedBrands.length > 0 || selectedDelivery.length > 0 || appliedPriceMin !== '' || appliedPriceMax !== '';
   const sellerUser = sellerFilter ? state.users.find(u => u.id === sellerFilter) : null;
 
   return (
@@ -151,6 +209,38 @@ export default function Search() {
                 </label>
               ))}
             </div>
+          </div>
+
+          {brandOptions.length > 1 && (
+            <div className="mb-6">
+              <h4 className="font-bold text-sm mb-2">Brand</h4>
+              <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                {brandOptions.map(b => (
+                  <label key={b} className="flex items-center gap-2 text-sm cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="rounded border-gray-300 accent-xbay-blue"
+                      checked={selectedBrands.includes(b)}
+                      onChange={() => toggleBrand(b)}
+                    />
+                    {b}
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="mb-6">
+            <h4 className="font-bold text-sm mb-2">Delivery Options</h4>
+            <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <input
+                type="checkbox"
+                className="rounded border-gray-300 accent-xbay-blue"
+                checked={selectedDelivery.includes('free')}
+                onChange={() => toggleDelivery('free')}
+              />
+              Free shipping
+            </label>
           </div>
 
           <div className="mb-6">
@@ -229,6 +319,18 @@ export default function Search() {
                   <button onClick={() => toggleFormat(f)} className="hover:text-blue-800 font-bold">&times;</button>
                 </span>
               ))}
+              {selectedBrands.map(b => (
+                <span key={b} className="inline-flex items-center gap-1 bg-blue-50 text-xbay-blue text-xs px-2 py-1 rounded-full">
+                  {b}
+                  <button onClick={() => toggleBrand(b)} className="hover:text-blue-800 font-bold">&times;</button>
+                </span>
+              ))}
+              {selectedDelivery.includes('free') && (
+                <span className="inline-flex items-center gap-1 bg-blue-50 text-xbay-blue text-xs px-2 py-1 rounded-full">
+                  Free shipping
+                  <button onClick={() => toggleDelivery('free')} className="hover:text-blue-800 font-bold">&times;</button>
+                </span>
+              )}
               {(appliedPriceMin !== '' || appliedPriceMax !== '') && (
                 <span className="inline-flex items-center gap-1 bg-blue-50 text-xbay-blue text-xs px-2 py-1 rounded-full">
                   ${appliedPriceMin || '0'} – ${appliedPriceMax || '∞'}
