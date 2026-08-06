@@ -213,8 +213,15 @@ export const Cart = () => {
                               aria-label="Scheduled delivery date"
                               min={new Date(gymNow(state)).toISOString().split('T')[0]}
                               value={item.scheduled_delivery || ''}
-                              onChange={(e) => setLineOptions(item.productId,
-                                lineOpts(item, { scheduled_delivery: e.target.value }))}
+                              onChange={(e) => {
+                                // The native `min` only soft-warns, so a date
+                                // typed before the gym's current day (2026-05-21)
+                                // is hard-rejected here — clamped up to today.
+                                const today = new Date(gymNow(state)).toISOString().split('T')[0];
+                                const picked = e.target.value;
+                                const val = picked && picked < today ? today : picked;
+                                setLineOptions(item.productId, lineOpts(item, { scheduled_delivery: val }));
+                              }}
                               className="border rounded px-2 py-1 text-sm focus:outline-none focus:border-xmazon-orange"
                             />
                           </div>
