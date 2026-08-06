@@ -26,6 +26,25 @@ export const DEMO_PROMOS = [
   { code: 'WELCOME5', discount_flat: 5 },
 ];
 
+// Subscribe & Save only makes sense for things you re-buy on a schedule
+// (consumables), not one-off durables like a laptop, a cat tree, or a blender.
+// Grocery is always consumable; a few categories are mixed, so within those we
+// look at the item itself — subscribe a fish-oil or dog-food, not a blood-
+// pressure monitor or a GPS collar.
+const _SUB_ALWAYS = new Set(['Grocery']);
+const _SUB_MAYBE = new Set(['Beauty', 'Health & Household', 'Office Products', 'Home & Kitchen', 'Pet Supplies']);
+const _CONSUMABLE_RX = /\b(vitamin|supplement|multivitamin|omega|fish oil|softgel|capsule|tablet|probiotic|protein|collagen|creatine|electrolyte|cream|lotion|serum|moisturizer|cleanser|sunscreen|shampoo|conditioner|body wash|soap|deodorant|toothpaste|floss|mouthwash|whitening|wipes|refill|pods?|k-?cup|coffee|espresso|tea|filters?|detergent|fabric softener|dryer sheet|paper towel|toilet paper|napkin|trash bag|storage bag|foil|batteries?|pens?|ink|toner|sticky note|post-it|notepad|diaper|formula|snack|granola|oats|sauce|salt|broth|spice|seasoning|dog food|cat food|pet food|kibble|treats?|jerky|dental chew|catnip|training bites|puppy|kitten|weight care|senior dog|senior cat|adult dog|adult cat|chili crisp|marinara|hot sauce)\b/i;
+const _DURABLE_RX = /\b(monitor|purifier|humidifier|shredder|stapler|scale|thermometer|dryer|straightener|trimmer|clipper|machine|maker|grinder|blender|kettle|mirror|toothbrush|candle|device|kit|organizer|notebook|dispenser|holder|case|lamp|set|mug|bottle|tumbler|tree|scratcher|feeder|collar|tracker|aquarium|robot|fountain|crate|leash|harness|goodie bone|chew toy|\btoy\b)\b/i;
+
+export const isSubscribable = (product) => {
+  if (!product) return false;
+  const cat = product.category || '';
+  if (_SUB_ALWAYS.has(cat)) return true;
+  if (!_SUB_MAYBE.has(cat)) return false;
+  const text = `${product.title || product.name || ''} ${product.description || ''} ${(product.bulletPoints || []).join(' ')}`;
+  return _CONSUMABLE_RX.test(text) && !_DURABLE_RX.test(text);
+};
+
 export const CATEGORIES = [
   "Electronics", "Books", "Home & Kitchen", "Fashion", "Toys & Games", "Beauty"
 ];

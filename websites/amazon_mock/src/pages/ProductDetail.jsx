@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
-import { gymNow, GYM_NOW_MS } from '../lib/mockData';
+import { gymNow, GYM_NOW_MS, isSubscribable } from '../lib/mockData';
 import { bridged, bridgeAct } from '../lib/bridge';
 import { Rating } from '../components/ui/Rating';
 import { Button } from '../components/ui/Button';
@@ -348,7 +348,9 @@ export const ProductDetail = () => {
                     </div>
                   )}
 
-                  {/* Subscribe & Save: a recurring order rather than a one-off. */}
+                  {/* Subscribe & Save: only for replenishable consumables (food,
+                      supplements, refills…), not one-off durables like a laptop. */}
+                  {isSubscribable(product) && (
                   <div className="mb-2 border rounded p-2 text-xs bg-gray-50">
                     <label className="block font-bold mb-1" htmlFor="sub-cadence">Subscribe &amp; Save</label>
                     <select
@@ -371,6 +373,7 @@ export const ProductDetail = () => {
                       Subscribe
                     </Button>
                   </div>
+                  )}
                   <Button variant="orange" className="w-full mb-4 text-sm" onClick={handleBuyNow}>Buy Now</Button>
                 </>
               )}
