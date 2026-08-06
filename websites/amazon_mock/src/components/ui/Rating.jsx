@@ -22,9 +22,12 @@ export const Rating = ({ value, count, size = 16, className, onCountClick }) => 
         <button
           type="button"
           onClick={onCountClick}
+          aria-label={`Rated ${Number(value || 0).toFixed(1)} out of 5`}
           className={`ml-2 text-sm text-xmazon-blue ${onCountClick ? 'hover:text-xmazon-darkYellow hover:underline cursor-pointer' : 'cursor-default'}`}
         >
-          {count.toLocaleString()}
+          {/* The number beside the stars is the RATING (e.g. 4.2), not the review
+              count — the count is shown separately as "N ratings" by callers. */}
+          {Number(value || 0).toFixed(1)}
         </button>
       )}
     </div>
