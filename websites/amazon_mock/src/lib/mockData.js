@@ -834,8 +834,8 @@ export const INITIAL_DATA = {
 
 // --- Session-based state isolation ---
 
-const BASE_STORAGE_KEY = 'amazon_mock_state';
-const BASE_INITIAL_KEY = 'amazon_mock_state_initialState';
+const BASE_STORAGE_KEY = 'shopgym_mock_state';
+const BASE_INITIAL_KEY = 'shopgym_mock_state_initialState';
 
 function storageKey(sid) { return sid ? `${BASE_STORAGE_KEY}_${sid}` : BASE_STORAGE_KEY; }
 function initialKey(sid) { return sid ? `${BASE_INITIAL_KEY}_${sid}` : BASE_INITIAL_KEY; }
@@ -852,7 +852,7 @@ export const fetchCustomState = async (sid = null) => {
     const url = sid ? `/state?sid=${encodeURIComponent(sid)}` : '/state';
     const resp = await fetch(url);
     if (resp.ok) { const d = await resp.json(); if (d.has_custom_state && d.stored_state) return d.stored_state; }
-  } catch(e) { console.warn('[amazon_mock] fetchCustomState error:', e); }
+  } catch(e) { console.warn('[shopgym_mock] fetchCustomState error:', e); }
   return null;
 };
 
@@ -863,7 +863,7 @@ export const saveState = (state, sid = null) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action: 'set_current', state })
-  }).catch(e => console.warn('[amazon_mock] saveState sync error:', e));
+  }).catch(e => console.warn('[shopgym_mock] saveState sync error:', e));
 };
 
 export const getInitialState = (sid = null) => {

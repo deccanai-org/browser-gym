@@ -15,7 +15,7 @@ const StoreContext = createContext();
 
 export const useStore = () => useContext(StoreContext);
 
-const BASE_INITIAL_KEY = 'amazon_mock_state_initialState';
+const BASE_INITIAL_KEY = 'shopgym_mock_state_initialState';
 
 export const StoreProvider = ({ children }) => {
   const [state, setState] = useState(() => ({ ...INITIAL_DATA, savedForLater: [] }));
@@ -104,16 +104,18 @@ export const StoreProvider = ({ children }) => {
       return;
     }
     setState(prev => {
+      // Never let the cart exceed a stock-tracked product's availability
+      // (null stockCount = unlimited). The engine enforces this in bridged mode.
+      const cap = (product.stockCount != null) ? product.stockCount : Infinity;
       const existing = prev.cart.find(item => item.productId === product.id);
       let newCart;
       if (existing) {
+        const q = Math.min(existing.quantity + quantity, cap);
         newCart = prev.cart.map(item =>
-          item.productId === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
+          item.productId === product.id ? { ...item, quantity: q } : item
         );
       } else {
-        newCart = [...prev.cart, { productId: product.id, quantity }];
+        newCart = [...prev.cart, { productId: product.id, quantity: Math.min(quantity, cap) }];
       }
       return { ...prev, cart: newCart };
     });
@@ -138,12 +140,17 @@ export const StoreProvider = ({ children }) => {
         .then(r => applyEngine(setState, r));
       return;
     }
-    setState(prev => ({
-      ...prev,
-      cart: prev.cart.map(item =>
-        item.productId === productId ? { ...item, quantity } : item
-      )
-    }));
+    setState(prev => {
+      const product = (prev.products || []).find(p => p.id === productId);
+      const cap = (product && product.stockCount != null) ? product.stockCount : Infinity;
+      const q = Math.min(quantity, cap);
+      return {
+        ...prev,
+        cart: prev.cart.map(item =>
+          item.productId === productId ? { ...item, quantity: q } : item
+        )
+      };
+    });
   };
 
   const toggleWishlist = (productId) => {
@@ -265,8 +272,11 @@ export const StoreProvider = ({ children }) => {
       });
       return {
         ...prev,
-        products: (prev.products || []).map(p => ordered[p.id]
-          ? { ...p, stockCount: Math.max(0, (p.stockCount ?? 0) - ordered[p.id]) }
+        // Only decrement products that TRACK stock (a numeric stockCount). A null
+        // stockCount means "unlimited" — leave it untouched, or every order would
+        // wrongly drop the whole no-limit catalog to 0.
+        products: (prev.products || []).map(p => (ordered[p.id] && p.stockCount != null)
+          ? { ...p, stockCount: Math.max(0, p.stockCount - ordered[p.id]) }
           : p),
         orders: [newOrder, ...prev.orders],
         cart: []

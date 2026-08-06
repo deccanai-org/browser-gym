@@ -405,7 +405,7 @@ export const ProductDetail = () => {
                   </tr>
                 ))}
                 <tr className={Object.keys(product.specs).length % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                  <td className="py-2 px-4 font-bold text-gray-700 w-48">ASIN</td>
+                  <td className="py-2 px-4 font-bold text-gray-700 w-48">Product ID</td>
                   <td className="py-2 px-4 text-gray-800 font-mono text-xs">{product.id.toUpperCase()}</td>
                 </tr>
               </tbody>
