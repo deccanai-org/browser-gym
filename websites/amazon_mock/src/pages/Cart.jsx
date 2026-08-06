@@ -64,7 +64,7 @@ export const Cart = () => {
   const enginePromoCode = enginePromoRaw
     ? (typeof enginePromoRaw === 'string' ? enginePromoRaw : (enginePromoRaw.code || null))
     : null;
-  const effectivePromo = bridged() ? enginePromoCode : appliedPromo;
+  const effectivePromo = bridged() ? enginePromoCode : (state.appliedPromoCode || null);
   const promoDef = effectivePromo
     ? promoDefs.find(p => (p.code || '').toUpperCase() === effectivePromo.toUpperCase())
     : null;
@@ -95,11 +95,10 @@ export const Cart = () => {
         else { setAppliedPromo(null); setPromoError('That code is not valid for this cart.'); }
       });
     } else {
-      // Demo (no engine): validate against the known promo list; reject unknown
-      // codes instead of silently "applying" one that never changes the price.
-      const def = (DEMO_PROMOS || []).find(p => (p.code || '').toUpperCase() === code.toUpperCase());
-      if (def) { setAppliedPromo(code); setPromoError(''); }
-      else { setAppliedPromo(null); setPromoError('That code is not valid.'); }
+      // Demo (no engine): applyPromo validated the code and, if valid, stored it
+      // in global state so Checkout applies the same discount. Reject unknowns.
+      if (res && res.ok) { setPromoError(''); }
+      else { setPromoError('That code is not valid.'); }
     }
   };
 

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import { INITIAL_DATA, getSessionId, fetchCustomState, saveState, initializeData, gymNow } from '../lib/mockData';
+import { INITIAL_DATA, getSessionId, fetchCustomState, saveState, initializeData, gymNow, DEMO_PROMOS } from '../lib/mockData';
 import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
 
 const APP = 'shop'; // bridge engine app key for this mock
@@ -279,7 +279,8 @@ export const StoreProvider = ({ children }) => {
           ? { ...p, stockCount: Math.max(0, p.stockCount - ordered[p.id]) }
           : p),
         orders: [newOrder, ...prev.orders],
-        cart: []
+        cart: [],
+        appliedPromoCode: null
       };
     });
     return newOrder.id;
@@ -482,8 +483,13 @@ export const StoreProvider = ({ children }) => {
       return bridgeAct('shop.apply_promo', { code })
         .then(r => { applyEngine(setState, r); return r; });
     }
-    // legacy: promo is handled locally in the Cart component's UI state
-    return null;
+    // Demo (no engine): validate against the known promo list and store the
+    // applied code in GLOBAL state, so Checkout (a separate component) applies
+    // the SAME discount the Cart shows instead of taxing the full subtotal.
+    const norm = (code || '').trim().toUpperCase();
+    const def = DEMO_PROMOS.find(p => (p.code || '').toUpperCase() === norm);
+    if (def) setState(prev => ({ ...prev, appliedPromoCode: def.code }));
+    return { ok: !!def, code: def ? def.code : null };
   };
 
   // Helper to get diff for /go endpoint

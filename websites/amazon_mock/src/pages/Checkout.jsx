@@ -4,7 +4,7 @@ import { useStore } from '../context/StoreContext';
 import { Button } from '../components/ui/Button';
 import { MapPin, CreditCard, Check } from 'lucide-react';
 import { bridged, bridgeAct } from '../lib/bridge';
-import { gymNow } from '../lib/mockData';
+import { gymNow, DEMO_PROMOS } from '../lib/mockData';
 
 export const Checkout = () => {
   const { state, placeOrder } = useStore();
@@ -38,11 +38,14 @@ export const Checkout = () => {
   // code is applied and how much it takes off (_gym_cart_detail.applied_promo +
   // _gym_promotions). Ignoring it and taxing the full subtotal made Checkout
   // quote a higher total than the Cart for the same cart.
-  const promoDefs = state._gym_promotions || [];
+  const promoDefs = (state._gym_promotions && state._gym_promotions.length) ? state._gym_promotions : DEMO_PROMOS;
   const enginePromoRaw = state._gym_cart_detail && state._gym_cart_detail.applied_promo;
-  const appliedPromoCode = enginePromoRaw
+  const enginePromoCode = enginePromoRaw
     ? (typeof enginePromoRaw === 'string' ? enginePromoRaw : (enginePromoRaw.code || null))
     : null;
+  // Bridged: the engine owns the applied code. Demo: it's in global state
+  // (set by applyPromo), so Checkout charges the same discount the Cart showed.
+  const appliedPromoCode = bridged() ? enginePromoCode : (state.appliedPromoCode || null);
   const promoDef = appliedPromoCode
     ? promoDefs.find(p => (p.code || '').toUpperCase() === appliedPromoCode.toUpperCase())
     : null;
