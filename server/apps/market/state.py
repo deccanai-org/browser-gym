@@ -66,6 +66,27 @@ class MarketCoupon:
 
 
 @dataclass
+class MarketAddress:
+    id: str
+    full_name: str
+    street: str
+    city: str
+    state: str
+    zip: str
+    country: str = "United States"
+    is_default: bool = False
+
+
+@dataclass
+class MarketPayment:
+    id: str
+    brand: str            # "Visa", "Mastercard", "PayPal"
+    last4: str = ""
+    expiry: str = ""
+    is_default: bool = False
+
+
+@dataclass
 class MarketOrder:
     id: str
     items: list[MarketCartItem]
@@ -75,6 +96,11 @@ class MarketOrder:
     total: float
     placed_at: str
     coupon_code: str | None = None
+    # The address + payment chosen at checkout (recorded on the order so a
+    # verifier can confirm the order actually shipped/charged to a selection,
+    # not to nothing). Default to the account defaults when none is passed.
+    shipping_address_id: str | None = None
+    payment_id: str | None = None
 
 
 @dataclass
@@ -84,6 +110,8 @@ class MarketState:
     cart: MarketCart = field(default_factory=MarketCart)
     orders: dict[str, MarketOrder] = field(default_factory=dict)
     coupons: dict[str, MarketCoupon] = field(default_factory=dict)
+    addresses: dict[str, MarketAddress] = field(default_factory=dict)
+    payments: dict[str, MarketPayment] = field(default_factory=dict)
     delivery_fee: float = 5.99
     free_delivery_over: float = 35.0   # free delivery when SUBTOTAL >= this
     _next: int = 1
@@ -96,6 +124,18 @@ class MarketState:
 
     def product(self, product_id: str) -> MarketProduct | None:
         return self.products.get(product_id)
+
+    def default_address_id(self) -> str | None:
+        for a in self.addresses.values():
+            if a.is_default:
+                return a.id
+        return next(iter(self.addresses), None)
+
+    def default_payment_id(self) -> str | None:
+        for p in self.payments.values():
+            if p.is_default:
+                return p.id
+        return next(iter(self.payments), None)
 
     def delivery_for(self, subtotal: float) -> float:
         """Delivery is charged on the SUBTOTAL (pre-discount), free over the
@@ -125,6 +165,10 @@ class MarketState:
             "cart_subtotal": self.cart.subtotal(),
             "orders": {k: asdict(v) for k, v in self.orders.items()},
             "coupons": {k: asdict(v) for k, v in self.coupons.items()},
+            "addresses": {k: asdict(v) for k, v in self.addresses.items()},
+            "payments": {k: asdict(v) for k, v in self.payments.items()},
+            "default_address_id": self.default_address_id(),
+            "default_payment_id": self.default_payment_id(),
             "delivery_fee": self.delivery_fee,
             "free_delivery_over": self.free_delivery_over,
         }
@@ -169,4 +213,14 @@ def make_marketstate(seed: int = 0) -> MarketState:
     m.coupons["VALUE10"] = MarketCoupon(
         code="VALUE10", percent_off=0.10, min_subtotal=0.0,
         description="10% off your ValueMart order")
+    # A shipping address + payment methods on file, so checkout has a real
+    # address/payment selection (matching ShopGym's Alice) instead of nothing.
+    m.addresses["vm_addr_home"] = MarketAddress(
+        id="vm_addr_home", full_name="Alice Anderson", street="100 Park Avenue, Apt 4B",
+        city="Brooklyn", state="NY", zip="11201", country="United States", is_default=True)
+    m.payments["vm_pay_visa"] = MarketPayment(
+        id="vm_pay_visa", brand="Visa", last4="4242", expiry="08/27", is_default=True)
+    m.payments["vm_pay_mc"] = MarketPayment(
+        id="vm_pay_mc", brand="Mastercard", last4="5309", expiry="03/26")
+    m.payments["vm_pay_paypal"] = MarketPayment(id="vm_pay_paypal", brand="PayPal")
     return m

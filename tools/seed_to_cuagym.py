@@ -525,17 +525,36 @@ def transform_market(m: dict) -> dict:
             "category": _EBAY_CAT.get((p.get("category") or "").lower(), "Other"),
         })
     cart = [it.get("product_id") for it in ((m.get("cart") or {}).get("items") or []) if it.get("product_id")]
+    # Ship-to addresses + payment methods on file, so ValueMart checkout has a
+    # real address/payment selection (was: only a cosmetic country dropdown).
+    addresses = [{"id": a.get("id"), "fullName": a.get("full_name"), "street": a.get("street"),
+                  "city": a.get("city"), "state": a.get("state"), "zip": a.get("zip"),
+                  "country": a.get("country"), "isDefault": bool(a.get("is_default"))}
+                 for a in (m.get("addresses") or {}).values()]
+    payment_methods = [{"id": p.get("id"), "brand": p.get("brand"), "last4": p.get("last4"),
+                        "expiry": p.get("expiry"),
+                        "label": (f"{p.get('brand')} •••• {p.get('last4')}" if p.get("last4") else p.get("brand")),
+                        "isDefault": bool(p.get("is_default"))}
+                       for p in (m.get("payments") or {}).values()]
     orders = []
     for oid, o in (m.get("orders") or {}).items():
         pids = [it.get("product_id") for it in (o.get("items") or [])]
         orders.append({"id": oid, "buyerId": buyer_id, "sellerId": seller_id,
                        "items": pids, "listingId": pids[0] if pids else None,
                        "amount": o.get("total"), "total": o.get("total"),
+                       "shippingAddressId": o.get("shipping_address_id"), "paymentId": o.get("payment_id"),
                        "status": "completed", "created": end_ms, "date": end_ms})
     amb_listings, amb_sellers = _amb.build_market(_svg_tile)   # browse-only filler
     listings = listings + amb_listings
     return {"currentUser": buyer, "users": [buyer, seller] + amb_sellers, "listings": listings, "orders": orders,
             "messages": [], "notifications": [], "feedbacks": [], "cart": cart,
+            "addresses": addresses, "paymentMethods": payment_methods,
+            # derive the default from the isDefault flags (the world dict is asdict(),
+            # which carries the raw fields but not the computed default_*_id helpers)
+            "defaultAddressId": next((a["id"] for a in addresses if a.get("isDefault")),
+                                     (addresses[0]["id"] if addresses else None)),
+            "defaultPaymentId": next((p["id"] for p in payment_methods if p.get("isDefault")),
+                                     (payment_methods[0]["id"] if payment_methods else None)),
             # the applied coupon so Cart.jsx can show the "coupon applied" banner +
             # discount (the engine stores + charges it, but it wasn't projected).
             "coupon": (m.get("cart") or {}).get("applied_coupon"),

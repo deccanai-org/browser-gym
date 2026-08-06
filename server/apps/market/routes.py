@@ -139,9 +139,9 @@ async def remove_coupon(request: Request):
 
 
 @router.post("/checkout")
-async def checkout(request: Request):
+async def checkout(request: Request, address_id: str = Form(""), payment_id: str = Form("")):
     world = _deps["get_world"]()
-    r = M.place_order(world)
+    r = M.place_order(world, address_id=address_id or None, payment_id=payment_id or None)
     if r.get("ok"):
         _deps["flash"](world.shop, "success",
                        f"ValueMart order placed! Total ${r['total']:.2f}.")

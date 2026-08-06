@@ -106,7 +106,7 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "market.clear_cart":     ("POST", "/market/cart/clear",  ()),
     "market.apply_coupon":   ("POST", "/market/apply-coupon", ("code",)),
     "market.remove_coupon":  ("POST", "/market/remove-coupon", ()),
-    "market.checkout":       ("POST", "/market/checkout",    ()),
+    "market.checkout":       ("POST", "/market/checkout",    ("address_id", "payment_id")),
     # food (Uber Eats)
     "food.add_to_cart":      ("POST", "/food/cart/add",      ("restaurant_id", "dish_id", "quantity", "note")),
     "food.set_qty":          ("POST", "/food/cart/set_qty",  ("dish_id", "quantity")),

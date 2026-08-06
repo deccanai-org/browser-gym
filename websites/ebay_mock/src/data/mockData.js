@@ -150,7 +150,20 @@ export const INITIAL_STATE = {
   notifications: [],
   feedbacks: [],
   cart: [],
-  coupon: null
+  cartQty: {},
+  coupon: null,
+  // Ship-to addresses + payment methods on file, so checkout has a real
+  // address/payment selection (demo mode; bridged gets these from the engine).
+  addresses: [
+    { id: 'vm_addr_home', fullName: 'Alice Anderson', street: '100 Park Avenue, Apt 4B', city: 'Brooklyn', state: 'NY', zip: '11201', country: 'United States', isDefault: true },
+  ],
+  paymentMethods: [
+    { id: 'vm_pay_visa', brand: 'Visa', last4: '4242', expiry: '08/27', label: 'Visa •••• 4242', isDefault: true },
+    { id: 'vm_pay_mc', brand: 'Mastercard', last4: '5309', expiry: '03/26', label: 'Mastercard •••• 5309', isDefault: false },
+    { id: 'vm_pay_paypal', brand: 'PayPal', last4: '', expiry: '', label: 'PayPal', isDefault: false },
+  ],
+  defaultAddressId: 'vm_addr_home',
+  defaultPaymentId: 'vm_pay_visa'
 };
 
 // --- Session-based state isolation ---

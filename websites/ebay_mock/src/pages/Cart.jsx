@@ -11,6 +11,15 @@ export default function Cart() {
   const [couponMsg, setCouponMsg] = useState('');
   const [checkedOut, setCheckedOut] = useState(false);
 
+  // Ship-to address + payment method (from the engine in bridged mode, from the
+  // seed in demo). Default to the account defaults.
+  const addresses = state.addresses || [];
+  const paymentMethods = state.paymentMethods || [];
+  const [selectedAddressId, setSelectedAddressId] = useState(
+    state.defaultAddressId || (addresses[0] && addresses[0].id) || '');
+  const [selectedPaymentId, setSelectedPaymentId] = useState(
+    state.defaultPaymentId || (paymentMethods[0] && paymentMethods[0].id) || '');
+
   const cartIds = state.cart || [];
   const cartListings = cartIds
     .map(id => state.listings.find(l => l.id === id))
@@ -67,7 +76,7 @@ export default function Cart() {
   };
 
   const handleCheckout = () => {
-    checkout();
+    checkout(selectedAddressId, selectedPaymentId);
     setCheckedOut(true);
     setTimeout(() => navigate('/dashboard'), 1200);
   };
@@ -229,6 +238,40 @@ export default function Cart() {
               <span>Total</span>
               <span>${total.toFixed(2)}</span>
             </div>
+
+            {/* Ship-to address + payment method selection (was missing entirely) */}
+            {addresses.length > 0 && (
+              <div className="mb-3">
+                <label className="block text-xs font-bold text-gray-600 mb-1">Ship to</label>
+                <select
+                  aria-label="Shipping address"
+                  value={selectedAddressId}
+                  onChange={e => setSelectedAddressId(e.target.value)}
+                  className="w-full text-sm border border-gray-300 rounded px-2 py-2 focus:outline-none focus:ring-1 focus:ring-xbay-blue"
+                >
+                  {addresses.map(a => (
+                    <option key={a.id} value={a.id}>
+                      {a.fullName} — {a.street}, {a.city} {a.state} {a.zip}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+            {paymentMethods.length > 0 && (
+              <div className="mb-4">
+                <label className="block text-xs font-bold text-gray-600 mb-1">Pay with</label>
+                <select
+                  aria-label="Payment method"
+                  value={selectedPaymentId}
+                  onChange={e => setSelectedPaymentId(e.target.value)}
+                  className="w-full text-sm border border-gray-300 rounded px-2 py-2 focus:outline-none focus:ring-1 focus:ring-xbay-blue"
+                >
+                  {paymentMethods.map(p => (
+                    <option key={p.id} value={p.id}>{p.label || p.brand}</option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             {checkedOut ? (
               <div className="text-center text-green-700 font-bold py-2 flex items-center justify-center gap-2">

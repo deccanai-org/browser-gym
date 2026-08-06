@@ -83,7 +83,8 @@ def remove_coupon(market: MarketState) -> dict[str, Any]:
     return {"ok": True}
 
 
-def place_order(world: "WorldState") -> dict[str, Any]:
+def place_order(world: "WorldState", address_id: str | None = None,
+                payment_id: str | None = None) -> dict[str, Any]:
     """Place the current ValueMart cart as an order, then emit
     MarketOrderPlaced. Takes the WHOLE world (not just MarketState) because
     emitting a cross-app event needs the shared event log; it still only WRITES
@@ -91,6 +92,15 @@ def place_order(world: "WorldState") -> dict[str, Any]:
     market = world.market
     if not market.cart.items:
         return {"ok": False, "error": "your ValueMart cart is empty"}
+    # Ship-to + payment: use the caller's choice, else the account defaults.
+    # Validate only when the store actually has addresses/payments on file, so a
+    # world without them still checks out.
+    addr_id = address_id or market.default_address_id()
+    pay_id = payment_id or market.default_payment_id()
+    if market.addresses and addr_id not in market.addresses:
+        return {"ok": False, "error": "unknown shipping address"}
+    if market.payments and pay_id not in market.payments:
+        return {"ok": False, "error": "unknown payment method"}
     subtotal = market.cart.subtotal()
     q = market.quote(subtotal=subtotal, coupon_code=market.cart.applied_coupon)
     oid = market.new_order_id()
@@ -98,7 +108,8 @@ def place_order(world: "WorldState") -> dict[str, Any]:
         id=oid, items=list(market.cart.items), subtotal=q["subtotal"],
         discount=q["discount"], delivery_fee=q["delivery_fee"],
         total=q["total"], placed_at=f"{SEED_DATE}T12:30:00",
-        coupon_code=market.cart.applied_coupon)
+        coupon_code=market.cart.applied_coupon,
+        shipping_address_id=addr_id, payment_id=pay_id)
     market.orders[oid] = order
     clear_cart(market)
 
@@ -112,6 +123,8 @@ def place_order(world: "WorldState") -> dict[str, Any]:
             "delivery_fee": q["delivery_fee"],
             "total": q["total"],
             "coupon_code": order.coupon_code,
+            "shipping_address_id": order.shipping_address_id,
+            "payment_id": order.payment_id,
             "items": [{"name": i.name, "qty": i.quantity,
                        "product_id": i.product_id} for i in order.items],
         })

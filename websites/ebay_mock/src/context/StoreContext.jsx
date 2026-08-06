@@ -379,6 +379,9 @@ function reducer(state, action) {
       const cart = state.cart || [];
       if (cart.length === 0) return state;
       const userId = state.currentUser.id;
+      // Ship-to + payment chosen at checkout; fall back to the account defaults.
+      const addrId = (action.payload && action.payload.addressId) || state.defaultAddressId || null;
+      const payId = (action.payload && action.payload.paymentId) || state.defaultPaymentId || null;
       const newOrders = [];
       const newListings = state.listings.map(l => {
         if (!cart.includes(l.id)) return l;
@@ -388,6 +391,8 @@ function reducer(state, action) {
           buyerId: userId,
           sellerId: l.sellerId,
           amount: l.buyItNowPrice || l.price || l.currentBid || 0,
+          shippingAddressId: addrId,
+          paymentId: payId,
           date: Date.now(),
           status: 'paid'
         });
@@ -613,12 +618,12 @@ export const StoreProvider = ({ children }) => {
     dispatch({ type: ACTIONS.REMOVE_COUPON });
   };
 
-  const checkout = () => {
+  const checkout = (addressId, paymentId) => {
     if (bridged()) {
-      return bridgeAct('market.checkout', {})
+      return bridgeAct('market.checkout', { address_id: addressId, payment_id: paymentId })
         .then(r => applyEngine(dispatch, r));
     }
-    dispatch({ type: ACTIONS.CHECKOUT });
+    dispatch({ type: ACTIONS.CHECKOUT, payload: { addressId, paymentId } });
     return Promise.resolve();
   };
 
