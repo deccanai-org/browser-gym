@@ -58,6 +58,8 @@ python3 merge_sol_breakers.py
 **Live tab:** open the site → sidebar pool **Eligible Suite** / **Eligible Task Suite**.
 Direct pool is client-side (`localStorage` `bg_annot_pool=eligible_task_suite`).
 
+**Deploy:** BrowserGym-Tasks `main` @ `d1528f7` (pushed; Pages via `.github/workflows/pages.yml`).
+
 ---
 
 ## Non-goals
