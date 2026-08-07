@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { bridged } from '../lib/bridge';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistance } from 'date-fns';
 
 export default function ListingCard({ listing }) {
   const { state, toggleWatchlist } = useStore();
@@ -13,7 +13,8 @@ export default function ListingCard({ listing }) {
   // just because the real clock is months past the seeded end times.
   const now = state._gym_now || Date.now();
   const ended = !(listing.endTime > now);
-  const timeLeft = ended ? 'Ended' : formatDistanceToNow(listing.endTime);
+  // Same clock for countdown text (formatDistanceToNow always used wall clock).
+  const timeLeft = ended ? 'Ended' : formatDistance(listing.endTime, now);
 
   return (
     <div className="group relative bg-white rounded-lg p-4 hover:shadow-lg transition-shadow border border-transparent hover:border-gray-200">

@@ -908,7 +908,14 @@ export function createDefaultData() {
 // cache was returned without being checked, and nothing on screen said so.
 const seedFingerprint = (s) => {
   const p = (s && s.products) || [];
-  return `${p.length}:${p[0] ? p[0].id : ''}:${p.length ? p[p.length - 1].id : ''}`;
+  // Include a content hash so category/label fixes invalidate stale localStorage
+  // caches that share the same id span (previously only length+first+last).
+  let catSig = 0;
+  for (let i = 0; i < p.length; i++) {
+    const c = p[i].category || '';
+    for (let j = 0; j < c.length; j++) catSig = (catSig * 31 + c.charCodeAt(j)) >>> 0;
+  }
+  return `${p.length}:${p[0] ? p[0].id : ''}:${p.length ? p[p.length - 1].id : ''}:c${catSig}`;
 };
 
 export const initializeData = (sid = null, customState = null) => {

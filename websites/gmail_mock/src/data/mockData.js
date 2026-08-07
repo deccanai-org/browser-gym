@@ -62,6 +62,15 @@ const seedFingerprint = (s) => {
   return `${em.length}:${first}:${last}`;
 };
 
+/** Wipe this session's persisted mailbox so the next load re-seeds. */
+export const resetSession = (sid = null) => {
+  try {
+    localStorage.removeItem(storageKey(sid));
+    localStorage.removeItem(initialKeyFn(sid));
+    sessionStorage.removeItem('mock_sid');
+  } catch (_) { /* storage unavailable */ }
+};
+
 export const initializeData = (sid = null, customState = null) => {
   const sk = storageKey(sid);
   const ik = initialKeyFn(sid);

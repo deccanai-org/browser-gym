@@ -30,10 +30,11 @@ export const Checkout = () => {
   const selectedAddress = addresses.find(a => a.id === selectedAddressId) || addresses[0] || state.user.address;
   const selectedPm = paymentMethods.find(p => p.id === selectedPmId) || paymentMethods[0] || state.user.paymentMethod;
 
-  const subtotal = state.cart.reduce((acc, item) => {
+  const money = (n) => Math.round((Number(n) || 0) * 100) / 100;
+  const subtotal = money(state.cart.reduce((acc, item) => {
     const product = state.products.find(p => p.id === item.productId);
     return acc + (product ? product.price * item.quantity : 0);
-  }, 0);
+  }, 0));
   // Mirror the Cart's promo math so the two pages agree: the engine owns which
   // code is applied and how much it takes off (_gym_cart_detail.applied_promo +
   // _gym_promotions). Ignoring it and taxing the full subtotal made Checkout
@@ -49,20 +50,20 @@ export const Checkout = () => {
   const promoDef = appliedPromoCode
     ? promoDefs.find(p => (p.code || '').toUpperCase() === appliedPromoCode.toUpperCase())
     : null;
-  const discount = !appliedPromoCode ? 0
+  const discount = money(!appliedPromoCode ? 0
     : promoDef
       ? (promoDef.discount_flat ? Math.min(promoDef.discount_flat, subtotal) : subtotal * (promoDef.discount_pct || 0))
-      : subtotal * 0.10; // demo fallback, same as the Cart
-  const discountedSubtotal = subtotal - discount;
+      : subtotal * 0.10); // demo fallback, same as the Cart
+  const discountedSubtotal = money(subtotal - discount);
   // Mirror the engine's place_order math so the quoted total == the amount
   // actually charged (was: 8% tax, $0 shipping, no gift-wrap fee).
   const SHIPPING_FLAT = 5.99;
   const GIFT_WRAP_FEE = 4.99;
   const shipping = subtotal > 0 ? SHIPPING_FLAT : 0;
   const giftWrapCount = state.cart.filter(i => i.gift_wrap).length;
-  const giftWrapFee = giftWrapCount * GIFT_WRAP_FEE;
-  const tax = discountedSubtotal * 0.085;
-  const total = discountedSubtotal + shipping + giftWrapFee + tax;
+  const giftWrapFee = money(giftWrapCount * GIFT_WRAP_FEE);
+  const tax = money(discountedSubtotal * 0.085);
+  const total = money(discountedSubtotal + shipping + giftWrapFee + tax);
 
   const handlePlaceOrder = () => {
     setLoading(true);

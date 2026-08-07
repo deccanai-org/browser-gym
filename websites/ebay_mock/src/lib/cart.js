@@ -83,10 +83,12 @@ const DEFAULT_DELIVERY_FEE = 5.99;
 const DEFAULT_FREE_DELIVERY_OVER = 35.0;
 
 export function deliveryFor(state, subtotal) {
+  const s = Number(subtotal) || 0;
+  if (s <= 0) return 0;
   const fee = (state && state.deliveryFee != null) ? Number(state.deliveryFee) : DEFAULT_DELIVERY_FEE;
   const over = (state && state.freeDeliveryOver != null)
     ? Number(state.freeDeliveryOver) : DEFAULT_FREE_DELIVERY_OVER;
-  return subtotal >= over ? 0 : money(fee);
+  return s >= over ? 0 : money(fee);
 }
 
 // The one pricing function: subtotal - discount + delivery, matching the

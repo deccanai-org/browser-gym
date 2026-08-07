@@ -37,7 +37,7 @@ export const Wishlist = () => {
               <span>Your Lists</span>
             </div>
             <h1 className="text-2xl font-medium">Your Wish List</h1>
-            <span className="text-gray-500 text-sm">{wishlistItems.length} items</span>
+            <span className="text-gray-500 text-sm">{wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'}</span>
           </div>
           {wishlistItems.length > 0 && (
             <div className="flex flex-col sm:flex-row gap-2 sm:items-center">

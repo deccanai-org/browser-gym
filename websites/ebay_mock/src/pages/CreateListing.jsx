@@ -233,7 +233,7 @@ export default function CreateListing() {
             <option value="Motors">Motors</option>
             <option value="Collectibles">Collectibles</option>
             <option value="Sports">Sports</option>
-            <option value="Home">Home &amp; Garden</option>
+            <option value="Home & Garden">Home &amp; Garden</option>
             <option value="Books">Books</option>
             <option value="Cameras">Cameras</option>
             <option value="Other">Other</option>

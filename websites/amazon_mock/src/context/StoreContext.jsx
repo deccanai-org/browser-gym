@@ -98,26 +98,49 @@ export const StoreProvider = ({ children }) => {
 
   // Actions
   const addToCart = (product, quantity = 1) => {
+    // Refuse out-of-stock / zero-stock products (including listing cards).
+    if (product && (product.inStock === false || product.stockCount === 0)) return;
     if (bridged()) {
       bridgeAct('shop.add_to_cart', { product_id: product.id, quantity })
         .then(r => applyEngine(setState, r));
       return;
     }
     setState(prev => {
+      // Gift cards are synthetic products not in the catalog — register them so
+      // cart/checkout can resolve title + price (otherwise they render blank/$0).
+      let products = prev.products || [];
+      if (product && product.id && !products.some(p => p.id === product.id)) {
+        products = [...products, {
+          ...product,
+          inStock: true,
+          stockCount: null,
+          prime: false,
+          rating: product.rating ?? 0,
+          reviewCount: product.reviewCount ?? 0,
+        }];
+      }
       // Never let the cart exceed a stock-tracked product's availability
       // (null stockCount = unlimited). The engine enforces this in bridged mode.
       const cap = (product.stockCount != null) ? product.stockCount : Infinity;
+      if (cap <= 0) return prev;
       const existing = prev.cart.find(item => item.productId === product.id);
       let newCart;
       if (existing) {
         const q = Math.min(existing.quantity + quantity, cap);
+        if (q <= 0) return prev;
         newCart = prev.cart.map(item =>
           item.productId === product.id ? { ...item, quantity: q } : item
         );
       } else {
-        newCart = [...prev.cart, { productId: product.id, quantity: Math.min(quantity, cap) }];
+        const q = Math.min(quantity, cap);
+        if (q <= 0) return prev;
+        newCart = [...prev.cart, { productId: product.id, quantity: q }];
       }
-      return { ...prev, cart: newCart };
+      const next = { ...prev, products, cart: newCart };
+      // Persist immediately so a hard navigation (or QA full-page goto) can't
+      // race the React useEffect save and drop the just-added line.
+      try { saveState(next, sidRef.current); } catch (_) { /* ignore */ }
+      return next;
     });
   };
 

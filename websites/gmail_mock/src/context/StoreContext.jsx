@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
-import { INITIAL_STATE, DEFAULT_SETTINGS, getSessionId, fetchCustomState, saveState, initializeData } from '../data/mockData';
+import { INITIAL_STATE, DEFAULT_SETTINGS, getSessionId, fetchCustomState, saveState, initializeData, resetSession } from '../data/mockData';
 import { generateId, formatDate } from '../lib/utils';
 import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
 
@@ -44,7 +44,9 @@ export const StoreProvider = ({ children }) => {
   const [composePreFill, setComposePreFill] = useState(null);
   const [toast, setToast] = useState(null);
   const toastTimerRef = useRef(null);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  );
   const [focusedEmailIndex, setFocusedEmailIndex] = useState(-1);
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
 
@@ -230,10 +232,13 @@ export const StoreProvider = ({ children }) => {
         );
       }
 
-      showToast(
-        trashIds.length > 0 ? 'Conversation deleted forever' : 'Conversation moved to Trash',
-        () => setState(s => ({ ...s, emails: snapshot }))
-      );
+      // Deleting from Trash is permanent, so there is nothing to undo — offering
+      // an Undo that restores the message contradicts "cannot be recovered".
+      if (trashIds.length > 0) {
+        showToast('Conversation deleted forever', null);
+      } else {
+        showToast('Conversation moved to Trash', () => setState(s => ({ ...s, emails: snapshot })));
+      }
 
       return { ...prev, emails: newEmails };
     });
@@ -254,6 +259,28 @@ export const StoreProvider = ({ children }) => {
       return {
         ...prev,
         emails: prev.emails.map(e => emailIds.includes(e.id) ? { ...e, folder: 'all-mail' } : e)
+      };
+    });
+    setSelectedEmails([]);
+  }
+
+  // Archive's inverse. Archived mail lives in all-mail with no way back to the
+  // inbox: the hover action there was another "Archive" button, which was a
+  // no-op on an already-archived conversation.
+  const unarchiveEmails = (emailIds) => {
+    if (bridged()) {
+      Promise.all((emailIds || []).map(id =>
+        bridgeAct('mail.set_folder', { email_id: id, folder: 'inbox' })))
+        .then(rs => applyEngine(setState, rs[rs.length - 1]));
+      showToast('Conversation moved to Inbox');
+      return;
+    }
+    setState(prev => {
+      const snapshot = prev.emails;
+      showToast('Conversation moved to Inbox', () => setState(s => ({ ...s, emails: snapshot })));
+      return {
+        ...prev,
+        emails: prev.emails.map(e => emailIds.includes(e.id) ? { ...e, folder: 'inbox' } : e)
       };
     });
     setSelectedEmails([]);
@@ -296,7 +323,7 @@ export const StoreProvider = ({ children }) => {
       to: parseRecipients(emailData.to),
       cc: parseRecipients(emailData.cc),
       bcc: parseRecipients(emailData.bcc),
-      subject: emailData.subject,
+      subject: emailData.subject || '(no subject)',
       body: emailData.body,
       snippet: emailData.body.replace(/<[^>]*>?/gm, '').substring(0, 100),
       timestamp: new Date().toISOString(),
@@ -434,6 +461,33 @@ export const StoreProvider = ({ children }) => {
   const toggleRead = (emailId, status) => {
       updateEmail(emailId, { read: status });
   }
+
+  // Read state belongs to the conversation, not one message in it: marking a
+  // 3-message thread unread left the other two read, so the thread counted
+  // three times in the unread badges and re-read as unread only in part.
+  const markThreadsRead = (emailIds, read) => {
+    const threadIds = new Set(
+      state.emails.filter(e => emailIds.includes(e.id)).map(e => e.threadId)
+    );
+    const ids = state.emails.filter(e => threadIds.has(e.threadId)).map(e => e.id);
+    bulkUpdateEmails(ids.length ? ids : emailIds, { read });
+  };
+
+  /** Unread conversations (not messages) matching a predicate. */
+  const unreadThreadCount = useCallback((predicate) => {
+    const threads = new Set();
+    (state.emails || []).forEach(e => {
+      if (e.read) return;
+      if (predicate && !predicate(e)) return;
+      threads.add(e.threadId || e.id);
+    });
+    return threads.size;
+  }, [state.emails]);
+
+  const signOut = () => {
+    resetSession(sidRef.current);
+    window.location.href = window.location.pathname;
+  };
 
   // Opening a thread reads its emails. In bridged mode, log the open to the gym
   // engine (mail.open marks the email read server-side — some tasks require the
@@ -645,6 +699,10 @@ export const StoreProvider = ({ children }) => {
       bulkUpdateEmails,
       deleteEmails,
       archiveEmails,
+      unarchiveEmails,
+      markThreadsRead,
+      unreadThreadCount,
+      signOut,
       sendEmail,
       saveDraft,
       deleteDraft,

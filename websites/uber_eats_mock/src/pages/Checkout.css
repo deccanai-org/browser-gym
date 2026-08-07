@@ -122,6 +122,7 @@
 /* Tips */
 .checkout__tips {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 

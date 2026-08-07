@@ -325,7 +325,7 @@ export const ProductDetail = () => {
               ) : (
                 <div className="text-sm text-red-600 font-medium mb-1">Currently unavailable</div>
               )}
-              {product.stockCount && product.stockCount <= 10 && product.inStock !== false && (
+              {product.stockCount != null && product.stockCount > 0 && product.stockCount <= 10 && product.inStock !== false && (
                 <div className="text-sm text-orange-600 font-medium mb-2">
                   Only {product.stockCount} left in stock - order soon
                 </div>

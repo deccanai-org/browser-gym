@@ -10,6 +10,7 @@ import EventPopover from './components/EventPopover';
 import GoEndpoint from './components/GoEndpoint';
 import { bridged, bridgeAct } from './lib/bridge';
 import { gymNow } from './utils/helpers';
+import { X } from 'lucide-react';
 
 // Simple router component since we can't use React Router easily in this constrained env without more setup
 const Router = () => {
@@ -65,7 +66,11 @@ function CalendarApp() {
   };
 
   const handleCreateClick = () => {
-    setSelectedDate(gymNow());
+    // Pass the bare day so the modal starts the event at the next whole hour,
+    // rather than an odd "now" minute like 9:42 PM.
+    const today = gymNow();
+    today.setHours(0, 0, 0, 0);
+    setSelectedDate(today);
     setSelectedEvent(null);
     setIsModalOpen(true);
   };
@@ -98,7 +103,7 @@ function CalendarApp() {
 
   return (
     <div className="flex flex-col h-screen bg-white">
-      <Header onSearch={setSearchQuery} />
+      <Header onSearch={setSearchQuery} searchQuery={searchQuery} />
       
       <div className="flex flex-1 overflow-hidden">
         <Sidebar onCreateEvent={handleCreateClick} />
@@ -117,7 +122,19 @@ function CalendarApp() {
           {/* Search Results Overlay (Simple Implementation) */}
           {searchQuery && (
             <div className="absolute top-0 right-0 w-80 bg-white shadow-xl border-l h-full z-20 p-4 overflow-y-auto">
-              <h3 className="font-medium mb-4">Search Results</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-medium">Search Results</h3>
+                {/* Closing the panel used to require emptying the search box by
+                    hand — there was no way back to the calendar. */}
+                <button
+                  onClick={() => setSearchQuery('')}
+                  title="Close search results"
+                  aria-label="Close search results"
+                  className="p-1 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                >
+                  <X size={18} />
+                </button>
+              </div>
               {filteredEvents.length === 0 ? (
                 <p className="text-sm text-gray-500">No events found.</p>
               ) : (

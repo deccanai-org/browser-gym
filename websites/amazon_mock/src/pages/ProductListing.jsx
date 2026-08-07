@@ -44,17 +44,18 @@ export const ProductListing = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
 
+  // Reset page when the search/category route changes (header search navigation).
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [query, categoryParam, dealsParam]);
+
   // Filter Logic
   const filteredProducts = useMemo(() => {
     return state.products.filter(product => {
-      // Word-boundary + category-aware: "book" matches the Books category and
-      // products with "book" as a whole word, NOT "MacBook".
+      // Substring match so compound words work ("phone" → "headphone").
       const q = (query || '').trim().toLowerCase();
-      const wordRe = q ? new RegExp('\\b' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') : null;
-      const matchesSearch = !q ||
-                            wordRe.test(product.title) ||
-                            wordRe.test(product.description) ||
-                            (product.category || '').toLowerCase().includes(q);
+      const hay = `${product.title || ''} ${product.description || ''} ${product.category || ''} ${product.brand || ''}`.toLowerCase();
+      const matchesSearch = !q || hay.includes(q);
       const matchesCategory = categoryParam ? product.category === categoryParam : true;
       // 1000 = "no upper bound", but the lower bound must STILL apply (the old
       // `>=1000 ? true` short-circuit made "$200 & Above" match everything).
@@ -220,7 +221,11 @@ export const ProductListing = () => {
         <div className="text-[14px] text-[#565959] mb-3">
           {filteredProducts.length > 0 ? (
             <span>
-              <strong className="text-[#0F1111]">{(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredProducts.length)}</strong> of over <strong className="text-[#0F1111]">{filteredProducts.length}</strong> results
+              <strong className="text-[#0F1111]">{(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredProducts.length)}</strong>
+              {' '}of{' '}
+              {filteredProducts.length > itemsPerPage ? 'over ' : ''}
+              <strong className="text-[#0F1111]">{filteredProducts.length}</strong>
+              {' '}{filteredProducts.length === 1 ? 'result' : 'results'}
               {query && <span> for <strong className="text-[#c7511f]">"{query}"</strong></span>}
               {categoryParam && !query && <span> in <strong className="text-[#c7511f]">{categoryParam}</strong></span>}
             </span>

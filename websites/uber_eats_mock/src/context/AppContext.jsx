@@ -210,15 +210,21 @@ export function AppProvider({ children }) {
         totalPrice: (menuItem.price + modifierTotal) * quantity
       };
 
-      // If adding from a different restaurant, clear cart first
+      // If adding from a different restaurant, confirm before wiping the cart.
       if (prev.cart.restaurantId && prev.cart.restaurantId !== restaurant.id) {
+        const ok = typeof window !== 'undefined'
+          ? window.confirm(`Your cart has items from ${prev.cart.restaurantName || 'another restaurant'}. Clear it and add from ${restaurant.name}?`)
+          : true;
+        if (!ok) return prev;
         return {
           ...prev,
           cart: {
             ...prev.cart,
             restaurantId: restaurant.id,
             restaurantName: restaurant.name,
-            items: [cartItem]
+            items: [cartItem],
+            promoCode: null,
+            promoDiscount: 0,
           }
         };
       }
@@ -523,9 +529,10 @@ export function AppProvider({ children }) {
   const setTip = useCallback((amount, percentage) => {
     setState(prev => {
       if (!prev) return prev;
+      const clamped = Math.min(500, Math.max(0, Number(amount) || 0));
       return {
         ...prev,
-        cart: { ...prev.cart, tipAmount: amount || 0, tipPercentage: percentage }
+        cart: { ...prev.cart, tipAmount: clamped, tipPercentage: percentage }
       };
     });
   }, []);
@@ -575,6 +582,15 @@ export function AppProvider({ children }) {
     }
     if (!state) return { error: 'Invalid promo code' };
     const entered = (code || '').trim();
+    // Empty code clears an applied promo (Remove button).
+    if (!entered) {
+      setState(prev => prev && ({
+        ...prev,
+        cart: { ...prev.cart, promoCode: null, promoDiscount: 0 },
+        appliedPromoCode: null,
+      }));
+      return true;
+    }
     const promo = (state.promotions || []).find(
       p => p.code && p.code.toLowerCase() === entered.toLowerCase()
     );

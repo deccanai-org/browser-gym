@@ -21,6 +21,10 @@ export default function SettingsModal({ isOpen, onClose }) {
 
   const handleSave = () => {
     dispatch({ type: 'UPDATE_SETTINGS', payload: settings });
+    // Apply default view immediately so Settings aren't a no-op.
+    if (settings.defaultView) {
+      dispatch({ type: 'SET_VIEW', payload: settings.defaultView });
+    }
     onClose();
   };
 

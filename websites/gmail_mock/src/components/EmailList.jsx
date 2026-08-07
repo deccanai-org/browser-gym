@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Star, Square, CheckSquare, Trash2, Archive, Mail, MailOpen, MoreVertical, Tag, Inbox, X, FolderInput, ShieldAlert, ShieldCheck, Clock, CornerUpLeft, ReplyAll, Forward, ChevronDown, Send, File, Zap, MessageSquare } from 'lucide-react';
+import { Star, Square, CheckSquare, Trash2, Archive, ArchiveRestore, Mail, MailOpen, MoreVertical, Tag, Inbox, X, FolderInput, ShieldAlert, ShieldCheck, Clock, CornerUpLeft, ReplyAll, Forward, ChevronDown, Send, File, Zap, MessageSquare } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { cn, formatDate } from '../lib/utils';
 import { isToday, isYesterday, startOfMonth, isBefore } from 'date-fns';
@@ -69,7 +69,12 @@ const ContextMenu = ({ email, position, onClose }) => {
     { divider: true },
     { label: 'Archive', action: () => { archiveEmails([email.id]); onClose(); } },
     { label: 'Delete', action: () => { deleteEmails([email.id]); onClose(); } },
-    { label: 'Mark as spam', action: () => { bulkUpdateEmails([email.id], { folder: 'spam' }); showToast('Marked as spam', null); onClose(); } },
+    { label: 'Mark as spam', action: () => {
+        const prev = email.folder;
+        bulkUpdateEmails([email.id], { folder: 'spam' });
+        showToast('Marked as spam', () => bulkUpdateEmails([email.id], { folder: prev || 'inbox' }));
+        onClose();
+      } },
     { divider: true },
     { label: email.read ? 'Mark as unread' : 'Mark as read', action: () => { toggleRead(email.id, !email.read); onClose(); } },
     { label: email.starred ? 'Unstar' : 'Star', action: () => { toggleStar(email.id); onClose(); } },
@@ -144,7 +149,7 @@ const MoveToMenu = ({ emailIds, onClose }) => {
 
 const EmailRow = ({ email, isSelected, toggleSelect, folder, threadCount, isFocused }) => {
   const navigate = useNavigate();
-  const { toggleStar, toggleImportant, toggleRead, archiveEmails, deleteEmails, bulkUpdateEmails, openDraft, showToast, state, settings } = useStore();
+  const { toggleStar, toggleImportant, toggleRead, archiveEmails, unarchiveEmails, markThreadsRead, deleteEmails, bulkUpdateEmails, openDraft, showToast, state, settings } = useStore();
   const [showSnooze, setShowSnooze] = useState(null);
   const [contextMenu, setContextMenu] = useState(null);
   // Display-density setting now actually changes row spacing (was saved+ignored).
@@ -210,7 +215,9 @@ const EmailRow = ({ email, isSelected, toggleSelect, folder, threadCount, isFocu
       </div>
 
       <div className={cn("w-48 truncate pr-4 flex-shrink-0", !email.read && "font-bold text-black")}>
-        {email.from.name}
+        {(email.folder === 'sent' || email.folder === 'drafts')
+          ? ((email.to || []).map(t => t.name || t.email).filter(Boolean).join(', ') || '(no recipient)')
+          : email.from.name}
         {threadCount > 1 && (
           <span className="ml-1 text-gray-500 font-normal text-xs">({threadCount})</span>
         )}
@@ -238,15 +245,24 @@ const EmailRow = ({ email, isSelected, toggleSelect, folder, threadCount, isFocu
       </div>
 
       <div className="hidden group-hover:flex items-center justify-end gap-2 w-28 pl-2 bg-inherit">
-        <button onClick={(e) => { e.stopPropagation(); archiveEmails([email.id]); }} className="p-1 hover:bg-gray-200 rounded text-gray-600" title="Archive"><Archive size={16} /></button>
+        {email.folder === 'all-mail' ? (
+          <button onClick={(e) => { e.stopPropagation(); unarchiveEmails([email.id]); }} className="p-1 hover:bg-gray-200 rounded text-gray-600" title="Move to Inbox"><ArchiveRestore size={16} /></button>
+        ) : (
+          <button onClick={(e) => { e.stopPropagation(); archiveEmails([email.id]); }} className="p-1 hover:bg-gray-200 rounded text-gray-600" title="Archive"><Archive size={16} /></button>
+        )}
         <button onClick={(e) => { e.stopPropagation(); deleteEmails([email.id]); }} className="p-1 hover:bg-gray-200 rounded text-gray-600" title="Delete"><Trash2 size={16} /></button>
-        <button onClick={(e) => { e.stopPropagation(); toggleRead(email.id, !email.read); }} className="p-1 hover:bg-gray-200 rounded text-gray-600" title={email.read ? "Mark as unread" : "Mark as read"}>
+        <button onClick={(e) => { e.stopPropagation(); markThreadsRead([email.id], !email.read); }} className="p-1 hover:bg-gray-200 rounded text-gray-600" title={email.read ? "Mark as unread" : "Mark as read"}>
           {email.read ? <MailOpen size={16} /> : <Mail size={16} />}
         </button>
         {email.folder === 'spam' ? (
           <button onClick={(e) => { e.stopPropagation(); bulkUpdateEmails([email.id], { folder: 'inbox' }); showToast('Marked as not spam', null); }} className="p-1 hover:bg-gray-200 rounded text-gray-600" title="Not spam"><ShieldCheck size={16} /></button>
         ) : (
-          <button onClick={(e) => { e.stopPropagation(); bulkUpdateEmails([email.id], { folder: 'spam' }); showToast('Marked as spam', null); }} className="p-1 hover:bg-gray-200 rounded text-gray-600" title="Report spam"><ShieldAlert size={16} /></button>
+          <button onClick={(e) => {
+            e.stopPropagation();
+            const prev = email.folder;
+            bulkUpdateEmails([email.id], { folder: 'spam' });
+            showToast('Marked as spam', () => bulkUpdateEmails([email.id], { folder: prev || 'inbox' }));
+          }} className="p-1 hover:bg-gray-200 rounded text-gray-600" title="Report spam"><ShieldAlert size={16} /></button>
         )}
         <button onClick={(e) => {
           e.stopPropagation();
@@ -363,7 +379,7 @@ const SelectDropdown = ({ threads, selectedEmails, setSelectedEmails, onClose })
 };
 
 const EmailList = ({ folder = 'inbox' }) => {
-  const { state, searchQuery, selectedEmails, setSelectedEmails, bulkUpdateEmails, deleteEmails, archiveEmails, emptyTrash, addLabel, removeLabel, showToast, focusedEmailIndex, settings } = useStore();
+  const { state, searchQuery, selectedEmails, setSelectedEmails, bulkUpdateEmails, deleteEmails, archiveEmails, unarchiveEmails, markThreadsRead, emptyTrash, addLabel, removeLabel, showToast, focusedEmailIndex, settings } = useStore();
   const { labelId } = useParams();
   const [activeTab, setActiveTab] = React.useState('primary');
   const [showLabelPicker, setShowLabelPicker] = useState(false);
@@ -440,7 +456,11 @@ const EmailList = ({ folder = 'inbox' }) => {
     }
 
     if (labelId) {
-      return email.labels.includes(labelId) && email.folder !== 'trash';
+      const labelMeta = (state.labels || []).find(l => l.id === labelId);
+      const aliases = new Set([labelId]);
+      if (labelMeta?.name) aliases.add(labelMeta.name.toLowerCase());
+      return (email.labels || []).some(l => aliases.has(l) || aliases.has(String(l).toLowerCase()))
+        && email.folder !== 'trash';
     }
 
     // Special folders based on properties
@@ -488,16 +508,21 @@ const EmailList = ({ folder = 'inbox' }) => {
     return map;
   }, [state.emails]);
 
-  // Unread count per inbox category tab
+  // Unread count per inbox category tab — fold hidden tabs into Primary the
+  // same way the row filter does, and count each CONVERSATION once (the list
+  // shows one row per thread, so counting messages overstated every badge).
   const unreadByCategory = React.useMemo(() => {
-    const counts = { primary: 0, social: 0, promotions: 0, updates: 0, forums: 0 };
+    const seen = { primary: new Set(), social: new Set(), promotions: new Set(), updates: new Set(), forums: new Set() };
+    const tabs = (settings && settings.categoryTabs) || {};
+    const shown = Object.keys(tabs).filter(k => tabs[k]);
     state.emails.forEach(email => {
-      if (email.folder === 'inbox' && !email.read && counts[email.category] !== undefined) {
-        counts[email.category]++;
-      }
+      if (email.folder !== 'inbox' || email.read) return;
+      const cat = email.category || 'primary';
+      const effCat = shown.length && !shown.includes(cat) ? 'primary' : cat;
+      if (seen[effCat]) seen[effCat].add(email.threadId || email.id);
     });
-    return counts;
-  }, [state.emails]);
+    return Object.fromEntries(Object.entries(seen).map(([k, v]) => [k, v.size]));
+  }, [state.emails, settings]);
 
   // Group threads by date
   const groupedThreads = React.useMemo(() => {
@@ -530,7 +555,11 @@ const EmailList = ({ folder = 'inbox' }) => {
     }
   };
 
-  const emptyState = EMPTY_STATES[folder] || EMPTY_STATES['all-mail'];
+  const emptyState = searchQuery
+    ? { icon: Inbox, title: 'No matching messages', desc: 'Try a different search query.' }
+    : labelId
+      ? { icon: Tag, title: 'No messages with this label', desc: 'Messages you label will appear here.' }
+      : (EMPTY_STATES[folder] || EMPTY_STATES['all-mail']);
 
   // Honor the "category tabs" setting (was ignored, so Forums/Updates always
   // showed even though the mailbox switches them OFF — Forums being permanently
@@ -570,13 +599,24 @@ const EmailList = ({ folder = 'inbox' }) => {
 
         {selectedEmails.length > 0 ? (
           <div className="flex items-center gap-2">
-            <button onClick={() => archiveEmails(selectedEmails)} className="p-2 hover:bg-gray-100 rounded-full text-gray-600" title="Archive">
-              <Archive size={18} />
-            </button>
+            {folder === 'all-mail' ? (
+              <button onClick={() => unarchiveEmails(selectedEmails)} className="p-2 hover:bg-gray-100 rounded-full text-gray-600" title="Move to Inbox">
+                <ArchiveRestore size={18} />
+              </button>
+            ) : (
+              <button onClick={() => archiveEmails(selectedEmails)} className="p-2 hover:bg-gray-100 rounded-full text-gray-600" title="Archive">
+                <Archive size={18} />
+              </button>
+            )}
             <button onClick={() => deleteEmails(selectedEmails)} className="p-2 hover:bg-gray-100 rounded-full text-gray-600" title="Delete">
               <Trash2 size={18} />
             </button>
-            <button onClick={() => bulkUpdateEmails(selectedEmails, { read: true })} className="p-2 hover:bg-gray-100 rounded-full text-gray-600" title="Mark as read">
+            <button onClick={() => markThreadsRead(selectedEmails, true)} className="p-2 hover:bg-gray-100 rounded-full text-gray-600" title="Mark as read">
+              <MailOpen size={18} />
+            </button>
+            {/* The toolbar only ever offered "mark as read" — the inverse was
+                reachable only via right-click or Shift+U. */}
+            <button onClick={() => markThreadsRead(selectedEmails, false)} className="p-2 hover:bg-gray-100 rounded-full text-gray-600" title="Mark as unread">
               <Mail size={18} />
             </button>
             <div className="relative">

@@ -73,3 +73,6 @@ websites/*/node_modules/
 websites/*/dist/
 websites/*/.mock-state*
 websites/*/public/assets/
+
+# Regenerable QA pipeline run outputs
+tools/qa_pipeline/reports/

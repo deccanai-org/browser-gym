@@ -1,9 +1,26 @@
 import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react';
-import { MOCK_USER, DEFAULT_CALENDARS, generateMockEvents, getSessionId, fetchCustomState, saveState, initializeData, getInitialState } from '../utils/helpers';
-import { addMinutes, differenceInMinutes } from 'date-fns';
+import { MOCK_USER, DEFAULT_CALENDARS, DEFAULT_SETTINGS, generateMockEvents, getSessionId, fetchCustomState, saveState, initializeData, getInitialState } from '../utils/helpers';
+import { addMinutes, differenceInMinutes, addDays, addWeeks, addMonths, addYears } from 'date-fns';
 import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
 
 const APP = 'calendar'; // bridge engine app key for this mock
+
+/** Compute the i-th occurrence start for a recurring master event (1-based). */
+function expandOneOccurrence(event, i) {
+  if (!event || !i) return null;
+  const originalStart = new Date(event.start);
+  let currentDate;
+  if (event.recurring === 'daily') currentDate = addDays(originalStart, i);
+  else if (event.recurring === 'weekly') currentDate = addWeeks(originalStart, i);
+  else if (event.recurring === 'monthly') currentDate = addMonths(originalStart, i);
+  else if (event.recurring === 'yearly') currentDate = addYears(originalStart, i);
+  else return null;
+  const duration = new Date(event.end).getTime() - new Date(event.start).getTime();
+  return {
+    start: currentDate.toISOString(),
+    end: new Date(currentDate.getTime() + duration).toISOString(),
+  };
+}
 // In bridged mode: run the gym action, then adopt the engine's authoritative
 // per-app state (already in this mock's shape) via the existing LOAD_STATE case.
 const applyEngine = (dispatch, r) => {
@@ -54,13 +71,20 @@ const defaultState = {
   user: MOCK_USER,
   calendars: DEFAULT_CALENDARS,
   events: generateMockEvents(),
-  view: 'month', // month, week, day, agenda
+  view: DEFAULT_SETTINGS.defaultView, // month, week, day, agenda
   currentDate: new Date().toISOString(),
   sidebarOpen: true,
-  settings: {
-    weekStart: 0, // Sunday
-    defaultDuration: 60,
-  }
+  settings: { ...DEFAULT_SETTINGS },
+};
+
+// The calendar opens on the view the user chose as their default. `view` also
+// tracks whatever they last switched to mid-session, so on a fresh load the
+// saved default has to win — otherwise "Default view: Week" silently loses to
+// the month view left behind by the previous session.
+const withDefaultView = (data) => {
+  if (!data) return data;
+  const settings = { ...DEFAULT_SETTINGS, ...(data.settings || {}) };
+  return { ...data, settings, view: settings.defaultView || data.view || 'month' };
 };
 
 // Deep clone for diffing
@@ -81,11 +105,29 @@ const reducer = (state, action) => {
         ...state,
         events: state.events.map(e => e.id === action.payload.id ? action.payload : e)
       };
-    case 'DELETE_EVENT':
+    case 'DELETE_EVENT': {
+      const id = action.payload;
+      // Recurring instance ids look like `${masterId}_recur_${n}`.
+      const recurMatch = String(id).match(/^(.*)_recur_(\d+)$/);
+      if (recurMatch) {
+        const masterId = recurMatch[1];
+        return {
+          ...state,
+          events: state.events.map(e => {
+            if (e.id !== masterId) return e;
+            const instance = expandOneOccurrence(e, parseInt(recurMatch[2], 10));
+            const dayKey = instance ? String(instance.start).slice(0, 10) : null;
+            const exceptions = [...(e.exceptions || [])];
+            if (dayKey && !exceptions.includes(dayKey)) exceptions.push(dayKey);
+            return { ...e, exceptions };
+          }),
+        };
+      }
       return {
         ...state,
-        events: state.events.filter(e => e.id !== action.payload)
+        events: state.events.filter(e => e.id !== id)
       };
+    }
     case 'MOVE_EVENT': {
       const { eventId, newStart } = action.payload;
       const event = state.events.find(e => e.id === eventId);
@@ -158,7 +200,7 @@ export const StoreProvider = ({ children }) => {
     // Session-aware: check localStorage with session key BEFORE any async fetch
     const sid = sidRef.current;
     const stored = localStorage.getItem(sid ? `gcal_mock_state_${sid}` : 'gcal_mock_state');
-    return stored ? JSON.parse(stored) : initial;
+    return withDefaultView(stored ? JSON.parse(stored) : initial);
   });
 
   const [originalState, setOriginalState] = React.useState(() => {
@@ -199,7 +241,7 @@ export const StoreProvider = ({ children }) => {
 
     fetchCustomState(sid).then(customState => {
       if (customState) {
-        const data = initializeData(sid, customState);
+        const data = withDefaultView(initializeData(sid, customState));
         dispatch({ type: 'LOAD_STATE', payload: data });
         setOriginalState(deepClone(data));
         setReadyToSave(true);
@@ -213,7 +255,7 @@ export const StoreProvider = ({ children }) => {
         // wise surface a loud error rather than pretending demo data is the seed.
         const stored = localStorage.getItem(`gcal_mock_state_${sid}`);
         if (stored) {
-          const data = JSON.parse(stored);
+          const data = withDefaultView(JSON.parse(stored));
           dispatch({ type: 'LOAD_STATE', payload: data });
           setOriginalState(deepClone(data));
           setReadyToSave(true);
@@ -224,7 +266,7 @@ export const StoreProvider = ({ children }) => {
       }
 
       // No sid in the URL at all -> the demo fallback is legitimate.
-      const data = initializeData(null, null);
+      const data = withDefaultView(initializeData(null, null));
       dispatch({ type: 'LOAD_STATE', payload: data });
       const initialStored = getInitialState(null);
       if (initialStored) {

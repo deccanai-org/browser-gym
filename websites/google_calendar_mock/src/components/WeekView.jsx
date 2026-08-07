@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useStore } from '../context/StoreContext';
 import { startOfWeek, endOfWeek, eachDayOfInterval, format, isSameDay, addMinutes, startOfDay, endOfDay, differenceInMinutes, addDays, addWeeks, addMonths, addYears } from 'date-fns';
-import { gymNow } from '../utils/helpers';
+import { gymNow, formatTime, formatHour, overlapsDay } from '../utils/helpers';
 
 const HOUR_HEIGHT = 60; // px per hour
 
@@ -10,19 +10,24 @@ function expandRecurringEvents(rawEvents, viewStart, viewEnd) {
   const extendedEnd = addDays(viewEnd, 7);
 
   rawEvents.forEach(event => {
-    events.push(event);
+    const exceptions = new Set((event.exceptions || []).map(d => String(d).slice(0, 10)));
+    const startKey = String(event.start).slice(0, 10);
+    if (!exceptions.has(startKey)) events.push(event);
 
     if (event.recurring && event.recurring !== 'none') {
-      let currentDate = new Date(event.start);
-      let i = 0;
-      while (currentDate < extendedEnd && i < 200) {
-        i++;
-        if (event.recurring === 'daily') currentDate = addDays(currentDate, 1);
-        else if (event.recurring === 'weekly') currentDate = addWeeks(currentDate, 1);
-        else if (event.recurring === 'monthly') currentDate = addMonths(currentDate, 1);
-        else if (event.recurring === 'yearly') currentDate = addYears(currentDate, 1);
+      const originalStart = new Date(event.start);
+      for (let i = 1; i < 200; i++) {
+        let currentDate;
+        if (event.recurring === 'daily') currentDate = addDays(originalStart, i);
+        else if (event.recurring === 'weekly') currentDate = addWeeks(originalStart, i);
+        else if (event.recurring === 'monthly') currentDate = addMonths(originalStart, i);
+        else if (event.recurring === 'yearly') currentDate = addYears(originalStart, i);
+        else break;
 
         if (currentDate > extendedEnd) break;
+
+        const dayKey = currentDate.toISOString().slice(0, 10);
+        if (exceptions.has(dayKey)) continue;
 
         const duration = new Date(event.end).getTime() - new Date(event.start).getTime();
         events.push({
@@ -83,20 +88,30 @@ export default function WeekView({ onEventClick, onDateClick }) {
   const { state, dispatch } = useStore();
   const currentDate = new Date(state.currentDate);
   const scrollRef = useRef(null);
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState(() => gymNow());
+  useEffect(() => {
+    const tick = () => setCurrentTime(gymNow());
+    tick();
+    const id = setInterval(tick, 60000);
+    return () => clearInterval(id);
+  }, []);
 
   // H-06: Drag-to-create state
   const [dragCreate, setDragCreate] = useState(null); // { day, startMinutes, endMinutes, dayIndex }
   const dragCreateRef = useRef(null);
   const isDraggingCreate = useRef(false);
 
+  // "Week starts on" and "Time format" are user settings; both were hardcoded.
+  const weekStartsOn = Number(state.settings?.weekStart ?? 0);
+  const timeFormat = state.settings?.timeFormat || '12h';
+
   // Determine date range based on view type
   let days;
   if (state.view === 'day') {
     days = [currentDate];
   } else {
-    const start = startOfWeek(currentDate, { weekStartsOn: 0 });
-    const end = endOfWeek(currentDate, { weekStartsOn: 0 });
+    const start = startOfWeek(currentDate, { weekStartsOn });
+    const end = endOfWeek(currentDate, { weekStartsOn });
     days = eachDayOfInterval({ start, end });
   }
 
@@ -107,14 +122,11 @@ export default function WeekView({ onEventClick, onDateClick }) {
     }
   }, [state.view]);
 
-  // Update current time every minute
-  useEffect(() => {
-    const interval = setInterval(() => setCurrentTime(new Date()), 60000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const visibleCalendars = state.calendars.filter(c => c.visible).map(c => c.id);
-  const rawEvents = state.events.filter(e => visibleCalendars.includes(e.calendarId));
+  const visibleCalendars = new Set([
+    ...state.calendars.filter(c => c.visible).map(c => c.id),
+    ...(state.otherCalendars || []).filter(c => c.visible).map(c => c.id),
+  ]);
+  const rawEvents = state.events.filter(e => visibleCalendars.has(e.calendarId));
   const allEvents = expandRecurringEvents(rawEvents, startOfDay(days[0]), endOfDay(days[days.length - 1]));
 
   // Separate all-day and timed events
@@ -365,7 +377,7 @@ export default function WeekView({ onEventClick, onDateClick }) {
               >
                 {hour !== 0 && (
                   <span style={{ fontSize: '10px', color: '#70757A', marginTop: '-6px' }}>
-                    {format(new Date().setHours(hour, 0, 0, 0), 'h a')}
+                    {formatHour(hour, timeFormat)}
                   </span>
                 )}
               </div>
@@ -402,7 +414,25 @@ export default function WeekView({ onEventClick, onDateClick }) {
             {days.map((day, dayIndex) => {
               const dayStart = startOfDay(day);
               const isToday = isSameDay(day, gymNow());
-              const dayTimedEvents = timedEvents.filter(e => isSameDay(new Date(e.start), day));
+              // An event running past midnight belongs to both columns. Matching
+              // on the start day alone made the tail (e.g. 11:30 PM–12:30 AM)
+              // vanish from the day it actually ends on, so overlap is clipped
+              // per column instead.
+              const dayEndExclusive = addDays(dayStart, 1);
+              const dayTimedEvents = timedEvents.flatMap(e => {
+                if (!overlapsDay(e, dayStart)) return [];
+                const s = new Date(e.start);
+                const en = new Date(e.end);
+                if (s >= dayStart && en <= dayEndExclusive) return [e];
+                return [{
+                  ...e,
+                  start: (s < dayStart ? dayStart : s).toISOString(),
+                  end: (en > dayEndExclusive ? dayEndExclusive : en).toISOString(),
+                  // Keep a handle on the real event so clicking a clipped
+                  // segment edits the whole event, not just the visible slice.
+                  clippedFrom: e,
+                }];
+              });
               const layoutItems = computeEventLayout(dayTimedEvents);
 
               // H-06: Check if there's an active drag-create preview for this day column
@@ -463,7 +493,9 @@ export default function WeekView({ onEventClick, onDateClick }) {
                           const sm = dragCreate.startMinutes % 60;
                           const eh = Math.floor(dragCreate.endMinutes / 60);
                           const em = dragCreate.endMinutes % 60;
-                          const fmt = (h, m) => `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`;
+                          const fmt = (h, m) => timeFormat === '24h'
+                            ? `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`
+                            : `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`;
                           return `${fmt(sh, sm)} – ${fmt(eh, em)}`;
                         })()}
                       </span>
@@ -495,7 +527,7 @@ export default function WeekView({ onEventClick, onDateClick }) {
                     const style = getEventStyle(event, dayStart);
                     const width = `calc(${100 / totalCols}% - 4px)`;
                     const left = `calc(${(col / totalCols) * 100}% + 2px)`;
-                    const isOriginalId = !event.id.includes('_recur_');
+                    const isOriginalId = !event.id.includes('_recur_') && !event.clippedFrom;
 
                     return (
                       <div
@@ -508,9 +540,10 @@ export default function WeekView({ onEventClick, onDateClick }) {
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          const targetEvent = event.originalEventId
-                            ? state.events.find(ev => ev.id === event.originalEventId)
-                            : event;
+                          const source = event.clippedFrom || event;
+                          const targetEvent = source.originalEventId
+                            ? state.events.find(ev => ev.id === source.originalEventId)
+                            : source;
                           onEventClick(targetEvent, e);
                         }}
                         style={{
@@ -535,7 +568,7 @@ export default function WeekView({ onEventClick, onDateClick }) {
                           {event.title || '(No title)'}
                         </div>
                         <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {format(new Date(event.start), 'h:mm a')} – {format(new Date(event.end), 'h:mm a')}
+                          {formatTime(event.start, timeFormat)} – {formatTime(event.end, timeFormat)}
                         </div>
                         {event.location && parseFloat(style.height) > 50 && (
                           <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.75)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>

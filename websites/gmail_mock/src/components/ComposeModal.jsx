@@ -107,7 +107,21 @@ const ComposeModal = () => {
       setBody(sig);
       setShowSignature(true);
       setTimeout(() => {
-        if (bodyRef.current) bodyRef.current.innerHTML = sig;
+        if (bodyRef.current) {
+          bodyRef.current.innerHTML = sig;
+          // Place caret BEFORE the signature so typing doesn't land inside it.
+          const range = document.createRange();
+          const sel = window.getSelection();
+          const first = bodyRef.current.firstChild;
+          if (first) {
+            range.setStart(first, 0);
+            range.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(range);
+          } else {
+            bodyRef.current.focus();
+          }
+        }
       }, 0);
     }
     if (!isComposeOpen) {
@@ -140,9 +154,16 @@ const ComposeModal = () => {
 
   const handleSend = () => {
     if (!to.trim()) { setToError(true); return; }
+    const recipients = to.split(',').map(s => s.trim()).filter(Boolean);
+    const emailOk = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    if (!recipients.every(emailOk)) {
+      setToError(true);
+      showToast('Enter a valid email address (name@domain.com)');
+      return;
+    }
     setToError(false);
     skipNextDraftSaveRef.current = true;
-    sendEmail({ to, cc: showCc ? cc : '', bcc: showBcc ? bcc : '', subject, body: getFullBody(), attachments });
+    sendEmail({ to, cc: showCc ? cc : '', bcc: showBcc ? bcc : '', subject: subject.trim() || '(no subject)', body: getFullBody(), attachments });
     closeModal();
   };
 

@@ -2,10 +2,12 @@ import React, { useRef, useEffect } from 'react';
 import { X, Clock, MapPin, Edit2, Trash2, Calendar as CalendarIcon, Users, Video, RefreshCw } from 'lucide-react';
 import { format } from 'date-fns';
 import { useStore } from '../context/StoreContext';
+import { formatTime } from '../utils/helpers';
 
 export default function EventPopover({ event, position, onClose, onEdit, onDelete }) {
   const popoverRef = useRef(null);
   const { state } = useStore();
+  const timeFormat = state.settings?.timeFormat || '12h';
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -98,7 +100,7 @@ export default function EventPopover({ event, position, onClose, onEdit, onDelet
             <div style={{ fontSize: '13px', color: '#3C4043' }}>
               {format(new Date(event.start), 'EEEE, MMMM d')}
               {!event.allDay && (
-                <span> · {format(new Date(event.start), 'h:mm a')} – {format(new Date(event.end), 'h:mm a')}</span>
+                <span> · {formatTime(event.start, timeFormat)} – {formatTime(event.end, timeFormat)}</span>
               )}
               {event.allDay && <span> · All day</span>}
             </div>

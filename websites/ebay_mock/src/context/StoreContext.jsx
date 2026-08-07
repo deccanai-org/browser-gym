@@ -31,6 +31,9 @@ const ACTIONS = {
   CLEAR_CART: 'CLEAR_CART',
   APPLY_COUPON: 'APPLY_COUPON',
   REMOVE_COUPON: 'REMOVE_COUPON',
+  ADD_ADDRESS: 'ADD_ADDRESS',
+  SET_DEFAULT_ADDRESS: 'SET_DEFAULT_ADDRESS',
+  ADD_PAYMENT_METHOD: 'ADD_PAYMENT_METHOD',
   CHECKOUT: 'CHECKOUT',
   MARK_NOTIFICATION_READ: 'MARK_NOTIFICATION_READ',
   MARK_ALL_NOTIFICATIONS_READ: 'MARK_ALL_NOTIFICATIONS_READ',
@@ -48,22 +51,59 @@ function reducer(state, action) {
       if (listingIndex === -1) return state;
 
       const listing = state.listings[listingIndex];
-
-      // Basic validation
-      if (amount <= listing.currentBid) return state;
-
-      const currentHighBidderId = listing.bids.length > 0 ? listing.bids[0].userId : null;
-      const currentHighBidderMax = listing.bids.length > 0 ? (listing.bids[0].autoBidMax || listing.bids[0].amount) : 0;
-
       const increment = 1.00;
+
+      // Seed bids may be oldest-first; always resolve the true high bidder by max.
+      const sortedByMax = [...(listing.bids || [])].sort(
+        (a, b) => (b.autoBidMax || b.amount || 0) - (a.autoBidMax || a.amount || 0)
+      );
+      const leader = sortedByMax[0] || null;
+      const currentHighBidderId = leader ? leader.userId : null;
+      const currentHighBidderMax = leader ? (leader.autoBidMax || leader.amount || 0) : 0;
+
+      // Advertised minimum must match the gate: never below displayed currentBid.
+      const minAccept = listing.bids.length === 0
+        ? Math.max(listing.startingBid || 0, listing.currentBid || 0)
+        : (listing.currentBid || 0) + increment;
+      if (!(amount > listing.currentBid) || amount < minAccept) {
+        return {
+          ...state,
+          notifications: [
+            ...state.notifications,
+            {
+              id: `notif_${Date.now()}`,
+              userId,
+              message: `Bid must be at least $${minAccept.toFixed(2)}`,
+              read: false,
+            },
+          ],
+        };
+      }
 
       let newCurrentBid = listing.currentBid;
       let newBids = [...listing.bids];
       let notifications = [...state.notifications];
 
-      // Scenario 1: No previous bids
+      // Same user already leading: raise max in place (don't inflate bid count).
+      if (currentHighBidderId && userId === currentHighBidderId && listing.bids.length > 0) {
+        const idx = newBids.findIndex(b => b.userId === userId);
+        if (idx >= 0) {
+          newBids[idx] = { ...newBids[idx], autoBidMax: Math.max(amount, newBids[idx].autoBidMax || 0) };
+          // Keep newest-first for UI consistency.
+          newBids = [...newBids].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+          const updatedListing = { ...listing, currentBid: newCurrentBid, bids: newBids };
+          const newListings = [...state.listings];
+          newListings[listingIndex] = updatedListing;
+          return { ...state, listings: newListings, notifications };
+        }
+      }
+
+      // Scenario 1: No previous bids — open at startingBid (or keep current if higher).
       if (listing.bids.length === 0) {
-        newCurrentBid = listing.startingBid;
+        newCurrentBid = Math.max(listing.startingBid || 0, listing.currentBid || 0);
+        // If the max bid is the only bid, current stays at the floor until a second bidder.
+        // Never drop below the previously displayed currentBid.
+        newCurrentBid = Math.max(newCurrentBid, listing.currentBid || 0);
 
         const newBid = {
           id: `bid_${Date.now()}`,
@@ -77,6 +117,8 @@ function reducer(state, action) {
       // Scenario 2: New bid is higher than current price but LOWER than current leader's max
       else if (amount <= currentHighBidderMax && userId !== currentHighBidderId) {
         newCurrentBid = Math.min(amount + increment, currentHighBidderMax);
+        // Never let current bid go down.
+        newCurrentBid = Math.max(newCurrentBid, listing.currentBid);
 
         const failedBid = {
           id: `bid_${Date.now()}_failed`,
@@ -105,7 +147,10 @@ function reducer(state, action) {
       }
       // Scenario 3: New bid is HIGHER than current leader's max
       else if (amount > currentHighBidderMax) {
-        newCurrentBid = Math.min(currentHighBidderMax + increment, amount);
+        newCurrentBid = listing.bids.length === 0
+          ? Math.max(listing.startingBid || 0, listing.currentBid || 0)
+          : Math.min(currentHighBidderMax + increment, amount);
+        newCurrentBid = Math.max(newCurrentBid, listing.currentBid);
 
         const newBid = {
           id: `bid_${Date.now()}`,
@@ -125,11 +170,6 @@ function reducer(state, action) {
             read: false
           });
         }
-      }
-      // Scenario 4: Updating own max bid
-      else if (userId === currentHighBidderId) {
-         const myLatestBid = newBids[0];
-         newBids[0] = { ...myLatestBid, autoBidMax: amount };
       }
 
       const updatedListing = {
@@ -162,7 +202,9 @@ function reducer(state, action) {
       const qty = Math.max(1, parseInt(quantity, 10) || 1);
       const unitPrice = unitPriceOf(listing);
       const lineTotal = money(unitPrice * qty);
-      const delivery = deliveryFor(state, lineTotal);
+      // Honor per-listing shipping when present; else the cart delivery helper.
+      const listedShip = Number(listing.shipping);
+      const delivery = Number.isFinite(listedShip) ? money(listedShip) : deliveryFor(state, lineTotal);
 
       const newOrder = {
         id: `order_${Date.now()}`,
@@ -395,6 +437,39 @@ function reducer(state, action) {
 
     case ACTIONS.REMOVE_COUPON: {
       return { ...state, coupon: null };
+    }
+
+    // Checkout could only ever pick from addresses/cards that were already on
+    // the account. With none seeded there was no way to supply either, so an
+    // order could be placed with no shipping address and no payment method.
+    case ACTIONS.ADD_ADDRESS: {
+      const address = action.payload;
+      if (!address) return state;
+      return {
+        ...state,
+        addresses: [...(state.addresses || []), address],
+        defaultAddressId: address.isDefault || !state.defaultAddressId
+          ? address.id
+          : state.defaultAddressId,
+      };
+    }
+
+    case ACTIONS.SET_DEFAULT_ADDRESS: {
+      const { addressId } = action.payload || {};
+      if (!addressId) return state;
+      return { ...state, defaultAddressId: addressId };
+    }
+
+    case ACTIONS.ADD_PAYMENT_METHOD: {
+      const method = action.payload;
+      if (!method) return state;
+      return {
+        ...state,
+        paymentMethods: [...(state.paymentMethods || []), method],
+        defaultPaymentId: method.isDefault || !state.defaultPaymentId
+          ? method.id
+          : state.defaultPaymentId,
+      };
     }
 
     case ACTIONS.CHECKOUT: {
@@ -683,6 +758,22 @@ export const StoreProvider = ({ children }) => {
     dispatch({ type: ACTIONS.REMOVE_COUPON });
   };
 
+  const addAddress = (address) => {
+    const withId = { id: address.id || `vm_addr_${Date.now()}`, ...address };
+    dispatch({ type: ACTIONS.ADD_ADDRESS, payload: withId });
+    return withId;
+  };
+
+  const setDefaultAddress = (addressId) => {
+    dispatch({ type: ACTIONS.SET_DEFAULT_ADDRESS, payload: { addressId } });
+  };
+
+  const addPaymentMethod = (method) => {
+    const withId = { id: method.id || `vm_pay_${Date.now()}`, ...method };
+    dispatch({ type: ACTIONS.ADD_PAYMENT_METHOD, payload: withId });
+    return withId;
+  };
+
   const checkout = (addressId, paymentId) => {
     if (bridged()) {
       return bridgeAct('market.checkout', { address_id: addressId, payment_id: paymentId })
@@ -740,6 +831,9 @@ export const StoreProvider = ({ children }) => {
       clearCart,
       applyCoupon,
       removeCoupon,
+      addAddress,
+      setDefaultAddress,
+      addPaymentMethod,
       checkout,
       markNotificationRead,
       markAllNotificationsRead

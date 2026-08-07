@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStore } from '../context/StoreContext';
 import { format, isSameDay, compareAsc, addDays, addWeeks, addMonths, addYears, startOfDay, endOfDay } from 'date-fns';
-import { gymNow } from '../utils/helpers';
+import { gymNow, formatTime } from '../utils/helpers';
 
 // Show events for the next 90 days from the current date
 const AGENDA_DAYS = 90;
@@ -48,6 +48,7 @@ function expandRecurringEvents(rawEvents, viewStart, viewEnd) {
 
 export default function AgendaView({ onEventClick }) {
   const { state } = useStore();
+  const timeFormat = state.settings?.timeFormat || '12h';
 
   const currentDate = new Date(state.currentDate);
   const viewStart = startOfDay(currentDate);
@@ -135,7 +136,7 @@ export default function AgendaView({ onEventClick }) {
                     >
                       <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: color, flexShrink: 0 }} />
                       <div style={{ width: '120px', fontSize: '13px', color: '#70757A', flexShrink: 0 }}>
-                        {event.allDay ? 'All day' : format(new Date(event.start), 'h:mm a')}
+                        {event.allDay ? 'All day' : formatTime(event.start, timeFormat)}
                       </div>
                       <div className="flex-1">
                         <div style={{ fontSize: '14px', fontWeight: 500, color: '#3C4043' }}>{event.title || '(No title)'}</div>

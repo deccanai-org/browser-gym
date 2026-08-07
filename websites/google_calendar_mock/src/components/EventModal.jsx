@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Clock, MapPin, AlignLeft, Bell, Trash2, Copy, Repeat } from 'lucide-react';
+import { X, Clock, MapPin, AlignLeft, Bell, Trash2, Copy, Repeat, User } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { generateId } from '../utils/helpers';
 import { format } from 'date-fns';
 import clsx from 'clsx';
-import { gymNow } from '../utils/helpers';
+import { gymNow, toLocalInput } from '../utils/helpers';
 
 export default function EventModal({ isOpen, onClose, event, selectedDate }) {
   const { state, dispatch } = useStore();
@@ -26,37 +26,50 @@ export default function EventModal({ isOpen, onClose, event, selectedDate }) {
   useEffect(() => {
     if (isOpen) {
       if (event) {
-        // Edit mode
+        // Edit mode. Stored times are UTC ISO strings; slicing them raw showed
+        // the UTC wall time in a local-time input (an event saved for 9:00 AM
+        // reopened at 3:30 AM).
         setFormData({
           ...event,
-          start: event.start.slice(0, 16), // Format for datetime-local
-          end: event.end.slice(0, 16),
+          start: toLocalInput(event.start),
+          end: toLocalInput(event.end),
           recurring: event.recurring || 'none',
-          reminders: event.reminders || []
+          reminders: event.reminders || [],
+          guestsText: (event.guests || []).join(', '),
         });
       } else {
-        // Create mode
-        const defaultStart = selectedDate ? new Date(selectedDate) : gymNow();
-        defaultStart.setHours(gymNow().getHours() + 1, 0, 0, 0);
-        const defaultEnd = new Date(defaultStart);
-        defaultEnd.setMinutes(defaultStart.getMinutes() + (state.settings.defaultDuration || 60));
+        // Create mode. Honor the slot that was actually clicked: week/day view
+        // passes the clicked time, month view and the Create button pass a bare
+        // day, which starts at the next whole hour.
+        const clicked = selectedDate ? new Date(selectedDate) : null;
+        const defaultStart = clicked || new Date();
+        const clickedCarriesTime = !!clicked &&
+          (clicked.getHours() !== 0 || clicked.getMinutes() !== 0);
+        if (!clickedCarriesTime) {
+          const now = new Date();
+          defaultStart.setHours(now.getHours() + 1, 0, 0, 0);
+        }
+        const duration = state.settings?.defaultDuration || 60;
+        const defaultEnd = new Date(defaultStart.getTime() + duration * 60000);
+        const reminder = state.settings?.defaultReminder || { type: 'popup', minutes: 10 };
 
         setFormData({
           title: '',
-          start: defaultStart.toISOString().slice(0, 16),
-          end: defaultEnd.toISOString().slice(0, 16),
+          start: toLocalInput(defaultStart),
+          end: toLocalInput(defaultEnd),
           allDay: false,
           location: '',
           description: '',
           calendarId: state.calendars[0]?.id || '',
           color: 'bg-blue-500',
           recurring: 'none',
-          reminders: [{ type: 'popup', minutes: 10 }]
+          reminders: [reminder],
+          guestsText: '',
         });
       }
       setDeletePending(false);
     }
-  }, [isOpen, event, selectedDate, state.calendars]);
+  }, [isOpen, event, selectedDate, state.calendars, state.settings]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -73,12 +86,24 @@ export default function EventModal({ isOpen, onClose, event, selectedDate }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const startMs = new Date(formData.start).getTime();
+    const endMs = new Date(formData.end).getTime();
+    if (!(endMs > startMs)) {
+      alert('End time must be after start time.');
+      return;
+    }
+    const guests = String(formData.guestsText || '')
+      .split(/[,;\s]+/)
+      .map(s => s.trim())
+      .filter(Boolean);
     const newEvent = {
       ...formData,
+      guests,
       id: event ? event.id : generateId(),
       start: new Date(formData.start).toISOString(),
       end: new Date(formData.end).toISOString()
     };
+    delete newEvent.guestsText;
 
     // Raw wall-clock date + HH:MM straight from the datetime-local inputs,
     // BEFORE the ISO conversion above. Carried on a sibling `bridge` field so
@@ -280,6 +305,17 @@ export default function EventModal({ isOpen, onClose, event, selectedDate }) {
                 <option key={cal.id} value={cal.id}>{cal.name}</option>
               ))}
             </select>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <User className="text-gray-400" size={20} />
+            <input
+              type="text"
+              placeholder="Add guests (comma-separated emails)"
+              className="w-full border-b border-gray-200 focus:border-primary outline-none py-1 text-sm"
+              value={formData.guestsText || ''}
+              onChange={e => setFormData({ ...formData, guestsText: e.target.value })}
+            />
           </div>
 
           <div className="flex items-center gap-4">

@@ -50,10 +50,23 @@ const CreateLabelDialog = ({ onClose }) => {
 };
 
 const Sidebar = () => {
-  const { state, setIsComposeOpen, settings } = useStore();
+  const { state, setIsComposeOpen, settings, unreadThreadCount } = useStore();
   const location = useLocation();
   const [showCreateLabel, setShowCreateLabel] = useState(false);
   const [showMore, setShowMore] = useState(false);
+
+  // The Inbox badge must agree with the Primary tab it links to: it used to sum
+  // every category's unread, so Social/Promotions/Updates mail inflated a count
+  // for a list that never shows those rows. Hidden tabs still fold into Primary,
+  // exactly as the list itself does.
+  const categoryTabs = settings?.categoryTabs || {};
+  const shownTabs = Object.keys(categoryTabs).filter(k => categoryTabs[k]);
+  const inInboxPrimary = (email) => {
+    if (email.folder !== 'inbox') return false;
+    const cat = email.category || 'primary';
+    const effCat = shownTabs.length && !shownTabs.includes(cat) ? 'primary' : cat;
+    return effCat === 'primary';
+  };
 
   // "Show in label list" visibility from Settings > Labels now actually hides
   // nav entries (previously saved and ignored). Everything defaults to visible.
@@ -62,7 +75,7 @@ const Sidebar = () => {
   const showSys = (id) => sysShown[id] ?? true;
 
   const primaryNavItems = [
-    { icon: Inbox, label: 'Inbox', path: '/inbox', sysId: 'sys_inbox', count: state.emails.filter(e => e.folder === 'inbox' && !e.read).length },
+    { icon: Inbox, label: 'Inbox', path: '/inbox', sysId: 'sys_inbox', count: unreadThreadCount(inInboxPrimary) },
     { icon: Star, label: 'Starred', path: '/starred', sysId: 'sys_starred', count: state.emails.filter(e => e.starred && e.folder !== 'trash').length },
     { icon: AlertCircle, label: 'Important', path: '/important', sysId: 'sys_important', count: state.emails.filter(e => e.important && e.folder !== 'trash').length },
     { icon: Clock, label: 'Snoozed', path: '/snoozed', sysId: 'sys_snoozed', count: state.emails.filter(e => e.folder === 'snoozed').length },
@@ -71,7 +84,7 @@ const Sidebar = () => {
   ].filter(item => showSys(item.sysId));
 
   const moreNavItems = [
-    { icon: AlertOctagon, label: 'Spam', path: '/spam', sysId: 'sys_spam', count: state.emails.filter(e => e.folder === 'spam' && !e.read).length },
+    { icon: AlertOctagon, label: 'Spam', path: '/spam', sysId: 'sys_spam', count: unreadThreadCount(e => e.folder === 'spam') },
     { icon: Trash2, label: 'Trash', path: '/trash', sysId: 'sys_trash' },
     { icon: Mail, label: 'All Mail', path: '/all-mail', sysId: 'sys_allmail' },
   ].filter(item => showSys(item.sysId));
