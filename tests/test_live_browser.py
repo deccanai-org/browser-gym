@@ -417,6 +417,69 @@ async def test_a_switch_to_an_app_with_no_tab_yet_opens_one():
     assert out["resolved"]["openedTab"] is True, "and it says the tab was built, not found"
 
 
+# --------------------------------------------------------------------------- observation
+def test_the_observe_script_is_valid_javascript():
+    """The JS is assembled by string formatting, so a Python-level mistake becomes
+    a JS SYNTAX ERROR that only shows up in a browser.
+
+    This is not hypothetical: a `\\n` inside a `//` comment in the Python source
+    became a real newline, ended the comment early, and turned the rest of the
+    line into code. `observe()` catches everything and returns {}, so every page
+    yielded zero elements, every request still answered 200, and the dataset
+    would simply have had no observations.
+    """
+    js = service._OBSERVE_JS
+    assert "%s" not in js, "the descriptor was never substituted in"
+    assert js.count("{") == js.count("}"), "unbalanced braces"
+    assert js.count("(") == js.count(")"), "unbalanced parens"
+    for n, line in enumerate(js.splitlines(), 1):
+        stripped = line.strip()
+        if stripped.startswith("//"):
+            continue
+        # A `//` comment cannot be followed by a bare newline mid-statement; the
+        # check that actually catches the bug is that no comment line is left
+        # holding an unterminated string.
+        assert stripped.count("'") % 2 == 0, f"odd quote count on line {n}: {line!r}"
+
+
+@pytest.mark.asyncio
+async def test_observation_failure_is_reported_not_silently_empty(caplog):
+    """`observe` is best-effort so a mid-navigation page cannot lose a step — but
+    silence is how observation capture turns itself off permanently."""
+    page = FakePage()
+
+    async def boom(script, arg=None):
+        raise RuntimeError("SyntaxError: Unexpected identifier")
+    page.evaluate = boom
+
+    with caplog.at_level("WARNING"):
+        out = await _live(page).observe()
+    assert out == {}
+    assert any("observe failed" in r.message or "observe failed" in r.getMessage()
+               for r in caplog.records), "a broken observe must say so"
+
+
+@pytest.mark.asyncio
+async def test_an_observation_carries_the_page_and_its_elements():
+    page = FakePage()
+    captured = {
+        "url": "http://localhost:5201/cart", "title": "Cart",
+        "viewport": {"w": 1280, "h": 800}, "scroll": {"x": 0, "y": 240},
+        "text": "Subtotal $41.98", "truncated": False,
+        "elements": [{"targetKey": "checkout-btn", "role": "button",
+                      "bbox": {"x": 1, "y": 2, "w": 120, "h": 40}}],
+    }
+
+    async def ev(script, arg=None):
+        return captured
+    page.evaluate = ev
+
+    out = await _live(page).observe()
+    assert out["url"].endswith("/cart") and out["scroll"]["y"] == 240
+    assert out["elements"][0]["targetKey"] == "checkout-btn"
+    assert "tabId" in out, "an observation must say which tab it describes"
+
+
 @pytest.mark.asyncio
 async def test_the_last_tab_cannot_be_closed():
     s, pages = _multitab(1)

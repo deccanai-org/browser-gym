@@ -33,6 +33,7 @@ import functools
 import hashlib
 import hmac
 import json
+import logging
 import os
 import time
 import uuid
@@ -42,6 +43,8 @@ from typing import Any
 from fastapi import FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
+log = logging.getLogger("live_browser")
 
 VIEWPORT_W = int(os.getenv("LIVE_VIEWPORT_W", "1280"))
 VIEWPORT_H = int(os.getenv("LIVE_VIEWPORT_H", "800"))
@@ -135,11 +138,70 @@ _DESCRIBE_EL_JS = """(el) => {
         d.selectedText = (el.options[el.selectedIndex] || {}).text || '';
     const r = el.getBoundingClientRect();
     d.bbox = {x: r.x, y: r.y, w: r.width, h: r.height};
-    d.targetKey = testId || el.id || name || tag + ':' + (d.label || d.text).slice(0, 40);
+    // Whitespace collapsed: an element's text can span several lines, and a key
+    // with a line break inside it is awkward everywhere it is later read — a
+    // JSON dataset, a log line, a diff. Same rule for every caller, so the
+    // identity still matches across describe/focused/observe.
+    d.targetKey = testId || el.id || name ||
+        tag + ':' + (d.label || d.text).replace(/\\s+/g, ' ').trim().slice(0, 40);
     return d;
 }"""
 
 _FOCUS_JS = f"() => ({_DESCRIBE_EL_JS})(document.activeElement)"
+
+
+# Every INTERACTIVE element on the page, described the same way a clicked one is.
+#
+# This is the observation half of a trajectory. Without it a sample says what the
+# annotator did and nothing about what they could see, which is not something a
+# policy can be trained on: the model has to learn "given this page, click that",
+# and the page was never recorded. Reusing `_DESCRIBE_EL_JS` matters — the element
+# in the inventory and the element in the action then carry the SAME `targetKey`,
+# so a consumer can find the action's target in the observation by identity rather
+# than by guessing from coordinates.
+#
+# Visible elements only, and capped. An uncapped dump of a storefront is hundreds
+# of kilobytes per step, most of it chrome the annotator never looked at, and the
+# cost lands on every step of every trajectory.
+_OBSERVE_JS = """(max) => {
+    const SEL = 'a[href],button,input,select,textarea,[role=button],[role=link],' +
+                '[role=checkbox],[role=radio],[role=tab],[role=menuitem],[onclick],' +
+                '[data-test-id],[contenteditable=true]';
+    const describe = %s;
+    const seen = new Set();
+    const out = [];
+    for (const el of document.querySelectorAll(SEL)) {
+        if (out.length >= max) break;
+        const r = el.getBoundingClientRect();
+        if (!r.width || !r.height) continue;                       // laid out but not rendered
+        if (r.bottom < 0 || r.top > (window.innerHeight || 0) * 3) continue;  // far off-screen
+        const s = window.getComputedStyle(el);
+        if (s.visibility === 'hidden' || s.display === 'none' || s.opacity === '0') continue;
+        const d = describe(el);
+        if (!d || !d.targetKey) continue;
+        if (seen.has(d.targetKey)) continue;                       // one row per identity
+        seen.add(d.targetKey);
+        d.disabled = !!el.disabled;
+        d.inViewport = r.top < (window.innerHeight || 0) && r.bottom > 0;
+        out.push(d);
+    }
+    return {
+        url: location.href,
+        title: document.title,
+        viewport: {w: window.innerWidth, h: window.innerHeight},
+        scroll: {x: window.scrollX, y: window.scrollY},
+        // What the page SAYS, capped. The element inventory covers what can be
+        // acted on; this covers what can be read — prices, totals, confirmations
+        // — which is most of what a shopping task actually turns on.
+        text: (document.body ? document.body.innerText : '').slice(0, 20000),
+        elements: out,
+        truncated: out.length >= max,
+    };
+}""" % _DESCRIBE_EL_JS
+
+# Enough to cover a dense storefront listing without letting one pathological
+# page dominate the dataset.
+OBSERVE_MAX_ELEMENTS = 300
 
 
 # --------------------------------------------------------------------------- session
@@ -372,6 +434,27 @@ class LiveSession:
         with contextlib.suppress(Exception):
             state["focus"] = await self.page.evaluate(_FOCUS_JS)
         return state
+
+    async def observe(self, max_elements: int = OBSERVE_MAX_ELEMENTS) -> dict:
+        """What the page LOOKED like — the observation half of a trajectory step.
+
+        Best-effort by design. An observation is context, not an action: failing
+        the step because a page was mid-navigation when we asked would lose the
+        thing that actually matters. A caller gets `{}` and records no
+        observation rather than losing the step.
+
+        But it is LOUD about it. Swallowing this silently is how observation
+        capture turns itself off permanently and nobody notices — a typo in
+        `_OBSERVE_JS` raises on every page, every step returns `{}`, and the
+        dataset simply has no observations while every request still answers 200.
+        """
+        try:
+            obs = await self.page.evaluate(_OBSERVE_JS, max_elements)
+        except Exception as exc:  # noqa: BLE001 — see docstring
+            log.warning("observe failed on %s: %s", getattr(self.page, "url", "?"), exc)
+            return {}
+        obs["tabId"] = self.tab_id(self.page)
+        return obs
 
     # --- structured actions ------------------------------------------------
     # Raw pointer input is how a HUMAN drives the browser; a committed trajectory
@@ -762,6 +845,31 @@ async def session_focused(sid: str, body: FocusBody) -> dict:
     if check_ticket(sid, body.ticket) is None:
         raise HTTPException(403, "invalid or expired ticket")
     return await s.focused()
+
+
+class ObserveBody(BaseModel):
+    ticket: str = ""
+    max_elements: int = OBSERVE_MAX_ELEMENTS
+
+
+@app.post("/live/sessions/{sid}/observe")
+async def session_observe(sid: str, body: ObserveBody) -> dict:
+    """The page as an OBSERVATION: url, title, viewport, scroll, visible text and
+    an inventory of every interactive element, each described exactly the way a
+    clicked element is.
+
+    A trajectory without this records what the annotator did and nothing about
+    what they could see, and a policy cannot be trained on the action alone. The
+    shared descriptor is the point: an element here and the target of the action
+    that follows carry the same `targetKey`, so a consumer can tie them together
+    by identity instead of inferring it from coordinates.
+    """
+    s = SESSIONS.get(sid)
+    if not s or s.closed:
+        raise HTTPException(404, "unknown session")
+    if check_ticket(sid, body.ticket) is None:
+        raise HTTPException(403, "invalid or expired ticket")
+    return await s.observe(max(1, min(int(body.max_elements or OBSERVE_MAX_ELEMENTS), 2000)))
 
 
 @app.get("/live/sessions/{sid}/frame")
