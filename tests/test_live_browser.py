@@ -729,9 +729,13 @@ def test_a_contenteditable_reports_its_text_as_its_value():
     # property, and a replay that filled a contenteditable by assigning el.value
     # did exactly that — so reading `value` first reported the phantom back and
     # the field looked filled while the page still showed an empty body.
-    editable_at = js.index("if (el.isContentEditable) d.value =")
+    editable_at = js.index("if (el.isContentEditable) {")
     value_at = js.index("else if ('value' in el) d.value = el.value;")
     assert editable_at < value_at, "a phantom .value must not outrank the real content"
+    # And the MARKUP alongside it: a rich editor stores markup (ShopMail keeps
+    # bodyRef.current.innerHTML), so a fill that only knows the text rebuilds the
+    # body as flat divs — same words, different body, hash says diverged.
+    assert "d.valueHtml = el.innerHTML;" in js
 
 
 def test_filling_a_contenteditable_writes_its_text_not_a_value_property():

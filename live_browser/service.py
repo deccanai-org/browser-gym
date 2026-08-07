@@ -48,6 +48,11 @@ log = logging.getLogger("live_browser")
 
 VIEWPORT_W = int(os.getenv("LIVE_VIEWPORT_W", "1280"))
 VIEWPORT_H = int(os.getenv("LIVE_VIEWPORT_H", "800"))
+
+#: How long a real Playwright fill may take before we fall back to the JS one.
+#: Short on purpose — the fallback is what keeps a hidden-but-present element
+#: fillable, so waiting here only delays reaching it.
+_FILL_TIMEOUT_MS = 2000
 TICKET_TTL_S = int(os.getenv("LIVE_TICKET_TTL_S", "300"))
 SECRET = os.getenv("LIVE_STREAM_SECRET", os.getenv("HARNESS_TOKEN", "dev-live-secret"))
 # "*" allows any origin (dev only); otherwise a comma-separated allow-list.
@@ -177,7 +182,16 @@ _DESCRIBE_EL_JS = """(el) => {
     // looked filled while the page still showed an empty body. For a
     // contenteditable the content is the text, by definition; a `value` sitting
     // on it is not the content.
-    if (el.isContentEditable) d.value = (el.innerText || el.textContent || '');
+    if (el.isContentEditable) {
+        d.value = (el.innerText || el.textContent || '');
+        // The MARKUP as well as the text, because a rich editor stores markup:
+        // ShopMail keeps `bodyRef.current.innerHTML`. Replaying a fill that only
+        // knows the text rebuilds the body as flat divs, so the sent mail has
+        // the same words and a different body, and the world hash says diverged.
+        // `value` stays plain text — it is what a trajectory is read for, and
+        // nobody training on this wants a <span> in it.
+        d.valueHtml = el.innerHTML;
+    }
     else if ('value' in el) d.value = el.value;
     if (el.type === 'checkbox' || el.type === 'radio') d.checked = !!el.checked;
     if (tag === 'select' && el.selectedIndex >= 0)
@@ -624,7 +638,13 @@ class LiveSession:
                 const el = document.querySelector(sel);
                 if (!el) return false;
                 try { el.scrollIntoView({block: 'center', inline: 'center'}); } catch (e) {}
-                if (kind === 'fill') {
+                if (kind === 'fill_html') {
+                    if (!el.isContentEditable) return false;
+                    try { el.focus(); } catch (e) {}
+                    el.innerHTML = val;
+                    el.dispatchEvent(new Event('input', {bubbles: true}));
+                    el.dispatchEvent(new Event('change', {bubbles: true}));
+                } else if (kind === 'fill') {
                     try { el.focus(); } catch (e) {}
                     // A contenteditable's content is its TEXT. `el.value = val`
                     // on one just invents a JS property nobody reads: the page
@@ -827,7 +847,30 @@ class LiveSession:
                 with contextlib.suppress(Exception):
                     await self.page.wait_for_load_state("networkidle", timeout=5000)
         elif kind in ("fill", "type"):
-            ok = await self._js_activate(sel, "fill", value)
+            # Playwright FIRST, JS as the fallback — the mirror of the click path
+            # above, and for the same reason. A JS fill assigns the value and
+            # dispatches an input event, which is enough for the DOM and usually
+            # enough for React; when it is not, the field shows the text and the
+            # component's state never hears about it. ShopMail's send refuses on
+            # an empty `to`, so a replayed M105 filled all three fields visibly,
+            # clicked Send, and sent nothing. Playwright drives real input
+            # through CDP, so the page cannot tell it from a person typing.
+            #
+            # Short timeout, and any failure falls through: the JS path exists
+            # because a present-but-hidden element must still be fillable, and
+            # that contract is not given up to gain this.
+            # A rich editor stores MARKUP, so replay its markup when we have it —
+            # `page.fill` only knows text and rebuilds the body as flat divs.
+            html = args.get("valueHtml")
+            ok = False
+            if html:
+                ok = await self._js_activate(sel, "fill_html", str(html))
+            if not ok:
+                with contextlib.suppress(Exception):
+                    await self.page.fill(sel, value or "", timeout=_FILL_TIMEOUT_MS)
+                    ok = True
+            if not ok:
+                ok = await self._js_activate(sel, "fill", value)
         elif kind in ("select", "select_option"):
             ok = await self._js_activate(sel, "select", value)
         elif kind == "check":
