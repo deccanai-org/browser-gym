@@ -47,7 +47,10 @@ for entry in "${PORTS[@]}"; do
   sleep 2
 done
 
-echo "==> starting $NGYMS gym instance(s) — one world each"
+# NGYMS is only the WARM pool now. One annotator needs one gym (two while they
+# certify), so the bridge starts more on demand up to BRIDGE_MAX_GYMS rather
+# than telling the third annotator to come back later.
+echo "==> starting $NGYMS warm gym instance(s) — one world each; the bridge grows more on demand"
 GYMS=""
 for i in $(seq 0 $((NGYMS-1))); do
   p=$((8077+i))
@@ -71,7 +74,7 @@ for p in 5201 5202 5203 5204 5205; do
   printf "  mock  :%s -> %s\n" "$p" "$(curl -s -o /dev/null -w '%{http_code}' -m 5 "http://127.0.0.1:$p/")"
 done
 curl -s -m 5 "http://127.0.0.1:$BRIDGE_PORT/bridge/sessions" \
-  | "$PY" -c 'import json,sys; d=json.load(sys.stdin); print(f"  bridge:{d[\"capacity\"]} gym(s) in the pool")'
+  | "$PY" -c 'import json,sys; d=json.load(sys.stdin); print(f"  bridge:{d[\"capacity\"]} gym(s) in the pool" + (f", grows to {d[\"maxGyms\"]} on demand" if d.get(\"autoscale\") else " (autoscale off)"))'
 echo
 echo "start a session:"
 echo "  BRIDGE_URL=http://127.0.0.1:$BRIDGE_PORT CUA_ENV=local \\"
