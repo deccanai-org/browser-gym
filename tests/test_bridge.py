@@ -18,6 +18,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from harness.auth import HARNESS_TOKEN_ENV
+from server.apps import bus, wiring as apps_wiring
 from server.main import app
 import tools.bridge as bridge
 from tools.bridge import Bridge
@@ -27,6 +28,22 @@ TOKEN = "test-bridge-token"
 GYM = "http://gym"
 MOCK = "http://mock"
 TASK = "A1/buy_wireless_mouse"
+
+
+@pytest.fixture(autouse=True)
+def _subscribers():
+    """The cross-app subscribers, per test, as every other cross-app test does.
+
+    `server.main` registers them once at import, and this file used to lean on
+    that. The registry is global, so any test file that clears it on teardown
+    (test_apps.py does) left the confirmation email with nobody to deliver it —
+    and the failure looked like the bridge, not like import order: the order was
+    created and the cart cleared, only the email never arrived.
+    """
+    bus.clear_subscribers()
+    apps_wiring.register_default_subscribers()
+    yield
+    bus.clear_subscribers()
 
 
 @pytest.fixture()
