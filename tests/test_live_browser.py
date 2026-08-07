@@ -384,6 +384,40 @@ async def test_switch_tab_out_of_range_is_refused_not_clamped():
 
 
 @pytest.mark.asyncio
+async def test_a_switch_carrying_a_url_goes_by_origin_not_by_index():
+    """The replay path addresses an app the way the live pane does.
+
+    A session opens with only the task's primary app and the others get a tab
+    when first visited, so a recorded tab INDEX is meaningless by the time a
+    replay reaches it. Worse, `tab_index` defaulted to 0: a switch carrying only
+    {app, url} replayed as "go to the first tab" and answered ok, so every
+    cross-app step ran against the primary app while the transcript read clean.
+    """
+    s, pages = _multitab(1)
+    pages[0].url = "http://localhost:5201/"
+    mail = _tabbable(FakePage(present={"#buy"}, url="http://localhost:5203/"))
+    s.context.pages.append(mail)
+
+    out = await s.act("switch_tab", None, {"app": "mail", "url": "http://localhost:5203/"})
+    assert out["ok"] and s.page is mail, "the url must win over the absent index"
+    assert out["kind"] == "switch_tab", "report the action that was asked for"
+    assert out["resolved"]["openedTab"] is False, "mail already had a tab"
+
+
+@pytest.mark.asyncio
+async def test_a_switch_to_an_app_with_no_tab_yet_opens_one():
+    """Only the primary app is open at the start, so the first move to any other
+    app has no tab to find. Refusing here would strand the replay at step one of
+    every cross-app trajectory."""
+    s, pages = _multitab(1)
+    pages[0].url = "http://localhost:5201/"
+
+    out = await s.act("switch_tab", None, {"app": "food", "url": "http://localhost:5205/"})
+    assert out["ok"] and len(s.context.pages) == 2
+    assert out["resolved"]["openedTab"] is True, "and it says the tab was built, not found"
+
+
+@pytest.mark.asyncio
 async def test_the_last_tab_cannot_be_closed():
     s, pages = _multitab(1)
     out = await s.act("close_tab", None, {"tab_index": 0})

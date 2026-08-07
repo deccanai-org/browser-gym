@@ -546,6 +546,26 @@ class LiveSession:
         if kind == "open_tab":
             return await self._open_tab(self._abs(args.get("url", "/")))
         if kind == "switch_tab":
+            # By URL first, matching the live path (see the websocket handler's
+            # `goto_app`): a session opens with only the task's primary app, and
+            # the others get a tab when first visited. So a tab INDEX means
+            # nothing across a replay — it depends on which apps the annotator
+            # happened to open and in what order, and a recorded index of 1 is
+            # a tab that does not exist yet when the replay reaches it.
+            #
+            # Worse than failing: `tab_index` defaulted to 0, so a switch that
+            # carried only {app, url} replayed as "go to the first tab" and
+            # reported ok. Every cross-app step in a replayed trajectory ran
+            # against the primary app while the transcript read clean.
+            if args.get("url") and not args.get("tab_id"):
+                out = await self.goto_app(self._abs(args["url"]))
+                # Report the action that was asked for; `openedTab` keeps the
+                # fact that the app had no tab yet, which is the difference
+                # between a replay that matched the recording and one that
+                # rebuilt part of it.
+                return {**out, "kind": "switch_tab",
+                        "resolved": {**out.get("resolved", {}),
+                                     "openedTab": out.get("kind") == "open_tab"}}
             return await self._switch_tab(
                 index=(None if args.get("tab_id") else int(args.get("tab_index", args.get("index", 0)))),
                 tab_id=args.get("tab_id"))
