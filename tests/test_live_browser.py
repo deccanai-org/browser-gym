@@ -597,3 +597,29 @@ async def test_a_double_click_clicks_twice():
     out = await _live(page).act("dblclick", {"id": "x"}, {})
     assert out["ok"] is True
     assert page.calls == [("click", "#x", "left", 2)]
+
+
+def test_the_descriptor_gives_an_unnamed_element_a_path():
+    """An element with no test id, id or name described as {}, and a step whose
+    locator is {} is refused at the last gate as unreplayable — which stranded
+    whole hand-done attempts with no way to ship and no repair control. Not noise
+    either: of the four locator-less clicks in the recorded corpus, one had
+    changed the world."""
+    js = service._DESCRIBE_EL_JS
+    assert "cssPath" in js, "there must be a fallback handle"
+    assert "nth-of-type" in js
+    # The path has to REACH an anchor. resolve() uses querySelector, which takes
+    # the first match, so a chain cut short of an id or body is relative and can
+    # match a different element elsewhere on the page.
+    assert "e.id" in js and "body" in js and "data-test-id" in js, (
+        "the walk must terminate at something unique"
+    )
+    assert "parts.length >= 20" in js, "the cap has to be generous enough to reach the anchor"
+
+
+def test_the_path_is_only_a_last_resort():
+    """A page that names its elements must not pay for this: `resolve` tries
+    testId, id and name first, and an nth-of-type chain is the most
+    layout-fragile handle here."""
+    js = service._DESCRIBE_EL_JS
+    assert "if (!testId && !el.id && !name) d.selector = cssPath(el);" in js

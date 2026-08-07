@@ -120,6 +120,39 @@ def origin_ok(origin: str | None) -> bool:
 # field wrong. `targetKey` is a stable identity for coalescing.
 _DESCRIBE_EL_JS = """(el) => {
     if (!el || el === document.body) return {};
+    // A CSS PATH, so that every element has SOME durable handle.
+    //
+    // Elements with no test id, id, name or text described as {} — and a step
+    // whose locator is {} is refused at the last gate as unreplayable, which
+    // stranded whole hand-done attempts with no way to ship and no repair
+    // control. It is not noise either: of the four locator-less clicks in the
+    // recorded corpus, one had changed the world.
+    //
+    // Anchored at the nearest ancestor carrying a test id or an id, so the path
+    // is as short as the page allows and survives changes above that anchor.
+    // Last resort by construction — `resolve` tries testId, id and name first,
+    // and an nth-of-type chain is the most layout-fragile thing here.
+    const cssPath = (node) => {
+        const parts = [];
+        for (let e = node; e && e.nodeType === 1 && e !== document.documentElement; e = e.parentElement) {
+            const testId = e.getAttribute && e.getAttribute('data-test-id');
+            if (testId) { parts.unshift('[data-test-id="' + CSS.escape(testId) + '"]'); break; }
+            if (e.id) { parts.unshift('#' + CSS.escape(e.id)); break; }
+            const tag = e.tagName.toLowerCase();
+            if (tag === 'body') { parts.unshift('body'); break; }
+            let n = 1;
+            for (let sib = e.previousElementSibling; sib; sib = sib.previousElementSibling)
+                if (sib.tagName === e.tagName) n++;
+            parts.unshift(tag + ':nth-of-type(' + n + ')');
+            // Generous, because the path must REACH its anchor. `resolve` uses
+            // querySelector, which takes the first match, so a chain cut short
+            // of an id or body is relative and can match the wrong element
+            // somewhere else on the page. Anchored + nth-of-type at every level
+            // is unique by construction; a cut chain is a coin flip.
+            if (parts.length >= 20) break;
+        }
+        return parts.join(' > ');
+    };
     const attr = (n) => el.getAttribute(n) || '';
     const tag = el.tagName.toLowerCase();
     const testId = attr('data-test-id');
@@ -142,6 +175,10 @@ _DESCRIBE_EL_JS = """(el) => {
     // with a line break inside it is awkward everywhere it is later read — a
     // JSON dataset, a log line, a diff. Same rule for every caller, so the
     // identity still matches across describe/focused/observe.
+    // Only when nothing better exists. The recorder maps this to `css`, which
+    // `resolve` tries AFTER testId/id/name, so a page that names its elements
+    // never pays for it.
+    if (!testId && !el.id && !name) d.selector = cssPath(el);
     d.targetKey = testId || el.id || name ||
         tag + ':' + (d.label || d.text).replace(/\\s+/g, ' ').trim().slice(0, 40);
     return d;
