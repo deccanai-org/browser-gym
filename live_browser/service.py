@@ -175,10 +175,16 @@ _DESCRIBE_EL_JS = """(el) => {
     // with a line break inside it is awkward everywhere it is later read — a
     // JSON dataset, a log line, a diff. Same rule for every caller, so the
     // identity still matches across describe/focused/observe.
-    // Only when nothing better exists. The recorder maps this to `css`, which
-    // `resolve` tries AFTER testId/id/name, so a page that names its elements
-    // never pays for it.
-    if (!testId && !el.id && !name) d.selector = cssPath(el);
+    // Whenever there is no UNIQUE handle. testId and id identify one element;
+    // `name` does not — every radio in a group shares it, which is the whole
+    // point of a radio group. Skipping the path for named elements meant the
+    // controls that most need disambiguating were the ones that never got it:
+    // a click on the PayPal radio recorded {role: input, name: "payment"},
+    // `resolve` turned that into [name="payment"], and querySelector returned
+    // the FIRST match — the expired Visa. The replay then paid with the card the
+    // task exists to catch, reported ok, and the sample would have shipped
+    // saying the annotator chose PayPal.
+    if (!testId && !el.id) d.selector = cssPath(el);
     d.targetKey = testId || el.id || name ||
         tag + ':' + (d.label || d.text).replace(/\\s+/g, ' ').trim().slice(0, 40);
     return d;
@@ -293,6 +299,23 @@ class LiveSession:
         self.context.on("page", self._on_new_page)
         page = await self.context.new_page()
         await page.goto(self.url, wait_until="load")
+        # `load` fires when the document and its assets are in — which is BEFORE
+        # these apps have anything on screen. Each mock is an SPA that then fetches
+        # its world from the bridge and re-renders; the cart lines, and therefore
+        # the gift-message field, exist only after that.
+        #
+        # A server-side replay opens a browser and immediately dispatches action
+        # 0, so losing that race made the first locator miss — and because the
+        # replay stops at the first failure, a whole trajectory came back as
+        # "13 steps diverged / did not replay" when the truth was that we looked
+        # before the page had drawn. Same shape as the world-read race in the
+        # materializer: a race lost, reported as a definite negative.
+        #
+        # Suppressed rather than awaited hard: a page that never goes idle (a
+        # poll, an open socket) must not stop the session from opening. The
+        # timeout is the cost of being wrong, once, at open.
+        with contextlib.suppress(Exception):
+            await page.wait_for_load_state("networkidle", timeout=5000)
         await self._bind(page)
 
     # --- tab binding --------------------------------------------------------

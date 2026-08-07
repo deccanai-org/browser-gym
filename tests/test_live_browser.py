@@ -617,9 +617,18 @@ def test_the_descriptor_gives_an_unnamed_element_a_path():
     assert "parts.length >= 20" in js, "the cap has to be generous enough to reach the anchor"
 
 
-def test_the_path_is_only_a_last_resort():
-    """A page that names its elements must not pay for this: `resolve` tries
-    testId, id and name first, and an nth-of-type chain is the most
-    layout-fragile handle here."""
+def test_a_named_element_still_gets_a_path_because_a_name_is_not_unique():
+    """The condition that let a replay pay with the wrong card.
+
+    testId and id identify ONE element; `name` does not — every radio in a group
+    shares it. Skipping the path for named elements meant the controls that most
+    need disambiguating never got one: a click on the PayPal radio recorded
+    {role: input, name: "payment"}, `resolve` turned that into [name="payment"],
+    and querySelector returned the FIRST match — the expired Visa the task exists
+    to catch. The replay reported ok either way.
+    """
     js = service._DESCRIBE_EL_JS
-    assert "if (!testId && !el.id && !name) d.selector = cssPath(el);" in js
+    assert "if (!testId && !el.id) d.selector = cssPath(el);" in js
+    assert "!name" not in js.split("d.selector = cssPath")[0][-80:], (
+        "a name must not suppress the path"
+    )
