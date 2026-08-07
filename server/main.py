@@ -762,6 +762,31 @@ async def api_logout():
     return RedirectResponse("/", 303)
 
 
+#: Header a refused action carries, so a caller that is NOT a browser can tell a
+#: refusal from a success.
+#:
+#: These routes redirect on BOTH outcomes -- deliberately, because the browser
+#: agent drives real HTML forms and a redirect is what a form does. But the
+#: bridge reads only the status code, and `ok = status in (200, 201, 302, 303)`
+#: therefore called every refusal a success. A click on a product the engine
+#: does not know answered {"ok": true}, the cart stayed empty, and ShopGym even
+#: flashed "Added 1 to cart" over the top of it. The annotator is told their
+#: action worked, the trajectory records that it worked, and only the world
+#: disagrees.
+#:
+#: A header keeps the HTML flow byte-identical -- no browser looks at it -- while
+#: giving the bridge the one bit it was missing.
+REFUSED_HEADER = "X-Gym-Refused"
+REFUSED_REASON_HEADER = "X-Gym-Refused-Reason"
+
+
+def _refused(response, result: dict):
+    """Mark a redirect as a REFUSAL without changing what a browser does."""
+    response.headers[REFUSED_HEADER] = "1"
+    response.headers[REFUSED_REASON_HEADER] = str(result.get("error") or "refused")[:120]
+    return response
+
+
 @app.post("/api/cart/add")
 async def api_add_to_cart(
     product_id: str = Form(...),
@@ -780,7 +805,7 @@ async def api_add_to_cart(
     # case — that would silently land the agent on /cart with only a
     # toast that's easy to miss in a heavy observation.
     if not result.get("ok"):
-        return RedirectResponse(f"/product/{product_id}", 303)
+        return _refused(RedirectResponse(f"/product/{product_id}", 303), result)
     return RedirectResponse(redirect or f"/product/{product_id}", 303)
 
 

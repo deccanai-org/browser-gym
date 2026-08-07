@@ -65,18 +65,20 @@ def wired(monkeypatch):
                 if act in ("set", "set_current"):
                     store[sid] = (json_body or {}).get("state")
                     events.append((sid, act))
-                return 200, {"ok": True}
+                return 200, {"ok": True}, {}
             if url.startswith(MOCK + "/state"):
-                return 200, {"stored_state": store.get(sid)}
-            return 200, {"ok": True}
+                return 200, {"stored_state": store.get(sid)}, {}
+            return 200, {"ok": True}, {}
         # gym: strip the fake base, drive the TestClient (don't chase 303s)
         path = url[len(GYM):]
         r = client.request(method, path, data=form, json=json_body,
                            headers=headers or {}, follow_redirects=False)
+        # Headers travel with the answer: these routes 303 on success AND on
+        # refusal, so the header is the only thing that distinguishes them.
         try:
-            return r.status_code, r.json()
+            return r.status_code, r.json(), dict(r.headers)
         except Exception:
-            return r.status_code, r.text
+            return r.status_code, r.text, dict(r.headers)
 
     monkeypatch.setattr(bridge, "_http", shim)
     b = Bridge(gym_url=GYM, mock_map={a: MOCK for a in
@@ -286,8 +288,8 @@ def test_bridge_tick_disable(monkeypatch):
         if "/api/" in url:
             calls["act"] += 1
         if url.endswith("/_harness/world_full"):
-            return 200, {"shop": {"cart": {"items": []}}}
-        return 200, {}
+            return 200, {"shop": {"cart": {"items": []}}}, {}
+        return 200, {}, {}
     monkeypatch.setattr(bridge, "_http", fake_http)
     b = bridge.Bridge(gym_url="http://g", mock_map={}, tick_enabled=False)
     b.reset("A1/buy_wireless_mouse", 0)
@@ -355,3 +357,43 @@ def test_actions_are_journalled_to_the_hub(wired):
     import uuid
     for sid, _a in b._events:
         assert str(uuid.UUID(sid)) == sid, sid
+
+
+def test_a_refused_add_to_cart_does_not_report_success(wired):
+    """The bug that told an annotator their click worked when it did not.
+
+    These routes 303 on success AND on refusal — deliberately, because the
+    browser agent drives real HTML forms and a redirect is what a form does. The
+    bridge read only the status code, so `ok = status in (200, 201, 302, 303)`
+    called every refusal a success. A click on a product the engine does not know
+    answered {"ok": true}, the cart stayed empty, and the mock flashed "Added 1
+    to cart" over the top of it: the annotator is told it worked, the trajectory
+    records that it worked, and only the world disagrees.
+
+    Most of what a storefront shows is ambient filler that exists only in the
+    projection — 188 of 231 ShopGym products — so this is the COMMON case, not an
+    edge one.
+    """
+    b = wired
+    b.reset("A1/buy_wireless_mouse", 0)
+
+    out = b.act("shop.add_to_cart", product_id="p_does_not_exist_anywhere", quantity=1)
+
+    assert out["ok"] is False, "a product the engine does not know must not report success"
+    assert "error" in out and out["error"], "and it must say why"
+    items = ((b.world().get("shop") or {}).get("cart") or {}).get("items") or []
+    assert not items, "nothing was added, which is the point"
+
+
+def test_a_real_add_to_cart_still_reports_success(wired):
+    """The other half: the refusal check must not make every action look failed."""
+    b = wired
+    b.reset("A1/buy_wireless_mouse", 0)
+    world = b.world()
+    pid = next(iter((world.get("shop") or {}).get("products") or {}), None)
+    assert pid, "the fixture task must have a product to add"
+
+    out = b.act("shop.add_to_cart", product_id=pid, quantity=1)
+
+    assert out["ok"] is True, out
+    assert "error" not in out

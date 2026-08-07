@@ -175,11 +175,13 @@ def _http(method: str, url: str, *, form: dict | None = None,
     try:
         with opener.open(req, timeout=timeout) as r:
             body = r.read().decode() or ""
-            return r.status, _maybe_json(body)
+            return r.status, _maybe_json(body), dict(r.headers)
     except urllib.error.HTTPError as e:
-        # 303/302 land here with the redirect handler disabled — that's success.
+        # 303/302 land here with the redirect handler disabled. A redirect is
+        # what a FORM does, so it says nothing about whether the action was
+        # accepted — the headers do.
         body = e.read().decode() if e.fp else ""
-        return e.code, _maybe_json(body)
+        return e.code, _maybe_json(body), dict(e.headers or {})
 
 
 def _maybe_json(body: str) -> dict | str:
@@ -214,13 +216,13 @@ class Bridge:
     def reset(self, task_id: str, seed: int = 0) -> dict:
         """Reset the gym engine to (task, seed) and remember it."""
         self.task_id, self.seed, self._step = task_id, seed, 0
-        _, meta = _http("POST", f"{self.gym_url}/_harness/reset",
+        _, meta, _h = _http("POST", f"{self.gym_url}/_harness/reset",
                         json_body={"task_id": task_id, "seed": seed}, headers=self._hh())
         return meta if isinstance(meta, dict) else {}
 
     def world(self) -> dict[str, Any]:
         """The COMPLETE live world (asdict) from the running engine."""
-        _, w = _http("GET", f"{self.gym_url}/_harness/world_full", headers=self._hh())
+        _, w, _h = _http("GET", f"{self.gym_url}/_harness/world_full", headers=self._hh())
         return w if isinstance(w, dict) else {}
 
     # -- read half: engine -> realistic UIs --------------------------------- #
@@ -277,24 +279,35 @@ class Bridge:
         path = path.format(**payload)
         # GET actions (views/navigation) carry their args in the path, no body.
         form = None if method == "GET" else {f: payload.get(f) for f in fields}
-        status, _ = _http(method, f"{self.gym_url}{path}", form=form)
-        ok = status in (200, 201, 302, 303)
+        status, _, hdrs = _http(method, f"{self.gym_url}{path}", form=form)
+        # A redirect is what a FORM does, not a verdict. These routes 303 on
+        # success AND on refusal, so `status in (...)` called every refusal a
+        # success: a click on a product the engine does not know answered
+        # {"ok": true}, the cart stayed empty, and the mock flashed "Added 1 to
+        # cart" over the top of it. The annotator is told it worked, the
+        # trajectory records that it worked, and only the world disagrees.
+        refused = str(hdrs.get("X-Gym-Refused") or hdrs.get("x-gym-refused") or "") == "1"
+        reason = str(hdrs.get("X-Gym-Refused-Reason") or hdrs.get("x-gym-refused-reason") or "")
+        ok = status in (200, 201, 302, 303) and not refused
         if self.tick_enabled:
             self.tick()                  # flush any scheduled cross-app effects
         pushed = self.push()             # re-project the advanced world to all tabs
-        return {"ok": ok, "status": status, "world_step": self._step, "pushed": pushed}
+        out = {"ok": ok, "status": status, "world_step": self._step, "pushed": pushed}
+        if refused:
+            out["error"] = reason or "the engine refused this action"
+        return out
 
     def tick(self) -> list[dict]:
         """Advance the deterministic scheduler one step (delivers due async
         cross-app events, exactly as the gym does at each step boundary)."""
         self._step += 1
-        _, r = _http("POST", f"{self.gym_url}/_harness/tick",
+        _, r, _h = _http("POST", f"{self.gym_url}/_harness/tick",
                      json_body={"step": self._step}, headers=self._hh())
         return (r.get("fired") if isinstance(r, dict) else None) or []
 
     # -- score: the gym's real verifiers ------------------------------------ #
     def verify(self, url: str = "") -> dict:
         """The REAL milestone verdict for the live world."""
-        _, r = _http("POST", f"{self.gym_url}/_harness/verify",
+        _, r, _h = _http("POST", f"{self.gym_url}/_harness/verify",
                      json_body={"url": url, "step": self._step}, headers=self._hh())
         return r if isinstance(r, dict) else {}
