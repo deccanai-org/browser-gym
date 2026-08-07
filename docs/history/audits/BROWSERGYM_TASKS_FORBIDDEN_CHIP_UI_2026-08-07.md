@@ -21,4 +21,5 @@ Open M83 (Wave-1) BREAK run: step 5 should show green `ordered_perfume_to_jordan
 
 ## Live
 - URL: https://arun-thepolicy-murari.github.io/BrowserGym-Tasks/
-- Deploy: push to `main` → GitHub Pages workflow (`workflow_dispatch` available)
+- Deploy SHA: `fe8051914ed08a8df179b2c1e4ca840243981765` (Pages run [31203986977](https://github.com/arun-thepolicy-murari/BrowserGym-Tasks/actions/runs/31203986977), `workflow_dispatch` after push)
+- Canonical: `BrowserGym-Tasks` (`arun-thepolicy-murari`). Annotation-phase2 got the same `app/` + `index.html` patch locally (`4010bb2`) but could not push to `amit-deccan/BrowserGym-Annotation-phase2` (403).
