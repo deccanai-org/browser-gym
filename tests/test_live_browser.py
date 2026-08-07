@@ -628,6 +628,23 @@ def test_the_descriptor_gives_an_unnamed_element_a_path():
 
 
 @pytest.mark.asyncio
+async def test_a_label_that_wraps_onto_two_lines_still_matches_itself():
+    """ShopGym's "Returns\n& Orders" link, refused at step 0 of every run.
+
+    The recorder stores `text` trimmed but NOT whitespace-collapsed, while the
+    page is read collapsed — so the identity check compared "Returns\n& Orders"
+    against "Returns & Orders" and concluded the element was a different one.
+    Every multi-line label in every mock, and it is the FIRST action of the M105
+    trajectory.
+    """
+    page = FakePage(present={"#orders"}, says={"#orders": "Returns & Orders"})
+
+    sel = await _live(page).resolve({"role": "a", "text": "Returns\n& Orders", "css": "#orders"})
+
+    assert sel == "#orders"
+
+
+@pytest.mark.asyncio
 async def test_a_path_that_lands_on_the_wrong_element_is_refused():
     """Resolving is not being right.
 
@@ -708,14 +725,28 @@ def test_a_contenteditable_reports_its_text_as_its_value():
     """
     js = service._DESCRIBE_EL_JS
     assert "el.isContentEditable" in js, "a contenteditable must report a value"
-    # After the plain `value` branch, never instead of it: a real <input> whose
-    # value happens to be empty must not be overwritten by its text.
-    value_at = js.index("if ('value' in el) d.value = el.value;")
-    editable_at = js.index("el.isContentEditable")
-    assert value_at < editable_at
-    assert "else if (el.isContentEditable)" in js, (
-        "the contenteditable read must be the ELSE of the value read — an <input> "
-        "whose value is legitimately empty must not be overwritten by its text"
+    # BEFORE the plain `value` read, not after. Anything can be given a `.value`
+    # property, and a replay that filled a contenteditable by assigning el.value
+    # did exactly that — so reading `value` first reported the phantom back and
+    # the field looked filled while the page still showed an empty body.
+    editable_at = js.index("if (el.isContentEditable) d.value =")
+    value_at = js.index("else if ('value' in el) d.value = el.value;")
+    assert editable_at < value_at, "a phantom .value must not outrank the real content"
+
+
+def test_filling_a_contenteditable_writes_its_text_not_a_value_property():
+    """`el.value = val` on a contenteditable invents a property nobody reads.
+
+    The page is unchanged, the fill reports success, and the mail body stays
+    empty. Replaying M105 that way filled nothing, clicked a Send that really was
+    the Send button, and sent no mail — every action ok, trajectory failed at its
+    last step, and the describe helper read the phantom back so the field even
+    looked filled.
+    """
+    js = service._JS_ACTIVATE_JS if hasattr(service, "_JS_ACTIVATE_JS") else ""
+    src = js or __import__("inspect").getsource(service.LiveSession._js_activate)
+    assert "el.isContentEditable" in src and "el.textContent = val" in src, (
+        "a contenteditable must be filled by writing its text"
     )
 
 

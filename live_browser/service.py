@@ -165,15 +165,20 @@ _DESCRIBE_EL_JS = """(el) => {
         tag,
         text: (el.innerText || el.textContent || '').trim().slice(0, 120),
     };
-    if ('value' in el) d.value = el.value;
     // A contenteditable IS a text field; it just is not an <input>. Every rich
     // editor is built this way — a mail compose body, a comment box, a note —
-    // and `value` does not exist on one, so `'value' in el` was false and the
-    // keystrokes folded into a fill with value null. The trajectory then said
-    // the annotator typed SOMETHING into the message body and never what: the
-    // one field that step exists to carry. Recorded on a real M105 run, where
-    // the whole point of the task is the wording of the reply.
-    else if (el.isContentEditable) d.value = (el.innerText || el.textContent || '');
+    // and `value` does not exist on one, so keystrokes folded into a fill with
+    // value null: the trajectory said the annotator typed SOMETHING into the
+    // message body and never what, on a task whose answer IS the wording.
+    //
+    // Checked BEFORE `value`, not after. Anything can be given a `.value`
+    // property, and a replay that filled one by assigning `el.value` did exactly
+    // that — so reading `value` first reported the phantom back and the field
+    // looked filled while the page still showed an empty body. For a
+    // contenteditable the content is the text, by definition; a `value` sitting
+    // on it is not the content.
+    if (el.isContentEditable) d.value = (el.innerText || el.textContent || '');
+    else if ('value' in el) d.value = el.value;
     if (el.type === 'checkbox' || el.type === 'radio') d.checked = !!el.checked;
     if (tag === 'select' && el.selectedIndex >= 0)
         d.selectedText = (el.options[el.selectedIndex] || {}).text || '';
@@ -565,7 +570,12 @@ class LiveSession:
         # no sent mail — the trajectory failed at its last step with every action
         # reporting success. Same lesson as the radio group: resolving is not
         # being right.
-        want = str(locator.get("name") or locator.get("label") or locator.get("text") or "").strip()
+        # Whitespace collapsed on BOTH sides. The recorder stores `text` trimmed
+        # but not collapsed, so ShopGym's "Returns\n& Orders" link compared
+        # against a collapsed "Returns & Orders" and failed to be itself — every
+        # multi-line label in every mock, refused at step 0.
+        want = " ".join(str(locator.get("name") or locator.get("label")
+                            or locator.get("text") or "").split())
         for sel in cands:
             with contextlib.suppress(Exception):
                 got = await self.page.evaluate(
@@ -616,8 +626,18 @@ class LiveSession:
                 try { el.scrollIntoView({block: 'center', inline: 'center'}); } catch (e) {}
                 if (kind === 'fill') {
                     try { el.focus(); } catch (e) {}
-                    const d = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(el), 'value');
-                    if (d && d.set) d.set.call(el, val); else el.value = val;
+                    // A contenteditable's content is its TEXT. `el.value = val`
+                    // on one just invents a JS property nobody reads: the page
+                    // is unchanged, the fill reports success, and the mail body
+                    // stays empty. Replaying M105 that way filled nothing,
+                    // clicked a Send that really was the Send button, and sent
+                    // no mail — every action ok, trajectory failed at the end.
+                    if (el.isContentEditable) {
+                        el.textContent = val;
+                    } else {
+                        const d = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(el), 'value');
+                        if (d && d.set) d.set.call(el, val); else el.value = val;
+                    }
                     el.dispatchEvent(new Event('input', {bubbles: true}));
                     el.dispatchEvent(new Event('change', {bubbles: true}));
                 } else if (kind === 'select') {
