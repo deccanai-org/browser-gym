@@ -49,6 +49,22 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"],
 DEFAULT_SESSION = "_default"
 TTL_SEC = int(os.environ.get("BRIDGE_TTL_MIN", "90")) * 60
 
+# How long a session must have been IDLE before a newcomer may take its gym when
+# the pool is full.
+#
+# The plain TTL is generous on purpose — an annotator mid-task who steps away for
+# twenty minutes must come back to their world. But an annotator who simply
+# CLOSES THE TAB never calls /close, so their gym stays leased for the full TTL,
+# and a pool of two is dead for an hour and a half after two abandoned tabs. That
+# is not hypothetical: it is what the pool looked like when this was written, both
+# gyms held by sessions idle for 75 minutes, every annotator getting "every gym in
+# the bridge pool is busy".
+#
+# So idleness only costs you your gym when someone else actually needs one, and
+# only after this much of it. An active session is never evicted, however full the
+# pool is, because touching it resets the clock.
+GRACE_SEC = int(os.environ.get("BRIDGE_GRACE_MIN", "12")) * 60
+
 
 def _mock_map() -> dict[str, str]:
     """app -> state-API base. Explicit CUA_HUB_URL_* wins; otherwise the live hub."""
@@ -114,10 +130,29 @@ class _Pool:
             free = [u for u in _gym_pool()
                     if u not in {x.gym_url for x in self._sessions.values()}]
             if not free:
-                return None
+                # Nothing free. Take the gym off the session that has gone longest
+                # without being touched, provided it is past the grace period —
+                # almost always a closed tab, which never calls /close and would
+                # otherwise hold its gym for the whole TTL.
+                victim = self._lru_evictable_locked()
+                if victim is None:
+                    return None
+                free = [self._sessions.pop(victim).gym_url]
             s = _Session(sid, free[0])
             self._sessions[sid] = s
             return s
+
+    def _lru_evictable_locked(self) -> str | None:
+        """The idlest session past GRACE_SEC, or None if every session is in use.
+
+        Returning None is what keeps this from being a footgun: with every gym
+        genuinely busy the caller still gets its 503 and the annotator is told to
+        try again, rather than someone mid-task losing their world to a newcomer.
+        """
+        now = time.monotonic()
+        idle = [(now - x.touched, sid) for sid, x in self._sessions.items()
+                if now - x.touched > GRACE_SEC]
+        return max(idle)[1] if idle else None
 
     def close(self, sid: str) -> bool:
         with self._lock:
