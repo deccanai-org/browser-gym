@@ -769,3 +769,22 @@ def test_a_named_element_still_gets_a_path_because_a_name_is_not_unique():
     assert "!name" not in js.split("d.selector = cssPath")[0][-80:], (
         "a name must not suppress the path"
     )
+
+
+def test_the_pane_can_operate_a_select_at_all():
+    """A native dropdown is painted by the BROWSER, so the headless Chromium
+    behind the screencast never renders one. Measured against the real ShopGym
+    product page: clicking the Qty box moved its value from 'All' to 'All'.
+
+    So the option list has to come back over the wire for the pane to draw, and
+    the choice has to go back as its own message. Without both, every task whose
+    answer runs through a <select> — a quantity, a per-line ship-to address — is
+    impossible to annotate, and M102 is exactly that task.
+    """
+    src = __import__("inspect").getsource(service)
+    assert "async def select_at" in src, "the pane must be able to READ the options"
+    assert "async def select_value" in src, "and to CHOOSE one"
+    assert '/live/sessions/{sid}/select-at' in src, "exposed over REST for the press path"
+    assert 'kind == "select"' in src, "and accepted on the input channel"
+    # It must use the real control, not assign .value — React listens for change.
+    assert "select_option" in src

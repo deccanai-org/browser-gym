@@ -489,6 +489,56 @@ class LiveSession:
         """
         await self.cdp.send("Input.insertText", {"text": text})
 
+    #: What a <select> under the pointer looks like to the pane, so it can offer a
+    #: chooser. Returns {} for anything that is not a select.
+    _SELECT_AT_JS = """([x, y]) => {
+        const hit = document.elementFromPoint(x, y);
+        const el = hit && hit.closest('select');
+        if (!el) return {};
+        return {
+            value: el.value,
+            multiple: !!el.multiple,
+            options: [...el.options].map(o => ({
+                value: o.value, label: (o.label || o.textContent || '').trim(),
+                selected: !!o.selected, disabled: !!o.disabled,
+            })),
+        };
+    }"""
+
+    async def select_at(self, nx: float, ny: float) -> dict:
+        """The <select> under this point, with its options — or {} if there is none.
+
+        A native dropdown is drawn by the BROWSER, not the page, so a headless
+        Chromium never paints it and the screencast has nothing to show. An
+        annotator clicking a quantity dropdown therefore saw nothing happen and
+        could not set a quantity at all — which makes every task whose answer runs
+        through a <select> impossible to annotate.
+
+        So the pane draws the list itself. This is what it needs to draw it.
+        """
+        x, y = self.to_page_xy(nx, ny)
+        return await self.page.evaluate(self._SELECT_AT_JS, [x, y])
+
+    async def select_value(self, nx: float, ny: float, value: str) -> dict:
+        """Choose `value` in the <select> under this point.
+
+        Playwright's select_option drives the real control and fires `change`, so
+        React sees exactly what it would from a person using the dropdown.
+        """
+        x, y = self.to_page_xy(nx, ny)
+        handle = await self.page.evaluate_handle(
+            "([x, y]) => { const h = document.elementFromPoint(x, y); return h && h.closest('select'); }",
+            [x, y],
+        )
+        el = handle.as_element()
+        if el is None:
+            return {"ok": False, "error": "no select under the pointer"}
+        try:
+            await el.select_option(value=value, timeout=3000)
+        except Exception as exc:                                  # noqa: BLE001
+            return {"ok": False, "error": str(exc)[:200]}
+        return {"ok": True, "value": value}
+
     async def navigate(self, url: str) -> None:
         await self.page.goto(url, wait_until="load")
 
@@ -1008,6 +1058,22 @@ async def session_describe(sid: str, body: DescribeBody) -> dict:
     return await s.describe(body.x, body.y)
 
 
+@app.post("/live/sessions/{sid}/select-at")
+async def session_select_at(sid: str, body: DescribeBody) -> dict:
+    """The <select> under a normalized point, with its options — {} if none.
+
+    The pane asks this on every click so it can draw the dropdown a headless
+    browser will not paint. Same body shape as /describe, deliberately: it is the
+    same question about the same point, asked at the same moment.
+    """
+    s = SESSIONS.get(sid)
+    if not s or s.closed:
+        raise HTTPException(404, "unknown session")
+    if check_ticket(sid, body.ticket) is None:
+        raise HTTPException(403, "invalid or expired ticket")
+    return await s.select_at(body.x, body.y)
+
+
 class FocusBody(BaseModel):
     ticket: str = ""
 
@@ -1207,6 +1273,19 @@ async def stream(ws: WebSocket, sid: str, ticket: str = Query(default=""), contr
             elif kind == "mouse":
                 await s.mouse(msg.get("phase", "move"), msg["nx"], msg["ny"],
                               msg.get("button", "left"), int(msg.get("clicks", 1)))
+            # A native dropdown is painted by the BROWSER, so a headless one never
+            # renders and the screencast has nothing to show. The pane draws the
+            # option list itself and sends the choice back here, which is the only
+            # way an annotator can operate a <select> at all — and every task whose
+            # answer runs through one (a quantity, a ship-to address) was
+            # impossible to annotate without it.
+            elif kind == "select":
+                out = await s.select_value(msg["nx"], msg["ny"], str(msg.get("value", "")))
+                await ws.send_text(json.dumps({
+                    "type": "ack", "id": input_id, "applied": bool(out.get("ok")),
+                    "reason": out.get("error", ""), "state": await s.post_state(),
+                }))
+                continue
             elif kind == "paste":
                 await s.paste(msg.get("text", ""))
             elif kind == "back":
