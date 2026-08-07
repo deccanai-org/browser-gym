@@ -13,6 +13,7 @@ from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from server.apps.market import mutations as M
+from server.state import refused as _refused
 
 router = APIRouter(prefix="/market", tags=["market"])
 
@@ -70,11 +71,18 @@ async def cart_add(request: Request, product_id: str = Form(...),
                    quantity: int = Form(1)):
     world = _deps["get_world"]()
     r = M.add_to_cart(world.market, product_id=product_id, quantity=quantity)
+    resp = RedirectResponse(f"/market/product/{product_id}", 303)
     if r.get("ok"):
         _deps["flash"](world.shop, "success", "Added to your ValueMart cart.")
-    else:
-        _deps["flash"](world.shop, "error", "Could not add that item.")
-    return RedirectResponse(f"/market/product/{product_id}", 303)
+        return resp
+    _deps["flash"](world.shop, "error", "Could not add that item.")
+    # Same reason as the shop's /api/cart/add: this route 303s on BOTH outcomes,
+    # because the browser agent drives real HTML forms and a redirect is what a
+    # form does. The bridge reads only the status code, so without this a refusal
+    # answered {"ok": true} and ValueMart's cart silently stayed empty. Most of
+    # what the storefront shows is ambient filler the engine has never heard of
+    # — 158 of 167 listings — so this is the common path, not the edge.
+    return _refused(resp, r)
 
 
 @router.post("/cart/update")

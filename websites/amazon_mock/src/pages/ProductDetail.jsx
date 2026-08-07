@@ -23,6 +23,9 @@ export const ProductDetail = () => {
   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
   const [votedReviews, setVotedReviews] = useState(new Set());
   const [addedMsg, setAddedMsg] = useState('');
+  // Whether that message is a REFUSAL. A red banner and a green one must not
+  // look alike: the whole failure was an add that confirmed itself.
+  const [addFailed, setAddFailed] = useState(false);
   const reviewsRef = useRef(null);
 
   const product = state.products.find(p => p.id === id);
@@ -59,12 +62,23 @@ export const ProductDetail = () => {
   };
 
   // Add-to-cart had NO visible feedback (only the tiny cart-badge number changed),
-  // so it read as "not working". Show a clear confirmation.
+  // so it read as "not working". Show a clear confirmation — but only for an add
+  // that actually happened. This used to confirm unconditionally, so a product
+  // the engine does not know answered with a green "Added 1 to cart" over a cart
+  // that stayed empty. Saying nothing would have been better than that; saying
+  // the truth is better still.
   const handleAddToCart = () => {
-    addToCart(product, qty);
-    setAddedMsg(`Added ${qty} to cart`);
-    clearTimeout(handleAddToCart._t);
-    handleAddToCart._t = setTimeout(() => setAddedMsg(''), 3000);
+    const show = (msg, bad) => {
+      setAddedMsg(msg);
+      setAddFailed(!!bad);
+      clearTimeout(handleAddToCart._t);
+      handleAddToCart._t = setTimeout(() => { setAddedMsg(''); setAddFailed(false); }, 4000);
+    };
+    Promise.resolve(addToCart(product, qty))
+      .then(r => (r && r.ok === false)
+        ? show(r.error ? `Could not add this item — ${r.error}` : 'Could not add this item', true)
+        : show(`Added ${qty} to cart`, false))
+      .catch(() => show('Could not add this item', true));
   };
 
   const handleSubmitReview = (e) => {
@@ -343,8 +357,11 @@ export const ProductDetail = () => {
 
                   <Button className="w-full mb-2 text-sm" onClick={handleAddToCart}>Add to Cart</Button>
                   {addedMsg && (
-                    <div className="mb-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded px-2 py-1.5 flex items-center gap-1">
-                      <span className="font-bold">✓</span> {addedMsg}
+                    <div className={`mb-2 text-sm rounded px-2 py-1.5 flex items-center gap-1 border ${
+                      addFailed
+                        ? 'text-red-700 bg-red-50 border-red-200'
+                        : 'text-green-700 bg-green-50 border-green-200'}`}>
+                      <span className="font-bold">{addFailed ? '!' : '✓'}</span> {addedMsg}
                     </div>
                   )}
 

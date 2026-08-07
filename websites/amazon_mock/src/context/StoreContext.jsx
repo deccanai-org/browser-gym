@@ -97,11 +97,15 @@ export const StoreProvider = ({ children }) => {
   }, [state, hydrated]);
 
   // Actions
+  // Returns a promise of the ENGINE's verdict in bridged mode, so the caller can
+  // tell the truth instead of confirming an add that did not happen. Most of
+  // what this storefront shows is ambient filler the engine has never heard of
+  // (188 of 231 products), so a refusal is the common path, not the edge — and
+  // it used to be invisible: the cart stayed empty under a green "Added to cart".
   const addToCart = (product, quantity = 1) => {
     if (bridged()) {
-      bridgeAct('shop.add_to_cart', { product_id: product.id, quantity })
-        .then(r => applyEngine(setState, r));
-      return;
+      return bridgeAct('shop.add_to_cart', { product_id: product.id, quantity })
+        .then(r => { applyEngine(setState, r); return r; });
     }
     setState(prev => {
       // Never let the cart exceed a stock-tracked product's availability
@@ -119,6 +123,7 @@ export const StoreProvider = ({ children }) => {
       }
       return { ...prev, cart: newCart };
     });
+    return Promise.resolve({ ok: true });
   };
 
   const removeFromCart = (productId) => {

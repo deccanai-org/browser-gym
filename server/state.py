@@ -386,3 +386,27 @@ def flash(state: GymState, kind: str, body: str) -> None:
     """Push a flash message. Surfaced in the UI as a banner; verifiers
     can see them via state.flash_messages."""
     state.flash_messages.append({"kind": kind, "body": body})
+
+
+#: Headers a REFUSED form action carries, so a caller that is not a browser can
+#: tell a refusal from a success.
+#:
+#: The mutation routes redirect on BOTH outcomes -- deliberately, because the
+#: browser agent drives real HTML forms and a redirect is what a form does. But
+#: the bridge reads only the status code, so `ok = status in (200, 201, 302,
+#: 303)` called every refusal a success: a click on a product the engine does not
+#: know answered {"ok": true}, the cart stayed empty, and the mock flashed "Added
+#: 1 to cart" over the top of it. The annotator is told their click worked, the
+#: trajectory records that it worked, and only the world disagrees.
+#:
+#: A header keeps the HTML flow byte-identical -- no browser reads it -- while
+#: giving the bridge the one bit it was missing.
+REFUSED_HEADER = "X-Gym-Refused"
+REFUSED_REASON_HEADER = "X-Gym-Refused-Reason"
+
+
+def refused(response, result: dict):
+    """Mark a redirect as a REFUSAL without changing what a browser does."""
+    response.headers[REFUSED_HEADER] = "1"
+    response.headers[REFUSED_REASON_HEADER] = str(result.get("error") or "refused")[:120]
+    return response

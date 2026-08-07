@@ -397,3 +397,21 @@ def test_a_real_add_to_cart_still_reports_success(wired):
 
     assert out["ok"] is True, out
     assert "error" not in out
+
+
+def test_a_refused_valuemart_add_does_not_report_success(wired):
+    """ValueMart's route was missed by the first pass of this fix.
+
+    It 303s on both outcomes exactly like the shop's, so a refusal there was
+    still answering {"ok": true} while the cart stayed empty — and ValueMart is
+    the WORSE case: 158 of its 167 listings are ambient filler the engine has
+    never heard of, so ~19 of every 20 items an annotator can click are
+    un-addable.
+    """
+    b = wired
+    b.reset("A1/buy_wireless_mouse", 0)
+
+    out = b.act("market.add_to_cart", product_id="vm_nothing_like_this", quantity=1)
+
+    assert out["ok"] is False, "ValueMart must refuse audibly too"
+    assert out.get("error")
