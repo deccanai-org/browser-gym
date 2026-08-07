@@ -617,6 +617,28 @@ def test_the_descriptor_gives_an_unnamed_element_a_path():
     assert "parts.length >= 20" in js, "the cap has to be generous enough to reach the anchor"
 
 
+def test_a_contenteditable_reports_its_text_as_its_value():
+    """The bug that emptied every email body out of the trajectory.
+
+    A contenteditable is a text field that is not an <input>, so it has no
+    `value` property and `'value' in el` is false. Keystrokes into ShopMail's
+    compose body therefore folded into a fill with value null: the step said the
+    annotator typed SOMETHING and never what. Recorded on a real M105 run, where
+    the wording of the reply IS the answer to the task.
+    """
+    js = service._DESCRIBE_EL_JS
+    assert "el.isContentEditable" in js, "a contenteditable must report a value"
+    # After the plain `value` branch, never instead of it: a real <input> whose
+    # value happens to be empty must not be overwritten by its text.
+    value_at = js.index("if ('value' in el) d.value = el.value;")
+    editable_at = js.index("el.isContentEditable")
+    assert value_at < editable_at
+    assert "else if (el.isContentEditable)" in js, (
+        "the contenteditable read must be the ELSE of the value read — an <input> "
+        "whose value is legitimately empty must not be overwritten by its text"
+    )
+
+
 def test_a_named_element_still_gets_a_path_because_a_name_is_not_unique():
     """The condition that let a replay pay with the wrong card.
 

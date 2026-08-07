@@ -166,6 +166,14 @@ _DESCRIBE_EL_JS = """(el) => {
         text: (el.innerText || el.textContent || '').trim().slice(0, 120),
     };
     if ('value' in el) d.value = el.value;
+    // A contenteditable IS a text field; it just is not an <input>. Every rich
+    // editor is built this way — a mail compose body, a comment box, a note —
+    // and `value` does not exist on one, so `'value' in el` was false and the
+    // keystrokes folded into a fill with value null. The trajectory then said
+    // the annotator typed SOMETHING into the message body and never what: the
+    // one field that step exists to carry. Recorded on a real M105 run, where
+    // the whole point of the task is the wording of the reply.
+    else if (el.isContentEditable) d.value = (el.innerText || el.textContent || '');
     if (el.type === 'checkbox' || el.type === 'radio') d.checked = !!el.checked;
     if (tag === 'select' && el.selectedIndex >= 0)
         d.selectedText = (el.options[el.selectedIndex] || {}).text || '';
