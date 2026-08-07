@@ -191,9 +191,28 @@ except Exception:
     _PRODUCT_IMAGES = set()
 
 
+# Products that reuse a photo we already have, keyed by product id -> the asset's
+# basename. 148 of the 190 ids the engine can produce had no photo of their own,
+# so `_product_image` handed back a gradient letter tile — including the wool
+# socks and the camp mug, the very items a task prompt names. Sourcing 148 new
+# photos is a different project; pointing them at the 99 real ones already here is
+# not, and an alias costs no disk (the file is shared, not copied).
+#
+# Deliberately incomplete: a product with no honest match keeps the tile. A wrong
+# photo is worse than an obvious placeholder, and a warranty or an installation
+# service has nothing to photograph at all.
+_ALIAS_MANIFEST = pathlib.Path(__file__).with_name("product_image_aliases.json")
+try:
+    _IMAGE_ALIASES = json.loads(_ALIAS_MANIFEST.read_text()) if _ALIAS_MANIFEST.exists() else {}
+except Exception:
+    _IMAGE_ALIASES = {}
+
+
 def _product_image(pid: str, name: str | None = None) -> str:
     if pid in _PRODUCT_IMAGES:
         return f"/assets/products/{pid}.jpg"
+    if pid in _IMAGE_ALIASES:
+        return f"/assets/products/{_IMAGE_ALIASES[pid]}.jpg"
     return _svg_tile(name or pid, pid)
 
 
@@ -225,6 +244,11 @@ def _market_image(pid: str, name: str) -> str:
     alt = "p_" + pid[3:] if pid.startswith("vm_") else pid
     if alt in _PRODUCT_IMAGES:
         return f"/assets/products/{alt}.jpg"
+    # The same aliases the shop uses, under either id — ValueMart mirrors the
+    # catalog with vm_ ids, so a match on the shop's id is a match here.
+    for key in (pid, alt):
+        if key in _IMAGE_ALIASES:
+            return f"/assets/products/{_IMAGE_ALIASES[key]}.jpg"
     return _svg_tile(name or pid, pid)
 
 

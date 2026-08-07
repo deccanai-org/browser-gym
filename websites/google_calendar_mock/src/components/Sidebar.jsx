@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
-import { Plus, Eye, EyeOff, Trash2, Database } from 'lucide-react';
+import { Plus, Eye, EyeOff, Trash2 } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, startOfWeek, endOfWeek } from 'date-fns';
 import clsx from 'clsx';
-import { getSessionId } from '../utils/helpers';
 import AddCalendarModal from './AddCalendarModal';
 import { gymNow } from '../utils/helpers';
 
@@ -25,8 +24,6 @@ export default function Sidebar({ onCreateEvent }) {
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [addModalMode, setAddModalMode] = useState('my');
   const openAddModal = (mode) => { setAddModalMode(mode); setAddModalOpen(true); };
-  const sid = getSessionId();
-  const goHref = sid ? `/go?sid=${encodeURIComponent(sid)}` : '/go';
 
   React.useEffect(() => {
     if (!calendarToDelete) return;
@@ -234,10 +231,6 @@ export default function Sidebar({ onCreateEvent }) {
             <p className="flex items-center gap-1 mb-2">
               <span className="font-medium">Tip:</span> Drag and drop events to reschedule.
             </p>
-            <a href={goHref} className="flex items-center gap-1 text-primary hover:underline">
-              <Database size={12} />
-              Debug State (/go)
-            </a>
           </div>
         </div>
       </div>

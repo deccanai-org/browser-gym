@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../context/StoreContext';
-import { Menu, ChevronLeft, ChevronRight, Search, Settings, HelpCircle, User, ChevronDown, Plus, Database } from 'lucide-react';
+import { Menu, ChevronLeft, ChevronRight, Search, Settings, HelpCircle, User, ChevronDown, Plus } from 'lucide-react';
 import { format, addMonths, subMonths, addWeeks, subWeeks, addDays, subDays, addHours, startOfTomorrow } from 'date-fns';
-import { generateId, getSessionId } from '../utils/helpers';
+import { generateId } from '../utils/helpers';
 import SettingsModal from './SettingsModal';
 import { gymNow } from '../utils/helpers';
 
@@ -16,8 +16,6 @@ export default function Header({ onSearch }) {
   const quickAddRef = useRef(null);
   const settingsRef = useRef(null);
   const date = new Date(state.currentDate);
-  const sid = getSessionId();
-  const goHref = sid ? `/go?sid=${encodeURIComponent(sid)}` : '/go';
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -190,16 +188,12 @@ export default function Header({ onSearch }) {
       </div>
 
       <div className="flex items-center gap-3">
-        {/* Debug Button - Prominent */}
-        <a 
-          href={goHref} 
-          className="hidden md:flex items-center gap-1 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium rounded border border-gray-300 transition-colors"
-          title="Debug State JSON"
-        >
-          <Database size={14} />
-          Debug API
-        </a>
-
+        {/* No debug affordance in the chrome. The annotator drives this as a
+            REAL calendar, and the trajectory is sold as a recording of someone
+            using one — a "Debug API" button next to the month title is not
+            something Google Calendar has, and an annotator who clicks it lands
+            on a JSON dump mid-task. The /go route still exists for tooling; it
+            is simply not advertised, which is how the other four mocks do it. */}
         {/* Quick Add Toggle */}
         <div className="relative" ref={quickAddRef}>
           <button 
