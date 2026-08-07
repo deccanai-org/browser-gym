@@ -136,10 +136,13 @@ class FakePage:
     """Stands in for a Playwright page: `present` is what the DOM contains, and
     `visible` decides whether the real click path works or falls through to JS."""
 
-    def __init__(self, present=(), visible=True, url="http://localhost:8000/"):
+    def __init__(self, present=(), visible=True, url="http://localhost:8000/", says=None):
         self.present, self.visible, self.url = set(present), visible, url
         self.calls: list[tuple] = []
         self.js: list[tuple] = []
+        #: selector -> what that element SAYS (its aria-label/name/text). Only
+        #: needed by the tests about a path that resolves to the wrong element.
+        self.says = dict(says or {})
 
     async def evaluate(self, script, arg=None):
         if isinstance(arg, list) and len(arg) == 3:            # _js_activate
@@ -148,7 +151,14 @@ class FakePage:
                 return False
             self.js.append((kind, sel, val))
             return True
-        if isinstance(arg, str):                                # querySelector probe
+        if isinstance(arg, list) and len(arg) == 2:            # querySelector + identity probe
+            sel, want = arg
+            if sel not in self.present:
+                return False
+            if not want:
+                return True
+            return self.says.get(sel, want)[:120] == want[:120]
+        if isinstance(arg, str):                                # legacy querySelector probe
             return arg in self.present
         return None
 
@@ -615,6 +625,43 @@ def test_the_descriptor_gives_an_unnamed_element_a_path():
         "the walk must terminate at something unique"
     )
     assert "parts.length >= 20" in js, "the cap has to be generous enough to reach the anchor"
+
+
+@pytest.mark.asyncio
+async def test_a_path_that_lands_on_the_wrong_element_is_refused():
+    """Resolving is not being right.
+
+    An nth-of-type chain anchored at `#root` describes a POSITION, and one extra
+    wrapper between recording and replay slides it onto a different element that
+    resolves perfectly and does something else. On a real M105 replay the Send
+    click landed on whatever now sat at that position, reported ok, and left the
+    world with no sent mail: the trajectory failed at its last step with every
+    action reporting success. The element has to still say what we wrote down.
+    """
+    page = FakePage(present={"#root > div:nth-of-type(1) > button:nth-of-type(1)",
+                             "role:button:Send"},
+                    says={"#root > div:nth-of-type(1) > button:nth-of-type(1)": "Discard"})
+
+    sel = await _live(page).resolve({"role": "button", "text": "Send",
+                                     "css": "#root > div:nth-of-type(1) > button:nth-of-type(1)"})
+
+    assert sel != "#root > div:nth-of-type(1) > button:nth-of-type(1)", (
+        "a path onto a button that now says Discard must not answer for Send"
+    )
+    assert sel == "[data-replay-target='1']", "it should fall through to the accessible name"
+
+
+@pytest.mark.asyncio
+async def test_a_path_onto_the_element_it_described_is_still_used():
+    """The check must not cost the common case: when the path still lands on the
+    thing we wrote down, it is the fastest and most exact handle there is."""
+    page = FakePage(present={"#root > div:nth-of-type(1) > button:nth-of-type(1)"},
+                    says={"#root > div:nth-of-type(1) > button:nth-of-type(1)": "Send"})
+
+    sel = await _live(page).resolve({"role": "button", "text": "Send",
+                                     "css": "#root > div:nth-of-type(1) > button:nth-of-type(1)"})
+
+    assert sel == "#root > div:nth-of-type(1) > button:nth-of-type(1)"
 
 
 @pytest.mark.asyncio

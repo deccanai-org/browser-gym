@@ -556,9 +556,33 @@ class LiveSession:
             cands.append(locator["css"])
         if locator.get("name"):
             cands.append(f"[name={json.dumps(locator['name'])}]")
+        # What we recorded the element SAYS. A selector that matches is not the
+        # same as a selector that matches the right thing: an nth-of-type path
+        # anchored at `#root` describes a position in the tree, and one extra
+        # wrapper slides it onto a different element that resolves perfectly and
+        # does something else. On a real M105 replay the Send click landed on
+        # whatever now sat at that position, reported ok, and left the world with
+        # no sent mail — the trajectory failed at its last step with every action
+        # reporting success. Same lesson as the radio group: resolving is not
+        # being right.
+        want = str(locator.get("name") or locator.get("label") or locator.get("text") or "").strip()
         for sel in cands:
             with contextlib.suppress(Exception):
-                if await self.page.evaluate("(s) => !!document.querySelector(s)", sel):
+                got = await self.page.evaluate(
+                    """([s, want]) => {
+                        const el = document.querySelector(s);
+                        if (!el) return null;
+                        if (!want) return true;               // nothing to check it against
+                        const said = (el.getAttribute('aria-label') || el.getAttribute('name')
+                                      || el.innerText || el.textContent || '').replace(/\\s+/g, ' ').trim();
+                        // Compared on the first 120 chars because that is what
+                        // the recorder stored — a longer element would never
+                        // match its own description otherwise.
+                        return said.slice(0, 120) === want.slice(0, 120);
+                    }""",
+                    [sel, want],
+                )
+                if got:
                     return sel
         # role + accessible name is last: it needs a Playwright locator rather
         # than a selector, so we resolve it to a concrete element and hand back a
