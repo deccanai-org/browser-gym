@@ -617,6 +617,39 @@ def test_the_descriptor_gives_an_unnamed_element_a_path():
     assert "parts.length >= 20" in js, "the cap has to be generous enough to reach the anchor"
 
 
+@pytest.mark.asyncio
+async def test_a_button_with_only_text_still_resolves_by_its_accessible_name():
+    """The step that SENT the email, failing at the last action.
+
+    ShopMail's Send is `<button>Send</button>` in a compose dialog: no testId, no
+    id, no name attribute. The only handle the recorder could give it was an
+    unanchored `#root > div:nth-of-type(1) > …` path, and one extra wrapper
+    between recording and replay is enough to miss it. For a button the visible
+    text IS the accessible name, so role+text finds it when the path does not.
+    """
+    calls: list[tuple] = []
+
+    class Loc:
+        async def count(self): return 1
+        async def evaluate(self, _js): calls.append(("marked",))
+        @property
+        def first(self): return self
+
+    class Page:
+        async def evaluate(self, _js, sel=None): return False       # every selector misses
+        def get_by_role(self, role, name=None):
+            calls.append((role, name))
+            return Loc()
+
+    ex = service.LiveSession.__new__(service.LiveSession)
+    ex.page = Page()
+    sel = await ex.resolve({"role": "button", "text": "Send",
+                            "css": "#root > div:nth-of-type(9) > button:nth-of-type(1)"})
+
+    assert sel == "[data-replay-target='1']"
+    assert ("button", "Send") in calls, "text must be offered as the accessible name"
+
+
 def test_a_contenteditable_reports_its_text_as_its_value():
     """The bug that emptied every email body out of the trajectory.
 

@@ -560,11 +560,22 @@ class LiveSession:
             with contextlib.suppress(Exception):
                 if await self.page.evaluate("(s) => !!document.querySelector(s)", sel):
                     return sel
-        # role+name is last: it needs a Playwright locator rather than a selector,
-        # so we resolve it to a concrete element and hand back a unique handle.
-        if locator.get("role") and locator.get("name"):
+        # role + accessible name is last: it needs a Playwright locator rather
+        # than a selector, so we resolve it to a concrete element and hand back a
+        # unique handle.
+        #
+        # `text` counts as that name, and it is what saves the buttons a mock
+        # never gave an id. ShopMail's Send is `<button>Send</button>` inside a
+        # compose dialog: no testId, no id, no name attribute — so the only
+        # handle was an unanchored `#root > div:nth-of-type(1) > …` path, and one
+        # extra wrapper between recording and replay is enough to miss it. That
+        # is the step that SENDS the email, so missing it fails the whole
+        # trajectory at the last action. For a button or a link the visible text
+        # IS the accessible name, which is exactly what get_by_role matches.
+        role, name = locator.get("role"), (locator.get("name") or locator.get("label") or locator.get("text"))
+        if role and name:
             with contextlib.suppress(Exception):
-                loc = self.page.get_by_role(locator["role"], name=locator["name"]).first
+                loc = self.page.get_by_role(role, name=name).first
                 if await loc.count():
                     await loc.evaluate("(el) => el.setAttribute('data-replay-target', '1')")
                     return "[data-replay-target='1']"
