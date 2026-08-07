@@ -117,10 +117,12 @@ class FakeLocator:
     async def scroll_into_view_if_needed(self, timeout=0):
         return None
 
-    async def click(self, timeout=0):
+    async def click(self, timeout=0, button="left", click_count=1):
         if not self.visible:
             raise RuntimeError("intercepted")
-        self.page.calls.append(("click", self.sel))
+        # Records the BUTTON and the count, because "did it click" is not the
+        # question a right-click test is asking.
+        self.page.calls.append(("click", self.sel, button, click_count))
 
     async def evaluate(self, script):
         self.page.calls.append(("tag", self.sel))
@@ -194,7 +196,7 @@ async def test_an_unresolvable_locator_fails_loudly():
 async def test_click_uses_the_real_interaction_when_the_element_is_visible():
     page = FakePage(present={"#buy"}, visible=True)
     out = await _live(page).act("click", {"id": "buy"})
-    assert out["ok"] and ("click", "#buy") in page.calls
+    assert out["ok"] and ("click", "#buy", "left", 1) in page.calls
     assert not page.js, "no need for the JS fallback when a real click works"
 
 
@@ -346,7 +348,13 @@ async def test_submit_is_supported():
 async def test_every_action_kind_in_the_recorded_archive_is_executable():
     """The vocabulary must be COMPLETE, not merely overlapping with the harness.
     These eight kinds are what the archive actually contains."""
-    recorded = ["click", "fill", "submit", "navigate", "open_tab", "select", "check", "switch_tab"]
+    # `right_click` and `dblclick` joined the list when the RECORDER stopped
+    # flattening them into `click` — a step described as "right-click Save for
+    # later" used to replay as a left click, report ok, and be stamped verified.
+    # Recording them honestly is only half the fix: if the executor cannot
+    # perform them, every trajectory containing one becomes unshippable instead.
+    recorded = ["click", "fill", "submit", "navigate", "open_tab", "select", "check", "switch_tab",
+                "right_click", "dblclick"]
     s, pages = _multitab()
     for p in pages:
         p.present = {"#x"}
@@ -562,3 +570,30 @@ def test_the_input_counter_resets_so_a_reconnect_is_not_answered_stale():
     s.last_input_id = 57
     s.last_input_id = 0  # what `stream` does on accept
     assert 1 > s.last_input_id, "the first input of the new socket is accepted"
+
+
+@pytest.mark.asyncio
+async def test_a_right_click_uses_the_right_button_and_never_falls_back():
+    """A right-click that quietly becomes a left click is the failure this whole
+    kind exists to end. The JS fallback dispatches a plain click, so it is
+    deliberately NOT available here: an un-performable gesture must be refused,
+    not substituted."""
+    page = FakePage(present={"#x"})
+    s = _live(page)
+
+    out = await s.act("right_click", {"id": "x"}, {})
+    assert out["ok"] is True
+    assert page.calls == [("click", "#x", "right", 1)]
+
+    hidden = FakePage(present={"#x"}, visible=False)
+    refused = await _live(hidden).act("right_click", {"id": "x"}, {})
+    assert refused["ok"] is False, "no silent downgrade to a JS click"
+    assert hidden.js == [], "the JS fallback dispatches a LEFT click"
+
+
+@pytest.mark.asyncio
+async def test_a_double_click_clicks_twice():
+    page = FakePage(present={"#x"})
+    out = await _live(page).act("dblclick", {"id": "x"}, {})
+    assert out["ok"] is True
+    assert page.calls == [("click", "#x", "left", 2)]

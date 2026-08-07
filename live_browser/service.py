@@ -677,14 +677,26 @@ class LiveSession:
 
         value = args.get("value")
         ok = False
-        if kind in ("click", "submit"):
+        if kind in ("click", "submit", "right_click", "dblclick"):
+            # A right-click and a double-click are DIFFERENT ACTIONS, not clicks
+            # with a note attached. The recorder used to flatten both into
+            # `click`, so a step described as "right-click Save for later"
+            # replayed as a left click, reported ok, and was stamped verified.
+            # Now that it records them honestly, this has to be able to perform
+            # them — otherwise every trajectory containing one is unshippable.
+            #
+            # No JS fallback for either: `_js_activate` dispatches a plain click,
+            # which is the very substitution that made the old behaviour a lie.
+            # If the real gesture cannot be performed, say so.
+            button = "right" if kind == "right_click" else "left"
+            clicks = 2 if kind == "dblclick" else 1
             loc = self.page.locator(sel).first
             with contextlib.suppress(Exception):
                 if await loc.is_visible():
                     await loc.scroll_into_view_if_needed(timeout=2000)
-                    await loc.click(timeout=5000)
+                    await loc.click(timeout=5000, button=button, click_count=clicks)
                     ok = True
-            if not ok:
+            if not ok and kind in ("click", "submit"):
                 ok = await self._js_activate(sel, "click")
             if ok and kind == "submit":
                 # A submit navigates; settling first means the caller reads the
