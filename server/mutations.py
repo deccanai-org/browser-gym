@@ -19,6 +19,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any
 
 from server import catalog
+from server import ambient
 from server.state import (
     Address, Cart, CartItem, GymState, Order, OrderItem,
     PaymentMethod, ReturnRequest, RefundMethod, Shipment, ShipmentEvent,
@@ -59,6 +60,29 @@ _EPOCH = datetime(2026, 1, 1, tzinfo=timezone.utc)
 # a placed order shows a delivery date days from whenever the run happens.
 _WORLD_TODAY = datetime(2026, 5, 21, tzinfo=timezone.utc)
 _WORLD_TODAY_ISO = _WORLD_TODAY.date().isoformat()
+
+
+
+def _catalog(state: GymState, product_id: str):
+    """A product by id, from the task's catalog or the ambient one.
+
+    The storefront shows both — four fifths of what a ShopGym annotator can see
+    is ambient filler — but only the task's own products live in
+    `state.products`, which is what the world hash and every verifier read. So
+    the ambient half is looked up separately: addable, priceable, and
+    structurally invisible to anything reading the world. See server/ambient.py.
+    """
+    return state.products.get(product_id) or ambient.shop(product_id)
+
+
+def _catalog_or_raise(state: GymState, product_id: str):
+    """For the paths that cannot proceed without the product — pricing a line,
+    building an order item. These used `state.products[pid]`, so a miss raised
+    KeyError; keep it a named failure rather than an AttributeError on None."""
+    p = _catalog(state, product_id)
+    if p is None:
+        raise KeyError(f"no such product in the task or ambient catalog: {product_id!r}")
+    return p
 
 
 def _mint_seq(state: GymState, key: str) -> int:
@@ -103,7 +127,7 @@ def _require_login(state: GymState) -> str | None:
 
 def _resolve_unit_price(state: GymState, product_id: str,
                        variant_id: str | None) -> float:
-    p = state.products[product_id]
+    p = _catalog_or_raise(state, product_id)
     if not variant_id:
         return p.base_price
     for v in p.variants:
@@ -116,7 +140,7 @@ def _resolve_variant_label(state: GymState, product_id: str,
                           variant_id: str | None) -> str:
     if not variant_id:
         return ""
-    p = state.products.get(product_id)
+    p = _catalog(state, product_id)
     if not p:
         return ""
     for v in p.variants:
@@ -267,7 +291,7 @@ def _line_id(state: GymState) -> str:
 
 def add_to_cart(state: GymState, product_id: str, quantity: int,
                 variant_id: str | None = None) -> dict[str, Any]:
-    p = state.products.get(product_id)
+    p = _catalog(state, product_id)
     if p is None:
         return {"ok": False, "error": "unknown product"}
     if quantity <= 0:
@@ -321,7 +345,7 @@ def update_line(state: GymState, line_id: str, *,
     if quantity is not None:
         if quantity <= 0:
             return remove_line(state, line_id)
-        p = state.products.get(line.product_id)
+        p = _catalog(state, line.product_id)
         if p is None:
             return {"ok": False, "error": "unknown product"}
         max_stock = (
@@ -388,7 +412,7 @@ def apply_promo(state: GymState, code: str) -> dict[str, Any]:
     if promo.applies_to_category or promo.applies_to_product_id:
         eligible = False
         for line in state.cart.items:
-            p = state.products.get(line.product_id)
+            p = _catalog(state, line.product_id)
             if p is None:
                 continue
             if promo.applies_to_product_id and p.id == promo.applies_to_product_id:
@@ -438,7 +462,7 @@ def _promo_discount_on_eligible(state: GymState) -> float:
         return 0.0
     eligible_subtotal = 0.0
     for line in state.cart.items:
-        p = state.products.get(line.product_id)
+        p = _catalog(state, line.product_id)
         if p is None:
             continue
         if promo.applies_to_product_id and p.id != promo.applies_to_product_id:
@@ -481,7 +505,7 @@ def place_order(state: GymState, payment_id: str,
 
     items_resolved: list[OrderItem] = []
     for line in state.cart.items:
-        p = state.products.get(line.product_id)
+        p = _catalog(state, line.product_id)
         if p is None:
             return {"ok": False, "error": f"unknown product {line.product_id}"}
         addr_for_line = line.ship_to_address_id or default_address_id
@@ -553,7 +577,7 @@ def place_order(state: GymState, payment_id: str,
 
     # Decrement inventory.
     for oi in items_resolved:
-        p = state.products[oi.product_id]
+        p = _catalog_or_raise(state, oi.product_id)
         if oi.variant_id:
             for v in p.variants:
                 if v.id == oi.variant_id:
@@ -636,7 +660,7 @@ def create_subscription(state: GymState, product_id: str,
     if uid is None:
         return {"ok": False, "error": "not logged in"}
     user = state.users[uid]
-    p = state.products.get(product_id)
+    p = _catalog(state, product_id)
     if p is None or not p.is_subscribable:
         return {"ok": False, "error": "not subscribable"}
     if cadence not in ("weekly", "biweekly", "monthly"):

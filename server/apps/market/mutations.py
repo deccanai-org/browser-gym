@@ -13,6 +13,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from server.apps import bus
+from server import ambient
 from server.apps.market.state import MarketCartItem, MarketOrder, MarketState, SEED_DATE
 
 if TYPE_CHECKING:
@@ -21,7 +22,15 @@ if TYPE_CHECKING:
 
 def add_to_cart(market: MarketState, *, product_id: str,
                 quantity: int = 1) -> dict[str, Any]:
-    p = market.products.get(product_id)
+    # The storefront shows the ambient catalog too — 158 of ValueMart's 167
+    # listings are filler that exists only in the projection — and every one of
+    # them had an Add-to-cart button the engine rejected. They are looked up
+    # separately so they stay out of `market.products`, which is what the world
+    # hash and every verifier read. See server/ambient.py.
+    #
+    # Only this lookup needs it: a MarketCartItem carries its own name and
+    # unit_price, so nothing downstream consults the catalog again.
+    p = market.products.get(product_id) or ambient.market(product_id)
     if p is None:
         return {"ok": False, "error": "no such product"}
     if not p.in_stock:

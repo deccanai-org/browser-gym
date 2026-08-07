@@ -64,7 +64,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, Field
 
-from server import mutations, verifiers
+from server import ambient, mutations, verifiers
 from server.state import GymState, flash, log_action, refused as _refused
 from server.tasks import TASKS, make_task, START_PATHS
 from server.apps.world import WorldState
@@ -225,6 +225,12 @@ def _reset_inline(task_id: str, seed: int, ui: str = "normal") -> None:
     SESSION.initial_world = copy.deepcopy(world)
     SESSION.suite = verifiers.build_suite(task_id)
     SESSION.ui_variant = ui or "normal"
+    # Rebuild the ambient (browse-only) catalog for this episode. It is what
+    # makes the four-fifths of the storefront that no task owns actually
+    # addable; it stays out of the world, so the hash and every verifier are
+    # unaffected. Rebuilt per reset so one task's filler cannot leak into the
+    # next. See server/ambient.py.
+    ambient.load()
 
 
 def _world() -> WorldState:
