@@ -63,7 +63,14 @@ VIEWPORT_H = int(os.getenv("LIVE_VIEWPORT_H", "800"))
 #: negotiation exists to remove. A short viewport is not a broken one: the page
 #: simply scrolls, which is what a short window does everywhere else.
 MIN_VIEWPORT_W, MAX_VIEWPORT_W = 900, 2560
-MIN_VIEWPORT_H, MAX_VIEWPORT_H = 360, 1600
+#: The ceiling is generous because the pane's whole-page fit asks for a viewport
+#: as tall as the CONTENT, so no scrolling is needed at all — a cart or a product
+#: page runs well past a window's height. It is only a render size; the picture
+#: is scaled down to the stage.
+MIN_VIEWPORT_H, MAX_VIEWPORT_H = 360, 4000
+#: How many measure-resize passes the whole-page fit gets. Narrowing reflows the
+#: page taller, so one pass is never enough and an unbounded loop is a hang.
+_FIT_PAGE_PASSES = 4
 
 #: How long a real Playwright fill may take before we fall back to the JS one.
 #: Short on purpose — the fallback is what keeps a hidden-but-present element
@@ -593,6 +600,58 @@ class LiveSession:
                 "() => { const s = window.getSelection(); return s ? s.toString() : ''; }"
             ) or "")
         return ""
+
+    async def metrics(self) -> dict:
+        """How big the page actually IS, as opposed to how big the window is.
+
+        The pane needs this for its whole-page fit: to show a page with no
+        scrolling at all, the viewport has to be as tall as the CONTENT, and only
+        the page knows that number. `scrollHeight` is the full laid-out height
+        including everything below the fold.
+        """
+        with contextlib.suppress(Exception):
+            got = await self.page.evaluate(
+                """() => {
+                    const d = document.documentElement, b = document.body;
+                    return {
+                        contentHeight: Math.max(d.scrollHeight, b ? b.scrollHeight : 0),
+                        contentWidth: Math.max(d.scrollWidth, b ? b.scrollWidth : 0),
+                        innerWidth: window.innerWidth, innerHeight: window.innerHeight,
+                    };
+                }"""
+            )
+            if isinstance(got, dict):
+                return {k: int(v or 0) for k, v in got.items()}
+        return {"contentHeight": 0, "contentWidth": 0,
+                "innerWidth": self.vw, "innerHeight": self.vh}
+
+    async def fit_page(self, width: int) -> dict:
+        """Size the viewport so the WHOLE page fits with no scrolling.
+
+        Iterative on purpose. Narrowing the viewport reflows the page taller —
+        measured on the ShopGym cart, going from 1280 to 1128 wide took the
+        content from 1378px to 1956px — so a single measure-then-resize lands on
+        a height that is already wrong and the page still scrolls. Each pass
+        re-measures at the width it will actually be rendered at.
+
+        Converges in two or three passes; the cap is there so a page that
+        reflows forever (a layout whose height depends on its own height) costs a
+        bounded number of round trips rather than hanging the pane.
+        """
+        last = {}
+        for _ in range(_FIT_PAGE_PASSES):
+            m = await self.metrics()
+            want_h = int(m.get("contentHeight") or 0) or self.vh
+            last = await self.resize(width, want_h)
+            if not last.get("changed"):
+                break            # the height it asked for is the height it has
+        after = await self.metrics()
+        return {**last,
+                "contentHeight": after.get("contentHeight", 0),
+                # Honest about the outcome: a page taller than MAX_VIEWPORT_H
+                # cannot be shown whole, and the caller should know rather than
+                # wonder why it is still scrolling.
+                "whole": after.get("contentHeight", 0) <= after.get("innerHeight", 0)}
 
     async def resize(self, width: int, height: int) -> dict:
         """Reshape the viewport to match the pane watching it.
@@ -1186,6 +1245,33 @@ async def session_select_at(sid: str, body: DescribeBody) -> dict:
 
 class FocusBody(BaseModel):
     ticket: str = ""
+
+
+class FitPageBody(BaseModel):
+    width: int
+    ticket: str = ""
+
+
+@app.post("/live/sessions/{sid}/fit-page")
+async def session_fit_page(sid: str, body: FitPageBody) -> dict:
+    """Size the viewport so the whole page is visible without scrolling."""
+    s = SESSIONS.get(sid)
+    if not s or s.closed:
+        raise HTTPException(404, "unknown session")
+    if check_ticket(sid, body.ticket) is None:
+        raise HTTPException(403, "invalid or expired ticket")
+    return await s.fit_page(body.width)
+
+
+@app.post("/live/sessions/{sid}/metrics")
+async def session_metrics(sid: str, body: FocusBody) -> dict:
+    """The laid-out size of the current page. See LiveSession.metrics."""
+    s = SESSIONS.get(sid)
+    if not s or s.closed:
+        raise HTTPException(404, "unknown session")
+    if check_ticket(sid, body.ticket) is None:
+        raise HTTPException(403, "invalid or expired ticket")
+    return await s.metrics()
 
 
 @app.post("/live/sessions/{sid}/selection")

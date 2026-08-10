@@ -903,3 +903,59 @@ async def test_a_plain_hover_carries_no_button():
     await s.mouse("move", 0.4, 0.4)
 
     assert sent[0]["buttons"] == 0 and sent[0]["button"] == "none"
+
+
+@pytest.mark.asyncio
+async def test_the_whole_page_fit_re_measures_because_narrowing_reflows():
+    """One measure-then-resize lands on a height that is already wrong.
+
+    Narrowing the viewport reflows the page TALLER — measured on the ShopGym
+    cart, 1280 to 1128 wide took the content from 1378px to 1956px — so the
+    height measured at the old width does not fit the new one. Each pass has to
+    re-measure at the width it will actually render at.
+    """
+    heights = iter([1378, 1956, 2100, 2100, 2100, 2100])
+    seen: list[tuple[int, int]] = []
+
+    class S(service.LiveSession):
+        def __init__(self):
+            self.vw, self.vh, self.context, self.cdp = 1280, 800, None, None
+        async def metrics(self):
+            h = next(heights)
+            return {"contentHeight": h, "contentWidth": 1128,
+                    "innerWidth": self.vw, "innerHeight": self.vh}
+        async def resize(self, width, height):
+            seen.append((width, height))
+            changed = (width, height) != (self.vw, self.vh)
+            self.vw, self.vh = width, height
+            return {"ok": True, "width": width, "height": height, "changed": changed}
+
+    out = await S().fit_page(1128)
+
+    assert len(seen) >= 2, f"a single pass cannot be right: {seen}"
+    assert seen[0] == (1128, 1378) and seen[1] == (1128, 1956)
+    assert out["width"] == 1128
+
+
+@pytest.mark.asyncio
+async def test_a_page_that_never_settles_is_reported_not_hidden():
+    """The ShopGym cart's carousels render more as the viewport grows, so the
+    height chases itself. Claiming "no scrolling" there is a lie the annotator
+    discovers by scrolling, and the pass cap must not turn into a hang."""
+    class S(service.LiveSession):
+        def __init__(self):
+            self.vw, self.vh, self.context, self.cdp = 1280, 800, None, None
+            self.n = 0
+        async def metrics(self):
+            self.n += 1
+            return {"contentHeight": 1000 * self.n, "contentWidth": 1128,
+                    "innerWidth": self.vw, "innerHeight": self.vh}
+        async def resize(self, width, height):
+            self.vw, self.vh = width, height
+            return {"ok": True, "width": width, "height": height, "changed": True}
+
+    s = S()
+    out = await s.fit_page(1128)
+
+    assert out["whole"] is False, "a page that never settles must say so"
+    assert s.n <= service._FIT_PAGE_PASSES + 1, "the cap is what stops this hanging"
