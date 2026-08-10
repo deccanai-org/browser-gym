@@ -363,7 +363,10 @@ def update_line(state: GymState, line_id: str, *,
     if ship_to_address_id is not None:
         line.ship_to_address_id = ship_to_address_id
     if scheduled_delivery is not None:
-        line.scheduled_delivery = scheduled_delivery
+        # Normalize a cleared field to None so the world has exactly one shape for
+        # "no scheduled delivery" — seeds, verifiers and the order projection all
+        # test this for absence, and "" vs None would be two spellings of it.
+        line.scheduled_delivery = scheduled_delivery.strip() or None
     log_action(state, "update_line", line_id=line_id,
                changes={k: v for k, v in locals().items()
                         if k not in ("state", "line", "p", "max_stock")

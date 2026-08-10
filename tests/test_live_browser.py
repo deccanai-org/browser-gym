@@ -851,3 +851,55 @@ async def test_a_short_stage_gets_the_viewport_it_asked_for():
 
     assert (out["width"], out["height"]) == (1584, 494), out
     assert (s.vw, s.vh) == (1584, 494)
+
+
+@pytest.mark.asyncio
+async def test_a_move_between_a_press_and_a_release_carries_the_held_button():
+    """Why an annotator could not select or copy anything in the gym.
+
+    `buttons` is the mask of what is HELD, and it is what makes a drag a drag.
+    Moves were dispatched with button "none" and no mask, so Chrome treated every
+    one as a hover: a press-move-release across a paragraph selected nothing.
+    Measured against a real page — the same gesture returns "" without the mask
+    and the full sentence with it.
+
+    The gesture was recorded as a `drag` on top of that, which the executor
+    cannot perform, so one attempt to read a value failed the whole trajectory
+    at certify.
+    """
+    sent: list[dict] = []
+
+    class Cdp:
+        async def send(self, method, payload=None):
+            sent.append(payload or {})
+
+    s = service.LiveSession.__new__(service.LiveSession)
+    s.cdp, s.vw, s.vh, s.held_button = Cdp(), 1280, 800, None
+
+    await s.mouse("down", 0.1, 0.5, "left", 1)
+    await s.mouse("move", 0.3, 0.5)
+    await s.mouse("up", 0.3, 0.5, "left", 1)
+
+    down, move, up = sent
+    assert down["buttons"] == 1
+    assert move["buttons"] == 1, "a move with the button held must say so, or it is a hover"
+    assert move["button"] == "left"
+    assert up["buttons"] == 0, "and the release must clear it"
+
+
+@pytest.mark.asyncio
+async def test_a_plain_hover_carries_no_button():
+    """The other half: an ordinary move must not look like a drag, or every
+    mouseover on the page would start selecting text."""
+    sent: list[dict] = []
+
+    class Cdp:
+        async def send(self, method, payload=None):
+            sent.append(payload or {})
+
+    s = service.LiveSession.__new__(service.LiveSession)
+    s.cdp, s.vw, s.vh, s.held_button = Cdp(), 1280, 800, None
+
+    await s.mouse("move", 0.4, 0.4)
+
+    assert sent[0]["buttons"] == 0 and sent[0]["button"] == "none"

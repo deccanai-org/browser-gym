@@ -835,6 +835,7 @@ async def api_add_to_cart(
 
 @app.post("/api/cart/update")
 async def api_update_line(
+    request: Request,
     line_id: str = Form(...),
     quantity: Optional[int] = Form(None),
     gift_wrap: Optional[bool] = Form(None),
@@ -843,11 +844,19 @@ async def api_update_line(
     scheduled_delivery: Optional[str] = Form(None),
 ):
     s = _state()
+    # An empty date field is the shopper CLEARING the date, not "no opinion" —
+    # without the distinction a scheduled delivery is a one-way door: a wrong
+    # date can be typed but never taken back. FastAPI collapses a present-but-
+    # empty form field into the parameter's default, so the declared parameter
+    # cannot tell the two apart; the raw form can. A caller with no opinion omits
+    # the field entirely, and no other cart form posts this one.
+    if scheduled_delivery is None and "scheduled_delivery" in (await request.form()):
+        scheduled_delivery = ""
     mutations.update_line(
         s, line_id=line_id, quantity=quantity,
         gift_wrap=gift_wrap, gift_message=gift_message,
         ship_to_address_id=ship_to_address_id,
-        scheduled_delivery=(scheduled_delivery or None),   # blank date input = no change
+        scheduled_delivery=scheduled_delivery,
     )
     return RedirectResponse("/cart", 303)
 

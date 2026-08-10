@@ -321,6 +321,9 @@ class LiveSession:
     #: means scale 1.0 and nothing wasted.
     vw: int = VIEWPORT_W
     vh: int = VIEWPORT_H
+    #: Which button is currently held, so a move between a press and a release
+    #: carries the `buttons` mask that makes it a drag rather than a hover.
+    held_button: str | None = None
     # Which page the screencast and mouse are currently bound to. Bumped on every
     # rebind so a frame emitted by a superseded tab can be dropped instead of
     # painting over the tab the annotator just switched to.
@@ -484,8 +487,22 @@ class LiveSession:
         """
         x, y = self.to_page_xy(nx, ny)
         cdp_type = {"down": "mousePressed", "up": "mouseReleased"}.get(phase, "mouseMoved")
-        payload = {"type": cdp_type, "x": x, "y": y,
-                   "button": button if cdp_type != "mouseMoved" else "none"}
+
+        # `buttons` is the mask of what is HELD, and it is what makes a drag a
+        # drag. Without it every move is a hover, so a press-move-release across
+        # a run of text selected nothing at all — an annotator could not select
+        # or copy anything in the gym, and the attempt was recorded as a drag
+        # the executor cannot perform, which failed the whole trajectory at
+        # certify. Measured: the same gesture with buttons=1 selects, without it
+        # returns "".
+        if phase == "down":
+            self.held_button = button
+        elif phase == "up":
+            self.held_button = None
+        held = 1 if self.held_button == "left" else 2 if self.held_button == "right" else 0
+
+        payload = {"type": cdp_type, "x": x, "y": y, "buttons": held,
+                   "button": button if cdp_type != "mouseMoved" else (self.held_button or "none")}
         if cdp_type != "mouseMoved":
             payload["clickCount"] = clicks
         await self.cdp.send("Input.dispatchMouseEvent", payload)
@@ -561,6 +578,21 @@ class LiveSession:
         except Exception as exc:                                  # noqa: BLE001
             return {"ok": False, "error": str(exc)[:200]}
         return {"ok": True, "value": value}
+
+    async def selection(self) -> str:
+        """Whatever text is selected in the remote page right now.
+
+        An annotator selects text to READ it — an order id, a total, an address
+        they are about to retype somewhere else. The gesture is a press, a move
+        and a release, which is indistinguishable from a drag at the wire level,
+        so the recorder needs the one thing that tells them apart: whether
+        anything actually got selected.
+        """
+        with contextlib.suppress(Exception):
+            return str(await self.page.evaluate(
+                "() => { const s = window.getSelection(); return s ? s.toString() : ''; }"
+            ) or "")
+        return ""
 
     async def resize(self, width: int, height: int) -> dict:
         """Reshape the viewport to match the pane watching it.
@@ -1154,6 +1186,22 @@ async def session_select_at(sid: str, body: DescribeBody) -> dict:
 
 class FocusBody(BaseModel):
     ticket: str = ""
+
+
+@app.post("/live/sessions/{sid}/selection")
+async def session_selection(sid: str, body: FocusBody) -> dict:
+    """The page's current text selection, read at pointer-up.
+
+    Read on the RELEASE rather than tracked continuously: a selection only means
+    something once it is finished, and polling it would put a round trip on every
+    pointer move.
+    """
+    s = SESSIONS.get(sid)
+    if not s or s.closed:
+        raise HTTPException(404, "unknown session")
+    if check_ticket(sid, body.ticket) is None:
+        raise HTTPException(403, "invalid or expired ticket")
+    return {"text": await s.selection()}
 
 
 @app.post("/live/sessions/{sid}/focused")

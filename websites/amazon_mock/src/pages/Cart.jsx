@@ -2,17 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { bridged } from '../lib/bridge';
-import { DEMO_PROMOS } from '../lib/mockData';
+import { DEMO_PROMOS, gymNow } from '../lib/mockData';
 import { Button } from '../components/ui/Button';
 import { Tag } from 'lucide-react';
 
-// The scheduled-delivery floor deliberately tracks the REAL calendar date (not
-// the gym's frozen 2026-05-21 clock): a delivery must not be schedulable before
-// the actual current day. Local date, so it matches the shopper's own calendar.
-const realTodayISO = () => {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-};
+// The scheduled-delivery floor is the GYM's clock, not the wall clock. The world
+// is frozen at 2026-05-21 and every delivery-date task asks for a day just after
+// it, so a wall-clock floor put the whole task family months in the "past": the
+// picker's `min` rejected the only correct answer and the clamp below silently
+// rewrote it to the real today. Everything else that dates this world (Checkout,
+// Orders, ProductDetail) already reads gymNow — this was the one holdout.
+const worldTodayISO = (state) =>
+  new Date(gymNow(state)).toISOString().slice(0, 10);
 
 // set_line_options replaces the whole option set for a line, so every change has
 // to resend all four fields — patch just the one that moved.
@@ -48,6 +49,58 @@ const GiftMessageField = ({ item, onCommit }) => {
       }}
       rows={2}
       className="w-full border rounded px-2 py-1 text-sm focus:outline-none focus:border-xmazon-orange"
+    />
+  );
+};
+
+// A date box needs the same LOCAL draft as the gift message, and for a sharper
+// reason: a native date input fires `change` on every segment, and once the box
+// holds a value each of those intermediate events is a COMPLETE date. Committing
+// them sent a garbage date to the engine mid-keystroke, and the re-projection
+// then wrote that date back into this controlled input — so the second digit the
+// annotator typed landed in a field that had just been reset under them, and
+// typing a date was impossible. Only whole, settled dates reach the engine.
+//
+// Committing on blur alone would strand the value for an agent that types and
+// never clicks away, so a settle timer commits too: one write per edit, from
+// either driver, without the per-segment churn.
+const SETTLE_MS = 700;
+
+const ScheduledDeliveryField = ({ item, floor, onCommit }) => {
+  const [draft, setDraft] = useState(item.scheduled_delivery || '');
+  const editing = useRef(false);
+  const timer = useRef(null);
+  const engineValue = item.scheduled_delivery || '';
+
+  useEffect(() => {
+    if (!editing.current) setDraft(engineValue);
+  }, [engineValue]);
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  // A date before the world's today can never be honored — the engine drops it
+  // at checkout — so clamp up to the floor rather than posting a dead value.
+  const commit = (val) => {
+    clearTimeout(timer.current);
+    const next = val && val < floor ? floor : val;
+    if (next !== draft) setDraft(next);
+    if (next !== engineValue) onCommit(next);
+  };
+
+  return (
+    <input
+      type="date"
+      aria-label="Scheduled delivery date"
+      min={floor}
+      value={draft}
+      onFocus={() => { editing.current = true; }}
+      onChange={(e) => {
+        const val = e.target.value;
+        setDraft(val);
+        clearTimeout(timer.current);
+        timer.current = setTimeout(() => commit(val), SETTLE_MS);
+      }}
+      onBlur={() => { editing.current = false; commit(draft); }}
+      className="border rounded px-2 py-1 text-sm focus:outline-none focus:border-xmazon-orange"
     />
   );
 };
@@ -216,21 +269,11 @@ export const Cart = () => {
                           </div>
                           <div>
                             <label className="block text-xs text-gray-600 mb-1">Scheduled delivery date</label>
-                            <input
-                              type="date"
-                              aria-label="Scheduled delivery date"
-                              min={realTodayISO()}
-                              value={item.scheduled_delivery || ''}
-                              onChange={(e) => {
-                                // The native `min` only soft-warns, so a date
-                                // typed before the real current day is hard-
-                                // rejected here — clamped up to today.
-                                const today = realTodayISO();
-                                const picked = e.target.value;
-                                const val = picked && picked < today ? today : picked;
-                                setLineOptions(item.productId, lineOpts(item, { scheduled_delivery: val }));
-                              }}
-                              className="border rounded px-2 py-1 text-sm focus:outline-none focus:border-xmazon-orange"
+                            <ScheduledDeliveryField
+                              item={item}
+                              floor={worldTodayISO(state)}
+                              onCommit={(val) => setLineOptions(item.productId,
+                                lineOpts(item, { scheduled_delivery: val }))}
                             />
                           </div>
                         </div>
