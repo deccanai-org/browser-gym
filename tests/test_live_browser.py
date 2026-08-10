@@ -788,3 +788,34 @@ def test_the_pane_can_operate_a_select_at_all():
     assert 'kind == "select"' in src, "and accepted on the input channel"
     # It must use the real control, not assign .value — React listens for change.
     assert "select_option" in src
+
+
+def test_the_frame_endpoint_reports_the_SESSION_viewport(monkeypatch):
+    """A module-level route is not a method, and `self` there is a 500 nothing
+    catches until something calls it.
+
+    Making the viewport per-session rewrote several VIEWPORT_W references at once
+    and one landed in /frame — the route the annotator backend calls for every
+    per-step screenshot. The pane looked perfect while the whole screenshot
+    channel 500'd, and the bundle would have shipped without its pixels.
+
+    It must also report the SESSION's size, not the module default: a screenshot
+    labelled with the wrong dimensions is worse than one with none.
+    """
+    from fastapi.testclient import TestClient
+
+    class FakeSession:
+        closed = False
+        frame_seq = 7
+        latest_frame = "AAA"
+        vw, vh = 1884, 684
+
+    monkeypatch.setitem(service.SESSIONS, "s1", FakeSession())
+    r = TestClient(service.app).get("/live/sessions/s1/frame")
+
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["seq"] == 7 and body["data"] == "AAA"
+    assert body["viewport"] == {"width": 1884, "height": 684}, (
+        "the frame must be labelled with the size it was actually captured at"
+    )

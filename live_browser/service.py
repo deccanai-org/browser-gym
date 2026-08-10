@@ -46,8 +46,17 @@ from pydantic import BaseModel
 
 log = logging.getLogger("live_browser")
 
+#: The DEFAULT viewport. A session may resize itself to the shape of the pane it
+#: is being watched in — see LiveSession.resize.
 VIEWPORT_W = int(os.getenv("LIVE_VIEWPORT_W", "1280"))
 VIEWPORT_H = int(os.getenv("LIVE_VIEWPORT_H", "800"))
+
+#: What a session may negotiate itself to. Bounded at both ends: a viewport
+#: narrower than a phone makes the storefronts reflow into a layout no task was
+#: authored against, and an unbounded one lets a maximised window ask for a
+#: 6000px page the mocks render but nobody can read.
+MIN_VIEWPORT_W, MAX_VIEWPORT_W = 900, 2560
+MIN_VIEWPORT_H, MAX_VIEWPORT_H = 600, 1600
 
 #: How long a real Playwright fill may take before we fall back to the JS one.
 #: Short on purpose — the fallback is what keeps a hidden-but-present element
@@ -298,6 +307,13 @@ class LiveSession:
     attached: set = field(default_factory=set)
     last_input_id: int = 0
     closed: bool = False
+    #: This session's viewport. Per-session rather than global because the pane
+    #: negotiates it: a fixed 1280x800 inside a stage of a different shape gets
+    #: letterboxed, and the bars were costing ~790px of horizontal space — the
+    #: page rendered at 63% with blank margins either side. Matching the shape
+    #: means scale 1.0 and nothing wasted.
+    vw: int = VIEWPORT_W
+    vh: int = VIEWPORT_H
     # Which page the screencast and mouse are currently bound to. Bumped on every
     # rebind so a frame emitted by a superseded tab can be dropped instead of
     # painting over the tab the annotator just switched to.
@@ -317,7 +333,7 @@ class LiveSession:
         self.pw = await async_playwright().start()
         self.browser = await self.pw.chromium.launch(headless=True)
         self.context = await self.browser.new_context(
-            viewport={"width": VIEWPORT_W, "height": VIEWPORT_H},
+            viewport={"width": self.vw, "height": self.vh},
             device_scale_factor=1,
         )
         # A target=_blank click creates a page nobody asked for. Without this the
@@ -384,7 +400,7 @@ class LiveSession:
         self.cdp.on("Page.screencastFrame", functools.partial(self._on_frame, epoch))
         await self.cdp.send("Page.startScreencast", {
             "format": "jpeg", "quality": 60,
-            "maxWidth": VIEWPORT_W, "maxHeight": VIEWPORT_H, "everyNthFrame": 1,
+            "maxWidth": self.vw, "maxHeight": self.vh, "everyNthFrame": 1,
         })
 
     def _notice(self, event: str, payload: dict) -> None:
@@ -432,7 +448,7 @@ class LiveSession:
         format is fractional: the client canvas is scaled, the viewport is not."""
         nx = min(max(float(nx), 0.0), 1.0)
         ny = min(max(float(ny), 0.0), 1.0)
-        return nx * VIEWPORT_W, ny * VIEWPORT_H
+        return nx * self.vw, ny * self.vh
 
     async def click(self, nx: float, ny: float, button: str = "left", clicks: int = 1) -> None:
         x, y = self.to_page_xy(nx, ny)
@@ -538,6 +554,40 @@ class LiveSession:
         except Exception as exc:                                  # noqa: BLE001
             return {"ok": False, "error": str(exc)[:200]}
         return {"ok": True, "value": value}
+
+    async def resize(self, width: int, height: int) -> dict:
+        """Reshape the viewport to match the pane watching it.
+
+        The viewport was fixed at 1280x800 while the stage it renders into is a
+        different shape entirely, so `fit` letterboxed it — on a wide pane that
+        cost about 790px of horizontal blank space and rendered the page at 63%.
+        Matching the shape makes the scale 1.0 and the bars disappear.
+
+        Bounded at both ends: below MIN the storefronts reflow into a layout no
+        task was authored against, and above MAX a maximised window asks for a
+        page nobody can read. Rounded to even numbers because an odd CDP metric
+        override yields a half-pixel device ratio and a visibly blurry screencast.
+        """
+        w = max(MIN_VIEWPORT_W, min(MAX_VIEWPORT_W, int(width))) // 2 * 2
+        h = max(MIN_VIEWPORT_H, min(MAX_VIEWPORT_H, int(height))) // 2 * 2
+        if (w, h) == (self.vw, self.vh):
+            return {"ok": True, "width": w, "height": h, "changed": False}
+        self.vw, self.vh = w, h
+        for page in list(self.context.pages) if self.context else []:
+            with contextlib.suppress(Exception):
+                await page.set_viewport_size({"width": w, "height": h})
+        # The screencast was started with the OLD maxWidth/maxHeight, so it keeps
+        # emitting frames at the old size until it is restarted — the page would
+        # be the right shape and the picture the wrong one.
+        if self.cdp is not None:
+            with contextlib.suppress(Exception):
+                await self.cdp.send("Page.stopScreencast")
+            with contextlib.suppress(Exception):
+                await self.cdp.send("Page.startScreencast", {
+                    "format": "jpeg", "quality": 60,
+                    "maxWidth": w, "maxHeight": h, "everyNthFrame": 1,
+                })
+        return {"ok": True, "width": w, "height": h, "changed": True}
 
     async def navigate(self, url: str) -> None:
         await self.page.goto(url, wait_until="load")
@@ -975,7 +1025,7 @@ class LiveSession:
                         for i, p in enumerate(pages)],
             "activeTab": pages.index(self.page) if self.page in pages else 0,
             "activeTabId": self.tab_id(self.page) if self.page is not None else "",
-            "viewport": {"width": VIEWPORT_W, "height": VIEWPORT_H},
+            "viewport": {"width": self.vw, "height": self.vh},
             "frameSeq": self.frame_seq,
         }
 
@@ -1058,6 +1108,27 @@ async def session_describe(sid: str, body: DescribeBody) -> dict:
     return await s.describe(body.x, body.y)
 
 
+class ResizeBody(BaseModel):
+    width: int
+    height: int
+    ticket: str = ""
+
+
+@app.post("/live/sessions/{sid}/viewport")
+async def session_viewport(sid: str, body: ResizeBody) -> dict:
+    """Reshape this session's viewport to the pane's stage.
+
+    The pane calls this when its stage changes size, so the remote page is the
+    same shape as the box it is drawn in and no space is wasted on bars.
+    """
+    s = SESSIONS.get(sid)
+    if not s or s.closed:
+        raise HTTPException(404, "unknown session")
+    if check_ticket(sid, body.ticket) is None:
+        raise HTTPException(403, "invalid or expired ticket")
+    return await s.resize(body.width, body.height)
+
+
 @app.post("/live/sessions/{sid}/select-at")
 async def session_select_at(sid: str, body: DescribeBody) -> dict:
     """The <select> under a normalized point, with its options — {} if none.
@@ -1127,8 +1198,11 @@ async def session_frame(sid: str) -> dict:
     s = SESSIONS.get(sid)
     if not s or s.closed:
         raise HTTPException(404, "unknown session")
+    # The SESSION's viewport, not the module default: a session negotiates its
+    # own size to match the pane, and a screenshot labelled with the wrong
+    # dimensions is worse than one with none — the bundle records these.
     return {"seq": s.frame_seq, "data": s.latest_frame or "",
-            "viewport": {"width": VIEWPORT_W, "height": VIEWPORT_H}}
+            "viewport": {"width": s.vw, "height": s.vh}}
 
 
 @app.get("/live/sessions/{sid}/context")

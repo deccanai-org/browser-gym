@@ -102,3 +102,29 @@ def test_the_dumbbell_photo_is_a_photo():
     ValueMart item page, and nothing anywhere checked."""
     for app in ("amazon_mock", "ebay_mock", "uber_eats_mock"):
         assert _resolves(app, "/assets/products/amb_bl_62.jpg"), app
+
+
+def test_the_build_SOURCE_holds_real_images_too():
+    """Guarding dist/ alone is not enough: the next rebuild overwrites it.
+
+    tools/build_hub_mocks.sh copies tools/product_assets/ into every storefront's
+    public/, and vite copies public/ into dist/. So a corrupt file in the build
+    source silently reinfects all three mocks on the next build — which is
+    exactly how the dumbbell photo came back: dist/ held a good JPEG, the source
+    held 397 bytes of S3 error XML, and a routine rebuild propagated the XML over
+    the good copies in all three apps at once.
+
+    Checked by magic bytes rather than extension, because the whole failure mode
+    is a non-image with a .jpg on the end.
+    """
+    src = ROOT / "tools" / "product_assets"
+    if not src.is_dir():
+        pytest.skip("no vendored product assets in this checkout")
+
+    bad = []
+    for p in src.rglob("*.jpg"):
+        head = p.read_bytes()[:4]
+        if not (head.startswith(b"\xff\xd8\xff") or head.startswith(b"\x89PNG")):
+            bad.append(f"{p.relative_to(src)} ({p.stat().st_size} bytes)")
+
+    assert not bad, f"the build source holds files that are not images: {bad[:6]}"
