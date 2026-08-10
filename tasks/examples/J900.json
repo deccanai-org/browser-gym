@@ -1,0 +1,86 @@
+{
+  "short_id": "J900",
+  "slug": "desk_riser_reorder_from_email",
+  "category": "M",
+  "difficulty": "medium",
+  "prompt": "My standing desk riser arrived cracked — support emailed me about it. Can you order me a replacement one? Then email me at alice@shopgym.com to confirm it's on the way.",
+  "start_path": "/",
+  "base": "world",
+  "seed_world": {
+    "shop.products": {
+      "p_desk_riser_j900": {
+        "id": "p_desk_riser_j900",
+        "name": "Adjustable Standing Desk Riser",
+        "brand": "DeskWorks",
+        "category": "office",
+        "base_price": 129.5,
+        "rating": 4.4,
+        "review_count": 218,
+        "stock": 6,
+        "image_emoji": "🪑",
+        "short_description": "Sit-stand converter that lifts a monitor and keyboard to standing height.",
+        "long_description": "Gas-spring riser with a 35lb capacity and a separate keyboard tray. Assembles in minutes."
+      }
+    },
+    "mail.inbox": {
+      "em_riser_j900": {
+        "id": "em_riser_j900",
+        "sender": "support@shopgym.com",
+        "subject": "About your cracked desk riser",
+        "body": "Hi Alice — sorry about the damage to your Adjustable Standing Desk Riser. We've refunded the original order. Please place a new order for a replacement when you're ready, and let us know once it's on the way.",
+        "read": false,
+        "received_at": "2026-05-20T09:14:00",
+        "folder": "inbox",
+        "to": "alice@shopgym.com"
+      }
+    }
+  },
+  "oracle": [
+    { "action": "goto", "path": "/mail", "reasoning": "Read what support actually said before ordering anything." },
+    { "action": "goto", "path": "/product/p_desk_riser_j900" },
+    { "action": "click", "selector": "button[data-test-id='btn-add-to-cart']" },
+    { "action": "goto", "path": "/cart" },
+    { "action": "click", "selector": "a[data-test-id='btn-proceed-checkout']" },
+    { "action": "click", "selector": "a[data-test-id='btn-continue-payment']" },
+    { "action": "click", "selector": "a[data-test-id='btn-continue-review']" },
+    { "action": "click", "selector": "button[data-test-id='btn-place-order']" },
+    { "action": "goto", "path": "/mail/compose", "reasoning": "Confirm the replacement to the user." },
+    { "action": "fill", "selector": "input[data-test-id='input-compose-to']", "value": "alice@shopgym.com" },
+    { "action": "fill", "selector": "input[data-test-id='input-compose-subject']", "value": "Replacement desk riser ordered" },
+    { "action": "fill", "selector": "textarea[data-test-id='input-compose-body']", "value": "Support confirmed the refund on the cracked riser, so I ordered a replacement Adjustable Standing Desk Riser ($129.50). It's on the way." },
+    { "action": "click", "selector": "button[data-test-id='btn-send']" }
+  ],
+
+  "milestones": [
+    {
+      "name": "read_the_support_email",
+      "weight": 0.2,
+      "check": {
+        "kind": "read_gate",
+        "log_kinds": [
+          "view_mail"
+        ],
+        "or_url_contains": [
+          "/mail"
+        ]
+      }
+    },
+    {
+      "name": "ordered_the_replacement_riser",
+      "weight": 0.6,
+      "required": true,
+      "check": {
+        "kind": "order_exists",
+        "product_id": "p_desk_riser_j900"
+      }
+    },
+    {
+      "name": "confirmed_to_alice",
+      "weight": 0.2,
+      "check": {
+        "kind": "mail_sent_to",
+        "address": "alice@shopgym.com"
+      }
+    }
+  ]
+}

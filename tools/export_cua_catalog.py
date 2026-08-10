@@ -19,7 +19,9 @@ would drift.
 
 The seed SIDs are recomputed with `tools.cua_env.seed_sid` and ASSERTED equal to
 the map, so a SEED_REV bump can never ship a catalog that points at a sid family
-nobody seeded.
+nobody seeded. Coverage is asserted the same way: every id in TASKS must be in
+the map, because a task quietly missing from the catalog is a task no annotator
+is ever offered.
 
     python -m tools.export_cua_catalog [-o tools/cua_task_catalog.json]
 
@@ -108,10 +110,18 @@ def build() -> dict:
         print(f"!! {len(drifted)} seed-SID mismatches — the map and cua_env disagree:", file=sys.stderr)
         for d in drifted[:10]:
             print(f"     {d}", file=sys.stderr)
-        sys.exit("refusing to write a catalog that points at unseeded sids")
+    # A task absent from the sid map used to be a `note:` and a zero exit, so a
+    # short catalog looked like a successful export and the missing tasks simply
+    # never reached an annotator's queue. Nobody counts 311 against 312 by eye.
     if missing:
-        print(f"note: {len(missing)} gym task(s) absent from the sid map "
-              f"(e.g. {missing[:3]}) — they will not be annotatable", file=sys.stderr)
+        print(f"!! {len(missing)} gym task(s) absent from the sid map:", file=sys.stderr)
+        for t in missing[:10]:
+            print(f"     {t}", file=sys.stderr)
+        if len(missing) > 10:
+            print(f"     ... and {len(missing) - 10} more", file=sys.stderr)
+        print("   re-run tools/seed_all_tasks.py --plan to regenerate the map", file=sys.stderr)
+    if drifted or missing:
+        sys.exit("refusing to write a catalog that does not cover every task in TASKS")
 
     return {
         "rev": sid_map.get("rev", 1),

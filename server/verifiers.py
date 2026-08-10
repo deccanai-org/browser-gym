@@ -14070,6 +14070,17 @@ SUITE_FACTORIES.update(_structural_implicit_suite_factories())
 from server.final_implicit_wave import suite_factories as _final_implicit_suite_factories
 SUITE_FACTORIES.update(_final_implicit_suite_factories())
 
+# The declarative suites compiled from ``tasks/*.json``. Checked for collisions
+# rather than update()-ed blind: two suites for one id means the one that loses
+# is dead code nobody knows is dead, and which one wins depends on import order.
+from server import tasks_json as _tasks_json
+_json_suites = _tasks_json.suite_factories()
+_clashes = set(_json_suites) & set(SUITE_FACTORIES)
+if _clashes:
+    raise _tasks_json.TaskSpecError(
+        f"JSON task id(s) already have a Python verifier suite: {sorted(_clashes)}")
+SUITE_FACTORIES.update(_json_suites)
+
 
 def build_suite(task_id: str) -> TaskSuite:
     if task_id not in SUITE_FACTORIES:

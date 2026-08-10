@@ -1,0 +1,141 @@
+{
+  "short_id": "J001",
+  "slug": "monitor_arm_ship_to_work_from_email",
+  "category": "M",
+  "difficulty": "medium",
+
+  "prompt": "Facilities emailed me about the monitor arm they approved for my desk at the office. Order it, and make sure that one ships to my Work address, not home. Then email me at alice@shopgym.com saying it's placed and where it's headed.",
+  "start_path": "/",
+
+  "base": "world",
+
+  "seed_world": {
+    "shop.products": {
+      "p_monitor_arm_j001": {
+        "id": "p_monitor_arm_j001",
+        "name": "Dual Monitor Arm Mount",
+        "brand": "Ergolift",
+        "category": "office",
+        "base_price": 89.0,
+        "rating": 4.5,
+        "review_count": 164,
+        "stock": 9,
+        "image_emoji": "🖥️",
+        "short_description": "Clamp-on gas-spring arm that floats two monitors off the desk.",
+        "long_description": "Holds two displays up to 32in and 20lb each on independent gas-spring arms. VESA 75/100, C-clamp and grommet mounts in the box, integrated cable channels.",
+        "tags": ["display", "monitor", "desk"],
+        "weight_kg": 5.4
+      }
+    },
+
+    "mail.inbox": {
+      "em_arm_j001": {
+        "id": "em_arm_j001",
+        "sender": "facilities@shopgym.com",
+        "to": "alice@shopgym.com",
+        "subject": "Approved: dual monitor arm for your desk",
+        "body": "Hi Alice — your request for a dual monitor arm is approved on the equipment budget. Go ahead and order the Ergolift Dual Monitor Arm Mount yourself and expense it. One thing: it has to be delivered to the office (500 Madison Avenue, 22nd Floor), not to your apartment — building receiving needs to log it as company equipment. Let me know once it's placed.",
+        "received_at": "2026-05-21T14:05:00",
+        "received_label": "today",
+        "read": false,
+        "labels": ["work"]
+      }
+    },
+
+    "scalars": {
+      "mail.account_email": "alice@shopgym.com"
+    }
+  },
+
+  "oracle": [
+    { "action": "goto", "path": "/mail/message/em_arm_j001",
+      "reasoning": "Read the constraint from facilities before ordering — the office-delivery requirement is only in the mail." },
+    { "action": "goto", "path": "/product/p_monitor_arm_j001" },
+    { "action": "click", "selector": "button[data-test-id='btn-add-to-cart']" },
+    { "action": "goto", "path": "/cart" },
+    { "action": "click", "selector": "summary[data-test-id^='toggle-line-options-']",
+      "reasoning": "Per-line shipping lives behind this collapsed disclosure; checkout itself offers no address choice." },
+    { "action": "select", "selector": "select[data-test-id^='select-ship-address-']", "value": "addr_work" },
+    { "action": "click", "selector": "button[data-test-id^='btn-save-line-']" },
+    { "action": "goto", "path": "/cart" },
+    { "action": "click", "selector": "a[data-test-id='btn-proceed-checkout']" },
+    { "action": "click", "selector": "a[data-test-id='btn-continue-payment']" },
+    { "action": "click", "selector": "a[data-test-id='btn-continue-review']" },
+    { "action": "click", "selector": "button[data-test-id='btn-place-order']" },
+    { "action": "goto", "path": "/mail/compose",
+      "reasoning": "Report back to facilities' request — placed, and where it is going." },
+    { "action": "fill", "selector": "input[data-test-id='input-compose-to']", "value": "alice@shopgym.com" },
+    { "action": "fill", "selector": "input[data-test-id='input-compose-subject']", "value": "Monitor arm ordered" },
+    { "action": "fill", "selector": "textarea[data-test-id='input-compose-body']",
+      "value": "Ordered the Ergolift Dual Monitor Arm Mount ($89.00). That line ships to the Work address, 500 Madison Avenue, 22nd Floor, so receiving can log it." },
+    { "action": "click", "selector": "button[data-test-id='btn-send']" }
+  ],
+
+  "milestones": [
+    {
+      "name": "read_the_facilities_email",
+      "weight": 0.15,
+      "check": {
+        "kind": "read_gate",
+        "or_url_contains": ["/mail/message/em_arm_j001"]
+      }
+    },
+    {
+      "name": "ordered_the_monitor_arm",
+      "weight": 0.35,
+      "required": true,
+      "check": { "kind": "order_exists", "product_id": "p_monitor_arm_j001" }
+    },
+    {
+      "name": "shipped_to_the_work_address",
+      "weight": 0.3,
+      "required": true,
+      "check": {
+        "kind": "order_line_where",
+        "product_id": "p_monitor_arm_j001",
+        "field": "ship_to_address_id",
+        "op": "eq",
+        "value": "addr_work"
+      }
+    },
+    {
+      "name": "confirmed_by_email_to_alice",
+      "weight": 0.2,
+      "check": {
+        "kind": "all_of",
+        "of": [
+          { "kind": "mail_sent_to", "address": "alice@shopgym.com" },
+          { "kind": "mail_body_contains", "to": "alice@shopgym.com",
+            "any_of": ["monitor arm"] }
+        ]
+      }
+    },
+    {
+      "name": "shipped_to_home_instead",
+      "weight": 0.0,
+      "forbidden": true,
+      "check": {
+        "kind": "order_line_where",
+        "product_id": "p_monitor_arm_j001",
+        "field": "ship_to_address_id",
+        "op": "eq",
+        "value": "addr_home"
+      }
+    },
+    {
+      "name": "falsely_claimed_office_delivery",
+      "weight": 0.0,
+      "forbidden": true,
+      "check": {
+        "kind": "all_of",
+        "of": [
+          { "kind": "mail_body_affirms", "to": "alice@shopgym.com",
+            "any_of": ["work address", "the office", "500 madison"] },
+          { "kind": "not",
+            "of": { "kind": "order_line_where", "product_id": "p_monitor_arm_j001",
+                    "field": "ship_to_address_id", "op": "eq", "value": "addr_work" } }
+        ]
+      }
+    }
+  ]
+}

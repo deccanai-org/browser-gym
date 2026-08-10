@@ -51,6 +51,7 @@ required (though the UI uses fetch for some nicer interactions).
 
 from __future__ import annotations
 
+import contextlib
 import copy
 import hmac
 from pathlib import Path
@@ -87,6 +88,40 @@ from harness.auth import HARNESS_TOKEN_HEADER, get_harness_token
 REPO_ROOT = Path(__file__).resolve().parents[1]
 UI_DIR = REPO_ROOT / "ui"
 
+
+def _registry_gaps() -> tuple[list[str], list[str]]:
+    """(tasks with no verifier suite, suites with no task).
+
+    Read live off ``verifiers.SUITE_FACTORIES`` rather than a name bound at
+    import: task registration is still open while modules load — the
+    JSON-defined tasks land after this module — so a snapshot taken here would
+    report phantom gaps for tasks that do have suites by the time anything runs.
+    """
+    tasks, suites = set(TASKS), set(verifiers.SUITE_FACTORIES)
+    return sorted(tasks - suites), sorted(suites - tasks)
+
+
+@contextlib.asynccontextmanager
+async def _lifespan(_app: FastAPI):
+    """Refuse to serve a registry that can only fail later.
+
+    A task with a factory but no suite resets fine and then has nothing to grade
+    it, so every run of it is a silent zero. Better to hear about it once, at
+    boot, than to discover it per-request. The other direction — a suite no task
+    reaches — costs a run nothing, so it is reported and not fatal.
+    """
+    unsuited, orphaned = _registry_gaps()
+    if orphaned:
+        print(f"[gym] note: {len(orphaned)} verifier suite(s) with no task in TASKS: "
+              f"{orphaned[:5]}{' ...' if len(orphaned) > 5 else ''}")
+    if unsuited:
+        raise RuntimeError(
+            f"{len(unsuited)} task(s) in TASKS have no verifier suite in "
+            f"SUITE_FACTORIES: {unsuited[:10]}{' ...' if len(unsuited) > 10 else ''}"
+        )
+    yield
+
+
 app = FastAPI(
     title="ecommerce-browser-gym",
     version="0.1.0",
@@ -95,6 +130,7 @@ app = FastAPI(
         "drive a real Chromium browser through a multi-page e-commerce "
         "site; a per-step milestone verifier grades progress."
     ),
+    lifespan=_lifespan,
 )
 app.mount("/static", StaticFiles(directory=UI_DIR / "static"), name="static")
 templates = Jinja2Templates(directory=UI_DIR / "pages")
@@ -194,6 +230,13 @@ def _state() -> GymState:
 
 
 def _reset_inline(task_id: str, seed: int, ui: str = "normal") -> None:
+    # A task with no suite would blow up as a bare KeyError halfway through the
+    # reset, 500ing the gym and leaving SESSION holding a world it cannot grade.
+    # Check before anything is committed, and name the task in the response.
+    if task_id not in verifiers.SUITE_FACTORIES:
+        raise HTTPException(
+            422, f"task {task_id!r} has no verifier suite; it can be built but not graded",
+        )
     # The seed baseline comes from seed.db when SEEDDB_MODE is on and the pool
     # covers this (task, seed); otherwise from the factory (the default, and the
     # fallback). Imported lazily so the seed-db layer never loads at import time.

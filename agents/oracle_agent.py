@@ -7298,3 +7298,9 @@ SOLVERS = {
     "M217/scoped_cancel_quantifier":                   solve_m217_scoped_cancel_quantifier,
     "M215/discount_wont_save_it":                      solve_m215_discount_wont_save_it,
 }
+
+# Solvers compiled from the ``oracle`` block of a data-driven task. A JSON task
+# that declares no oracle contributes nothing here — on purpose, so
+# ``test_oracle_solvers_aligned`` names it instead of a stub pretending to solve it.
+from server import tasks_json as _tasks_json
+SOLVERS.update(_tasks_json.oracle_solvers())

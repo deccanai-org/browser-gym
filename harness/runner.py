@@ -53,15 +53,57 @@ _SCREENSHOT_SETTLE_MS = 250
 # harness open the right mock: a gym-style path segment -> app key, and each app
 # -> its mock start path. Scoring still goes to the gym /_harness/* — only
 # browser navigation is redirected to the mock origins.
-_SEG_TO_APP = {"": "shop", "mail": "mail", "food": "food",
-               "market": "market", "valuemart": "market", "calendar": "calendar"}
+#
+# The four sub-apps are route-prefixed (/mail, /food, /calendar, /market); the
+# shop owns every other top-level segment the gym serves, so those are listed
+# here one by one. They used to be covered by a `default="shop"`, which meant an
+# unrecognised segment — a renamed route, a typo in a new task's START_PATHS —
+# resolved to shop just as confidently as /cart did, and the task ran against
+# the wrong primary app with nothing on screen to say so. 70 of the 312 tasks
+# start on a shop segment, so this list is load-bearing, not decoration:
+# tests/test_seed_projection_strictness.py re-derives it from the live route
+# table and fails when a new top-level route is added without one.
+_SEG_TO_APP = {
+    "mail": "mail", "food": "food", "calendar": "calendar",
+    # `valuemart` is the storefront name the mocks use for the market app.
+    "market": "market", "valuemart": "market",
+    "": "shop", "account": "shop", "browse": "shop", "bulk": "shop",
+    "cart": "shop", "catalog": "shop", "category": "shop", "checkout": "shop",
+    "deals": "shop", "item": "shop", "items": "shop", "log-in": "shop",
+    "login": "shop", "me": "shop", "my-orders": "shop", "order": "shop",
+    "orders": "shop", "p": "shop", "product": "shop", "products": "shop",
+    "profile": "shop", "returns": "shop", "search": "shop", "shop": "shop",
+    "sign-in": "shop", "signin": "shop", "store": "shop", "subs": "shop",
+    "subscriptions": "shop",
+}
 _APP_START_PATH = {"shop": "/", "mail": "/#/inbox", "market": "/",
                    "calendar": "/", "food": "/"}
 
 
-def _seg_to_app(path: str) -> str:
+class UnknownStartPath(ValueError):
+    """A start path whose leading segment belongs to no known app."""
+
+
+def _seg_to_app_or_none(path: str) -> str | None:
     seg = urlsplit(path or "/").path.lstrip("/").split("/")[0].lower()
-    return _SEG_TO_APP.get(seg, "shop")
+    return _SEG_TO_APP.get(seg)
+
+
+def _seg_to_app(path: str) -> str:
+    """The app a gym path belongs to. Raises rather than guessing.
+
+    Used to pick a task's PRIMARY app — the tab the agent lands in and the one
+    the catalog records — so a wrong answer here mis-files the task for every
+    run that follows.
+    """
+    app = _seg_to_app_or_none(path)
+    if app is None:
+        seg = urlsplit(path or "/").path.lstrip("/").split("/")[0].lower()
+        raise UnknownStartPath(
+            f"start path {path!r} begins with {seg!r}, which maps to no app — "
+            f"add it to _SEG_TO_APP in harness/runner.py"
+        )
+    return app
 
 
 def _app_url(origin: str, app: str, param: dict, start_path: str | None = None) -> str:
@@ -1224,14 +1266,20 @@ class BrowserCtx:
         # (a product, a cart) so a deep link lands where it should; _mock_start_path
         # returns None when there's no safe equivalent and we fall back to the app
         # start rather than a 404.
-        if self._hosted():
-            app = _seg_to_app(path)
-            if app in self.app_sids:
-                return hosted_app_url(app, self.app_sids[app], _mock_start_path(app, path))
-        elif self.app_origins and self.bridge_url:
-            app = _seg_to_app(path)
-            if app in self.app_origins:
-                return bridged_app_url(self.app_origins, self.bridge_url, app)
+        #
+        # This is mid-episode navigation, not task setup: the path comes from
+        # whatever the agent asked for, so an unresolvable one is the agent's
+        # mistake and must not kill the run. Fall through to the gym origin,
+        # which answers with the recoverable 404 page — the lenient lookup here
+        # is deliberate, unlike _seg_to_app's, which raises.
+        app = _seg_to_app_or_none(path)
+        if app is not None:
+            if self._hosted():
+                if app in self.app_sids:
+                    return hosted_app_url(app, self.app_sids[app], _mock_start_path(app, path))
+            elif self.app_origins and self.bridge_url:
+                if app in self.app_origins:
+                    return bridged_app_url(self.app_origins, self.bridge_url, app)
         return f"{self.server_url}{path}"
 
     async def open_app_tabs(self, apps: list[str], primary: str,

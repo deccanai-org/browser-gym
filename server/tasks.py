@@ -12816,6 +12816,13 @@ BRIEFS.update(_FINAL_IMPLICIT_BRIEFS)
 START_PATHS.update(_FINAL_IMPLICIT_START_URLS)
 TASKS.update(_FINAL_IMPLICIT_TASKS)
 
+# Data-driven tasks: every ``tasks/*.json`` file, merged in last so a collision
+# with any Python task above is a load error rather than a silent override. The
+# loader deliberately imports nothing from this module at its own import time,
+# so this line cannot cycle.
+from server import tasks_json as _tasks_json
+_tasks_json.register_into(TASKS, BRIEFS, START_PATHS, TASK_BUILD_STATUS)
+
 
 def make_task(task_id: str, seed: int) -> "GymState | WorldState":
     """Returns a GymState for single-app tasks and a WorldState for the

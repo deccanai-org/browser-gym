@@ -253,13 +253,46 @@ def _market_image(pid: str, name: str) -> str:
 
 
 # --- amazon (gym shop) -------------------------------------------------------
+# Every category the engine's catalogs actually emit, enumerated across all of
+# TASKS — see tests/test_seed_projection_strictness.py, which re-derives the set
+# and fails when a task introduces a category this map doesn't name. The
+# right-hand side is the storefront's own vocabulary (the same labels
+# tools/ambient_catalog.py files its browse-only filler under), because the mock
+# builds its category nav from the products it is handed.
 _AMAZON_CAT = {
     "electronics": "Electronics", "audio": "Electronics",
     "books": "Books", "book": "Books",
     "home": "Home & Kitchen", "kitchen": "Home & Kitchen", "grocery": "Home & Kitchen",
     "fashion": "Fashion", "clothing": "Fashion", "apparel": "Fashion",
+    "shoes": "Fashion",
     "toys": "Toys & Games", "games": "Toys & Games", "beauty": "Beauty",
+    "office": "Office Products", "pet": "Pet Supplies",
+    "health": "Health & Household",
+    # Warranties, installation and gift-wrap are line items with nothing to
+    # shelve; they get their own aisle rather than being filed as a gadget.
+    "services": "Services",
 }
+
+
+class UnmappedCategory(KeyError):
+    """A product whose category has no storefront equivalent.
+
+    Loud on purpose. The old default filed anything unrecognised under
+    Electronics, which is how Premium Dog Food shipped to the live UI as a
+    gadget — invisible in review, and a browse or filter task keyed on the
+    category then graded against a shelf the item was never on.
+    """
+
+
+def _amazon_category(product: dict) -> str:
+    raw = (product.get("category") or "").strip()
+    mapped = _AMAZON_CAT.get(raw.lower())
+    if mapped is None:
+        raise UnmappedCategory(
+            f"product {product.get('id')!r} ({product.get('name')!r}) has category "
+            f"{raw!r}, which _AMAZON_CAT does not map — add it to tools/seed_to_cuagym.py"
+        )
+    return mapped
 
 
 _AMZ_STATUS = {
@@ -396,7 +429,7 @@ def transform_shop(shop: dict) -> dict:
             "description": p.get("long_description") or p.get("short_description") or "",
             "bulletPoints": p.get("tags") or [],
             "specs": {"Brand": p.get("brand"), "Weight": f"{p.get('weight_kg')} kg", "Emoji": p.get("image_emoji")},
-            "category": _AMAZON_CAT.get((p.get("category") or "").lower(), "Electronics"),
+            "category": _amazon_category(p),
             "brand": p.get("brand"), "prime": True, "inStock": stock > 0, "stockCount": stock,
             # The store is branded ShopGym; the old value re-introduced on every
             # product the exact name the rebrand took out of the mock.
@@ -512,7 +545,21 @@ def transform_shop(shop: dict) -> dict:
 
 
 # --- ebay (gym market / ValueMart) -------------------------------------------
+# ValueMart mirrors a slice of the shop catalog, so it emits far fewer
+# categories — but its default was the same silent one, and "Other" hides a
+# mis-shelved listing just as well as "Electronics" does.
 _EBAY_CAT = {"electronics": "Electronics", "audio": "Electronics", "home": "Home", "grocery": "Other"}
+
+
+def _ebay_category(pid: str, product: dict) -> str:
+    raw = (product.get("category") or "").strip()
+    mapped = _EBAY_CAT.get(raw.lower())
+    if mapped is None:
+        raise UnmappedCategory(
+            f"listing {pid!r} ({product.get('name')!r}) has category {raw!r}, which "
+            f"_EBAY_CAT does not map — add it to tools/seed_to_cuagym.py"
+        )
+    return mapped
 
 
 def transform_market(m: dict) -> dict:
@@ -546,7 +593,7 @@ def transform_market(m: dict) -> dict:
             "condition": "New", "shippingCost": 0.0, "location": "United States",
             "status": "sold" if pid in ordered_pids else "active",
             "quantity": 1 if p.get("in_stock") else 0,
-            "category": _EBAY_CAT.get((p.get("category") or "").lower(), "Other"),
+            "category": _ebay_category(pid, p),
         })
     cart = [it.get("product_id") for it in ((m.get("cart") or {}).get("items") or []) if it.get("product_id")]
     # Ship-to addresses + payment methods on file, so ValueMart checkout has a
