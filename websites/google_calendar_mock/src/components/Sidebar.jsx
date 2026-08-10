@@ -18,13 +18,14 @@ const NAMED_COLORS = {
 };
 const swatchColor = (c) => !c ? '#039BE5' : c.startsWith('#') ? c : (NAMED_COLORS[c] || '#039BE5');
 
+const MINI_WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
 export default function Sidebar({ onCreateEvent }) {
   const { state, dispatch } = useStore();
   const [calendarToDelete, setCalendarToDelete] = useState(null);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [addModalMode, setAddModalMode] = useState('my');
   const openAddModal = (mode) => { setAddModalMode(mode); setAddModalOpen(true); };
-
   React.useEffect(() => {
     if (!calendarToDelete) return;
     const handleEscape = (e) => {
@@ -35,13 +36,15 @@ export default function Sidebar({ onCreateEvent }) {
   }, [calendarToDelete]);
 
   // Mini Calendar Logic
+  const weekStartsOn = Number(state.settings?.weekStart ?? 0);
   const miniDate = new Date(state.currentDate);
   const monthStart = startOfMonth(miniDate);
   const monthEnd = endOfMonth(miniDate);
-  const startDate = startOfWeek(monthStart);
-  const endDate = endOfWeek(monthEnd);
-  
+  const startDate = startOfWeek(monthStart, { weekStartsOn });
+  const endDate = endOfWeek(monthEnd, { weekStartsOn });
+
   const calendarDays = eachDayOfInterval({ start: startDate, end: endDate });
+  const miniWeekdays = [...MINI_WEEKDAYS.slice(weekStartsOn), ...MINI_WEEKDAYS.slice(0, weekStartsOn)];
 
   return (
     <aside className={clsx(
@@ -67,8 +70,8 @@ export default function Sidebar({ onCreateEvent }) {
             </span>
           </div>
           <div className="grid grid-cols-7 text-center text-xs mb-2 text-text-secondary">
-            {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => (
-              <div key={d} className="h-6 flex items-center justify-center">{d}</div>
+            {miniWeekdays.map((d, i) => (
+              <div key={`${d}-${i}`} className="h-6 flex items-center justify-center">{d}</div>
             ))}
           </div>
           <div className="grid grid-cols-7 text-center text-xs gap-y-1">

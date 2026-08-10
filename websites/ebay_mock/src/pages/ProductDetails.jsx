@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { bridged } from '../lib/bridge';
 import { Heart, Share2, ShieldCheck, Truck, RotateCcw, ChevronDown, ChevronUp, X, Check } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistance } from 'date-fns';
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -43,14 +43,14 @@ export default function ProductDetails() {
   // detail page marked EVERY seeded listing "ended" (end times ~May, real clock Aug).
   const gymNow = state._gym_now || Date.now();
 
-  // Timer Effect
+  // Timer Effect — use the SAME clock for ended + countdown (no split-clock).
   useEffect(() => {
     if (!listing) return;
     const updateTimer = () => {
       if (listing.endTime < gymNow) {
         setTimeLeft('Ended');
       } else {
-        setTimeLeft(formatDistanceToNow(listing.endTime));
+        setTimeLeft(formatDistance(listing.endTime, gymNow));
       }
     };
     updateTimer();
@@ -75,8 +75,10 @@ export default function ProductDetails() {
     : 5;
   const displayStars = '★'.repeat(starRating) + '☆'.repeat(5 - starRating);
 
-  // Calculate minimum bid
-  const minBid = listing.bids.length === 0 ? listing.startingBid : listing.currentBid + 1;
+  // Min bid must match the reducer's gate (never advertise a dead zone).
+  const minBid = listing.bids.length === 0
+    ? Math.max(listing.startingBid || 0, listing.currentBid || 0)
+    : (listing.currentBid || 0) + 1;
 
   const handleBid = (e) => {
     e.preventDefault();
@@ -432,21 +434,34 @@ export default function ProductDetails() {
       </div>
 
       {/* Buy Now Confirmation Modal */}
-      {showBuyConfirm && (
+      {showBuyConfirm && (() => {
+        const unit = listing.buyItNowPrice || listing.price || 0;
+        const lineTotal = Math.round(unit * quantity * 100) / 100;
+        // Prefer listing.shipping when advertised as free/paid; else engine delivery fee.
+        const listedShip = Number(listing.shipping);
+        const delivery = Number.isFinite(listedShip)
+          ? listedShip
+          : (lineTotal >= 35 ? 0 : 5.99);
+        const grand = Math.round((lineTotal + delivery) * 100) / 100;
+        return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
             <h3 className="text-xl font-bold mb-2">Confirm Purchase</h3>
             <p className="text-gray-600 mb-1">Are you sure you want to buy this item now?</p>
             <p className="font-bold text-gray-900 mb-1">{listing.title}</p>
-            {/* Show what will actually be charged — the stepper above governs
-                this purchase, so a quantity of 2 must not confirm at 1x price. */}
             {quantity > 1 && (
               <p className="text-sm text-gray-600 mb-1">
-                {quantity} × ${(listing.buyItNowPrice || listing.price).toFixed(2)}
+                {quantity} × ${unit.toFixed(2)}
               </p>
             )}
+            <div className="text-sm text-gray-600 mb-1 flex justify-between">
+              <span>Item</span><span>${lineTotal.toFixed(2)}</span>
+            </div>
+            <div className="text-sm text-gray-600 mb-2 flex justify-between">
+              <span>Shipping</span><span>{delivery === 0 ? 'FREE' : `$${delivery.toFixed(2)}`}</span>
+            </div>
             <p className="text-2xl font-bold text-gray-900 mb-4">
-              ${((listing.buyItNowPrice || listing.price) * quantity).toFixed(2)}
+              Total ${grand.toFixed(2)}
             </p>
             {isAuction && (
               <p className="text-sm text-orange-600 mb-4">This will end the auction immediately.</p>
@@ -468,7 +483,8 @@ export default function ProductDetails() {
             </div>
           </div>
         </div>
-      )}
+        );
+      })()}
 
       {/* Contact Seller Modal */}
       {showContactModal && (

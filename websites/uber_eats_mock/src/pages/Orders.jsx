@@ -34,7 +34,10 @@ function OrderCard({ order, onReorder, onRate }) {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
   const isActive = ACTIVE_STATUSES.includes(order.status);
-  const itemSummary = order.items.map(i => `${i.quantity}× ${i.name}`).join(', ');
+  const itemSummary = order.items.map(i => {
+    const name = i.name || i.menuItem?.name || 'Item';
+    return `${i.quantity}× ${name}`;
+  }).join(', ');
 
   const submitRating = () => {
     if (rating < 1) return;

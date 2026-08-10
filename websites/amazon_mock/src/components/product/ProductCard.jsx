@@ -53,15 +53,19 @@ export const ProductCard = ({ product, layout = 'grid' }) => {
               FREE Delivery <strong className="text-[#0F1111]">{getDeliveryDate()}</strong>
             </div>
           )}
-          {product.stockCount && product.stockCount <= 10 && (
+          {product.inStock !== false && product.stockCount != null && product.stockCount > 0 && product.stockCount <= 10 && (
             <div className="text-[12px] text-[#cc0c39] mt-1">Only {product.stockCount} left in stock - order soon.</div>
           )}
-          <button
-            onClick={(e) => { e.preventDefault(); addToCart(product); }}
-            className="mt-2 bg-[#ffd814] hover:bg-[#f7ca00] text-[13px] py-1.5 px-4 rounded-full border border-[#fcd200] font-medium"
-          >
-            Add to Cart
-          </button>
+          {product.inStock === false || product.stockCount === 0 ? (
+            <div className="mt-2 text-[13px] text-red-600 font-medium">Currently Unavailable</div>
+          ) : (
+            <button
+              onClick={(e) => { e.preventDefault(); addToCart(product); }}
+              className="mt-2 bg-[#ffd814] hover:bg-[#f7ca00] text-[13px] py-1.5 px-4 rounded-full border border-[#fcd200] font-medium"
+            >
+              Add to Cart
+            </button>
+          )}
         </div>
       </div>
     );
@@ -111,16 +115,20 @@ export const ProductCard = ({ product, layout = 'grid' }) => {
           </div>
         )}
 
-        {product.stockCount && product.stockCount <= 10 && (
+        {product.inStock !== false && product.stockCount != null && product.stockCount > 0 && product.stockCount <= 10 && (
           <div className="text-[11px] text-[#cc0c39] mb-1">Only {product.stockCount} left</div>
         )}
 
-        <button
-          onClick={(e) => { e.preventDefault(); addToCart(product); }}
-          className="w-full bg-[#ffd814] hover:bg-[#f7ca00] text-[13px] py-1.5 rounded-full mt-1 border border-[#fcd200] font-medium"
-        >
-          Add to Cart
-        </button>
+        {product.inStock === false || product.stockCount === 0 ? (
+          <div className="w-full text-center text-[13px] text-red-600 font-medium mt-1 py-1.5">Currently Unavailable</div>
+        ) : (
+          <button
+            onClick={(e) => { e.preventDefault(); addToCart(product); }}
+            className="w-full bg-[#ffd814] hover:bg-[#f7ca00] text-[13px] py-1.5 rounded-full mt-1 border border-[#fcd200] font-medium"
+          >
+            Add to Cart
+          </button>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import SEED_DEFAULT from './seedDefault.json';
 import { addHours, startOfToday, addDays, subDays } from 'date-fns';
+import { bridged } from '../lib/bridge';
 
 export const generateId = () => uuidv4();
 
@@ -29,6 +30,18 @@ export const EVENT_COLORS = [
   { id: 'banana', name: 'Banana', hex: '#F6BF26' },
   { id: 'sage', name: 'Sage', hex: '#0B8043' },
 ];
+
+// Every setting the Settings dialog exposes needs a default here, or the
+// control renders uncontrolled and its value is silently dropped on save.
+export const DEFAULT_SETTINGS = {
+  weekStart: 0,
+  defaultView: 'month',
+  timeFormat: '12h',
+  defaultDuration: 60,
+  defaultReminder: { type: 'popup', minutes: 10 },
+  showWeekNumbers: false,
+  showDeclinedEvents: false,
+};
 
 export const generateMockEvents = () => {
   const today = startOfToday();
@@ -162,10 +175,7 @@ function createDefaultData() {
     view: 'month',
     currentDate: new Date().toISOString(),
     sidebarOpen: true,
-    settings: {
-      weekStart: 0,
-      defaultDuration: 60,
-    }
+    settings: { ...DEFAULT_SETTINGS },
   };
 }
 
@@ -214,29 +224,117 @@ function deepMergeWithDefaults(defaults, custom) {
   return result;
 }
 
-// The gym's frozen "today". Captured from the projection's _gym_today so every
-// today()/now() reference uses the frozen clock (2026-05-21, where the seed
-// events live) instead of the real system date. Falls back to real time in demo.
+// "Today" is the REAL current date. The seed ships events around a fixed
+// authoring day (_gym_today); rather than freezing the clock to that day —
+// which made the calendar drift further out of date every day it stayed
+// deployed — the seed events are shifted onto the current week at load time
+// (see rebaseSeedToToday). Bridged mode is exempt: there the engine owns the
+// world and its own dates must be shown verbatim.
 let _gymTodayIso = null;
 export const setGymToday = (iso) => { if (iso) _gymTodayIso = iso; };
 export const gymNow = () => (_gymTodayIso ? new Date(_gymTodayIso) : new Date());
 
+/** Local-time 'YYYY-MM-DDTHH:mm' for <input type="datetime-local">.
+ *  toISOString() would convert to UTC and shift the day/hour the user sees. */
+export const toLocalInput = (date) => {
+  const d = new Date(date);
+  const p = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+};
+
+/** Local 'YYYY-MM-DD' day key (toISOString() rolls over the date near midnight). */
+export const toLocalDay = (date) => toLocalInput(date).slice(0, 10);
+
+/**
+ * Does an event occupy any part of the day starting at `dayStart`?
+ * Half-open on purpose: an event ending exactly at midnight belongs to the day
+ * before, but one ending at 12:30 AM has to show on both days.
+ */
+export const overlapsDay = (event, dayStart) => {
+  const dayEnd = new Date(dayStart).getTime() + 86400000;
+  return new Date(event.start).getTime() < dayEnd &&
+         new Date(event.end).getTime() > new Date(dayStart).getTime();
+};
+
+/** Format a time honoring the user's 12h/24h setting. */
+export const formatTime = (date, timeFormat = '12h') => {
+  const d = new Date(date);
+  const p = (n) => String(n).padStart(2, '0');
+  if (timeFormat === '24h') return `${p(d.getHours())}:${p(d.getMinutes())}`;
+  const h = d.getHours();
+  return `${h % 12 || 12}:${p(d.getMinutes())} ${h < 12 ? 'AM' : 'PM'}`;
+};
+
+/** Hour-gutter label ("1 PM" / "13:00"). */
+export const formatHour = (hour, timeFormat = '12h') => {
+  if (timeFormat === '24h') return `${String(hour).padStart(2, '0')}:00`;
+  return `${hour % 12 || 12} ${hour < 12 ? 'AM' : 'PM'}`;
+};
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/** Whole-day distance between two dates, ignoring time-of-day. */
+const dayDelta = (from, to) => {
+  const a = new Date(from.getFullYear(), from.getMonth(), from.getDate());
+  const b = new Date(to.getFullYear(), to.getMonth(), to.getDate());
+  return Math.round((b - a) / DAY_MS);
+};
+
+/**
+ * Slide seeded events from the seed's authoring day onto today, preserving each
+ * event's offset from that day and its time of day. Without this the calendar
+ * opens on a real "today" that has no events on it.
+ */
+export function rebaseSeedToToday(data) {
+  if (!data || !data._gym_today || !Array.isArray(data.events)) return data;
+  const seedToday = new Date(data._gym_today);
+  if (isNaN(seedToday)) return data;
+  const offset = dayDelta(seedToday, new Date());
+  if (offset === 0) return data;
+
+  const shift = (iso) => {
+    const d = new Date(iso);
+    if (isNaN(d)) return iso;
+    d.setDate(d.getDate() + offset);
+    return d.toISOString();
+  };
+
+  return {
+    ...data,
+    _gym_today: new Date().toISOString(),
+    currentDate: new Date().toISOString(),
+    events: data.events.map(e => ({
+      ...e,
+      start: shift(e.start),
+      end: shift(e.end),
+      exceptions: Array.isArray(e.exceptions)
+        ? e.exceptions.map(day => toLocalDay(shift(`${String(day).slice(0, 10)}T12:00:00`)))
+        : e.exceptions,
+    })),
+  };
+}
+
 // Identifies WHICH seed a cached calendar was built from — see the cache check
 // below. Keyed on the events plus the frozen day, since a re-seed can move
-// "today" without changing the event count.
+// "today" without changing the event count. The real calendar day is folded in
+// too: a cache rebased onto yesterday must not be reused today.
 const seedFingerprint = (s) => {
   const e = (s && s.events) || [];
-  return `${e.length}:${e[0] ? e[0].id : ''}:${(s && s._gym_today) || ''}`;
+  return `${e.length}:${e[0] ? e[0].id : ''}:${(s && s._gym_today) || ''}:r${toLocalDay(new Date())}`;
 };
+
+/** Seeded (non-bridged) state is slid onto the real current week. */
+const prepareSeed = (data) => (bridged() ? data : rebaseSeedToToday(data));
 
 export const initializeData = (sid = null, customState = null) => {
   const sk = storageKey(sid);
   const ik = initialKey(sid);
 
   if (customState) {
-    const data = deepMergeWithDefaults(createDefaultData(), customState);
+    const data = prepareSeed(deepMergeWithDefaults(createDefaultData(), customState));
     data._seedFp = seedFingerprint(customState);
-    setGymToday(data._gym_today);
+    // Only the engine's world gets a pinned clock; seeded state uses real time.
+    if (bridged()) setGymToday(data._gym_today);
     localStorage.setItem(sk, JSON.stringify(data));
     localStorage.setItem(ik, JSON.stringify(data));
     return data;
@@ -249,7 +347,7 @@ export const initializeData = (sid = null, customState = null) => {
     // browser open across a re-seed used to keep serving its first cache —
     // including the demo calendar from before this mock was ever seeded.
     if (p._seedFp === seedFingerprint(SEED_DEFAULT)) {
-      setGymToday(p._gym_today);
+      if (bridged()) setGymToday(p._gym_today);
       if (!localStorage.getItem(ik)) localStorage.setItem(ik, stored);
       return p;
     }
@@ -257,10 +355,19 @@ export const initializeData = (sid = null, customState = null) => {
     localStorage.removeItem(ik);
   }
 
-  const data = deepMergeWithDefaults(createDefaultData(), SEED_DEFAULT);
+  const data = prepareSeed(deepMergeWithDefaults(createDefaultData(), SEED_DEFAULT));
   data._seedFp = seedFingerprint(SEED_DEFAULT);
-  setGymToday(data._gym_today);
+  if (bridged()) setGymToday(data._gym_today);
   localStorage.setItem(sk, JSON.stringify(data));
   localStorage.setItem(ik, JSON.stringify(data));
   return data;
+};
+
+/** Wipe this session's persisted calendar so the next load re-seeds. */
+export const resetSession = (sid = null) => {
+  try {
+    localStorage.removeItem(storageKey(sid));
+    localStorage.removeItem(initialKey(sid));
+    sessionStorage.removeItem('mock_sid');
+  } catch (_) { /* storage unavailable */ }
 };

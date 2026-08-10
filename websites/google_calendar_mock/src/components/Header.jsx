@@ -1,21 +1,27 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../context/StoreContext';
-import { Menu, ChevronLeft, ChevronRight, Search, Settings, HelpCircle, User, ChevronDown, Plus } from 'lucide-react';
-import { format, addMonths, subMonths, addWeeks, subWeeks, addDays, subDays, addHours, startOfTomorrow } from 'date-fns';
-import { generateId } from '../utils/helpers';
+import { Menu, ChevronLeft, ChevronRight, Search, Settings, HelpCircle, User, ChevronDown, Plus, X, LogOut } from 'lucide-react';
+import { format, addMonths, subMonths, addWeeks, subWeeks, addDays, subDays, addHours } from 'date-fns';
+import { generateId, getSessionId, resetSession } from '../utils/helpers';
 import SettingsModal from './SettingsModal';
 import { gymNow } from '../utils/helpers';
 
-export default function Header({ onSearch }) {
+export default function Header({ onSearch, searchQuery = '' }) {
   const { state, dispatch } = useStore();
   const [isViewMenuOpen, setIsViewMenuOpen] = useState(false);
   const [quickAddOpen, setQuickAddOpen] = useState(false);
   const [quickAddText, setQuickAddText] = useState('');
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const menuRef = useRef(null);
   const quickAddRef = useRef(null);
-  const settingsRef = useRef(null);
+  const accountRef = useRef(null);
   const date = new Date(state.currentDate);
+
+  const handleSignOut = () => {
+    resetSession(getSessionId());
+    window.location.href = window.location.pathname;
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -24,6 +30,9 @@ export default function Header({ onSearch }) {
       }
       if (quickAddRef.current && !quickAddRef.current.contains(event.target)) {
         setQuickAddOpen(false);
+      }
+      if (accountRef.current && !accountRef.current.contains(event.target)) {
+        setAccountOpen(false);
       }
       // Settings now opens a full-screen SettingsModal which manages its own
       // dismissal (overlay click / Cancel / Escape); no outside-click branch here
@@ -34,6 +43,7 @@ export default function Header({ onSearch }) {
         setIsViewMenuOpen(false);
         setQuickAddOpen(false);
         setSettingsOpen(false);
+        setAccountOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -76,13 +86,14 @@ export default function Header({ onSearch }) {
     if (!quickAddText.trim()) return;
 
     // Simple parser logic for demo
-    let start = gymNow();
+    let start = new Date(gymNow());
     let title = quickAddText;
 
-    // Basic date parsing
+    // Basic date parsing — always against the gym clock (no split with wall clock).
     if (quickAddText.toLowerCase().includes('tomorrow')) {
-      start = startOfTomorrow();
-      // Remove 'tomorrow' from title case-insensitively
+      start = new Date(gymNow());
+      start.setDate(start.getDate() + 1);
+      start.setHours(9, 0, 0, 0);
       title = title.replace(/\btomorrow\b/i, '').trim();
     } else if (quickAddText.toLowerCase().includes('next monday')) {
        // Simple logic for "next monday"
@@ -118,7 +129,11 @@ export default function Header({ onSearch }) {
     title = title.replace(/\bat\b/i, '').trim(); // Remove standalone "at"
     if (!title) title = "New Event";
 
-    const end = addHours(start, 1);
+    // "Default event duration" applies to Quick Add too — it was hardcoded to
+    // one hour, so a 2-hour default still produced 1-hour events.
+    const duration = state.settings?.defaultDuration || 60;
+    const end = new Date(start.getTime() + duration * 60000);
+    const reminder = state.settings?.defaultReminder;
 
     const newEvent = {
       id: generateId(),
@@ -132,7 +147,7 @@ export default function Header({ onSearch }) {
       guests: [],
       color: 'bg-blue-500',
       recurring: 'none',
-      reminders: []
+      reminders: reminder ? [reminder] : []
     };
 
     dispatch({ type: 'ADD_EVENT', payload: newEvent });
@@ -249,15 +264,29 @@ export default function Header({ onSearch }) {
           <input
             type="text"
             placeholder="Search"
+            value={searchQuery}
             onChange={(e) => onSearch(e.target.value)}
-            className="pl-10 pr-4 py-2 bg-google-gray rounded-lg focus:outline-none focus:bg-white focus:shadow-md transition-all w-64"
+            aria-label="Search events"
+            className="pl-10 pr-9 py-2 bg-google-gray rounded-lg focus:outline-none focus:bg-white focus:shadow-md transition-all w-64"
           />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => onSearch('')}
+              title="Clear search"
+              aria-label="Clear search"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-800"
+            >
+              <X size={16} />
+            </button>
+          )}
         </div>
         
         {/* Custom View Dropdown */}
         <div className="relative" ref={menuRef}>
           <button 
             onClick={() => setIsViewMenuOpen(!isViewMenuOpen)}
+            aria-label="Change calendar view"
             className="flex items-center gap-2 px-3 py-2 border border-google-border rounded hover:bg-gray-50 text-sm font-medium min-w-[100px] justify-between"
           >
             <span>{viewLabels[state.view]}</span>
@@ -290,21 +319,46 @@ export default function Header({ onSearch }) {
             <Settings size={20} />
           </button>
           <SettingsModal isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
-          {state.user.avatar ? (
-            <img
-              src={state.user.avatar}
-              alt="User"
-              className="w-8 h-8 rounded-full border border-google-border"
-            />
-          ) : (
-            <div
-              className="w-8 h-8 rounded-full border border-google-border bg-primary text-white flex items-center justify-center text-sm font-medium"
-              title={state.user.username}
-              aria-label={state.user.username}
+
+          <div className="relative" ref={accountRef}>
+            <button
+              onClick={() => setAccountOpen(o => !o)}
+              title="Account"
+              aria-label="Account"
+              aria-haspopup="menu"
+              aria-expanded={accountOpen}
+              className="block rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              {(state.user.username || 'U').trim().charAt(0).toUpperCase()}
-            </div>
-          )}
+              {state.user.avatar ? (
+                <img
+                  src={state.user.avatar}
+                  alt="User"
+                  className="w-8 h-8 rounded-full border border-google-border"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full border border-google-border bg-primary text-white flex items-center justify-center text-sm font-medium">
+                  {(state.user.username || 'U').trim().charAt(0).toUpperCase()}
+                </div>
+              )}
+            </button>
+
+            {accountOpen && (
+              <div role="menu" className="absolute top-full right-0 mt-2 w-64 bg-white border border-google-border rounded-lg shadow-xl py-2 z-50">
+                <div className="px-4 py-2 border-b border-google-border">
+                  <div className="text-sm font-medium text-text-primary">{state.user.username}</div>
+                  <div className="text-xs text-text-secondary truncate">{state.user.email}</div>
+                </div>
+                <button
+                  role="menuitem"
+                  onClick={handleSignOut}
+                  className="w-full flex items-center gap-2 px-4 py-2 text-sm text-text-primary hover:bg-gray-100"
+                >
+                  <LogOut size={16} />
+                  Sign out
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>

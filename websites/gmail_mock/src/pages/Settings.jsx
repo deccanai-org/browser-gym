@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, AlertTriangle } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { cn } from '../lib/utils';
@@ -84,10 +84,17 @@ const DeleteLabelModal = ({ label, onConfirm, onClose }) => (
   </div>
 );
 
+const VALID_TABS = ['general', 'labels', 'inbox', 'accounts'];
+
 const SettingsPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { state, createLabel, updateLabel, deleteLabel, updateSettings, settings, showToast } = useStore();
-  const [activeTab, setActiveTab] = useState('general');
+  // ?tab= lets other screens deep-link a specific section (the profile menu's
+  // "Manage your account" lands on Accounts).
+  const requestedTab = new URLSearchParams(location.search).get('tab');
+  const [activeTab, setActiveTab] = useState(
+    VALID_TABS.includes(requestedTab) ? requestedTab : 'general');
 
   // General tab local state (pre-populated from persisted settings)
   const [density, setDensity] = useState(settings.density || 'default');

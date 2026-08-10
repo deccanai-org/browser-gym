@@ -1,0 +1,559 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mock UI Suite — QA Audit Report</title>
+<style>
+:root{--bg:#0d1117;--panel:#161b22;--bd:#30363d;--tx:#e6edf3;--mut:#9198a1;--acc:#58a6ff;
+--crit:#f85149;--high:#ff8c42;--med:#e3b341;--low:#6e9fd8;--code:#1f2430}
+@media(prefers-color-scheme:light){:root{--bg:#fff;--panel:#f6f8fa;--bd:#d0d7de;--tx:#1f2328;--mut:#59636e;--acc:#0969da;--code:#f0f3f6}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:48px 22px 100px}
+h1{font-size:2.1rem;line-height:1.25;margin:0 0 .3em;letter-spacing:-.02em}
+h2{font-size:1.5rem;margin:2.4em 0 .7em;padding-bottom:.35em;border-bottom:2px solid var(--bd);letter-spacing:-.01em}
+h3{font-size:1.11rem;margin:2em 0 .5em;letter-spacing:-.005em}
+h4{font-size:1rem;margin:1.5em 0 .4em;color:var(--mut)}
+p,li{color:var(--tx)}
+a{color:var(--acc)}
+code{background:var(--code);padding:.15em .4em;border-radius:5px;font-size:.87em;
+font-family:ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-word}
+pre{background:var(--code);padding:15px 17px;border-radius:9px;overflow-x:auto;border:1px solid var(--bd);line-height:1.5}
+pre code{background:none;padding:0;font-size:.83em}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:.93rem;display:block;overflow-x:auto}
+th,td{border:1px solid var(--bd);padding:9px 13px;text-align:left;vertical-align:top}
+th{background:var(--panel);font-weight:600}
+tbody tr:nth-child(even){background:color-mix(in srgb,var(--panel) 45%,transparent)}
+blockquote{border-left:3px solid var(--acc);margin:1.2em 0;padding:.5em 0 .5em 1.1em;color:var(--mut);background:color-mix(in srgb,var(--acc) 6%,transparent);border-radius:0 7px 7px 0}
+hr{border:0;border-top:1px solid var(--bd);margin:3em 0}
+.sev{display:inline-block;padding:.13em .62em;border-radius:999px;font-size:.7rem;font-weight:700;
+letter-spacing:.05em;vertical-align:middle;color:#fff}
+.sev.critical{background:var(--crit)}.sev.high{background:var(--high);color:#3d1c00}
+.sev.medium{background:var(--med);color:#3d3000}.sev.low{background:var(--low);color:#06203d}
+h3{border-left:3px solid var(--bd);padding-left:12px}
+h1+p{color:var(--mut)}
+strong{font-weight:650}
+@media(max-width:640px){.wrap{padding:28px 15px 70px}h1{font-size:1.6rem}h2{font-size:1.25rem}}
+</style></head><body><div class="wrap"><h1>Mock UI Suite — Full QA Audit Report</h1>
+<p><strong>Date:</strong> 2026-08-06
+<strong>Scope:</strong> ShopGym (Amazon), ShopMail (Gmail), ValueMart (eBay), GymEats (Uber Eats), GymCal (Calendar)
+<strong>Method:</strong> Automated browser testing (Playwright/Chromium) + source analysis of the shipped JS bundles
+<strong>Result:</strong> <strong>54 defects</strong> — 10 Critical, 16 High, 19 Medium, 9 Low</p>
+<hr>
+<h2>Executive summary</h2>
+<p>All five apps are functional at the surface level, and all five have defects that would
+corrupt an agent benchmark run. The failures cluster into four systemic patterns rather
+than 54 unrelated bugs:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Pattern</th>
+<th>Where</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><strong>Split-clock</strong> — a frozen seeded &quot;now&quot; in some code paths, real <code>Date.now()</code> in others</td>
+<td>GymCal, ValueMart</td>
+<td>Same screen shows contradictory dates. Gets <em>worse every day</em> the suite stays deployed.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Money math rounds from two different bases</strong> — line items rounded individually, totals summed from unrounded floats</td>
+<td>ShopGym, GymEats</td>
+<td>Receipts don&#39;t reconcile to the cent. An agent asked to verify a total will always &quot;fail&quot; correctly.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Seed data doesn&#39;t match the shape the UI reads</strong> — wrong category values, label ids, item field names</td>
+<td>ShopMail, ValueMart, ShopGym, GymEats</td>
+<td>Whole features look implemented but return nothing.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Validation declared in HTML, never enforced in JS</strong> — <code>min</code>/<code>max</code> attributes with no code behind them</td>
+<td>All five</td>
+<td>Negative tips, expired cards, $99,999 gift cards, out-of-range bids all sail through.</td>
+</tr>
+</tbody></table>
+<p><strong>The three most damaging for your use case (CUA benchmarking):</strong></p>
+<ol>
+<li><strong>X-01</strong> — <code>?sid=</code> custom state injection is broken in production across all five apps. Every task
+runs against default seed state. If you rely on per-task state seeding, it is silently not working.</li>
+<li><strong>GC-01/02/04</strong> — GymCal&#39;s &quot;today&quot; is permanently frozen at 2026-05-21 (77 days stale as of today),
+except where it isn&#39;t. Any date-relative task (&quot;schedule this for tomorrow&quot;) is unscorable.</li>
+<li><strong>VM-01/02</strong> — ValueMart&#39;s bidding reducer can make the current bid go <em>down</em> when you bid, and has a
+silent dead zone where the UI advertises a minimum the code rejects. Affects 36 of 45 auctions.</li>
+</ol>
+<hr>
+<h2>X — Cross-cutting (affects all five apps)</h2>
+<h3>X-01 · <span class="sev high">HIGH</span> · <code>?sid=</code> custom-state injection is dead in production</h3>
+<p><strong>Category:</strong> logic / infrastructure</p>
+<p>Every app ships this loader:</p>
+<pre><code class="language-js">const t = sid ? `/state?sid=${encodeURIComponent(sid)}` : &quot;/state&quot;;
+const n = await fetch(t);
+if (n.ok) { const r = await n.json(); if (r.has_custom_state &amp;&amp; r.stored_state) return r.stored_state; }
+// catch → console.warn(&quot;No custom state available, using defaults&quot;)
+</code></pre>
+<p><strong>Verified against the live hosted deployment:</strong> <code>GET /state</code> returns <strong>HTTP 200 with
+<code>text/html</code></strong> — the CloudFront SPA fallback serving <code>index.html</code>, not JSON. So <code>n.ok</code> is
+<code>true</code>, <code>n.json()</code> throws, the catch swallows it, and the app <strong>always</strong> falls back to
+default seed state. Same for the <code>POST /post</code> write-back.</p>
+<p>Confirmed present in all five bundles (<code>has_custom_state</code> string found in each). The <code>sid</code>
+itself <em>is</em> threaded correctly (<code>GET /state?sid=testsession123</code> observed), so the client
+side is fine — there is simply no API behind <code>/state</code>.</p>
+<p><strong>Impact:</strong> if any part of your harness seeds per-task state through <code>?sid=</code>, that state is
+being discarded 100% of the time and every task starts from identical defaults.
+<strong>Fix:</strong> serve <code>/state</code> and <code>/post</code> as real JSON endpoints (or return 404 so <code>n.ok</code> is false
+and the failure is at least loud).</p>
+<blockquote>
+<p>This also explains the <code>console.warn(&quot;No custom state available, using defaults&quot;)</code> that
+fires on every page load, and a failed request on every state mutation, in all five apps.</p>
+</blockquote>
+<hr>
+<h2>1. ShopGym (Amazon clone) — 14 findings</h2>
+<p><strong>2 Critical · 4 High · 6 Medium · 2 Low</strong></p>
+<h3>SG-01 · <span class="sev critical">CRITICAL</span> · Out-of-stock items can be ordered, producing a $0.00 completed order</h3>
+<p><strong>Where:</strong> <code>/search</code>, <code>/cart</code>, <code>/checkout</code>, <code>/orders</code></p>
+<p>Search &quot;Power Broker&quot; (<code>p_book_oos</code>, <code>inStock:false</code>, <code>stockCount:0</code>, real price $32.00).
+The <strong>listing card</strong> shows &quot;Add to Cart&quot; (the PDP correctly hides it). Adding it puts a line
+in the cart reading &quot;Currently Unavailable&quot;, price <strong>$0.00</strong>, <code>Qty: 1</code> in the dropdown but
+&quot;Subtotal (0 items): $0.00&quot;. Checkout completes and the order is permanently recorded at
+<strong>Total $0.00</strong> for a $32 item.</p>
+<p><strong>Root cause:</strong> the ProductCard component renders &quot;Add to Cart&quot; unconditionally with no
+<code>inStock</code> check, unlike the PDP buy-box. <code>addToCart</code> then clamps via
+<code>Math.min(qty, product.stockCount)</code> → qty becomes <code>0</code>, which reads as $0 everywhere while
+still occupying a cart and order line.</p>
+<h3>SG-02 · <span class="sev critical">CRITICAL</span> · Gift cards are invisible and worthless in cart — any amount charges $0.00</h3>
+<p><strong>Where:</strong> <code>/gift-cards</code>, <code>/cart</code>, <code>/checkout</code>, <code>/orders</code></p>
+<p>Add a $50 gift card. Cart header says &quot;Subtotal (1 item): $0.00&quot; and <strong>renders no row at all</strong>
+— the cart body is blank. Checkout shows $0.00 across Items/Shipping/Tax/Total. The order
+places successfully with no product name recorded anywhere. Reproduced with the $50 preset
+and a $99,999 custom amount.</p>
+<p><strong>Root cause:</strong> the handler builds a synthetic <code>{id: &quot;giftcard-&quot;+amount, price: amount}</code> and
+passes it to <code>addToCart</code>, but never adds it to <code>state.products</code>. Cart rendering and all
+checkout math resolve price/title via <code>state.products.find(p =&gt; p.id === cartItem.productId)</code>,
+which returns <code>undefined</code> — so price defaults to <code>0</code> and the row template returns <code>null</code>.</p>
+<h3>SG-03 · <span class="sev high">HIGH</span> · Home hero &quot;Shop now&quot; CTA is completely unclickable</h3>
+<p><strong>Where:</strong> <code>/</code></p>
+<p>The 4-column category rail (<code>relative z-10 -mt-36</code>) overlaps upward onto the hero banner far
+enough to cover the CTA&#39;s hit area. <code>elementFromPoint</code> at the button&#39;s coordinates returns the
+&quot;Gaming accessories&quot; <code>&lt;h2&gt;</code>, not the anchor. Reproduces on <strong>every</strong> carousel slide and at
+375px. The primary above-the-fold call to action is dead for all users.</p>
+<h3>SG-04 · <span class="sev high">HIGH</span> · Header overflows horizontally at 375px and 768px, hiding primary nav</h3>
+<p><strong>Where:</strong> global header; worst on <code>/cart</code></p>
+<p>At 375×812: <code>scrollWidth</code> 647px vs <code>clientWidth</code> 375px. Search truncates to &quot;Search S...&quot;,
+Registry cuts to &quot;...Reg&quot;. Cart icon, Gift Cards and Sell are only reachable by scrolling
+sideways over blank background. At 768×1024: 925px vs 768px. On <code>/cart</code> at 375px the line-item
+price ($29.99) renders detached far right, visually disconnected from its product row.</p>
+<p><strong>Root cause:</strong> header top bar is a single non-wrapping flex row with no shrink, hide, or
+hamburger consolidation at narrow breakpoints, and the overflow is never clipped up to <code>&lt;body&gt;</code>.</p>
+<h3>SG-08 · <span class="sev high">HIGH</span> · Pagination index isn&#39;t reset on new search — valid results show &quot;No products found&quot;</h3>
+<p><strong>Where:</strong> <code>/search</code></p>
+<p>Go to <code>/search?category=Electronics</code> (67 results), click Next twice to reach page 3, then
+search &quot;candle&quot; (3 real matches) from the header. Result header reads <strong>&quot;25-3 of over 3 results&quot;</strong>
+and the body says &quot;No products found matching your criteria.&quot;</p>
+<p><strong>Root cause:</strong> <code>page</code> is local <code>useState(1)</code>; category/brand/rating/price handlers all call
+<code>setPage(1)</code>, but the header search box&#39;s route navigation does not.</p>
+<h3>SG-11 · <span class="sev high">HIGH</span> · Payment form accepts expired dates, month 13, and 5-digit CVVs</h3>
+<p><strong>Where:</strong> <code>/profile</code> → Payment methods → Add a card</p>
+<p>Accepted and saved as valid: expiry <code>01/20</code> (past), expiry <code>13/29</code> (no such month), CVV <code>99999</code>.
+Correctly rejected: CVV <code>12</code>, CVV <code>abc</code>, malformed card numbers — so validation exists, it just
+skips the expiry field entirely and has no CVV maximum.</p>
+<h3>SG-05 · <span class="sev medium">MEDIUM</span> · Stray literal <code>0</code> rendered on out-of-stock product cards</h3>
+<p><strong>Verified independently.</strong> DOM text node immediately before the Add-to-Cart button is exactly
+<code>&quot;0&quot;</code>. Classic React falsy-zero bug: <code>{e.stockCount &amp;&amp; e.stockCount &lt;= 10 &amp;&amp; &lt;div&gt;…&lt;/div&gt;}</code> —
+when <code>stockCount</code> is <code>0</code>, the <code>&amp;&amp;</code> chain returns the number <code>0</code>, which React renders as text
+(unlike <code>false</code>/<code>null</code>/<code>undefined</code>).</p>
+<h3>SG-06 · <span class="sev medium">MEDIUM</span> · Dog food, dog treats and an office chair are categorized as &quot;Electronics&quot;</h3>
+<p><code>p_pet_food</code>, <code>p_pet_treats</code>, <code>p_office_chair</code> all breadcrumb into Electronics, appear under
+<code>/search?category=Electronics&amp;q=dog</code>, and are <strong>absent</strong> from Pet Supplies. Knock-on effect: the
+Subscribe &amp; Save eligibility allow-list keys off <code>category</code>, so both dog products silently lose
+the Subscribe option — even though <code>p_pet_food</code>&#39;s own description advertises weekly subscription,
+and the correctly-categorized competitor <code>amb_bp_88</code> does offer it.</p>
+<h3>SG-07 · <span class="sev medium">MEDIUM</span> · Search misses compound words — &quot;phone&quot; returns zero results</h3>
+<p><strong>Verified independently:</strong> <code>q=phone</code> → &quot;No results found&quot;; <code>q=headphone</code> → 11 results;
+<code>q=Head</code> → 13 results.
+<strong>Root cause:</strong> matcher builds <code>new RegExp(&quot;\\b&quot; + escapedQuery, &quot;i&quot;)</code>. There is no word
+boundary before &quot;phone&quot; inside &quot;headphone&quot;, so compound matches never fire.</p>
+<h3>SG-09 · <span class="sev medium">MEDIUM</span> · Checkout line items don&#39;t sum to the displayed Order Total</h3>
+<p>Cart: Wireless Mouse $29.99 + Wireless Keyboard $59.99, gift wrap on one line, promo <code>SAVE10</code>.
+Displayed: Items $89.98, Shipping $5.99, Gift wrap $4.99, Promo −$9.00, Tax $6.88 →
+sums to <strong>$98.84</strong>, but Order Total displays <strong>$98.85</strong>.
+<strong>Root cause:</strong> &quot;Items&quot; shows the raw pre-discount subtotal while tax is computed from the
+unrounded post-discount subtotal; each line is <code>toFixed(2)</code>&#39;d independently while the total is
+summed from unrounded intermediates and rounded once at the end.</p>
+<h3>SG-10 · <span class="sev medium">MEDIUM</span> · Address form accepts a non-numeric ZIP</h3>
+<p><code>abcde</code> saves successfully as &quot;Testville, CA abcde&quot;. Presence validation exists (empty and
+whitespace-only are correctly blocked); format validation does not.</p>
+<h3>SG-12 · <span class="sev medium">MEDIUM</span> · Gift card custom amount ignores its own $2000 max</h3>
+<p>Input carries <code>min=1 max=2000</code>. Typing <code>99999</code> updates the button to &quot;Add to Cart — $99999&quot;
+with no clamp. Handler is <code>Math.max(1, Number(s) || 0)</code> — floors at 1, never applies
+<code>Math.min(2000, …)</code>, so the HTML <code>max</code> is decorative.</p>
+<h3>SG-13 · <span class="sev low">LOW</span> · Wishlist says &quot;1 items&quot;</h3>
+<p>Missing the <code>count === 1 ? &quot;item&quot; : &quot;items&quot;</code> conditional that the Cart page already applies
+correctly.</p>
+<h3>SG-14 · <span class="sev low">LOW</span> · Result count always reads &quot;of over N results&quot;</h3>
+<p><strong>Verified independently:</strong> a single exact match renders literally <strong>&quot;of over 1 results&quot;</strong> —
+both the &quot;over&quot; qualifier and the plural are wrong for an exact singular count.</p>
+<hr>
+<h2>2. ShopMail (Gmail clone) — 8 findings</h2>
+<p><strong>0 Critical · 4 High · 3 Medium · 1 Low</strong></p>
+<h3>SM-01 · <span class="sev high">HIGH</span> · Compose merges typed text into the signature block</h3>
+<p><strong>Where:</strong> Compose modal</p>
+<p>The caret lands <em>inside</em> the signature <code>&lt;span&gt;</code>, so typed text appends directly onto &quot;Alice&quot;
+with no break and inherits the signature&#39;s gray 12px styling. A sent message body literally
+reads <code>--\nAliceThis is my real message…</code>, entirely in gray signature font.</p>
+<p><strong>Root cause:</strong> <code>J.current.innerHTML = v()</code> where
+<code>v = () =&gt; \</code><br><br><span class="xmail-sig" style="color:#777;font-size:12px">${signature}</span>``
+— no Selection/Range is set before the signature span, so default caret placement is inside it.</p>
+<h3>SM-02 · <span class="sev high">HIGH</span> · Work/Personal/Travel/Finance label views are empty for all seed mail</h3>
+<p>All four labels render 0 rows on a fresh session, despite the fixture data tagging
+work=114, personal=173, travel=42, finance=57 emails. No colored label dots appear on any of
+the 163 Primary rows either. Only labels applied <em>by hand during the session</em> ever show up.</p>
+<p><strong>Root cause:</strong> the filter is <code>email.labels.includes(labelId)</code> where <code>labelId</code> is <code>&quot;l1&quot;</code>…<code>&quot;l4&quot;</code>
+from <code>state.labels</code>, but all 394 seed emails store lowercase <strong>category names</strong>
+(<code>labels: [&quot;work&quot;]</code>, <code>[&quot;personal&quot;]</code>, …). <code>&quot;work&quot; !== &quot;l1&quot;</code>, so nothing ever matches.</p>
+<h3>SM-03 · <span class="sev high">HIGH</span> · Sent and Drafts show &quot;Alice Anderson&quot; (yourself) on every row</h3>
+<p>Standard mail clients show the <em>recipient</em> in outgoing folders. Every row in both folders shows
+the sender — who is always you — so recipients are indistinguishable without opening each message.
+<strong>Root cause:</strong> <code>EmailRow</code> always renders <code>e.from.name</code>, with no <code>folder === &#39;sent&#39; || &#39;drafts&#39;</code>
+branch to render <code>e.to</code> instead.</p>
+<h3>SM-04 · <span class="sev high">HIGH</span> · Primary tab badge undercounts unread by ~43%</h3>
+<p>Badge reads <strong>28</strong>; the Primary list actually contains <strong>49</strong> bold/unread rows out of 163
+(confirmed via DOM). The sidebar Inbox count (61) <em>is</em> correct — it equals the sum of all five
+category unread counts.</p>
+<p><strong>Root cause:</strong> row filtering folds hidden categories into primary
+(<code>(F.length &amp;&amp; !F.includes(cat) ? &quot;primary&quot; : cat) === A</code>), but the badge counter increments the
+raw category key only and never applies the same fold — so the 21 unread &quot;updates&quot; messages that
+are visually folded into Primary (Updates/Forums tabs are off by default) are never credited.</p>
+<h3>SM-05 · <span class="sev medium">MEDIUM</span> · Compose accepts invalid addresses and sends with a truly blank subject</h3>
+<p><code>notanemail</code> (no <code>@</code>, no domain) is accepted verbatim and sends. Empty subject sends <strong>blank</strong> —
+while the Drafts path correctly falls back to <code>&quot;(no subject)&quot;</code> for the identical case.
+<strong>Root cause:</strong> recipient parser builds <code>{name: T, email: T}</code> from any non-empty string with zero
+format checking; <code>sendEmail</code> sets <code>subject: S.subject</code> directly whereas <code>saveDraft</code> applies
+<code>|| &quot;(no subject)&quot;</code>. The only guard before Send is a non-empty check on To.</p>
+<h3>SM-06 · <span class="sev medium">MEDIUM</span> · Zero-result search shows &quot;Your Primary tab is empty&quot;</h3>
+<p>Searching <code>$$$***@@@</code> shows the Inbox&#39;s own empty-state copy (&quot;Your Primary tab is empty / Tip:
+Messages in other tabs won&#39;t interrupt what you&#39;re doing here&quot;) — misleading, since Primary
+actually has 163 messages and the real situation is zero search matches. The same wrong fallback
+fires on every <code>#/label/:id</code> route.
+<strong>Root cause:</strong> <code>w = hc[e] || hc[&quot;all-mail&quot;]</code>; the <code>hc</code> map has no <code>search</code> or <code>label</code> key and the
+folder prop stays <code>&quot;inbox&quot;</code> while filtering is driven by a separate query variable.</p>
+<h3>SM-07 · <span class="sev medium">MEDIUM</span> · Sidebar stays expanded at 375px, squeezing the message list to unreadability</h3>
+<p>On first load at 375×812 the full 240px sidebar renders alongside the list, leaving roughly four
+icon-widths for messages — no sender, subject, snippet or date visible. The inbox looks broken
+until the user discovers the hamburger. Tablet (768px) renders fine.
+<strong>Root cause:</strong> no breakpoint auto-collapses <code>sidebarCollapsed</code>; it only toggles on explicit click.</p>
+<h3>SM-08 · <span class="sev low">LOW</span> · &quot;Marked as spam&quot; offers no Undo</h3>
+<p>Archive shows &quot;Conversation archived&quot; <strong>with Undo</strong>; Delete shows &quot;Conversation moved to Trash&quot;
+<strong>with Undo</strong>; spam shows &quot;Marked as spam&quot; with none. The handler passes <code>showToast(&quot;Marked as spam&quot;, null)</code>
+— the second argument is the undo callback, hardcoded <code>null</code>.</p>
+<hr>
+<h2>3. ValueMart (eBay clone) — 11 findings</h2>
+<p><strong>3 Critical · 2 High · 4 Medium · 2 Low</strong></p>
+<h3>VM-01 · <span class="sev critical">CRITICAL</span> · Placing a valid bid makes the Current Bid go DOWN</h3>
+<p><strong>Where:</strong> <code>/item/amb_l_amb_vinyl_0</code> and every auction seeded with bid history (8 items)</p>
+<p>&quot;Vintage Vinyl Record — Jazz Classics&quot;: Current Bid <strong>$20.49</strong> [2 bids], placeholder says
+&quot;Max bid (min $21.49)&quot;. Bid exactly $21.49 → Current Bid drops to <strong>$18.49</strong>, below both the
+prior price and the bid just placed. Bid count correctly goes to 3.</p>
+<p><strong>Root cause:</strong> the <code>PLACE_BID</code> reducer computes the incumbent leader as <code>a.bids[0]</code>, assuming
+newest-first ordering — true only for bids the app itself creates (it prepends). The <strong>seed data
+ships bids oldest-first</strong>, so <code>bids[0]</code> resolves to the <em>lowest</em> historical bid ($17.49). The new
+price is then <code>Math.min(c + 1, r)</code> = <code>min(18.49, r)</code> = <strong>$18.49</strong>.</p>
+<h3>VM-02 · <span class="sev critical">CRITICAL</span> · Silent dead zone, then accepted bids reset the price to the starting bid</h3>
+<p><strong>Where:</strong> <code>/item/amb_bl_48</code> and ~27 active auctions seeded with 0 bids (36 of 45 total have the mismatch)</p>
+<p>&quot;Ergo Mesh Office Chair&quot;: Current Bid <strong>$122.18</strong> [0 bids], placeholder says &quot;min $74.50&quot;.</p>
+<ul>
+<li>Bid <strong>$80</strong> (above the advertised minimum): <strong>complete no-op</strong> — no error, no change, input just clears like a success.</li>
+<li>Bid <strong>$130</strong> (above the displayed price): accepted, but Current Bid <strong>falls to $74.50</strong>.</li>
+</ul>
+<p><strong>Root cause:</strong> seed data sets <code>currentBid</code> far above <code>startingBid</code> while leaving <code>bids: []</code>
+(<code>startingBid: 74.5, currentBid: 122.18, bids: []</code>). The UI advertises the minimum as
+<code>bids.length === 0 ? startingBid : currentBid + 1</code>, but the reducer&#39;s first guard is
+<code>if (r &lt;= a.currentBid) return e</code> — creating a dead zone between the advertised minimum and the
+actual price where bids are rejected with zero feedback. When a bid does clear, the
+<code>bids.length === 0</code> branch sets the new <code>currentBid</code> to <code>a.startingBid</code> unconditionally, ignoring
+the bid amount entirely.</p>
+<h3>VM-03 · <span class="sev critical">CRITICAL</span> · Buy It Now charges $5.99 more than the price you confirmed</h3>
+<p><strong>Where:</strong> <code>/item/vm_usb_cable</code></p>
+<p>Item is $6.99 and the page says &quot;Shipping: $0.00&quot;. The confirm dialog shows only &quot;USB-C Cable 2m
+/ $6.99&quot;. After Confirm Purchase, Dashboard → Purchase History records the order at <strong>$12.98</strong>.</p>
+<p><strong>Root cause:</strong> <code>BUY_NOW</code> computes <code>f = price × qty</code> then silently adds a flat delivery fee
+<code>h = Xd(e, f)</code> ($5.99 unless subtotal ≥ $35) into the stored order as <code>amount: nt(f + h)</code>. The
+confirmation modal renders only the raw <code>buyItNowPrice</code> and never the computed total. The
+per-listing <code>shipping</code> field displayed on the same page plays no role in the charge at all.</p>
+<h3>VM-04 · <span class="sev high">HIGH</span> · Ended auctions display a positive countdown (split-clock)</h3>
+<p><code>amb_l_amb_vinyl_0</code> is not flagged &quot;Ended&quot; and shows &quot;Time left: 2 months&quot;, but its recorded
+<code>endTime</code> is 2026-05-29 — roughly two months <strong>in the past</strong>. <strong>18 of 45 listings (40%)</strong> are in
+this contradictory state today, and the count grows every day.</p>
+<p><strong>Root cause:</strong> ended-state uses a frozen clock — <code>s = t._gym_now || Date.now()</code> where <code>_gym_now</code>
+is seeded to <code>1779364800000</code> (2026-05-21T12:00 UTC) — while the &quot;time left&quot; text comes from
+<code>ip(e.endTime)</code> → <code>$0(e, Date.now())</code>, the <strong>real</strong> wall clock. Any listing ending between the
+frozen date and today gets <code>Ended = false</code> alongside a countdown measured against today.</p>
+<h3>VM-05 · <span class="sev high">HIGH</span> · Header search collapses off-screen at 375px, causing sitewide overflow</h3>
+<p>Every route renders at a fixed 589px inside a 375px viewport (214px overflow). The search
+<code>&lt;input&gt;</code> collapses to <strong>0px</strong> and is pushed off-screen; scrolling right reveals only the
+category dropdown and the blue Search button with no field between them — search is unusable on
+mobile. Verified on <code>/</code>, <code>/cart</code>, <code>/dashboard</code>, <code>/deals</code>, <code>/sell</code>, <code>/search</code>, <code>/item/:id</code>.</p>
+<h3>VM-06 · <span class="sev medium">MEDIUM</span> · Empty cart shows a $5.99 total</h3>
+<p>&quot;Items (0) $0.00 … <strong>Total $5.99</strong>&quot;. Checkout is a no-op in this state (the reducer bails on an
+empty cart) so no phantom order is created, but the displayed total is impossible.
+<strong>Root cause:</strong> the delivery-fee helper <code>Xd</code> never special-cases a <code>$0</code> subtotal.</p>
+<h3>VM-07 · <span class="sev medium">MEDIUM</span> · Selecting &quot;Home &amp; Garden&quot; when listing stores the category as &quot;Home&quot;</h3>
+<p>The listing becomes undiscoverable via the Home &amp; Garden nav link (<code>/search?c=Home%20%26%20Garden</code>
+result count unchanged at 24). Reproduced across 3 separate listings.
+<strong>Root cause:</strong> verbatim in both the create and edit forms —
+<code>l.jsx(&quot;option&quot;, { value: &quot;Home&quot;, children: &quot;Home &amp; Garden&quot; })</code>. Every other category&#39;s <code>value</code>
+matches its label; this one alone doesn&#39;t.</p>
+<h3>VM-08 · <span class="sev medium">MEDIUM</span> · &quot;Ending Soonest&quot; sort is dominated by fixed-price listings that never close</h3>
+<p>The top 7 results under Electronics are all Buy-It-Now items with no countdown or bid count,
+ahead of every real auction. All 9 original <code>vm_</code> catalog items share one artificially early
+hidden <code>endTime</code> (2026-05-28).
+<strong>Root cause:</strong> <code>sort((x,S) =&gt; x.endTime - S.endTime)</code> runs across all listings; fixed-price items
+carry an <code>endTime</code> that is never displayed or otherwise used but still feeds the comparator.</p>
+<h3>VM-09 · <span class="sev medium">MEDIUM</span> · &quot;Sports&quot; and &quot;Motors&quot; have inventory but no navigation entry point</h3>
+<p>0 of the 7 <code>Sports</code>-tagged items (Peloton Bike+, Wilson Pro Staff racket, Trek Marlin) appear
+under the &quot;Sporting Goods&quot; tile. The entire <strong>Motors</strong> category (7 car-parts listings) is
+reachable only by hand-typing a URL — despite &quot;Motors&quot; being a selectable option in the Sell form.
+<strong>Root cause:</strong> the home tiles and header nav hard-code 8 category strings; neither <code>Sports</code> nor
+<code>Motors</code> is among them, even though both are valid seed values and Sell-form options.</p>
+<h3>VM-10 · <span class="sev low">LOW</span> · Custom bid-validation message is dead code</h3>
+<p><code>&lt;input type=&quot;number&quot; min={G} step=&quot;0.01&quot;&gt;</code> has no <code>required</code>, so the browser&#39;s native constraint
+validation intercepts every too-low value with its generic tooltip (&quot;Value must be greater than or
+equal to 155.98&quot;) and React&#39;s <code>onSubmit</code> never runs. The hand-written
+<code>if (isNaN(Je) || Je &lt; G) { _(…) }</code> is unreachable except via the <code>isNaN</code> branch.</p>
+<h3>VM-11 · <span class="sev low">LOW</span> · Raising your own bid inflates the bid counter; no &quot;you&#39;re winning&quot; state exists</h3>
+<p>Bidding 120 then 150 as the same user on <code>amb_bl_56</code> takes the count from [1 bids] to [2 bids] and
+creates a duplicate history entry, as though a second bidder joined. No high-bidder/winning
+indicator exists anywhere in the app.
+<strong>Root cause:</strong> the <code>else if (r &gt; c)</code> branch fires regardless of whether <code>i === o</code> (same bidder) and
+always prepends a new record; the in-place update path <code>else if (i === o)</code> is only reachable when a
+self-raise <em>doesn&#39;t</em> exceed your own previous max — dead for the common case.</p>
+<hr>
+<h2>4. GymEats (Uber Eats clone) — 8 findings</h2>
+<p><strong>2 Critical · 1 High · 2 Medium · 3 Low</strong></p>
+<h3>GE-01 · <span class="sev critical">CRITICAL</span> · Negative tip accepted — drives the total below cost, order places successfully</h3>
+<p><strong>Where:</strong> <code>/checkout</code></p>
+<p>Tip → &quot;Other&quot; → type <code>-8</code>. Tip row shows <strong>−$8.00</strong>, total drops from $16.86 to <strong>$8.86</strong>, and
+&quot;Place Order — $8.86&quot; completes and persists (<code>ord_mshouumt</code>, <code>tip: -8</code>). Reproduced at a second
+restaurant with tip −5.
+<strong>Root cause:</strong> <code>ut = tipPercentage ? M*(tipPercentage/100) : tipAmount; gr = M+L+Re+Xt+ut-lt</code> —
+<code>tipAmount</code> is never clamped to ≥ 0, and no JS backs the input&#39;s <code>min=&quot;0&quot;</code>.</p>
+<h3>GE-02 · <span class="sev critical">CRITICAL</span> · Order total is 1¢ off from the sum of its own line items — and persists that way</h3>
+<p>Smash Shack, 2× Double Stack Attack, promo <code>EATS10</code>, 18% tip:
+Subtotal $23.98 + Service $3.60 + Delivery $0.00 + Tax $2.16 + Tip $4.32 − Promo $2.40 = <strong>$31.66</strong>,
+but the Total and Place Order button both read <strong>$31.65</strong>. The persisted receipt keeps the
+discrepancy. Reproduced with a second, different cart ($21.10 vs $21.09).
+<strong>Root cause:</strong> the <code>useMemo</code> keeps service fee, tax and tip as full-precision floats and computes
+the total from those, while <code>Intl.NumberFormat</code> rounds each line independently at render — two
+different rounding bases. Repeated at order-creation time.</p>
+<h3>GE-03 · <span class="sev high">HIGH</span> · Seeded order history renders &quot;undefined&quot; item names and &quot;$NaN&quot; prices</h3>
+<p>No interaction needed — <code>/orders</code> on a fresh load shows &quot;2× undefined&quot; (The Daily Grind) and
+&quot;1× undefined, 1× undefined&quot; (Patty Palace). Detail pages show &quot;1x $NaN&quot;.
+<strong>Root cause:</strong> the two seeded orders nest item data under <code>.menuItem</code>
+(<code>{cartItemId, menuItem: {name, price}, quantity}</code>), but the list computes
+<code>`${c.quantity}× ${c.name}`</code> and the detail reads <code>c.price</code> — neither falls back to
+<code>c.menuItem.*</code>. Orders placed live use a flat <code>{name, unitPrice, totalPrice}</code> shape and render fine.</p>
+<h3>GE-04 · <span class="sev medium">MEDIUM</span> · Switching restaurants silently destroys the existing cart</h3>
+<p>Adding an item from restaurant B wipes restaurant A&#39;s items with <strong>no dialog, toast or
+confirmation</strong> (verified with a <code>page.on(&#39;dialog&#39;)</code> listener recording zero dialogs). Totals stay
+internally consistent — the user just loses their order with no feedback.
+<strong>Root cause:</strong> the <code>addToCart</code> reducer&#39;s cross-restaurant branch replaces <code>items</code> with <code>[Me]</code>
+unconditionally, with no confirmation step wired to it.</p>
+<h3>GE-05 · <span class="sev medium">MEDIUM</span> · Checkout overflows ~173px horizontally at 375px</h3>
+<p>The tip pill row (15% / 18% / 20% / 25% / Other / None) doesn&#39;t wrap, pushing the whole document
+into horizontal scroll. <code>.checkout__tips { display:flex; gap:8px }</code> has no <code>flex-wrap</code> and no
+scroll containment. Not reproducible at 768px.</p>
+<h3>GE-06 · <span class="sev low">LOW</span> · No upper bound on custom tip</h3>
+<p><code>1000</code> is accepted verbatim → Total $1,014.87, no confirmation. Same unclamped code path as GE-01.</p>
+<h3>GE-07 · <span class="sev low">LOW</span> · An applied promo code cannot be removed or changed</h3>
+<p>The input and Apply button are replaced by a static chip with no click handler of any kind. The
+only escape is &quot;Clear cart&quot;.</p>
+<h3>GE-08 · <span class="sev low">LOW</span> · The paid add-on / required-option system is unreachable with live data</h3>
+<p>None of the 204 menu items across 42 live restaurants define a non-empty <code>customizationGroups</code>,
+so every &quot;Add to order&quot; modal shows only a quantity stepper and a notes field. The required-group
+validation and add-on price summation code paths — which do work — are dead. A separate unused
+fixture set (<code>rest_1</code>…<code>rest_16</code> / <code>item_1</code>…<code>item_96</code>) does define such groups.</p>
+<hr>
+<h2>5. GymCal (Calendar clone) — 12 findings</h2>
+<p><strong>3 Critical · 4 High · 4 Medium · 1 Low</strong></p>
+<h3>GC-01 · <span class="sev critical">CRITICAL</span> · &quot;Today&quot; is permanently frozen at 2026-05-21</h3>
+<p>The app opens on the week of May 17–23 2026 with Thursday the 21st circled as today — <strong>77 days
+stale</strong>. The Today button always jumps back there. <code>/go</code> shows both <code>currentDate</code> and <code>_gym_today</code>
+hardcoded to <code>&quot;2026-05-21T00:00:00&quot;</code>.
+<strong>Root cause:</strong> <code>let bo = null; const zi = e =&gt; { e &amp;&amp; (bo = e) }, rt = () =&gt; bo ? new Date(bo) : new Date</code>.
+On boot, the seed object deep-merges over the real-clock defaults and calls <code>zi(i._gym_today)</code>,
+permanently pinning <code>bo</code>. Every &quot;now&quot; lookup in the app goes through <code>rt()</code>.</p>
+<h3>GC-02 · <span class="sev critical">CRITICAL</span> · Quick Add resolves &quot;tomorrow&quot; against the real clock, everything else against the frozen one</h3>
+<p>Two events created seconds apart in the same box land <strong>78 days apart</strong>:</p>
+<ul>
+<li>&quot;Team lunch <strong>tomorrow</strong> 1pm&quot; → stored <code>2026-08-07T13:00</code> (real tomorrow)</li>
+<li>&quot;Team lunch plain 3pm&quot; → stored <code>2026-05-21T15:00</code> (frozen today)</li>
+</ul>
+<p><strong>Root cause:</strong> base date is <code>let E = rt()</code> (frozen), but the &quot;tomorrow&quot; branch overrides with
+<code>E = dh()</code>, a <code>startOfTomorrow()</code> built directly on <code>new Date()</code>. Only the literal word &quot;tomorrow&quot;
+escapes the frozen clock.</p>
+<h3>GC-03 · <span class="sev critical">CRITICAL</span> · Deleting one occurrence of a recurring event deletes the whole series</h3>
+<p>Delete a <em>later</em> occurrence → the entire series vanishes, including past occurrences. The
+confirmation says only &quot;This removes &#39;<title>&#39; from the local calendar state&quot; — never mentioning
+all occurrences. No &quot;This event / All events&quot; scope prompt exists.
+<strong>Root cause:</strong> clicking a generated instance (<code>&lt;originalId&gt;_recur_&lt;n&gt;</code>) resolves via
+<code>originalEventId</code> back to the master record before opening the editor, and <code>DELETE_EVENT</code> filters
+by that master id. There is no per-instance exception model at all.</p>
+<h3>GC-04 · <span class="sev high">HIGH</span> · The red current-time line appears only on the fake today, never on the real one</h3>
+<p>It renders on 2026-05-21 at the <em>real</em> wall-clock vertical position, and is entirely absent when
+you navigate to 2026-08-06.
+<strong>Root cause:</strong> the vertical offset comes from real-clock React state
+(<code>useState(new Date)</code> + <code>setInterval(…, 6e4)</code>), but the render gate is <code>We(dayColumn, rt())</code> —
+the frozen getter. Two clocks gating one feature.</p>
+<h3>GC-05 · <span class="sev high">HIGH</span> · Monthly recurrence permanently drifts down after crossing a short month</h3>
+<p>&quot;Monthly on the 31st&quot; starting 2026-01-31 renders: Jan <strong>31</strong> ✓ → Feb <strong>28</strong> (expected clamp) →
+Mar <strong>28</strong> ✗ → Apr <strong>28</strong> ✗. It never returns to the anchor day.
+<strong>Root cause:</strong> the expander mutates its iterator in place — <code>o = on(o, 1)</code> applied to the
+<em>previous computed instance</em> rather than <code>addMonths(originalStart, n)</code> — so date-fns&#39;s
+end-of-month clamp becomes the new permanent base.</p>
+<h3>GC-06 · <span class="sev high">HIGH</span> · The &quot;Other calendars&quot; section is entirely non-functional</h3>
+<p>Unchecking &quot;Birthdays&quot; or &quot;Holidays in United States&quot; updates
+<code>state.otherCalendars[].visible</code> correctly but hides nothing — &quot;Mom&#39;s birthday&quot; and &quot;Swiss National
+Day&quot; both remain.
+<strong>Root cause:</strong> two independent failures. Every seed event&#39;s <code>calendarId</code> is one of <code>c1</code>–<code>c5</code>
+(the <em>My calendars</em> ids); none reference <code>oc1</code>/<code>oc2</code>. And every view&#39;s filter reads only
+<code>state.calendars</code>, never <code>state.otherCalendars</code> — so the section could never filter anything even
+if the data did line up.</p>
+<h3>GC-07 · <span class="sev high">HIGH</span> · Header toolbar clips at mobile and tablet widths with no way to reach the controls</h3>
+<p>At 375×812 the header&#39;s <code>scrollWidth</code> is 787px inside a 375px box with <code>overflowX: visible</code> and
+<code>body.scrollWidth</code> stuck at 375 — nothing scrolls. Quick-add, the Month/Week/Day/Agenda switcher,
+Settings and Create are all rendered past x=375 and are simply unreachable. At 768×1024 the view
+switcher, Settings gear and avatar are likewise cut off.
+<strong>Root cause:</strong> single non-wrapping flex row; only the debug link and search box carry responsive
+classes (<code>hidden md:flex</code>), everything else has none.</p>
+<h3>GC-08 · <span class="sev medium">MEDIUM</span> · Events ending before they start are saved without complaint</h3>
+<p>Start 3:00 PM, end 1:00 PM saves and renders a chip labelled &quot;3:00 PM – 1:00 PM&quot;. Zero-length
+(4:00–4:00 PM) also saves. No comparison between start and end happens before dispatch; the
+renderer merely clamps display height via <code>Math.max(differenceInMinutes(end, start), 30)</code>, masking
+the bad data visually while printing the inverted label verbatim.</p>
+<h3>GC-09 · <span class="sev medium">MEDIUM</span> · A timed event spanning midnight is invisible on the day it ends</h3>
+<p>An 11:30 PM–12:30 AM event renders only on its start date; the portion occupying 12:00–12:30 AM of
+the next day is completely absent from that column.
+<strong>Root cause:</strong> per-day bucketing is <code>events.filter(z =&gt; We(new Date(z.start), day))</code> — an exact
+same-day-as-start test that never checks <code>end</code>.</p>
+<h3>GC-10 · <span class="sev medium">MEDIUM</span> · Settings are saved but never applied</h3>
+<p>&quot;Default view&quot; → Month persists into <code>state.settings.defaultView</code> but <code>state.view</code> stays <code>week</code>,
+the switcher still reads Week, and reload still opens Week. &quot;Time format&quot; → 24-hour leaves every
+label as &quot;9:30 AM&quot;. Beyond ICS import/export, the Settings panel has no observable effect.</p>
+<h3>GC-11 · <span class="sev medium">MEDIUM</span> · Guests/invitees are modeled and exported but have no UI</h3>
+<p><code>event.guests</code> is in the schema and included in ICS export, but no input exists anywhere in the
+Create/Edit form. Every event created through the UI is hard-set to <code>guests: []</code>, making the field
+permanently unreachable.</p>
+<h3>GC-12 · <span class="sev low">LOW</span> · No resize handle — duration can only be changed by typing</h3>
+<p>Event chips carry only the HTML5 <code>draggable</code> attribute (move) and an <code>onClick</code> (popover). No
+resize-specific pointer handlers exist in the bundle, despite drag-to-reschedule being advertised
+in the sidebar tip.</p>
+<hr>
+<h2>Severity roll-up</h2>
+<table>
+<thead>
+<tr>
+<th>App</th>
+<th align="right">Critical</th>
+<th align="right">High</th>
+<th align="right">Medium</th>
+<th align="right">Low</th>
+<th align="right">Total</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ShopGym</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">2</td>
+<td align="right"><strong>14</strong></td>
+</tr>
+<tr>
+<td>ShopMail</td>
+<td align="right">0</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right"><strong>8</strong></td>
+</tr>
+<tr>
+<td>ValueMart</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right"><strong>11</strong></td>
+</tr>
+<tr>
+<td>GymEats</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right"><strong>8</strong></td>
+</tr>
+<tr>
+<td>GymCal</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right"><strong>12</strong></td>
+</tr>
+<tr>
+<td>Cross-cutting</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right"><strong>1</strong></td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td align="right"><strong>10</strong></td>
+<td align="right"><strong>16</strong></td>
+<td align="right"><strong>19</strong></td>
+<td align="right"><strong>9</strong></td>
+<td align="right"><strong>54</strong></td>
+</tr>
+</tbody></table>
+<h2>Suggested fix order</h2>
+<ol>
+<li><strong>X-01</strong> — stand up <code>/state</code> + <code>/post</code>, or make the failure loud. Everything else is measured
+against seed state that you may believe you&#39;re overriding.</li>
+<li><strong>The frozen clock</strong> (GC-01/02/04, VM-04) — one shared decision: either freeze <em>everything</em>
+consistently, or drop <code>_gym_now</code> and use the real clock everywhere. The current hybrid degrades
+daily and makes date-relative tasks unscorable.</li>
+<li><strong>ValueMart bidding</strong> (VM-01/02/03) — the reducer&#39;s <code>bids[0]</code> assumption and the
+<code>currentBid</code>/<code>startingBid</code> seed mismatch. Affects 36 of 45 auctions.</li>
+<li><strong>Money that doesn&#39;t reconcile</strong> (GE-02, SG-09, GE-01, VM-03, VM-06) — round once, from one base,
+and clamp tips at zero.</li>
+<li><strong>Seed-data/UI shape mismatches</strong> (SM-02, SM-03, GE-03, SG-06, VM-07, VM-09) — cheap, mechanical
+fixes that switch whole features back on.</li>
+<li><strong>Mobile layout</strong> (SG-04, SM-07, VM-05, GE-05, GC-07) — every one of the five apps overflows or
+becomes unusable at 375px. If agents are ever run at mobile viewports, all five are affected.</li>
+</ol>
+<hr>
+<h2>Methodology &amp; caveats</h2>
+<p><strong>How this was tested.</strong> The sandbox&#39;s egress firewall blocked <code>*.delta.deccanexperts.ai</code>, and
+Chromium could not traverse the environment&#39;s HTTP proxy (every host returned
+<code>ERR_CONNECTION_RESET</code> while <code>curl</code> succeeded). The five apps were therefore mirrored byte-for-byte
+— same <code>index.html</code>, same hashed JS/CSS bundles — and served from <code>127.0.0.1</code>, then driven with
+Playwright/Chromium at 1440×900, 768×1024 and 375×812. Each session captured uncaught exceptions,
+console errors, failed requests and 4xx/5xx responses. Findings were corroborated against the
+shipped bundles, which is where most root causes came from.</p>
+<p><strong>Confidence.</strong> Every finding above was reproduced at least twice from a fresh session. Root
+causes quoting bundle code were read directly from the shipped JS. SG-05, SG-07 and SG-14 were
+additionally re-verified independently by the lead auditor. SG-09, SG-10 and SG-13 were confirmed
+by the app auditor but not independently re-run.</p>
+<p><strong>Mirror caveat.</strong> The apps are pure client-side SPAs with no backend — no external API calls exist
+in any bundle — so the mirror is behaviourally identical to production. The one place this
+mattered is X-01: the mirror and the hosted deployment both return HTML for <code>/state</code>, which was
+confirmed directly against the live host (<code>HTTP 200, text/html</code>) rather than inferred from the mirror.</p>
+<p><strong>Not covered.</strong> Real-network latency and CloudFront cache behaviour; concurrent multi-tab state;
+screen-reader and full keyboard-navigation accessibility audits; load/performance testing;
+cross-browser (Chromium only).</p>
+</div></body></html>

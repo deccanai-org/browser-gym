@@ -133,6 +133,9 @@ const KeyboardShortcuts = () => {
     const tag = document.activeElement.tagName;
     if (['INPUT', 'TEXTAREA'].includes(tag)) return;
     if (document.activeElement.isContentEditable) return;
+    // Never hijack browser/system chords: Cmd+C (copy) was opening the composer,
+    // Cmd+R was starring, and so on. Single-key shortcuts only.
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
     // Ignore if compose is open (except Z for undo)
     if (isComposeOpen && e.key !== 'Escape') return;
 

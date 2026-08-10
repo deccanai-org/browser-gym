@@ -82,9 +82,8 @@ export const Header = () => {
         ? state.products.filter(p => p.category === searchCategory)
         : state.products;
 
-      const wordRe = term ? new RegExp('\\b' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') : null;
       const productMatches = filtered
-        .filter(p => wordRe && (wordRe.test(p.title) || (p.category || '').toLowerCase().includes(term)))
+        .filter(p => (p.title || '').toLowerCase().includes(term) || (p.category || '').toLowerCase().includes(term))
         .slice(0, 5)
         .map(p => ({ type: 'product', text: p.title, id: p.id }));
 
@@ -133,12 +132,12 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-50">
       {/* Top Bar */}
-      <div className="bg-xmazon text-white px-4 py-2 flex items-center gap-4 h-[60px]">
-        <Link to="/" className="flex items-center border border-transparent hover:border-white p-2 rounded-sm focus:outline-none focus:ring-2 focus:ring-white">
-          <span className="text-2xl font-bold tracking-tighter">ShopGym<span className="text-xmazon-orange"></span></span>
+      <div className="bg-xmazon text-white px-2 sm:px-4 py-2 flex items-center gap-2 sm:gap-4 h-[60px] overflow-hidden max-w-[100vw]">
+        <Link to="/" className="flex items-center border border-transparent hover:border-white p-1 sm:p-2 rounded-sm focus:outline-none focus:ring-2 focus:ring-white shrink-0">
+          <span className="text-xl sm:text-2xl font-bold tracking-tighter">ShopGym<span className="text-xmazon-orange"></span></span>
         </Link>
 
-        <Link to="/profile#addresses" className="hidden md:flex flex-col text-xs border border-transparent hover:border-white p-2 rounded-sm leading-tight">
+        <Link to="/profile#addresses" className="hidden lg:flex flex-col text-xs border border-transparent hover:border-white p-2 rounded-sm leading-tight shrink-0">
           <span className="text-gray-300">Deliver to {state.user.name.split(' ')[0]}</span>
           <div className="flex items-center font-bold">
             <MapPin size={14} className="mr-1" />
@@ -147,12 +146,12 @@ export const Header = () => {
         </Link>
 
         {/* Search Bar */}
-        <div className="flex-1 relative" ref={searchRef}>
+        <div className="flex-1 min-w-0 relative" ref={searchRef}>
           <form onSubmit={handleSearch} className="flex h-10 rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-xmazon-orange">
             <select
               value={searchCategory}
               onChange={handleCategoryChange}
-              className="bg-gray-100 text-gray-600 text-xs px-2 border-r border-gray-300 w-auto max-w-[150px] cursor-pointer hover:bg-gray-200 outline-none border-none h-full"
+              className="hidden sm:block bg-gray-100 text-gray-600 text-xs px-2 border-r border-gray-300 w-auto max-w-[150px] cursor-pointer hover:bg-gray-200 outline-none border-none h-full shrink-0"
             >
               <option value="All">All</option>
               {categories.map(cat => (
@@ -267,10 +266,10 @@ export const Header = () => {
       </div>
 
       {/* Sub Nav */}
-      <div className="bg-xmazon-light text-white text-sm px-4 py-1.5 flex items-center gap-4 overflow-x-auto whitespace-nowrap border-b border-[#485769]" ref={navMenuRef}>
+      <div className="bg-xmazon-light text-white text-sm px-2 sm:px-4 py-1.5 flex items-center gap-2 sm:gap-4 overflow-x-auto whitespace-nowrap border-b border-[#485769] max-w-full" ref={navMenuRef}>
         <button
           onClick={() => setShowNavMenu(v => !v)}
-          className="flex items-center gap-1 font-bold hover:border hover:border-white px-1 rounded-sm"
+          className="flex items-center gap-1 font-bold hover:border hover:border-white px-1 rounded-sm shrink-0"
         >
           <Menu size={20} /> All
         </button>
@@ -278,11 +277,15 @@ export const Header = () => {
           <Link
             key={item.label}
             to={item.to}
-            className="hover:border hover:border-white px-2 py-1 rounded-sm"
+            className="hover:border hover:border-white px-2 py-1 rounded-sm shrink-0 hidden sm:inline-block"
           >
             {item.label}
           </Link>
         ))}
+        {/* Mobile: expose Gift Cards / Sell inside All drawer only; keep Deals visible */}
+        <Link to="/search?deals=true" className="sm:hidden hover:border hover:border-white px-2 py-1 rounded-sm shrink-0">
+          Today's Deals
+        </Link>
 
         {/* All Categories Drawer */}
         {showNavMenu && (

@@ -86,7 +86,7 @@ const HeroCarousel = () => {
   const next = () => setCurrent(c => (c + 1) % CAROUSEL_SLIDES.length);
 
   return (
-    <div className="relative w-full h-[280px] md:h-[380px] overflow-hidden bg-gray-900">
+    <div className="relative w-full h-[280px] md:h-[380px] overflow-hidden bg-gray-900 z-10">
       {CAROUSEL_SLIDES.map((s, idx) => (
         <div
           key={s.id}
@@ -94,13 +94,13 @@ const HeroCarousel = () => {
           style={{ opacity: idx === current ? 1 : 0, zIndex: idx === current ? 1 : 0 }}
         >
           <img src={s.image} alt={s.headline} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end pb-16 md:pb-24">
-            <div className="ml-8 md:ml-16 text-white">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex items-end pb-10 md:pb-14 pointer-events-none">
+            <div className="ml-8 md:ml-16 text-white relative z-30 pointer-events-auto">
               <h2 className="text-2xl md:text-4xl font-bold mb-1">{s.headline}</h2>
               <p className="text-base md:text-lg mb-3 text-gray-200">{s.subtext}</p>
               <Link
                 to={s.ctaLink}
-                className="inline-block bg-[#ffa41c] hover:bg-[#fa8900] text-[#111] font-bold px-5 py-2 rounded-lg text-sm shadow"
+                className="inline-block bg-[#ffa41c] hover:bg-[#fa8900] text-[#111] font-bold px-5 py-2 rounded-lg text-sm shadow relative z-30"
               >
                 {s.ctaText}
               </Link>
@@ -111,7 +111,7 @@ const HeroCarousel = () => {
 
       <button
         onClick={prev}
-        className="absolute left-0 top-0 bottom-0 z-10 px-3 bg-transparent hover:bg-white/10 transition-colors"
+        className="absolute left-0 top-0 bottom-0 z-20 px-3 bg-transparent hover:bg-white/10 transition-colors"
         aria-label="Previous"
       >
         <ChevronLeft size={36} className="text-white drop-shadow" />
@@ -119,7 +119,7 @@ const HeroCarousel = () => {
 
       <button
         onClick={next}
-        className="absolute right-0 top-0 bottom-0 z-10 px-3 bg-transparent hover:bg-white/10 transition-colors"
+        className="absolute right-0 top-0 bottom-0 z-20 px-3 bg-transparent hover:bg-white/10 transition-colors"
         aria-label="Next"
       >
         <ChevronRight size={36} className="text-white drop-shadow" />
@@ -263,8 +263,8 @@ export const Home = () => {
       {/* Hero Carousel */}
       <HeroCarousel />
 
-      {/* Category Cards - Overlapping Hero */}
-      <div className="relative z-10 -mt-36 px-4">
+      {/* Category cards sit below the hero — never overlap the CTA hit area */}
+      <div className="relative z-0 mt-4 px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {CATEGORY_CARD_DATA.map(card => (
             <CategoryCard

@@ -7,6 +7,25 @@ import Avatar from './Avatar';
 const AdvancedSearchModal = () => {
   const { isSearchModalOpen, setIsSearchModalOpen, setSearchQuery } = useStore();
   const [localQuery, setLocalQuery] = useState({ from: '', to: '', subject: '', hasAttachment: false });
+  const ref = React.useRef(null);
+
+  // The filter panel stayed pinned open until Cancel/Search was pressed; every
+  // other popover in the app dismisses on an outside click or Escape.
+  React.useEffect(() => {
+    if (!isSearchModalOpen) return;
+    const handleClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target) && !e.target.closest('[data-search-toggle]')) {
+        setIsSearchModalOpen(false);
+      }
+    };
+    const handleEsc = (e) => { if (e.key === 'Escape') setIsSearchModalOpen(false); };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEsc);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEsc);
+    };
+  }, [isSearchModalOpen, setIsSearchModalOpen]);
 
   if (!isSearchModalOpen) return null;
 
@@ -22,7 +41,7 @@ const AdvancedSearchModal = () => {
   };
 
   return (
-    <div className="absolute top-16 left-0 right-0 bg-white shadow-xl border border-gray-200 p-6 z-50 w-[600px] mx-auto rounded-b-lg">
+    <div ref={ref} className="absolute top-16 left-0 right-0 bg-white shadow-xl border border-gray-200 p-6 z-50 w-[600px] mx-auto rounded-b-lg">
       <div className="grid grid-cols-[100px_1fr] gap-4 mb-4 items-center">
         <label className="text-gray-600 text-sm font-medium">From</label>
         <input
@@ -121,7 +140,8 @@ const GoogleAppsPanel = ({ onClose }) => {
 };
 
 const ProfileDropdown = ({ onClose }) => {
-  const { state, showToast } = useStore();
+  const { state, signOut } = useStore();
+  const navigate = useNavigate();
   const ref = React.useRef(null);
 
   React.useEffect(() => {
@@ -145,14 +165,15 @@ const ProfileDropdown = ({ onClose }) => {
         <p className="text-sm text-gray-500">{state.user.email}</p>
       </div>
       <div className="py-2">
+        {/* Both entries used to only raise a "not available in this mock" toast. */}
         <button
-          onClick={() => { showToast('Account management isn\'t available in this mock'); onClose(); }}
+          onClick={() => { navigate('/settings?tab=accounts'); onClose(); }}
           className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         >
           Manage your account
         </button>
         <button
-          onClick={() => { showToast('Sign out isn\'t available in this mock'); onClose(); }}
+          onClick={() => { onClose(); signOut(); }}
           className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         >
           Sign out
@@ -178,9 +199,19 @@ const Header = () => {
         >
           <Menu size={24} className="text-gray-600" />
         </button>
-        <div className="flex items-center gap-2">
+        <button
+          onClick={() => navigate('/inbox')}
+          className="flex items-center gap-2 rounded px-1 py-0.5 hover:bg-gray-100"
+          title="ShopMail — go to Inbox"
+          aria-label="ShopMail home"
+        >
+          <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true">
+            <rect width="32" height="32" rx="7" fill="#c5221f" />
+            <path d="M6 10h20v12H6z" fill="#fff" />
+            <path d="M6 10l10 7 10-7" fill="none" stroke="#c5221f" strokeWidth="2" />
+          </svg>
           <span className="text-2xl font-medium text-gray-600" style={{fontFamily:"Roboto,Arial,sans-serif"}}>ShopMail</span>
-        </div>
+        </button>
       </div>
 
       <div className="flex-1 max-w-3xl relative">
@@ -194,7 +225,10 @@ const Header = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <button
+            data-search-toggle
             onClick={() => setIsSearchModalOpen(prev => !prev)}
+            title="Show search options"
+            aria-label="Show search options"
             className="p-1 hover:bg-gray-200 rounded-full ml-2"
           >
             <SlidersHorizontal size={18} className="text-gray-600" />

@@ -12,6 +12,8 @@ const CATEGORIES = [
   { label: 'Fashion', c: 'Fashion', img: '/assets/categories/fashion.jpg' },
   { label: 'Collectibles', c: 'Collectibles', img: '/assets/categories/collectibles.jpg' },
   { label: 'Sporting Goods', c: 'Sporting Goods', img: '/assets/categories/sporting_goods.jpg' },
+  { label: 'Sports', c: 'Sports', img: '/assets/categories/sporting_goods.jpg' },
+  { label: 'Motors', c: 'Motors', img: '/assets/categories/electronics.jpg' },
   { label: 'Toys & Hobbies', c: 'Toys & Hobbies', img: '/assets/categories/toys_hobbies.jpg' },
   { label: 'Health & Beauty', c: 'Health & Beauty', img: '/assets/categories/health_beauty.jpg' },
   { label: 'Books', c: 'Books', img: '/assets/categories/books.jpg' },

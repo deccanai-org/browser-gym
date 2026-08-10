@@ -127,7 +127,18 @@ const ThreadView = () => {
         <div className="flex-1 flex items-center gap-2">
            <button onClick={() => { archiveEmails(threadEmails.map(e => e.id)); navigate(-1); }} className="p-2 hover:bg-gray-100 rounded-full text-gray-600" title="Archive"><Archive size={18} /></button>
            <button onClick={() => { deleteEmails(threadEmails.map(e => e.id)); navigate(-1); }} className="p-2 hover:bg-gray-100 rounded-full text-gray-600" title="Delete"><Trash2 size={18} /></button>
-           <button onClick={() => { const allRead = threadEmails.every(e => e.read); bulkUpdateEmails(threadEmails.map(e => e.id), { read: !allRead }); }} className="p-2 hover:bg-gray-100 rounded-full text-gray-600" title="Mark as read/unread">
+           <button
+             onClick={() => {
+               const allRead = threadEmails.every(e => e.read);
+               bulkUpdateEmails(threadEmails.map(e => e.id), { read: !allRead });
+               // Marking the open conversation unread has to leave it: staying
+               // put re-reads it (and the row it belongs to now lives back in
+               // the folder list as unread).
+               if (allRead) navigate(-1);
+             }}
+             className="p-2 hover:bg-gray-100 rounded-full text-gray-600"
+             title={threadEmails.every(e => e.read) ? 'Mark as unread' : 'Mark as read'}
+           >
              {threadEmails.every(e => e.read) ? <MailOpen size={18} /> : <Mail size={18} />}
            </button>
            <button onClick={() => { bulkUpdateEmails(threadEmails.map(e => e.id), { folder: 'spam' }); showToast('Reported as spam', null); navigate(-1); }} className="p-2 hover:bg-gray-100 rounded-full text-gray-600" title="Report spam"><ShieldAlert size={18} /></button>

@@ -79,20 +79,22 @@ export default function Checkout() {
     : null;
 
   const totals = useMemo(() => {
-    const subtotal = cart.items.reduce((s, item) => s + item.totalPrice, 0);
-    const serviceFee = Math.min(Math.max(subtotal * 0.15, 0.99), 9.99);
-    const deliveryFee = (restaurant && !isPickup) ? restaurant.deliveryFee : 0;
-    const tax = subtotal * 0.09;
-    const promoDiscount = appliedPromo
-      ? Math.round(subtotal * (appliedPromo.percentOff || 0) * 100) / 100
-      : (cart.promoDiscount || 0);
+    const money = (n) => Math.round((Number(n) || 0) * 100) / 100;
+    const subtotal = money(cart.items.reduce((s, item) => s + item.totalPrice, 0));
+    const serviceFee = money(Math.min(Math.max(subtotal * 0.15, 0.99), 9.99));
+    const deliveryFee = money((restaurant && !isPickup) ? restaurant.deliveryFee : 0);
+    const tax = money(subtotal * 0.09);
+    const promoDiscount = money(appliedPromo
+      ? subtotal * (appliedPromo.percentOff || 0)
+      : (cart.promoDiscount || 0));
     // food.checkout has no tip field — the engine never records or charges a tip.
     // In bridged mode force it to 0 so the displayed total isn't a figure the
     // gym will never see (the tip selector is hidden below in the same mode).
-    const tipAmount = bridged()
+    let tipAmount = bridged()
       ? 0
       : (cart.tipPercentage ? subtotal * (cart.tipPercentage / 100) : cart.tipAmount);
-    const total = subtotal + serviceFee + deliveryFee + tax + tipAmount - promoDiscount;
+    tipAmount = money(Math.min(500, Math.max(0, tipAmount || 0)));
+    const total = money(subtotal + serviceFee + deliveryFee + tax + tipAmount - promoDiscount);
     return {
       subtotal,
       serviceFee,
@@ -389,6 +391,18 @@ export default function Checkout() {
               <div className="checkout__promo-applied">
                 <span className="checkout__promo-code">{appliedCode}</span>
                 <span className="checkout__promo-save">−{formatCurrency(totals.promoDiscount)}</span>
+                <button
+                  type="button"
+                  className="checkout__promo-btn"
+                  aria-label="Remove promo code"
+                  onClick={() => {
+                    applyPromoCode('');
+                    setPromoInput('');
+                    setPromoError('');
+                  }}
+                >
+                  Remove
+                </button>
               </div>
             ) : (
               <form className="checkout__promo-form" onSubmit={handleApplyPromo}>

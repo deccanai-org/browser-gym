@@ -136,7 +136,13 @@ export default function Search() {
         return pb - pa;
       });
     } else if (sortBy === 'ending_soonest') {
-      filtered = [...filtered].sort((a, b) => a.endTime - b.endTime);
+      // Auctions first by endTime; fixed-price / BIN-only listings go last.
+      filtered = [...filtered].sort((a, b) => {
+        const aAuction = a.type === 'auction' ? 0 : 1;
+        const bAuction = b.type === 'auction' ? 0 : 1;
+        if (aAuction !== bAuction) return aAuction - bAuction;
+        return (a.endTime || 0) - (b.endTime || 0);
+      });
     } else if (sortBy === 'most_bids') {
       filtered = [...filtered].sort((a, b) => b.bids.length - a.bids.length);
     }

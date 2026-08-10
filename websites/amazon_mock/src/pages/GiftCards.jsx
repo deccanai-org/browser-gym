@@ -16,16 +16,21 @@ export const GiftCards = () => {
   const [message, setMessage] = useState('');
   const [added, setAdded] = useState(false);
 
-  const value = custom ? Math.max(1, Number(custom) || 0) : amount;
+  const value = custom
+    ? Math.min(2000, Math.max(1, Number(custom) || 0))
+    : amount;
 
   const handleAdd = () => {
+    const amountCents = Math.min(2000, Math.max(1, Number(value) || 0));
     addToCart({
-      id: `giftcard-${value}`,
-      title: `ShopGym Gift Card — $${value}`,
-      price: value,
+      id: `giftcard-${amountCents}`,
+      title: `ShopGym Gift Card — $${amountCents}`,
+      price: amountCents,
       image: '',
       category: 'Gift Cards',
       giftCard: true,
+      inStock: true,
+      stockCount: null,
       recipient, message,
     }, 1);
     setAdded(true);

@@ -58,7 +58,12 @@ export const Profile = () => {
   const handleAddAddress = (e) => {
     e.preventDefault();
     if (!newAddressForm.fullName || !newAddressForm.street || !newAddressForm.city || !newAddressForm.state || !newAddressForm.zip) return;
-    addAddress(newAddressForm);
+    const zip = String(newAddressForm.zip).trim();
+    if (!/^\d{5}(-\d{4})?$/.test(zip)) {
+      setToast('Enter a valid ZIP code (12345 or 12345-6789).');
+      return;
+    }
+    addAddress({ ...newAddressForm, zip });
     setNewAddressForm({ fullName: '', street: '', city: '', state: '', zip: '', country: 'United States', phone: '' });
     setShowNewAddress(false);
     setToast('Address added successfully.');
@@ -67,10 +72,32 @@ export const Profile = () => {
   const handleAddPm = (e) => {
     e.preventDefault();
     const digits = (newPmForm.cardNumber || '').replace(/\D/g, '');
-    // The engine rejects a credit card without a number/expiry/CVV, so require
-    // them (previously only last4 was collected and the add silently failed).
-    if (digits.length < 12 || !newPmForm.expiry || (newPmForm.cvv || '').length < 3) return;
-    addPaymentMethod({ ...newPmForm, cardNumber: digits, last4: digits.slice(-4) });
+    const cvv = (newPmForm.cvv || '').replace(/\D/g, '');
+    const expiryRaw = String(newPmForm.expiry || '').trim();
+    const m = expiryRaw.match(/^(\d{1,2})\s*[\/\-]\s*(\d{2}|\d{4})$/);
+    if (!m) {
+      setToast('Enter expiry as MM/YY.');
+      return;
+    }
+    const month = parseInt(m[1], 10);
+    let year = parseInt(m[2], 10);
+    if (year < 100) year += 2000;
+    if (month < 1 || month > 12) {
+      setToast('Expiry month must be between 01 and 12.');
+      return;
+    }
+    const now = new Date();
+    const expEnd = new Date(year, month, 0, 23, 59, 59);
+    if (expEnd < now) {
+      setToast('Card expiry is in the past.');
+      return;
+    }
+    if (digits.length < 12 || cvv.length < 3 || cvv.length > 4) {
+      setToast('Enter a valid card number and 3–4 digit CVV.');
+      return;
+    }
+    const expiry = `${String(month).padStart(2, '0')}/${String(year).slice(-2)}`;
+    addPaymentMethod({ ...newPmForm, expiry, cvv, cardNumber: digits, last4: digits.slice(-4) });
     setNewPmForm({ brand: 'Visa', cardNumber: '', expiry: '', cvv: '' });
     setShowNewPm(false);
     setToast('Payment method added successfully.');

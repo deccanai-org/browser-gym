@@ -8,7 +8,7 @@ import { cartQtyOf, cartUnitCount, unitPriceOf, money } from '../lib/cart';
 // Only categories that actually populate the projection (Cameras had 0, Home had 1).
 const CATEGORIES = [
   'Electronics', 'Home & Garden', 'Fashion', 'Collectibles',
-  'Sporting Goods', 'Toys & Hobbies', 'Motors', 'Books'
+  'Sporting Goods', 'Sports', 'Toys & Hobbies', 'Motors', 'Books'
 ];
 
 export default function Navbar() {
@@ -23,11 +23,10 @@ export default function Navbar() {
   const [helpTopic, setHelpTopic] = useState('Buying');
   const [helpMessage, setHelpMessage] = useState('');
   const [helpSubmitted, setHelpSubmitted] = useState(false);
-  const [shipCountry, setShipCountry] = useState('United States');
-  const [shipZip, setShipZip] = useState('94105');
   const [shippingSaved, setShippingSaved] = useState(false);
   const navigate = useNavigate();
-  const { state, markNotificationRead, markAllNotificationsRead, removeFromCart } = useStore();
+  const { state, markNotificationRead, markAllNotificationsRead, removeFromCart, setDefaultAddress } = useStore();
+  const [shipAddressId, setShipAddressId] = useState(state.defaultAddressId || '');
 
   const cartIds = state.cart || [];
   // Count UNITS, not lines: 3 of one item is "3" in the badge, not "1".
@@ -86,8 +85,12 @@ export default function Navbar() {
     setHelpSubmitted(true);
   };
 
+  const savedAddresses = state.addresses || [];
+  const selectedShipAddress = savedAddresses.find(a => a.id === shipAddressId);
+
   const saveShippingLocation = (e) => {
     e.preventDefault();
+    if (shipAddressId) setDefaultAddress(shipAddressId);
     setShippingSaved(true);
   };
 
@@ -166,15 +169,18 @@ export default function Navbar() {
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search size={18} className="text-gray-400" />
             </div>
+            {/* min-w-0 matters: without it the input keeps its intrinsic size
+                and, together with the category and Search buttons, forced the
+                whole document 161px wider than a phone viewport. */}
             <input
               type="text"
-              className="w-full pl-10 pr-4 py-2.5 border-2 border-r-0 border-black rounded-l-full focus:outline-none"
+              className="w-full min-w-0 pl-10 pr-4 py-2.5 border-2 border-r-0 border-black rounded-l-full focus:outline-none"
               placeholder="Search for anything"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            {/* Category selector */}
-            <div className="relative shrink-0" ref={searchCatRef}>
+            {/* Category selector — no room for it beside the field on phones. */}
+            <div className="relative shrink-0 hidden sm:block" ref={searchCatRef}>
               <button
                 type="button"
                 onClick={() => setShowCategoryDropdown(v => !v)}
@@ -205,7 +211,7 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-            <button type="submit" className="bg-xbay-blue text-white px-8 py-2.5 rounded-r-full font-bold hover:bg-blue-700 transition-colors shrink-0">
+            <button type="submit" className="bg-xbay-blue text-white px-4 sm:px-8 py-2.5 rounded-r-full font-bold hover:bg-blue-700 transition-colors shrink-0">
               Search
             </button>
           </div>
@@ -429,38 +435,56 @@ export default function Navbar() {
               </button>
             </div>
             <form onSubmit={saveShippingLocation} className="p-4 space-y-4">
+              {/* This dialog used to offer only a country and ZIP, neither of
+                  which reached an order. It now picks the account's delivery
+                  address, which is what checkout actually ships to. */}
               <div>
-                <label className="block text-sm font-bold mb-1">Country or region</label>
-                <select
-                  value={shipCountry}
-                  onChange={e => setShipCountry(e.target.value)}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-xbay-blue focus:outline-none"
-                >
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>United Kingdom</option>
-                  <option>Australia</option>
-                  <option>Germany</option>
-                  <option>Japan</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-bold mb-1">ZIP or postal code</label>
-                <input
-                  value={shipZip}
-                  onChange={e => setShipZip(e.target.value)}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-xbay-blue focus:outline-none"
-                  required
-                />
+                <label className="block text-sm font-bold mb-1">Deliver to</label>
+                {savedAddresses.length > 0 ? (
+                  <div className="space-y-2">
+                    {savedAddresses.map(a => (
+                      <label
+                        key={a.id}
+                        className="flex items-start gap-2 border border-gray-200 rounded p-2 text-sm cursor-pointer hover:bg-gray-50"
+                      >
+                        <input
+                          type="radio"
+                          name="ship-address"
+                          className="mt-1"
+                          checked={shipAddressId === a.id}
+                          onChange={() => setShipAddressId(a.id)}
+                        />
+                        <span>
+                          <span className="font-medium block">{a.fullName}</span>
+                          <span className="text-gray-600">{a.street}, {a.city} {a.state} {a.zip}</span>
+                          <span className="text-gray-500 block">{a.country}</span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-600">
+                    No delivery address on file.{' '}
+                    <Link
+                      to="/cart"
+                      onClick={() => setShowShippingDialog(false)}
+                      className="text-xbay-blue hover:underline font-medium"
+                    >
+                      Add one at checkout
+                    </Link>.
+                  </p>
+                )}
               </div>
               {shippingSaved && (
                 bridged() ? (
                   <div className="text-sm text-gray-600 bg-gray-100 border border-gray-200 rounded p-2">
-                    Demo only — shipping location isn't applied to orders.
+                    The workspace engine owns the delivery address for orders.
                   </div>
                 ) : (
                   <div className="text-sm text-green-700 bg-green-50 border border-green-200 rounded p-2">
-                    Shipping location set to {shipCountry} {shipZip}.
+                    Orders will ship to {selectedShipAddress
+                      ? `${selectedShipAddress.street}, ${selectedShipAddress.city}`
+                      : 'the selected address'}.
                   </div>
                 )
               )}

@@ -4,9 +4,22 @@ import { useStore } from '../context/StoreContext';
 import { cartQtyOf, unitPriceOf, money, priceCart } from '../lib/cart';
 import { Trash2, X, Check, ShoppingCart } from 'lucide-react';
 
+const ADDRESS_FIELDS = [
+  { key: 'fullName', label: 'Full name' },
+  { key: 'street', label: 'Street address' },
+  { key: 'city', label: 'City' },
+  { key: 'state', label: 'State / region' },
+  { key: 'zip', label: 'ZIP or postal code' },
+];
+const COUNTRIES = ['United States', 'Canada', 'United Kingdom', 'Australia', 'Germany', 'Japan'];
+const CARD_BRANDS = ['Visa', 'Mastercard', 'American Express', 'PayPal'];
+
+const EMPTY_ADDRESS = { fullName: '', street: '', city: '', state: '', zip: '', country: COUNTRIES[0] };
+
 export default function Cart() {
   const navigate = useNavigate();
-  const { state, removeFromCart, clearCart, updateQty, applyCoupon, removeCoupon, checkout } = useStore();
+  const { state, removeFromCart, clearCart, updateQty, applyCoupon, removeCoupon, checkout,
+          addAddress, addPaymentMethod } = useStore();
   const [couponInput, setCouponInput] = useState('');
   const [couponMsg, setCouponMsg] = useState('');
   const [checkedOut, setCheckedOut] = useState(false);
@@ -19,6 +32,35 @@ export default function Cart() {
     state.defaultAddressId || (addresses[0] && addresses[0].id) || '');
   const [selectedPaymentId, setSelectedPaymentId] = useState(
     state.defaultPaymentId || (paymentMethods[0] && paymentMethods[0].id) || '');
+
+  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [addressForm, setAddressForm] = useState(EMPTY_ADDRESS);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [paymentForm, setPaymentForm] = useState({ brand: CARD_BRANDS[0], number: '', expiry: '' });
+
+  const handleSaveAddress = () => {
+    if (!addressForm.fullName.trim() || !addressForm.street.trim() || !addressForm.city.trim()) return;
+    const saved = addAddress({ ...addressForm });
+    setSelectedAddressId(saved.id);
+    setAddressForm(EMPTY_ADDRESS);
+    setShowAddressForm(false);
+  };
+
+  const handleSavePayment = () => {
+    const isPaypal = paymentForm.brand === 'PayPal';
+    const digits = paymentForm.number.replace(/\D/g, '');
+    if (!isPaypal && digits.length < 4) return;
+    const last4 = digits.slice(-4);
+    const saved = addPaymentMethod({
+      brand: paymentForm.brand,
+      last4,
+      expiry: paymentForm.expiry,
+      label: isPaypal ? 'PayPal' : `${paymentForm.brand} •••• ${last4}`,
+    });
+    setSelectedPaymentId(saved.id);
+    setPaymentForm({ brand: CARD_BRANDS[0], number: '', expiry: '' });
+    setShowPaymentForm(false);
+  };
 
   const cartIds = state.cart || [];
   const cartListings = cartIds
@@ -65,7 +107,10 @@ export default function Cart() {
     setCouponInput('');
   };
 
+  const canCheckout = cartListings.length > 0 && !!selectedAddressId && !!selectedPaymentId;
+
   const handleCheckout = () => {
+    if (!canCheckout) return;
     checkout(selectedAddressId, selectedPaymentId);
     setCheckedOut(true);
     setTimeout(() => navigate('/dashboard'), 1200);
@@ -237,10 +282,21 @@ export default function Cart() {
               <span>${total.toFixed(2)}</span>
             </div>
 
-            {/* Ship-to address + payment method selection (was missing entirely) */}
-            {addresses.length > 0 && (
-              <div className="mb-3">
-                <label className="block text-xs font-bold text-gray-600 mb-1">Ship to</label>
+            {/* Ship-to address. Both sections render unconditionally: when the
+                account has nothing on file the picker used to disappear, so an
+                order could be placed with no address and no payment method. */}
+            <div className="mb-3">
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-bold text-gray-600">Ship to</label>
+                <button
+                  type="button"
+                  onClick={() => setShowAddressForm(v => !v)}
+                  className="text-xs font-medium text-xbay-blue hover:underline"
+                >
+                  {showAddressForm ? 'Cancel' : 'Add a new address'}
+                </button>
+              </div>
+              {addresses.length > 0 ? (
                 <select
                   aria-label="Shipping address"
                   value={selectedAddressId}
@@ -253,11 +309,53 @@ export default function Cart() {
                     </option>
                   ))}
                 </select>
+              ) : (
+                <p className="text-sm text-gray-500">No address on file. Add one to check out.</p>
+              )}
+
+              {showAddressForm && (
+                <div className="mt-2 space-y-2 border border-gray-200 rounded p-3 bg-gray-50">
+                  {ADDRESS_FIELDS.map(f => (
+                    <input
+                      key={f.key}
+                      aria-label={f.label}
+                      placeholder={f.label}
+                      value={addressForm[f.key]}
+                      onChange={e => setAddressForm({ ...addressForm, [f.key]: e.target.value })}
+                      className="w-full text-sm border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-xbay-blue"
+                    />
+                  ))}
+                  <select
+                    aria-label="Country"
+                    value={addressForm.country}
+                    onChange={e => setAddressForm({ ...addressForm, country: e.target.value })}
+                    className="w-full text-sm border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-xbay-blue"
+                  >
+                    {COUNTRIES.map(c => <option key={c}>{c}</option>)}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={handleSaveAddress}
+                    className="w-full bg-xbay-blue text-white text-sm font-bold rounded py-2 hover:bg-blue-700"
+                  >
+                    Save address
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-bold text-gray-600">Pay with</label>
+                <button
+                  type="button"
+                  onClick={() => setShowPaymentForm(v => !v)}
+                  className="text-xs font-medium text-xbay-blue hover:underline"
+                >
+                  {showPaymentForm ? 'Cancel' : 'Add a payment method'}
+                </button>
               </div>
-            )}
-            {paymentMethods.length > 0 && (
-              <div className="mb-4">
-                <label className="block text-xs font-bold text-gray-600 mb-1">Pay with</label>
+              {paymentMethods.length > 0 ? (
                 <select
                   aria-label="Payment method"
                   value={selectedPaymentId}
@@ -268,23 +366,71 @@ export default function Cart() {
                     <option key={p.id} value={p.id}>{p.label || p.brand}</option>
                   ))}
                 </select>
-              </div>
-            )}
+              ) : (
+                <p className="text-sm text-gray-500">No payment method on file. Add one to check out.</p>
+              )}
+
+              {showPaymentForm && (
+                <div className="mt-2 space-y-2 border border-gray-200 rounded p-3 bg-gray-50">
+                  <select
+                    aria-label="Card brand"
+                    value={paymentForm.brand}
+                    onChange={e => setPaymentForm({ ...paymentForm, brand: e.target.value })}
+                    className="w-full text-sm border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-xbay-blue"
+                  >
+                    {CARD_BRANDS.map(c => <option key={c}>{c}</option>)}
+                  </select>
+                  {paymentForm.brand !== 'PayPal' && (
+                    <>
+                      <input
+                        aria-label="Card number"
+                        placeholder="Card number"
+                        inputMode="numeric"
+                        value={paymentForm.number}
+                        onChange={e => setPaymentForm({ ...paymentForm, number: e.target.value })}
+                        className="w-full text-sm border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-xbay-blue"
+                      />
+                      <input
+                        aria-label="Expiry"
+                        placeholder="MM/YY"
+                        value={paymentForm.expiry}
+                        onChange={e => setPaymentForm({ ...paymentForm, expiry: e.target.value })}
+                        className="w-full text-sm border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-xbay-blue"
+                      />
+                    </>
+                  )}
+                  <button
+                    type="button"
+                    onClick={handleSavePayment}
+                    className="w-full bg-xbay-blue text-white text-sm font-bold rounded py-2 hover:bg-blue-700"
+                  >
+                    Save payment method
+                  </button>
+                </div>
+              )}
+            </div>
 
             {checkedOut ? (
               <div className="text-center text-green-700 font-bold py-2 flex items-center justify-center gap-2">
                 <Check size={18} /> Order placed!
               </div>
             ) : (
-              <button
-                type="button"
-                aria-label="Checkout"
-                onClick={handleCheckout}
-                disabled={cartListings.length === 0}
-                className="w-full bg-xbay-blue text-white px-6 py-3 rounded-full font-bold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Checkout
-              </button>
+              <>
+                <button
+                  type="button"
+                  aria-label="Checkout"
+                  onClick={handleCheckout}
+                  disabled={!canCheckout}
+                  className="w-full bg-xbay-blue text-white px-6 py-3 rounded-full font-bold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Checkout
+                </button>
+                {cartListings.length > 0 && !canCheckout && (
+                  <p className="mt-2 text-xs text-center text-red-600">
+                    Choose a shipping address and a payment method to continue.
+                  </p>
+                )}
+              </>
             )}
           </div>
         </div>
