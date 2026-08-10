@@ -819,3 +819,35 @@ def test_the_frame_endpoint_reports_the_SESSION_viewport(monkeypatch):
     assert body["viewport"] == {"width": 1884, "height": 684}, (
         "the frame must be labelled with the size it was actually captured at"
     )
+
+
+def test_the_height_floor_does_not_reintroduce_the_letterboxing():
+    """The floor was 600, and the stage the pane actually has is about 510px.
+
+    So a request for 494 was clamped UP to 600, and `fit` then scaled the picture
+    to 85% to make it back — min(1600/1584, 510/600) — which is exactly the
+    letterboxing this negotiation exists to remove. The floor was undoing the fix
+    and reporting a plausible-looking percentage while doing it.
+
+    A short viewport is not a broken one: the page scrolls, which is what a short
+    window does everywhere else.
+    """
+    assert service.MIN_VIEWPORT_H <= 400, (
+        f"a floor of {service.MIN_VIEWPORT_H} is taller than the stage, so short panes "
+        f"get clamped up and letterboxed again"
+    )
+    # The width floor stays real: below it the storefronts reflow to the mobile
+    # layout, which is not the layout any task was authored against.
+    assert service.MIN_VIEWPORT_W >= 900
+
+
+@pytest.mark.asyncio
+async def test_a_short_stage_gets_the_viewport_it_asked_for():
+    """The regression above, at the size that produced it."""
+    s = service.LiveSession.__new__(service.LiveSession)
+    s.vw, s.vh, s.context, s.cdp = 1280, 800, None, None
+
+    out = await s.resize(1584, 494)
+
+    assert (out["width"], out["height"]) == (1584, 494), out
+    assert (s.vw, s.vh) == (1584, 494)

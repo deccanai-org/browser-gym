@@ -51,12 +51,19 @@ log = logging.getLogger("live_browser")
 VIEWPORT_W = int(os.getenv("LIVE_VIEWPORT_W", "1280"))
 VIEWPORT_H = int(os.getenv("LIVE_VIEWPORT_H", "800"))
 
-#: What a session may negotiate itself to. Bounded at both ends: a viewport
-#: narrower than a phone makes the storefronts reflow into a layout no task was
-#: authored against, and an unbounded one lets a maximised window ask for a
-#: 6000px page the mocks render but nobody can read.
+#: What a session may negotiate itself to.
+#:
+#: The WIDTH floor is real: below about 900px the storefronts reflow to their
+#: mobile layout, which is not the layout any task was authored against.
+#:
+#: The HEIGHT floor is deliberately low. It was 600, which is TALLER than the
+#: stage the pane actually has (~510px once the app chrome is accounted for), so
+#: a request for 494 was clamped UP to 600 and `fit` then shrank the picture to
+#: 85% to make it back — the floor was reintroducing the exact letterboxing the
+#: negotiation exists to remove. A short viewport is not a broken one: the page
+#: simply scrolls, which is what a short window does everywhere else.
 MIN_VIEWPORT_W, MAX_VIEWPORT_W = 900, 2560
-MIN_VIEWPORT_H, MAX_VIEWPORT_H = 600, 1600
+MIN_VIEWPORT_H, MAX_VIEWPORT_H = 360, 1600
 
 #: How long a real Playwright fill may take before we fall back to the JS one.
 #: Short on purpose — the fallback is what keeps a hidden-but-present element
