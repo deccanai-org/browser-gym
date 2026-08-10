@@ -39,6 +39,8 @@ world, and the bridge pool gives every annotator their own process.
 
 from __future__ import annotations
 
+import re
+
 from server.apps.market.state import MarketProduct
 from server.state import Product
 
@@ -48,6 +50,79 @@ from server.state import Product
 _shop: dict[str, Product] = {}
 #: The same for ValueMart listings.
 _market: dict[str, MarketProduct] = {}
+
+# --------------------------------------------------------------------------- #
+# Standalone gift cards
+# --------------------------------------------------------------------------- #
+# The storefront's Gift Cards page sells a stored-value card for any whole-dollar
+# amount, so its ids cannot be enumerated up front the way the rest of the filler
+# is — there are two thousand of them. They are minted on demand instead, from
+# the id alone.
+#
+# The id grammar is load-bearing, not cosmetic. Ambient products are deliberately
+# unreachable from a verifier (see the module docstring), and yet three breakers
+# — M361, M353, M381 — turn on "a gift card must not be purchased". A verifier
+# looking at an order line has the product_id and nothing else, so the id itself
+# has to say "this is a gift card". Hence the reserved `giftcard-<dollars>`
+# namespace and `is_gift_card_id`, which a verifier may read because it inspects
+# the NAME of a thing, never the catalog behind it.
+#
+# Canonical spelling only: `giftcard-050` and `giftcard-50` would otherwise be
+# two ids for one card, which is one id too many for a tripwire to keep track of.
+GIFT_CARD_PREFIX = "giftcard-"
+GIFT_CARD_MIN_USD = 1
+GIFT_CARD_MAX_USD = 2000
+_GIFT_CARD_ID = re.compile(r"^giftcard-(0|[1-9][0-9]*)$")
+
+
+def gift_card_amount(product_id: str) -> int | None:
+    """The face value in whole dollars, or None if this is not a gift-card id."""
+    m = _GIFT_CARD_ID.match(product_id or "")
+    if m is None:
+        return None
+    amount = int(m.group(1))
+    if not (GIFT_CARD_MIN_USD <= amount <= GIFT_CARD_MAX_USD):
+        return None
+    return amount
+
+
+def is_gift_card_id(product_id: str) -> bool:
+    """True for the standalone-gift-card id namespace.
+
+    Safe for a verifier to call: it answers a question about the id string, so it
+    reveals nothing about which filler products happen to be loaded.
+    """
+    return gift_card_amount(product_id) is not None
+
+
+def _mint_gift_card(product_id: str) -> Product | None:
+    """Build the gift card an id denotes, or None.
+
+    Not cached in `_shop`: the value is a pure function of the id, so caching
+    would only make `counts()` drift during an episode and make the registry's
+    contents depend on what the annotator happened to click.
+    """
+    amount = gift_card_amount(product_id)
+    if amount is None:
+        return None
+    return Product(
+        id=product_id,
+        name=f"ShopGym Gift Card — ${amount}",
+        brand="ShopGym",
+        category="gift-cards",
+        base_price=float(amount),
+        rating=0.0,
+        review_count=0,
+        # A stored-value card has no stock to run out of, but `add_to_cart`
+        # compares quantity against this number, so it needs a real one.
+        stock=999,
+        image_emoji="🎁",
+        short_description=f"ShopGym gift card with a ${amount} stored value.",
+        long_description=(
+            f"A ShopGym gift card worth ${amount}, delivered by email. "
+            "Redeemable against anything ShopGym sells."
+        ),
+    )
 
 
 def _emoji(spec: dict) -> str:
@@ -109,7 +184,7 @@ def load() -> None:
 
 def shop(product_id: str) -> Product | None:
     """The ambient shop product with this id, if any."""
-    return _shop.get(product_id)
+    return _shop.get(product_id) or _mint_gift_card(product_id)
 
 
 def market(product_id: str) -> MarketProduct | None:
@@ -118,7 +193,8 @@ def market(product_id: str) -> MarketProduct | None:
 
 
 def is_ambient(product_id: str) -> bool:
-    return product_id in _shop or product_id in _market
+    return (product_id in _shop or product_id in _market
+            or is_gift_card_id(product_id))
 
 
 def counts() -> tuple[int, int]:

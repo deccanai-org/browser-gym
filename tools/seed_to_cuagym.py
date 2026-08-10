@@ -412,6 +412,47 @@ def _order_payment(pay_by_id: dict, payment_id: str | None, def_pay: dict) -> di
             "expiry": "", "isDefault": False}
 
 
+def _gift_card_rows(shop: dict, known: set) -> list[dict]:
+    """Projection rows for the standalone gift cards this world's cart or orders
+    actually reference.
+
+    The storefront sells a card for any whole-dollar amount, so unlike the rest of
+    the filler there is no fixed list to append — two thousand browse rows for a
+    product nobody browses. They are minted from the engine's own definition (a
+    pure function of the id, see `server.ambient`) for exactly the ids in play, so
+    a gift-card cart line renders with its real name and face value instead of the
+    blank $0 row a mock shows for a product it cannot find.
+
+    Deliberately the engine's builder rather than a copy of it: a card the mock
+    prices differently from the one the annotator is charged for would be a worse
+    bug than the missing row.
+    """
+    from server import ambient
+
+    ids = [it.get("product_id") for it in ((shop.get("cart") or {}).get("items") or [])]
+    for o in (shop.get("orders") or {}).values():
+        ids += [it.get("product_id") for it in (o.get("items") or [])]
+
+    rows, seen = [], set(known)
+    for pid in ids:
+        if not pid or pid in seen or not ambient.is_gift_card_id(pid):
+            continue
+        seen.add(pid)
+        p = ambient.shop(pid)
+        rows.append({
+            "id": p.id, "title": p.name, "price": p.base_price,
+            "originalPrice": None, "rating": p.rating, "reviewCount": p.review_count,
+            "image": "", "images": [],
+            "description": p.long_description or p.short_description,
+            "bulletPoints": [],
+            "specs": {"Brand": p.brand, "Emoji": p.image_emoji},
+            "category": "Gift Cards", "brand": p.brand, "prime": False,
+            "inStock": True, "stockCount": p.stock, "seller": "ShopGym",
+            "badges": [], "createdAt": "2024-01-01T00:00:00.000Z",
+        })
+    return rows
+
+
 def transform_shop(shop: dict) -> dict:
     """gym GymState -> amazon_mock (products[], user, cart[], orders[], reviews[])."""
     users = shop.get("users") or {}
@@ -520,6 +561,7 @@ def transform_shop(shop: dict) -> dict:
                 prod["originalPrice"] = round(prod["price"] / (1 - frac), 2)
 
     products = products + _amb.build_shop()   # browse-only filler (projection-only)
+    products = products + _gift_card_rows(shop, {p["id"] for p in products})
     return {"products": products, "user": user, "cart": cart,
             # The gym's frozen clock, so the mock computes "today", delivery
             # windows and deal countdowns against it instead of real Date.now().

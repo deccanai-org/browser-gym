@@ -409,11 +409,15 @@ export const StoreProvider = ({ children }) => {
     });
   };
 
+  // Returns the engine's verdict in bridged mode, like addToCart, so a caller
+  // that needs to know whether the option actually landed can wait for it. Cart
+  // edits happen on a line already on screen and ignore it; the Gift Cards page
+  // writes the gift note immediately after creating the line, and must not
+  // confirm a message the engine refused.
   const setLineOptions = (productId, opts = {}) => {
     if (bridged()) {
-      bridgeAct('shop.set_line_options', { product_id: productId, ...opts })
-        .then(r => applyEngine(setState, r));
-      return;
+      return bridgeAct('shop.set_line_options', { product_id: productId, ...opts })
+        .then(r => { applyEngine(setState, r); return r; });
     }
     setState(prev => ({
       ...prev,
@@ -421,6 +425,7 @@ export const StoreProvider = ({ children }) => {
         item.productId === productId ? { ...item, ...opts } : item
       )
     }));
+    return Promise.resolve({ ok: true });
   };
 
   const createSubscription = ({ productId, cadence = 'monthly', deliveries = 4, quantity = 1 }) => {
