@@ -5,7 +5,7 @@
 **Env:** seed-to-cua tip UI wipe-bake. No CUA-Gym-Hub / no headed browser.  
 **Modules:** `server/mp_066.py` … `mp_070.py`, mirrored gym ↔ runner  
 **Pack:** `verification_pipeline_tasks/mp066_070_2026-08-11/`  
-**Eligible:** **not** added (sibling packing Eligible Suite separately)
+**Eligible:** e14–e17 seed0 BREAK (mp_067–070); mp_066 HOLD omitted — see `ELIGIBLE_ADD_MP067_070_BREAKERS_2026-08-11.md`
 
 ---
 
