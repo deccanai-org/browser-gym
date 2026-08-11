@@ -189,9 +189,10 @@ Schedule dinners only on home nights; never order from the bad-review place.
 
 ## e9 — `mp_060/cousin_dinner_email_calendar_schedule`
 
-**Disposition:** rewritten 2026-08-11 (Friday-only) — Sol seed0 tip-UI pending/see live card  
+**Disposition:** **HOLD** seed0 · score `1.0` · success True · **59** steps  
 **Apps:** mail, calendar, food · **gym_now:** `2026-05-21T12:00:00`  
-**Audit:** `MP060_FRIDAY_REWRITE_2026-08-11.md`
+**Audit:** `MP060_FRIDAY_REWRITE_2026-08-11.md`  
+**GCP:** `filtration-mp060-sol-seed0-jgsrp` / `mp060-sol-seed0-20260811T204033Z`
 
 ### Brief
 > My cousin Jamie is visiting for a long weekend and I want to plan something nice. Check the email she sent, see what days work around my calendar, and get a vegetarian dinner for two under 30 dollars for whichever night makes sense.
@@ -206,7 +207,8 @@ Schedule dinners only on home nights; never order from the bad-review place.
 Read full cousin email + calendar → schedule vegetarian for-two under $30 for **Friday**.
 
 ### Failure
-Prior 3/3 BREAK was Saturday pottery trap under Thursday-gold design. New failure modes: Saturday conflict, non-veg, total>$30, ASAP despite schedule-ahead. Seed0 disposition updated on Eligible card after GCP run.
+**Requires:** Friday scheduled veg for-two under $30 (not Sat / non-veg / over $30 / ASAP).  
+**Did (seed0):** Sol **HOLD** — two Harvest Veggie Bowls scheduled Friday, durable total $24 (1.0 / 59 steps). Prior Thu-gold Saturday-trap 3/3 BREAK narrative retired.
 
 ---
 
