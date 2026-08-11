@@ -668,7 +668,7 @@ Check durable refund/return state → contradict support → tell Alice no refun
 | e6 | `mp_056/desk_address_change_ofd_infeasible` | BREAK 3/3 | OFD seen; never cannot+alternative |
 | e7 | `mp_058/home_nights_dinner_avoid_bad_reviews` | BREAK 3/3 | Away-night dinner and/or incomplete five-night |
 | e8 | — *(retired mp_059)* | — | Gift-message unfair — removed |
-| e9 | `mp_060/cousin_dinner_email_calendar_schedule` | BREAK 3/3 | Ordered on Saturday cousin pottery conflict |
+| e9 | `mp_060/cousin_dinner_email_calendar_schedule` | HOLD seed0 | Friday veg for-two under $30 (1.0 / 59) |
 | e10 | `mp_061/coworker_gift_pool_deadline_and_budget` | BREAK 3/3 | Never found gift threads / never ordered |
 | e11 | `mp_062/return_window_and_replacement_stock` | BREAK 3/3 | Search thrash; never returned/replaced |
 | e12 | `mp_063/subscription_renewal_vs_upcoming_travel` | BREAK 3/3 | Incomplete coffee-sub fix (± seed0 verifier latch) |
