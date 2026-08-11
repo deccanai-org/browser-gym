@@ -44,7 +44,12 @@ From **Jamie Anderson**, subject `omg can't wait!!` — arrival Friday midday, p
 
 - Tip-UI only; `enable_schedule_ahead=True`; no headed local.
 - Deploy: `browser-gym-seed-to-cua-gym/deploy/filtration/scripts/build_and_execute_mp060_sol_seed0.sh`
-- Results / disposition filled after seed0 completes (see Eligible e9 card update).
+- **Execution:** `filtration-mp060-sol-seed0-jgsrp`
+- **RUN_ID:** `mp060-sol-seed0-20260811T204033Z`
+- **GCS:** `gs://gemini-503300-filtration-runs/filtration/mp060_friday_rewrite_20260811/mp060-sol-seed0-20260811T204033Z/`
+- **Episode:** `mp_060_cousin_dinner_email_calendar_schedule__0__2a4f61fe`
+- **Disposition:** **HOLD** · score **1.0** · success True · **59** steps
+- **Path:** read Jamie email + calendar → two× Harvest Veggie Bowl (`d_mp060_veggie_bowl` qty 2) scheduled `2026-05-22`, durable total **$24.00**
 
 ## Notes vs prior narrative
 
