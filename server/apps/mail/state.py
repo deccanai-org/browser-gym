@@ -34,6 +34,8 @@ class Email:
     amount_total: float | None = None
     eta: str | None = None
     product_id: str | None = None     # a product this email is about (price alerts)
+    cc: str = ""
+    bcc: str = ""
 
 
 @dataclass
@@ -41,7 +43,7 @@ class MailState:
     inbox: dict[str, Email] = field(default_factory=dict)
     sent: dict[str, Email] = field(default_factory=dict)
     drafts: dict[str, Email] = field(default_factory=dict)
-    account_email: str = "alice@example.com"
+    account_email: str = "alice@shopmail.com"
     account_name: str = "Alice Anderson"
     _next: int = 1
     # Optional one-shot "lying bounce" trap (M35): when set, the first send whose

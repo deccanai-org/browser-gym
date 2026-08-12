@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Star, Clock, MapPin, Heart, ChevronRight, Info, Search, ArrowLeft } from 'lucide-react';
+import { Star, Clock, MapPin, Heart, ChevronRight, Info, Search } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { formatCurrency } from '../utils/dataManager';
 import ItemModal from '../components/ItemModal';
@@ -99,11 +99,6 @@ export default function StorePage() {
     return grouped;
   }, [menuItems]);
 
-  const featuredItems = useMemo(() => {
-    const popular = menuItems.filter(item => item.isPopular);
-    return popular.length > 0 ? popular : menuItems.slice(0, 6);
-  }, [menuItems]);
-
   const categories = Object.keys(menuByCategory);
 
   if (!restaurant) {
@@ -120,6 +115,11 @@ export default function StorePage() {
     setSelectedItem(null);
   };
 
+  const handleQuickAdd = (event, item) => {
+    event.stopPropagation();
+    addToCart(item, restaurant, 1, [], '');
+  };
+
   return (
     <div className="store-page">
       {/* Banner */}
@@ -133,14 +133,6 @@ export default function StorePage() {
           />
         )}
         <div className="store-banner__overlay">
-          <button
-            className="store-banner__back"
-            aria-label="Back"
-            onClick={() => navigate(-1)}
-            style={{ position: 'absolute', top: 16, left: 16, background: 'rgba(255,255,255,0.92)', border: 'none', borderRadius: 999, width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
-          >
-            <ArrowLeft size={20} />
-          </button>
           <div className="store-banner__content">
             <h1 className="store-banner__name">{restaurant.name}</h1>
           </div>
@@ -183,7 +175,11 @@ export default function StorePage() {
           </div>
           <div className="store-info-bar__stat">
             <span className="store-info-bar__stat-label">Earliest arrival</span>
-            <span className="store-info-bar__stat-value">{restaurant.deliveryTimeMin} min</span>
+            <span className="store-info-bar__stat-value">
+              {restaurant.etaLabel
+                ? `~${restaurant.etaLabel} (${restaurant.deliveryTimeMin} min)`
+                : `${restaurant.deliveryTimeMin} min`}
+            </span>
           </div>
         </div>
       </div>
@@ -229,51 +225,40 @@ export default function StorePage() {
             No matching menu items for "{storeSearch.trim()}". Try a dish, category, or dietary tag.
           </div>
         )}
-        {featuredItems.length > 0 && (
-          <section className="store-menu__section" data-testid="featured-items">
-            <h2 className="store-menu__section-title">Featured items</h2>
-            <div className="store-menu__grid">
-              {featuredItems.map(item => (
-                <button key={item.id} className="menu-item" onClick={() => setSelectedItem(item)}>
-                  <div className="menu-item__info">
-                    <h3 className="menu-item__name">{item.name}</h3>
-                    <p className="menu-item__desc line-clamp-2">{item.description}</p>
-                    <div className="menu-item__bottom">
-                      <span className="menu-item__price">{formatCurrency(item.price)}</span>
-                      {item.isPopular && <span className="menu-item__popular">Popular</span>}
-                      {item.dietaryTags && item.dietaryTags.length > 0 && (
-                        <span className="menu-item__dietary">{item.dietaryTags[0]}</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="menu-item__image" style={{ background: getItemColor(item.id) }}>
-                    {item.imageUrl ? (
-                      <img
-                        src={item.imageUrl}
-                        alt={item.name}
-                        className="menu-item__photo"
-                        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', borderRadius: 12 }}
-                      />
-                    ) : (
-                      <span className="menu-item__image-emoji">{getItemEmoji(item.name)}</span>
-                    )}
-                  </div>
-                </button>
-              ))}
-            </div>
-          </section>
-        )}
         {categories.map(cat => (
           <section key={cat} id={`section-${cat}`} className="store-menu__section">
             <h2 className="store-menu__section-title">{cat}</h2>
             <div className="store-menu__grid">
               {menuByCategory[cat].map(item => (
-                <button key={item.id} className="menu-item" onClick={() => setSelectedItem(item)}>
+                <div
+                  key={item.id}
+                  className="menu-item"
+                  role="button"
+                  tabIndex={0}
+                  aria-label={item.name}
+                  data-test-id={`menu-item-${item.id}`}
+                  onClick={() => setSelectedItem(item)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedItem(item);
+                    }
+                  }}
+                >
                   <div className="menu-item__info">
                     <h3 className="menu-item__name">{item.name}</h3>
                     <p className="menu-item__desc line-clamp-2">{item.description}</p>
                     <div className="menu-item__bottom">
                       <span className="menu-item__price">{formatCurrency(item.price)}</span>
+                      {item.etaLabel && (
+                        <span
+                          className="menu-item__eta"
+                          aria-label={`Estimated arrival ${item.etaLabel}`}
+                          title="Estimated arrival (gym clock)"
+                        >
+                          Arrives ~{item.etaLabel}
+                        </span>
+                      )}
                       {item.isPopular && <span className="menu-item__popular">Popular</span>}
                       {item.dietaryTags && item.dietaryTags.length > 0 && (
                         <span className="menu-item__dietary">{item.dietaryTags[0]}</span>
@@ -291,8 +276,17 @@ export default function StorePage() {
                     ) : (
                       <span className="menu-item__image-emoji">{getItemEmoji(item.name)}</span>
                     )}
+                    <button
+                      type="button"
+                      className="menu-item__add"
+                      aria-label={`Add ${item.name} to cart`}
+                      data-test-id={`btn-quick-add-${item.id}`}
+                      onClick={(e) => handleQuickAdd(e, item)}
+                    >
+                      +
+                    </button>
                   </div>
-                </button>
+                </div>
               ))}
             </div>
           </section>
@@ -324,15 +318,13 @@ export default function StorePage() {
       </div>
 
       {/* Item Modal */}
-      {selectedItem && (
-        <ItemModal
-          item={selectedItem}
-          isOpen={true}
-          restaurant={restaurant}
-          onClose={() => setSelectedItem(null)}
-          onAdd={handleAddToCart}
-        />
-      )}
+      <ItemModal
+        item={selectedItem}
+        isOpen={!!selectedItem}
+        restaurant={restaurant}
+        onClose={() => setSelectedItem(null)}
+        onAddToCart={handleAddToCart}
+      />
     </div>
   );
 }

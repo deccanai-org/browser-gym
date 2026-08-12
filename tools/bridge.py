@@ -92,11 +92,19 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "shop.enable_two_fa":    ("POST", "/api/account/security/two-fa", ("code",)),
     "shop.create_return":    ("POST", "/api/returns",
                               ("order_id", "item_ids", "reason", "refund_method", "notes")),
+    "shop.create_support_ticket": ("POST", "/api/support-tickets",
+                              ("subject", "body", "channel")),
     "shop.create_subscription": ("POST", "/api/subscriptions",
                               ("product_id", "cadence", "deliveries", "address_id", "payment_id", "quantity", "variant_id")),
     "calendar.view":         ("GET",  "/calendar",                       ()),
     "calendar.view_event":   ("GET",  "/calendar/edit/{event_id}",       ()),
     "shop.cancel_subscription": ("POST", "/api/subscriptions/{subscription_id}/cancel", ()),
+    "shop.pause_subscription": ("POST", "/api/subscriptions/{subscription_id}/pause", ()),
+    "shop.change_order_shipping": ("POST", "/api/orders/{order_id}/change-shipping",
+                                   ("shipping_speed", "estimated_delivery")),
+    "shop.change_order_item_variant": ("POST", "/api/orders/{order_id}/change-item-variant",
+                                       ("item_id", "variant_id")),
+    "shop.view_registry": ("GET", "/api/registries/{registry_id}", ()),
     # mail (Gmail)
     "mail.send":             ("POST", "/mail/send",          ("to", "subject", "body", "cc", "bcc")),
     # market (eBay) — a mock listingId IS the gym product_id, so no resolution
@@ -107,6 +115,11 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "market.apply_coupon":   ("POST", "/market/apply-coupon", ("code",)),
     "market.remove_coupon":  ("POST", "/market/remove-coupon", ()),
     "market.checkout":       ("POST", "/market/checkout",    ("address_id", "payment_id")),
+    "market.create_listing": ("POST", "/market/listings/create",
+                              ("title", "description", "price", "condition", "category", "shipping")),
+    "market.update_listing": ("POST", "/market/listings/update",
+                              ("listing_id", "title", "description", "price", "condition", "category", "shipping")),
+    "market.cancel_membership": ("POST", "/market/membership/cancel", ("keep_perks",)),
     # food (Uber Eats)
     "food.add_to_cart":      ("POST", "/food/cart/add",      ("restaurant_id", "dish_id", "quantity", "note")),
     "food.set_qty":          ("POST", "/food/cart/set_qty",  ("dish_id", "quantity")),
@@ -114,7 +127,13 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "food.apply_promo":      ("POST", "/food/cart/promo",    ("code",)),
     "food.cancel_order":     ("POST", "/food/order/{order_id}/cancel", ()),
     "food.clear_cart":       ("POST", "/food/cart/clear",    ()),
-    "food.checkout":         ("POST", "/food/checkout",      ("delivery_note",)),
+    "food.set_schedule":     ("POST", "/food/cart/schedule", ("scheduled_delivery",)),
+    "food.checkout":         ("POST", "/food/checkout",
+                              ("delivery_note", "delivery_mode", "scheduled_delivery")),
+    # shop order mutations (cancel + address change with reason unlock)
+    "shop.cancel_order":     ("POST", "/api/orders/{order_id}/cancel", ()),
+    "shop.change_order_address": ("POST", "/api/orders/{order_id}/change-address",
+                                  ("address_id", "reason")),
     # calendar (Google Calendar)
     "calendar.create":       ("POST", "/calendar/create",
                           ("title", "day", "start", "end", "location", "description", "calendar_id", "all_day", "recurring", "reminder_minutes")),
@@ -250,9 +269,14 @@ class Bridge:
                 continue
             sid = self.session.get(app) or seed_sid(self.task_id or "", self.seed, app)
             self.session.setdefault(app, sid)
-            _http("POST", f"{base.rstrip('/')}/post?sid={urllib.parse.quote(sid)}",
-                  json_body={"action": action, "state": state})
-            pushed.append(app)
+            try:
+                _http("POST", f"{base.rstrip('/')}/post?sid={urllib.parse.quote(sid)}",
+                      json_body={"action": action, "state": state})
+                pushed.append(app)
+            except Exception as e:  # noqa: BLE001 — keep act alive if one mock is down
+                # A dead vite preview must not 500 the whole food.add_to_cart and
+                # leave the agent with an empty cart after the gym write succeeded.
+                print(f"[bridge] push {app} failed: {type(e).__name__}: {e}", flush=True)
         return pushed
 
     # -- write half: UI click -> gym action -> re-project ------------------- #

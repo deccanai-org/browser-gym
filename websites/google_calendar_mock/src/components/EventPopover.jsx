@@ -94,7 +94,33 @@ export default function EventPopover({ event, position, onClose, onEdit, onDelet
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '12px' }}>
           <div style={{ width: '12px', height: '12px', borderRadius: '3px', backgroundColor: color, flexShrink: 0, marginTop: '5px' }} />
           <div>
-            <h3 style={{ fontSize: '22px', fontWeight: 400, color: '#3C4043', lineHeight: 1.2, marginBottom: '4px' }}>
+            {(event.status || '').toLowerCase() === 'cancelled' && (
+              <div
+                data-test-id="event-status-cancelled"
+                style={{
+                  display: 'inline-block',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase',
+                  color: '#B3261E',
+                  backgroundColor: '#FCE8E6',
+                  borderRadius: '4px',
+                  padding: '2px 6px',
+                  marginBottom: '6px',
+                }}
+              >
+                Cancelled
+              </div>
+            )}
+            <h3 style={{
+              fontSize: '22px',
+              fontWeight: 400,
+              color: '#3C4043',
+              lineHeight: 1.2,
+              marginBottom: '4px',
+              textDecoration: (event.status || '').toLowerCase() === 'cancelled' ? 'line-through' : 'none',
+            }}>
               {event.title || '(No title)'}
             </h3>
             <div style={{ fontSize: '13px', color: '#3C4043' }}>
@@ -112,7 +138,7 @@ export default function EventPopover({ event, position, onClose, onEdit, onDelet
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
             <RefreshCw size={16} style={{ color: '#5F6368', flexShrink: 0 }} />
             <span style={{ fontSize: '13px', color: '#3C4043' }}>
-              {event.recurring === 'daily' ? 'Every day' : event.recurring === 'weekly' ? 'Every week' : event.recurring === 'monthly' ? 'Every month' : 'Every year'}
+              {event.recurring === 'daily' ? 'Every day' : event.recurring === 'weekly' ? 'Every week' : event.recurring === 'biweekly' ? 'Every 2 weeks' : event.recurring === 'monthly' ? 'Every month' : 'Every year'}
             </span>
           </div>
         )}

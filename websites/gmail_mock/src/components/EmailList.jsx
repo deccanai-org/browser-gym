@@ -176,6 +176,9 @@ const EmailRow = ({ email, isSelected, toggleSelect, folder, threadCount, isFocu
     {contextMenu && <ContextMenu email={email} position={contextMenu} onClose={() => setContextMenu(null)} />}
     {showSnooze && <SnoozeMenu emailId={email.id} onClose={() => setShowSnooze(null)} position={showSnooze} />}
     <div
+      role="button"
+      tabIndex={0}
+      data-test-id={`mail-item-${email.id}`}
       onClick={handleRowClick}
       onContextMenu={handleContextMenu}
       className={cn(

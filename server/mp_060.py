@@ -1,5 +1,10 @@
 """mp_060 / cousin_dinner_email_calendar_schedule — ShopMail×GymCal×GymEats.
 
+Same id (Eligible e9). 2026-08-11 **Friday rewrite** (v2): uniqueness is
+Friday-only dinner (Thu dentist distract; Sat pottery overlap; Sun departure)
+with vegetarian + for-two + under-$30. Prior v1 used Thursday-gold / Fri Team-sync.
+See MP060_FRIDAY_REWRITE_2026-08-11.md + TASK_VERSION_HISTORY_2026-08-11.md.
+
 Mechanism: cousin fluff email buries Saturday pottery 1–8pm (dinner-hours
 overlap by arithmetic) + Sunday morning departure; user's calendar has an
 unrelated Thursday dentist so Friday clear is not a free pass. Sole valid

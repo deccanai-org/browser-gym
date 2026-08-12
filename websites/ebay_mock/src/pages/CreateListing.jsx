@@ -12,7 +12,7 @@ function makeListingImage(title, category) {
 
 export default function CreateListing() {
   const navigate = useNavigate();
-  const { createListing } = useStore();
+  const { createListing, state } = useStore();
   const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -94,7 +94,7 @@ export default function CreateListing() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -117,7 +117,7 @@ export default function CreateListing() {
       type: formData.type,
       startingBid: formData.type === 'auction' ? price : null,
       currentBid: formData.type === 'auction' ? price : null,
-      price: formData.type === 'fixed' ? price : null,
+      price: formData.type === 'fixed' ? price : price,
       buyItNowPrice: formData.buyItNowPrice ? parseFloat(formData.buyItNowPrice) : (formData.type === 'fixed' ? price : null),
       condition: formData.condition,
       shipping,
@@ -126,7 +126,7 @@ export default function CreateListing() {
       images
     };
 
-    createListing(newListing);
+    await Promise.resolve(createListing(newListing));
     navigate('/dashboard?tab=selling');
   };
 
@@ -137,9 +137,8 @@ export default function CreateListing() {
     if (errors[name]) setErrors(prev => ({ ...prev, [name]: undefined }));
   };
 
-  // No engine-backed seller model in bridged mode — selling isn't part of this
-  // buyer-side demo store, so don't present a listing form that saves nothing.
-  if (bridged()) {
+  // Bridged: only allow sell when the seed arms enableSellerCreate (mp_078 etc.).
+  if (bridged() && !state.enableSellerCreate) {
     return (
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200 text-center">
@@ -245,6 +244,7 @@ export default function CreateListing() {
           <select name="condition" value={formData.condition} onChange={handleChange} className="input-field">
             <option value="New">New</option>
             <option value="Open Box">Open Box</option>
+            <option value="Good">Good</option>
             <option value="Used">Used</option>
             <option value="Refurbished">Refurbished</option>
             <option value="For Parts">For Parts or Not Working</option>

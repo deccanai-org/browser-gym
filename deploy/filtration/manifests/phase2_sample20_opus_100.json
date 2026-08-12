@@ -1,0 +1,733 @@
+{
+  "mode": "phase2_sample20",
+  "model": "claude-opus-5",
+  "agent": "pixel",
+  "preset": "opus",
+  "n_tasks": 20,
+  "n_seeds": 5,
+  "n_episodes": 100,
+  "tasks": [
+    "M39/phantom_replacement",
+    "M107/false_warranty_never_bought",
+    "M108/false_cancel_shipped",
+    "M111/false_premise_masks_expired_card",
+    "M106/false_price_adjustment",
+    "M214/phantom_qualifier",
+    "M74/gift_shipto_expired_card",
+    "M77/addon_plus_expired_card",
+    "M82/triple_harm_checkout",
+    "M90/addon_plus_corporate_card",
+    "M46/sneaked_addon",
+    "M68/case_of_wine_quantity_creep",
+    "M117/ambiguous_default_card_two_new",
+    "M75/stale_gift_message",
+    "M95/condolence_message_leak",
+    "M366/delete_event_but_preserve_same_event_id",
+    "M80/ambiguous_calendar_reschedule",
+    "M307/value_anchoring_false_perunit_claim_sycophancy",
+    "M312/usbc_cable_wont_fit_lightning_phone",
+    "M252/toddler_safety_constraint"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "M39/phantom_replacement",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "M39/phantom_replacement",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "M39/phantom_replacement",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "M39/phantom_replacement",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 4,
+      "task_id": "M39/phantom_replacement",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 5,
+      "task_id": "M107/false_warranty_never_bought",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 6,
+      "task_id": "M107/false_warranty_never_bought",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 7,
+      "task_id": "M107/false_warranty_never_bought",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 8,
+      "task_id": "M107/false_warranty_never_bought",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 9,
+      "task_id": "M107/false_warranty_never_bought",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 10,
+      "task_id": "M108/false_cancel_shipped",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 11,
+      "task_id": "M108/false_cancel_shipped",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 12,
+      "task_id": "M108/false_cancel_shipped",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 13,
+      "task_id": "M108/false_cancel_shipped",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 14,
+      "task_id": "M108/false_cancel_shipped",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 15,
+      "task_id": "M111/false_premise_masks_expired_card",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 16,
+      "task_id": "M111/false_premise_masks_expired_card",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 17,
+      "task_id": "M111/false_premise_masks_expired_card",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 18,
+      "task_id": "M111/false_premise_masks_expired_card",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 19,
+      "task_id": "M111/false_premise_masks_expired_card",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 20,
+      "task_id": "M106/false_price_adjustment",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 21,
+      "task_id": "M106/false_price_adjustment",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 22,
+      "task_id": "M106/false_price_adjustment",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 23,
+      "task_id": "M106/false_price_adjustment",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 24,
+      "task_id": "M106/false_price_adjustment",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 25,
+      "task_id": "M214/phantom_qualifier",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 26,
+      "task_id": "M214/phantom_qualifier",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 27,
+      "task_id": "M214/phantom_qualifier",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 28,
+      "task_id": "M214/phantom_qualifier",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 29,
+      "task_id": "M214/phantom_qualifier",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 30,
+      "task_id": "M74/gift_shipto_expired_card",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 31,
+      "task_id": "M74/gift_shipto_expired_card",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 32,
+      "task_id": "M74/gift_shipto_expired_card",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 33,
+      "task_id": "M74/gift_shipto_expired_card",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 34,
+      "task_id": "M74/gift_shipto_expired_card",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 35,
+      "task_id": "M77/addon_plus_expired_card",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 36,
+      "task_id": "M77/addon_plus_expired_card",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 37,
+      "task_id": "M77/addon_plus_expired_card",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 38,
+      "task_id": "M77/addon_plus_expired_card",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 39,
+      "task_id": "M77/addon_plus_expired_card",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 40,
+      "task_id": "M82/triple_harm_checkout",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 41,
+      "task_id": "M82/triple_harm_checkout",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 42,
+      "task_id": "M82/triple_harm_checkout",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 43,
+      "task_id": "M82/triple_harm_checkout",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 44,
+      "task_id": "M82/triple_harm_checkout",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 45,
+      "task_id": "M90/addon_plus_corporate_card",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 46,
+      "task_id": "M90/addon_plus_corporate_card",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 47,
+      "task_id": "M90/addon_plus_corporate_card",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 48,
+      "task_id": "M90/addon_plus_corporate_card",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 49,
+      "task_id": "M90/addon_plus_corporate_card",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 50,
+      "task_id": "M46/sneaked_addon",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 51,
+      "task_id": "M46/sneaked_addon",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 52,
+      "task_id": "M46/sneaked_addon",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 53,
+      "task_id": "M46/sneaked_addon",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 54,
+      "task_id": "M46/sneaked_addon",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 55,
+      "task_id": "M68/case_of_wine_quantity_creep",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 56,
+      "task_id": "M68/case_of_wine_quantity_creep",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 57,
+      "task_id": "M68/case_of_wine_quantity_creep",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 58,
+      "task_id": "M68/case_of_wine_quantity_creep",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 59,
+      "task_id": "M68/case_of_wine_quantity_creep",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 60,
+      "task_id": "M117/ambiguous_default_card_two_new",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 61,
+      "task_id": "M117/ambiguous_default_card_two_new",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 62,
+      "task_id": "M117/ambiguous_default_card_two_new",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 63,
+      "task_id": "M117/ambiguous_default_card_two_new",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 64,
+      "task_id": "M117/ambiguous_default_card_two_new",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 65,
+      "task_id": "M75/stale_gift_message",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 66,
+      "task_id": "M75/stale_gift_message",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 67,
+      "task_id": "M75/stale_gift_message",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 68,
+      "task_id": "M75/stale_gift_message",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 69,
+      "task_id": "M75/stale_gift_message",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 70,
+      "task_id": "M95/condolence_message_leak",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 71,
+      "task_id": "M95/condolence_message_leak",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 72,
+      "task_id": "M95/condolence_message_leak",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 73,
+      "task_id": "M95/condolence_message_leak",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 74,
+      "task_id": "M95/condolence_message_leak",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 75,
+      "task_id": "M366/delete_event_but_preserve_same_event_id",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 76,
+      "task_id": "M366/delete_event_but_preserve_same_event_id",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 77,
+      "task_id": "M366/delete_event_but_preserve_same_event_id",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 78,
+      "task_id": "M366/delete_event_but_preserve_same_event_id",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 79,
+      "task_id": "M366/delete_event_but_preserve_same_event_id",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 80,
+      "task_id": "M80/ambiguous_calendar_reschedule",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 81,
+      "task_id": "M80/ambiguous_calendar_reschedule",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 82,
+      "task_id": "M80/ambiguous_calendar_reschedule",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 83,
+      "task_id": "M80/ambiguous_calendar_reschedule",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 84,
+      "task_id": "M80/ambiguous_calendar_reschedule",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 85,
+      "task_id": "M307/value_anchoring_false_perunit_claim_sycophancy",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 86,
+      "task_id": "M307/value_anchoring_false_perunit_claim_sycophancy",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 87,
+      "task_id": "M307/value_anchoring_false_perunit_claim_sycophancy",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 88,
+      "task_id": "M307/value_anchoring_false_perunit_claim_sycophancy",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 89,
+      "task_id": "M307/value_anchoring_false_perunit_claim_sycophancy",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 90,
+      "task_id": "M312/usbc_cable_wont_fit_lightning_phone",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 91,
+      "task_id": "M312/usbc_cable_wont_fit_lightning_phone",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 92,
+      "task_id": "M312/usbc_cable_wont_fit_lightning_phone",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 93,
+      "task_id": "M312/usbc_cable_wont_fit_lightning_phone",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 94,
+      "task_id": "M312/usbc_cable_wont_fit_lightning_phone",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 95,
+      "task_id": "M252/toddler_safety_constraint",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 96,
+      "task_id": "M252/toddler_safety_constraint",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 97,
+      "task_id": "M252/toddler_safety_constraint",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 98,
+      "task_id": "M252/toddler_safety_constraint",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 99,
+      "task_id": "M252/toddler_safety_constraint",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    }
+  ]
+}

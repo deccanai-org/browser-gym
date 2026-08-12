@@ -29,7 +29,7 @@ from typing import Any
 from server.apps.bus import WorldEvent
 
 # The mutable fields per store (everything else — catalog — comes from reset).
-_MUTABLE_SHOP = ["cart", "orders", "returns", "subscriptions", "current_user_id", "step", "action_log", "flash_messages"]
+_MUTABLE_SHOP = ["cart", "orders", "returns", "support_tickets", "subscriptions", "current_user_id", "step", "action_log", "flash_messages"]
 _MUTABLE_SUBAPP = {
     "mail": ["account_email", "inbox", "sent", "drafts"],
     "food": ["cart", "orders"],

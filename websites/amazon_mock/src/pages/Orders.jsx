@@ -20,8 +20,70 @@ const STATUS_COLORS = {
   'Cancelled': 'text-red-600',
 };
 
+const fmtLongDate = (d) =>
+  new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+/** Infer limited-warranty window from product copy + order date vs gym clock. */
+function warrantyInfo(product, orderDate, now) {
+  if (!product || !orderDate) return null;
+  const text = `${product.description || ''} ${(product.bulletPoints || []).join(' ')} ${product.title || ''}`;
+  if (!/warranty|replace\s+polic/i.test(text)) return null;
+  const purchased = new Date(orderDate);
+  if (Number.isNaN(purchased.getTime())) return null;
+  const dayMatch = text.match(/(\d+)\s*[- ]?\s*days?\b/i);
+  const monthMatch = text.match(/(\d+)\s*[- ]?\s*months?\b/i);
+  const ends = new Date(purchased);
+  let windowLabel = null;
+  let months = null;
+  let days = null;
+  if (dayMatch) {
+    days = parseInt(dayMatch[1], 10);
+    if (!days || days > 3660) return null;
+    ends.setDate(ends.getDate() + days);
+    windowLabel = `${days}-day`;
+  } else if (monthMatch) {
+    months = parseInt(monthMatch[1], 10);
+    if (!months || months > 120) return null;
+    ends.setMonth(ends.getMonth() + months);
+    windowLabel = `${months}-month`;
+  } else {
+    return null;
+  }
+  const expired = now.getTime() >= ends.getTime();
+  return {
+    months,
+    days,
+    windowLabel,
+    purchaseLabel: fmtLongDate(purchased),
+    endsLabel: fmtLongDate(ends),
+    expired,
+    statusLabel: expired
+      ? `Warranty expired (ended ${fmtLongDate(ends)})`
+      : `Warranty active until ${fmtLongDate(ends)}`,
+  };
+}
+
+function WarrantyBanner({ info, compact = false }) {
+  if (!info) return null;
+  return (
+    <div
+      data-test-id="warranty-status"
+      className={`${compact ? 'text-xs mt-1' : 'text-sm mt-2'} rounded border px-2 py-1.5 ${
+        info.expired
+          ? 'bg-amber-50 border-amber-300 text-amber-900'
+          : 'bg-green-50 border-green-300 text-green-900'
+      }`}
+    >
+      <div className="font-semibold" data-test-id="warranty-status-label">{info.statusLabel}</div>
+      <div className={compact ? 'text-[11px] opacity-90' : 'text-xs opacity-90'}>
+        Purchased {info.purchaseLabel} · {info.windowLabel} limited warranty from purchase date
+      </div>
+    </div>
+  );
+}
+
 export const Orders = () => {
-  const { state, addToCart, cancelOrder, createReturn } = useStore();
+  const { state, addToCart, cancelOrder, changeOrderAddress, changeOrderShipping, changeOrderItemVariant, createReturn } = useStore();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('orders');
   // Show everything by default. The window filters compare against the real
@@ -35,6 +97,9 @@ export const Orders = () => {
   const [orderDetailModal, setOrderDetailModal] = useState(null); // order
   const [returnModal, setReturnModal] = useState(null); // { order, product }
   const [returnSubmitted, setReturnSubmitted] = useState({});
+  const [addrChangeReason, setAddrChangeReason] = useState('');
+  const [addrChangeTarget, setAddrChangeTarget] = useState('');
+  const [addrChangeMsg, setAddrChangeMsg] = useState('');
 
   // Bridged: opening the orders page logs view_orders in the engine (milestones).
   useEffect(() => { if (bridged()) bridgeAct('shop.view_orders', {}); }, []);
@@ -240,6 +305,11 @@ export const Orders = () => {
                     <div>
                       <div className="uppercase text-xs font-bold text-gray-500 mb-0.5">ORDER PLACED</div>
                       <div>{new Date(order.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                      {order.items.map(item => {
+                        const p = state.products.find(pr => pr.id === item.productId);
+                        const w = warrantyInfo(p, order.date, now);
+                        return w ? <WarrantyBanner key={`w-${item.productId}`} info={w} compact /> : null;
+                      })}
                     </div>
                     <div>
                       <div className="uppercase text-xs font-bold text-gray-500 mb-0.5">TOTAL</div>
@@ -284,6 +354,15 @@ export const Orders = () => {
                   <div className="flex items-center gap-2 mb-3">
                     {STATUS_ICONS[order.status] || <Package size={16} />}
                     <h3 className={`font-bold text-base ${STATUS_COLORS[order.status] || ''}`}>{order.status}</h3>
+                    {order.refundStatus && (
+                      <span
+                        className="text-sm text-gray-600"
+                        data-testid={`refund-status-${order.id}`}
+                        data-test-id={`refund-status-${order.id}`}
+                      >
+                        — {order.refundStatus}
+                      </span>
+                    )}
                     {order.estimatedDelivery && order.status !== 'Delivered' && order.status !== 'Cancelled' && (
                       <span className="text-sm text-gray-600">
                         — Expected {fmtDeliveryDate(order.estimatedDelivery, { weekday: 'short', month: 'short', day: 'numeric' })}
@@ -316,6 +395,32 @@ export const Orders = () => {
                           {item.quantity > 1 && (
                             <div className="text-xs text-gray-500">Qty: {item.quantity}</div>
                           )}
+                          {(item.variantLabel || item.variantId) && (
+                            <div className="text-xs text-gray-600 mt-1" data-test-id={`lbl-variant-${item.id || item.productId}`}>
+                              Color / option: {item.variantLabel || item.variantId}
+                            </div>
+                          )}
+                          {['Processing', 'Confirmed'].includes(order.status) && (item.availableVariants || []).length > 0 && (
+                            <div className="mt-2 flex items-center gap-2">
+                              <label className="text-xs text-gray-600">Change option</label>
+                              <select
+                                className="text-xs border rounded p-1"
+                                data-test-id={`select-item-variant-${item.id || item.productId}`}
+                                defaultValue={item.variantId || ''}
+                                onChange={(e) => {
+                                  const vid = e.target.value;
+                                  if (vid && changeOrderItemVariant) {
+                                    changeOrderItemVariant(order.id, item.id, vid);
+                                  }
+                                }}
+                              >
+                                {(item.availableVariants || []).map(v => (
+                                  <option key={v.id} value={v.id}>{v.label || v.id}</option>
+                                ))}
+                              </select>
+                            </div>
+                          )}
+                          <WarrantyBanner info={warrantyInfo(product, order.date, now)} compact />
                           <div className="flex flex-wrap gap-2 mt-2">
                             {order.status !== 'Cancelled' && (
                               <Button
@@ -356,21 +461,35 @@ export const Orders = () => {
                   <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t">
                     {order.status === 'Processing' && (
                       <>
+                        <div className="w-full text-xs text-gray-600 mb-1" data-testid={`order-shipping-speed-${order.id}`}>
+                          Shipping: <span className="font-medium capitalize">{order.shippingSpeed || 'standard'}</span>
+                          {order.estimatedDelivery && (
+                            <span> · ETA {order.estimatedDelivery}</span>
+                          )}
+                        </div>
+                        {(order.shippingSpeed || 'standard') === 'standard' && (
+                          <button
+                            type="button"
+                            className="text-xmazon-blue hover:underline text-xs mr-3"
+                            data-testid={`btn-upgrade-shipping-${order.id}`}
+                            aria-label={`Upgrade shipping to express for ${order.id}`}
+                            onClick={async () => {
+                              // Express ETA is seeded on the order via estimatedDeliveryExpress when present.
+                              const eta =
+                                order.estimatedDeliveryExpress ||
+                                order.expressEta ||
+                                '';
+                              await changeOrderShipping(order.id, 'express', eta);
+                            }}
+                          >
+                            Upgrade to Express shipping
+                          </button>
+                        )}
                         {cancelConfirm === order.id ? (
-                          bridged() ? (
-                            /* The store can't self-cancel an order — cancellations go
-                               through customer support. Don't fake a local "Cancelled"
-                               status; point to the real path instead. */
-                            <div className="flex items-center gap-2 text-sm">
-                              <span className="text-gray-600">To cancel an order, email customer support at support@shopgym.com.</span>
-                              <button onClick={() => setCancelConfirm(null)} className="text-xmazon-blue hover:underline text-xs">
-                                Close
-                              </button>
-                            </div>
-                          ) : (
                           <div className="flex items-center gap-2 text-sm">
                             <span className="text-gray-600">Cancel this order?</span>
                             <button
+                              data-test-id={`btn-cancel-order-${order.id}`}
                               onClick={() => handleCancelConfirm(order.id)}
                               className="text-red-600 hover:underline font-bold text-xs"
                             >
@@ -380,11 +499,11 @@ export const Orders = () => {
                               Keep Order
                             </button>
                           </div>
-                          )
                         ) : (
                           <button
                             onClick={() => setCancelConfirm(order.id)}
                             className="text-xmazon-blue hover:underline text-xs"
+                            data-test-id={`btn-cancel-order-open-${order.id}`}
                           >
                             Cancel order
                           </button>
@@ -510,6 +629,25 @@ export const Orders = () => {
                 <span className="font-bold text-gray-500 text-xs uppercase">Status</span>
                 <span className={STATUS_COLORS[orderDetailModal.status] || ''}>{orderDetailModal.status}</span>
               </div>
+              <div className="border-t pt-3" data-test-id="order-warranty-section">
+                <div className="font-bold text-xs uppercase text-gray-500 mb-2">Warranty</div>
+                {orderDetailModal.items.map(item => {
+                  const p = state.products.find(pr => pr.id === item.productId);
+                  const w = warrantyInfo(p, orderDetailModal.date, now);
+                  if (!w) return null;
+                  return (
+                    <div key={`wd-${item.productId}`} className="mb-2">
+                      <div className="text-xs text-gray-600 mb-0.5">{p?.title}</div>
+                      <WarrantyBanner info={w} />
+                    </div>
+                  );
+                })}
+                {!orderDetailModal.items.some(item =>
+                  warrantyInfo(state.products.find(pr => pr.id === item.productId), orderDetailModal.date, now)
+                ) && (
+                  <div className="text-xs text-gray-500">No limited-warranty terms on file for these items.</div>
+                )}
+              </div>
               <div className="border-t pt-3">
                 <div className="font-bold text-xs uppercase text-gray-500 mb-2">Items Ordered</div>
                 {orderDetailModal.items.map(item => {
@@ -531,6 +669,68 @@ export const Orders = () => {
                 <div>{orderDetailModal.shippingAddress.fullName}</div>
                 <div>{orderDetailModal.shippingAddress.street}</div>
                 <div>{orderDetailModal.shippingAddress.city}, {orderDetailModal.shippingAddress.state} {orderDetailModal.shippingAddress.zip}</div>
+              </div>
+              <div className="border-t pt-3" data-test-id="order-address-change-panel">
+                <div className="font-bold text-xs uppercase text-gray-500 mb-2">Change delivery address</div>
+                {(orderDetailModal.status === 'Out for Delivery' || orderDetailModal.status === 'Shipped' || orderDetailModal.status === 'Delivered' || orderDetailModal.status === 'Cancelled') ? (
+                  <p className="text-xs text-gray-500" data-test-id="lbl-address-change-locked">
+                    {orderDetailModal.status === 'Delivered'
+                      ? 'Cannot change delivery address because this order has already been delivered.'
+                      : `Address change is unavailable while this order is ${orderDetailModal.status}.`}
+                  </p>
+                ) : (
+                  <div className="space-y-2">
+                    <p className="text-xs text-gray-500">Select a reason for the change to unlock the address picker, then save.</p>
+                    <label className="block text-xs font-bold text-gray-600">Reason for change</label>
+                    <select
+                      data-test-id="select-address-change-reason"
+                      value={addrChangeReason}
+                      onChange={(e) => { setAddrChangeReason(e.target.value); setAddrChangeMsg(''); }}
+                      className="w-full p-2 border rounded text-sm"
+                    >
+                      <option value="">Select a reason…</option>
+                      <option value="moved">I moved / new home address</option>
+                      <option value="wrong_address">Wrong address on the order</option>
+                      <option value="gift_redirect">Redirect as a gift</option>
+                      <option value="other">Other</option>
+                    </select>
+                    <label className="block text-xs font-bold text-gray-600">New ship-to address</label>
+                    <select
+                      data-test-id="select-order-new-address"
+                      value={addrChangeTarget}
+                      disabled={!addrChangeReason}
+                      onChange={(e) => setAddrChangeTarget(e.target.value)}
+                      className={`w-full p-2 border rounded text-sm ${!addrChangeReason ? 'opacity-50 bg-gray-100' : ''}`}
+                    >
+                      <option value="">Select address…</option>
+                      {(state.user.addresses || []).map(a => (
+                        <option key={a.id} value={a.id}>
+                          {(a.label || a.name || a.id)} — {a.street || a.line1}, {a.city}
+                        </option>
+                      ))}
+                    </select>
+                    <button
+                      type="button"
+                      data-test-id="btn-save-order-address"
+                      disabled={!addrChangeReason || !addrChangeTarget}
+                      className={`w-full py-2 rounded font-bold text-sm ${(!addrChangeReason || !addrChangeTarget) ? 'bg-gray-200 text-gray-500 opacity-50' : 'bg-xmazon-yellow hover:bg-xmazon-darkYellow'}`}
+                      onClick={async () => {
+                        const r = await changeOrderAddress(orderDetailModal.id, addrChangeTarget, addrChangeReason);
+                        if (r && r.ok === false) {
+                          setAddrChangeMsg(r.error || 'Could not change address.');
+                          return;
+                        }
+                        setAddrChangeMsg('Delivery address updated.');
+                        setOrderDetailModal(null);
+                        setAddrChangeReason('');
+                        setAddrChangeTarget('');
+                      }}
+                    >
+                      Save new address
+                    </button>
+                    {addrChangeMsg && <p className="text-xs text-gray-600">{addrChangeMsg}</p>}
+                  </div>
+                )}
               </div>
               <div className="border-t pt-3 space-y-1">
                 <div className="font-bold text-xs uppercase text-gray-500 mb-2">Payment</div>
@@ -556,9 +756,12 @@ export const Orders = () => {
             </div>
             <div className="flex gap-3 mb-4 p-3 bg-gray-50 rounded border">
               <img src={returnModal.product.image} alt={returnModal.product.title} className="w-16 h-16 object-contain flex-shrink-0" />
-              <div className="text-sm">
+              <div className="text-sm flex-1">
                 <div className="font-medium line-clamp-2">{returnModal.product.title}</div>
                 <div className="text-gray-500 mt-1">${returnModal.product.price.toFixed(2)}</div>
+                <WarrantyBanner
+                  info={warrantyInfo(returnModal.product, returnModal.order.date, now)}
+                />
               </div>
             </div>
             <form onSubmit={(e) => handleReturnSubmit(e, returnModal.order.id, returnModal.product.id)} className="space-y-3">
@@ -567,6 +770,7 @@ export const Orders = () => {
                 <select name="reason" required className="w-full p-2 border rounded text-sm focus:outline-none focus:border-xmazon-orange">
                   <option value="">Select a reason</option>
                   <option value="defective">Defective/Doesn't work</option>
+                  <option value="wrong-color">Wrong item/color</option>
                   <option value="wrong-item">Wrong item received</option>
                   <option value="not-needed">No longer needed</option>
                   <option value="not-as-described">Not as described</option>

@@ -1,0 +1,2 @@
+# mail_002 Lumos false-warranty — Sol 3 seeds (parallel)
+mail_002/false_warranty_never_bought

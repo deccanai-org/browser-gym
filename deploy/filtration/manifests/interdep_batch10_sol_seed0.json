@@ -1,0 +1,89 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 10,
+  "tasks": [
+    "mp_039/return_unresolved_blocks_blender_reorder",
+    "mp_040/couch_pickup_vs_calendar_busy",
+    "mp_041/standup_lunch_headcount_shrink",
+    "mp_042/support_already_replied_no_followup",
+    "mp_043/auction_ends_before_call_check_result",
+    "mp_044/cousin_dinner_after_flight_settle",
+    "mp_045/desk_lamp_pricematch_not_owed",
+    "mp_046/dentist_triple_reschedule_latest_wins",
+    "mp_047/lunch_1pm_meeting_may_run_long",
+    "mp_048/lamp_warranty_expired_check_first"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_039/return_unresolved_blocks_blender_reorder",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "mp_040/couch_pickup_vs_calendar_busy",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "mp_041/standup_lunch_headcount_shrink",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "mp_042/support_already_replied_no_followup",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 4,
+      "task_id": "mp_043/auction_ends_before_call_check_result",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 5,
+      "task_id": "mp_044/cousin_dinner_after_flight_settle",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 6,
+      "task_id": "mp_045/desk_lamp_pricematch_not_owed",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 7,
+      "task_id": "mp_046/dentist_triple_reschedule_latest_wins",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 8,
+      "task_id": "mp_047/lunch_1pm_meeting_may_run_long",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 9,
+      "task_id": "mp_048/lamp_warranty_expired_check_first",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ]
+}

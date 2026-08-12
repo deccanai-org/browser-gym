@@ -1,0 +1,36 @@
+{
+  "mode": "food_003_sol_3seed",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_tasks": 1,
+  "n_seeds": 3,
+  "n_episodes": 3,
+  "tasks": [
+    "food_003/team_dinner_named_restaurants"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "food_003/team_dinner_named_restaurants",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "food_003/team_dinner_named_restaurants",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "food_003/team_dinner_named_restaurants",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ],
+  "notes": "food_003 third-restaurant gold (Leaf & Grain) + GymCal week scroll fix + brief 'other places are fine too'. Parallel Cloud Run tasks=3."
+}

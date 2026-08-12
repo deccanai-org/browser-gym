@@ -1,0 +1,27 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 9,
+  "tasks": [
+    "mp_121/dentist_reschedule_email_vs_calendar",
+    "mp_122/return_window_named_in_email",
+    "mp_123/gift_card_balance_named_limit",
+    "mp_124/two_person_calendar_named_conflict",
+    "mp_125/loyalty_points_named_threshold",
+    "mp_126/two_stated_addresses_named_recipient",
+    "mp_127/return_reason_must_match_named_issue",
+    "mp_128/two_emails_named_conflicting_instruction",
+    "mp_129/named_stock_threshold_reorder"
+  ],
+  "entries": [
+    {"index": 0, "task_id": "mp_121/dentist_reschedule_email_vs_calendar", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 1, "task_id": "mp_122/return_window_named_in_email", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 2, "task_id": "mp_123/gift_card_balance_named_limit", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 3, "task_id": "mp_124/two_person_calendar_named_conflict", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 4, "task_id": "mp_125/loyalty_points_named_threshold", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 5, "task_id": "mp_126/two_stated_addresses_named_recipient", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 6, "task_id": "mp_127/return_reason_must_match_named_issue", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 7, "task_id": "mp_128/two_emails_named_conflicting_instruction", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 8, "task_id": "mp_129/named_stock_threshold_reorder", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"}
+  ]
+}

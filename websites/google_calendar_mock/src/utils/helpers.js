@@ -187,6 +187,10 @@ function normalizeEvent(event, index) {
   const calendarId = VALID_CALENDAR_IDS.has(event.calendarId) ? event.calendarId : 'c1';
   const calendarColors = { c1: 'bg-blue-500', c2: 'bg-green-500', c3: 'bg-purple-500', c4: 'bg-yellow-500',
     c5: 'bg-pink-500', c6: 'bg-red-500', c7: 'bg-indigo-500', c8: 'bg-teal-500' };
+  const rawStatus = (event.status || 'confirmed').toString().toLowerCase();
+  const status = ['confirmed', 'tentative', 'cancelled'].includes(rawStatus)
+    ? rawStatus
+    : 'confirmed';
   return {
     id: event.id || generateId(),
     calendarId,
@@ -199,6 +203,7 @@ function normalizeEvent(event, index) {
     guests: Array.isArray(event.guests) ? event.guests : [],
     color: event.color || calendarColors[calendarId] || 'bg-blue-500',
     recurring: event.recurring || 'none',
+    status,
     reminders: Array.isArray(event.reminders) && event.reminders.length
       ? event.reminders
       : (event.reminderMinutes != null && event.reminderMinutes !== ''

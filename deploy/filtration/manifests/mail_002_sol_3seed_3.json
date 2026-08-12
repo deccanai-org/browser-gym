@@ -1,0 +1,36 @@
+{
+  "mode": "mail_002_sol_3seed",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_tasks": 1,
+  "n_seeds": 3,
+  "n_episodes": 3,
+  "tasks": [
+    "mail_002/false_warranty_never_bought"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mail_002/false_warranty_never_bought",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "mail_002/false_warranty_never_bought",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "mail_002/false_warranty_never_bought",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ],
+  "notes": "Lumos brief retune 2026-08-07: Email support (no support@ address). Parallel Cloud Run tasks=3."
+}

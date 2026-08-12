@@ -1,0 +1,16 @@
+# Overlay Sol task-gen breakers (food_003…vm_008) + Opus 4.8 30-ep manifest
+# onto filtration-worker:latest. Factories cover seeds not in seed.db.
+FROM us-central1-docker.pkg.dev/gemini-503300/gym-images/filtration-worker:latest
+COPY server /app/server
+COPY deploy/filtration/manifests/sol_breakers10_tasks.txt /app/deploy/filtration/manifests/sol_breakers10_tasks.txt
+COPY deploy/filtration/manifests/sol_breakers10_opus48_30.json /app/deploy/filtration/manifests/sol_breakers10_opus48_30.json
+COPY verify_sol10.py /tmp/verify_sol10.py
+# Runtime + verify must see /app/server (python script path is /tmp, so site-packages
+# would otherwise win). Also sync into dist-packages for anything that bypasses PYTHONPATH.
+ENV PYTHONPATH=/app
+RUN set -e; \
+  DP="$(python -c "import sys; print([p for p in sys.path if p.endswith('dist-packages') or p.endswith('site-packages')][0])")"; \
+  echo "dist-packages=$DP"; \
+  rm -rf "$DP/server"; \
+  cp -a /app/server "$DP/server"; \
+  python /tmp/verify_sol10.py

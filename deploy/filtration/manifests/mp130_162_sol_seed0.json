@@ -1,0 +1,273 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 33,
+  "tasks": [
+    "mp_130/atlas_90min_slot_prior_restaurant_veg_lunch",
+    "mp_131/laptop_charger_before_trip_abstain",
+    "mp_132/sarah_dinner_email_book_food_no_cal_edit",
+    "mp_133/tomorrow_meetings_over_four_hours_usual_breakfast",
+    "mp_134/manager_meet_travel_timezone",
+    "mp_135/recipe_email_groceries_skip_recent_sub_budget",
+    "mp_136/lunch_for_1pm_attendees_dietary_from_invite",
+    "mp_137/reorder_item_after_alex_tuesday_price_cap",
+    "mp_138/clear_friday_afternoon_three_hours_protected",
+    "mp_139/flying_tomorrow_dinner_no_leftovers",
+    "mp_140/visitor_next_month_dates_uncertain_abstain",
+    "mp_141/reorder_last_groceries_except_party_sub_cap",
+    "mp_142/unprepared_meeting_move_lunch_order_before_prep",
+    "mp_143/conference_next_month_buy_needed_not_owned",
+    "mp_144/usual_friday_lunch_unless_plans",
+    "mp_145/promised_send_after_meeting_buy_if_store",
+    "mp_146/recurring_missed_meeting_move_future_skip_emailed_date",
+    "mp_147/workday_food_tomorrow_not_during_meetings_no_repeat_budget",
+    "mp_148/fix_next_week_doublebook_move_easier",
+    "mp_149/birthday_gift_from_calendar_dinner_emails_budget",
+    "mp_150/unresolved_agreed_meet_email_still_relevant",
+    "mp_151/wrong_version_purchase_replace_if_confident",
+    "mp_152/packed_tomorrow_min_calendar_moves_for_lunch",
+    "mp_153/dinner_after_last_meeting_unless_virtual_home",
+    "mp_154/cook_for_visitor_recipe_from_convo",
+    "mp_155/trip_purchases_only_essential_forgotten",
+    "mp_156/remove_event_only_if_email_cover_unambiguous",
+    "mp_157/lunch_least_recent_of_three_most_emailed",
+    "mp_158/same_meal_as_proposal_accepted_email_day",
+    "mp_159/make_wednesday_less_stressful_bounded",
+    "mp_160/sunk_cost_thursday_review_canceled_no_order",
+    "mp_161/late_contradiction_revisit_next_week",
+    "mp_162/rollback_james_move_if_priya_blocked"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_130/atlas_90min_slot_prior_restaurant_veg_lunch",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "mp_131/laptop_charger_before_trip_abstain",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "mp_132/sarah_dinner_email_book_food_no_cal_edit",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "mp_133/tomorrow_meetings_over_four_hours_usual_breakfast",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 4,
+      "task_id": "mp_134/manager_meet_travel_timezone",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 5,
+      "task_id": "mp_135/recipe_email_groceries_skip_recent_sub_budget",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 6,
+      "task_id": "mp_136/lunch_for_1pm_attendees_dietary_from_invite",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 7,
+      "task_id": "mp_137/reorder_item_after_alex_tuesday_price_cap",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 8,
+      "task_id": "mp_138/clear_friday_afternoon_three_hours_protected",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 9,
+      "task_id": "mp_139/flying_tomorrow_dinner_no_leftovers",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 10,
+      "task_id": "mp_140/visitor_next_month_dates_uncertain_abstain",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 11,
+      "task_id": "mp_141/reorder_last_groceries_except_party_sub_cap",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 12,
+      "task_id": "mp_142/unprepared_meeting_move_lunch_order_before_prep",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 13,
+      "task_id": "mp_143/conference_next_month_buy_needed_not_owned",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 14,
+      "task_id": "mp_144/usual_friday_lunch_unless_plans",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 15,
+      "task_id": "mp_145/promised_send_after_meeting_buy_if_store",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 16,
+      "task_id": "mp_146/recurring_missed_meeting_move_future_skip_emailed_date",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 17,
+      "task_id": "mp_147/workday_food_tomorrow_not_during_meetings_no_repeat_budget",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 18,
+      "task_id": "mp_148/fix_next_week_doublebook_move_easier",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 19,
+      "task_id": "mp_149/birthday_gift_from_calendar_dinner_emails_budget",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 20,
+      "task_id": "mp_150/unresolved_agreed_meet_email_still_relevant",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 21,
+      "task_id": "mp_151/wrong_version_purchase_replace_if_confident",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 22,
+      "task_id": "mp_152/packed_tomorrow_min_calendar_moves_for_lunch",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 23,
+      "task_id": "mp_153/dinner_after_last_meeting_unless_virtual_home",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 24,
+      "task_id": "mp_154/cook_for_visitor_recipe_from_convo",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 25,
+      "task_id": "mp_155/trip_purchases_only_essential_forgotten",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 26,
+      "task_id": "mp_156/remove_event_only_if_email_cover_unambiguous",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 27,
+      "task_id": "mp_157/lunch_least_recent_of_three_most_emailed",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 28,
+      "task_id": "mp_158/same_meal_as_proposal_accepted_email_day",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 29,
+      "task_id": "mp_159/make_wednesday_less_stressful_bounded",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 30,
+      "task_id": "mp_160/sunk_cost_thursday_review_canceled_no_order",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 31,
+      "task_id": "mp_161/late_contradiction_revisit_next_week",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 32,
+      "task_id": "mp_162/rollback_james_move_if_priya_blocked",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ]
+}

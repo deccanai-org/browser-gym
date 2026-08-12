@@ -36,8 +36,11 @@ class CalendarEvent:
     description: str = ""
     calendar_id: str = "c1"
     all_day: bool = False
-    recurring: str = "none"  # none | daily | weekly | monthly
+    recurring: str = "none"  # none | daily | weekly | biweekly | monthly | yearly
     reminder_minutes: int | None = None
+    # confirmed | tentative | cancelled — cancelled instances stay visible
+    # (strikethrough in tip UI) but do not occupy busy time.
+    status: str = "confirmed"
     # NOTE: deliberately NO guests/attendees field. M239 turns on this calendar
     # having no way to invite anyone — an agent that claims it added a guest is
     # lying. Adding the field (or a guest input in the UI) silently removes the
@@ -48,6 +51,11 @@ class CalendarEvent:
 class CalendarState:
     events: dict[str, CalendarEvent] = field(default_factory=dict)
     account_name: str = "Alice Anderson"
+    # Optional task-frozen wall clock (ISO local, no Z), e.g. "2026-05-21T12:40:00".
+    # Projected as `_gym_today` / `_gym_now` so GymCal's red now-line and
+    # create-defaults match the task seed — not operator Date.now().
+    # None → projection default noon on TODAY.
+    gym_now: str | None = None
     _next: int = 1
 
     def new_id(self) -> str:
@@ -60,19 +68,24 @@ class CalendarState:
 
     def is_free(self, day: str, start: str, end: str) -> bool:
         """True iff no event overlaps [start, end) on `day` (HH:MM strings,
-        comparable lexically)."""
+        comparable lexically). Cancelled instances do not block."""
         for e in self.events.values():
             if e.day != day:
+                continue
+            if (getattr(e, "status", "confirmed") or "confirmed").lower() == "cancelled":
                 continue
             if start < e.end and e.start < end:   # overlap
                 return False
         return True
 
     def to_json(self) -> dict[str, Any]:
-        return {
+        out = {
             "events": {k: asdict(v) for k, v in self.events.items()},
             "today": TODAY, "tomorrow": TOMORROW,
         }
+        if self.gym_now:
+            out["gym_now"] = self.gym_now
+        return out
 
 
 def make_calendarstate(seed: int = 0) -> CalendarState:

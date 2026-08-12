@@ -1,0 +1,19 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 5,
+  "tasks": [
+    "mp_066/valuemart_seller_dispute_and_calendar_pickup_reschedule",
+    "mp_067/gymeats_group_order_dietary_conflict_reschedule",
+    "mp_068/valuemart_price_watch_vs_gymcal_deadline",
+    "mp_069/mail_thread_promise_vs_valuemart_listing_reality",
+    "mp_070/gymcal_recurring_event_single_instance_food_order"
+  ],
+  "entries": [
+    {"index": 0, "task_id": "mp_066/valuemart_seller_dispute_and_calendar_pickup_reschedule", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 1, "task_id": "mp_067/gymeats_group_order_dietary_conflict_reschedule", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 2, "task_id": "mp_068/valuemart_price_watch_vs_gymcal_deadline", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 3, "task_id": "mp_069/mail_thread_promise_vs_valuemart_listing_reality", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 4, "task_id": "mp_070/gymcal_recurring_event_single_instance_food_order", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"}
+  ]
+}

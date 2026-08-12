@@ -49,7 +49,7 @@ def _base(seed: int, task_id: str) -> "WorldState":
     from server.tasks import _cross_app_world
 
     world = _cross_app_world(seed, task_id, "hard")
-    world.mail.account_email = "alice@shopgym.com"
+    world.mail.account_email = "alice@shopmail.com"
     world.calendar.events.clear()
     world.market.cart.items.clear()
     world.market.orders.clear()
@@ -198,7 +198,7 @@ def _build_suites() -> dict[str, Callable[[], "TaskSuite"]]:
     def alice_bodies(p: Probe) -> list[str]:
         out = []
         for message in _sent_list(p):
-            if "alice@shopgym.com" in (getattr(message, "to", "") or "").lower():
+            if "alice@shopmail.com" in (getattr(message, "to", "") or "").lower():
                 out.append(((getattr(message, "subject", "") or "") + "\n" +
                             (getattr(message, "body", "") or "")).lower())
         return out

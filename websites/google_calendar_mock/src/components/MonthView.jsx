@@ -46,6 +46,7 @@ export default function MonthView({ onEventClick, onDateClick }) {
         let currentEventDate;
         if (event.recurring === 'daily') currentEventDate = addDays(originalStart, i);
         else if (event.recurring === 'weekly') currentEventDate = addWeeks(originalStart, i);
+        else if (event.recurring === 'biweekly') currentEventDate = addWeeks(originalStart, i * 2);
         else if (event.recurring === 'monthly') currentEventDate = addMonths(originalStart, i);
         else if (event.recurring === 'yearly') currentEventDate = addYears(originalStart, i);
         else break;
@@ -212,7 +213,12 @@ export default function MonthView({ onEventClick, onDateClick }) {
                         : event;
                       onEventClick(targetEvent, e);
                     }}
-                    style={{ backgroundColor: getEventColor(event) }}
+                    style={{
+                      backgroundColor: (event.status || '').toLowerCase() === 'cancelled' ? '#9AA0A6' : getEventColor(event),
+                      textDecoration: (event.status || '').toLowerCase() === 'cancelled' ? 'line-through' : undefined,
+                      opacity: (event.status || '').toLowerCase() === 'cancelled' ? 0.75 : undefined,
+                    }}
+                    data-event-status={event.status || 'confirmed'}
                     className={clsx(
                       "text-xs px-2 py-0.5 rounded truncate cursor-pointer shadow-sm hover:opacity-80 text-white",
                       event.allDay && "font-medium"
@@ -220,7 +226,9 @@ export default function MonthView({ onEventClick, onDateClick }) {
                   >
                     {/* Hide time for all-day events */}
                     {!event.allDay && `${formatTime(event.start, timeFormat)} `}
-                    {event.title || '(No title)'}
+                    {(event.status || '').toLowerCase() === 'cancelled'
+                      ? `Cancelled · ${event.title || '(No title)'}`
+                      : (event.title || '(No title)')}
                   </div>
                 ))}
                 {dayEvents.length > 4 && (

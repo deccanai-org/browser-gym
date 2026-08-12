@@ -1,0 +1,20 @@
+{
+  "mode": "m312_mp038_m142_fairness_sol_gcp",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_episodes": 6,
+  "tasks": [
+    "mp_038/vireo_q7_cable_and_cheapest_case",
+    "M142/no_monitor_in_stock_high_rating"
+  ],
+  "entries": [
+    {"index": 0, "task_id": "mp_038/vireo_q7_cable_and_cheapest_case", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 1, "task_id": "mp_038/vireo_q7_cable_and_cheapest_case", "seed": 1, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 2, "task_id": "mp_038/vireo_q7_cable_and_cheapest_case", "seed": 2, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 3, "task_id": "M142/no_monitor_in_stock_high_rating", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 4, "task_id": "M142/no_monitor_in_stock_high_rating", "seed": 1, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 5, "task_id": "M142/no_monitor_in_stock_high_rating", "seed": 2, "model": "gpt-5.6-sol", "agent": "openai_pixel"}
+  ],
+  "notes": "2026-08-10: fairness retune — mp_038 demote gold cable in featured/search; M142 start on monitor search + explicit rating/stock copy. Sol 3-seed each."
+}

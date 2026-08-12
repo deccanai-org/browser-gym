@@ -65,9 +65,10 @@ export const Checkout = () => {
   const tax = money(discountedSubtotal * 0.085);
   const total = money(discountedSubtotal + shipping + giftWrapFee + tax);
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
+    if (loading) return;
     setLoading(true);
-    setTimeout(async () => {
+    try {
       // Honor a scheduled delivery date the customer picked in the cart (the
       // latest, since the order arrives when the last item does), ignoring any
       // in the past; otherwise default to the frozen-clock now + 5 days.
@@ -87,10 +88,13 @@ export const Checkout = () => {
         trackingNumber: null,
         estimatedDelivery
       };
+      // No fake delay in bridged mode — oracle/agents click Place order and
+      // immediately need the engine order to exist for the next milestone.
       const orderId = await placeOrder(orderData);
-      setLoading(false);
       navigate(`/order-confirmation/${orderId}`);
-    }, 1500);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // One CTA drives the whole flow so the sidebar MIRRORS the current step instead
@@ -174,6 +178,7 @@ export const Checkout = () => {
                         <div className="flex items-center gap-2">
                           <MapPin size={14} className="text-gray-500" />
                           <span className="font-bold">{addr.fullName}</span>
+                          {addr.label && <span className="text-xs font-medium text-gray-700">{addr.label}</span>}
                           {addr.isDefault && <span className="text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">Default</span>}
                         </div>
                         <div className="text-gray-600 mt-1">{addr.street}</div>
@@ -183,7 +188,7 @@ export const Checkout = () => {
                     </label>
                   ))}
                 </div>
-                <Button onClick={advance}>Use this address</Button>
+                <Button data-test-id="btn-use-address" onClick={advance}>Use this address</Button>
               </div>
             ) : (
               <div className="text-sm text-gray-600 flex items-center gap-2">
@@ -233,7 +238,7 @@ export const Checkout = () => {
                     </label>
                   ))}
                 </div>
-                <Button onClick={advance}>Use this payment method</Button>
+                <Button data-test-id="btn-use-payment" onClick={advance}>Use this payment method</Button>
               </div>
             ) : (
               step > 2 && (
@@ -265,7 +270,7 @@ export const Checkout = () => {
                   );
                 })}
                 <div className="border-t pt-4 mt-4">
-                  <Button onClick={advance} className="w-full md:w-auto" disabled={loading}>
+                  <Button data-test-id="btn-place-order" onClick={advance} className="w-full md:w-auto" disabled={loading}>
                     {loading ? 'Placing Order...' : 'Place your order'}
                   </Button>
                 </div>
@@ -280,8 +285,15 @@ export const Checkout = () => {
             {/* Contextual step CTA — mirrors the current step, so "Place your
                 order" only appears at review (steps 1/2 show Use this address /
                 Use this payment method) instead of a persistent grayed button. */}
-            <Button onClick={advance} className="w-full mb-4" disabled={loading}>
-              {ctaLabel}
+            {/* Only expose Place-order test-id / enabled CTA at review (step 3).
+                Earlier steps use btn-use-address / btn-use-payment in the form. */}
+            <Button
+              data-test-id={step >= 3 ? 'btn-place-order' : undefined}
+              onClick={advance}
+              className="w-full mb-4"
+              disabled={step < 3 || loading}
+            >
+              {step >= 3 ? (loading ? 'Placing Order...' : 'Place your order') : ctaLabel}
             </Button>
             <div className="flex items-center justify-center gap-1 text-[11px] text-gray-500 mb-3">
               <span className={step >= 1 ? 'font-bold text-xmazon-darkYellow' : ''}>Address</span>

@@ -1,0 +1,11 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 1,
+  "tasks": [
+    "mp_077/matched_pair_cancel_the_subscription_ambiguous"
+  ],
+  "entries": [
+    {"index": 0, "task_id": "mp_077/matched_pair_cancel_the_subscription_ambiguous", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"}
+  ]
+}

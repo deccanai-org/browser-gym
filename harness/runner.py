@@ -158,6 +158,8 @@ def _mock_start_path(app: str, gym_path: str | None) -> str | None:
     if app == "shop":
         if p == "/cart":
             return "/cart"
+        if p == "/checkout" or p.startswith("/checkout"):
+            return "/checkout"
         if p == "/search":
             return "/search" + q                       # keep ?q= & category
         if len(segs) == 2 and segs[0] == "product":
@@ -184,6 +186,13 @@ def _mock_start_path(app: str, gym_path: str | None) -> str | None:
     elif app == "food":
         if segs[:2] == ["food", "cart"]:
             return "/cart"
+        # Gym /food/restaurant/:id → uber mock /store/:id (RedirectToStore).
+        if len(segs) == 3 and segs[0] == "food" and segs[1] == "restaurant":
+            return f"/store/{segs[2]}"
+        if len(segs) == 3 and segs[0] == "food" and segs[1] == "order":
+            return f"/orders/{segs[2]}"
+        if segs[:2] == ["food", "orders"]:
+            return "/orders"
     return None
 
 
@@ -1279,7 +1288,13 @@ class BrowserCtx:
                     return hosted_app_url(app, self.app_sids[app], _mock_start_path(app, path))
             elif self.app_origins and self.bridge_url:
                 if app in self.app_origins:
-                    return bridged_app_url(self.app_origins, self.bridge_url, app)
+                    # Match hosted: keep /cart, /product/:id, etc. Dropping the
+                    # sub-path here sent every shop goto to "/" and broke oracles
+                    # that deep-link mid-episode (mp_059 gift-message cart flow).
+                    return bridged_app_url(
+                        self.app_origins, self.bridge_url, app,
+                        _mock_start_path(app, path),
+                    )
         return f"{self.server_url}{path}"
 
     async def open_app_tabs(self, apps: list[str], primary: str,

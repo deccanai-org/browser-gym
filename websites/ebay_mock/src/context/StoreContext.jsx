@@ -675,7 +675,28 @@ export const StoreProvider = ({ children }) => {
   };
 
   const createListing = (listing) => {
+    if (bridged()) {
+      return bridgeAct('market.create_listing', {
+        title: listing.title || '',
+        description: listing.description || '',
+        price: listing.price != null ? listing.price : (listing.buyItNowPrice || listing.startingBid || 0),
+        condition: listing.condition || 'Used',
+        category: listing.category || 'Electronics',
+        shipping: listing.shipping != null ? listing.shipping : 0,
+      }).then(r => {
+        applyEngine(dispatch, r);
+        return r;
+      });
+    }
     dispatch({ type: ACTIONS.CREATE_LISTING, payload: { listing } });
+  };
+
+  const cancelMembership = (keepPerks = false) => {
+    if (bridged()) {
+      return bridgeAct('market.cancel_membership', { keep_perks: keepPerks ? '1' : '0' })
+        .then(r => { applyEngine(dispatch, r); return r; });
+    }
+    return Promise.resolve({ ok: false, error: 'not_bridged' });
   };
 
   const endListing = (listingId) => {
@@ -701,6 +722,22 @@ export const StoreProvider = ({ children }) => {
   };
 
   const editListing = (listingId, updates) => {
+    if (bridged()) {
+      const price = updates.price != null ? updates.price
+        : (updates.buyItNowPrice != null ? updates.buyItNowPrice : undefined);
+      return bridgeAct('market.update_listing', {
+        listing_id: listingId,
+        title: updates.title || '',
+        description: updates.description != null ? updates.description : '',
+        price: price != null ? price : '',
+        condition: updates.condition || '',
+        category: updates.category || '',
+        shipping: updates.shipping != null ? updates.shipping : '',
+      }).then(r => {
+        applyEngine(dispatch, r);
+        return r;
+      });
+    }
     dispatch({ type: ACTIONS.EDIT_LISTING, payload: { listingId, updates, userId: state.currentUser.id } });
   };
 
@@ -821,6 +858,7 @@ export const StoreProvider = ({ children }) => {
       sendMessage,
       markMessageRead,
       createListing,
+      cancelMembership,
       editListing,
       endListing,
       leaveFeedback,

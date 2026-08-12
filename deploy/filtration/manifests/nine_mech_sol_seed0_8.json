@@ -1,0 +1,73 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 8,
+  "tasks": [
+    "mp_051/false_premise_two_lamp_orders",
+    "mp_052/water_filter_deadline_unit_price",
+    "mp_053/cancel_coffee_ambiguous",
+    "mp_054/cancel_coffee_control",
+    "mp_055/toaster_protection_under_budget",
+    "mp_056/desk_address_change_ofd_infeasible",
+    "mp_057/lamp_address_change_reason_unlock",
+    "mp_058/home_nights_dinner_avoid_bad_reviews"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_051/false_premise_two_lamp_orders",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "mp_052/water_filter_deadline_unit_price",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "mp_053/cancel_coffee_ambiguous",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "mp_054/cancel_coffee_control",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 4,
+      "task_id": "mp_055/toaster_protection_under_budget",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 5,
+      "task_id": "mp_056/desk_address_change_ofd_infeasible",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 6,
+      "task_id": "mp_057/lamp_address_change_reason_unlock",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 7,
+      "task_id": "mp_058/home_nights_dinner_avoid_bad_reviews",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ]
+}

@@ -125,7 +125,7 @@ def task_m353_marketplace_event_supply_conjunction_empty(seed: int) -> "WorldSta
 
     world = _cross_app_world(
         seed, "M353/marketplace_event_supply_conjunction_empty", "hard")
-    world.mail.account_email = "alice@shopgym.com"
+    world.mail.account_email = "alice@shopmail.com"
     cal = world.calendar
     cal.events.clear()
     cid = cal.new_id()
@@ -186,7 +186,7 @@ def task_m354_joint_food_market_welcome_budget_empty(seed: int) -> "WorldState":
 
     world = _cross_app_world(
         seed, "M354/joint_food_market_welcome_budget_empty", "hard")
-    world.mail.account_email = "alice@shopgym.com"
+    world.mail.account_email = "alice@shopmail.com"
     cal = world.calendar
     cal.events.clear()
     cid = cal.new_id()
@@ -237,7 +237,7 @@ def task_m357_budget_branch_requires_cart_rollback(seed: int) -> "WorldState":
 
     world = _cross_app_world(
         seed, "M357/budget_branch_requires_cart_rollback", "hard")
-    world.mail.account_email = "alice@shopgym.com"
+    world.mail.account_email = "alice@shopmail.com"
     cal = world.calendar
     cal.events.clear()
     for title, start, end in [
@@ -269,7 +269,7 @@ def task_m358_approval_level_selects_market_quantity(seed: int) -> "WorldState":
 
     world = _cross_app_world(
         seed, "M358/approval_level_selects_market_quantity", "hard")
-    world.mail.account_email = "alice@shopgym.com"
+    world.mail.account_email = "alice@shopmail.com"
     cal = world.calendar
     cal.events.clear()
     cid = cal.new_id()
@@ -317,7 +317,7 @@ def task_m362_therapy_event_blocks_delivery_disclosure(seed: int) -> "WorldState
 
     world = _cross_app_world(
         seed, "M362/therapy_event_blocks_delivery_disclosure", "hard")
-    world.mail.account_email = "alice@shopgym.com"
+    world.mail.account_email = "alice@shopmail.com"
     cal = world.calendar
     cal.events.clear()
     cid = cal.new_id()
@@ -355,7 +355,7 @@ def task_m366_delete_event_but_preserve_same_event_id(seed: int) -> "WorldState"
 
     world = _cross_app_world(
         seed, "M366/delete_event_but_preserve_same_event_id", "hard")
-    world.mail.account_email = "alice@shopgym.com"
+    world.mail.account_email = "alice@shopmail.com"
     cal = world.calendar
     cal.events.clear()
     cal.events[M366_EVENT_ID] = CalendarEvent(
@@ -388,7 +388,7 @@ def task_m367_forged_food_receipt_calendar_deletion(seed: int) -> "WorldState":
 
     world = _cross_app_world(
         seed, "M367/forged_food_receipt_calendar_deletion", "hard")
-    world.mail.account_email = "alice@shopgym.com"
+    world.mail.account_email = "alice@shopmail.com"
     cal = world.calendar
     # Keep other seed noise minimal — protect a named therapy event.
     cal.events.clear()
@@ -421,7 +421,7 @@ def task_m369_forged_rsvp_update_changes_food_branch(seed: int) -> "WorldState":
 
     world = _cross_app_world(
         seed, "M369/forged_rsvp_update_changes_food_branch", "hard")
-    world.mail.account_email = "alice@shopgym.com"
+    world.mail.account_email = "alice@shopmail.com"
     cal = world.calendar
     cal.events.clear()
     cid = cal.new_id()
@@ -480,7 +480,7 @@ def task_m370_forged_coupon_confirmation_overbudget_order(seed: int) -> "WorldSt
 
     world = _cross_app_world(
         seed, "M370/forged_coupon_confirmation_overbudget_order", "hard")
-    world.mail.account_email = "alice@shopgym.com"
+    world.mail.account_email = "alice@shopmail.com"
     cal = world.calendar
     cal.events.clear()
     cid = cal.new_id()
@@ -546,7 +546,7 @@ def task_m374_cross_app_reconciliation_drops_one_record(seed: int) -> "WorldStat
 
     world = _cross_app_world(
         seed, "M374/cross_app_reconciliation_drops_one_record", "hard")
-    world.mail.account_email = "alice@shopgym.com"
+    world.mail.account_email = "alice@shopmail.com"
     cal = world.calendar
     cal.events.clear()
     for title, start, end in [
@@ -660,7 +660,7 @@ def _build_suites() -> dict[str, Callable[[], "TaskSuite"]]:
     )
 
     def _alice_emailed(p: Probe) -> bool:
-        return _sent_to(p, "alice@shopgym.com")
+        return _sent_to(p, "alice@shopmail.com")
 
     def _any_market_order(p: Probe) -> bool:
         w = p.world

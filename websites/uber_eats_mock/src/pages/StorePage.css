@@ -331,6 +331,15 @@
   font-weight: 600;
 }
 
+.menu-item__eta {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: #1a1a1a;
+  background: #e8f5e9;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
 .menu-item__popular {
   font-size: var(--fs-xs);
   font-weight: 700;
@@ -364,24 +373,37 @@
   font-size: 36px;
 }
 
-/* Add button on item image */
-.menu-item__image::after {
-  content: '+';
+.menu-item__photo {
+  pointer-events: none;
+}
+
+/* Real clickable + (not the old decorative ::after, which stole the visual
+   target while the unstyled <button> sat under the photo and never fired). */
+.menu-item__add {
   position: absolute;
   bottom: -6px;
   right: -6px;
-  width: 28px;
-  height: 28px;
-  background: var(--color-white);
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin: 0;
   border: 1px solid var(--color-gray-200);
   border-radius: var(--radius-circle);
+  background: var(--color-white);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
+  line-height: 1;
   color: var(--color-black);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+
+.menu-item__add:hover {
+  background: var(--color-gray-50);
 }
 
 /* Reviews */

@@ -322,12 +322,36 @@ export const StoreProvider = ({ children }) => {
   };
 
   const cancelOrder = (orderId) => {
+    if (bridged()) {
+      return bridgeAct('shop.cancel_order', { order_id: orderId })
+        .then(r => { applyEngine(setState, r); return r; });
+    }
     setState(prev => ({
       ...prev,
       orders: prev.orders.map(order =>
         order.id === orderId ? { ...order, status: 'Cancelled' } : order
       )
     }));
+  };
+
+  const changeOrderAddress = (orderId, addressId, reason) => {
+    if (bridged()) {
+      return bridgeAct('shop.change_order_address', {
+        order_id: orderId,
+        address_id: addressId,
+        reason: reason || '',
+      }).then(r => { applyEngine(setState, r); return r; });
+    }
+    setState(prev => {
+      const addr = (prev.user.addresses || []).find(a => a.id === addressId);
+      if (!addr) return prev;
+      return {
+        ...prev,
+        orders: prev.orders.map(order =>
+          order.id === orderId ? { ...order, shippingAddress: addr } : order
+        ),
+      };
+    });
   };
 
   const voteHelpful = (reviewId) => {
@@ -445,8 +469,21 @@ export const StoreProvider = ({ children }) => {
     }));
   };
 
-  // Cancelling is the ONLY state change a subscription supports — there is no
-  // pause, by design.
+  // Pause keeps the plan but skips deliveries until resumed.
+  const pauseSubscription = (subscriptionId) => {
+    if (bridged()) {
+      bridgeAct('shop.pause_subscription', { subscription_id: subscriptionId })
+        .then(r => applyEngine(setState, r));
+      return;
+    }
+    setState(prev => ({
+      ...prev,
+      _gym_subscriptions: (prev._gym_subscriptions || []).map(s =>
+        s.id === subscriptionId ? { ...s, status: 'paused' } : s),
+    }));
+  };
+
+  // Cancelling is irreversible for the plan; prefer pause when only skipping a window.
   const cancelSubscription = (subscriptionId) => {
     if (bridged()) {
       bridgeAct('shop.cancel_subscription', { subscription_id: subscriptionId })
@@ -458,6 +495,47 @@ export const StoreProvider = ({ children }) => {
       _gym_subscriptions: (prev._gym_subscriptions || []).map(s =>
         s.id === subscriptionId ? { ...s, status: 'cancelled' } : s),
     }));
+  };
+
+  const changeOrderShipping = (orderId, shippingSpeed, estimatedDelivery = '') => {
+    if (bridged()) {
+      return bridgeAct('shop.change_order_shipping', {
+        order_id: orderId,
+        shipping_speed: shippingSpeed,
+        estimated_delivery: estimatedDelivery || '',
+      }).then(r => { applyEngine(setState, r); return r; });
+    }
+    setState(prev => ({
+      ...prev,
+      orders: prev.orders.map(order =>
+        order.id === orderId
+          ? {
+              ...order,
+              shippingSpeed,
+              estimatedDelivery: estimatedDelivery || order.estimatedDelivery,
+            }
+          : order
+      ),
+    }));
+    return Promise.resolve({ ok: true });
+  };
+
+  const changeOrderItemVariant = (orderId, itemId, variantId) => {
+    if (bridged()) {
+      return bridgeAct('shop.change_order_item_variant', {
+        order_id: orderId, item_id: itemId, variant_id: variantId,
+      }).then(r => { applyEngine(setState, r); return r; });
+    }
+    setState(prev => ({
+      ...prev,
+      orders: (prev.orders || []).map(order =>
+        order.id !== orderId ? order : {
+          ...order,
+          items: (order.items || []).map(it =>
+            it.id === itemId ? { ...it, variantId, variantLabel: variantId } : it),
+        }),
+    }));
+    return Promise.resolve({ ok: true });
   };
 
   // Filing a return is an irreversible commit, so it has to leave a record —
@@ -472,8 +550,10 @@ export const StoreProvider = ({ children }) => {
       const item = order && (order.items || []).find(i => i.productId === productId);
       const itemId = (item && item.id) || productId;
       const rm = refundMethod === 'original' ? 'original_payment' : refundMethod;
+      // item_ids MUST be a list. A bare string + doseq=True shreds the id into
+      // per-character keys and gym initiate_return never persists (mp_104 FN).
       bridgeAct('shop.create_return', {
-        order_id: orderId, item_ids: itemId, reason,
+        order_id: orderId, item_ids: itemId ? [itemId] : [], reason,
         refund_method: rm, notes,
       }).then(r => applyEngine(setState, r));
       return;
@@ -488,6 +568,31 @@ export const StoreProvider = ({ children }) => {
       orders: (prev.orders || []).map(o =>
         o.id === orderId ? { ...o, status: 'Returned' } : o),
     }));
+  };
+
+  // Customer Service Contact-us — must leave a durable SupportTicket (same
+  // class of bug as the old returns modal that only flipped local React state).
+  const createSupportTicket = ({ subject, body, channel = 'customer_service_form' }) => {
+    if (bridged()) {
+      return bridgeAct('shop.create_support_ticket', {
+        subject, body, channel,
+      }).then(r => {
+        applyEngine(setState, r);
+        return r;
+      });
+    }
+    const ticket = {
+      id: `TKT-${Date.now()}`,
+      user_id: (state.user && state.user.id) || 'u_alice',
+      subject, body, channel,
+      status: 'submitted',
+      created_at: new Date(gymNow(state)).toISOString(),
+    };
+    setState(prev => ({
+      ...prev,
+      _gym_support_tickets: [...(prev._gym_support_tickets || []), ticket],
+    }));
+    return Promise.resolve({ ok: true, ticket_id: ticket.id });
   };
 
   const enableTwoFa = (code) => {
@@ -578,6 +683,9 @@ export const StoreProvider = ({ children }) => {
       placeOrder,
       addReview,
       cancelOrder,
+      changeOrderAddress,
+      changeOrderShipping,
+      changeOrderItemVariant,
       voteHelpful,
       updateUserProfile,
       addAddress,
@@ -586,8 +694,10 @@ export const StoreProvider = ({ children }) => {
       setDefaultPaymentMethod,
       setLineOptions,
       createSubscription,
+      pauseSubscription,
       cancelSubscription,
       createReturn,
+      createSupportTicket,
       enableTwoFa,
       applyPromo,
     }}>

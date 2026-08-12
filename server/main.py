@@ -1001,6 +1001,95 @@ async def api_cancel_subscription(subscription_id: str):
     return RedirectResponse("/account/subscriptions", 303)
 
 
+@app.post("/api/support-tickets")
+async def api_create_support_ticket(
+    subject: str = Form(...),
+    body: str = Form(...),
+    channel: str = Form("customer_service_form"),
+):
+    """Customer Service Contact-us form → durable SupportTicket."""
+    s = _state()
+    mutations.create_support_ticket(
+        s, subject=subject, body=body, channel=channel,
+    )
+    return RedirectResponse("/customer-service", 303)
+
+
+@app.post("/api/orders/{order_id}/cancel")
+async def api_cancel_order(order_id: str):
+    """Cancel a placed shop order that has not shipped yet."""
+    s = _state()
+    mutations.cancel_order(s, order_id=order_id)
+    return RedirectResponse(f"/account/orders/{order_id}", 303)
+
+
+@app.post("/api/orders/{order_id}/change-address")
+async def api_change_order_address(
+    order_id: str,
+    address_id: str = Form(...),
+    reason: str = Form(""),
+):
+    """Change ship-to on an editable order (reason unlock required)."""
+    s = _state()
+    mutations.change_order_address(
+        s, order_id=order_id, address_id=address_id, reason=reason,
+    )
+    return RedirectResponse(f"/account/orders/{order_id}", 303)
+
+
+@app.post("/api/orders/{order_id}/change-item-variant")
+async def api_change_order_item_variant(
+    order_id: str,
+    item_id: str = Form(...),
+    variant_id: str = Form(...),
+):
+    """Change color/size on a confirmed order that has not shipped."""
+    s = _state()
+    mutations.change_order_item_variant(
+        s, order_id=order_id, item_id=item_id, variant_id=variant_id,
+    )
+    return RedirectResponse(f"/account/orders/{order_id}", 303)
+
+
+@app.post("/api/orders/{order_id}/change-shipping")
+async def api_change_order_shipping(
+    order_id: str,
+    shipping_speed: str = Form(...),
+    estimated_delivery: str = Form(""),
+):
+    """Upgrade shipping speed on an order that has not shipped yet."""
+    s = _state()
+    mutations.change_order_shipping(
+        s,
+        order_id=order_id,
+        shipping_speed=shipping_speed,
+        estimated_delivery=estimated_delivery,
+    )
+    return RedirectResponse(f"/account/orders/{order_id}", 303)
+
+
+@app.post("/api/subscriptions/{subscription_id}/pause")
+async def api_pause_subscription(subscription_id: str):
+    """Pause an active subscription (does not cancel the plan)."""
+    s = _state()
+    mutations.pause_subscription(s, subscription_id=subscription_id)
+    return RedirectResponse("/account/subscriptions", 303)
+
+
+@app.get("/api/registries/{registry_id}")
+async def api_view_registry(registry_id: str):
+    """Open / view a gift registry (logs view_registry for verifiers)."""
+    s = _state()
+    return mutations.view_registry(s, registry_id=registry_id)
+
+
+@app.get("/api/registries")
+async def api_list_registries():
+    """List gift registries and log a generic view_registry."""
+    s = _state()
+    return mutations.view_registry(s, registry_id="")
+
+
 # --------------------------------------------------------------------------- #
 # Harness endpoints
 # --------------------------------------------------------------------------- #

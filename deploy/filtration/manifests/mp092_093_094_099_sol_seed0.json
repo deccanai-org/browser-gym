@@ -1,0 +1,41 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 4,
+  "tasks": [
+    "mp_092/valuemart_leroy_bike_stand_helmet_absence_email",
+    "mp_093/thursday_team_meeting_cancelled_lunch_email",
+    "mp_094/shopgym_razer_expired_promo_email",
+    "mp_099/silent_noop_valuemart_monitor_comps"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_092/valuemart_leroy_bike_stand_helmet_absence_email",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "mp_093/thursday_team_meeting_cancelled_lunch_email",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "mp_094/shopgym_razer_expired_promo_email",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "mp_099/silent_noop_valuemart_monitor_comps",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+FROM us-central1-docker.pkg.dev/gemini-503300/gym-images/filtration-worker:latest
+COPY deploy/filtration/manifests/phase2_remaining27_tasks.txt /app/deploy/filtration/manifests/phase2_remaining27_tasks.txt
+COPY deploy/filtration/manifests/phase2_remaining27_sol_135.json /app/deploy/filtration/manifests/phase2_remaining27_sol_135.json
+COPY deploy/filtration/manifests/phase2_remaining27_opus_135.json /app/deploy/filtration/manifests/phase2_remaining27_opus_135.json

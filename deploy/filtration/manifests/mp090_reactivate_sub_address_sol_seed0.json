@@ -1,0 +1,17 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 1,
+  "tasks": [
+    "mp_090/reactivate_subscription_and_update_default_address"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_090/reactivate_subscription_and_update_default_address",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ]
+}

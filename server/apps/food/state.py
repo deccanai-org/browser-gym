@@ -23,6 +23,9 @@ class Dish:
     tags: list[str] = field(default_factory=list)
     emoji: str = "🍽️"
     popular: bool = False          # "best-seller" flag (decoy_salience perturbation later)
+    # Optional absolute arrival clock ("6:15 PM"). When set, cart/checkout/order
+    # ETA prefer this over the restaurant-level eta_label (per-SKU late traps).
+    eta_label: str | None = None
 
 
 @dataclass
@@ -35,6 +38,8 @@ class Restaurant:
     delivery_fee: float
     emoji: str = "🍴"
     dishes: list[Dish] = field(default_factory=list)
+    delivery_time_min: int = 20
+    delivery_time_max: int = 40
 
     def dish(self, dish_id: str) -> Dish | None:
         return next((d for d in self.dishes if d.id == dish_id), None)
@@ -47,11 +52,6 @@ class FoodCartItem:
     name: str
     unit_price: float
     quantity: int
-    # "no onions", "extra spicy" — the item modal has always collected this and
-    # had nowhere to put it. Distinct from FoodOrder.delivery_note, which is the
-    # instruction for the courier.
-    note: str = ""
-
 
 
 @dataclass
@@ -60,7 +60,8 @@ class FoodCart:
     restaurant_id: str | None = None       # food carts are single-restaurant
     # Task-local (M362): courier/restaurant delivery instruction at checkout.
     delivery_note: str = ""
-    promo_code: str = ""
+    # ISO date (YYYY-MM-DD) when scheduling delivery for a future day; None = ASAP.
+    scheduled_delivery: str | None = None
 
     def subtotal(self) -> float:
         return round(sum(i.unit_price * i.quantity for i in self.items), 2)
@@ -80,8 +81,11 @@ class FoodOrder:
     total: float
     placed_at: str
     eta_label: str                 # "7:20 PM"
-    status: str = "preparing"      # preparing | on_the_way | delivered | cancelled
+    status: str = "preparing"      # preparing | on_the_way | delivered
     delivery_note: str = ""        # persisted checkout instruction (M362)
+    delivery_mode: str = "delivery"  # delivery | pickup
+    # ISO date for schedule-ahead dinner nights; None = ASAP same-day.
+    scheduled_delivery: str | None = None
 
 
 @dataclass
@@ -89,12 +93,6 @@ class FoodState:
     restaurants: dict[str, Restaurant] = field(default_factory=dict)
     cart: FoodCart = field(default_factory=FoodCart)
     orders: dict[str, FoodOrder] = field(default_factory=dict)
-    # code -> percent off. The checkout has always had a promo box; without any
-    # codes behind it every entry was a silent no-op. A small default set makes
-    # the control real (and gives a wrong code something to be wrong against).
-    promos: dict[str, float] = field(default_factory=lambda: {
-        "EATS10": 0.10, "WELCOME15": 0.15,
-    })
     _next: int = 1
     # Task-local (M371): when set, the FoodOrderPlaced receipt subscriber DEFERS
     # delivery by this many steps (schedules DelayedFoodReceipt) instead of writing
@@ -103,6 +101,9 @@ class FoodState:
     # Task-local (M362): when True, the food-cart checkout form exposes a
     # delivery-instruction field. Not required for other tasks.
     enable_delivery_notes: bool = False
+    # Task-local: when True, cart checkout exposes a delivery-day picker and
+    # place_food_order persists scheduled_delivery onto FoodOrder.
+    enable_schedule_ahead: bool = False
 
     def new_order_id(self) -> str:
         oid = f"FOOD-{1040 + self._next}"

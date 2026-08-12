@@ -41,40 +41,6 @@ def mark_read(mail: MailState, email_id: str) -> dict[str, Any]:
     return {"ok": True, "email_id": email_id}
 
 
-def set_folder(mail: MailState, email_id: str, folder: str) -> dict[str, Any]:
-    """Move a message between folders — archive and delete are folder moves.
-
-    The message stays in whichever collection it lives in; `folder` is what the
-    mailbox filters on, so nothing is destroyed and a trashed mail can come back.
-    """
-    e = mail.get(email_id)
-    if e is None:
-        return {"ok": False, "error": "no such email"}
-    folder = (folder or "").strip().lower()
-    if folder not in ("inbox", "archive", "trash", "spam", "sent", "drafts"):
-        return {"ok": False, "error": "no such folder"}
-    e.folder = folder
-    return {"ok": True, "email_id": email_id, "folder": folder}
-
-
-def toggle_label(mail: MailState, email_id: str, label: str) -> dict[str, Any]:
-    """Add/remove a label. Starred and Important ride on labels rather than new
-    columns, which is also how the mock projection derives those two flags."""
-    e = mail.get(email_id)
-    if e is None:
-        return {"ok": False, "error": "no such email"}
-    label = (label or "").strip().lower()
-    if not label:
-        return {"ok": False, "error": "a label is required"}
-    labels = list(e.labels or [])
-    if label in labels:
-        labels.remove(label)
-    else:
-        labels.append(label)
-    e.labels = labels
-    return {"ok": True, "email_id": email_id, "labels": labels}
-
-
 def send_email(mail: MailState, *, to: str, subject: str,
                body: str = "", cc: str = "", bcc: str = "") -> dict[str, Any]:
     """Compose-and-send. Lands a copy in the Sent folder. Validates a
@@ -87,14 +53,15 @@ def send_email(mail: MailState, *, to: str, subject: str,
     if not subject:
         return {"ok": False, "error": "A subject is required."}
     eid = mail.new_id()
-    # cc/bcc are recipients too: a task that says "copy Dana" is only satisfiable
-    # if they end up somewhere a verifier can read. Fold them into `to` so the
-    # existing recipient checks see them, and keep the raw fields as well.
+    cc = (cc or "").strip()
+    bcc = (bcc or "").strip()
     all_to = ", ".join([x for x in (to, cc, bcc) if x and x.strip()])
     mail.sent[eid] = Email(
         id=eid, sender=mail.account_email, to=all_to,
         subject=subject, body=body or "",
         received_at=f"{SEED_DATE}T12:00:00", received_label="now",
         read=True, folder="sent",
+        cc=cc, bcc=bcc,
     )
-    return {"ok": True, "email_id": eid, "to": to, "subject": subject}
+    return {"ok": True, "email_id": eid, "to": to, "subject": subject,
+            "cc": cc, "bcc": bcc}

@@ -156,3 +156,115 @@ async def checkout(request: Request, address_id: str = Form(""), payment_id: str
         return RedirectResponse(f"/market/order/{r['order_id']}", 303)
     _deps["flash"](world.shop, "error", r.get("error", "Could not place order."))
     return RedirectResponse("/market/cart", 303)
+
+
+@router.post("/listings/create")
+async def listings_create(
+    request: Request,
+    title: str = Form(""),
+    description: str = Form(""),
+    price: str = Form(""),
+    condition: str = Form("Used"),
+    category: str = Form("Electronics"),
+    shipping: str = Form("0"),
+):
+    """JSON-friendly create listing for bridged ebay_mock sell flow."""
+    world = _deps["get_world"]()
+    try:
+        price_f = float(price)
+    except (TypeError, ValueError):
+        price_f = 0.0
+    try:
+        ship_f = float(shipping or 0)
+    except (TypeError, ValueError):
+        ship_f = 0.0
+    r = M.create_listing(
+        world,
+        market=world.market,
+        title=title,
+        description=description,
+        price=price_f,
+        condition=condition,
+        category=category,
+        shipping=ship_f,
+    )
+    if r.get("ok") and not r.get("noop"):
+        _deps["flash"](world.shop, "success", r.get("message") or "Listing published.")
+    elif r.get("ok") and r.get("noop"):
+        # Deliberate silent-noop success flash — UI looks successful.
+        _deps["flash"](world.shop, "success", r.get("message") or "Listing published.")
+    else:
+        _deps["flash"](world.shop, "error", r.get("error") or "Could not create listing.")
+    # Bridged clients prefer JSON; HTML form posts still redirect.
+    accept = (request.headers.get("accept") or "").lower()
+    if "application/json" in accept or request.headers.get("x-bridge"):
+        from fastapi.responses import JSONResponse
+        return JSONResponse(r)
+    return RedirectResponse("/market", 303)
+
+
+@router.post("/listings/update")
+async def listings_update(
+    request: Request,
+    listing_id: str = Form(""),
+    title: str = Form(""),
+    description: str = Form(""),
+    price: str = Form(""),
+    condition: str = Form(""),
+    category: str = Form(""),
+    shipping: str = Form(""),
+):
+    """JSON-friendly edit listing for bridged ebay_mock Save Changes."""
+    world = _deps["get_world"]()
+
+    def _opt(raw: str):
+        s = (raw or "").strip()
+        return s if s else None
+
+    price_arg = _opt(price)
+    ship_arg = _opt(shipping)
+    r = M.update_listing(
+        world,
+        market=world.market,
+        listing_id=listing_id,
+        title=_opt(title),
+        description=_opt(description) if description != "" else None,
+        price=price_arg,
+        condition=_opt(condition),
+        category=_opt(category),
+        shipping=ship_arg,
+    )
+    if r.get("ok"):
+        _deps["flash"](world.shop, "success", r.get("message") or "Listing updated.")
+    else:
+        _deps["flash"](world.shop, "error", r.get("error") or "Could not update listing.")
+    accept = (request.headers.get("accept") or "").lower()
+    if "application/json" in accept or request.headers.get("x-bridge"):
+        from fastapi.responses import JSONResponse
+        return JSONResponse(r)
+    return RedirectResponse("/market", 303)
+
+
+@router.get("/membership")
+async def membership_page(request: Request):
+    world = _deps["get_world"]()
+    return _render(request, "market/membership.html", market=world.market,
+                   membership=world.market.membership)
+
+
+@router.post("/membership/cancel")
+async def membership_cancel(request: Request, keep_perks: str = Form("0")):
+    world = _deps["get_world"]()
+    keep = str(keep_perks).lower() in ("1", "true", "yes", "on")
+    r = M.cancel_membership(world, market=world.market, keep_perks=keep)
+    if r.get("ok") and r.get("kept"):
+        _deps["flash"](world.shop, "success", r.get("message") or "Perks kept.")
+    elif r.get("ok"):
+        _deps["flash"](world.shop, "success", r.get("message") or "Cancelled.")
+    else:
+        _deps["flash"](world.shop, "error", r.get("error") or "Could not update membership.")
+    accept = (request.headers.get("accept") or "").lower()
+    if "application/json" in accept or request.headers.get("x-bridge"):
+        from fastapi.responses import JSONResponse
+        return JSONResponse(r)
+    return RedirectResponse("/market/membership", 303)

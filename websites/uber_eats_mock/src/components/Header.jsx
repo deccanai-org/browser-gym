@@ -16,27 +16,41 @@ export default function Header({ onCartClick, onMenuClick }) {
   const addressRef = useRef(null);
   const scheduleRef = useRef(null);
 
-  // "Now / Schedule" affordance — a real picker (was a dead <span> nested inside
-  // the address button). Slots are the next few half-hours + tomorrow noon.
+  // "Now / Schedule" affordance — same-day half-hours plus dinner slots for the
+  // next week (schedule-ahead nights). Uses gym clock when bridged.
   const scheduledTime = state.ui.scheduledTime;
   const scheduleLabel = scheduledTime?.label || 'Now';
   const scheduleSlots = useMemo(() => {
     const two = (n) => (n < 10 ? '0' + n : '' + n);
     const fmt = (dt) => { let h = dt.getHours(); const m = dt.getMinutes(); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return `${h}:${two(m)} ${ap}`; };
-    const now = new Date();
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const nowMs = (state && state._gym_now) || Date.now();
+    const now = new Date(nowMs);
     const base = new Date(now.getTime());
     base.setSeconds(0, 0);
     base.setMinutes(base.getMinutes() <= 30 ? 30 : 60);
     const slots = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 4; i++) {
       const s = new Date(base.getTime() + i * 30 * 60000);
       const day = s.getDate() === now.getDate() ? 'Today' : 'Tomorrow';
       slots.push({ label: `${day}, ${fmt(s)}`, iso: s.toISOString() });
     }
-    const tmr = new Date(now.getTime() + 24 * 3600 * 1000); tmr.setHours(12, 0, 0, 0);
-    slots.push({ label: `Tomorrow, ${fmt(tmr)}`, iso: tmr.toISOString() });
+    // Dinner evenings for the next 7 calendar days (YYYY-MM-DD iso date).
+    for (let d = 0; d < 7; d++) {
+      const s = new Date(now.getFullYear(), now.getMonth(), now.getDate() + d, 19, 0, 0, 0);
+      const y = s.getFullYear();
+      const mo = two(s.getMonth() + 1);
+      const da = two(s.getDate());
+      const isoDay = `${y}-${mo}-${da}`;
+      const labelDay = d === 0 ? 'Tonight' : `${dayNames[s.getDay()]} ${mo}/${da}`;
+      slots.push({
+        label: `${labelDay}, 7:00 PM dinner`,
+        iso: isoDay,
+        date: isoDay,
+      });
+    }
     return slots;
-  }, []);
+  }, [state && state._gym_now]);
 
   const cartCount = state.cart.items.reduce((sum, item) => sum + item.quantity, 0);
   const selectedAddress = state.user.addresses.find(a => a.id === state.ui.selectedAddressId) || state.user.addresses[0];
@@ -110,13 +124,17 @@ export default function Header({ onCartClick, onMenuClick }) {
         {/* Delivery/Pickup Toggle */}
         <div className="ue-header__mode-toggle">
           <button
+            type="button"
             className={`ue-header__mode-btn ${state.ui.deliveryMode === 'delivery' ? 'ue-header__mode-btn--active' : ''}`}
+            data-test-id="btn-delivery-mode-delivery"
             onClick={() => setDeliveryMode('delivery')}
           >
             Delivery
           </button>
           <button
+            type="button"
             className={`ue-header__mode-btn ${state.ui.deliveryMode === 'pickup' ? 'ue-header__mode-btn--active' : ''}`}
+            data-test-id="btn-delivery-mode-pickup"
             onClick={() => setDeliveryMode('pickup')}
           >
             Pickup
@@ -230,6 +248,7 @@ export default function Header({ onCartClick, onMenuClick }) {
           <button
             type="button"
             className="ue-header__address"
+            data-test-id="btn-schedule-when"
             onClick={() => setScheduleOpen(o => !o)}
             aria-haspopup="true"
             aria-expanded={scheduleOpen}
@@ -239,10 +258,11 @@ export default function Header({ onCartClick, onMenuClick }) {
             <ChevronDown size={14} className={scheduleOpen ? 'ue-header__chevron--open' : ''} />
           </button>
           {scheduleOpen && (
-            <div className="ue-header__address-dropdown" style={{ minWidth: 240 }}>
+            <div className="ue-header__address-dropdown" style={{ minWidth: 240 }} data-test-id="schedule-when-menu">
               <div className="ue-header__dropdown-title">When</div>
               <button
                 className={`ue-header__dropdown-item ${!scheduledTime ? 'ue-header__dropdown-item--active' : ''}`}
+                data-test-id="btn-schedule-now"
                 onClick={() => { setScheduledTime(null); setScheduleOpen(false); }}
               >
                 <Clock size={16} />
@@ -257,6 +277,7 @@ export default function Header({ onCartClick, onMenuClick }) {
                 <button
                   key={slot.iso}
                   className={`ue-header__dropdown-item ${scheduledTime?.iso === slot.iso ? 'ue-header__dropdown-item--active' : ''}`}
+                  data-test-id={`btn-schedule-slot-${slot.date || slot.iso}`}
                   onClick={() => { setScheduledTime(slot); setScheduleOpen(false); }}
                 >
                   <Clock size={16} />

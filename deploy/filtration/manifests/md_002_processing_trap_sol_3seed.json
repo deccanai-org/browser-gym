@@ -1,0 +1,36 @@
+{
+  "mode": "md_002_processing_trap_sol_3seed",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_tasks": 1,
+  "n_seeds": 3,
+  "n_episodes": 3,
+  "tasks": [
+    "md_002/kettle_chase_and_dishrack_reorder"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "md_002/kettle_chase_and_dishrack_reorder",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "md_002/kettle_chase_and_dishrack_reorder",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "md_002/kettle_chase_and_dishrack_reorder",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ],
+  "notes": "2026-08-10: md_002 retune — brief claims stuck in processing; ORD-KT-111 is delivered. Forbidden support chase; required VM dish rack + tell user delivered."
+}

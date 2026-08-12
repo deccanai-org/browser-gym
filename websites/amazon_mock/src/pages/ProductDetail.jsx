@@ -355,7 +355,7 @@ export const ProductDetail = () => {
                     {Array.from({length: Math.min(10, product.stockCount ?? 10)}, (_, i) => i + 1).map(n => <option key={n} value={n}>Qty: {n}</option>)}
                   </select>
 
-                  <Button className="w-full mb-2 text-sm" onClick={handleAddToCart}>Add to Cart</Button>
+                  <Button className="w-full mb-2 text-sm" data-test-id="btn-add-to-cart" onClick={handleAddToCart}>Add to Cart</Button>
                   {addedMsg && (
                     <div className={`mb-2 text-sm rounded px-2 py-1.5 flex items-center gap-1 border ${
                       addFailed
@@ -391,7 +391,7 @@ export const ProductDetail = () => {
                     </Button>
                   </div>
                   )}
-                  <Button variant="orange" className="w-full mb-4 text-sm" onClick={handleBuyNow}>Buy Now</Button>
+                  <Button variant="orange" className="w-full mb-4 text-sm" data-test-id="btn-buy-now" onClick={handleBuyNow}>Buy Now</Button>
                 </>
               )}
 

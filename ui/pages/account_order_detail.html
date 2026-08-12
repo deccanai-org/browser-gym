@@ -10,6 +10,22 @@
   </div>
   <div class="text-sm text-slate-500">Placed {{ order.placed_at }}</div>
 
+  {% if warranties %}
+  <div class="mt-4 space-y-2" data-test-id="order-warranty-section">
+    <h3 class="font-bold">Warranty</h3>
+    {% for w in warranties %}
+      <div data-test-id="warranty-status"
+           class="rounded border px-3 py-2 text-sm {% if w.expired %}bg-amber-50 border-amber-300 text-amber-900{% else %}bg-emerald-50 border-emerald-300 text-emerald-900{% endif %}">
+        <div class="font-semibold" data-test-id="warranty-status-label">{{ w.status_label }}</div>
+        <div class="text-xs opacity-90">
+          {{ w.product_name }} · Purchased {{ w.purchase_label }} ·
+          {{ w.window_label or ((w.months|string) + '-month') }} limited warranty from purchase date
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
   <h3 class="mt-4 font-bold">Items</h3>
   <ul class="ml-4 list-disc text-sm space-y-1" data-test-id="list-order-items">
     {% for it in order.items %}
@@ -30,11 +46,72 @@
     {% endfor %}
   </div>
 
-  <div class="mt-4 flex items-center gap-3">
+  <div class="mt-4 flex items-center gap-3 flex-wrap">
     <a href="/account/returns/new?order_id={{ order.id }}" data-test-id="btn-initiate-return"
        class="bg-amber-500 hover:bg-amber-400 text-slate-900 px-4 py-2 rounded font-bold">
       Initiate return
     </a>
+    {% if order.status in ('pending', 'confirmed', 'preparing') %}
+    <form action="/api/orders/{{ order.id }}/cancel" method="post"
+          data-test-id="form-cancel-order-{{ order.id }}">
+      <button type="submit" data-test-id="btn-cancel-order-{{ order.id }}"
+              class="bg-white border border-red-300 text-red-700 hover:bg-red-50 px-4 py-2 rounded font-bold">
+        Cancel order
+      </button>
+    </form>
+    {% endif %}
+  </div>
+
+  <div class="mt-6 border-t pt-4" data-test-id="order-address-change-panel">
+    <h3 class="font-bold mb-2">Change delivery address</h3>
+    {% if order.status in ('shipped', 'out_for_delivery', 'delivered', 'cancelled') %}
+    <p class="text-sm text-slate-500" data-test-id="lbl-address-change-locked">
+      Address change is unavailable while this order is
+      <span class="font-semibold">{{ order.status.replace('_', ' ') }}</span>.
+      Contact support or refuse/redirect with the carrier if needed.
+    </p>
+    {% else %}
+    <p class="text-sm text-slate-500 mb-3">
+      Select a reason for the change to unlock the address picker, then save.
+    </p>
+    <form action="/api/orders/{{ order.id }}/change-address" method="post"
+          class="space-y-3" data-test-id="form-change-order-address"
+          id="form-change-order-address">
+      <div>
+        <label for="select-address-change-reason" class="block text-xs font-semibold text-slate-600 uppercase mb-1">
+          Reason for change
+        </label>
+        <select id="select-address-change-reason" name="reason"
+                data-test-id="select-address-change-reason"
+                class="border border-slate-300 rounded px-3 py-2 text-sm w-full max-w-md"
+                onchange="(function(sel){var a=document.getElementById('select-order-new-address');var b=document.getElementById('btn-save-order-address');var ok=!!sel.value;a.disabled=!ok;b.disabled=!ok;a.classList.toggle('opacity-50',!ok);b.classList.toggle('opacity-50',!ok);})(this)">
+          <option value="">Select a reason…</option>
+          <option value="moved">I moved / new home address</option>
+          <option value="wrong_address">Wrong address on the order</option>
+          <option value="gift_redirect">Redirect as a gift</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label for="select-order-new-address" class="block text-xs font-semibold text-slate-600 uppercase mb-1">
+          New ship-to address
+        </label>
+        <select id="select-order-new-address" name="address_id"
+                data-test-id="select-order-new-address"
+                disabled
+                class="border border-slate-300 rounded px-3 py-2 text-sm w-full max-w-md opacity-50 bg-slate-100">
+          {% for a in user.addresses.values() %}
+          <option value="{{ a.id }}">{{ a.label }} — {{ a.line1 }}, {{ a.city }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" id="btn-save-order-address" disabled
+              data-test-id="btn-save-order-address"
+              class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded font-bold opacity-50">
+        Save new address
+      </button>
+    </form>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

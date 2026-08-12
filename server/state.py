@@ -108,6 +108,8 @@ class PaymentMethod:
     is_default: bool = False
     expires: str = ""              # "MM/YY"
     nickname: str = ""
+    # Gift-card / store-credit remaining balance. None for ordinary cards.
+    balance: float | None = None
 
 
 @dataclass
@@ -120,6 +122,7 @@ class User:
     payment_methods: dict[str, PaymentMethod] = field(default_factory=dict)
     two_fa_enabled: bool = False
     loyalty_tier: Literal["basic", "silver", "gold"] = "basic"
+    loyalty_points: int = 0
 
 
 # --------------------------------------------------------------------------- #
@@ -219,6 +222,32 @@ class Order:
     shipments: list[Shipment] = field(default_factory=list)
     is_subscription: bool = False
     subscription_id: str | None = None
+    # Post-order shipping speed ("standard" | "express" | "overnight").
+    # Tip UI can upgrade before the package ships (change_order_shipping).
+    shipping_speed: str = "standard"
+    # Optional seed-only target ETA shown when upgrading to Express (tip UI).
+    express_eta: str = ""
+
+
+# --------------------------------------------------------------------------- #
+# Gift registries (wedding / baby lists with purchased qty)
+# --------------------------------------------------------------------------- #
+
+@dataclass
+class RegistryItem:
+    product_id: str
+    name: str
+    price: float
+    quantity_requested: int = 1
+    quantity_purchased: int = 0
+
+
+@dataclass
+class GiftRegistry:
+    id: str
+    owner_name: str
+    event_title: str
+    items: list[RegistryItem] = field(default_factory=list)
 
 
 # --------------------------------------------------------------------------- #
@@ -236,6 +265,27 @@ class ReturnRequest:
     status: ReturnStatus = "initiated"
     created_at: str = ""
     notes: str = ""
+
+
+# --------------------------------------------------------------------------- #
+# Customer Service / support tickets (Contact-us form)
+# --------------------------------------------------------------------------- #
+
+@dataclass
+class SupportTicket:
+    """Durable record of a ShopGym Customer Service Contact-us submission.
+
+    The /customer-service form used to only flip local React ``sent`` state; claim
+    text never reached the engine. Tickets are the omniscient verifier surface for
+    that channel (sibling of mail.sent for emailed support claims).
+    """
+    id: str
+    user_id: str
+    subject: str
+    body: str
+    channel: str = "customer_service_form"
+    status: str = "submitted"
+    created_at: str = ""
 
 
 # --------------------------------------------------------------------------- #
@@ -289,30 +339,13 @@ class GymState:
     cart: Cart = field(default_factory=Cart)
     orders: dict[str, Order] = field(default_factory=dict)
     returns: dict[str, ReturnRequest] = field(default_factory=dict)
+    support_tickets: dict[str, SupportTicket] = field(default_factory=dict)
     subscriptions: dict[str, Subscription] = field(default_factory=dict)
+    registries: dict[str, GiftRegistry] = field(default_factory=dict)
 
     # Trail (for verifiers)
     action_log: list[dict[str, Any]] = field(default_factory=list)
     flash_messages: list[dict[str, str]] = field(default_factory=list)
-
-    @property
-    def mint_counts(self) -> dict[tuple[int, str], int]:
-        """Per-(step, prefix) counter behind the deterministic ids in mutations.py.
-
-        Deliberately NOT a dataclass field. It is bookkeeping, not world state, and
-        a field would ride along in `asdict(world)` — which the checkout-parity
-        test reads to assert that a checkout changes NOTHING outside the cart, the
-        orders and the mail. That test caught exactly this and was right to.
-
-        It also does not need to survive a restore: `apply_snapshot` overlays only
-        the mutable slice, and the STEP CLOCK it does restore is what keeps the
-        next mint from colliding with one made before the checkpoint.
-        """
-        counts = getattr(self, "_mint_counts", None)
-        if counts is None:
-            counts = {}
-            object.__setattr__(self, "_mint_counts", counts)
-        return counts
 
     def to_json(self) -> dict[str, Any]:
         """Compact JSON snapshot for verifier inspection. The UI does its
@@ -336,30 +369,18 @@ class GymState:
             },
             "orders": {oid: asdict(o) for oid, o in self.orders.items()},
             "returns": {rid: asdict(r) for rid, r in self.returns.items()},
+            "support_tickets": {
+                tid: asdict(t) for tid, t in self.support_tickets.items()
+            },
             "subscriptions": {
                 sid: asdict(s) for sid, s in self.subscriptions.items()
+            },
+            "registries": {
+                rid: asdict(r) for rid, r in self.registries.items()
             },
             "products_count": len(self.products),
             "action_log": list(self.action_log),
             "flash_messages": list(self.flash_messages),
-        }
-
-    def stock_map(self) -> dict[str, Any]:
-        """Per-product (and per-variant) stock — mutable catalog state.
-
-        Deliberately NOT part of `to_json()`: that snapshot is a published
-        contract (verifier paths, seed goldens, the db-vs-factory byte-equality
-        tests), and widening it churns all three. But stock IS mutated — placing
-        an order decrements it (`mutations.py`) — so a world restored without it
-        silently restocks everything the annotator bought. Suspend/resume asks
-        for this separately and overlays it via `statecodec`.
-        """
-        return {
-            p.id: (
-                p.stock if not p.variants
-                else {"_": p.stock, **{v.id: v.stock for v in p.variants}}
-            )
-            for p in self.products.values()
         }
 
 
@@ -389,18 +410,7 @@ def flash(state: GymState, kind: str, body: str) -> None:
 
 
 #: Headers a REFUSED form action carries, so a caller that is not a browser can
-#: tell a refusal from a success.
-#:
-#: The mutation routes redirect on BOTH outcomes -- deliberately, because the
-#: browser agent drives real HTML forms and a redirect is what a form does. But
-#: the bridge reads only the status code, so `ok = status in (200, 201, 302,
-#: 303)` called every refusal a success: a click on a product the engine does not
-#: know answered {"ok": true}, the cart stayed empty, and the mock flashed "Added
-#: 1 to cart" over the top of it. The annotator is told their click worked, the
-#: trajectory records that it worked, and only the world disagrees.
-#:
-#: A header keeps the HTML flow byte-identical -- no browser reads it -- while
-#: giving the bridge the one bit it was missing.
+#: tell a rejected mutation from a successful redirect.
 REFUSED_HEADER = "X-Gym-Refused"
 REFUSED_REASON_HEADER = "X-Gym-Refused-Reason"
 

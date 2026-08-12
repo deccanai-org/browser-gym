@@ -1,0 +1,17 @@
+# Overlay mp LH∩RUNNABLE tasks + shipping_cost market projection onto filtration-worker:latest.
+FROM us-central1-docker.pkg.dev/gemini-503300/gym-images/filtration-worker:latest
+COPY server /app/server
+COPY tools/seed_to_cuagym.py /app/tools/seed_to_cuagym.py
+COPY deploy/filtration/manifests/mp_lh_runnable_tasks.txt /app/deploy/filtration/manifests/mp_lh_runnable_tasks.txt
+COPY deploy/filtration/manifests/mp_lh_runnable_sol_seed0_8.json /app/deploy/filtration/manifests/mp_lh_runnable_sol_seed0_8.json
+COPY verify_mp_lh.py /tmp/verify_mp_lh.py
+ENV PYTHONPATH=/app
+ENV AGENT_MAX_STEPS=80
+RUN set -e; \
+  DP="$(python -c "import sys; print([p for p in sys.path if p.endswith('dist-packages') or p.endswith('site-packages')][0])")"; \
+  echo "dist-packages=$DP"; \
+  rm -rf "$DP/server"; \
+  cp -a /app/server "$DP/server"; \
+  mkdir -p "$DP/tools"; \
+  cp /app/tools/seed_to_cuagym.py "$DP/tools/seed_to_cuagym.py"; \
+  python /tmp/verify_mp_lh.py

@@ -41,7 +41,7 @@ def task_m383_internal_workshop_company_addresses_only(seed: int) -> "WorldState
     from server.tasks import _cross_app_world
 
     world = _cross_app_world(seed, TASK_ID, "hard")
-    world.mail.account_email = "alice@shopgym.com"
+    world.mail.account_email = "alice@shopmail.com"
     world.mail.sent.clear()
 
     cal = world.calendar
@@ -138,7 +138,7 @@ def _build_suites() -> dict[str, Callable[[], "TaskSuite"]]:
 
         def _alice_confirmed(p: Probe) -> bool:
             return any(
-                "alice@shopgym.com" in (getattr(message, "to", "") or "").lower()
+                "alice@shopmail.com" in (getattr(message, "to", "") or "").lower()
                 for message in _sent_list(p)
             )
 

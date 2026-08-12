@@ -1,0 +1,7 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 1,
+  "tasks": ["mp_093/thursday_team_meeting_cancelled_lunch_email"],
+  "entries": [{"index": 0, "task_id": "mp_093/thursday_team_meeting_cancelled_lunch_email", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"}]
+}

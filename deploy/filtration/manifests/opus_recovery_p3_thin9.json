@@ -1,0 +1,83 @@
+{
+  "mode": "opus_recovery_p3",
+  "model": "claude-opus-5",
+  "agent": "pixel",
+  "preset": "opus",
+  "n_tasks": 5,
+  "n_seeds": "mixed",
+  "n_episodes": 9,
+  "tasks": [
+    "M220/address_change_no_propagate",
+    "M210/split_ship_schedule_collapse",
+    "M102/qty_shipto_corporate",
+    "M213/default_card_swap_then_confirm",
+    "M115/wrong_item_warranty_then_reorder_dead_card"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "M220/address_change_no_propagate",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "M220/address_change_no_propagate",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "M210/split_ship_schedule_collapse",
+      "seed": 1,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "M210/split_ship_schedule_collapse",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 4,
+      "task_id": "M210/split_ship_schedule_collapse",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 5,
+      "task_id": "M102/qty_shipto_corporate",
+      "seed": 2,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 6,
+      "task_id": "M102/qty_shipto_corporate",
+      "seed": 3,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 7,
+      "task_id": "M213/default_card_swap_then_confirm",
+      "seed": 4,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    },
+    {
+      "index": 8,
+      "task_id": "M115/wrong_item_warranty_then_reorder_dead_card",
+      "seed": 0,
+      "model": "claude-opus-5",
+      "agent": "pixel"
+    }
+  ],
+  "recovery_priority": "p3_thin9",
+  "note": "Opus credit recovery 51-episode plan 2026-08-05"
+}

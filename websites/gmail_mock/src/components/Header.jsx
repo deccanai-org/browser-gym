@@ -162,7 +162,7 @@ const ProfileDropdown = ({ onClose }) => {
           className="border border-gray-200 mb-2"
         />
         <p className="font-medium text-gray-900 text-base">{state.user.username}</p>
-        <p className="text-sm text-gray-500">{state.user.email}</p>
+        <p className="text-sm text-gray-500" data-test-id="mail-account">{state.user.email}</p>
       </div>
       <div className="py-2">
         {/* Both entries used to only raise a "not available in this mock" toast. */}

@@ -12,18 +12,17 @@ parse args, call a mutation, and return its result.
 
 from __future__ import annotations
 
-import hashlib
+import secrets
 import uuid
 from dataclasses import asdict
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
 from server import catalog
-from server import ambient
 from server.state import (
     Address, Cart, CartItem, GymState, Order, OrderItem,
     PaymentMethod, ReturnRequest, RefundMethod, Shipment, ShipmentEvent,
-    Subscription, User, flash, log_action,
+    Subscription, SupportTicket, User, flash, log_action,
 )
 
 
@@ -36,86 +35,12 @@ GIFT_WRAP_FEE = 4.99
 # Helpers
 # --------------------------------------------------------------------------- #
 
-# The determinism contract, stated where it is enforced.
-#
-# The whole project rests on a byte-reproducible reset: fork-before-step-N,
-# replay validation and the golden export all compare world hashes, and every one
-# of them fails if the same actions from the same seed produce a different world.
-# `secrets.token_hex` and `datetime.now()` broke that by construction — an id
-# minted here lands in the order record, the confirmation email body, the tracking
-# URL and the cross-app event payload, so ONE random id makes every world from
-# that action onward differ. Measured across the archive: the step at which a
-# run's first random id appears predicted its replay coverage exactly, five for
-# five (M57 17 steps/first id at 4 -> 4 worlds; M70 14/13 -> 13).
-#
-# Both are now derived from state the gym already restores: the task, the seed and
-# the deterministic step clock, plus a counter that distinguishes several mints
-# within one step. Nothing is stored that a checkpoint would have to carry —
-# `apply_snapshot` overlays only the mutable slice, so a stored counter would come
-# back as zero and remint ids that already exist.
-_EPOCH = datetime(2026, 1, 1, tzinfo=timezone.utc)
-
-# The world's frozen "today" (== mail SEED_DATE, 2026-05-21). Delivery estimates
-# and subscription dates must be derived from THIS, never the real wall clock, or
-# a placed order shows a delivery date days from whenever the run happens.
-_WORLD_TODAY = datetime(2026, 5, 21, tzinfo=timezone.utc)
-_WORLD_TODAY_ISO = _WORLD_TODAY.date().isoformat()
+def _now() -> str:
+    return datetime.now(timezone.utc).isoformat()
 
 
-
-def _catalog(state: GymState, product_id: str):
-    """A product by id, from the task's catalog or the ambient one.
-
-    The storefront shows both — four fifths of what a ShopGym annotator can see
-    is ambient filler — but only the task's own products live in
-    `state.products`, which is what the world hash and every verifier read. So
-    the ambient half is looked up separately: addable, priceable, and
-    structurally invisible to anything reading the world. See server/ambient.py.
-    """
-    return state.products.get(product_id) or ambient.shop(product_id)
-
-
-def _catalog_or_raise(state: GymState, product_id: str):
-    """For the paths that cannot proceed without the product — pricing a line,
-    building an order item. These used `state.products[pid]`, so a miss raised
-    KeyError; keep it a named failure rather than an AttributeError on None."""
-    p = _catalog(state, product_id)
-    if p is None:
-        raise KeyError(f"no such product in the task or ambient catalog: {product_id!r}")
-    return p
-
-
-def _mint_seq(state: GymState, key: str) -> int:
-    """A counter scoped to (step, key), so two orders placed in one step differ
-    while a replay of that step reproduces both."""
-    counts = state.mint_counts
-    slot = (state.step, key)
-    n = counts.get(slot, 0)
-    counts[slot] = n + 1
-    return n
-
-
-def _now(state: GymState) -> str:
-    """A timestamp derived from the deterministic clock.
-
-    Only ORDERING is ever read off these (verifiers sort by `placed_at`), so a
-    monotonic derived time serves every real use while a wall-clock reading
-    breaks every hash comparison — two replays of one action differed by
-    microseconds, which is all it takes.
-    """
-    offset = timedelta(seconds=state.step * 60 + _mint_seq(state, "@clock"))
-    return (_EPOCH + offset).isoformat()
-
-
-def _new_id(state: GymState, prefix: str) -> str:
-    """A stable id for a newly created entity.
-
-    Derived, not random, so replaying the same action from the same state mints
-    the same id. Distinct from every seeded fixture id, which use a readable
-    suffix (`pay_visa`, `addr_home`) or a hyphen (`ORD-5290`).
-    """
-    seed_material = f"{state.task_id}|{state.seed}|{prefix}|{state.step}|{_mint_seq(state, prefix)}"
-    return f"{prefix}_{hashlib.blake2s(seed_material.encode(), digest_size=4).hexdigest()}"
+def _new_id(prefix: str) -> str:
+    return f"{prefix}_{secrets.token_hex(4)}"
 
 
 def _require_login(state: GymState) -> str | None:
@@ -127,7 +52,7 @@ def _require_login(state: GymState) -> str | None:
 
 def _resolve_unit_price(state: GymState, product_id: str,
                        variant_id: str | None) -> float:
-    p = _catalog_or_raise(state, product_id)
+    p = state.products[product_id]
     if not variant_id:
         return p.base_price
     for v in p.variants:
@@ -140,7 +65,7 @@ def _resolve_variant_label(state: GymState, product_id: str,
                           variant_id: str | None) -> str:
     if not variant_id:
         return ""
-    p = _catalog(state, product_id)
+    p = state.products.get(product_id)
     if not p:
         return ""
     for v in p.variants:
@@ -189,7 +114,7 @@ def add_address(state: GymState, label: str, full_name: str, line1: str,
         flash(state, "error", "Please fill in every required field.")
         log_action(state, "add_address_failed", reason="missing fields")
         return {"ok": False, "error": "missing fields"}
-    addr_id = _new_id(state, "addr")
+    addr_id = _new_id("addr")
     new_addr = Address(
         id=addr_id, label=label, full_name=full_name,
         line1=line1, line2=line2, city=city, state=st, zip=zip_,
@@ -233,7 +158,7 @@ def add_payment_method(state: GymState, label: str, kind: str,
         log_action(state, "add_payment_failed", reason="missing card fields")
         return {"ok": False, "error": "missing card fields"}
     last4 = (card_number[-4:] if card_number else "0000")
-    pay_id = _new_id(state, "pay")
+    pay_id = _new_id("pay")
     pm = PaymentMethod(
         id=pay_id,
         label=label or f"{kind.title()} ****{last4}",
@@ -285,13 +210,13 @@ def enable_two_fa(state: GymState, code: str) -> dict[str, Any]:
 # Cart
 # --------------------------------------------------------------------------- #
 
-def _line_id(state: GymState) -> str:
-    return _new_id(state, "ln")
+def _line_id() -> str:
+    return _new_id("ln")
 
 
 def add_to_cart(state: GymState, product_id: str, quantity: int,
                 variant_id: str | None = None) -> dict[str, Any]:
-    p = _catalog(state, product_id)
+    p = state.products.get(product_id)
     if p is None:
         return {"ok": False, "error": "unknown product"}
     if quantity <= 0:
@@ -322,7 +247,7 @@ def add_to_cart(state: GymState, product_id: str, quantity: int,
             return {"ok": False, "error": "out of stock"}
 
     item = CartItem(
-        id=_line_id(state), product_id=product_id, variant_id=variant_id,
+        id=_line_id(), product_id=product_id, variant_id=variant_id,
         quantity=quantity,
     )
     state.cart.items.append(item)
@@ -345,7 +270,7 @@ def update_line(state: GymState, line_id: str, *,
     if quantity is not None:
         if quantity <= 0:
             return remove_line(state, line_id)
-        p = _catalog(state, line.product_id)
+        p = state.products.get(line.product_id)
         if p is None:
             return {"ok": False, "error": "unknown product"}
         max_stock = (
@@ -363,10 +288,7 @@ def update_line(state: GymState, line_id: str, *,
     if ship_to_address_id is not None:
         line.ship_to_address_id = ship_to_address_id
     if scheduled_delivery is not None:
-        # Normalize a cleared field to None so the world has exactly one shape for
-        # "no scheduled delivery" — seeds, verifiers and the order projection all
-        # test this for absence, and "" vs None would be two spellings of it.
-        line.scheduled_delivery = scheduled_delivery.strip() or None
+        line.scheduled_delivery = scheduled_delivery
     log_action(state, "update_line", line_id=line_id,
                changes={k: v for k, v in locals().items()
                         if k not in ("state", "line", "p", "max_stock")
@@ -415,7 +337,7 @@ def apply_promo(state: GymState, code: str) -> dict[str, Any]:
     if promo.applies_to_category or promo.applies_to_product_id:
         eligible = False
         for line in state.cart.items:
-            p = _catalog(state, line.product_id)
+            p = state.products.get(line.product_id)
             if p is None:
                 continue
             if promo.applies_to_product_id and p.id == promo.applies_to_product_id:
@@ -465,7 +387,7 @@ def _promo_discount_on_eligible(state: GymState) -> float:
         return 0.0
     eligible_subtotal = 0.0
     for line in state.cart.items:
-        p = _catalog(state, line.product_id)
+        p = state.products.get(line.product_id)
         if p is None:
             continue
         if promo.applies_to_product_id and p.id != promo.applies_to_product_id:
@@ -508,7 +430,7 @@ def place_order(state: GymState, payment_id: str,
 
     items_resolved: list[OrderItem] = []
     for line in state.cart.items:
-        p = _catalog(state, line.product_id)
+        p = state.products.get(line.product_id)
         if p is None:
             return {"ok": False, "error": f"unknown product {line.product_id}"}
         addr_for_line = line.ship_to_address_id or default_address_id
@@ -538,29 +460,20 @@ def place_order(state: GymState, payment_id: str,
     for oi in items_resolved:
         by_addr.setdefault(oi.ship_to_address_id, []).append(oi.id)
 
-    order_id = _new_id(state, "ord").upper()
-    # Default estimate: 3 days off the FROZEN world clock (never the wall clock).
-    _default_eta = (_WORLD_TODAY + timedelta(days=3)).date().isoformat()
+    order_id = _new_id("ord").upper()
     shipments: list[Shipment] = []
     for addr_id, item_ids in by_addr.items():
-        # Honor a customer-picked scheduled delivery date — the latest among this
-        # shipment's items (it arrives when the last item does), and only if it's
-        # not in the past. Otherwise fall back to the frozen-clock default.
-        _sched = [oi.scheduled_delivery for oi in items_resolved
-                  if oi.id in item_ids and oi.scheduled_delivery
-                  and oi.scheduled_delivery >= _WORLD_TODAY_ISO]
         sh = Shipment(
-            id=_new_id(state, "sh"),
-            # Also derived: a tracking number is embedded in the shipment record
-            # AND rendered into the confirmation email body, so a random one
-            # diverges the world twice over.
-            tracking_number=f"1Z{_new_id(state, 'trk').split('_', 1)[1].upper()}{_mint_seq(state, 'trk#'):04X}",
+            id=_new_id("sh"),
+            tracking_number=f"1Z{secrets.token_hex(6).upper()}",
             carrier="USPS",
             item_ids=item_ids,
             status="confirmed",
-            estimated_delivery=max(_sched) if _sched else _default_eta,
+            estimated_delivery=(
+                datetime.now(timezone.utc) + timedelta(days=3)
+            ).date().isoformat(),
             events=[ShipmentEvent(
-                timestamp=_now(state),
+                timestamp=_now(),
                 status="label_created",
                 detail="Shipping label created.",
             )],
@@ -568,7 +481,7 @@ def place_order(state: GymState, payment_id: str,
         shipments.append(sh)
 
     order = Order(
-        id=order_id, user_id=uid, placed_at=_now(state),
+        id=order_id, user_id=uid, placed_at=_now(),
         items=items_resolved,
         subtotal=subtotal, discount=discount, tax=tax,
         shipping=shipping, total=total,
@@ -580,7 +493,7 @@ def place_order(state: GymState, payment_id: str,
 
     # Decrement inventory.
     for oi in items_resolved:
-        p = _catalog_or_raise(state, oi.product_id)
+        p = state.products[oi.product_id]
         if oi.variant_id:
             for v in p.variants:
                 if v.id == oi.variant_id:
@@ -608,6 +521,10 @@ def initiate_return(state: GymState, order_id: str,
     order = state.orders.get(order_id)
     if order is None or order.user_id != uid:
         return {"ok": False, "error": "order not found"}
+    # Bridge used to send item_ids as a bare string; keep a single-id string
+    # working. Per-character shredded lists still fail (unknown items).
+    if isinstance(item_ids, str):
+        item_ids = [item_ids]
     valid_item_ids = {oi.id for oi in order.items}
     bad = [i for i in item_ids if i not in valid_item_ids]
     if bad:
@@ -615,14 +532,14 @@ def initiate_return(state: GymState, order_id: str,
     if refund_method not in ("original_payment", "store_credit"):
         return {"ok": False, "error": "invalid refund_method"}
 
-    ret_id = _new_id(state, "ret").upper()
+    ret_id = _new_id("ret").upper()
     state.returns[ret_id] = ReturnRequest(
         id=ret_id, order_id=order_id, user_id=uid,
         item_ids=list(item_ids),
         reason=reason,
         refund_method=refund_method,
         status="initiated",
-        created_at=_now(state),
+        created_at=_now(),
         notes=notes,
     )
     log_action(state, "initiate_return",
@@ -631,6 +548,76 @@ def initiate_return(state: GymState, order_id: str,
                refund_method=refund_method)
     flash(state, "success", f"Return {ret_id} initiated.")
     return {"ok": True, "return_id": ret_id}
+
+
+def change_order_item_variant(
+    state: GymState,
+    order_id: str,
+    item_id: str,
+    variant_id: str,
+) -> dict[str, Any]:
+    """Swap color/size on a confirmed order that has not shipped."""
+    uid = _require_login(state)
+    if uid is None:
+        return {"ok": False, "error": "not logged in"}
+    order = state.orders.get(order_id)
+    if order is None or order.user_id != uid:
+        return {"ok": False, "error": "order not found"}
+    if order.status in ("shipped", "out_for_delivery", "delivered", "cancelled"):
+        flash(state, "error", "This order can no longer change options.")
+        return {"ok": False, "error": "not editable", "status": order.status}
+    item = next((it for it in order.items if it.id == item_id), None)
+    if item is None:
+        return {"ok": False, "error": "item not found"}
+    product = state.products.get(item.product_id)
+    if product is None:
+        return {"ok": False, "error": "unknown product"}
+    variant = next(
+        (v for v in (product.variants or []) if v.id == variant_id), None
+    )
+    if variant is None:
+        return {"ok": False, "error": "unknown variant"}
+    item.variant_id = variant_id
+    item.variant_label = variant.label
+    log_action(
+        state, "change_order_item_variant",
+        order_id=order_id, item_id=item_id, variant_id=variant_id,
+        variant_label=variant.label,
+    )
+    flash(state, "success", f"Updated to {variant.label}.")
+    return {"ok": True, "variant_id": variant_id, "variant_label": variant.label}
+
+
+def create_support_ticket(
+    state: GymState,
+    subject: str,
+    body: str,
+    channel: str = "customer_service_form",
+) -> dict[str, Any]:
+    """Persist a Customer Service Contact-us submission as a SupportTicket."""
+    uid = _require_login(state)
+    if uid is None:
+        return {"ok": False, "error": "not logged in"}
+    subject = (subject or "").strip()
+    body = (body or "").strip()
+    if not subject or not body:
+        return {"ok": False, "error": "subject and body required"}
+    channel = (channel or "customer_service_form").strip() or "customer_service_form"
+
+    ticket_id = _new_id("tkt").upper()
+    state.support_tickets[ticket_id] = SupportTicket(
+        id=ticket_id,
+        user_id=uid,
+        subject=subject,
+        body=body,
+        channel=channel,
+        status="submitted",
+        created_at=_now(),
+    )
+    log_action(state, "create_support_ticket",
+               ticket_id=ticket_id, channel=channel, subject=subject)
+    flash(state, "success", f"Support ticket {ticket_id} submitted.")
+    return {"ok": True, "ticket_id": ticket_id}
 
 
 def cancel_order(state: GymState, order_id: str) -> dict[str, Any]:
@@ -643,11 +630,70 @@ def cancel_order(state: GymState, order_id: str) -> dict[str, Any]:
     if order.status in ("shipped", "out_for_delivery", "delivered"):
         flash(state, "error",
               f"Order {order_id} has already shipped and can't be cancelled.")
+        log_action(state, "cancel_order_failed", order_id=order_id,
+                   reason="already shipped")
         return {"ok": False, "error": "already shipped"}
+    if order.status == "cancelled":
+        return {"ok": True, "already": True}
     order.status = "cancelled"
     log_action(state, "cancel_order", order_id=order_id)
     flash(state, "success", f"Order {order_id} cancelled.")
     return {"ok": True}
+
+
+# Reasons that unlock the Change address control (must match UI <select>).
+ADDRESS_CHANGE_REASONS = (
+    "moved",
+    "wrong_address",
+    "gift_redirect",
+    "other",
+)
+
+
+def change_order_address(
+    state: GymState,
+    order_id: str,
+    address_id: str,
+    reason: str = "",
+) -> dict[str, Any]:
+    """Change ship-to on a placed order that has not left the warehouse.
+
+    Refuses shipped / out_for_delivery / delivered / cancelled. Requires a
+    non-empty reason from ADDRESS_CHANGE_REASONS (UI unlock dropdown).
+    """
+    uid = _require_login(state)
+    if uid is None:
+        return {"ok": False, "error": "not logged in"}
+    order = state.orders.get(order_id)
+    if order is None or order.user_id != uid:
+        return {"ok": False, "error": "order not found"}
+    user = state.users[uid]
+    if address_id not in user.addresses:
+        flash(state, "error", "Pick a saved address.")
+        return {"ok": False, "error": "invalid address"}
+    reason = (reason or "").strip().lower()
+    if reason not in ADDRESS_CHANGE_REASONS:
+        flash(state, "error",
+              "Select a reason for the address change before saving.")
+        log_action(state, "change_order_address_failed", order_id=order_id,
+                   reason="missing_reason")
+        return {"ok": False, "error": "reason required"}
+    if order.status in ("shipped", "out_for_delivery", "delivered"):
+        flash(state, "error",
+              f"Order {order_id} is already {order.status.replace('_', ' ')} "
+              "and the delivery address can no longer be changed.")
+        log_action(state, "change_order_address_failed", order_id=order_id,
+                   reason="not_editable", status=order.status)
+        return {"ok": False, "error": "not editable", "status": order.status}
+    if order.status == "cancelled":
+        return {"ok": False, "error": "order cancelled"}
+    for it in order.items:
+        it.ship_to_address_id = address_id
+    log_action(state, "change_order_address", order_id=order_id,
+               address_id=address_id, reason=reason)
+    flash(state, "success",
+          f"Delivery address for {order_id} updated.")
+    return {"ok": True, "order_id": order_id, "address_id": address_id}
 
 
 # --------------------------------------------------------------------------- #
@@ -663,7 +709,7 @@ def create_subscription(state: GymState, product_id: str,
     if uid is None:
         return {"ok": False, "error": "not logged in"}
     user = state.users[uid]
-    p = _catalog(state, product_id)
+    p = state.products.get(product_id)
     if p is None or not p.is_subscribable:
         return {"ok": False, "error": "not subscribable"}
     if cadence not in ("weekly", "biweekly", "monthly"):
@@ -680,14 +726,14 @@ def create_subscription(state: GymState, product_id: str,
         else 0.05 if user.loyalty_tier == "silver"
         else 0.0
     )
-    sub_id = _new_id(state, "sub").upper()
+    sub_id = _new_id("sub").upper()
     state.subscriptions[sub_id] = Subscription(
         id=sub_id, user_id=uid,
         product_id=product_id, variant_id=variant_id, quantity=quantity,
         cadence=cadence,                       # type: ignore[arg-type]
         deliveries_remaining=deliveries,
         next_delivery_date=(
-            _WORLD_TODAY + timedelta(days=7)
+            datetime.now(timezone.utc) + timedelta(days=7)
         ).date().isoformat(),
         address_id=address_id, payment_id=payment_id,
         loyalty_discount_pct=loyalty,
@@ -723,3 +769,119 @@ def cancel_subscription(state: GymState,
     flash(state, "success",
           f"Subscription {subscription_id} has been cancelled.")
     return {"ok": True, "subscription_id": subscription_id}
+
+
+def pause_subscription(state: GymState,
+                       subscription_id: str) -> dict[str, Any]:
+    """Pause an active subscription (keeps plan; skips deliveries until resumed)."""
+    uid = _require_login(state)
+    if uid is None:
+        return {"ok": False, "error": "not logged in"}
+    sub = state.subscriptions.get(subscription_id)
+    if sub is None or sub.user_id != uid:
+        flash(state, "error", "Subscription not found.")
+        return {"ok": False, "error": "unknown subscription"}
+    if sub.status == "cancelled":
+        flash(state, "error",
+              f"Subscription {subscription_id} is cancelled and cannot be paused.")
+        log_action(state, "pause_subscription_failed",
+                   subscription_id=subscription_id, reason="cancelled")
+        return {"ok": False, "error": "cancelled"}
+    if sub.status == "paused":
+        return {"ok": True, "subscription_id": subscription_id,
+                "already_paused": True}
+    sub.status = "paused"
+    log_action(state, "pause_subscription",
+               subscription_id=subscription_id,
+               product_id=sub.product_id,
+               next_delivery_date=sub.next_delivery_date)
+    flash(state, "success",
+          f"Subscription {subscription_id} has been paused.")
+    return {"ok": True, "subscription_id": subscription_id}
+
+
+# Shipping speed tiers for post-order upgrade (Processing only).
+SHIPPING_SPEED_META = {
+    "standard": {"label": "Standard", "cost": 5.99, "eta_phrase": "5–7 business days"},
+    "express": {"label": "Express", "cost": 12.99, "eta_phrase": "1–2 business days"},
+    "overnight": {"label": "Overnight", "cost": 24.99, "eta_phrase": "next business day"},
+}
+
+
+def change_order_shipping(
+    state: GymState,
+    order_id: str,
+    shipping_speed: str,
+    estimated_delivery: str = "",
+) -> dict[str, Any]:
+    """Upgrade/downgrade shipping on an order that has not shipped yet.
+
+    Updates ``Order.shipping_speed``, shipping cost, and (when provided)
+    the first shipment's ``estimated_delivery`` string so the tip UI ETA
+    reflects the faster option.
+    """
+    uid = _require_login(state)
+    if uid is None:
+        return {"ok": False, "error": "not logged in"}
+    order = state.orders.get(order_id)
+    if order is None or order.user_id != uid:
+        return {"ok": False, "error": "order not found"}
+    speed = (shipping_speed or "").strip().lower()
+    if speed not in SHIPPING_SPEED_META:
+        flash(state, "error", "Pick Standard, Express, or Overnight shipping.")
+        return {"ok": False, "error": "invalid shipping_speed"}
+    if order.status in ("shipped", "out_for_delivery", "delivered"):
+        flash(state, "error",
+              f"Order {order_id} is already {order.status.replace('_', ' ')} "
+              "and shipping speed can no longer be changed.")
+        log_action(state, "change_order_shipping_failed", order_id=order_id,
+                   reason="not_editable", status=order.status)
+        return {"ok": False, "error": "not editable", "status": order.status}
+    if order.status == "cancelled":
+        return {"ok": False, "error": "order cancelled"}
+    meta = SHIPPING_SPEED_META[speed]
+    old_speed = getattr(order, "shipping_speed", "standard") or "standard"
+    old_ship = float(order.shipping or 0.0)
+    order.shipping_speed = speed
+    order.shipping = float(meta["cost"])
+    order.total = round(
+        float(order.subtotal) - float(order.discount) + float(order.tax)
+        + float(order.shipping),
+        2,
+    )
+    eta = (estimated_delivery or "").strip()
+    if eta and order.shipments:
+        order.shipments[0].estimated_delivery = eta
+    log_action(
+        state, "change_order_shipping",
+        order_id=order_id,
+        shipping_speed=speed,
+        previous_speed=old_speed,
+        shipping_cost=order.shipping,
+        previous_shipping_cost=old_ship,
+        estimated_delivery=eta or (
+            order.shipments[0].estimated_delivery if order.shipments else ""
+        ),
+    )
+    flash(state, "success",
+          f"Shipping for {order_id} updated to {meta['label']}.")
+    return {
+        "ok": True,
+        "order_id": order_id,
+        "shipping_speed": speed,
+        "estimated_delivery": eta,
+    }
+
+
+def view_registry(state: GymState, registry_id: str = "") -> dict[str, Any]:
+    """Log that the agent opened a gift registry (discoverability signal)."""
+    uid = _require_login(state)
+    if uid is None:
+        return {"ok": False, "error": "not logged in"}
+    regs = getattr(state, "registries", None) or {}
+    if registry_id and registry_id not in regs:
+        log_action(state, "view_registry", registry_id=registry_id, found=False)
+        return {"ok": False, "error": "unknown registry"}
+    rid = registry_id or (next(iter(regs)) if regs else "")
+    log_action(state, "view_registry", registry_id=rid, found=bool(rid))
+    return {"ok": True, "registry_id": rid}

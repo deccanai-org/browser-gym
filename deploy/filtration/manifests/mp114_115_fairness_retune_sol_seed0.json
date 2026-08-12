@@ -1,0 +1,25 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 2,
+  "tasks": [
+    "mp_114/arcglow_desk_lamp_spend_cap_email",
+    "mp_115/five_home_nights_dinner_avoid_sunny_wok_email"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_114/arcglow_desk_lamp_spend_cap_email",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "mp_115/five_home_nights_dinner_avoid_sunny_wok_email",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ]
+}

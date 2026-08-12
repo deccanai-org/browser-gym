@@ -1,0 +1,42 @@
+{
+  "mode": "mp040_mp048_sol_seeds12_20260810",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_episodes": 4,
+  "tasks": [
+    "mp_040/couch_pickup_vs_calendar_busy",
+    "mp_048/lamp_warranty_expired_check_first"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_040/couch_pickup_vs_calendar_busy",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "mp_040/couch_pickup_vs_calendar_busy",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "mp_048/lamp_warranty_expired_check_first",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "mp_048/lamp_warranty_expired_check_first",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ],
+  "notes": "2026-08-10 confirm seeds 1–2 for coaching-dropped briefs already BREAK'd on seed0 (parallel probes). mp_040 ErgoGlide pickup; mp_048 lamp flicker replacement."
+}

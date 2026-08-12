@@ -9,6 +9,7 @@ import { Cart } from './pages/Cart';
 import { Checkout } from './pages/Checkout';
 import { Orders } from './pages/Orders';
 import { Wishlist } from './pages/Wishlist';
+import { Registry } from './pages/Registry';
 import { Subscriptions } from './pages/Subscriptions';
 import { BrowsingHistory } from './pages/BrowsingHistory';
 import { Profile } from './pages/Profile';
@@ -136,6 +137,8 @@ function App() {
             <Route path="subscriptions" element={<Subscriptions />} />
             <Route path="browsing-history" element={<BrowsingHistory />} />
             <Route path="wishlist" element={<Wishlist />} />
+            <Route path="registry" element={<Registry />} />
+            <Route path="registry/:registryId" element={<Registry />} />
             <Route path="recommendations" element={<Recommendations />} />
             <Route path="gift-cards" element={<GiftCards />} />
             <Route path="customer-service" element={<CustomerService />} />
