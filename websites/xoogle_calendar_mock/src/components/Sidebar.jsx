@@ -48,13 +48,13 @@ export default function Sidebar({ onCreateEvent }) {
 
   return (
     <aside className={clsx(
-      "w-64 flex-shrink-0 flex flex-col border-r border-google-border bg-white transition-all duration-300 overflow-y-auto",
+      "w-64 flex-shrink-0 flex flex-col border-r border-xoogle-border bg-white transition-all duration-300 overflow-y-auto",
       !state.sidebarOpen && "-ml-64"
     )}>
       <div className="p-4 flex-1">
         <button 
           onClick={onCreateEvent}
-          className="flex items-center gap-3 px-4 py-3 bg-white border border-google-border shadow-sm hover:shadow-md rounded-full transition-all mb-6"
+          className="flex items-center gap-3 px-4 py-3 bg-white border border-xoogle-border shadow-sm hover:shadow-md rounded-full transition-all mb-6"
         >
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 via-yellow-500 to-green-500 flex items-center justify-center">
             <Plus className="text-white" size={20} />
@@ -92,7 +92,7 @@ export default function Sidebar({ onCreateEvent }) {
           </div>
         </div>
 
-        <div className="border-t border-google-border pt-4">
+        <div className="border-t border-xoogle-border pt-4">
           <div className="flex items-center justify-between mb-2 px-2">
             <h3 className="text-sm font-medium text-text-primary">My calendars</h3>
             <button
@@ -156,7 +156,7 @@ export default function Sidebar({ onCreateEvent }) {
           {/* Other calendars — subscribed / shared calendars, seeded separately
               from "My calendars". Each row has an eye toggle wired to
               TOGGLE_OTHER_CALENDAR. */}
-          <div className="mt-4 border-t border-google-border pt-4">
+          <div className="mt-4 border-t border-xoogle-border pt-4">
             <div className="flex items-center justify-between mb-2 px-2">
               <h3 className="text-sm font-medium text-text-primary">Other calendars</h3>
               <button
@@ -230,7 +230,7 @@ export default function Sidebar({ onCreateEvent }) {
             </div>
           )}
           
-          <div className="mt-4 px-2 text-xs text-text-secondary border-t border-google-border pt-2">
+          <div className="mt-4 px-2 text-xs text-text-secondary border-t border-xoogle-border pt-2">
             <p className="flex items-center gap-1 mb-2">
               <span className="font-medium">Tip:</span> Drag and drop events to reschedule.
             </p>

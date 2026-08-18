@@ -1,6 +1,6 @@
 import SEED_DEFAULT from '../lib/seedDefault.json';
-const BASE_STORAGE_KEY = 'uber_eats_state';
-const BASE_INITIAL_KEY = 'uber_eats_initialState';
+const BASE_STORAGE_KEY = 'xber_eats_state';
+const BASE_INITIAL_KEY = 'xber_eats_initialState';
 
 export function storageKey(sid) {
   return sid ? `${BASE_STORAGE_KEY}_${sid}` : BASE_STORAGE_KEY;
@@ -14,10 +14,10 @@ export function getSessionId() {
   const params = new URLSearchParams(window.location.search);
   const urlSid = params.get('sid');
   if (urlSid) {
-    sessionStorage.setItem('uber_eats_sid', urlSid);
+    sessionStorage.setItem('xber_eats_sid', urlSid);
     return urlSid;
   }
-  return sessionStorage.getItem('uber_eats_sid') || null;
+  return sessionStorage.getItem('xber_eats_sid') || null;
 }
 
 export async function fetchCustomState(sid = null) {

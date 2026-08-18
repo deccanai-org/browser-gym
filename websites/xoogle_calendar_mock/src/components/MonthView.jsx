@@ -145,7 +145,7 @@ export default function MonthView({ onEventClick, onDateClick }) {
           <button onClick={() => setNotice('')} className="text-amber-700 hover:text-amber-950">Dismiss</button>
         </div>
       )}
-      <div className="flex border-b border-google-border">
+      <div className="flex border-b border-xoogle-border">
         {showWeekNumbers && (
           <div className="w-10 flex-shrink-0 py-2 text-center text-xs font-medium text-text-secondary" title="Week number">
             WK
@@ -161,11 +161,11 @@ export default function MonthView({ onEventClick, onDateClick }) {
       </div>
       <div className="flex-1 flex">
         {showWeekNumbers && (
-          <div className="w-10 flex-shrink-0 grid grid-rows-5 lg:grid-rows-6 border-r border-google-border">
+          <div className="w-10 flex-shrink-0 grid grid-rows-5 lg:grid-rows-6 border-r border-xoogle-border">
             {weekStarts.map(weekStart => (
               <div
                 key={weekStart.toString()}
-                className="flex items-start justify-center pt-2 text-[11px] text-text-secondary border-b border-google-border"
+                className="flex items-start justify-center pt-2 text-[11px] text-text-secondary border-b border-xoogle-border"
               >
                 {getISOWeek(weekStart)}
               </div>
@@ -181,7 +181,7 @@ export default function MonthView({ onEventClick, onDateClick }) {
             <div 
               key={day.toString()} 
               className={clsx(
-                "border-b border-r border-google-border min-h-[100px] p-1 transition-colors hover:bg-gray-50 cursor-pointer",
+                "border-b border-r border-xoogle-border min-h-[100px] p-1 transition-colors hover:bg-gray-50 cursor-pointer",
                 !isSameMonth(day, currentDate) && "bg-gray-50/50"
               )}
               onClick={() => onDateClick(day)}
@@ -202,6 +202,10 @@ export default function MonthView({ onEventClick, onDateClick }) {
                 {dayEvents.slice(0, 4).map(event => (
                   <div
                     key={event.id}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Open event: ${event.title || '(No title)'}`}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.currentTarget.click(); } }}
                     draggable={!event.id.includes('_recur_')} // Only original events draggable for simplicity
                     onDragStart={(e) => !event.id.includes('_recur_') && handleDragStart(e, event.id)}
                     onClick={(e) => {

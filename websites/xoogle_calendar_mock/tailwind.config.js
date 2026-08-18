@@ -9,8 +9,8 @@ export default {
       colors: {
         primary: '#1A73E8', // Google Blue
         'primary-hover': '#1557B0',
-        'google-gray': '#F1F3F4',
-        'google-border': '#DADCE0',
+        'xoogle-gray': '#F1F3F4',
+        'xoogle-border': '#DADCE0',
         'text-primary': '#3C4043',
         'text-secondary': '#70757A',
       },

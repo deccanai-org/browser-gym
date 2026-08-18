@@ -61,7 +61,7 @@
 - [x] **State management** (`src/context/AppContext.jsx` + `src/utils/dataManager.js`):
   - `AppContext` provides global state and updater functions to all components
   - `dataManager.js` exports `createInitialData()` per `assets/data_model.md` — must include all 10 restaurants with full menu items (6-10 per restaurant), 15 browse categories, 5 past orders, user profile, empty cart
-  - State persists to `localStorage` under key `"uber_eats_state"`
+  - State persists to `localStorage` under key `"xber_eats_state"`
   - On mount: check localStorage first, fall back to `createInitialData()`
   - Track `initialState` separately (deep clone at first load) for state diffing
   - Provide these context actions: `addToCart`, `removeFromCart`, `updateCartItemQuantity`, `clearCart`, `placeOrder`, `toggleFavorite`, `setDeliveryMode`, `updateFilters`, `setSearchQuery`, `rateOrder`, `updateAddress`, `setTip`, `applyPromoCode`
@@ -80,8 +80,8 @@
       - `reset`: resets current state back to initial
     - `GET /go?sid=<sid>` — returns `{ initial_state, current_state, state_diff }` as JSON
     - `GET /state?sid=<sid>` — alias for `/go?sid=`
-  - When `sid` param present, use session-specific localStorage key: `"uber_eats_state_<sid>"`
-  - Without `sid`, use default key `"uber_eats_state"`
+  - When `sid` param present, use session-specific localStorage key: `"xber_eats_state_<sid>"`
+  - Without `sid`, use default key `"xber_eats_state"`
 
 ---
 

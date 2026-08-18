@@ -93,7 +93,7 @@ const AdvancedSearchModal = () => {
   );
 };
 
-const GoogleAppsPanel = ({ onClose }) => {
+const XoogleAppsPanel = ({ onClose }) => {
   const { showToast } = useStore();
   const ref = React.useRef(null);
   React.useEffect(() => {
@@ -257,7 +257,7 @@ const Header = () => {
             <Grid size={24} className="text-gray-600" />
           </button>
           {showAppsPanel && (
-            <GoogleAppsPanel onClose={() => setShowAppsPanel(false)} />
+            <XoogleAppsPanel onClose={() => setShowAppsPanel(false)} />
           )}
         </div>
         <div className="ml-2 relative">

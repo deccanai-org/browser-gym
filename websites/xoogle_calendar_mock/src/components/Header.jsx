@@ -168,7 +168,7 @@ export default function Header({ onSearch, searchQuery = '' }) {
   };
 
   return (
-    <header className="h-16 border-b border-google-border flex items-center px-4 justify-between bg-white z-20 relative">
+    <header className="h-16 border-b border-xoogle-border flex items-center px-4 justify-between bg-white z-20 relative">
       <div className="flex items-center gap-2 min-w-[240px]">
         <button 
           onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}
@@ -187,7 +187,7 @@ export default function Header({ onSearch, searchQuery = '' }) {
       <div className="flex items-center gap-4 flex-1">
         <button 
           onClick={handleToday}
-          className="px-4 py-2 border border-google-border rounded hover:bg-gray-50 text-sm font-medium"
+          className="px-4 py-2 border border-xoogle-border rounded hover:bg-gray-50 text-sm font-medium"
         >
           Today
         </button>
@@ -267,7 +267,7 @@ export default function Header({ onSearch, searchQuery = '' }) {
             value={searchQuery}
             onChange={(e) => onSearch(e.target.value)}
             aria-label="Search events"
-            className="pl-10 pr-9 py-2 bg-google-gray rounded-lg focus:outline-none focus:bg-white focus:shadow-md transition-all w-64"
+            className="pl-10 pr-9 py-2 bg-xoogle-gray rounded-lg focus:outline-none focus:bg-white focus:shadow-md transition-all w-64"
           />
           {searchQuery && (
             <button
@@ -287,14 +287,14 @@ export default function Header({ onSearch, searchQuery = '' }) {
           <button 
             onClick={() => setIsViewMenuOpen(!isViewMenuOpen)}
             aria-label="Change calendar view"
-            className="flex items-center gap-2 px-3 py-2 border border-google-border rounded hover:bg-gray-50 text-sm font-medium min-w-[100px] justify-between"
+            className="flex items-center gap-2 px-3 py-2 border border-xoogle-border rounded hover:bg-gray-50 text-sm font-medium min-w-[100px] justify-between"
           >
             <span>{viewLabels[state.view]}</span>
             <ChevronDown size={16} className="text-gray-500" />
           </button>
 
           {isViewMenuOpen && (
-            <div className="absolute top-full right-0 mt-1 w-48 bg-white border border-google-border rounded shadow-lg py-1 z-50">
+            <div className="absolute top-full right-0 mt-1 w-48 bg-white border border-xoogle-border rounded shadow-lg py-1 z-50">
               {Object.entries(viewLabels).map(([key, label]) => (
                 <button
                   key={key}
@@ -333,18 +333,18 @@ export default function Header({ onSearch, searchQuery = '' }) {
                 <img
                   src={state.user.avatar}
                   alt="User"
-                  className="w-8 h-8 rounded-full border border-google-border"
+                  className="w-8 h-8 rounded-full border border-xoogle-border"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full border border-google-border bg-primary text-white flex items-center justify-center text-sm font-medium">
+                <div className="w-8 h-8 rounded-full border border-xoogle-border bg-primary text-white flex items-center justify-center text-sm font-medium">
                   {(state.user.username || 'U').trim().charAt(0).toUpperCase()}
                 </div>
               )}
             </button>
 
             {accountOpen && (
-              <div role="menu" className="absolute top-full right-0 mt-2 w-64 bg-white border border-google-border rounded-lg shadow-xl py-2 z-50">
-                <div className="px-4 py-2 border-b border-google-border">
+              <div role="menu" className="absolute top-full right-0 mt-2 w-64 bg-white border border-xoogle-border rounded-lg shadow-xl py-2 z-50">
+                <div className="px-4 py-2 border-b border-xoogle-border">
                   <div className="text-sm font-medium text-text-primary">{state.user.username}</div>
                   <div className="text-xs text-text-secondary truncate">{state.user.email}</div>
                 </div>
