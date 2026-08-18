@@ -325,7 +325,10 @@ export default function WeekView({ onEventClick, onDateClick }) {
                   const color = getEventColor(event);
                   return (
                     <div
-                      key={event.id}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Open event: ${(event && event.title) || "(No title)"}`}
+                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.currentTarget.click(); } }}                      key={event.id}
                       onClick={(e) => {
                         e.stopPropagation();
                         const targetEvent = event.originalEventId
@@ -533,6 +536,10 @@ export default function WeekView({ onEventClick, onDateClick }) {
                       <div
                         key={event.id}
                         data-event-chip
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`Open event: ${event.title || '(No title)'}`}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.currentTarget.click(); } }}
                         draggable={isOriginalId}
                         onDragStart={(e) => {
                           e.stopPropagation();

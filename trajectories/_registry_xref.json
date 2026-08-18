@@ -1,13 +1,13 @@
 {
   "sizes": {
-    "BRIEFS": 308,
-    "TASKS": 308,
-    "SUITE_FACTORIES": 308,
-    "SOLVERS": 308,
-    "START_PATHS": 283,
-    "REQUIRED_FACTS": 293
+    "BRIEFS": 327,
+    "TASKS": 327,
+    "SUITE_FACTORIES": 327,
+    "SOLVERS": 327,
+    "START_PATHS": 302,
+    "REQUIRED_FACTS": 308
   },
-  "universe": 308,
+  "universe": 327,
   "failures": [],
   "n_failures": 0
 }

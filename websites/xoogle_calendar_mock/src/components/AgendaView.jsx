@@ -116,7 +116,10 @@ export default function AgendaView({ onEventClick }) {
                   const color = getEventColor(event);
                   return (
                     <div
-                      key={event.id}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Open event: ${(event && event.title) || "(No title)"}`}
+                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.currentTarget.click(); } }}                      key={event.id}
                       onClick={() => {
                         const targetEvent = event.originalEventId
                           ? state.events.find(ev => ev.id === event.originalEventId)

@@ -605,14 +605,22 @@ def initiate_return(state: GymState, order_id: str,
     uid = _require_login(state)
     if uid is None:
         return {"ok": False, "error": "not logged in"}
+    # Every rejection below flashes. POST /api/returns redirects 303 on failure
+    # exactly as on success, so without a flash a thrown-away return is
+    # completely invisible: the caller sees a redirect, the UI says "Return
+    # requested", and no return exists. That cost two mis-scored episodes.
     order = state.orders.get(order_id)
     if order is None or order.user_id != uid:
+        flash(state, "error", f"Return failed: order {order_id} not found.")
         return {"ok": False, "error": "order not found"}
     valid_item_ids = {oi.id for oi in order.items}
     bad = [i for i in item_ids if i not in valid_item_ids]
     if bad:
+        flash(state, "error",
+              f"Return failed: {bad} are not items on order {order_id}.")
         return {"ok": False, "error": f"unknown items in return: {bad}"}
     if refund_method not in ("original_payment", "store_credit"):
+        flash(state, "error", f"Return failed: invalid refund method {refund_method!r}.")
         return {"ok": False, "error": "invalid refund_method"}
 
     ret_id = _new_id(state, "ret").upper()

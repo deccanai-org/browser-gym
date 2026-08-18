@@ -66,41 +66,141 @@ const GiftMessageField = ({ item, onCommit }) => {
 // either driver, without the per-segment churn.
 const SETTLE_MS = 700;
 
+// A year out from the world's today. Long enough that no legitimate scheduled
+// delivery is ever refused, short enough that the year field cannot run away.
+const horizonFrom = (floorISO) => {
+  const d = new Date((floorISO || '2026-01-01') + 'T00:00:00Z');
+  if (Number.isNaN(d.getTime())) return '2027-12-31';
+  d.setUTCFullYear(d.getUTCFullYear() + 1);
+  return d.toISOString().slice(0, 10);
+};
+
+// The engine speaks ISO; the field shows mm/dd/yyyy. Kept module-level so the
+// initial state and the sync effect use the same conversion the commit path does.
+const isoToDisplay = (iso) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso || '')) return iso || '';
+  const [y, m, d] = iso.split('-');
+  return `${m}/${d}/${y}`;
+};
+
 const ScheduledDeliveryField = ({ item, floor, onCommit }) => {
-  const [draft, setDraft] = useState(item.scheduled_delivery || '');
+  const [draft, setDraft] = useState(isoToDisplay(item.scheduled_delivery || ''));
   const editing = useRef(false);
   const timer = useRef(null);
   const engineValue = item.scheduled_delivery || '';
+  const horizon = horizonFrom(floor);
 
   useEffect(() => {
-    if (!editing.current) setDraft(engineValue);
+    if (!editing.current) setDraft(isoToDisplay(engineValue));
   }, [engineValue]);
   useEffect(() => () => clearTimeout(timer.current), []);
 
   // A date before the world's today can never be honored — the engine drops it
   // at checkout — so clamp up to the floor rather than posting a dead value.
-  const commit = (val) => {
+  //
+  // A date AFTER the horizon is the other half of the same problem, and it is
+  // the one that actually bit: a native date input with no max accepts years up
+  // to 275760, so an agent typing into the field produced "11/31/275760" and the
+  // control took it. Nothing downstream would ever schedule that, and a delivery
+  // task graded on "does this arrive before the party" reads a year-275760 date
+  // as simply late, which looks like a reasoning failure and is not one.
+  //
+  // isValidISO also rejects dates that do not exist at all. The browser hands
+  // back a value for 31 November because it validates the FIELDS, not the day
+  // count for that month; round-tripping through Date is what catches it.
+  const isValidISO = (v) => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
+    const d = new Date(v + "T00:00:00Z");
+    return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === v;
+  };
+
+  // Accept what a person would actually type. The displayed shape is mm/dd/yyyy,
+  // so that is the primary form; ISO is accepted too because scripted callers
+  // and the reference solver write yyyy-mm-dd.
+  const toISO = (raw) => {
+    const s = (raw || "").trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+    const m = s.match(/^(\d{1,2})\s*\/\s*(\d{1,2})\s*\/\s*(\d{4})$/);
+    if (!m) return "";
+    const [, mm, dd, yyyy] = m;
+    return `${yyyy}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}`;
+  };
+
+  const toDisplay = isoToDisplay;
+
+  const commit = (raw) => {
     clearTimeout(timer.current);
-    const next = val && val < floor ? floor : val;
-    if (next !== draft) setDraft(next);
+    // Clearing the field is a legitimate edit: it means "no scheduled date".
+    if (!raw) {
+      if (draft !== "") setDraft("");
+      if (engineValue !== "") onCommit("");
+      return;
+    }
+    const iso = toISO(raw);
+    if (!iso || !isValidISO(iso)) {
+      // Half-typed or impossible (31 November, month 13): hold what the engine
+      // already has rather than posting nonsense.
+      setDraft(toDisplay(engineValue));
+      return;
+    }
+    let next = iso;
+    if (next < floor) next = floor;
+    if (next > horizon) next = horizon;
+    setDraft(toDisplay(next));
     if (next !== engineValue) onCommit(next);
   };
 
+  // A TEXT input, not type="date", and this is the whole point of the control.
+  //
+  // A native date input cannot be driven by typing: its value lives in segment
+  // widgets, so keystrokes never reach it and .value stays empty. Verified every
+  // way an agent might try - "05/22/2026", "05222026", "2026-05-22" - and all
+  // three leave the field blank; only a programmatic .fill() works, and no agent
+  // does that. Its picker is an OS-level widget headless Chromium will not open
+  // either. So the one control this task turns on was impossible to operate, and
+  // a model that typed the correct party date twice had both silently dropped
+  // and was then marked down for a late delivery it had actually tried to set.
+  //
+  // Digits are masked to mm/dd/yyyy as they arrive, which is the 2/2/4 limit the
+  // field needs: eight digits maximum, so the year cannot run to 275760.
   return (
     <input
-      type="date"
+      type="text"
+      inputMode="numeric"
+      autoComplete="off"
+      placeholder="mm/dd/yyyy"
+      maxLength={10}
       aria-label="Scheduled delivery date"
-      min={floor}
       value={draft}
       onFocus={() => { editing.current = true; }}
       onChange={(e) => {
-        const val = e.target.value;
-        setDraft(val);
+        const raw = e.target.value || "";
+        // An ISO value arrives whole, from a scripted .fill() rather than from
+        // keystrokes. Masking it as mm/dd/yyyy would read 2026-05-22 as the
+        // digits 20260522 and render "20/26/0522", so take it as-is.
+        if (/^\d{4}-\d{2}-\d{2}$/.test(raw.trim())) {
+          setDraft(raw.trim());
+          clearTimeout(timer.current);
+          timer.current = setTimeout(() => commit(raw.trim()), SETTLE_MS);
+          return;
+        }
+        const digits = raw.replace(/\D/g, "").slice(0, 8);
+        let masked = digits;
+        if (digits.length > 4) {
+          masked = `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
+        } else if (digits.length > 2) {
+          masked = `${digits.slice(0, 2)}/${digits.slice(2)}`;
+        }
+        setDraft(masked);
         clearTimeout(timer.current);
-        timer.current = setTimeout(() => commit(val), SETTLE_MS);
+        // Only a complete mm/dd/yyyy is worth sending; a settle timer on a
+        // half-typed date would keep bouncing the field back under the typist.
+        if (digits.length === 8) {
+          timer.current = setTimeout(() => commit(masked), SETTLE_MS);
+        }
       }}
       onBlur={() => { editing.current = false; commit(draft); }}
-      className="border rounded px-2 py-1 text-sm focus:outline-none focus:border-xmazon-orange"
+      className="border rounded px-2 py-1 text-sm w-[130px] focus:outline-none focus:border-xmazon-orange"
     />
   );
 };
@@ -210,6 +310,7 @@ export const Cart = () => {
 
                         <div className="flex items-center gap-4 text-sm mt-2">
                           <select
+                            aria-label="Quantity"
                             value={item.quantity}
                             onChange={(e) => updateCartQty(item.productId, Number(e.target.value))}
                             className="p-1 border rounded bg-gray-50 shadow-sm text-sm"

@@ -175,8 +175,23 @@ const EmailRow = ({ email, isSelected, toggleSelect, folder, threadCount, isFocu
     <>
     {contextMenu && <ContextMenu email={email} position={contextMenu} onClose={() => setContextMenu(null)} />}
     {showSnooze && <SnoozeMenu emailId={email.id} onClose={() => setShowSnooze(null)} position={showSnooze} />}
+    {/* role + tabindex are load-bearing, not decoration. The Set-of-Mark
+        extractor only enumerates a[href], button, input, textarea, select,
+        summary, [role] and [tabindex], and a pixel agent's only click verb is
+        click_mark — so as a bare <div onClick> this row carried NO mark and an
+        agent literally could not open an email. Measured across ten graded
+        episodes: zero emails opened, zero engine mail actions, with one run
+        spending 68 of its 86 steps stuck in the mailbox. Everything the tasks
+        hide in email bodies was unreachable. */}
     <div
+      role="button"
+      tabIndex={0}
+      aria-label={`Open email: ${email.subject || "(no subject)"} from ${
+        (email.from && (email.from.name || email.from.email)) || email.sender || "unknown"}`}
       onClick={handleRowClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleRowClick(e); }
+      }}
       onContextMenu={handleContextMenu}
       className={cn(
         "group flex items-center px-4 border-b border-gray-100 cursor-pointer hover:shadow-md relative z-0",

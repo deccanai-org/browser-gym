@@ -81,9 +81,16 @@ export default function Checkout() {
   const totals = useMemo(() => {
     const money = (n) => Math.round((Number(n) || 0) * 100) / 100;
     const subtotal = money(cart.items.reduce((s, item) => s + item.totalPrice, 0));
-    const serviceFee = money(Math.min(Math.max(subtotal * 0.15, 0.99), 9.99));
+    // The engine charges `subtotal - discount + delivery_fee` and nothing else
+    // (server/apps/food/mutations.py): GymEats has no service fee and levies no
+    // tax — ShopGym is the only store in the world that taxes. Left in, this
+    // sidebar showed $74.67 for an order the gym billed at $60.99, and tasks
+    // that ask for the amount ACTUALLY charged became unanswerable from the
+    // screen. Zeroed rather than deleted so the unbridged demo still looks like
+    // a real delivery app. Same treatment as the tip below.
+    const serviceFee = bridged() ? 0 : money(Math.min(Math.max(subtotal * 0.15, 0.99), 9.99));
     const deliveryFee = money((restaurant && !isPickup) ? restaurant.deliveryFee : 0);
-    const tax = money(subtotal * 0.09);
+    const tax = bridged() ? 0 : money(subtotal * 0.09);
     const promoDiscount = money(appliedPromo
       ? subtotal * (appliedPromo.percentOff || 0)
       : (cart.promoDiscount || 0));
@@ -490,20 +497,24 @@ export default function Checkout() {
               <span>Subtotal</span>
               <span>{formatCurrency(totals.subtotal)}</span>
             </div>
-            <div className="checkout__total-row">
-              <span>Service fee</span>
-              <span>{formatCurrency(totals.serviceFee)}</span>
-            </div>
+            {!bridged() && (
+              <div className="checkout__total-row">
+                <span>Service fee</span>
+                <span>{formatCurrency(totals.serviceFee)}</span>
+              </div>
+            )}
             {!isPickup && (
               <div className="checkout__total-row">
                 <span>Delivery fee</span>
                 <span>{formatCurrency(totals.deliveryFee)}</span>
               </div>
             )}
-            <div className="checkout__total-row">
-              <span>Tax</span>
-              <span>{formatCurrency(totals.tax)}</span>
-            </div>
+            {!bridged() && (
+              <div className="checkout__total-row">
+                <span>Tax</span>
+                <span>{formatCurrency(totals.tax)}</span>
+              </div>
+            )}
             {!bridged() && (
               <div className="checkout__total-row">
                 <span>Tip</span>

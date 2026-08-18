@@ -3,11 +3,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { Button } from '../components/ui/Button';
 import { MapPin, CreditCard, Check } from 'lucide-react';
-import { bridged, bridgeAct } from '../lib/bridge';
+import { bridged } from '../lib/bridge';
 import { gymNow, DEMO_PROMOS } from '../lib/mockData';
 
 export const Checkout = () => {
-  const { state, placeOrder } = useStore();
+  const { state, placeOrder, setLineOptions } = useStore();
   const navigate = useNavigate();
   // Skip the redundant address-selection step when a default address is already
   // on file (the shopper can still click "Change" to revisit it).
@@ -99,10 +99,18 @@ export const Checkout = () => {
   const advance = () => {
     if (loading) return;
     if (step === 1) {
-      // placeOrder only posts payment_id, so the engine resolves ship-to from the
-      // account default — commit the chosen address before moving on.
+      // Route THIS order via the per-line ship-to that already exists, rather
+      // than writing the choice back as the account default: picking a delivery
+      // address for one order does not mean every future order should go there,
+      // and that silent standing change is exactly what some tasks forbid.
+      //
+      // Only lines the customer has not deliberately routed are touched, which
+      // mirrors the engine's own rule (`line.ship_to_address_id or default`) and
+      // keeps a split-shipping basket split.
       if (bridged() && selectedAddressId) {
-        bridgeAct('shop.set_default_address', { address_id: selectedAddressId });
+        state.cart
+          .filter(i => !i.ship_to_address_id)
+          .forEach(i => setLineOptions(i.productId, { ship_to_address_id: selectedAddressId }));
       }
       setStep(2);
     } else if (step === 2) {

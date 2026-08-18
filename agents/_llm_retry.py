@@ -8,9 +8,12 @@ the event loop with no ceiling, so the episode — and the whole batch behind it
 freezes silently.
 
 This helper guarantees three things the plan requires:
-  1. TIMEOUT      — every attempt is offloaded to a worker thread and bounded by
-                    ``asyncio.wait_for``. Even if the SDK's own timeout misbehaves,
-                    the coroutine gives up after ``per_call_timeout`` seconds.
+  1. TIMEOUT      — every attempt is offloaded to a DAEMON worker thread and
+                    bounded by ``asyncio.wait_for``. Even if the SDK's own timeout
+                    misbehaves, the coroutine gives up after ``per_call_timeout``
+                    seconds — and because the thread is a daemon, a call still
+                    stuck on the socket cannot hold the process open at exit.
+                    See ``_spawn`` for why ``asyncio.to_thread`` is wrong here.
   2. RETRY+BACKOFF— transient failures (timeouts, 429, 5xx, connection resets) are
                     retried up to ``attempts`` times with capped exponential backoff.
                     Non-transient 4xx client errors (e.g. a malformed request) are
@@ -32,11 +35,50 @@ from __future__ import annotations
 
 import asyncio
 import os
+import threading
 from typing import Any, Callable
 
 
 class LLMCallError(RuntimeError):
     """An LLM API call could not complete within the timeout + retry budget."""
+
+
+def _spawn(make_call: Callable[[], Any]) -> "asyncio.Future":
+    """Run ``make_call`` on a throwaway DAEMON thread; return a future for it.
+
+    Deliberately not ``asyncio.to_thread``. That borrows the loop's default
+    ThreadPoolExecutor, whose workers are non-daemon and are JOINED by an
+    interpreter-exit hook. So when an SDK call wedges on a socket, the
+    ``wait_for`` below correctly abandons the await and the episode runs to
+    completion — and then the PROCESS hangs forever at shutdown waiting to join
+    a thread that will never return. Seen on the ten-task Sol batch: the episode
+    wrote its 41st frame, then sat at 0% CPU with an ESTABLISHED socket for 15+
+    minutes, with the other nine queued behind it.
+
+    A daemon thread is abandoned at exit instead of joined, so the timeout
+    ceiling actually ends the call as far as the process is concerned.
+    """
+    loop = asyncio.get_running_loop()
+    fut: "asyncio.Future" = loop.create_future()
+
+    def settle(setter, value) -> None:
+        if not fut.done():                    # wait_for may have cancelled it
+            setter(value)
+
+    def target() -> None:
+        try:
+            res = make_call()
+        except BaseException as exc:          # noqa: BLE001 — relayed verbatim
+            payload, setter = exc, fut.set_exception
+        else:
+            payload, setter = res, fut.set_result
+        try:
+            loop.call_soon_threadsafe(settle, setter, payload)
+        except RuntimeError:
+            pass                              # loop already closed; nobody is waiting
+
+    threading.Thread(target=target, name="llm-call", daemon=True).start()
+    return fut
 
 
 def _env_float(name: str, default: float) -> float:
@@ -97,9 +139,7 @@ async def acall(
             # Offload the blocking SDK call to a thread so wait_for can enforce a
             # ceiling the SDK cannot escape. asyncio.CancelledError (BaseException)
             # is NOT caught here, so cooperative cancellation still works.
-            return await asyncio.wait_for(
-                asyncio.to_thread(make_call), timeout=per_call_timeout
-            )
+            return await asyncio.wait_for(_spawn(make_call), timeout=per_call_timeout)
         except Exception as e:  # noqa: BLE001 — deliberately broad, then triaged
             last_exc = e
             retryable = is_retryable(e)

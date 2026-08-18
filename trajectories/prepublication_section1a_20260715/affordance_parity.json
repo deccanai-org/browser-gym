@@ -831,8 +831,8 @@
       "seed": 0,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "3ae6d31e603192757b59a138bdfbba0b5ae87fd67d2bfc046b6f01eb62feb29e",
-      "semantic_after_sha256": "81a61326144cb3ef4b25b3027e8ac446181ae9eb90fe8dbd61f1da25ddccc286",
+      "semantic_before_sha256": "969c89d306ad3a86dca7d8ce586044f622bb9206d6fb984ac07dbec3aa844d56",
+      "semantic_after_sha256": "8fc6c055e8c47e86a825565a00f97089e6a6f7f16c80742e3d2dbb179b90caa3",
       "raw_diff": [
         {
           "path": "$.events",
@@ -852,6 +852,8 @@
                 "delivery_fee": 5.99,
                 "total": 18.59,
                 "coupon_code": "VALUE10",
+                "shipping_address_id": "vm_addr_home",
+                "payment_id": "vm_pay_visa",
                 "items": [
                   {
                     "name": "Welcome Sign",
@@ -887,7 +889,9 @@
             "delivery_fee": 5.99,
             "total": 18.59,
             "placed_at": "2026-05-21T12:30:00",
-            "coupon_code": "VALUE10"
+            "coupon_code": "VALUE10",
+            "shipping_address_id": "vm_addr_home",
+            "payment_id": "vm_pay_visa"
           }
         },
         {
@@ -932,8 +936,8 @@
       "seed": 1,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "3ae6d31e603192757b59a138bdfbba0b5ae87fd67d2bfc046b6f01eb62feb29e",
-      "semantic_after_sha256": "81a61326144cb3ef4b25b3027e8ac446181ae9eb90fe8dbd61f1da25ddccc286",
+      "semantic_before_sha256": "969c89d306ad3a86dca7d8ce586044f622bb9206d6fb984ac07dbec3aa844d56",
+      "semantic_after_sha256": "8fc6c055e8c47e86a825565a00f97089e6a6f7f16c80742e3d2dbb179b90caa3",
       "raw_diff": [
         {
           "path": "$.events",
@@ -953,6 +957,8 @@
                 "delivery_fee": 5.99,
                 "total": 18.59,
                 "coupon_code": "VALUE10",
+                "shipping_address_id": "vm_addr_home",
+                "payment_id": "vm_pay_visa",
                 "items": [
                   {
                     "name": "Welcome Sign",
@@ -988,7 +994,9 @@
             "delivery_fee": 5.99,
             "total": 18.59,
             "placed_at": "2026-05-21T12:30:00",
-            "coupon_code": "VALUE10"
+            "coupon_code": "VALUE10",
+            "shipping_address_id": "vm_addr_home",
+            "payment_id": "vm_pay_visa"
           }
         },
         {
@@ -1033,8 +1041,8 @@
       "seed": 2,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "3ae6d31e603192757b59a138bdfbba0b5ae87fd67d2bfc046b6f01eb62feb29e",
-      "semantic_after_sha256": "81a61326144cb3ef4b25b3027e8ac446181ae9eb90fe8dbd61f1da25ddccc286",
+      "semantic_before_sha256": "969c89d306ad3a86dca7d8ce586044f622bb9206d6fb984ac07dbec3aa844d56",
+      "semantic_after_sha256": "8fc6c055e8c47e86a825565a00f97089e6a6f7f16c80742e3d2dbb179b90caa3",
       "raw_diff": [
         {
           "path": "$.events",
@@ -1054,6 +1062,8 @@
                 "delivery_fee": 5.99,
                 "total": 18.59,
                 "coupon_code": "VALUE10",
+                "shipping_address_id": "vm_addr_home",
+                "payment_id": "vm_pay_visa",
                 "items": [
                   {
                     "name": "Welcome Sign",
@@ -1089,7 +1099,9 @@
             "delivery_fee": 5.99,
             "total": 18.59,
             "placed_at": "2026-05-21T12:30:00",
-            "coupon_code": "VALUE10"
+            "coupon_code": "VALUE10",
+            "shipping_address_id": "vm_addr_home",
+            "payment_id": "vm_pay_visa"
           }
         },
         {

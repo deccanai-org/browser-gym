@@ -463,19 +463,66 @@ export const StoreProvider = ({ children }) => {
   // Filing a return is an irreversible commit, so it has to leave a record —
   // the stock modal only set component state, which meant a filed return was
   // invisible to anything reading the session afterwards.
-  const createReturn = ({ orderId, productId, reason, refundMethod = 'original', notes = '' }) => {
+  const createReturn = ({ orderId, productId, order: passedOrder, reason,
+                          refundMethod = 'original', notes = '' }) => {
     if (bridged()) {
       // The engine validates item_ids against ORDER-ITEM ids (the projected
       // order.items[].id), not product ids, and only accepts 'original_payment'
       // or 'store_credit'. Map both so a filed return actually persists.
-      const order = (state.orders || []).find(o => o.id === orderId);
-      const item = order && (order.items || []).find(i => i.productId === productId);
-      const itemId = (item && item.id) || productId;
+      //
+      // Prefer the order handed in by the caller. Re-finding it in `state` here
+      // reads whatever this closure captured, and the 2.5s bridge poll replaces
+      // state wholesale — a stale or missed lookup fell through to the product
+      // id, which the engine rejects outright.
       const rm = refundMethod === 'original' ? 'original_payment' : refundMethod;
-      bridgeAct('shop.create_return', {
-        order_id: orderId, item_ids: itemId, reason,
-        refund_method: rm, notes,
-      }).then(r => applyEngine(setState, r));
+
+      // Resolve the ORDER-LINE id from the bridge projection, which is the same
+      // data the engine validates against. Reading it out of local React state
+      // was silently wrong: the lookup missed, the code fell back to the PRODUCT
+      // id, and the engine rejected the return — while POST /api/returns
+      // redirected 303 exactly as on success, so nothing anywhere said no. Two
+      // scored episodes reported "return submitted" for a return that never
+      // existed. Never fall back to the product id: if the line cannot be
+      // resolved, fail loudly instead of sending a request that cannot work.
+      (async () => {
+        let itemId = null;
+        const fromOrder = (o) => {
+          const items = (o && (o.items || o.lines)) || [];
+          const hit = items.find(i => i.productId === productId
+                                   || i.product_id === productId
+                                   || i.id === productId);
+          return hit ? hit.id : (items.length === 1 ? items[0].id : null);
+        };
+        itemId = fromOrder(passedOrder);
+        if (!itemId) {
+          try {
+            const shop = await bridgeState('shop');
+            itemId = fromOrder((shop?.orders || []).find(o => o.id === orderId));
+          } catch (_) { /* fall through to the loud failure below */ }
+        }
+        if (!itemId) {
+          console.error('[gym] create_return ABORTED — no order-line id for',
+                        { orderId, productId });
+          window.dispatchEvent(new CustomEvent('gym:return-failed',
+                                               { detail: { orderId, reason: 'unresolved-line' } }));
+          return;
+        }
+        const r = await bridgeAct('shop.create_return', {
+          order_id: orderId, item_ids: itemId, reason,
+          refund_method: rm, notes,
+        });
+        applyEngine(setState, r);
+        // POST /api/returns redirects 303 whether the engine accepted or threw
+        // the return away, so `ok` proves nothing. Confirm the return actually
+        // exists before letting the UI claim one was filed — otherwise the agent
+        // is told it succeeded and the world never changed.
+        const filed = ((r && r.apps && r.apps.shop && r.apps.shop._gym_returns) || [])
+          .some(x => x && x.order_id === orderId);
+        if (!filed) {
+          console.error('[gym] return REJECTED by the engine', { orderId, itemId, rm });
+          window.dispatchEvent(new CustomEvent('gym:return-failed', { detail: { orderId } }));
+        }
+      })();
       return;
     }
     setState(prev => ({

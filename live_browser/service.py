@@ -72,6 +72,13 @@ MIN_VIEWPORT_H, MAX_VIEWPORT_H = 360, 4000
 #: page taller, so one pass is never enough and an unbounded loop is a hang.
 _FIT_PAGE_PASSES = 4
 
+#: How a dock thumbnail is rendered: a fraction of the viewport, JPEG-compressed
+#: harder than the screencast. Five apps, re-photographed on a timer, ride this
+#: wire repeatedly — a full-size frame is ~60KB of base64 each, this is ~14KB.
+#: Small enough to be cheap, big enough to recognise a storefront from.
+THUMB_SCALE = 0.3
+THUMB_QUALITY = 50
+
 #: How long a real Playwright fill may take before we fall back to the JS one.
 #: Short on purpose — the fallback is what keeps a hidden-but-present element
 #: fillable, so waiting here only delays reaching it.
@@ -343,6 +350,10 @@ class LiveSession:
     # a JS redirect). Drained by the socket pump so the client can record them.
     notices: list = field(default_factory=list)
     notice_seq: int = 0
+    # Whether a new page is a POPUP — i.e. one the page opened on its own, worth
+    # following and recording. Cleared while this service opens tabs of its own;
+    # see _own_new_pages.
+    follow_new_pages: bool = True
 
     async def start(self) -> None:
         from playwright.async_api import async_playwright
@@ -357,7 +368,8 @@ class LiveSession:
         # popup is invisible: the stream keeps showing the opener and the click
         # looks like it did nothing.
         self.context.on("page", self._on_new_page)
-        page = await self.context.new_page()
+        with self._own_new_pages():     # the session's own first tab is not a popup
+            page = await self.context.new_page()
         await page.goto(self.url, wait_until="load")
         # `load` fires when the document and its assets are in — which is BEFORE
         # these apps have anything on screen. Each mock is an SPA that then fetches
@@ -377,6 +389,29 @@ class LiveSession:
         with contextlib.suppress(Exception):
             await page.wait_for_load_state("networkidle", timeout=5000)
         await self._bind(page)
+
+    async def preopen_tabs(self, urls: list[str]) -> None:
+        """Open each URL in its own tab without switching away from the active one.
+
+        A cua-hub task spans up to five apps on five origins. Opening them all at
+        session start lets the annotator see a real multi-window ecosystem instead
+        of discovering tabs one at a time. Shared BrowserContext keeps cookies
+        intact for cross-app effects.
+        """
+        from urllib.parse import urlsplit
+        with self._own_new_pages():
+            for url in urls:
+                if not url:
+                    continue
+                pages = self._tabs()
+                want = urlsplit(url)
+                if any(urlsplit(p.url).netloc == want.netloc for p in pages):
+                    continue
+                page = await self.context.new_page()
+                await page.goto(url, wait_until="load")
+                with contextlib.suppress(Exception):
+                    await page.wait_for_load_state("networkidle", timeout=5000)
+                self.tab_id(page)
 
     # --- tab binding --------------------------------------------------------
     def tab_id(self, page) -> str:
@@ -427,7 +462,29 @@ class LiveSession:
         del self.notices[:-50]          # a client that never drains must not grow this
         self.frame_event.set()
 
+    @contextlib.contextmanager
+    def _own_new_pages(self):
+        """Open tabs of our own without them being mistaken for popups.
+
+        `context.on("page")` fires for EVERY page in the context, including the
+        ones this service asks for — Playwright does not distinguish them — and
+        following one rebinds the screencast to it. A five-app session therefore
+        came up watching the LAST app it pre-opened instead of the task's primary,
+        and recorded four `popup` notices for tabs nobody opened.
+
+        Safe as a flag because `_on_new_page` is dispatched synchronously as the
+        event arrives, which is while the `new_page()` that caused it is still
+        being awaited inside this block.
+        """
+        self.follow_new_pages = False
+        try:
+            yield
+        finally:
+            self.follow_new_pages = True
+
     def _on_new_page(self, page) -> None:
+        if not self.follow_new_pages:
+            return
         asyncio.create_task(self._adopt_page(page))
 
     async def _adopt_page(self, page) -> None:
@@ -477,8 +534,19 @@ class LiveSession:
             "type": "mouseReleased", "x": x, "y": y, "button": button, "clickCount": clicks})
 
     async def move(self, nx: float, ny: float) -> None:
-        x, y = self.to_page_xy(nx, ny)
-        await self.cdp.send("Input.dispatchMouseEvent", {"type": "mouseMoved", "x": x, "y": y, "button": "none"})
+        """A pointer move, carrying whatever button is currently HELD.
+
+        Delegates to `mouse` rather than dispatching its own event, because the
+        `buttons` mask is the entire difference between a hover and a drag. This
+        used to send `button: "none"` with no mask at all, so every intermediate
+        move of a press-move-release was a hover: Chromium never extended the
+        selection, and an annotator could not highlight a single word. Measured
+        against the ShopGym home page — the same gesture selects 60 characters
+        with the mask and returns "" without it — which also made the recorder
+        see a drag with no selection and write down a `drag` step the executor
+        cannot perform.
+        """
+        await self.mouse("move", nx, ny)
 
     async def scroll(self, nx: float, ny: float, dy: float, dx: float = 0.0) -> None:
         x, y = self.to_page_xy(nx, ny)
@@ -702,13 +770,20 @@ class LiveSession:
         with contextlib.suppress(Exception):
             await self.page.reload(wait_until="load")
 
-    async def post_state(self) -> dict:
+    async def post_state(self, with_focus: bool = True) -> dict:
         """What is true AFTER an action — the client records from this.
 
         Returns the landed URL, the active tab, and the focused control's REAL
         value. That last one is why fills can be recorded correctly: the client
         only ever knows the keys it sent, so a Backspace (or an autocomplete, or a
         rejected keystroke) made its idea of the value wrong.
+
+        `with_focus=False` skips that evaluate. It is the expensive half — a real
+        round trip into the page — and input is handled in ONE sequential loop
+        here, so paying it for an action that cannot move focus makes every
+        following input wait behind it. A scroll is the case that hurt: a
+        trackpad swipe is dozens of events, and answering each with a focus
+        evaluate put the stream one to two seconds behind the annotator's hand.
         """
         state: dict = {"url": "", "tabId": "", "tabIndex": 0, "frameSeq": self.frame_seq}
         with contextlib.suppress(Exception):
@@ -716,8 +791,9 @@ class LiveSession:
             state["url"] = self.page.url
             state["tabId"] = self.tab_id(self.page)
             state["tabIndex"] = pages.index(self.page) if self.page in pages else 0
-        with contextlib.suppress(Exception):
-            state["focus"] = await self.page.evaluate(_FOCUS_JS)
+        if with_focus:
+            with contextlib.suppress(Exception):
+                state["focus"] = await self.page.evaluate(_FOCUS_JS)
         return state
 
     async def observe(self, max_elements: int = OBSERVE_MAX_ELEMENTS) -> dict:
@@ -912,8 +988,12 @@ class LiveSession:
         return await self._open_tab(url)
 
     async def _open_tab(self, url: str) -> dict:
-        page = await self.context.new_page()
-        await page.goto(url, wait_until="load")
+        # Ours, not a popup: the explicit bind below is the one that counts, and
+        # letting the follower also adopt it records a `popup` step for a tab the
+        # trajectory already says we opened.
+        with self._own_new_pages():
+            page = await self.context.new_page()
+            await page.goto(url, wait_until="load")
         await self._bind(page)          # rebind: pixels AND mouse follow the new tab
         return {"ok": True, "kind": "open_tab",
                 "resolved": {"url": page.url, "tabId": self.tab_id(page),
@@ -1112,6 +1192,61 @@ class LiveSession:
             [x, y],
         )
 
+    async def thumbnail(self, page) -> str | None:
+        """One tab's pixels as a small JPEG, taken WITHOUT bringing it forward.
+
+        A raw CDP capture on a throwaway session rather than `page.screenshot`:
+        Playwright fronts the target before it shoots, which on a background tab
+        hides the tab the screencast is bound to and freezes the stream the
+        annotator is working in. This touches neither `self.page` nor `self.cdp`,
+        so the binding and the mouse stay exactly where they were.
+
+        `clip.scale` does the downscaling in Chromium, so nothing full-size is
+        ever encoded. Measured against the five mocks: ~20ms and ~14KB of base64
+        per app, and a hidden tab's capture DOES reflect what changed while it
+        was hidden — which is what makes a ShopMail preview show the mail an
+        order in ShopGym just produced.
+        """
+        sess = None
+        try:
+            sess = await self.context.new_cdp_session(page)
+            shot = await sess.send("Page.captureScreenshot", {
+                "format": "jpeg", "quality": THUMB_QUALITY,
+                "clip": {"x": 0, "y": 0, "width": self.vw, "height": self.vh, "scale": THUMB_SCALE},
+                "captureBeyondViewport": False,
+            })
+            return shot.get("data") or None
+        except Exception as exc:  # noqa: BLE001 — a preview is never worth a 500
+            log.warning("thumbnail failed for %s: %s", getattr(page, "url", "?"), exc)
+            return None
+        finally:
+            if sess is not None:
+                with contextlib.suppress(Exception):
+                    await sess.detach()
+
+    async def thumbnails(self) -> list[dict]:
+        """Every open tab as a preview — what the dock of mini browser windows draws.
+
+        A cua-hub session pre-opens all five apps, and only the active one is
+        being screencast, so the other four had no pixels to show until the
+        annotator had visited them once: the ecosystem looked half-empty exactly
+        when it should look most alive. They are real, loaded pages; this is
+        simply asking each one what it looks like.
+
+        Sequential rather than gathered: five captures cost ~100ms in total, and
+        firing them at one browser at once buys nothing worth the contention.
+        A tab that could not be photographed is OMITTED, not faked — the caller
+        keeps whatever preview it already had.
+        """
+        out: list[dict] = []
+        for page in self._tabs():
+            data = await self.thumbnail(page)
+            if not data:
+                continue
+            out.append({"tabId": self.tab_id(page), "url": page.url,
+                        "active": page is self.page, "data": data})
+        return out
+
     async def info(self) -> dict:
         pages = list(self.context.pages) if self.context else []
         return {
@@ -1146,6 +1281,9 @@ SESSIONS: dict[str, LiveSession] = {}
 class OpenBody(BaseModel):
     url: str
     owner: str = "anonymous"
+    # Other app URLs to open as background tabs (same BrowserContext). The primary
+    # `url` stays active for the screencast; these are pre-warmed for switching.
+    extra_urls: list[str] = []
 
 
 @app.post("/live/sessions")
@@ -1154,6 +1292,8 @@ async def open_session(body: OpenBody) -> dict:
     s = LiveSession(id=sid, owner=body.owner, url=body.url)
     try:
         await s.start()
+        if body.extra_urls:
+            await s.preopen_tabs(body.extra_urls)
     except Exception as exc:  # noqa: BLE001 — surface the real reason, don't leak a half-session
         await s.close()
         raise HTTPException(500, f"could not start live browser: {exc}") from exc
@@ -1326,6 +1466,28 @@ async def session_observe(sid: str, body: ObserveBody) -> dict:
     if check_ticket(sid, body.ticket) is None:
         raise HTTPException(403, "invalid or expired ticket")
     return await s.observe(max(1, min(int(body.max_elements or OBSERVE_MAX_ELEMENTS), 2000)))
+
+
+@app.post("/live/sessions/{sid}/thumbnails")
+async def session_thumbnails(sid: str, body: FocusBody) -> dict:
+    """A small JPEG of EVERY open tab, so the pane can draw the inactive apps.
+
+    The screencast only ever covers one tab, so the other four pre-opened apps
+    had nothing to show until they had been visited — the annotator was told
+    there were five live browsers and shown one plus four placeholders. Asked on
+    a timer as well as at connect, because a cross-app effect (an order in
+    ShopGym producing a ShopMail email) changes a tab nobody is looking at.
+
+    Reports the scale it used: the caller is drawing these, and a thumbnail
+    whose size it has to guess at renders blurry or letterboxed.
+    """
+    s = SESSIONS.get(sid)
+    if not s or s.closed:
+        raise HTTPException(404, "unknown session")
+    if check_ticket(sid, body.ticket) is None:
+        raise HTTPException(403, "invalid or expired ticket")
+    return {"thumbs": await s.thumbnails(), "scale": THUMB_SCALE,
+            "viewport": {"width": s.vw, "height": s.vh}}
 
 
 @app.get("/live/sessions/{sid}/frame")
@@ -1536,7 +1698,11 @@ async def stream(ws: WebSocket, sid: str, ticket: str = Query(default=""), contr
             # navigates, a value corrected by Backspace, an input that never applied).
             await ws.send_text(json.dumps({
                 "type": "ack", "id": input_id, "applied": True,
-                "state": None if kind == "move" else await s.post_state(),
+                # A move needs no state at all; a scroll needs where it landed but
+                # cannot have moved focus, so it skips the evaluate that costs a
+                # round trip. See post_state — this loop is sequential, so every
+                # avoidable await is latency the annotator feels as lag.
+                "state": None if kind == "move" else await s.post_state(with_focus=kind != "scroll"),
             }))
     except WebSocketDisconnect:
         pass

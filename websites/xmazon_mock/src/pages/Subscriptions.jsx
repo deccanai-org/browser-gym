@@ -19,6 +19,18 @@ export const Subscriptions = () => {
   const productName = (pid) =>
     (state.products || []).find(p => p.id === pid)?.title || pid;
 
+  // Resolve a subscription's delivery address to something a person can read.
+  // Falls back to the id rather than hiding the difference, so a plan pointing at
+  // an address the account no longer holds is still visibly not the default one.
+  const shipsTo = (addrId) => {
+    const list = state.addresses || state.user?.addresses || [];
+    const a = list.find(x => x.id === addrId);
+    if (!a) return addrId || 'default address';
+    const who = a.fullName || a.name || '';
+    const where = [a.city, a.state].filter(Boolean).join(', ');
+    return [who, where].filter(Boolean).join(' — ') || a.street || addrId;
+  };
+
   return (
     <div className="bg-xmazon-bg min-h-screen">
       <div className="max-w-[1000px] mx-auto p-4">
@@ -46,6 +58,15 @@ export const Subscriptions = () => {
                     </div>
                     <div className="text-gray-600">
                       {sub.deliveries_remaining} deliver{sub.deliveries_remaining === 1 ? 'y' : 'ies'} remaining
+                    </div>
+                    {/* Where a repeat delivery actually goes is part of what it IS,
+                        and it was the one field this row never showed. A plan can
+                        ship somewhere other than the account's own address, and an
+                        agent asked to tidy up an account cannot tell those apart
+                        from name and cadence alone. */}
+                    <div className="text-gray-600 mt-1">
+                      Delivers to:{' '}
+                      <span className="font-bold">{shipsTo(sub.address_id)}</span>
                     </div>
                     <div className="text-xs text-gray-500 mt-1">Subscription {sub.id}</div>
                   </div>

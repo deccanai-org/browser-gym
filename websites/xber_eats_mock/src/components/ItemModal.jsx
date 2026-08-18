@@ -23,19 +23,28 @@ export default function ItemModal({ item, restaurant, onClose, onAdd }) {
   const [instructions, setInstructions] = useState('');
   const [error, setError] = useState('');
 
+  // Reset the form ONLY when the dish changes. `onClose` is deliberately not a
+  // dependency here: StorePage passes it as an inline arrow, so it has a new
+  // identity on every render, and in bridged mode the 2.5s engine poll
+  // re-renders the page constantly. With onClose in this list the effect re-ran
+  // on every poll and setQuantity(1) silently threw away what the user had
+  // chosen — set 4 portions, read the menu for three seconds, and the modal was
+  // back to 1 with the button quietly showing the single-item price.
   useEffect(() => {
-    if (!item) return undefined;
+    if (!item) return;
     setQuantity(1);
     setSelections(getDefaultSelections(item.customizationGroups || []));
     setInstructions('');
     setError('');
+  }, [item]);
 
+  useEffect(() => {
     const onKey = (e) => {
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [item, onClose]);
+  }, [onClose]);
 
   const selectedOptions = useMemo(() => {
     const options = [];

@@ -1,12 +1,12 @@
 {
   "agent": "oracle",
   "model": null,
-  "n_episodes": 1,
+  "n_episodes": 2,
   "overall_score": 1.0,
   "overall_success_rate": 1.0,
   "by_task": {
-    "M30/moving_refund": {
-      "n": 1,
+    "M432/valuemart_slot_nobody_can_sign_for": {
+      "n": 2,
       "score": 1.0
     }
   }

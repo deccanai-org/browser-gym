@@ -106,15 +106,22 @@ export const Orders = () => {
     navigate('/cart');
   };
 
-  const handleReturnSubmit = (e, orderId, productId) => {
+  // `order` is passed whole, not looked up again by id. createReturn used to
+  // re-find it in state.orders to map productId -> order-line id, and the engine
+  // validates against LINE ids: when that lookup missed it silently fell back to
+  // the product id, the engine rejected the return, and — because the API
+  // redirects 303 on failure exactly as on success — the UI still said "Return
+  // requested". A return that never existed. The modal already holds the right
+  // order, so use it.
+  const handleReturnSubmit = (e, order, productId) => {
     e.preventDefault();
     const form = e.target;
     createReturn({
-      orderId, productId,
+      orderId: order.id, productId, order,
       reason: form.elements.reason?.value || '',
       notes: form.elements.notes?.value || '',
     });
-    setReturnSubmitted(prev => ({ ...prev, [`${orderId}-${productId}`]: true }));
+    setReturnSubmitted(prev => ({ ...prev, [`${order.id}-${productId}`]: true }));
     setReturnModal(null);
   };
 
@@ -561,7 +568,7 @@ export const Orders = () => {
                 <div className="text-gray-500 mt-1">${returnModal.product.price.toFixed(2)}</div>
               </div>
             </div>
-            <form onSubmit={(e) => handleReturnSubmit(e, returnModal.order.id, returnModal.product.id)} className="space-y-3">
+            <form onSubmit={(e) => handleReturnSubmit(e, returnModal.order, returnModal.product.id)} className="space-y-3">
               <div>
                 <label className="block text-sm font-bold mb-1">Reason for return</label>
                 <select name="reason" required className="w-full p-2 border rounded text-sm focus:outline-none focus:border-xmazon-orange">

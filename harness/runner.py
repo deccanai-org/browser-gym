@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import sys
 import time
 import uuid
 from dataclasses import asdict, dataclass, field
@@ -197,6 +198,13 @@ def _mock_start_path(app: str, gym_path: str | None) -> str | None:
 
 PINNED_VIEWPORT: dict[str, int] = {"width": 1280, "height": 800}
 PINNED_DEVICE_SCALE_FACTOR: float = 1.0
+
+# The world's frozen "now": 2026-05-21 12:00 UTC. Must stay in step with
+# GYM_NOW_MS in websites/*/src/lib/mockData.js and the freeze in
+# tools/seed_to_cuagym.py, because the page clock is pinned to it (see
+# make_browser) so a native date picker's "today" matches the world the agent is
+# reading rather than the wall clock of whatever machine is running the browser.
+GYM_NOW_MS: int = 1779364800000
 PINNED_SCREENSHOT_FORMAT: str = "png"
 
 # Documented provider image-encoding settings. Agents must keep these stable;
@@ -989,16 +997,22 @@ class BrowserCtx:
         """
         t0 = time.monotonic()
         err: str | None = None
-        # The eval browser is headless Chromium on Linux, where select-all / copy /
-        # paste use Control, not Meta. A model that sends the macOS chord
-        # (Cmd/Command/Meta+a) would otherwise no-op — so "select all, then
-        # overwrite" silently failed and the agent looped trying to clear a field.
-        # Normalize any Meta-family modifier to Control.
-        name = "+".join(
-            "Control" if p.strip().lower() in ("meta", "cmd", "command", "super", "os")
-            else p.strip()
-            for p in name.split("+")
-        )
+        # Select-all / copy / paste use Control on Linux and Meta on macOS, and
+        # getting this backwards is silent: on macOS "Control+a" is
+        # beginning-of-line, so the field is never cleared, the agent types on
+        # top of the old text and its search returns nothing. That is exactly
+        # what happened in the graded runs — the ShopMail box still read
+        # "Ardenne OR ORD-ARDENNE-4" after Control+a then Backspace.
+        #
+        # So normalise toward whichever modifier this HOST actually uses, in
+        # both directions, rather than assuming the browser is on Linux.
+        _EDIT_MOD = "Meta" if sys.platform == "darwin" else "Control"
+        _MOD_ALIASES = ("meta", "cmd", "command", "super", "os", "control", "ctrl")
+        parts = [p.strip() for p in name.split("+")]
+        if len(parts) > 1 and parts[-1].lower() in ("a", "c", "v", "x", "z"):
+            # only remap the editing chords; Control+Enter etc. keep their meaning
+            parts = [_EDIT_MOD if p.lower() in _MOD_ALIASES else p for p in parts]
+        name = "+".join(parts)
         try:
             await self.page.keyboard.press(name)
             # Some keys (Enter on a form) trigger navigation — wait briefly
@@ -1363,6 +1377,35 @@ async def open_browser(
     # behind a collapsed menu is revealed + activated instead of timing out — the
     # agent can pick anything, and no run stalls 30s on a single click.
     context.set_default_timeout(6000)
+
+    # Freeze the PAGE's clock to the world's frozen instant.
+    #
+    # The gym world is frozen at 2026-05-21; the machine running the browser is
+    # not. The apps already read the world clock (`state._gym_now`), but a native
+    # <input type="date"> picker does not: it highlights the BROWSER's today. So
+    # the calendar app would say 21 May 2026 while the date picker beside it
+    # offered 13 August, and an agent that used the picker rather than typing got
+    # a delivery date months past the deadline it had just read. That is the
+    # environment setting the trap, not the task.
+    #
+    # Only the no-argument forms are overridden - `new Date(x)`, parsing and
+    # arithmetic are untouched - so date maths, timers and React stay intact.
+    await context.add_init_script(script=f"""
+      (() => {{
+        const FROZEN = {GYM_NOW_MS};
+        const _Date = Date;
+        const D = function (...args) {{
+          if (!(this instanceof D)) return new _Date(FROZEN).toString();
+          return args.length === 0 ? new _Date(FROZEN) : new _Date(...args);
+        }};
+        D.prototype = _Date.prototype;
+        D.now = () => FROZEN;
+        D.parse = _Date.parse;
+        D.UTC = _Date.UTC;
+        try {{ Object.defineProperty(D, 'name', {{ value: 'Date' }}); }} catch (e) {{}}
+        window.Date = D;
+      }})();
+    """)
 
     # Inject the ghost cursor on EVERY page load (incl. after redirects).
     if inject_cursor and _AGENT_CURSOR_JS_PATH.exists():

@@ -277,6 +277,10 @@ class FakeCDPSession:
 
     async def send(self, method, params=None):
         self.sent.append((method, params or {}))
+        # A capture answers with pixels. The thumbnail path reads them off the
+        # answer, and treats an empty one as "this tab could not be photographed".
+        if method == "Page.captureScreenshot":
+            return {"data": f"jpeg:{self.page.url}"}
         return {}
 
     async def detach(self):
@@ -288,6 +292,7 @@ class FakeContext:
         self.pages = pages
         self.opened = []
         self.cdp_sessions: list = []
+        self._on_page = None
 
     async def new_cdp_session(self, page):
         s = FakeCDPSession(page)
@@ -295,9 +300,9 @@ class FakeContext:
         return s
 
     def on(self, event, handler):
-        """`context.on("page")` — popup adoption. Nothing in these tests opens
-        one, so recording it is enough."""
-        return None
+        """`context.on("page")` — the popup follower."""
+        if event == "page":
+            self._on_page = handler
 
     async def new_page(self):
         # A new tab loads the same app, so it sees the same elements — the real
@@ -305,6 +310,12 @@ class FakeContext:
         p = _tabbable(FakePage(present=set(self.pages[0].present) if self.pages else {"#buy"}))
         self.pages.append(p)
         self.opened.append(p)
+        # Playwright fires this for EVERY page in the context, not only for a
+        # popup the page opened itself — which is the whole trap, so the fake
+        # fires it too. Dispatched here, inside the awaited new_page(), because
+        # that is when the real event arrives.
+        if self._on_page is not None:
+            self._on_page(p)
         return p
 
 
@@ -333,6 +344,7 @@ def _multitab(n=2):
     pages = [_tabbable(FakePage(present={"#buy"}, url=f"http://localhost:8000/tab{i}")) for i in range(n)]
     s = _sess()
     s.context = FakeContext(pages)
+    s.context.on("page", s._on_new_page)
     s.page = pages[0]
     return s, pages
 
@@ -383,6 +395,65 @@ async def test_open_tab_shares_the_browser_context():
     out = await s.act("open_tab", None, {"url": "/mail"})
     assert out["ok"] and len(s.context.pages) == 2
     assert s.page is s.context.pages[1] and s.page.fronted
+
+
+@pytest.mark.asyncio
+async def test_preopen_tabs_warms_background_tabs_without_switching():
+    """A cua-hub session opens every app at once; only the primary stays active."""
+    s, pages = _multitab(1)
+    pages[0].url = "http://localhost:5201/"
+    active = s.page
+    await s.preopen_tabs([
+        "http://localhost:5203/",
+        "http://localhost:5202/",
+        "http://localhost:5203/",  # duplicate origin — must not stack
+    ])
+    assert len(s.context.pages) == 3
+    assert s.page is active, "preopen must not steal the screencast binding"
+    # The context's page event fires for tabs WE open, and the popup follower
+    # cannot tell them apart: unsuppressed it rebound to each one in turn, so a
+    # five-app session came up watching the last app it pre-opened instead of the
+    # task's primary — and recorded four popups for tabs nobody opened.
+    assert s.notices == [], "a tab we asked for is not a popup"
+
+
+@pytest.mark.asyncio
+async def test_thumbnails_photograph_every_tab_without_touching_the_binding():
+    """The dock draws the apps nobody is looking at, which means photographing a
+    tab in place. Fronting one to shoot it would hide the tab the screencast is
+    bound to and freeze the stream the annotator is working in."""
+    s, pages = _multitab(3)
+    await s._bind(pages[0])
+    bound = s.cdp
+
+    shots = await s.thumbnails()
+
+    assert [t["url"] for t in shots] == [p.url for p in pages]
+    assert [t["active"] for t in shots] == [True, False, False]
+    assert all(t["data"] for t in shots), "a preview with no pixels is a placeholder"
+    assert s.page is pages[0] and s.cdp is bound, "a preview must not steal the binding"
+    assert not any(p.fronted for p in pages[1:]), "photographing a tab must not front it"
+    # One throwaway session per tab per poll; leaking them exhausts the browser.
+    assert all(c.detached for c in s.context.cdp_sessions if c is not bound)
+
+
+@pytest.mark.asyncio
+async def test_a_tab_that_cannot_be_photographed_is_omitted_not_blanked():
+    """A blank preview drawn as if it were the app is a lie about a live page.
+    Leaving it out lets the pane keep whatever it last had."""
+    s, pages = _multitab(2)
+    real = s.context.new_cdp_session
+
+    async def refuse(page):
+        if page is pages[1]:
+            raise RuntimeError("target closed")
+        return await real(page)
+
+    s.context.new_cdp_session = refuse
+
+    shots = await s.thumbnails()
+
+    assert [t["url"] for t in shots] == [pages[0].url]
 
 
 @pytest.mark.asyncio
@@ -821,6 +892,36 @@ def test_the_frame_endpoint_reports_the_SESSION_viewport(monkeypatch):
     )
 
 
+def test_the_thumbnails_endpoint_needs_a_ticket(monkeypatch):
+    """A preview is a picture of somebody's live session — five of them, in fact,
+    including whatever is on screen in their mail app. It is read behind the same
+    ticket as every other read of the session, not left open because it is only
+    pixels."""
+    from fastapi.testclient import TestClient
+
+    class FakeSession:
+        closed = False
+        vw, vh = 1280, 800
+
+        async def thumbnails(self):
+            return [{"tabId": "t1", "url": "http://localhost:5201/", "active": True, "data": "AAA"}]
+
+    monkeypatch.setitem(service.SESSIONS, "s1", FakeSession())
+    client = TestClient(service.app)
+
+    assert client.post("/live/sessions/s1/thumbnails", json={"ticket": "forged"}).status_code == 403
+
+    ok = client.post("/live/sessions/s1/thumbnails",
+                     json={"ticket": service.mint_ticket("s1", "u@x.io")})
+    assert ok.status_code == 200, ok.text
+    body = ok.json()
+    assert body["thumbs"][0]["data"] == "AAA"
+    # The caller draws these, and a thumbnail whose size it has to guess at
+    # renders blurry or letterboxed.
+    assert body["scale"] == service.THUMB_SCALE
+    assert body["viewport"] == {"width": 1280, "height": 800}
+
+
 def test_the_height_floor_does_not_reintroduce_the_letterboxing():
     """The floor was 600, and the stage the pane actually has is about 510px.
 
@@ -885,6 +986,37 @@ async def test_a_move_between_a_press_and_a_release_carries_the_held_button():
     assert move["buttons"] == 1, "a move with the button held must say so, or it is a hover"
     assert move["button"] == "left"
     assert up["buttons"] == 0, "and the release must clear it"
+
+
+@pytest.mark.asyncio
+async def test_the_plain_move_MESSAGE_also_carries_the_held_button():
+    """The same rule, on the path the pane actually uses.
+
+    `mouse(phase="move")` had the mask and `move()` did not — and the pane sends
+    `{type: "move"}` for every pointer move, so the fixed path was the one nobody
+    called. A drag across a run of text was therefore still a sequence of hovers
+    and still selected nothing: measured end to end against the running service,
+    the identical gesture answered "" through `move` and 60 characters through
+    `mouse`. Hence the delegation, and hence this test — a future `move` that
+    dispatches its own event would silently reintroduce the whole defect.
+    """
+    sent: list[dict] = []
+
+    class Cdp:
+        async def send(self, method, payload=None):
+            sent.append(payload or {})
+
+    s = service.LiveSession.__new__(service.LiveSession)
+    s.cdp, s.vw, s.vh, s.held_button = Cdp(), 1280, 800, None
+
+    await s.mouse("down", 0.1, 0.5, "left", 1)
+    await s.move(0.3, 0.5)                      # what the pane sends mid-drag
+    await s.mouse("up", 0.3, 0.5, "left", 1)
+
+    _, move, _ = sent
+    assert move["type"] == "mouseMoved"
+    assert move["buttons"] == 1, "a plain move mid-press is a DRAG, not a hover"
+    assert move["button"] == "left"
 
 
 @pytest.mark.asyncio

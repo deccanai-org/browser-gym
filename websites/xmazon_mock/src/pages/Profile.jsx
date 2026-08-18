@@ -291,32 +291,32 @@ export const Profile = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <div className="col-span-2">
                     <label className="block text-xs font-bold mb-1">Full name</label>
-                    <input required type="text" value={newAddressForm.fullName} onChange={e => setNewAddressForm({...newAddressForm, fullName: e.target.value})}
+                    <input required type="text" value={newAddressForm.fullName} aria-label="Full name" onChange={e => setNewAddressForm({...newAddressForm, fullName: e.target.value})}
                       className="w-full border rounded p-2 text-sm focus:outline-none focus:border-xmazon-orange" />
                   </div>
                   <div className="col-span-2">
                     <label className="block text-xs font-bold mb-1">Street address</label>
-                    <input required type="text" value={newAddressForm.street} onChange={e => setNewAddressForm({...newAddressForm, street: e.target.value})}
+                    <input required type="text" value={newAddressForm.street} aria-label="Street address" onChange={e => setNewAddressForm({...newAddressForm, street: e.target.value})}
                       className="w-full border rounded p-2 text-sm focus:outline-none focus:border-xmazon-orange" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold mb-1">City</label>
-                    <input required type="text" value={newAddressForm.city} onChange={e => setNewAddressForm({...newAddressForm, city: e.target.value})}
+                    <input required type="text" value={newAddressForm.city} aria-label="City" onChange={e => setNewAddressForm({...newAddressForm, city: e.target.value})}
                       className="w-full border rounded p-2 text-sm focus:outline-none focus:border-xmazon-orange" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold mb-1">State</label>
-                    <input required type="text" value={newAddressForm.state} onChange={e => setNewAddressForm({...newAddressForm, state: e.target.value})}
+                    <input required type="text" value={newAddressForm.state} aria-label="State" onChange={e => setNewAddressForm({...newAddressForm, state: e.target.value})}
                       className="w-full border rounded p-2 text-sm focus:outline-none focus:border-xmazon-orange" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold mb-1">ZIP code</label>
-                    <input required type="text" value={newAddressForm.zip} onChange={e => setNewAddressForm({...newAddressForm, zip: e.target.value})}
+                    <input required type="text" value={newAddressForm.zip} aria-label="ZIP code" onChange={e => setNewAddressForm({...newAddressForm, zip: e.target.value})}
                       className="w-full border rounded p-2 text-sm focus:outline-none focus:border-xmazon-orange" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold mb-1">Phone (optional)</label>
-                    <input type="text" value={newAddressForm.phone} onChange={e => setNewAddressForm({...newAddressForm, phone: e.target.value})}
+                    <input type="text" value={newAddressForm.phone} aria-label="Phone" onChange={e => setNewAddressForm({...newAddressForm, phone: e.target.value})}
                       className="w-full border rounded p-2 text-sm focus:outline-none focus:border-xmazon-orange" />
                   </div>
                 </div>
