@@ -46,6 +46,29 @@ DELTA_API_ROOT = "https://cua-gym-hub.delta.soulhq.ai"
 # the _mock suffix and with underscores hyphenated (google_calendar_mock -> google-calendar).
 DELTA_UI_TMPL = "https://cua-hub-{slug}.delta.deccanexperts.ai"
 
+# The renamed hosts. These used to be cua-hub-<slug> and are now x-forms, which
+# are NOT derivable from the slug: amazon -> xmazon, ebay -> xbay, uber-eats ->
+# xber-eats. So the template cannot express them and a per-slug map is required.
+# Anything absent here still resolves through DELTA_UI_TMPL, so mocks that have
+# not been renamed keep working untouched.
+DELTA_UI_HOSTS = {
+    "amazon": "xmazon",
+    "ebay": "xbay",
+    "gmail": "xmail",
+    "google-calendar": "xoogle-calendar",
+    "google-docs": "xoogle-docs",
+    "google-drive": "xoogle-drive",
+    "uber-eats": "xber-eats",
+}
+
+
+def delta_ui_base(slug: str) -> str:
+    """Hosted SPA origin for a mock slug, renamed hosts included."""
+    host = DELTA_UI_HOSTS.get(slug)
+    if host:
+        return f"https://{host}.delta.deccanexperts.ai"
+    return DELTA_UI_TMPL.format(slug=slug)
+
 LOCAL_PORTS = {"shop": 5201, "mail": 5203, "market": 5202, "calendar": 5204, "food": 5205}
 
 
@@ -76,7 +99,7 @@ def ui_base(app: str, env: str | None = None) -> str:
         return override.rstrip("/")
     if (env or env_name()) == "local":
         return f"http://127.0.0.1:{LOCAL_PORTS[app]}"
-    return DELTA_UI_TMPL.format(slug=_slug(APP_TO_MOCK[app]))
+    return delta_ui_base(_slug(APP_TO_MOCK[app]))
 
 
 def ui_url(app: str, sid: str, path: str = "/", env: str | None = None,

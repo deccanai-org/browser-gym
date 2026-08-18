@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Bake our 5 bridged mock UIs into a cua-gym-hub clone (deccan-ai/cua-gym-hub),
-# so Jenkins can build + deploy them to cua-hub-<app>.deccanexperts.ai.
+# so Jenkins can build + deploy them to their hosted origins (see
+# tools/cua_env.py:DELTA_UI_HOSTS — the five gym mocks are xmazon, xbay, xmail,
+# xoogle-calendar and xber-eats; everything else is still cua-hub-<app>).
 #
 # The Bitbucket repo already carries our EARLIER UI work, so the *_bridged.patch
 # files no longer apply cleanly on top of it. Instead we overwrite each mock's
