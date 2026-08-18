@@ -67,7 +67,7 @@ for entry in "${MOCKS[@]}"; do
   printf 'VITE_API_BASE=%s\nVITE_MOCK_ID=%s\n' "$API_BASE" "$hub_key" > "$d/.env.production"
 
   # Ship our licensed realistic images (products for the storefronts, food for
-  # GymEats). vite copies public/ into dist at build. Extra unused files in a
+  # xber Eats). vite copies public/ into dist at build. Extra unused files in a
   # given mock are harmless.
   if [ -d "$HERE/product_assets" ] && { [ "$hub_key" = amazon_mock ] || [ "$hub_key" = ebay_mock ] || [ "$hub_key" = uber_eats_mock ]; }; then
     mkdir -p "$d/public/assets"

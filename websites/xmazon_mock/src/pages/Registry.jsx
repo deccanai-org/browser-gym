@@ -39,7 +39,7 @@ export const Registry = () => {
     <div className="bg-xmazon-bg min-h-screen">
       <div className="max-w-[900px] mx-auto p-4">
         <div className="text-xs text-gray-500 mb-1">
-          <Link to="/" className="text-xmazon-blue hover:underline">ShopGym</Link>
+          <Link to="/" className="text-xmazon-blue hover:underline">xmazon</Link>
           <span className="mx-1">›</span>
           <span>Gift Registry</span>
         </div>

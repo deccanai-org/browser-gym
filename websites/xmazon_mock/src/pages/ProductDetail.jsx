@@ -191,7 +191,7 @@ export const ProductDetail = () => {
     <div className="max-w-[1500px] mx-auto bg-[#eaeded]">
       {/* Breadcrumb */}
       <div className="text-[12px] text-[#007185] px-4 pt-3 pb-1">
-        <Link to="/" className="hover:underline hover:text-[#c7511f]">ShopGym</Link>
+        <Link to="/" className="hover:underline hover:text-[#c7511f]">xmazon</Link>
         <span className="text-[#565959] mx-1">›</span>
         <Link to={`/search?category=${encodeURIComponent(product.category)}`} className="hover:underline hover:text-[#c7511f]">{product.category}</Link>
         <span className="text-[#565959] mx-1">›</span>
@@ -248,7 +248,7 @@ export const ProductDetail = () => {
               <div className="flex gap-2 mb-2">
                 {product.badges.map(badge => (
                   <span key={badge} className={`text-xs font-bold px-2 py-0.5 rounded ${badge === 'Best Seller' ? 'bg-xmazon-orange text-white' : 'bg-xmazon-blue text-white'}`}>
-                    {badge === "ShopGym's Choice" ? "ShopGym's Choice" : badge}
+                    {badge === "xmazon's Choice" ? "xmazon's Choice" : badge}
                   </span>
                 ))}
               </div>
@@ -396,7 +396,7 @@ export const ProductDetail = () => {
               )}
 
               <div className="text-xs text-gray-500 space-y-1 mb-4">
-                <div className="flex justify-between"><span>Ships from</span> <span>ShopGym</span></div>
+                <div className="flex justify-between"><span>Ships from</span> <span>xmazon</span></div>
                 <div className="flex justify-between"><span>Sold by</span> <span>{product.seller || product.brand}</span></div>
               </div>
 
@@ -584,7 +584,7 @@ export const ProductDetail = () => {
                         <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
                           <User size={16} />
                         </div>
-                        <span className="text-sm font-medium">{review.userName || 'ShopGym Customer'}</span>
+                        <span className="text-sm font-medium">{review.userName || 'xmazon Customer'}</span>
                       </div>
                       <div className="flex items-center gap-2 mb-1">
                         <Rating value={review.rating} size={14} />

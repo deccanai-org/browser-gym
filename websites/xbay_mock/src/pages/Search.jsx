@@ -29,7 +29,7 @@ const brandOf = (item) => {
   if (item.brand) return item.brand;
   const t = item.title || '';
   for (const [rx, b] of _BRAND_KW) if (rx.test(t)) return b;
-  return _CAT_BRAND[item.category] || 'ValueMart';
+  return _CAT_BRAND[item.category] || 'xbay';
 };
 const shippingCostOf = (item) =>
   Number(item.shipping != null ? item.shipping : (item.shippingCost != null ? item.shippingCost : 0));

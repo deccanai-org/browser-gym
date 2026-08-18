@@ -40,7 +40,7 @@ export default function SettingsModal({ isOpen, onClose }) {
     const lines = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//CUA Gym//GymCal Mock//EN',
+      'PRODID:-//CUA Gym//xoogle Calendar Mock//EN',
       'CALSCALE:GREGORIAN',
       ...state.events.flatMap(event => [
         'BEGIN:VEVENT',

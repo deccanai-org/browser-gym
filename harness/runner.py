@@ -66,8 +66,8 @@ _SCREENSHOT_SETTLE_MS = 250
 # table and fails when a new top-level route is added without one.
 _SEG_TO_APP = {
     "mail": "mail", "food": "food", "calendar": "calendar",
-    # `valuemart` is the storefront name the mocks use for the market app.
-    "market": "market", "valuemart": "market",
+    # Storefront names the mocks show (and their pre-rename leftovers).
+    "market": "market", "valuemart": "market", "xbay": "market",
     "": "shop", "account": "shop", "browse": "shop", "bulk": "shop",
     "cart": "shop", "catalog": "shop", "category": "shop", "checkout": "shop",
     "deals": "shop", "item": "shop", "items": "shop", "log-in": "shop",
@@ -76,8 +76,13 @@ _SEG_TO_APP = {
     "profile": "shop", "returns": "shop", "search": "shop", "shop": "shop",
     "sign-in": "shop", "signin": "shop", "store": "shop", "subs": "shop",
     "subscriptions": "shop", "wishlist": "shop", "registry": "shop",
-    # ValueMart's membership page (added with the Membership.jsx route).
+    # xbay membership page (added with the Membership.jsx route).
     "membership": "market",
+    "shopgym": "shop", "xmazon": "shop",
+    "shopmail": "mail", "xmail": "mail",
+    "gymeats": "food", "xber-eats": "food", "xbereats": "food",
+    "gymcal": "calendar", "xoogle-calendar": "calendar",
+    "xooglecalendar": "calendar",
 }
 _APP_START_PATH = {"shop": "/", "mail": "/#/inbox", "market": "/",
                    "calendar": "/", "food": "/"}
@@ -1012,7 +1017,7 @@ class BrowserCtx:
         # getting this backwards is silent: on macOS "Control+a" is
         # beginning-of-line, so the field is never cleared, the agent types on
         # top of the old text and its search returns nothing. That is exactly
-        # what happened in the graded runs — the ShopMail box still read
+        # what happened in the graded runs — the xmail box still read
         # "Ardenne OR ORD-ARDENNE-4" after Control+a then Backspace.
         #
         # So normalise toward whichever modifier this HOST actually uses, in

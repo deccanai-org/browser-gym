@@ -77,9 +77,9 @@ export const ProductCard = ({ product, layout = 'grid' }) => {
       {product.badges && product.badges.includes('Best Seller') && (
         <span className="absolute top-0 left-0 bg-[#e47911] text-white text-[10px] font-bold px-1.5 py-0.5 z-10 rounded-br">Best Seller</span>
       )}
-      {product.badges && product.badges.includes("ShopGym's Choice") && !product.badges.includes('Best Seller') && (
+      {product.badges && product.badges.includes("xmazon's Choice") && !product.badges.includes('Best Seller') && (
         <span className="absolute top-0 left-0 bg-[#232f3e] text-white text-[10px] font-bold px-1.5 py-0.5 z-10 rounded-br">
-          <span className="text-[#f5a623]">ShopGym's</span> <span>Choice</span>
+          <span className="text-[#f5a623]">xmazon's</span> <span>Choice</span>
         </span>
       )}
 

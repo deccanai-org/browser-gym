@@ -872,7 +872,7 @@ export function createInitialData() {
       { id: 'promo_2', type: 'free_delivery', title: 'Free Delivery', description: 'Free delivery at Mediterranean Grill', code: null, minOrder: 0, discountAmount: 0, discountPercent: null, expiresAt: '2026-12-31', restaurantId: 'rest_10' },
       { id: 'promo_3', type: 'percentage', title: '20% off first order', description: '20% off your first order', code: 'FIRST20', minOrder: 15.00, discountAmount: 0, discountPercent: 20, expiresAt: '2026-12-31', restaurantId: null },
       { id: 'promo_4', type: 'discount', title: '$3 off Sushi', description: '$3 off at Tokyo Express', code: 'SUSHI3', minOrder: 15.00, discountAmount: 3.00, discountPercent: null, expiresAt: '2026-12-31', restaurantId: 'rest_2' },
-      { id: 'promo_5', type: 'free_delivery', title: 'GymEats One: $0 Delivery', description: '$0 Delivery Fee and 5% off eligible orders with GymEats One', code: null, minOrder: 0, discountAmount: 0, discountPercent: 5, expiresAt: '2026-12-31', restaurantId: null },
+      { id: 'promo_5', type: 'free_delivery', title: 'xber Eats One: $0 Delivery', description: '$0 Delivery Fee and 5% off eligible orders with xber Eats One', code: null, minOrder: 0, discountAmount: 0, discountPercent: 5, expiresAt: '2026-12-31', restaurantId: null },
       { id: 'promo_6', type: 'discount', title: '$10 off $40+', description: 'Save $10 on orders over $40', code: 'DEAL10', minOrder: 40.00, discountAmount: 10.00, discountPercent: null, expiresAt: '2026-12-31', restaurantId: null },
       { id: 'promo_7', type: 'percentage', title: '15% off Korean', description: '15% off at Seoul Kitchen', code: 'KOREAN15', minOrder: 20.00, discountAmount: 0, discountPercent: 15, expiresAt: '2026-12-31', restaurantId: 'rest_11' }
     ],

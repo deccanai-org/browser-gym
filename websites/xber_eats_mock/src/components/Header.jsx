@@ -117,7 +117,7 @@ export default function Header({ onCartClick, onMenuClick }) {
 
         {/* Logo */}
         <Link to="/" className="ue-header__logo">
-          <span className="ue-header__logo-uber">Gym</span>
+          <span className="ue-header__logo-uber">xber</span>
           <span className="ue-header__logo-eats">Eats</span>
         </Link>
 
@@ -294,7 +294,7 @@ export default function Header({ onCartClick, onMenuClick }) {
           <Search size={18} className="ue-header__search-icon" />
           <input
             type="text"
-            placeholder="Search GymEats"
+            placeholder="Search xber Eats"
             className="ue-header__search-input"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}

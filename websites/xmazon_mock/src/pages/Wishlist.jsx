@@ -32,7 +32,7 @@ export const Wishlist = () => {
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
             <div className="text-xs text-gray-500 mb-1">
-              <Link to="/" className="text-xmazon-blue hover:underline">ShopGym</Link>
+              <Link to="/" className="text-xmazon-blue hover:underline">xmazon</Link>
               <span className="mx-1">›</span>
               <span>Your Lists</span>
             </div>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './Footer.css';
 
 const FOOTER_CONTENT = {
-  help: { title: 'GymEats Help', body: 'Choose an order from Your Orders to get order-specific help, refunds, delivery updates, or contact options.' },
+  help: { title: 'xber Eats Help', body: 'Choose an order from Your Orders to get order-specific help, refunds, delivery updates, or contact options.' },
   gift: { title: 'Gift cards', body: 'Sandbox gift cards can be added at checkout with promo code SAVE5. No external purchase is required.' },
   restaurant: { title: 'Add your restaurant', body: 'Restaurant onboarding is simulated locally. Your draft is saved in this browser session for training tasks.' },
   deliver: { title: 'Sign up to deliver', body: 'Delivery partner signup opens a local information flow in this sandbox and never contacts external services.' },
@@ -11,7 +11,7 @@ const FOOTER_CONTENT = {
   cities: { title: 'Cities', body: 'This sandbox currently serves San Francisco neighborhoods with stable local fixtures.' },
   countries: { title: 'Countries', body: 'Country selection is fixed to the United States so prices, addresses, and taxes remain deterministic.' },
   pickup: { title: 'Pickup near me', body: 'This sandbox is delivery-only. Pickup ordering is not available and the catalog and cart always use delivery.' },
-  about: { title: 'About GymEats', body: 'This is a self-contained GymEats training mock with local restaurants, orders, account settings, and file endpoints.' },
+  about: { title: 'About xber Eats', body: 'This is a self-contained xber Eats training mock with local restaurants, orders, account settings, and file endpoints.' },
   appStore: { title: 'App Store', body: 'App installation is represented locally. Continue using this browser sandbox for all training workflows.' },
   playStore: { title: 'Play Store', body: 'App installation is represented locally. Continue using this browser sandbox for all training workflows.' },
   privacy: { title: 'Privacy Policy', body: 'Sandbox data stays local to this mock server and browser storage for the active session id.' },
@@ -28,7 +28,7 @@ export default function Footer() {
       <div className="ue-footer__inner">
         <div className="ue-footer__brand">
           <div className="ue-footer__logo">
-            <span className="ue-footer__logo-uber">Gym</span>
+            <span className="ue-footer__logo-uber">xber</span>
             <span className="ue-footer__logo-eats">Eats</span>
           </div>
         </div>
@@ -47,7 +47,7 @@ export default function Footer() {
             <button className="ue-footer__link" onClick={() => setModalKey('pickup')}>Pickup near me</button>
           </div>
           <div className="ue-footer__col">
-            <button className="ue-footer__link" onClick={() => setModalKey('about')}>About GymEats</button>
+            <button className="ue-footer__link" onClick={() => setModalKey('about')}>About xber Eats</button>
             <Link to="/" className="ue-footer__link">English</Link>
           </div>
         </div>
@@ -71,7 +71,7 @@ export default function Footer() {
           </div>
 
           <div className="ue-footer__legal">
-            <span>&copy; {new Date().getFullYear()} GymEats</span>
+            <span>&copy; {new Date().getFullYear()} xber Eats</span>
             <span className="ue-footer__dot">&bull;</span>
             <button className="ue-footer__legal-link" onClick={() => setModalKey('privacy')}>Privacy Policy</button>
             <span className="ue-footer__dot">&bull;</span>

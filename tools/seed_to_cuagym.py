@@ -266,14 +266,14 @@ def _svg_tile(text: str, seed: str) -> str:
 
 
 def _market_image(pid: str, name: str) -> str:
-    """ValueMart mirrors the shop catalog with vm_ ids; reuse the real product
+    """xbay mirrors the shop catalog with vm_ ids; reuse the real product
     photo when one matches, else a gradient tile. Never picsum."""
     if pid in _PRODUCT_IMAGES:
         return f"/assets/products/{pid}.jpg"
     alt = "p_" + pid[3:] if pid.startswith("vm_") else pid
     if alt in _PRODUCT_IMAGES:
         return f"/assets/products/{alt}.jpg"
-    # The same aliases the shop uses, under either id — ValueMart mirrors the
+    # The same aliases the shop uses, under either id — xbay mirrors the
     # catalog with vm_ ids, so a match on the shop's id is a match here.
     for key in (pid, alt):
         if key in _IMAGE_ALIASES:
@@ -362,15 +362,15 @@ _UBER_CATEGORIES = [
     {"id": "cat_15", "name": "Mediterranean", "icon": "\U0001F959"},
 ]
 # The one account holder, identical across all five apps. User mailbox /
-# notify identity is alice@shopmail.com (ShopMail account). Do not confuse
-# with ShopGym commerce support addresses (support@shopgym.com, etc.).
+# notify identity is alice@shopmail.com (xmail account). Do not confuse
+# with xmazon commerce support addresses (support@shopgym.com, etc.).
 ALICE_NAME = "Alice Anderson"
 ALICE_EMAIL = "alice@shopmail.com"
 
 # The gym's frozen "now" (ms), 2026-05-21 12:00 UTC — the same instant the
 # calendar/market/food projections freeze to. Projected so every app computes
 # dates against the gym clock instead of the real Date.now(); without it a
-# date-dependent ShopGym task (delivery windows, "arrives by", deal countdowns)
+# date-dependent xmazon task (delivery windows, "arrives by", deal countdowns)
 # drifts with the wall clock and stops reproducing. Mirrors market's inline
 # literal at transform_market and _FOOD_EPOCH_MS.
 _GYM_NOW_MS = int(_dt.datetime(2026, 5, 21, 12, 0, 0, tzinfo=_dt.timezone.utc).timestamp() * 1000)
@@ -489,7 +489,7 @@ def _gift_card_rows(shop: dict, known: set) -> list[dict]:
             "bulletPoints": [],
             "specs": {"Brand": p.brand, "Emoji": p.image_emoji},
             "category": "Gift Cards", "brand": p.brand, "prime": False,
-            "inStock": True, "stockCount": p.stock, "seller": "ShopGym",
+            "inStock": True, "stockCount": p.stock, "seller": "xmazon",
             "badges": [], "createdAt": "2024-01-01T00:00:00.000Z",
         })
     return rows
@@ -533,9 +533,9 @@ def transform_shop(shop: dict) -> dict:
             "category": _amazon_category(p),
             "brand": p.get("brand"), "prime": True, "inStock": stock > 0, "stockCount": stock,
             "variants": variants,
-            # The store is branded ShopGym; the old value re-introduced on every
+            # The store is branded xmazon; the old value re-introduced on every
             # product the exact name the rebrand took out of the mock.
-            "seller": "ShopGym", "badges": (["Best Seller"] if (p.get("rating") or 0) >= 4.5 else []),
+            "seller": "xmazon", "badges": (["Best Seller"] if (p.get("rating") or 0) >= 4.5 else []),
             "createdAt": "2024-01-01T00:00:00.000Z",
         })
         for r in (p.get("reviews") or []):
@@ -685,8 +685,8 @@ def transform_shop(shop: dict) -> dict:
             "_gym_meta": _gym_meta(shop, "shop")}
 
 
-# --- ebay (gym market / ValueMart) -------------------------------------------
-# ValueMart mirrors a slice of the shop catalog, so it emits far fewer
+# --- ebay (gym market / xbay) -------------------------------------------
+# xbay mirrors a slice of the shop catalog, so it emits far fewer
 # categories — but its default was the same silent one, and "Other" hides a
 # mis-shelved listing just as well as "Electronics" does.
 _EBAY_CAT = {
@@ -731,7 +731,7 @@ def _ebay_category(pid: str, product: dict) -> str:
 
 def transform_market(m: dict) -> dict:
     """gym MarketState -> ebay_mock (listings[], users[], cart[])."""
-    store = m.get("store_name") or "ValueMart"
+    store = m.get("store_name") or "xbay"
     seller_id, buyer_id = "user_valuemart", "user_1"
     buyer = {"id": buyer_id, "username": ALICE_NAME, "email": ALICE_EMAIL,
              "avatar": _svg_tile(ALICE_NAME, "buyer"), "feedbackScore": 154, "feedbackRating": 98.5}
@@ -786,7 +786,7 @@ def transform_market(m: dict) -> dict:
             listing["pickupWindow"] = p.get("pickup_window")
         listings.append(listing)
     cart = [it.get("product_id") for it in ((m.get("cart") or {}).get("items") or []) if it.get("product_id")]
-    # Ship-to addresses + payment methods on file, so ValueMart checkout has a
+    # Ship-to addresses + payment methods on file, so xbay checkout has a
     # real address/payment selection (was: only a cosmetic country dropdown).
     addresses = [{"id": a.get("id"), "fullName": a.get("full_name"), "street": a.get("street"),
                   "city": a.get("city"), "state": a.get("state"), "zip": a.get("zip"),
@@ -860,7 +860,7 @@ _CAL_COLOR = {c["id"]: c["color"] for c in _CAL_DEFAULTS}
 
 
 def _calendar_gym_now_iso(cal: dict) -> str:
-    """Task-overridable frozen clock for GymCal (local wall ISO, no Z).
+    """Task-overridable frozen clock for xoogle Calendar (local wall ISO, no Z).
 
     Prefer ``CalendarState.gym_now`` when a task sets it (e.g. mp_032 12:40
     before lunch). Default noon on the gym SEED day so the red now-line and
@@ -1031,7 +1031,7 @@ def _dish_image(did: str, name: str) -> str:
     return _food_img(key)
 
 
-# Tasks that must not show the ambient GymEats decoy catalog (agent thrash /
+# Tasks that must not show the ambient xber Eats decoy catalog (agent thrash /
 # shopping diversion). Seeded restaurants + orders only.
 _SKIP_AMBIENT_FOOD_PREFIXES = (
     "cal_food_008/",

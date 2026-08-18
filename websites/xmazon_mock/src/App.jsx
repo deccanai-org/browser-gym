@@ -25,9 +25,9 @@ const Footer = () => {
   const year = new Date(GYM_NOW_MS).getFullYear();
   const [footerPanel, setFooterPanel] = React.useState(null);
   const footerLinks = {
-    company: ['Careers', 'Blog', 'About ShopGym', 'Investor Relations', 'ShopGym Devices', 'ShopGym Science'],
-    seller: ['Sell products on ShopGym', 'Sell on ShopGym Business', 'Sell apps on ShopGym', 'Become an Affiliate', 'Advertise Your Products', 'Self-Publish with Us'],
-    payments: ['ShopGym Business Card', 'Shop with Points', 'Reload Your Balance', 'ShopGym Currency Converter'],
+    company: ['Careers', 'Blog', 'About xmazon', 'Investor Relations', 'xmazon Devices', 'xmazon Science'],
+    seller: ['Sell products on xmazon', 'Sell on xmazon Business', 'Sell apps on xmazon', 'Become an Affiliate', 'Advertise Your Products', 'Self-Publish with Us'],
+    payments: ['xmazon Business Card', 'Shop with Points', 'Reload Your Balance', 'xmazon Currency Converter'],
     help: ['Shipping Rates & Policies', 'Returns & Replacements', 'Manage Your Content and Devices', 'Help'],
     legal: ['Conditions of Use', 'Privacy Notice', 'Consumer Health Data Privacy Disclosure', 'Your Ads Privacy Choices'],
   };
@@ -63,7 +63,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h4 className="font-bold text-[14px] mb-3">ShopGym Payment Products</h4>
+            <h4 className="font-bold text-[14px] mb-3">xmazon Payment Products</h4>
             <ul className="space-y-2 text-[#ddd] text-[13px]">
               {footerLinks.payments.map(label => <li key={label}><FooterButton>{label}</FooterButton></li>)}
             </ul>
@@ -82,13 +82,13 @@ const Footer = () => {
       {/* Bottom bar */}
       <div className="bg-[#131a22] text-white border-t border-gray-700 py-6 px-8 text-center">
         <div className="flex items-center justify-center gap-2 mb-3">
-          <span className="text-[20px] font-bold tracking-tight">ShopGym</span>
+          <span className="text-[20px] font-bold tracking-tight">xmazon</span>
           <span className="text-[10px] text-xmazon-orange font-medium"></span>
         </div>
         <div className="flex flex-wrap justify-center gap-6 text-[12px] text-[#999] mb-2">
           {footerLinks.legal.map(label => <FooterButton key={label}>{label}</FooterButton>)}
         </div>
-        <div className="text-[12px] text-[#999]">&copy; 1996-{year}, ShopGym, Inc. or its affiliates</div>
+        <div className="text-[12px] text-[#999]">&copy; 1996-{year}, xmazon, Inc. or its affiliates</div>
       </div>
 
       {footerPanel && (
@@ -99,7 +99,7 @@ const Footer = () => {
               <button type="button" aria-label="Close footer information" onClick={() => setFooterPanel(null)} className="text-gray-500 hover:text-gray-700">×</button>
             </div>
             <p className="text-sm text-gray-700 leading-6">
-              This local ShopGym sandbox keeps external company pages inside the training environment. Use the account, orders, wishlist, search, and cart links for task-relevant workflows.
+              This local xmazon sandbox keeps external company pages inside the training environment. Use the account, orders, wishlist, search, and cart links for task-relevant workflows.
             </p>
             <div className="flex justify-end mt-5">
               <button type="button" onClick={() => setFooterPanel(null)} className="bg-xmazon-yellow hover:bg-xmazon-darkYellow px-5 py-2 rounded text-sm font-bold">Done</button>

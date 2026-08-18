@@ -312,7 +312,7 @@ export const Checkout = () => {
             </div>
             {step === 3 && (
               <p className="text-xs text-gray-500 mb-4">
-                By placing your order, you agree to ShopGym's privacy notice and conditions of use.
+                By placing your order, you agree to xmazon's privacy notice and conditions of use.
               </p>
             )}
             <h3 className="font-bold text-lg mb-2">Order Summary</h3>

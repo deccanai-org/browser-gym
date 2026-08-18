@@ -108,7 +108,7 @@ const XoogleAppsPanel = ({ onClose }) => {
     { name: 'YouTube', icon: '▶️' },
     { name: 'Play', icon: '🎮' },
     { name: 'News', icon: '📰' },
-    { name: 'ShopMail', icon: '✉️' },
+    { name: 'xmail', icon: '✉️' },
     { name: 'Meet', icon: '📹' },
     { name: 'Chat', icon: '💬' },
     { name: 'Drive', icon: '📁' },
@@ -202,15 +202,15 @@ const Header = () => {
         <button
           onClick={() => navigate('/inbox')}
           className="flex items-center gap-2 rounded px-1 py-0.5 hover:bg-gray-100"
-          title="ShopMail — go to Inbox"
-          aria-label="ShopMail home"
+          title="xmail — go to Inbox"
+          aria-label="xmail home"
         >
           <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true">
             <rect width="32" height="32" rx="7" fill="#c5221f" />
             <path d="M6 10h20v12H6z" fill="#fff" />
             <path d="M6 10l10 7 10-7" fill="none" stroke="#c5221f" strokeWidth="2" />
           </svg>
-          <span className="text-2xl font-medium text-gray-600" style={{fontFamily:"Roboto,Arial,sans-serif"}}>ShopMail</span>
+          <span className="text-2xl font-medium text-gray-600" style={{fontFamily:"Roboto,Arial,sans-serif"}}>xmail</span>
         </button>
       </div>
 
@@ -241,7 +241,7 @@ const Header = () => {
         <button
           className="p-2 hover:bg-gray-100 rounded-full"
           title="Support"
-          onClick={() => showToast('ShopMail Help Center — not available in mock')}
+          onClick={() => showToast('xmail Help Center — not available in mock')}
         >
           <HelpCircle size={24} className="text-gray-600" />
         </button>

@@ -395,7 +395,7 @@ export default function ProductDetails() {
               <div className="flex gap-3">
                 <ShieldCheck size={20} className="text-gray-400" />
                 <div>
-                  <div className="font-bold">ValueMart Money Back Guarantee</div>
+                  <div className="font-bold">xbay Money Back Guarantee</div>
                   <div className="text-gray-500">Get the item you ordered or get your money back.</div>
                 </div>
               </div>

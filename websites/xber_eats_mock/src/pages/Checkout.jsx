@@ -106,8 +106,8 @@ export default function Checkout() {
     const money = (n) => Math.round((Number(n) || 0) * 100) / 100;
     const subtotal = money(cart.items.reduce((s, item) => s + item.totalPrice, 0));
     // The engine charges `subtotal - discount + delivery_fee` and nothing else
-    // (server/apps/food/mutations.py): GymEats has no service fee and levies no
-    // tax — ShopGym is the only store in the world that taxes. Left in, this
+    // (server/apps/food/mutations.py): xber Eats has no service fee and levies no
+    // tax — xmazon is the only store in the world that taxes. Left in, this
     // sidebar showed $74.67 for an order the gym billed at $60.99, and tasks
     // that ask for the amount ACTUALLY charged became unanswerable from the
     // screen. Zeroed rather than deleted so the unbridged demo still looks like

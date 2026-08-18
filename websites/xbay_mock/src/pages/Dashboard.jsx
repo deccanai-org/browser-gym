@@ -146,7 +146,7 @@ export default function Dashboard() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">My ValueMart</h1>
+      <h1 className="text-3xl font-bold mb-6">My xbay</h1>
 
       <div className="flex gap-8 border-b border-gray-200 mb-8 overflow-x-auto">
         {[

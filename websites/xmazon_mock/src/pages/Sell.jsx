@@ -14,7 +14,7 @@ export const Sell = () => {
     <div className="bg-xmazon-bg min-h-screen">
       <div className="max-w-[720px] mx-auto p-4">
         <h1 className="text-2xl font-medium flex items-center gap-2 mb-4">
-          <Tag size={22} /> Sell on ShopGym
+          <Tag size={22} /> Sell on xmazon
         </h1>
         <div className="bg-white border rounded p-6">
           {listed ? (

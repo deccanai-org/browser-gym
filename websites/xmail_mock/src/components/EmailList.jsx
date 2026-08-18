@@ -326,7 +326,7 @@ const EMPTY_STATES = {
     icon: null,
     svgPath: 'M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z',
     title: 'Nothing in Important',
-    desc: 'ShopMail automatically marks messages as important based on how you read and reply to them.',
+    desc: 'xmail automatically marks messages as important based on how you read and reply to them.',
   },
   sent: {
     icon: Send,
@@ -346,7 +346,7 @@ const EMPTY_STATES = {
   spam: {
     icon: ShieldCheck,
     title: 'Hooray, no spam here!',
-    desc: 'ShopMail protects you from spam messages. Messages marked as spam are deleted after 30 days.',
+    desc: 'xmail protects you from spam messages. Messages marked as spam are deleted after 30 days.',
   },
   trash: {
     icon: Trash2,

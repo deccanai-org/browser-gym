@@ -383,7 +383,7 @@ export const Profile = () => {
             <div className="flex items-center gap-4 mb-4 p-4 bg-gradient-to-r from-[#232f3e] to-[#37475a] rounded-lg">
               <span className="text-[#00a8e1] font-bold italic text-[28px]">prime</span>
               <div className="text-white">
-                <div className="font-bold text-[14px]">{state.user.isPrime ? 'You are a Prime member' : 'Join ShopGym Prime'}</div>
+                <div className="font-bold text-[14px]">{state.user.isPrime ? 'You are a Prime member' : 'Join xmazon Prime'}</div>
                 <div className="text-[12px] text-gray-300">
                   {state.user.isPrime
                     ? `Member since ${state.user.memberSince || '2019'} - Enjoy FREE same-day, one-day, and two-day delivery`

@@ -319,7 +319,7 @@ export const Cart = () => {
             {state.cart.length === 0 ? (
               <div className="py-8 text-center">
                 <div className="text-4xl mb-4">🛒</div>
-                <h2 className="text-2xl font-medium mb-2">Your ShopGym Cart is empty</h2>
+                <h2 className="text-2xl font-medium mb-2">Your xmazon Cart is empty</h2>
                 <p className="text-sm text-gray-600 mb-4">Your shopping cart lives here. Add items you want to purchase.</p>
                 <Link to="/" className="text-xmazon-blue hover:underline text-sm font-bold">Shop today's deals</Link>
               </div>

@@ -114,11 +114,11 @@ export default function Account() {
         <p className="account-profile__email">{user.email}</p>
       </div>
 
-      {/* GymEats One banner */}
+      {/* xber Eats One banner */}
       {!user.uberOneActive && (
         <div className="account-uber-one">
           <div className="account-uber-one__content">
-            <strong>GymEats One</strong>
+            <strong>xber Eats One</strong>
             <p>$0 Delivery Fee and 5% off eligible orders</p>
           </div>
           <button className="account-uber-one__btn" onClick={() => setShowUberOneModal(true)}>Try free for 1 month</button>
@@ -127,7 +127,7 @@ export default function Account() {
       {user.uberOneActive && (
         <div className="account-uber-one account-uber-one--active">
           <div className="account-uber-one__content">
-            <strong>GymEats One Member</strong>
+            <strong>xber Eats One Member</strong>
             <p>Enjoy $0 delivery and 5% off eligible orders</p>
           </div>
           <Shield size={24} />
@@ -488,7 +488,7 @@ export default function Account() {
         )}
       </section>
 
-      {/* GymEats One Modal */}
+      {/* xber Eats One Modal */}
       {showUberOneModal && (
         <div className="uber-one-modal-overlay" onClick={() => setShowUberOneModal(false)}>
           <div className="uber-one-modal" onClick={(e) => e.stopPropagation()}>
@@ -496,7 +496,7 @@ export default function Account() {
               <X size={20} />
             </button>
             <div className="uber-one-modal__header">
-              <strong>GymEats One</strong>
+              <strong>xber Eats One</strong>
             </div>
             <div className="uber-one-modal__benefits">
               <div className="uber-one-modal__benefit">

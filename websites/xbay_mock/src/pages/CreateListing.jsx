@@ -5,7 +5,7 @@ import { bridged } from '../lib/bridge';
 import { Upload, X, Image } from 'lucide-react';
 
 function makeListingImage(title, category) {
-  const label = (title || category || 'ValueMart').slice(0, 32);
+  const label = (title || category || 'xbay').slice(0, 32);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="400" height="400" fill="#f5f5f5"/><rect x="28" y="28" width="344" height="344" rx="18" fill="#ffffff" stroke="#e5e7eb" stroke-width="6"/><circle cx="200" cy="150" r="54" fill="#e53238"/><rect x="96" y="232" width="208" height="18" rx="9" fill="#0064d2"/><rect x="128" y="266" width="144" height="14" rx="7" fill="#86b817"/><text x="200" y="330" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#333333">${label.replace(/[&<>"']/g, '')}</text></svg>`;
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }

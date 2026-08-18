@@ -134,7 +134,7 @@ export const Header = () => {
       {/* Top Bar */}
       <div className="bg-xmazon text-white px-2 sm:px-4 py-2 flex items-center gap-2 sm:gap-4 h-[60px] overflow-hidden max-w-[100vw]">
         <Link to="/" className="flex items-center border border-transparent hover:border-white p-1 sm:p-2 rounded-sm focus:outline-none focus:ring-2 focus:ring-white shrink-0">
-          <span className="text-xl sm:text-2xl font-bold tracking-tighter">ShopGym<span className="text-xmazon-orange"></span></span>
+          <span className="text-xl sm:text-2xl font-bold tracking-tighter">xmazon<span className="text-xmazon-orange"></span></span>
         </Link>
 
         <Link to="/profile#addresses" className="hidden lg:flex flex-col text-xs border border-transparent hover:border-white p-2 rounded-sm leading-tight shrink-0">
@@ -165,7 +165,7 @@ export const Header = () => {
               onKeyDown={handleSearchKeyDown}
               onFocus={() => searchTerm.length > 1 && setShowSuggestions(true)}
               className="flex-1 px-3 text-black outline-none h-full"
-              placeholder="Search ShopGym Mock"
+              placeholder="Search xmazon"
             />
             <button type="submit" className="bg-xmazon-yellow hover:bg-xmazon-darkYellow px-4 text-black h-full flex items-center justify-center">
               <Search size={20} />

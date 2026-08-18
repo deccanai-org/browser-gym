@@ -180,7 +180,7 @@ export default function Header({ onSearch, searchQuery = '' }) {
           <div className="w-8 h-8 bg-primary rounded text-white flex items-center justify-center font-bold text-lg">
             31
           </div>
-          <span className="text-xl text-text-secondary hidden sm:block">GymCal</span>
+          <span className="text-xl text-text-secondary hidden sm:block">xoogle Calendar</span>
         </div>
       </div>
 

@@ -221,7 +221,7 @@ export default function Homepage() {
       {featured.length > 0 && (
         <section className="homepage__section">
           <div className="homepage__section-header">
-            <h2 className="homepage__section-title">Featured on GymEats</h2>
+            <h2 className="homepage__section-title">Featured on xber Eats</h2>
             <Link to="/search?q=popular" className="homepage__see-all">See all</Link>
           </div>
           <div className="homepage__grid">
@@ -259,11 +259,11 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* New on GymEats */}
+      {/* New on xber Eats */}
       {newRestaurants.length > 0 && (
         <section className="homepage__section">
           <div className="homepage__section-header">
-            <h2 className="homepage__section-title">New on GymEats</h2>
+            <h2 className="homepage__section-title">New on xber Eats</h2>
           </div>
           <div className="homepage__grid">
             {newRestaurants.map(r => (
@@ -273,7 +273,7 @@ export default function Homepage() {
         </section>
       )}
 
-      {/* GymEats One Banner */}
+      {/* xber Eats One Banner */}
       {!state.user.uberOneActive && (
         <div className="homepage__uber-one-banner">
           <div className="homepage__uber-one-content">
@@ -281,7 +281,7 @@ export default function Homepage() {
               <span style={{ fontWeight: 700, fontSize: 14, color: '#fff' }}>1</span>
             </div>
             <div>
-              <h3 className="homepage__uber-one-title">$0 Delivery Fee with GymEats One</h3>
+              <h3 className="homepage__uber-one-title">$0 Delivery Fee with xber Eats One</h3>
               <p className="homepage__uber-one-sub">Plus 5% off eligible orders. Cancel anytime.</p>
             </div>
           </div>

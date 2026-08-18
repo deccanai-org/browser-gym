@@ -84,7 +84,7 @@ export const GiftCards = () => {
     const note = giftNote();
     Promise.resolve(addToCart({
       id,
-      title: `ShopGym Gift Card — $${amountUsd}`,
+      title: `xmazon Gift Card — $${amountUsd}`,
       price: amountUsd,
       image: '',
       category: 'Gift Cards',
@@ -114,14 +114,14 @@ export const GiftCards = () => {
     <div className="bg-xmazon-bg min-h-screen">
       <div className="max-w-[800px] mx-auto p-4">
         <h1 className="text-2xl font-medium flex items-center gap-2 mb-4">
-          <Gift size={22} /> ShopGym Gift Cards
+          <Gift size={22} /> xmazon Gift Cards
         </h1>
         {giftBalances.length > 0 && (
           <div className="bg-white border rounded p-4 mb-4" data-test-id="gift-card-balance-panel">
             <div className="text-sm font-bold mb-2">Your gift card balance</div>
             {giftBalances.map((pm) => (
               <div key={pm.id} className="text-sm text-gray-800" data-test-id={`gift-card-balance-${pm.id}`}>
-                {pm.label || pm.nickname || 'ShopGym Gift Card'}
+                {pm.label || pm.nickname || 'xmazon Gift Card'}
                 {pm.balance != null && (
                   <span className="font-bold ml-2">
                     — ${Number(pm.balance).toFixed(2)} remaining

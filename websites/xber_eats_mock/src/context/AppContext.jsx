@@ -410,7 +410,7 @@ export function AppProvider({ children }) {
       const tipAmount = cart.tipPercentage ? subtotal * (cart.tipPercentage / 100) : cart.tipAmount;
       const total = subtotal + serviceFee + deliveryFee + tax + tipAmount - cart.promoDiscount;
 
-      // Prefer task-frozen gym clock so ETA windows align with GymCal now-line.
+      // Prefer task-frozen gym clock so ETA windows align with xoogle Calendar now-line.
       const now = prev._gym_now ? new Date(prev._gym_now) : new Date();
       const delivTimeMin = restaurant ? restaurant.deliveryTimeMin : 25;
       const delivTimeMax = restaurant ? restaurant.deliveryTimeMax : 40;
@@ -775,7 +775,7 @@ export function AppProvider({ children }) {
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: '#fff', fontFamily: 'var(--font-family)' }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '32px', fontWeight: 'bold' }}>
-            <span style={{ color: '#000' }}>Gym</span>
+            <span style={{ color: '#000' }}>xber</span>
             <span style={{ color: '#06C167' }}>Eats</span>
           </div>
           <p style={{ color: '#6B6B6B', marginTop: '12px' }}>Loading...</p>

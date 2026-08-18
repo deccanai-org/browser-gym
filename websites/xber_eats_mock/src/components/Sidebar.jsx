@@ -52,7 +52,7 @@ export default function Sidebar({ isOpen, onClose }) {
             <Heart size={20} />
             <span>Favorites</span>
           </button>
-          <button className="sidebar__nav-item" onClick={() => openLocalDialog('Wallet', 'Your GymEats credits balance is $0.00. Saved payment methods are managed in your Account under Payment.')}>
+          <button className="sidebar__nav-item" onClick={() => openLocalDialog('Wallet', 'Your xber Eats credits balance is $0.00. Saved payment methods are managed in your Account under Payment.')}>
             <CreditCard size={20} />
             <span>Wallet</span>
           </button>
@@ -64,21 +64,21 @@ export default function Sidebar({ isOpen, onClose }) {
             <HelpCircle size={20} />
             <span>Help</span>
           </button>
-          <button className="sidebar__nav-item" onClick={() => openLocalDialog('Get a ride', "Rides aren't available in this GymEats sandbox — there's no rides product to open.")}>
+          <button className="sidebar__nav-item" onClick={() => openLocalDialog('Get a ride', "Rides aren't available in this xber Eats sandbox — there's no rides product to open.")}>
             <ExternalLink size={20} />
             <span>Get a ride</span>
             <ExternalLink size={14} className="sidebar__ext-icon" />
           </button>
         </div>
 
-        {/* GymEats One */}
+        {/* xber Eats One */}
         {!user.uberOneActive && (
           <div className="sidebar__uber-one" onClick={() => handleNav('/account')}>
             <div className="sidebar__uber-one-icon">
-              <span className="sidebar__uber-one-badge">Gym<br/>One</span>
+              <span className="sidebar__uber-one-badge">xber<br/>One</span>
             </div>
             <div className="sidebar__uber-one-info">
-              <strong>GymEats One</strong>
+              <strong>xber Eats One</strong>
               <span className="sidebar__uber-one-trial">Try free for 4 weeks</span>
             </div>
           </div>
@@ -102,13 +102,13 @@ export default function Sidebar({ isOpen, onClose }) {
           <div className="sidebar__bottom-divider" />
           <button className="sidebar__bottom-link" onClick={() => openLocalDialog('Business account draft', 'Business account setup is represented locally. Company orders and billing stay inside this browser session.')}>Create a business account</button>
           <button className="sidebar__bottom-link" onClick={() => openLocalDialog('Restaurant onboarding', 'Restaurant signup is simulated locally with no external submission.')}>Add your restaurant</button>
-          <button className="sidebar__bottom-link" onClick={() => openLocalDialog('Delivery partner signup', 'Courier signup opens a local training flow and does not contact real GymEats services.')}>Sign up to deliver</button>
+          <button className="sidebar__bottom-link" onClick={() => openLocalDialog('Delivery partner signup', 'Courier signup opens a local training flow and does not contact real xber Eats services.')}>Sign up to deliver</button>
         </div>
 
         {/* App download */}
         <div className="sidebar__app-download">
           <div className="sidebar__app-icon">
-            <span style={{ fontWeight: 700, fontSize: 11, lineHeight: 1 }}>Gym<br/><span style={{ color: '#06C167' }}>Eats</span></span>
+            <span style={{ fontWeight: 700, fontSize: 11, lineHeight: 1 }}>xber<br/><span style={{ color: '#06C167' }}>Eats</span></span>
           </div>
           <span className="sidebar__app-text">There's more to love in the app.</span>
         </div>

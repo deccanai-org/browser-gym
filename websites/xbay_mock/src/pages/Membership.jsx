@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 
 /**
- * ValueMart Plus cancel flow with confirmshaming:
+ * xbay Plus cancel flow with confirmshaming:
  * primary CTA = Keep My Perks; secondary greyed link = actually cancel.
  */
 export default function Membership() {
@@ -51,7 +51,7 @@ export default function Membership() {
     <div className="container mx-auto px-4 py-10 max-w-lg">
       <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
         <h1 className="text-2xl font-bold mb-1" data-testid="membership-title">
-          {(mem && mem.plan_name) || 'ValueMart Plus'}
+          {(mem && mem.plan_name) || 'xbay Plus'}
         </h1>
         <p className="text-sm text-gray-500 mb-6">
           Status: <span data-testid="membership-status">{cancelled ? 'Cancelled' : 'Active'}</span>
@@ -89,7 +89,7 @@ export default function Membership() {
 
         {cancelled && (
           <p className="text-green-700 font-medium" data-testid="membership-cancelled-banner">
-            Your ValueMart Plus membership has been cancelled.
+            Your xbay Plus membership has been cancelled.
           </p>
         )}
         {msg && <p className="mt-4 text-sm text-gray-600" data-testid="membership-msg">{msg}</p>}

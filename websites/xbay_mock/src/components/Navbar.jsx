@@ -128,14 +128,14 @@ export default function Navbar() {
           {(!bridged() || state.enableSellerCreate) && <Link to="/sell" className="hover:underline" data-testid="nav-sell">Sell</Link>}
           {state.enableMembershipCancel && <Link to="/membership" className="hover:underline" data-testid="nav-membership">Membership</Link>}
           <Link to="/dashboard?tab=watchlist" className="hover:underline">Watchlist</Link>
-          <Link to="/dashboard" className="hover:underline">My ValueMart</Link>
+          <Link to="/dashboard" className="hover:underline">My xbay</Link>
         </div>
       </div>
 
       {/* Main Nav */}
       <div className="container mx-auto px-4 py-3 flex items-center gap-4">
         <Link to="/" className="text-3xl font-bold tracking-tighter text-xbay-blue shrink-0">
-          ValueMart<span className="text-xbay-yellow">.</span><span className="text-xbay-green">mock</span>
+          xbay
         </Link>
 
         {/* Shop by Category */}
@@ -384,7 +384,7 @@ export default function Navbar() {
                   ✓
                 </div>
                 <p className="font-bold text-gray-900">Support request saved locally</p>
-                <p className="text-sm text-gray-500 mt-1">A mock ValueMart teammate will follow up in Messages.</p>
+                <p className="text-sm text-gray-500 mt-1">A mock xbay teammate will follow up in Messages.</p>
                 <button onClick={() => setShowHelpDialog(false)} className="mt-5 btn-primary text-sm">Done</button>
               </div>
             ) : (
