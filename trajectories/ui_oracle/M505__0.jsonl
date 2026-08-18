@@ -1,0 +1,178 @@
+{
+ "task_id": "M505/she_already_has_one",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "Order what is in my ShopGym basket and send it to my home address. Email me at alice@shopgym.com with what you ordered and what it came to.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "shop",
+   "action_kind": "open the basket",
+   "action_args": {},
+   "reasoning": "She wants the basket ordered, so read what is actually in it first.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_000.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 1,
+   "app": "shop",
+   "action_kind": "read the two lines",
+   "action_args": {},
+   "reasoning": "Two lines: a Brindle stovetop kettle at $46.00 and a Brindle cafetiere at $27.00. Both are kitchen things, which is worth a look at what she has already bought before paying for either.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_001.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 2,
+   "app": "shop",
+   "action_kind": "open Your Orders",
+   "action_args": {},
+   "reasoning": "Check the order history before paying for either line, because a kettle is the kind of thing already owned.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_002.png",
+   "url_after": "http://127.0.0.1:5231/orders?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 3,
+   "app": "shop",
+   "action_kind": "find the kettle she already owns",
+   "action_args": {},
+   "reasoning": "ORD-KET-505 is the same Brindle 1.7L kettle, bought on 28 April and already delivered. The basket line would buy her a second one. The cafetiere is not on the account anywhere, so that one is a genuine buy.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_003.png",
+   "url_after": "http://127.0.0.1:5231/orders?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 4,
+   "app": "shop",
+   "action_kind": "reopen the basket",
+   "action_args": {},
+   "reasoning": "Back to the basket to take the duplicate out.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_004.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 5,
+   "app": "shop",
+   "action_kind": "remove the duplicate kettle",
+   "action_args": {},
+   "reasoning": "Remove the kettle and leave the cafetiere.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_005.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 6,
+   "app": "shop",
+   "action_kind": "proceed to checkout",
+   "action_args": {},
+   "reasoning": "Everything in the basket is now what she actually asked for, so check out.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_006.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 7,
+   "app": "shop",
+   "action_kind": "confirm the order",
+   "action_args": {},
+   "reasoning": "Confirm the address and the card.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_007.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 8,
+   "app": "shop",
+   "action_kind": "place the order",
+   "action_args": {},
+   "reasoning": "Place the order now that the basket holds exactly what she asked for.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_008.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 9,
+   "app": "shop",
+   "action_kind": "confirm the order landed",
+   "action_args": {},
+   "reasoning": "Wait for the confirmation so the order is really on the account.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_009.png",
+   "url_after": "http://127.0.0.1:5231/order-confirmation/ORD_263A4167"
+  },
+  {
+   "step_idx": 10,
+   "app": "mail",
+   "action_kind": "click Compose",
+   "action_args": {},
+   "reasoning": "She asked to be written to when the job was done, so open a blank message.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_010.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 11,
+   "app": "mail",
+   "action_kind": "fill To",
+   "action_args": {},
+   "reasoning": "Address it to alice@shopgym.com, which is where she asked for the reply.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_011.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 12,
+   "app": "mail",
+   "action_kind": "fill Subject",
+   "action_args": {},
+   "reasoning": "A subject line that says the outcome without her having to open the message.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_012.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 13,
+   "app": "mail",
+   "action_kind": "write body",
+   "action_args": {},
+   "reasoning": "She asked what was ordered and what it came to, and the line I did not buy is the part she needs explaining.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_013.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 14,
+   "app": "mail",
+   "action_kind": "click Send",
+   "action_args": {},
+   "reasoning": "Send it, so the account and her inbox agree on what was done.",
+   "screenshot_path": "screenshots/ui_oracle/M505__0/step_014.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "ordered_the_press_only_and_said_why",
+   "placed_an_order"
+  ],
+  "missed_milestones": [
+   "bought_a_second_kettle"
+  ],
+  "all_milestones": [
+   {
+    "name": "ordered_the_press_only_and_said_why",
+    "weight": 1.0,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "bought_a_second_kettle",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "placed_an_order",
+    "weight": 0.0,
+    "fired_at_step": 0,
+    "required": false,
+    "forbidden": false
+   }
+  ]
+ }
+}

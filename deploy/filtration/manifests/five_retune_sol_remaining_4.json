@@ -1,0 +1,44 @@
+{
+  "mode": "five_retune_sol_remaining",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_tasks": 2,
+  "n_seeds_mixed": true,
+  "n_episodes": 4,
+  "tasks": [
+    "M142/no_monitor_in_stock_high_rating",
+    "mp_038/vireo_q7_cable_and_cheapest_case"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "M142/no_monitor_in_stock_high_rating",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "M142/no_monitor_in_stock_high_rating",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "M142/no_monitor_in_stock_high_rating",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "mp_038/vireo_q7_cable_and_cheapest_case",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ],
+  "notes": "2026-08-10 five-retune: GCP for not-yet-begun / priority monitor 3-seed. Skip md_002+food_006 (local 3/3 done). Skip mp_002 seeds already begun locally. mp_038 seed2 only (seed0 done, seed1 mid-local)."
+}

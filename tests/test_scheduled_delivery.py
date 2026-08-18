@@ -254,35 +254,35 @@ def cart_page(monkeypatch):
                 s.shutdown()
 
 
-def test_the_date_floor_is_the_gym_clock_not_the_wall_clock(cart_page):
-    """The world is frozen at 2026-05-21. Flooring on the wall clock put every
-    delivery-date task in the "past", so the picker refused the only date that
-    could solve it — and the failure arrived by itself, on the day the wall
-    clock passed the seeded world."""
+def test_the_date_field_is_a_text_input_not_a_native_picker(cart_page):
+    """The scheduled-delivery control is a TEXT input, deliberately. A native
+    <input type="date"> keeps its value in segment widgets, so a value the agent
+    typed (05/22/2026, 05222026, 2026-05-22) never reached the engine and the
+    date could not be set at all (M207). The floor is enforced on commit, not by
+    a `min` attribute the text field does not have."""
     page, _ = cart_page
     field = page.get_by_label("Scheduled delivery date")
-    assert field.get_attribute("min") == WORLD_TODAY
+    assert field.get_attribute("type") == "text"
 
 
 def test_typing_a_date_commits_it_once_and_survives_the_reprojection(cart_page):
-    """A native date input fires `change` per SEGMENT, and once the box holds a
-    value every one of those is a complete date. Committing them round-tripped a
-    garbage date through the engine, which re-rendered this controlled input
-    mid-keystroke — so the date could never be typed at all."""
+    """The agent types eight digits; the field masks them to mm/dd/yyyy and
+    commits ONCE, after the settle window, as an ISO date. The 2.5s engine
+    re-poll used to blank a correctly set field — it must not."""
     page, fake = cart_page
     field = page.get_by_label("Scheduled delivery date")
-    box = field.bounding_box()
-    page.mouse.click(box["x"] + 10, box["y"] + box["height"] / 2)   # mm segment
+    field.click()
     for ch in "05222026":
         page.keyboard.type(ch)
-        page.wait_for_timeout(250)
+        page.wait_for_timeout(120)
+    # Wait past the settle timer so the single commit fires.
     page.wait_for_timeout(1500)
 
     sent = [a["payload"]["scheduled_delivery"] for a in fake.acts
             if a["action"] == "shop.set_line_options"]
     assert sent == [PARTY], f"expected one whole-date commit, got {sent}"
-    assert field.input_value() == PARTY
+    assert field.input_value() == "05/22/2026"
 
     # The re-poll is what used to blank a correctly set field.
     page.wait_for_timeout(4000)
-    assert field.input_value() == PARTY
+    assert field.input_value() == "05/22/2026"

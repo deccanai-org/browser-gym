@@ -188,6 +188,7 @@ const EmailRow = ({ email, isSelected, toggleSelect, folder, threadCount, isFocu
       tabIndex={0}
       aria-label={`Open email: ${email.subject || "(no subject)"} from ${
         (email.from && (email.from.name || email.from.email)) || email.sender || "unknown"}`}
+      data-test-id={`mail-item-${email.id}`}
       onClick={handleRowClick}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleRowClick(e); }

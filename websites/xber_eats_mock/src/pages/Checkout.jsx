@@ -35,6 +35,30 @@ export default function Checkout() {
 
   const { cart, user, restaurants } = state;
   const restaurant = restaurants.find(r => r.id === cart.restaurantId);
+  // Prefer dish-level clock ETA when seeded (late-SKU traps); else restaurant.
+  const cartArrivalLabel = useMemo(() => {
+    const menuItems = state.menuItems || [];
+    let best = null;
+    let bestMins = -1;
+    for (const it of cart.items || []) {
+      const mi = menuItems.find(m => m.id === it.menuItemId);
+      const label = mi?.etaLabel;
+      if (!label) continue;
+      const m = String(label).trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+      if (!m) {
+        if (!best) best = label;
+        continue;
+      }
+      let h = parseInt(m[1], 10) % 12;
+      if (m[3].toUpperCase() === 'PM') h += 12;
+      const mins = h * 60 + parseInt(m[2], 10);
+      if (mins >= bestMins) {
+        bestMins = mins;
+        best = label;
+      }
+    }
+    return best || restaurant?.etaLabel || null;
+  }, [cart.items, state.menuItems, restaurant]);
   // Pickup makes it a pickup order: no delivery address/instructions, no delivery
   // fee, pickup ETA. Scheduled time (from the header Now/Later picker) shows here.
   const isPickup = state.ui.deliveryMode === 'pickup';
@@ -137,7 +161,11 @@ export default function Checkout() {
     setPlacing(true);
     // placeOrder is async in bridged mode; awaiting a plain value is a no-op
     // in legacy mode. Without the await we navigated to /orders/undefined.
-    const orderId = await placeOrder({});
+    // Pass delivery_mode explicitly — full navigations used to reset the toggle
+    // before checkout read React state.
+    const orderId = await placeOrder({
+      delivery_mode: isPickup ? 'pickup' : 'delivery',
+    });
     navigate(orderId ? `/orders/${orderId}` : '/orders');
   };
 
@@ -289,7 +317,11 @@ export default function Checkout() {
                       ? scheduledTime.label
                       : isPickup
                         ? `${restaurant?.pickupTimeMin ?? 10}-${restaurant?.pickupTimeMax ?? 20} min`
-                        : (restaurant ? `${restaurant.deliveryTimeMin}-${restaurant.deliveryTimeMax} min` : '25-40 min')}
+                        : restaurant
+                          ? (cartArrivalLabel
+                              ? `Arrives by ~${cartArrivalLabel} (${restaurant.deliveryTimeMin}-${restaurant.deliveryTimeMax} min)`
+                              : `${restaurant.deliveryTimeMin}-${restaurant.deliveryTimeMax} min`)
+                          : '25-40 min'}
                   </span>
                 </div>
               </div>
@@ -535,6 +567,7 @@ export default function Checkout() {
 
           <button
             className="checkout__place-btn"
+            data-test-id="btn-place-order"
             onClick={handlePlaceOrder}
             disabled={placing || !selectedAddress}
           >

@@ -154,8 +154,14 @@ export default function Dashboard() {
           { id: 'selling', label: 'Selling' },
           { id: 'watchlist', label: 'Watchlist' },
           { id: 'messages', label: `Messages${inboxMessages.filter(m => !m.read).length > 0 ? ` (${inboxMessages.filter(m => !m.read).length})` : ''}` }
-        // No engine-backed selling or messaging store in bridged mode — hide both tabs.
-        ].filter(tab => !bridged() || (tab.id !== 'selling' && tab.id !== 'messages')).map(tab => (
+        // Bridged: hide Messages (no engine store). Show Selling when sell is armed
+        // so silent-noop tasks can verify durable listings after submit.
+        ].filter(tab => {
+          if (!bridged()) return true;
+          if (tab.id === 'messages') return false;
+          if (tab.id === 'selling') return !!state.enableSellerCreate;
+          return true;
+        }).map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
@@ -273,7 +279,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      {activeTab === 'selling' && !bridged() && (
+      {activeTab === 'selling' && (!bridged() || state.enableSellerCreate) && (
         <div className="space-y-8">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold">Active Listings</h2>
@@ -628,6 +634,7 @@ export default function Dashboard() {
                   >
                     <option value="New">New</option>
                     <option value="Open Box">Open Box</option>
+                    <option value="Good">Good</option>
                     <option value="Used">Used</option>
                     <option value="Refurbished">Refurbished</option>
                     <option value="For Parts">For Parts</option>

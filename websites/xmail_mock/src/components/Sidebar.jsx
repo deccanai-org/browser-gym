@@ -115,6 +115,7 @@ const Sidebar = () => {
       <div className="pl-4 mb-6">
         <button
           onClick={() => setIsComposeOpen(true)}
+          data-test-id="btn-compose"
           className="flex items-center gap-3 bg-[#c2e7ff] hover:shadow-md transition-shadow text-gray-800 px-6 py-4 rounded-2xl font-medium"
         >
           <Plus size={24} />

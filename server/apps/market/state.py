@@ -34,6 +34,29 @@ class MarketProduct:
     # store), or None for a ValueMart exclusive. Lets a cross-retailer verifier
     # line up "the same SKU" across the two stores without fuzzy name matching.
     shop_sku: str | None = None
+    # Optional per-listing seller (ebay_mock / ValueMart). When set, transform
+    # projects a distinct user with this feedback score/rating instead of the
+    # single store-wide seller. Used by seller-rating comparison tasks.
+    seller_id: str | None = None
+    seller_username: str | None = None
+    seller_feedback_score: int | None = None
+    seller_feedback_rating: float | None = None
+    # Optional listing condition (Used / New / …) for seller-create flows.
+    condition: str | None = None
+    # Per-listing BIN shipping (projected as listing.shipping / shippingCost).
+    shipping_cost: float = 0.0
+    # Explicit brand for ebay_mock Brand facet (Search.jsx prefers listing.brand
+    # over title-keyword inference). Required when title keywords would map to
+    # the wrong store brand (e.g. "coffee" → HomeChef).
+    brand: str | None = None
+    # Set on agent-created listings when the task supplies a fair-price band:
+    # True = within band, False = outside. Catalog seed rows leave this None.
+    fair_priced: bool | None = None
+    # Optional local-pickup window copy projected to the tip PDP as a shipping-
+    # style row (``pickupWindow``: truck + "Local pickup" + window). Prefer this
+    # over burying hours only in ``description`` when a task scores schedule
+    # alignment. Do not surface as a large amber banner.
+    pickup_window: str | None = None
 
 
 @dataclass
@@ -101,7 +124,51 @@ class MarketOrder:
     # not to nothing). Default to the account defaults when none is passed.
     shipping_address_id: str | None = None
     payment_id: str | None = None
+    # Optional fulfillment status for purchase-history UI / verifiers.
+    status: str = "completed"
 
+
+@dataclass
+class MarketMessage:
+    """Buyer↔seller message projected into ebay_mock ``messages[]``.
+
+    ``from_id`` / ``to_id`` are mock user ids (``user_1`` buyer, or a
+    ``seller_*`` id from ``MarketProduct.seller_id``).
+    """
+    id: str
+    from_id: str
+    to_id: str
+    listing_id: str
+    subject: str
+    content: str
+    read: bool = False
+    # Unix ms — ebay_mock renders via ``new Date(timestamp)``.
+    timestamp: int = 0
+
+
+
+
+@dataclass
+class MarketMembership:
+    """ValueMart Plus (or similar) membership — used by confirmshame cancel tasks."""
+    id: str = "vm_plus"
+    plan_name: str = "ValueMart Plus"
+    status: str = "active"  # active | cancelled
+    price_monthly: float = 9.99
+    perks_summary: str = "Free shipping + member deals"
+
+
+@dataclass
+class MarketSellerListing:
+    """Agent-created durable seller listing (ValueMart sell flow)."""
+    id: str
+    title: str
+    description: str
+    price: float
+    condition: str = "Used"
+    category: str = "Electronics"
+    shipping: float = 0.0
+    status: str = "active"  # active | ended
 
 @dataclass
 class MarketState:
@@ -112,15 +179,29 @@ class MarketState:
     coupons: dict[str, MarketCoupon] = field(default_factory=dict)
     addresses: dict[str, MarketAddress] = field(default_factory=dict)
     payments: dict[str, MarketPayment] = field(default_factory=dict)
+    messages: list[MarketMessage] = field(default_factory=list)
+    membership: MarketMembership | None = None
+    seller_listings: dict[str, MarketSellerListing] = field(default_factory=dict)
+    # When True, first create_listing call returns ok but does not persist (silent noop).
+    silent_noop_first_listing: bool = False
+    create_listing_attempts: int = 0
+    enable_seller_create: bool = False
+    enable_membership_cancel: bool = False
     delivery_fee: float = 5.99
     free_delivery_over: float = 35.0   # free delivery when SUBTOTAL >= this
     _next: int = 1
+    _listing_next: int = 1
 
     # ----- helpers -------------------------------------------------------- #
     def new_order_id(self) -> str:
         oid = f"VM-{2200 + self._next}"
         self._next += 1
         return oid
+
+    def new_listing_id(self) -> str:
+        lid = f"lst_vm_{2200 + self._listing_next}"
+        self._listing_next += 1
+        return lid
 
     def product(self, product_id: str) -> MarketProduct | None:
         return self.products.get(product_id)
@@ -169,6 +250,13 @@ class MarketState:
             "payments": {k: asdict(v) for k, v in self.payments.items()},
             "default_address_id": self.default_address_id(),
             "default_payment_id": self.default_payment_id(),
+            "messages": [asdict(v) for v in self.messages],
+            "membership": asdict(self.membership) if self.membership else None,
+            "seller_listings": {k: asdict(v) for k, v in self.seller_listings.items()},
+            "silent_noop_first_listing": self.silent_noop_first_listing,
+            "create_listing_attempts": self.create_listing_attempts,
+            "enable_seller_create": self.enable_seller_create,
+            "enable_membership_cancel": self.enable_membership_cancel,
             "delivery_fee": self.delivery_fee,
             "free_delivery_over": self.free_delivery_over,
         }

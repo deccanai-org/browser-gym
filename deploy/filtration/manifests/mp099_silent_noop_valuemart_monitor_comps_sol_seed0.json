@@ -1,0 +1,15 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 1,
+  "tasks": ["mp_099/silent_noop_valuemart_monitor_comps"],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_099/silent_noop_valuemart_monitor_comps",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ]
+}

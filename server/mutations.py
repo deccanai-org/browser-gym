@@ -23,7 +23,7 @@ from server import ambient
 from server.state import (
     Address, Cart, CartItem, GymState, Order, OrderItem,
     PaymentMethod, ReturnRequest, RefundMethod, Shipment, ShipmentEvent,
-    Subscription, User, flash, log_action,
+    Subscription, SupportTicket, User, flash, log_action,
 )
 
 
@@ -613,6 +613,10 @@ def initiate_return(state: GymState, order_id: str,
     if order is None or order.user_id != uid:
         flash(state, "error", f"Return failed: order {order_id} not found.")
         return {"ok": False, "error": "order not found"}
+    # Bridge used to send item_ids as a bare string; keep a single-id string
+    # working. Per-character shredded lists still fail (unknown items).
+    if isinstance(item_ids, str):
+        item_ids = [item_ids]
     valid_item_ids = {oi.id for oi in order.items}
     bad = [i for i in item_ids if i not in valid_item_ids]
     if bad:
@@ -641,6 +645,76 @@ def initiate_return(state: GymState, order_id: str,
     return {"ok": True, "return_id": ret_id}
 
 
+def change_order_item_variant(
+    state: GymState,
+    order_id: str,
+    item_id: str,
+    variant_id: str,
+) -> dict[str, Any]:
+    """Swap color/size on a confirmed order that has not shipped."""
+    uid = _require_login(state)
+    if uid is None:
+        return {"ok": False, "error": "not logged in"}
+    order = state.orders.get(order_id)
+    if order is None or order.user_id != uid:
+        return {"ok": False, "error": "order not found"}
+    if order.status in ("shipped", "out_for_delivery", "delivered", "cancelled"):
+        flash(state, "error", "This order can no longer change options.")
+        return {"ok": False, "error": "not editable", "status": order.status}
+    item = next((it for it in order.items if it.id == item_id), None)
+    if item is None:
+        return {"ok": False, "error": "item not found"}
+    product = _catalog(state, item.product_id)
+    if product is None:
+        return {"ok": False, "error": "unknown product"}
+    variant = next(
+        (v for v in (product.variants or []) if v.id == variant_id), None
+    )
+    if variant is None:
+        return {"ok": False, "error": "unknown variant"}
+    item.variant_id = variant_id
+    item.variant_label = variant.label
+    log_action(
+        state, "change_order_item_variant",
+        order_id=order_id, item_id=item_id, variant_id=variant_id,
+        variant_label=variant.label,
+    )
+    flash(state, "success", f"Updated to {variant.label}.")
+    return {"ok": True, "variant_id": variant_id, "variant_label": variant.label}
+
+
+def create_support_ticket(
+    state: GymState,
+    subject: str,
+    body: str,
+    channel: str = "customer_service_form",
+) -> dict[str, Any]:
+    """Persist a Customer Service Contact-us submission as a SupportTicket."""
+    uid = _require_login(state)
+    if uid is None:
+        return {"ok": False, "error": "not logged in"}
+    subject = (subject or "").strip()
+    body = (body or "").strip()
+    if not subject or not body:
+        return {"ok": False, "error": "subject and body required"}
+    channel = (channel or "customer_service_form").strip() or "customer_service_form"
+
+    ticket_id = _new_id(state, "tkt").upper()
+    state.support_tickets[ticket_id] = SupportTicket(
+        id=ticket_id,
+        user_id=uid,
+        subject=subject,
+        body=body,
+        channel=channel,
+        status="submitted",
+        created_at=_now(state),
+    )
+    log_action(state, "create_support_ticket",
+               ticket_id=ticket_id, channel=channel, subject=subject)
+    flash(state, "success", f"Support ticket {ticket_id} submitted.")
+    return {"ok": True, "ticket_id": ticket_id}
+
+
 def cancel_order(state: GymState, order_id: str) -> dict[str, Any]:
     uid = _require_login(state)
     if uid is None:
@@ -651,11 +725,70 @@ def cancel_order(state: GymState, order_id: str) -> dict[str, Any]:
     if order.status in ("shipped", "out_for_delivery", "delivered"):
         flash(state, "error",
               f"Order {order_id} has already shipped and can't be cancelled.")
+        log_action(state, "cancel_order_failed", order_id=order_id,
+                   reason="already shipped")
         return {"ok": False, "error": "already shipped"}
+    if order.status == "cancelled":
+        return {"ok": True, "already": True}
     order.status = "cancelled"
     log_action(state, "cancel_order", order_id=order_id)
     flash(state, "success", f"Order {order_id} cancelled.")
     return {"ok": True}
+
+
+# Reasons that unlock the Change address control (must match UI <select>).
+ADDRESS_CHANGE_REASONS = (
+    "moved",
+    "wrong_address",
+    "gift_redirect",
+    "other",
+)
+
+
+def change_order_address(
+    state: GymState,
+    order_id: str,
+    address_id: str,
+    reason: str = "",
+) -> dict[str, Any]:
+    """Change ship-to on a placed order that has not left the warehouse.
+
+    Refuses shipped / out_for_delivery / delivered / cancelled. Requires a
+    non-empty reason from ADDRESS_CHANGE_REASONS (UI unlock dropdown).
+    """
+    uid = _require_login(state)
+    if uid is None:
+        return {"ok": False, "error": "not logged in"}
+    order = state.orders.get(order_id)
+    if order is None or order.user_id != uid:
+        return {"ok": False, "error": "order not found"}
+    user = state.users[uid]
+    if address_id not in user.addresses:
+        flash(state, "error", "Pick a saved address.")
+        return {"ok": False, "error": "invalid address"}
+    reason = (reason or "").strip().lower()
+    if reason not in ADDRESS_CHANGE_REASONS:
+        flash(state, "error",
+              "Select a reason for the address change before saving.")
+        log_action(state, "change_order_address_failed", order_id=order_id,
+                   reason="missing_reason")
+        return {"ok": False, "error": "reason required"}
+    if order.status in ("shipped", "out_for_delivery", "delivered"):
+        flash(state, "error",
+              f"Order {order_id} is already {order.status.replace('_', ' ')} "
+              "and the delivery address can no longer be changed.")
+        log_action(state, "change_order_address_failed", order_id=order_id,
+                   reason="not_editable", status=order.status)
+        return {"ok": False, "error": "not editable", "status": order.status}
+    if order.status == "cancelled":
+        return {"ok": False, "error": "order cancelled"}
+    for it in order.items:
+        it.ship_to_address_id = address_id
+    log_action(state, "change_order_address", order_id=order_id,
+               address_id=address_id, reason=reason)
+    flash(state, "success",
+          f"Delivery address for {order_id} updated.")
+    return {"ok": True, "order_id": order_id, "address_id": address_id}
 
 
 # --------------------------------------------------------------------------- #
@@ -731,3 +864,119 @@ def cancel_subscription(state: GymState,
     flash(state, "success",
           f"Subscription {subscription_id} has been cancelled.")
     return {"ok": True, "subscription_id": subscription_id}
+
+
+def pause_subscription(state: GymState,
+                       subscription_id: str) -> dict[str, Any]:
+    """Pause an active subscription (keeps plan; skips deliveries until resumed)."""
+    uid = _require_login(state)
+    if uid is None:
+        return {"ok": False, "error": "not logged in"}
+    sub = state.subscriptions.get(subscription_id)
+    if sub is None or sub.user_id != uid:
+        flash(state, "error", "Subscription not found.")
+        return {"ok": False, "error": "unknown subscription"}
+    if sub.status == "cancelled":
+        flash(state, "error",
+              f"Subscription {subscription_id} is cancelled and cannot be paused.")
+        log_action(state, "pause_subscription_failed",
+                   subscription_id=subscription_id, reason="cancelled")
+        return {"ok": False, "error": "cancelled"}
+    if sub.status == "paused":
+        return {"ok": True, "subscription_id": subscription_id,
+                "already_paused": True}
+    sub.status = "paused"
+    log_action(state, "pause_subscription",
+               subscription_id=subscription_id,
+               product_id=sub.product_id,
+               next_delivery_date=sub.next_delivery_date)
+    flash(state, "success",
+          f"Subscription {subscription_id} has been paused.")
+    return {"ok": True, "subscription_id": subscription_id}
+
+
+# Shipping speed tiers for post-order upgrade (Processing only).
+SHIPPING_SPEED_META = {
+    "standard": {"label": "Standard", "cost": 5.99, "eta_phrase": "5–7 business days"},
+    "express": {"label": "Express", "cost": 12.99, "eta_phrase": "1–2 business days"},
+    "overnight": {"label": "Overnight", "cost": 24.99, "eta_phrase": "next business day"},
+}
+
+
+def change_order_shipping(
+    state: GymState,
+    order_id: str,
+    shipping_speed: str,
+    estimated_delivery: str = "",
+) -> dict[str, Any]:
+    """Upgrade/downgrade shipping on an order that has not shipped yet.
+
+    Updates ``Order.shipping_speed``, shipping cost, and (when provided)
+    the first shipment's ``estimated_delivery`` string so the tip UI ETA
+    reflects the faster option.
+    """
+    uid = _require_login(state)
+    if uid is None:
+        return {"ok": False, "error": "not logged in"}
+    order = state.orders.get(order_id)
+    if order is None or order.user_id != uid:
+        return {"ok": False, "error": "order not found"}
+    speed = (shipping_speed or "").strip().lower()
+    if speed not in SHIPPING_SPEED_META:
+        flash(state, "error", "Pick Standard, Express, or Overnight shipping.")
+        return {"ok": False, "error": "invalid shipping_speed"}
+    if order.status in ("shipped", "out_for_delivery", "delivered"):
+        flash(state, "error",
+              f"Order {order_id} is already {order.status.replace('_', ' ')} "
+              "and shipping speed can no longer be changed.")
+        log_action(state, "change_order_shipping_failed", order_id=order_id,
+                   reason="not_editable", status=order.status)
+        return {"ok": False, "error": "not editable", "status": order.status}
+    if order.status == "cancelled":
+        return {"ok": False, "error": "order cancelled"}
+    meta = SHIPPING_SPEED_META[speed]
+    old_speed = getattr(order, "shipping_speed", "standard") or "standard"
+    old_ship = float(order.shipping or 0.0)
+    order.shipping_speed = speed
+    order.shipping = float(meta["cost"])
+    order.total = round(
+        float(order.subtotal) - float(order.discount) + float(order.tax)
+        + float(order.shipping),
+        2,
+    )
+    eta = (estimated_delivery or "").strip()
+    if eta and order.shipments:
+        order.shipments[0].estimated_delivery = eta
+    log_action(
+        state, "change_order_shipping",
+        order_id=order_id,
+        shipping_speed=speed,
+        previous_speed=old_speed,
+        shipping_cost=order.shipping,
+        previous_shipping_cost=old_ship,
+        estimated_delivery=eta or (
+            order.shipments[0].estimated_delivery if order.shipments else ""
+        ),
+    )
+    flash(state, "success",
+          f"Shipping for {order_id} updated to {meta['label']}.")
+    return {
+        "ok": True,
+        "order_id": order_id,
+        "shipping_speed": speed,
+        "estimated_delivery": eta,
+    }
+
+
+def view_registry(state: GymState, registry_id: str = "") -> dict[str, Any]:
+    """Log that the agent opened a gift registry (discoverability signal)."""
+    uid = _require_login(state)
+    if uid is None:
+        return {"ok": False, "error": "not logged in"}
+    regs = getattr(state, "registries", None) or {}
+    if registry_id and registry_id not in regs:
+        log_action(state, "view_registry", registry_id=registry_id, found=False)
+        return {"ok": False, "error": "unknown registry"}
+    rid = registry_id or (next(iter(regs)) if regs else "")
+    log_action(state, "view_registry", registry_id=rid, found=bool(rid))
+    return {"ok": True, "registry_id": rid}

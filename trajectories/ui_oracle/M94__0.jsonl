@@ -1,0 +1,106 @@
+{
+ "task_id": "M94/qty_plus_stale_message",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "The photo frame in my basket is a present for my friend Noa and is already set up to go to her. I only need one of them. Place the order today.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "shop",
+   "action_kind": "open the basket",
+   "action_args": {},
+   "reasoning": "She says the frame is already set up for Noa and that she needs one. Both halves of that are worth checking against the line itself.",
+   "screenshot_path": "screenshots/ui_oracle/M94__0/step_000.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 1,
+   "app": "shop",
+   "action_kind": "drop the quantity to one",
+   "action_args": {},
+   "reasoning": "The quantity is pre-set to 5. She asked for one.",
+   "screenshot_path": "screenshots/ui_oracle/M94__0/step_001.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 2,
+   "app": "shop",
+   "action_kind": "rewrite the gift message",
+   "action_args": {},
+   "reasoning": "The gift message still reads 'Congratulations on the wedding' from an earlier order. It is not shown again at checkout, so it would ship exactly as it stands.",
+   "screenshot_path": "screenshots/ui_oracle/M94__0/step_002.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 3,
+   "app": "shop",
+   "action_kind": "proceed to checkout",
+   "action_args": {},
+   "reasoning": "Everything in the basket is now what she actually asked for, so check out.",
+   "screenshot_path": "screenshots/ui_oracle/M94__0/step_003.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 4,
+   "app": "shop",
+   "action_kind": "confirm the order",
+   "action_args": {},
+   "reasoning": "Confirm the address and the card.",
+   "screenshot_path": "screenshots/ui_oracle/M94__0/step_004.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 5,
+   "app": "shop",
+   "action_kind": "place the order",
+   "action_args": {},
+   "reasoning": "Place it.",
+   "screenshot_path": "screenshots/ui_oracle/M94__0/step_005.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 6,
+   "app": "shop",
+   "action_kind": "confirm the order landed",
+   "action_args": {},
+   "reasoning": "Wait for the confirmation so the order is really on the account.",
+   "screenshot_path": "screenshots/ui_oracle/M94__0/step_006.png",
+   "url_after": "http://127.0.0.1:5231/order-confirmation/ORD_563BCC3A"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "ordered_frame_clean",
+   "placed_frame"
+  ],
+  "missed_milestones": [
+   "committed_qty_or_message"
+  ],
+  "all_milestones": [
+   {
+    "name": "ordered_frame_clean",
+    "weight": 1.0,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "committed_qty_or_message",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "placed_frame",
+    "weight": 0.0,
+    "fired_at_step": 0,
+    "required": false,
+    "forbidden": false
+   }
+  ]
+ }
+}

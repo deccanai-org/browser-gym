@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStore } from '../context/StoreContext';
 import { Button } from '../components/ui/Button';
 import { Gift } from 'lucide-react';
+import { bridged, bridgeAct } from '../lib/bridge';
 
 // Every amount on this page is WHOLE DOLLARS. An earlier version called the
 // number `amountCents` while passing dollars straight through to `price`, which
@@ -23,7 +24,14 @@ const giftCardId = (usd) => `giftcard-${usd}`;
 // real gift-card purchase page: pick an amount, addressee, and add it to the cart
 // as a line item like any other product.
 export const GiftCards = () => {
-  const { addToCart, setLineOptions } = useStore();
+  const { state, addToCart, setLineOptions } = useStore();
+  useEffect(() => {
+    if (!bridged()) return;
+    bridgeAct('shop.view_payment_methods', {}).catch(() => {});
+  }, []);
+  const giftBalances = (state.user?.paymentMethods || []).filter(
+    (pm) => (pm.kind || '').toLowerCase() === 'gift_card' || (pm.brand || '') === 'Gift Card',
+  );
   const [presetUsd, setPresetUsd] = useState(50);
   const [customText, setCustomText] = useState('');
   const [recipient, setRecipient] = useState('');
@@ -108,6 +116,21 @@ export const GiftCards = () => {
         <h1 className="text-2xl font-medium flex items-center gap-2 mb-4">
           <Gift size={22} /> ShopGym Gift Cards
         </h1>
+        {giftBalances.length > 0 && (
+          <div className="bg-white border rounded p-4 mb-4" data-test-id="gift-card-balance-panel">
+            <div className="text-sm font-bold mb-2">Your gift card balance</div>
+            {giftBalances.map((pm) => (
+              <div key={pm.id} className="text-sm text-gray-800" data-test-id={`gift-card-balance-${pm.id}`}>
+                {pm.label || pm.nickname || 'ShopGym Gift Card'}
+                {pm.balance != null && (
+                  <span className="font-bold ml-2">
+                    — ${Number(pm.balance).toFixed(2)} remaining
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
         <div className="bg-white border rounded p-6 space-y-5">
           <div>
             <label className="block text-sm font-bold mb-2">Amount</label>

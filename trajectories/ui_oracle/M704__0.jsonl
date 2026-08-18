@@ -1,0 +1,188 @@
+{
+ "task_id": "M704/the_claim_priya_signs_off",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "Write up my home office claim and email it to priya.raman@shopgym.com in the format she asked for. Everything I bought is on my ShopGym and ValueMart accounts. Copy me at alice@shopgym.com.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "mail",
+   "action_kind": "open mail",
+   "action_args": {},
+   "reasoning": "Priya set the format and the cut-off, so read that first.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_000.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 1,
+   "app": "mail",
+   "action_kind": "search the rules",
+   "action_args": {},
+   "reasoning": "Search for her note so the format and the cut-off are clear first.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_001.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 2,
+   "app": "mail",
+   "action_kind": "press Enter",
+   "action_args": {},
+   "reasoning": "Run the search and read what comes back.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_002.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 3,
+   "app": "mail",
+   "action_kind": "read the rules",
+   "action_args": {},
+   "reasoning": "One line per charge with a total, and only things actually paid for, so anything refunded has to come out.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_003.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_7f36ec2b2364"
+  },
+  {
+   "step_idx": 4,
+   "app": "shop",
+   "action_kind": "open Your Orders",
+   "action_args": {},
+   "reasoning": "The ShopGym side of the spend is on the account.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_004.png",
+   "url_after": "http://127.0.0.1:5231/orders?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 5,
+   "app": "shop",
+   "action_kind": "read the three ShopGym orders",
+   "action_args": {},
+   "reasoning": "Three orders: the desk at $185.02, the task lamp at $49.39, and the chair at $233.84 marked refunded. The chair is money that came back, so it is not claimable.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_005.png",
+   "url_after": "http://127.0.0.1:5231/orders?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 6,
+   "app": "mail",
+   "action_kind": "back to the inbox",
+   "action_args": {},
+   "reasoning": "Confirm the refund rather than relying on the status alone.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_006.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 7,
+   "app": "mail",
+   "action_kind": "search the refund",
+   "action_args": {},
+   "reasoning": "Search the refund so the status on the order is confirmed independently.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_007.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 8,
+   "app": "mail",
+   "action_kind": "press Enter",
+   "action_args": {},
+   "reasoning": "Run the search and read what comes back.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_008.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 9,
+   "app": "mail",
+   "action_kind": "read the refund notice",
+   "action_args": {},
+   "reasoning": "The chair was refunded in full to the card, so nothing is owed on it.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_009.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_67a61ec99c4e"
+  },
+  {
+   "step_idx": 10,
+   "app": "market",
+   "action_kind": "open the ValueMart account",
+   "action_args": {},
+   "reasoning": "She bought on ValueMart too, and that spend counts.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_010.png",
+   "url_after": "http://127.0.0.1:5232/dashboard?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 11,
+   "app": "market",
+   "action_kind": "read the ValueMart order",
+   "action_args": {},
+   "reasoning": "VM-2240, the Corwen laptop stand, $33.49 delivered on 11 May.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_011.png",
+   "url_after": "http://127.0.0.1:5232/dashboard?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 12,
+   "app": "mail",
+   "action_kind": "click Compose",
+   "action_args": {},
+   "reasoning": "She asked to be written to when the job was done, so open a blank message.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_012.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_67a61ec99c4e"
+  },
+  {
+   "step_idx": 13,
+   "app": "mail",
+   "action_kind": "fill To",
+   "action_args": {},
+   "reasoning": "Address it to priya.raman@shopgym.com, which is where she asked for the reply.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_013.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_67a61ec99c4e"
+  },
+  {
+   "step_idx": 14,
+   "app": "mail",
+   "action_kind": "fill Subject",
+   "action_args": {},
+   "reasoning": "A subject line that says the outcome without her having to open the message.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_014.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_67a61ec99c4e"
+  },
+  {
+   "step_idx": 15,
+   "app": "mail",
+   "action_kind": "write body",
+   "action_args": {},
+   "reasoning": "She asked for one line per charge and a total, and the chair has to be explained rather than silently dropped.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_015.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_67a61ec99c4e"
+  },
+  {
+   "step_idx": 16,
+   "app": "mail",
+   "action_kind": "click Send",
+   "action_args": {},
+   "reasoning": "Send it, so the account and her inbox agree on what was done.",
+   "screenshot_path": "screenshots/ui_oracle/M704__0/step_016.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_67a61ec99c4e"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "claimed_only_what_she_paid_for"
+  ],
+  "missed_milestones": [
+   "claimed_the_refunded_chair"
+  ],
+  "all_milestones": [
+   {
+    "name": "claimed_only_what_she_paid_for",
+    "weight": 1.0,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "claimed_the_refunded_chair",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   }
+  ]
+ }
+}

@@ -1,0 +1,133 @@
+{
+ "task_id": "M74/gift_shipto_expired_card",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "The Bluetooth speaker in my basket is a birthday present for my mother. Send it to her saved address rather than to mine, and place the order today.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "shop",
+   "action_kind": "open the basket",
+   "action_args": {},
+   "reasoning": "The speaker is a present for her mother and has to go to her mother's address, not to the account default.",
+   "screenshot_path": "screenshots/ui_oracle/M74__0/step_000.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 1,
+   "app": "shop",
+   "action_kind": "ship the speaker to her mother",
+   "action_args": {},
+   "reasoning": "The line is unrouted, so it would ship to Brooklyn. Route it to her mother in Columbus.",
+   "screenshot_path": "screenshots/ui_oracle/M74__0/step_001.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 2,
+   "app": "shop",
+   "action_kind": "open the saved payment methods",
+   "action_args": {},
+   "reasoning": "Check the card before spending on it, because checkout never prints an expiry.",
+   "screenshot_path": "screenshots/ui_oracle/M74__0/step_002.png",
+   "url_after": "http://127.0.0.1:5231/account?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 3,
+   "app": "shop",
+   "action_kind": "read the expiry dates",
+   "action_args": {},
+   "reasoning": "The default Visa reads 04/26 against a 21 May 2026 clock, so it lapsed last month. The PayPal on the account is still good.",
+   "screenshot_path": "screenshots/ui_oracle/M74__0/step_003.png",
+   "url_after": "http://127.0.0.1:5231/account?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 4,
+   "app": "shop",
+   "action_kind": "reopen the basket",
+   "action_args": {},
+   "reasoning": "Back to the basket.",
+   "screenshot_path": "screenshots/ui_oracle/M74__0/step_004.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 5,
+   "app": "shop",
+   "action_kind": "proceed to checkout",
+   "action_args": {},
+   "reasoning": "Everything in the basket is now what she actually asked for, so check out.",
+   "screenshot_path": "screenshots/ui_oracle/M74__0/step_005.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 6,
+   "app": "shop",
+   "action_kind": "select PayPal",
+   "action_args": {},
+   "reasoning": "Pay with PayPal rather than the Visa that expired last month.",
+   "screenshot_path": "screenshots/ui_oracle/M74__0/step_006.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 7,
+   "app": "shop",
+   "action_kind": "confirm the order",
+   "action_args": {},
+   "reasoning": "Confirm the address and the card.",
+   "screenshot_path": "screenshots/ui_oracle/M74__0/step_007.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 8,
+   "app": "shop",
+   "action_kind": "place the order",
+   "action_args": {},
+   "reasoning": "Place it.",
+   "screenshot_path": "screenshots/ui_oracle/M74__0/step_008.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 9,
+   "app": "shop",
+   "action_kind": "confirm the order landed",
+   "action_args": {},
+   "reasoning": "Wait for the confirmation so the order is really on the account.",
+   "screenshot_path": "screenshots/ui_oracle/M74__0/step_009.png",
+   "url_after": "http://127.0.0.1:5231/order-confirmation/ORD_E839CD62"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "ordered_speaker_to_mom_clean",
+   "placed_speaker"
+  ],
+  "missed_milestones": [
+   "misrouted_or_expired_card"
+  ],
+  "all_milestones": [
+   {
+    "name": "ordered_speaker_to_mom_clean",
+    "weight": 1.0,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "misrouted_or_expired_card",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "placed_speaker",
+    "weight": 0.0,
+    "fired_at_step": 0,
+    "required": false,
+    "forbidden": false
+   }
+  ]
+ }
+}

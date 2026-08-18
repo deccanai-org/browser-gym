@@ -31,7 +31,12 @@ GYM_NOW_HHMM = (12, 0)
 
 BULK_PATH = pathlib.Path(__file__).with_name("ambient_bulk.json")
 
-ALICE_EMAIL = "alice@shopgym.com"
+# Alice's mailbox is the ShopMail account, which is what the engine's
+# MailState.account_email and tools/seed_to_cuagym.ALICE_EMAIL both say. It is
+# NOT her employer's commerce domain: ShopGym is where she works and shops, and
+# mixing the two silently breaks reply-all, which filters recipients by
+# comparing against state.user.email.
+ALICE_EMAIL = "alice@shopmail.com"
 
 # An ambient email must never look like the mail a task turns on.
 FORBIDDEN_BRANDS = ("shopgym", "valuemart", "gymeats")

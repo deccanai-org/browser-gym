@@ -20,6 +20,7 @@ function expandRecurringEvents(rawEvents, viewStart, viewEnd) {
         let currentDate;
         if (event.recurring === 'daily') currentDate = addDays(originalStart, i);
         else if (event.recurring === 'weekly') currentDate = addWeeks(originalStart, i);
+        else if (event.recurring === 'biweekly') currentDate = addWeeks(originalStart, i * 2);
         else if (event.recurring === 'monthly') currentDate = addMonths(originalStart, i);
         else if (event.recurring === 'yearly') currentDate = addYears(originalStart, i);
         else break;
@@ -122,6 +123,7 @@ export default function WeekView({ onEventClick, onDateClick }) {
     }
   }, [state.view]);
 
+
   const visibleCalendars = new Set([
     ...state.calendars.filter(c => c.visible).map(c => c.id),
     ...(state.otherCalendars || []).filter(c => c.visible).map(c => c.id),
@@ -132,6 +134,38 @@ export default function WeekView({ onEventClick, onDateClick }) {
   // Separate all-day and timed events
   const allDayEvents = allEvents.filter(e => e.allDay);
   const timedEvents = allEvents.filter(e => !e.allDay);
+
+  // Scroll so the frozen now-line stays near the top AND today's next timed
+  // event (often evening — e.g. Team Meeting 6:30 PM) remains in the viewport.
+  // Old fixed scroll-to-7am hid evening blocks on week view (~8h tall).
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const apply = () => {
+      const now = gymNow();
+      const nowHour = now.getHours() + now.getMinutes() / 60;
+      const h = el.clientHeight;
+      const viewportHours = Math.max(6, (h || 480) / HOUR_HEIGHT);
+      let coverUntil = Math.max(nowHour + 2, 19);
+      for (const ev of timedEvents) {
+        const start = new Date(ev.start);
+        if (!isSameDay(start, now)) continue;
+        const startHour = start.getHours() + start.getMinutes() / 60;
+        if (startHour >= nowHour - 0.5) {
+          coverUntil = Math.max(coverUntil, startHour + 0.75);
+        }
+      }
+      const preferNow = Math.max(0, nowHour - 1);
+      const preferCover = Math.max(0, coverUntil - viewportHours + 0.35);
+      const scrollHour = Math.max(preferNow, preferCover);
+      el.scrollTop = scrollHour * HOUR_HEIGHT;
+    };
+    apply();
+    if (el.clientHeight < 80) {
+      const id = requestAnimationFrame(apply);
+      return () => cancelAnimationFrame(id);
+    }
+  }, [state.view, state._gym_today, state._gym_now, timedEvents]);
 
   const timeSlots = Array.from({ length: 24 }, (_, i) => i);
 
@@ -323,12 +357,16 @@ export default function WeekView({ onEventClick, onDateClick }) {
               >
                 {dayAllDay.map(event => {
                   const color = getEventColor(event);
+                  const cancelled = (event.status || '').toLowerCase() === 'cancelled';
                   return (
                     <div
+                      key={event.id}
+                      data-event-chip
+                      data-event-status={event.status || 'confirmed'}
                       role="button"
                       tabIndex={0}
-                      aria-label={`Open event: ${(event && event.title) || "(No title)"}`}
-                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.currentTarget.click(); } }}                      key={event.id}
+                      aria-label={`Open event: ${(event && event.title) || '(No title)'}`}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.currentTarget.click(); } }}
                       onClick={(e) => {
                         e.stopPropagation();
                         const targetEvent = event.originalEventId
@@ -341,7 +379,7 @@ export default function WeekView({ onEventClick, onDateClick }) {
                         borderRadius: '2px',
                         padding: '0 6px',
                         marginBottom: '2px',
-                        backgroundColor: color,
+                        backgroundColor: cancelled ? '#9AA0A6' : color,
                         color: 'white',
                         fontSize: '11px',
                         fontWeight: 500,
@@ -351,11 +389,13 @@ export default function WeekView({ onEventClick, onDateClick }) {
                         overflow: 'hidden',
                         whiteSpace: 'nowrap',
                         textOverflow: 'ellipsis',
+                        textDecoration: cancelled ? 'line-through' : 'none',
+                        opacity: cancelled ? 0.75 : 1,
                       }}
                       onMouseEnter={e => e.currentTarget.style.filter = 'brightness(0.92)'}
                       onMouseLeave={e => e.currentTarget.style.filter = 'none'}
                     >
-                      {event.title}
+                      {cancelled ? `Cancelled · ${event.title}` : event.title}
                     </div>
                   );
                 })}
@@ -531,19 +571,23 @@ export default function WeekView({ onEventClick, onDateClick }) {
                     const width = `calc(${100 / totalCols}% - 4px)`;
                     const left = `calc(${(col / totalCols) * 100}% + 2px)`;
                     const isOriginalId = !event.id.includes('_recur_') && !event.clippedFrom;
+                    const cancelled = (event.status || '').toLowerCase() === 'cancelled';
+                    const chipColor = cancelled ? '#9AA0A6' : color;
 
                     return (
                       <div
                         key={event.id}
                         data-event-chip
+                        data-event-status={event.status || 'confirmed'}
+                        data-test-id={cancelled ? `event-chip-cancelled-${event.id}` : `event-chip-${event.id}`}
                         role="button"
                         tabIndex={0}
                         aria-label={`Open event: ${event.title || '(No title)'}`}
                         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.currentTarget.click(); } }}
-                        draggable={isOriginalId}
+                        draggable={isOriginalId && !cancelled}
                         onDragStart={(e) => {
                           e.stopPropagation();
-                          isOriginalId && handleDragStart(e, event.id);
+                          isOriginalId && !cancelled && handleDragStart(e, event.id);
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -560,19 +604,20 @@ export default function WeekView({ onEventClick, onDateClick }) {
                           width,
                           left,
                           zIndex: 3,
-                          backgroundColor: color,
+                          backgroundColor: chipColor,
                           borderRadius: '4px',
                           padding: '3px 6px',
                           overflow: 'hidden',
                           cursor: 'pointer',
-                          borderLeft: `3px solid ${darkenColor(color, 20)}`,
-                          opacity: 0.9,
+                          borderLeft: `3px solid ${darkenColor(chipColor, 20)}`,
+                          opacity: cancelled ? 0.7 : 0.9,
+                          textDecoration: cancelled ? 'line-through' : 'none',
                         }}
                         onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-                        onMouseLeave={e => e.currentTarget.style.opacity = '0.9'}
+                        onMouseLeave={e => e.currentTarget.style.opacity = cancelled ? '0.7' : '0.9'}
                       >
-                        <div style={{ fontSize: '11px', fontWeight: 600, color: 'white', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {event.title || '(No title)'}
+                        <div style={{ fontSize: '11px', fontWeight: 600, color: 'white', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textDecoration: cancelled ? 'line-through' : 'none' }}>
+                          {cancelled ? `Cancelled · ${event.title || '(No title)'}` : (event.title || '(No title)')}
                         </div>
                         <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {formatTime(event.start, timeFormat)} – {formatTime(event.end, timeFormat)}

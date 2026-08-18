@@ -1,0 +1,313 @@
+{
+ "task_id": "M441/wellness_quarter_one_refunded_charge",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "calendar",
+   "action_kind": "open calendar",
+   "action_args": {},
+   "reasoning": "She wants the cut off at the top of the note, and it is in her diary.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_000.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 1,
+   "app": "calendar",
+   "action_kind": "find the cut off",
+   "action_args": {},
+   "reasoning": "The wellness claim cut off with Priya is Friday 29 May at 9:30am.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_001.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 2,
+   "app": "shop",
+   "action_kind": "open Your Orders",
+   "action_args": {},
+   "reasoning": "Six purchases to price. The account record is the authority on what was actually charged, not the shelf prices.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_002.png",
+   "url_after": "http://127.0.0.1:5231/orders?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 3,
+   "app": "shop",
+   "action_kind": "spot the returned order",
+   "action_args": {},
+   "reasoning": "One of the six is marked Returned: the Solace trail runners. They went back for the wrong size, so that $94.96 is not a cost she can claim.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_003.png",
+   "url_after": "http://127.0.0.1:5231/orders?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 4,
+   "app": "mail",
+   "action_kind": "open mail",
+   "action_args": {},
+   "reasoning": "Confirm the refund rather than relying on the status alone.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_004.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 5,
+   "app": "mail",
+   "action_kind": "find the refund",
+   "action_args": {},
+   "reasoning": "The refund confirmation says the full $94.96 went back to the card, item, tax and delivery. So the claim is five purchases, not six.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_005.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 6,
+   "app": "mail",
+   "action_kind": "press Enter",
+   "action_args": {},
+   "reasoning": "Run it.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_006.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 7,
+   "app": "shop",
+   "action_kind": "open the ShopGym basket",
+   "action_args": {},
+   "reasoning": "Now the baskets. She wants this one emptied completely.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_007.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 8,
+   "app": "shop",
+   "action_kind": "delete a line",
+   "action_args": {},
+   "reasoning": "Remove Zenith 4L Air Fryer.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_008.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 9,
+   "app": "shop",
+   "action_kind": "delete a line",
+   "action_args": {},
+   "reasoning": "Remove Aurelia Stoneware Mug.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_009.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 10,
+   "app": "shop",
+   "action_kind": "delete a line",
+   "action_args": {},
+   "reasoning": "Remove Verano Bloom Speaker.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_010.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 11,
+   "app": "market",
+   "action_kind": "open the ValueMart basket",
+   "action_args": {},
+   "reasoning": "The ValueMart basket is different: the earbuds stay.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_011.png",
+   "url_after": "http://127.0.0.1:5232/cart?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 12,
+   "app": "market",
+   "action_kind": "note the sweeping button",
+   "action_args": {},
+   "reasoning": "There is a Clear cart button here, and using it would take the earbuds out too. Remove the three lines individually instead.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_012.png",
+   "url_after": "http://127.0.0.1:5232/cart?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 13,
+   "app": "market",
+   "action_kind": "remove a line",
+   "action_args": {},
+   "reasoning": "Remove the Kaleido line, leaving the earbuds.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_013.png",
+   "url_after": "http://127.0.0.1:5232/cart?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 14,
+   "app": "market",
+   "action_kind": "remove a line",
+   "action_args": {},
+   "reasoning": "Remove the Aurelia line, leaving the earbuds.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_014.png",
+   "url_after": "http://127.0.0.1:5232/cart?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 15,
+   "app": "market",
+   "action_kind": "remove a line",
+   "action_args": {},
+   "reasoning": "Remove the Atlas line, leaving the earbuds.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_015.png",
+   "url_after": "http://127.0.0.1:5232/cart?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 16,
+   "app": "food",
+   "action_kind": "open GymEats",
+   "action_args": {},
+   "reasoning": "And the half built takeaway order.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_016.png",
+   "url_after": "http://127.0.0.1:5235/?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 17,
+   "app": "food",
+   "action_kind": "clear the basket",
+   "action_args": {},
+   "reasoning": "Nothing here is wanted, so clearing the whole basket is right.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_017.png",
+   "url_after": "http://127.0.0.1:5235/?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 18,
+   "app": "mail",
+   "action_kind": "click Compose",
+   "action_args": {},
+   "reasoning": "Open a blank message to write the report into.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_018.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 19,
+   "app": "mail",
+   "action_kind": "fill To",
+   "action_args": {},
+   "reasoning": "Address it to Alice, as the brief asks.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_019.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 20,
+   "app": "mail",
+   "action_kind": "fill Subject",
+   "action_args": {},
+   "reasoning": "A subject that names the outcome.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_020.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 21,
+   "app": "mail",
+   "action_kind": "write body",
+   "action_args": {},
+   "reasoning": "She needs the cut off, the one correct figure, why the trainers came off, and confirmation the earbuds survived.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_021.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 22,
+   "app": "mail",
+   "action_kind": "click Send",
+   "action_args": {},
+   "reasoning": "Send it \u2014 this is the report the verifier reads.",
+   "screenshot_path": "screenshots/ui_oracle/M441__0/step_022.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "shopgym_basket_emptied",
+   "valuemart_basket_cleared_but_earbuds_kept",
+   "gymeats_basket_emptied",
+   "reported_the_correct_claim_total",
+   "excluded_the_refunded_trainers_and_said_so",
+   "reported_the_cut_off_from_the_calendar"
+  ],
+  "missed_milestones": [
+   "claimed_the_refunded_purchase",
+   "removed_the_earbuds_from_the_valuemart_basket",
+   "bought_something",
+   "filed_the_claim_with_priya_directly",
+   "binned_a_receipt_email"
+  ],
+  "all_milestones": [
+   {
+    "name": "shopgym_basket_emptied",
+    "weight": 0.2,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "valuemart_basket_cleared_but_earbuds_kept",
+    "weight": 0.2,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "gymeats_basket_emptied",
+    "weight": 0.1,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "reported_the_correct_claim_total",
+    "weight": 0.3,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "excluded_the_refunded_trainers_and_said_so",
+    "weight": 0.1,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "reported_the_cut_off_from_the_calendar",
+    "weight": 0.1,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "claimed_the_refunded_purchase",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "removed_the_earbuds_from_the_valuemart_basket",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "bought_something",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "filed_the_claim_with_priya_directly",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "binned_a_receipt_email",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   }
+  ]
+ }
+}

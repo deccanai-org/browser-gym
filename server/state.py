@@ -108,6 +108,8 @@ class PaymentMethod:
     is_default: bool = False
     expires: str = ""              # "MM/YY"
     nickname: str = ""
+    # Gift-card / store-credit remaining balance. None for ordinary cards.
+    balance: float | None = None
 
 
 @dataclass
@@ -120,6 +122,7 @@ class User:
     payment_methods: dict[str, PaymentMethod] = field(default_factory=dict)
     two_fa_enabled: bool = False
     loyalty_tier: Literal["basic", "silver", "gold"] = "basic"
+    loyalty_points: int = 0
 
 
 # --------------------------------------------------------------------------- #
@@ -219,6 +222,32 @@ class Order:
     shipments: list[Shipment] = field(default_factory=list)
     is_subscription: bool = False
     subscription_id: str | None = None
+    # Post-order shipping speed ("standard" | "express" | "overnight").
+    # Tip UI can upgrade before the package ships (change_order_shipping).
+    shipping_speed: str = "standard"
+    # Optional seed-only target ETA shown when upgrading to Express (tip UI).
+    express_eta: str = ""
+
+
+# --------------------------------------------------------------------------- #
+# Gift registries (wedding / baby lists with purchased qty)
+# --------------------------------------------------------------------------- #
+
+@dataclass
+class RegistryItem:
+    product_id: str
+    name: str
+    price: float
+    quantity_requested: int = 1
+    quantity_purchased: int = 0
+
+
+@dataclass
+class GiftRegistry:
+    id: str
+    owner_name: str
+    event_title: str
+    items: list[RegistryItem] = field(default_factory=list)
 
 
 # --------------------------------------------------------------------------- #
@@ -236,6 +265,27 @@ class ReturnRequest:
     status: ReturnStatus = "initiated"
     created_at: str = ""
     notes: str = ""
+
+
+# --------------------------------------------------------------------------- #
+# Customer Service / support tickets (Contact-us form)
+# --------------------------------------------------------------------------- #
+
+@dataclass
+class SupportTicket:
+    """Durable record of a ShopGym Customer Service Contact-us submission.
+
+    The /customer-service form used to only flip local React ``sent`` state; claim
+    text never reached the engine. Tickets are the omniscient verifier surface for
+    that channel (sibling of mail.sent for emailed support claims).
+    """
+    id: str
+    user_id: str
+    subject: str
+    body: str
+    channel: str = "customer_service_form"
+    status: str = "submitted"
+    created_at: str = ""
 
 
 # --------------------------------------------------------------------------- #
@@ -289,7 +339,9 @@ class GymState:
     cart: Cart = field(default_factory=Cart)
     orders: dict[str, Order] = field(default_factory=dict)
     returns: dict[str, ReturnRequest] = field(default_factory=dict)
+    support_tickets: dict[str, SupportTicket] = field(default_factory=dict)
     subscriptions: dict[str, Subscription] = field(default_factory=dict)
+    registries: dict[str, GiftRegistry] = field(default_factory=dict)
 
     # Trail (for verifiers)
     action_log: list[dict[str, Any]] = field(default_factory=list)
@@ -336,8 +388,14 @@ class GymState:
             },
             "orders": {oid: asdict(o) for oid, o in self.orders.items()},
             "returns": {rid: asdict(r) for rid, r in self.returns.items()},
+            "support_tickets": {
+                tid: asdict(t) for tid, t in self.support_tickets.items()
+            },
             "subscriptions": {
                 sid: asdict(s) for sid, s in self.subscriptions.items()
+            },
+            "registries": {
+                rid: asdict(r) for rid, r in self.registries.items()
             },
             "products_count": len(self.products),
             "action_log": list(self.action_log),

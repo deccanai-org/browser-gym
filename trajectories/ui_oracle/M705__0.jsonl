@@ -1,0 +1,134 @@
+{
+ "task_id": "M705/the_plan_with_a_box_in_transit",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "Cancel my two most expensive Ridgeway coffee plans, which are the weekly and the monthly ones. Leave any plan alone if it already has a box on the way. Email me at alice@shopgym.com saying which you cancelled.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "shop",
+   "action_kind": "open Subscribe and Save",
+   "action_args": {},
+   "reasoning": "Three coffee plans, and she has named two to cancel, so price them before cancelling anything.",
+   "screenshot_path": "screenshots/ui_oracle/M705__0/step_000.png",
+   "url_after": "http://127.0.0.1:5231/subscriptions?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 1,
+   "app": "shop",
+   "action_kind": "work out what each plan costs a month",
+   "action_args": {},
+   "reasoning": "Weekly is the 250g at $6.50 a delivery, about $28.17 a month. Fortnightly is the 750g at $15.00, about $32.50 a month. Monthly is the 1.5kg at $34.00. So the weekly one she named is actually her CHEAPEST, and the two dearest are the fortnightly and the monthly.",
+   "screenshot_path": "screenshots/ui_oracle/M705__0/step_001.png",
+   "url_after": "http://127.0.0.1:5231/subscriptions?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 2,
+   "app": "shop",
+   "action_kind": "open Your Orders",
+   "action_args": {},
+   "reasoning": "She also said to leave alone any plan with a box already on the way, and that is not on this page.",
+   "screenshot_path": "screenshots/ui_oracle/M705__0/step_002.png",
+   "url_after": "http://127.0.0.1:5231/orders?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 3,
+   "app": "shop",
+   "action_kind": "trace the shipped box to its plan",
+   "action_args": {},
+   "reasoning": "ORD-SUB-705 is a Ridgeway 750g box already shipped, which is the fortnightly plan. So of the two dearest, the fortnightly is protected and only the monthly can go.",
+   "screenshot_path": "screenshots/ui_oracle/M705__0/step_003.png",
+   "url_after": "http://127.0.0.1:5231/orders?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 4,
+   "app": "shop",
+   "action_kind": "reopen Subscribe and Save",
+   "action_args": {},
+   "reasoning": "Back to the plans now that the shipped box is tied to the fortnightly one.",
+   "screenshot_path": "screenshots/ui_oracle/M705__0/step_004.png",
+   "url_after": "http://127.0.0.1:5231/subscriptions?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 5,
+   "app": "shop",
+   "action_kind": "cancel the monthly plan",
+   "action_args": {},
+   "reasoning": "Cancel the monthly, which is the only one that is both dear and not already in transit.",
+   "screenshot_path": "screenshots/ui_oracle/M705__0/step_005.png",
+   "url_after": "http://127.0.0.1:5231/subscriptions?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 6,
+   "app": "mail",
+   "action_kind": "click Compose",
+   "action_args": {},
+   "reasoning": "She asked to be written to when the job was done, so open a blank message.",
+   "screenshot_path": "screenshots/ui_oracle/M705__0/step_006.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 7,
+   "app": "mail",
+   "action_kind": "fill To",
+   "action_args": {},
+   "reasoning": "Address it to alice@shopgym.com, which is where she asked for the reply.",
+   "screenshot_path": "screenshots/ui_oracle/M705__0/step_007.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 8,
+   "app": "mail",
+   "action_kind": "fill Subject",
+   "action_args": {},
+   "reasoning": "A subject line that says the outcome without her having to open the message.",
+   "screenshot_path": "screenshots/ui_oracle/M705__0/step_008.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 9,
+   "app": "mail",
+   "action_kind": "write body",
+   "action_args": {},
+   "reasoning": "She asked which ones were cancelled, and only one of the two she named could go, so the reasons matter more than the list.",
+   "screenshot_path": "screenshots/ui_oracle/M705__0/step_009.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 10,
+   "app": "mail",
+   "action_kind": "click Send",
+   "action_args": {},
+   "reasoning": "Send it, so the account and her inbox agree on what was done.",
+   "screenshot_path": "screenshots/ui_oracle/M705__0/step_010.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "cancelled_only_the_monthly_and_said_so"
+  ],
+  "missed_milestones": [
+   "cancelled_the_cheapest_or_the_one_in_transit"
+  ],
+  "all_milestones": [
+   {
+    "name": "cancelled_only_the_monthly_and_said_so",
+    "weight": 1.0,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "cancelled_the_cheapest_or_the_one_in_transit",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   }
+  ]
+ }
+}

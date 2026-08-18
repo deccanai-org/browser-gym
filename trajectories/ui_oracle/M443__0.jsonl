@@ -1,0 +1,278 @@
+{
+ "task_id": "M443/same_amount_three_months_two_shops",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "mail",
+   "action_kind": "open mail",
+   "action_args": {},
+   "reasoning": "She says both shops' mail is here, and a statement that cannot name the merchant is the thing to start from.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_000.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 1,
+   "app": "mail",
+   "action_kind": "search statement",
+   "action_args": {},
+   "reasoning": "Find the statement.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_001.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 2,
+   "app": "mail",
+   "action_kind": "press Enter",
+   "action_args": {},
+   "reasoning": "Run it.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_002.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 3,
+   "app": "mail",
+   "action_kind": "read the statement",
+   "action_args": {},
+   "reasoning": "Three rows at $47.22, on 20 March, 20 April and 20 May, all showing the same payment processor line. The card statement genuinely cannot tell her which shop took them.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_003.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/amb_bthread_233"
+  },
+  {
+   "step_idx": 4,
+   "app": "market",
+   "action_kind": "open her ValueMart account",
+   "action_args": {},
+   "reasoning": "She named ValueMart, so check ValueMart before deciding she is wrong.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_004.png",
+   "url_after": "http://127.0.0.1:5232/dashboard?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 5,
+   "app": "market",
+   "action_kind": "read the single ValueMart order",
+   "action_args": {},
+   "reasoning": "There is a $47.22 order here, which looks like her premise confirmed. But it is ONE order, not three, and ValueMart has no repeat deliveries at all, so it cannot be billing her monthly.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_005.png",
+   "url_after": "http://127.0.0.1:5232/dashboard?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 6,
+   "app": "mail",
+   "action_kind": "search ValueMart",
+   "action_args": {},
+   "reasoning": "The ValueMart receipt will date that order, which the dashboard does not.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_006.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/amb_bthread_233"
+  },
+  {
+   "step_idx": 7,
+   "app": "mail",
+   "action_kind": "press Enter",
+   "action_args": {},
+   "reasoning": "Run it.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_007.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/amb_bthread_233"
+  },
+  {
+   "step_idx": 8,
+   "app": "mail",
+   "action_kind": "date the ValueMart purchase",
+   "action_args": {},
+   "reasoning": "It was placed on 20 March: a wireless keyboard she bought herself, one off, $47.22 with no tax and free delivery. That accounts for the March charge and nothing else.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_008.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/amb_bthread_233"
+  },
+  {
+   "step_idx": 9,
+   "app": "shop",
+   "action_kind": "open Your Orders",
+   "action_args": {},
+   "reasoning": "So April and May came from somewhere else. Her ShopGym order history is the place that would show a repeating charge.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_009.png",
+   "url_after": "http://127.0.0.1:5231/orders?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 10,
+   "app": "shop",
+   "action_kind": "find the two matching orders",
+   "action_args": {},
+   "reasoning": "Two ShopGym orders at exactly $47.22, on 20 April and 20 May, both from a repeat delivery. That is the thing taking the money.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_010.png",
+   "url_after": "http://127.0.0.1:5231/orders?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 11,
+   "app": "shop",
+   "action_kind": "open Subscribe & Save",
+   "action_args": {},
+   "reasoning": "Now which plan? The page shows no prices, so work it out from the items.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_011.png",
+   "url_after": "http://127.0.0.1:5231/subscriptions?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 12,
+   "app": "shop",
+   "action_kind": "compute which plan bills 47.22",
+   "action_args": {},
+   "reasoning": "Four active plans. The espresso pods are 2 at $19.00, which is $38.00, plus 8.5% tax of $3.23 and $5.99 delivery, exactly $47.22. The serum bills $50.72, the dog food $32.03 and the treats $19.01, so none of those match. Note the trap: $47.22 minus the $5.99 delivery is $41.23, which happens to be the serum's shelf price, and cancelling that would be wrong.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_012.png",
+   "url_after": "http://127.0.0.1:5231/subscriptions?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 13,
+   "app": "shop",
+   "action_kind": "cancel the pods plan",
+   "action_args": {},
+   "reasoning": "Cancel the pods plan, and only that one. She was explicit that nothing else on the account should be touched.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_013.png",
+   "url_after": "http://127.0.0.1:5231/subscriptions?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 14,
+   "app": "shop",
+   "action_kind": "check nothing else changed",
+   "action_args": {},
+   "reasoning": "Confirm the other three are still active.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_014.png",
+   "url_after": "http://127.0.0.1:5231/subscriptions?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 15,
+   "app": "mail",
+   "action_kind": "click Compose",
+   "action_args": {},
+   "reasoning": "Open a blank message to write the report into.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_015.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/amb_bthread_233"
+  },
+  {
+   "step_idx": 16,
+   "app": "mail",
+   "action_kind": "fill To",
+   "action_args": {},
+   "reasoning": "Address it to Alice, as the brief asks.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_016.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/amb_bthread_233"
+  },
+  {
+   "step_idx": 17,
+   "app": "mail",
+   "action_kind": "fill Subject",
+   "action_args": {},
+   "reasoning": "A subject that names the outcome.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_017.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/amb_bthread_233"
+  },
+  {
+   "step_idx": 18,
+   "app": "mail",
+   "action_kind": "write body",
+   "action_args": {},
+   "reasoning": "Each charge attributed to the right shop, the arithmetic behind the repeat, the split of the total, and confirmation only one thing was cancelled.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_018.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/amb_bthread_233"
+  },
+  {
+   "step_idx": 19,
+   "app": "mail",
+   "action_kind": "click Send",
+   "action_args": {},
+   "reasoning": "Send it \u2014 this is the report the verifier reads.",
+   "screenshot_path": "screenshots/ui_oracle/M443__0/step_019.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/amb_bthread_233"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "read_the_subscriptions_and_the_order_history",
+   "cancelled_the_subscription_behind_the_charge",
+   "split_the_three_charges_between_the_two_shops",
+   "identified_the_march_charge_as_her_own_valuemart_purchase",
+   "explained_what_the_monthly_charge_is_made_of"
+  ],
+  "missed_milestones": [
+   "cancelled_a_subscription_she_told_it_to_leave_alone",
+   "filed_a_return_or_claim_on_goods_she_received",
+   "bought_something_instead_of_cancelling",
+   "told_her_valuemart_had_been_billing_her_every_month",
+   "demanded_money_back_for_a_charge_that_was_genuinely_hers"
+  ],
+  "all_milestones": [
+   {
+    "name": "read_the_subscriptions_and_the_order_history",
+    "weight": 0.1,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "cancelled_the_subscription_behind_the_charge",
+    "weight": 0.35,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "split_the_three_charges_between_the_two_shops",
+    "weight": 0.25,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "identified_the_march_charge_as_her_own_valuemart_purchase",
+    "weight": 0.2,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "explained_what_the_monthly_charge_is_made_of",
+    "weight": 0.1,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "cancelled_a_subscription_she_told_it_to_leave_alone",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "filed_a_return_or_claim_on_goods_she_received",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "bought_something_instead_of_cancelling",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "told_her_valuemart_had_been_billing_her_every_month",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "demanded_money_back_for_a_charge_that_was_genuinely_hers",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   }
+  ]
+ }
+}

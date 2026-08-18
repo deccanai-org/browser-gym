@@ -1,0 +1,187 @@
+{
+ "task_id": "M703/two_gifts_one_deadline",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "Order the two presents in my ShopGym basket. The book goes to Sam and the candle goes to Noa, and Noa needs hers in time for her dinner, which is in my calendar. Email me at alice@shopgym.com when it is placed.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "shop",
+   "action_kind": "open the basket",
+   "action_args": {},
+   "reasoning": "Two presents in the basket, so read both lines rather than checking out.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_000.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 1,
+   "app": "shop",
+   "action_kind": "replace the christening card",
+   "action_args": {},
+   "reasoning": "The book is routed to Sam, which is right, but its gift message still reads 'Congratulations on the christening!' from an earlier order and is never shown again at checkout.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_001.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 2,
+   "app": "calendar",
+   "action_kind": "open the calendar",
+   "action_args": {},
+   "reasoning": "Noa's present has a date to hit, and the date is in the calendar.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_002.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 3,
+   "app": "calendar",
+   "action_kind": "read the dinner date",
+   "action_args": {},
+   "reasoning": "Noa's birthday dinner is Friday 22 May, so her candle has to be there on or before that day.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_003.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 4,
+   "app": "shop",
+   "action_kind": "reopen the basket",
+   "action_args": {},
+   "reasoning": "Back to the basket to route and date the candle.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_004.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 5,
+   "app": "shop",
+   "action_kind": "send the candle to Noa",
+   "action_args": {},
+   "reasoning": "The candle has no address on it at all, so it would go to Alice's own flat. Send it to Noa.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_005.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 6,
+   "app": "shop",
+   "action_kind": "set the candle to arrive by the dinner",
+   "action_args": {},
+   "reasoning": "And pin it to the day of the dinner so it is there in time.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_006.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 7,
+   "app": "shop",
+   "action_kind": "proceed to checkout",
+   "action_args": {},
+   "reasoning": "Everything in the basket is now what she actually asked for, so check out.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_007.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 8,
+   "app": "shop",
+   "action_kind": "confirm the order",
+   "action_args": {},
+   "reasoning": "Confirm the address and the card.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_008.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 9,
+   "app": "shop",
+   "action_kind": "place the order",
+   "action_args": {},
+   "reasoning": "Place the order now that the basket holds exactly what she asked for.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_009.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 10,
+   "app": "shop",
+   "action_kind": "confirm the order landed",
+   "action_args": {},
+   "reasoning": "Wait for the confirmation so the order is really on the account.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_010.png",
+   "url_after": "http://127.0.0.1:5231/order-confirmation/ORD_2223BD96"
+  },
+  {
+   "step_idx": 11,
+   "app": "mail",
+   "action_kind": "click Compose",
+   "action_args": {},
+   "reasoning": "She asked to be written to when the job was done, so open a blank message.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_011.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 12,
+   "app": "mail",
+   "action_kind": "fill To",
+   "action_args": {},
+   "reasoning": "Address it to alice@shopgym.com, which is where she asked for the reply.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_012.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 13,
+   "app": "mail",
+   "action_kind": "fill Subject",
+   "action_args": {},
+   "reasoning": "A subject line that says the outcome without her having to open the message.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_013.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 14,
+   "app": "mail",
+   "action_kind": "write body",
+   "action_args": {},
+   "reasoning": "She asked to be told when it was placed, and both lines needed changing before they could go.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_014.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 15,
+   "app": "mail",
+   "action_kind": "click Send",
+   "action_args": {},
+   "reasoning": "Send it, so the account and her inbox agree on what was done.",
+   "screenshot_path": "screenshots/ui_oracle/M703__0/step_015.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "both_gifts_right_and_in_time",
+   "placed_an_order"
+  ],
+  "missed_milestones": [
+   "stale_card_or_gift_sent_to_her_own_flat"
+  ],
+  "all_milestones": [
+   {
+    "name": "both_gifts_right_and_in_time",
+    "weight": 1.0,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "stale_card_or_gift_sent_to_her_own_flat",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "placed_an_order",
+    "weight": 0.0,
+    "fired_at_step": 0,
+    "required": false,
+    "forbidden": false
+   }
+  ]
+ }
+}

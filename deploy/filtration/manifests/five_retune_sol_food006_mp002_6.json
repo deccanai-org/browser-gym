@@ -1,0 +1,22 @@
+{
+  "mode": "five_retune_sol_priority_3seed",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_tasks": 2,
+  "n_seeds": 3,
+  "n_episodes": 6,
+  "tasks": [
+    "food_006/design_review_shared_platter",
+    "mp_002/ps5_controller_cap_infeasible_ask"
+  ],
+  "entries": [
+    {"index": 0, "task_id": "food_006/design_review_shared_platter", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 1, "task_id": "food_006/design_review_shared_platter", "seed": 1, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 2, "task_id": "food_006/design_review_shared_platter", "seed": 2, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 3, "task_id": "mp_002/ps5_controller_cap_infeasible_ask", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 4, "task_id": "mp_002/ps5_controller_cap_infeasible_ask", "seed": 1, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 5, "task_id": "mp_002/ps5_controller_cap_infeasible_ask", "seed": 2, "model": "gpt-5.6-sol", "agent": "openai_pixel"}
+  ],
+  "notes": "Optional GCP reconfirm for Design Review + PS5 (local already has/near 3-seed). Prefer when GCP evidence required."
+}

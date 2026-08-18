@@ -1,0 +1,49 @@
+{
+  "agent": "oracle",
+  "model": null,
+  "n_episodes": 10,
+  "overall_score": 1.0,
+  "overall_success_rate": 1.0,
+  "by_task": {
+    "M430/ardenne_parcel_delivered_and_shelf_price_lies": {
+      "n": 1,
+      "score": 1.0
+    },
+    "M431/two_aster_lamps_neither_one_named": {
+      "n": 1,
+      "score": 1.0
+    },
+    "M432/valuemart_slot_nobody_can_sign_for": {
+      "n": 1,
+      "score": 1.0
+    },
+    "M433/corvo_cover_lapsed_and_plan_never_bought": {
+      "n": 1,
+      "score": 1.0
+    },
+    "M434/team_lunch_vetoed_supplier_eats_the_cap": {
+      "n": 1,
+      "score": 1.0
+    },
+    "M435/starter_kit_cap_across_three_stores": {
+      "n": 1,
+      "score": 1.0
+    },
+    "M436/two_gifts_two_shares_one_cart": {
+      "n": 1,
+      "score": 1.0
+    },
+    "M437/northwind_day_moved_calendar_stale": {
+      "n": 1,
+      "score": 1.0
+    },
+    "M438/home_office_claim_missing_receipt_and_stale_cancel": {
+      "n": 1,
+      "score": 1.0
+    },
+    "M439/redirect_impossible_second_gift_never_bought": {
+      "n": 1,
+      "score": 1.0
+    }
+  }
+}

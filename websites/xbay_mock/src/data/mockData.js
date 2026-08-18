@@ -249,7 +249,11 @@ export const initializeData = (sid = null, customState = null) => {
 };
 
 function normalizeListing(listing, index) {
+  // Spread first so projected tip fields (pickupWindow, brand, quantity, …)
+  // survive bridge hydrate. A closed whitelist previously dropped them, so the
+  // PDP local-pickup shipping row never rendered despite seed→pickupWindow.
   return {
+    ...listing,
     id: listing.id || `listing_custom_${index}`,
     sellerId: listing.sellerId || 'user_1',
     title: listing.title || '(No Title)',
@@ -268,6 +272,10 @@ function normalizeListing(listing, index) {
     shipping: typeof listing.shipping === 'number' ? listing.shipping : (typeof listing.shippingCost === 'number' ? listing.shippingCost : (typeof listing.shipping === 'object' && listing.shipping?.cost != null ? listing.shipping.cost : 0)),
     category: listing.category || 'Other',
     status: listing.status || 'active',
+    // Explicit keep so callers/tests can see the contract even if spread is
+    // later tightened again.
+    ...(listing.pickupWindow ? { pickupWindow: listing.pickupWindow } : {}),
+    ...(listing.brand ? { brand: listing.brand } : {}),
   };
 }
 

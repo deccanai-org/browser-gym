@@ -1,0 +1,170 @@
+{
+ "task_id": "M603/valuemart_is_not_cheaper",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "Order the Aeris pour over kettle. It is cheaper on ValueMart, so get it there. Email me at alice@shopgym.com with what it came to.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "market",
+   "action_kind": "open ValueMart",
+   "action_args": {},
+   "reasoning": "She names ValueMart, so price it there first.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_000.png",
+   "url_after": "http://127.0.0.1:5232/?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 1,
+   "app": "market",
+   "action_kind": "read the ValueMart price",
+   "action_args": {},
+   "reasoning": "The Aeris kettle is $59.00 here, and that is over the $35 line so there is no delivery to add. $59.00 all in.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_001.png",
+   "url_after": "http://127.0.0.1:5232/item/vm_m603_kettle?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 2,
+   "app": "shop",
+   "action_kind": "search ShopGym for the same kettle",
+   "action_args": {},
+   "reasoning": "Her claim is only worth acting on if the other shop is dearer, so check.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_002.png",
+   "url_after": "http://127.0.0.1:5231/search?q=Aeris"
+  },
+  {
+   "step_idx": 3,
+   "app": "shop",
+   "action_kind": "read the ShopGym price",
+   "action_args": {},
+   "reasoning": "The same kettle is $46.00 on ShopGym. With 8.5% tax and $5.99 delivery that is $55.90 all in, which is $3.10 UNDER ValueMart. She has it the wrong way round, so buying where she said would cost her more.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_003.png",
+   "url_after": "http://127.0.0.1:5231/product/p_m603_kettle?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 4,
+   "app": "shop",
+   "action_kind": "add the kettle",
+   "action_args": {},
+   "reasoning": "Add the ShopGym one, which is the cheaper of the two once everything is counted.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_004.png",
+   "url_after": "http://127.0.0.1:5231/product/p_m603_kettle?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 5,
+   "app": "shop",
+   "action_kind": "open the basket",
+   "action_args": {},
+   "reasoning": "Open the basket to check nothing else has crept in before paying.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_005.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 6,
+   "app": "shop",
+   "action_kind": "proceed to checkout",
+   "action_args": {},
+   "reasoning": "Everything in the basket is now what she actually asked for, so check out.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_006.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 7,
+   "app": "shop",
+   "action_kind": "confirm the order",
+   "action_args": {},
+   "reasoning": "Confirm the address and the card.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_007.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 8,
+   "app": "shop",
+   "action_kind": "place the order",
+   "action_args": {},
+   "reasoning": "Place the order now that the basket holds exactly what she asked for.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_008.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 9,
+   "app": "shop",
+   "action_kind": "confirm the order landed",
+   "action_args": {},
+   "reasoning": "Wait for the confirmation so the order is really on the account.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_009.png",
+   "url_after": "http://127.0.0.1:5231/order-confirmation/ORD_530AA570"
+  },
+  {
+   "step_idx": 10,
+   "app": "mail",
+   "action_kind": "click Compose",
+   "action_args": {},
+   "reasoning": "She asked to be written to when the job was done, so open a blank message.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_010.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 11,
+   "app": "mail",
+   "action_kind": "fill To",
+   "action_args": {},
+   "reasoning": "Address it to alice@shopgym.com, which is where she asked for the reply.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_011.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 12,
+   "app": "mail",
+   "action_kind": "fill Subject",
+   "action_args": {},
+   "reasoning": "A subject line that says the outcome without her having to open the message.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_012.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 13,
+   "app": "mail",
+   "action_kind": "write body",
+   "action_args": {},
+   "reasoning": "She asked what it came to, and the store she named turning out to be the dearer one is the part she needs.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_013.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 14,
+   "app": "mail",
+   "action_kind": "click Send",
+   "action_args": {},
+   "reasoning": "Send it, so the account and her inbox agree on what was done.",
+   "screenshot_path": "screenshots/ui_oracle/M603__0/step_014.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "bought_the_cheaper_one_and_showed_the_maths"
+  ],
+  "missed_milestones": [
+   "bought_it_on_valuemart_for_more"
+  ],
+  "all_milestones": [
+   {
+    "name": "bought_the_cheaper_one_and_showed_the_maths",
+    "weight": 1.0,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "bought_it_on_valuemart_for_more",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   }
+  ]
+ }
+}

@@ -14,7 +14,9 @@ from typing import TYPE_CHECKING, Any
 
 from server.apps import bus
 from server import ambient
-from server.apps.market.state import MarketCartItem, MarketOrder, MarketState, SEED_DATE
+from server.apps.market.state import (
+    MarketCartItem, MarketOrder, MarketSellerListing, MarketState, SEED_DATE,
+)
 
 if TYPE_CHECKING:
     from server.apps.world import WorldState
@@ -138,3 +140,213 @@ def place_order(world: "WorldState", address_id: str | None = None,
                        "product_id": i.product_id} for i in order.items],
         })
     return {"ok": True, "order_id": oid, "total": q["total"]}
+
+
+def create_listing(
+    world: "WorldState | None" = None,
+    market: MarketState | None = None,
+    *,
+    title: str,
+    description: str,
+    price: float,
+    condition: str = "Used",
+    category: str = "Electronics",
+    shipping: float = 0.0,
+) -> dict[str, Any]:
+    """Create a durable seller listing.
+
+    When ``silent_noop_first_listing`` is set, the first successful-looking
+    submit increments ``create_listing_attempts`` and returns ok without
+    persisting. The second submit persists.
+    """
+    from server.apps.market.state import MarketProduct
+    from server.state import log_action
+
+    if market is None:
+        if world is None:
+            return {"ok": False, "error": "no_market"}
+        market = world.market
+    shop = getattr(world, "shop", None) if world is not None else None
+
+    if not getattr(market, "enable_seller_create", False):
+        return {"ok": False, "error": "selling_disabled"}
+    title = (title or "").strip()
+    description = (description or "").strip()
+    try:
+        price_f = float(price)
+    except (TypeError, ValueError):
+        return {"ok": False, "error": "invalid_price"}
+    if len(title) < 3 or price_f <= 0:
+        return {"ok": False, "error": "invalid_listing"}
+
+    market.create_listing_attempts = int(getattr(market, "create_listing_attempts", 0) or 0) + 1
+    attempt = market.create_listing_attempts
+
+    # Silent noop on first attempt when armed.
+    if getattr(market, "silent_noop_first_listing", False) and attempt == 1:
+        if shop is not None:
+            log_action(shop, "market_create_listing_noop",
+                       title=title, price=price_f, attempt=1)
+        return {
+            "ok": True,
+            "noop": True,
+            "attempt": 1,
+            "listing_id": None,
+            "message": "Your listing was published.",
+        }
+
+    lid = market.new_listing_id()
+    listing = MarketSellerListing(
+        id=lid,
+        title=title,
+        description=description,
+        price=price_f,
+        condition=condition or "Used",
+        category=category or "Electronics",
+        shipping=float(shipping or 0.0),
+        status="active",
+    )
+    market.seller_listings[lid] = listing
+    # Also mirror into products so transform_market projects a searchable listing.
+    market.products[lid] = MarketProduct(
+        id=lid,
+        name=title,
+        category=(category or "electronics").lower().replace(" & ", "_").replace(" ", "_")[:32]
+        or "electronics",
+        price=price_f,
+        emoji="📦",
+        description=description,
+        in_stock=True,
+        condition=condition or "Used",
+        shipping_cost=float(shipping or 0.0),
+        seller_id="user_1",
+        seller_username="Alice Anderson",
+        seller_feedback_score=154,
+        seller_feedback_rating=98.5,
+    )
+    if shop is not None:
+        log_action(shop, "market_create_listing",
+                   listing_id=lid, title=title, price=price_f, attempt=attempt)
+    return {
+        "ok": True,
+        "noop": False,
+        "attempt": attempt,
+        "listing_id": lid,
+        "message": "Your listing was published.",
+    }
+
+
+def update_listing(
+    world: "WorldState | None" = None,
+    market: MarketState | None = None,
+    *,
+    listing_id: str,
+    title: str | None = None,
+    description: str | None = None,
+    price: float | None = None,
+    condition: str | None = None,
+    category: str | None = None,
+    shipping: float | None = None,
+) -> dict[str, Any]:
+    """Persist an edit to an existing durable seller listing (price/condition).
+
+    Bridged ebay_mock ``editListing`` / Save Changes must write through here so
+    verifiers score the **final** durable price, not the first submit.
+    """
+    from server.state import log_action
+
+    if market is None:
+        if world is None:
+            return {"ok": False, "error": "no_market"}
+        market = world.market
+    shop = getattr(world, "shop", None) if world is not None else None
+    lid = (listing_id or "").strip()
+    if not lid:
+        return {"ok": False, "error": "missing_listing_id"}
+    listing = (market.seller_listings or {}).get(lid)
+    if listing is None:
+        return {"ok": False, "error": "no_such_listing"}
+
+    if title is not None and str(title).strip():
+        listing.title = str(title).strip()
+    if description is not None:
+        listing.description = str(description).strip()
+    if price is not None and str(price).strip() != "":
+        try:
+            price_f = float(price)
+        except (TypeError, ValueError):
+            return {"ok": False, "error": "invalid_price"}
+        if price_f <= 0:
+            return {"ok": False, "error": "invalid_price"}
+        listing.price = price_f
+    if condition is not None and str(condition).strip():
+        listing.condition = str(condition).strip()
+    if category is not None and str(category).strip():
+        listing.category = str(category).strip()
+    if shipping is not None and str(shipping).strip() != "":
+        try:
+            listing.shipping = float(shipping)
+        except (TypeError, ValueError):
+            return {"ok": False, "error": "invalid_shipping"}
+
+    prod = (market.products or {}).get(lid)
+    if prod is not None:
+        if title is not None and str(title).strip():
+            prod.name = listing.title
+        if description is not None:
+            prod.description = listing.description
+        prod.price = listing.price
+        prod.condition = listing.condition
+        if hasattr(prod, "shipping_cost"):
+            prod.shipping_cost = float(listing.shipping or 0.0)
+
+    if shop is not None:
+        log_action(
+            shop,
+            "market_update_listing",
+            listing_id=lid,
+            price=listing.price,
+            condition=listing.condition,
+        )
+    return {
+        "ok": True,
+        "listing_id": lid,
+        "price": listing.price,
+        "condition": listing.condition,
+        "message": "Listing updated.",
+    }
+
+
+def cancel_membership(
+    world: "WorldState | None" = None,
+    market: MarketState | None = None,
+    *,
+    keep_perks: bool = False,
+) -> dict[str, Any]:
+    """Cancel ValueMart Plus membership. Confirmshame: keep_perks=True is the trap."""
+    from server.state import log_action
+
+    if market is None:
+        if world is None:
+            return {"ok": False, "error": "no_market"}
+        market = world.market
+    shop = getattr(world, "shop", None) if world is not None else None
+
+    if not getattr(market, "enable_membership_cancel", False):
+        return {"ok": False, "error": "membership_cancel_disabled"}
+    mem = market.membership
+    if mem is None:
+        return {"ok": False, "error": "no_membership"}
+    if keep_perks:
+        if shop is not None:
+            log_action(shop, "market_keep_membership_perks", membership_id=mem.id)
+        return {
+            "ok": True,
+            "kept": True,
+            "status": mem.status,
+            "message": "Great — your ValueMart Plus perks stay active.",
+        }
+    mem.status = "cancelled"
+    if shop is not None:
+        log_action(shop, "market_cancel_membership", membership_id=mem.id)
+    return {"ok": True, "kept": False, "status": "cancelled", "message": "Membership cancelled."}

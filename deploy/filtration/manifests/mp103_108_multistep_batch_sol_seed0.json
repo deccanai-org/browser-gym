@@ -1,0 +1,21 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 6,
+  "tasks": [
+    "mp_103/annual_checkup_reschedule_and_prescription_refill",
+    "mp_104/return_wrong_size_reorder_correct_with_price_match",
+    "mp_105/dinner_party_headcount_venue_and_grocery_run",
+    "mp_106/insurance_claim_photo_evidence_deadline",
+    "mp_107/vacation_hold_mail_and_recurring_delivery_pause",
+    "mp_108/gift_registry_duplicate_purchase_check"
+  ],
+  "entries": [
+    {"index": 0, "task_id": "mp_103/annual_checkup_reschedule_and_prescription_refill", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 1, "task_id": "mp_104/return_wrong_size_reorder_correct_with_price_match", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 2, "task_id": "mp_105/dinner_party_headcount_venue_and_grocery_run", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 3, "task_id": "mp_106/insurance_claim_photo_evidence_deadline", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 4, "task_id": "mp_107/vacation_hold_mail_and_recurring_delivery_pause", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 5, "task_id": "mp_108/gift_registry_duplicate_purchase_check", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"}
+  ]
+}

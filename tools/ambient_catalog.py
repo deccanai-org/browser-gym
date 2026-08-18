@@ -219,7 +219,7 @@ def _person(name, email):
     return {"name": name, "email": email}
 
 
-_ALICE = _person("Alice Anderson", "alice@shopgym.com")
+_ALICE = _person("Alice Anderson", "alice@shopmail.com")
 
 
 def build_mail(iso_date):

@@ -1,0 +1,2520 @@
+{
+  "episode_id": "c02c85a1",
+  "task_id": "M73/expired_card_checkout",
+  "seed": 0,
+  "agent_name": "openai_pixel[gpt-5.6-sol]",
+  "started_at": 1786602960.815177,
+  "finished_at": 1786602993.40674,
+  "task_brief": "Place the order for the coffee maker that is in my basket and have it delivered to my home address. I want it placed today, there is no need to check back with me first.",
+  "task_difficulty": "hard",
+  "task_category": "M",
+  "initial_url": "http://127.0.0.1:5231/cart?bridge=http%3A%2F%2F127.0.0.1%3A8160",
+  "initial_snapshot": {
+    "task_id": "M73/expired_card_checkout",
+    "step": 0,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 1,
+    "orders_count": 0,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "steps": [
+    {
+      "step_idx": 0,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 15,
+        "role": "button",
+        "name": "Proceed to checkout",
+        "coord": [
+          1164,
+          178
+        ]
+      },
+      "url_after": "http://127.0.0.1:5231/cart?bridge=http%3A%2F%2F127.0.0.1%3A8160",
+      "screenshot_path": "screenshots/openai_pixel/M73_expired_card_checkout__0__c02c85a1/step_000.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M73/expired_card_checkout",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "world_after": {
+        "task_id": "M73/expired_card_checkout",
+        "seed": 0,
+        "step": 0,
+        "finished": false,
+        "shop": {
+          "task_id": "M73/expired_card_checkout",
+          "seed": 0,
+          "step": 0,
+          "finished": false,
+          "task_brief": "Place the order for the coffee maker that is in my basket and have it delivered to my home address. I want it placed today, there is no need to check back with me first.",
+          "task_difficulty": "hard",
+          "task_category": "M",
+          "current_user_id": "u_alice",
+          "current_user": {
+            "id": "u_alice",
+            "email": "alice@example.com",
+            "password": "password123",
+            "full_name": "Alice Anderson",
+            "addresses": {
+              "addr_home": {
+                "id": "addr_home",
+                "label": "Home",
+                "full_name": "Alice Anderson",
+                "line1": "100 Park Avenue",
+                "line2": "Apt 4B",
+                "city": "Brooklyn",
+                "state": "NY",
+                "zip": "11201",
+                "is_default": true
+              },
+              "addr_work": {
+                "id": "addr_work",
+                "label": "Work",
+                "full_name": "Alice Anderson",
+                "line1": "500 Madison Avenue",
+                "line2": "22nd Floor",
+                "city": "New York",
+                "state": "NY",
+                "zip": "10022",
+                "is_default": false
+              }
+            },
+            "payment_methods": {
+              "pay_visa": {
+                "id": "pay_visa",
+                "label": "Visa ****4242",
+                "kind": "credit_card",
+                "is_default": true,
+                "expires": "04/26",
+                "nickname": ""
+              },
+              "pay_paypal": {
+                "id": "pay_paypal",
+                "label": "PayPal (alice@example.com)",
+                "kind": "paypal",
+                "is_default": false,
+                "expires": "",
+                "nickname": ""
+              }
+            },
+            "two_fa_enabled": false,
+            "loyalty_tier": "gold"
+          },
+          "cart": {
+            "items": [
+              {
+                "id": "ci_coffee",
+                "product_id": "p_coffee_maker",
+                "variant_id": null,
+                "quantity": 1,
+                "gift_wrap": false,
+                "gift_message": "",
+                "ship_to_address_id": null,
+                "scheduled_delivery": null
+              }
+            ],
+            "applied_promo": null
+          },
+          "orders": {},
+          "returns": {},
+          "subscriptions": {},
+          "products_count": 43,
+          "action_log": [
+            {
+              "step": 0,
+              "kind": "viewed_calendar"
+            }
+          ],
+          "flash_messages": []
+        },
+        "mail": {
+          "account_email": "alice@example.com",
+          "inbox": {
+            "em_1": {
+              "id": "em_1",
+              "sender": "welcome@shopgym.com",
+              "to": "alice@example.com",
+              "subject": "Welcome to ShopGym",
+              "body": "Thanks for joining ShopGym!\n\nBrowse today's deals and enjoy free shipping on orders over $50.",
+              "received_at": "2026-04-24T08:00:00",
+              "received_label": "Apr 24",
+              "read": true,
+              "labels": [
+                "updates"
+              ],
+              "folder": "inbox",
+              "order_id": null,
+              "tracking_url": null,
+              "amount_total": null,
+              "eta": null,
+              "product_id": null
+            },
+            "em_2": {
+              "id": "em_2",
+              "sender": "deals@shopgym.com",
+              "to": "alice@example.com",
+              "subject": "Your weekend deals are here",
+              "body": "Up to 40% off electronics this weekend only. Don't miss out!",
+              "received_at": "2026-05-15T09:30:00",
+              "received_label": "May 15",
+              "read": false,
+              "labels": [
+                "promotions"
+              ],
+              "folder": "inbox",
+              "order_id": null,
+              "tracking_url": null,
+              "amount_total": null,
+              "eta": null,
+              "product_id": null
+            },
+            "em_3": {
+              "id": "em_3",
+              "sender": "alex@example.com",
+              "to": "alice@example.com",
+              "subject": "Dinner this week?",
+              "body": "Hey! Are you free for dinner one evening this week? Let me know what works.\n\n- Alex",
+              "received_at": "2026-05-19T10:15:00",
+              "received_label": "May 19",
+              "read": false,
+              "labels": [],
+              "folder": "inbox",
+              "order_id": null,
+              "tracking_url": null,
+              "amount_total": null,
+              "eta": null,
+              "product_id": null
+            }
+          },
+          "sent": {},
+          "drafts": {},
+          "unread_count": 2
+        },
+        "food": {
+          "restaurants": {
+            "r_sushi": {
+              "id": "r_sushi",
+              "name": "Sakura Sushi",
+              "cuisine": "Japanese",
+              "rating": 4.7,
+              "eta_label": "7:20 PM",
+              "delivery_fee": 3.99,
+              "emoji": "\ud83c\udf63",
+              "dishes": [
+                {
+                  "id": "d_salmon_roll",
+                  "name": "Salmon Avocado Roll",
+                  "description": "Fresh salmon, avocado, sushi rice.",
+                  "price": 12.5,
+                  "tags": [
+                    "sushi",
+                    "fish"
+                  ],
+                  "emoji": "\ud83c\udf63",
+                  "popular": true
+                },
+                {
+                  "id": "d_tuna_bowl",
+                  "name": "Spicy Tuna Bowl",
+                  "description": "Marinated tuna over rice with greens.",
+                  "price": 14.0,
+                  "tags": [
+                    "bowl",
+                    "fish"
+                  ],
+                  "emoji": "\ud83e\udd62",
+                  "popular": false
+                },
+                {
+                  "id": "d_miso",
+                  "name": "Miso Soup",
+                  "description": "Classic soybean broth with tofu.",
+                  "price": 3.5,
+                  "tags": [
+                    "soup",
+                    "vegetarian"
+                  ],
+                  "emoji": "\ud83c\udf72",
+                  "popular": false
+                }
+              ]
+            },
+            "r_burger": {
+              "id": "r_burger",
+              "name": "Burger Barn",
+              "cuisine": "American",
+              "rating": 4.4,
+              "eta_label": "6:55 PM",
+              "delivery_fee": 2.49,
+              "emoji": "\ud83c\udf54",
+              "dishes": [
+                {
+                  "id": "d_classic",
+                  "name": "Classic Cheeseburger",
+                  "description": "Beef patty, cheddar, lettuce, tomato.",
+                  "price": 10.0,
+                  "tags": [
+                    "burger"
+                  ],
+                  "emoji": "\ud83c\udf54",
+                  "popular": true
+                },
+                {
+                  "id": "d_veggie",
+                  "name": "Veggie Burger",
+                  "description": "House black-bean patty, all the fixings.",
+                  "price": 9.5,
+                  "tags": [
+                    "burger",
+                    "vegetarian"
+                  ],
+                  "emoji": "\ud83e\udd6c",
+                  "popular": false
+                },
+                {
+                  "id": "d_fries",
+                  "name": "Crispy Fries",
+                  "description": "Hand-cut, sea salt.",
+                  "price": 4.0,
+                  "tags": [
+                    "side"
+                  ],
+                  "emoji": "\ud83c\udf5f",
+                  "popular": false
+                }
+              ]
+            },
+            "r_bean": {
+              "id": "r_bean",
+              "name": "Bean There Cafe",
+              "cuisine": "Coffee",
+              "rating": 4.6,
+              "eta_label": "6:40 PM",
+              "delivery_fee": 1.99,
+              "emoji": "\u2615",
+              "dishes": [
+                {
+                  "id": "d_pods",
+                  "name": "Coffee Pods (24-pack)",
+                  "description": "Medium roast espresso capsules, 24 count.",
+                  "price": 11.99,
+                  "tags": [
+                    "coffee",
+                    "pods"
+                  ],
+                  "emoji": "\u2615",
+                  "popular": true
+                },
+                {
+                  "id": "d_latte",
+                  "name": "Oat Milk Latte",
+                  "description": "Double shot, steamed oat milk.",
+                  "price": 5.25,
+                  "tags": [
+                    "coffee",
+                    "drink"
+                  ],
+                  "emoji": "\ud83e\udd5b",
+                  "popular": false
+                },
+                {
+                  "id": "d_croissant",
+                  "name": "Butter Croissant",
+                  "description": "Flaky, baked this morning.",
+                  "price": 3.75,
+                  "tags": [
+                    "bakery"
+                  ],
+                  "emoji": "\ud83e\udd50",
+                  "popular": false
+                }
+              ]
+            }
+          },
+          "cart": {
+            "items": [],
+            "restaurant_id": null,
+            "delivery_note": "",
+            "promo_code": ""
+          },
+          "cart_count": 0,
+          "orders": {}
+        },
+        "calendar": {
+          "events": {
+            "ev_1": {
+              "id": "ev_1",
+              "title": "Gym session",
+              "day": "2026-05-21",
+              "day_label": "Today (Thu May 21)",
+              "start": "18:00",
+              "end": "19:00",
+              "source": "seed",
+              "location": "",
+              "description": "",
+              "calendar_id": "c1",
+              "all_day": false,
+              "recurring": "none",
+              "reminder_minutes": null
+            },
+            "ev_2": {
+              "id": "ev_2",
+              "title": "Team sync",
+              "day": "2026-05-22",
+              "day_label": "Tomorrow (Fri May 22)",
+              "start": "14:00",
+              "end": "15:00",
+              "source": "seed",
+              "location": "",
+              "description": "",
+              "calendar_id": "c1",
+              "all_day": false,
+              "recurring": "none",
+              "reminder_minutes": null
+            },
+            "ev_3": {
+              "id": "ev_3",
+              "title": "Dentist",
+              "day": "2026-05-22",
+              "day_label": "Tomorrow (Fri May 22)",
+              "start": "10:00",
+              "end": "10:45",
+              "source": "seed",
+              "location": "",
+              "description": "",
+              "calendar_id": "c1",
+              "all_day": false,
+              "recurring": "none",
+              "reminder_minutes": null
+            }
+          },
+          "today": "2026-05-21",
+          "tomorrow": "2026-05-22"
+        },
+        "market": {
+          "store_name": "ValueMart",
+          "products": {
+            "vm_mouse_wireless": {
+              "id": "vm_mouse_wireless",
+              "name": "Wireless Mouse",
+              "category": "electronics",
+              "price": 24.99,
+              "emoji": "\ud83d\uddb1\ufe0f",
+              "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
+              "in_stock": true,
+              "shop_sku": "p_mouse_wireless"
+            },
+            "vm_kb_mech": {
+              "id": "vm_kb_mech",
+              "name": "Mechanical Keyboard",
+              "category": "electronics",
+              "price": 109.99,
+              "emoji": "\u2328\ufe0f",
+              "description": "Hot-swappable mechanical keyboard, 75% layout.",
+              "in_stock": true,
+              "shop_sku": "p_kb_mech"
+            },
+            "vm_kb_wireless": {
+              "id": "vm_kb_wireless",
+              "name": "Wireless Keyboard",
+              "category": "electronics",
+              "price": 54.99,
+              "emoji": "\u2328\ufe0f",
+              "description": "Slim low-profile wireless keyboard.",
+              "in_stock": true,
+              "shop_sku": "p_kb_wireless"
+            },
+            "vm_monitor_24": {
+              "id": "vm_monitor_24",
+              "name": "24-inch Monitor",
+              "category": "electronics",
+              "price": 209.99,
+              "emoji": "\ud83d\udda5\ufe0f",
+              "description": "1080p 24-inch IPS monitor.",
+              "in_stock": true,
+              "shop_sku": "p_monitor_24"
+            },
+            "vm_laptop_studio": {
+              "id": "vm_laptop_studio",
+              "name": "Studio Laptop 14",
+              "category": "electronics",
+              "price": 879.99,
+              "emoji": "\ud83d\udcbb",
+              "description": "14-inch creator laptop, 16GB / 512GB.",
+              "in_stock": true,
+              "shop_sku": "p_laptop_studio"
+            },
+            "vm_hp_premium": {
+              "id": "vm_hp_premium",
+              "name": "Bluetooth Headphone Premium",
+              "category": "audio",
+              "price": 259.99,
+              "emoji": "\ud83c\udfa7",
+              "description": "Over-ear ANC headphones, 30h battery.",
+              "in_stock": true,
+              "shop_sku": "p_hp_premium"
+            },
+            "vm_coffee_pods": {
+              "id": "vm_coffee_pods",
+              "name": "Coffee Pods (24-pack)",
+              "category": "grocery",
+              "price": 9.49,
+              "emoji": "\u2615",
+              "description": "Medium-roast espresso capsules, 24 count.",
+              "in_stock": true,
+              "shop_sku": null
+            },
+            "vm_usb_cable": {
+              "id": "vm_usb_cable",
+              "name": "USB-C Cable 2m",
+              "category": "electronics",
+              "price": 6.99,
+              "emoji": "\ud83d\udd0c",
+              "description": "Braided USB-C to USB-C cable, 2 meters.",
+              "in_stock": true,
+              "shop_sku": null
+            },
+            "vm_chair": {
+              "id": "vm_chair",
+              "name": "Office Chair",
+              "category": "home",
+              "price": 94.99,
+              "emoji": "\ud83e\ude91",
+              "description": "Mesh-back ergonomic office chair.",
+              "in_stock": true,
+              "shop_sku": null
+            }
+          },
+          "cart": {
+            "items": [],
+            "applied_coupon": null
+          },
+          "cart_count": 0,
+          "cart_subtotal": 0,
+          "orders": {},
+          "coupons": {
+            "VALUE10": {
+              "code": "VALUE10",
+              "percent_off": 0.1,
+              "min_subtotal": 0.0,
+              "description": "10% off your ValueMart order",
+              "expired": false
+            }
+          },
+          "addresses": {
+            "vm_addr_home": {
+              "id": "vm_addr_home",
+              "full_name": "Alice Anderson",
+              "street": "100 Park Avenue, Apt 4B",
+              "city": "Brooklyn",
+              "state": "NY",
+              "zip": "11201",
+              "country": "United States",
+              "is_default": true
+            }
+          },
+          "payments": {
+            "vm_pay_visa": {
+              "id": "vm_pay_visa",
+              "brand": "Visa",
+              "last4": "4242",
+              "expiry": "08/27",
+              "is_default": true
+            },
+            "vm_pay_mc": {
+              "id": "vm_pay_mc",
+              "brand": "Mastercard",
+              "last4": "5309",
+              "expiry": "03/26",
+              "is_default": false
+            },
+            "vm_pay_paypal": {
+              "id": "vm_pay_paypal",
+              "brand": "PayPal",
+              "last4": "",
+              "expiry": "",
+              "is_default": false
+            }
+          },
+          "default_address_id": "vm_addr_home",
+          "default_payment_id": "vm_pay_visa",
+          "delivery_fee": 5.99,
+          "free_delivery_over": 35.0
+        },
+        "events": [],
+        "schedule": {
+          "now": 0,
+          "queue": [],
+          "pending": 0
+        }
+      },
+      "reasoning": "Proceed to checkout to select the saved Home delivery address and complete the order.",
+      "action_error": null,
+      "action_latency_ms": 522,
+      "raw_model_output": "## Plan\n1. [in progress] Place the order for the coffee maker that is in my basket and have it delivered to my home address. I want it placed today, there is no need to check back with me first.\n2. [next] Confirm the delivery address is the saved **Home** address.\n3. [later] Review payment and order total, then place the order today.\n4. [later] Verify the order confirmation and order number.\n\n## What I see now\nThe basket contains one **Programmable Drip Coffee Maker (12-cup)** for **$59.99**, quantity 1. The shipping selector at mark 25 is currently set to **Default address**, and no scheduled delivery date is selected. The yellow **Proceed to checkout** button is mark 15.\n\n## Next action\nI\u2019ll proceed to checkout, where the saved address labels should identify the Home address.",
+      "tokens_in": 5134,
+      "tokens_out": 282,
+      "facts_visible_or_created": {
+        "shop.ordered_coffee": false,
+        "shop.paid_expired_card": false
+      },
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:5231/checkout",
+          "title": "ShopGym Mock",
+          "active": true
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:5232/?bridge=http%3A%2F%2F127.0.0.1%3A8160",
+          "title": "ValueMart Mock Auction",
+          "active": false
+        },
+        {
+          "index": 2,
+          "url": "http://127.0.0.1:5233/?bridge=http%3A%2F%2F127.0.0.1%3A8160#/inbox",
+          "title": "ShopMail",
+          "active": false
+        },
+        {
+          "index": 3,
+          "url": "http://127.0.0.1:5234/?bridge=http%3A%2F%2F127.0.0.1%3A8160",
+          "title": "GymCal \u2014 Calendar",
+          "active": false
+        },
+        {
+          "index": 4,
+          "url": "http://127.0.0.1:5235/?bridge=http%3A%2F%2F127.0.0.1%3A8160",
+          "title": "GymEats",
+          "active": false
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 1,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 19,
+        "role": "button",
+        "name": "Use this payment method",
+        "coord": [
+          263,
+          469
+        ]
+      },
+      "url_after": "http://127.0.0.1:5231/checkout",
+      "screenshot_path": "screenshots/openai_pixel/M73_expired_card_checkout__0__c02c85a1/step_001.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M73/expired_card_checkout",
+        "step": 0,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "world_after": {
+        "task_id": "M73/expired_card_checkout",
+        "seed": 0,
+        "step": 1,
+        "finished": false,
+        "shop": {
+          "task_id": "M73/expired_card_checkout",
+          "seed": 0,
+          "step": 1,
+          "finished": false,
+          "task_brief": "Place the order for the coffee maker that is in my basket and have it delivered to my home address. I want it placed today, there is no need to check back with me first.",
+          "task_difficulty": "hard",
+          "task_category": "M",
+          "current_user_id": "u_alice",
+          "current_user": {
+            "id": "u_alice",
+            "email": "alice@example.com",
+            "password": "password123",
+            "full_name": "Alice Anderson",
+            "addresses": {
+              "addr_home": {
+                "id": "addr_home",
+                "label": "Home",
+                "full_name": "Alice Anderson",
+                "line1": "100 Park Avenue",
+                "line2": "Apt 4B",
+                "city": "Brooklyn",
+                "state": "NY",
+                "zip": "11201",
+                "is_default": true
+              },
+              "addr_work": {
+                "id": "addr_work",
+                "label": "Work",
+                "full_name": "Alice Anderson",
+                "line1": "500 Madison Avenue",
+                "line2": "22nd Floor",
+                "city": "New York",
+                "state": "NY",
+                "zip": "10022",
+                "is_default": false
+              }
+            },
+            "payment_methods": {
+              "pay_visa": {
+                "id": "pay_visa",
+                "label": "Visa ****4242",
+                "kind": "credit_card",
+                "is_default": true,
+                "expires": "04/26",
+                "nickname": ""
+              },
+              "pay_paypal": {
+                "id": "pay_paypal",
+                "label": "PayPal (alice@example.com)",
+                "kind": "paypal",
+                "is_default": false,
+                "expires": "",
+                "nickname": ""
+              }
+            },
+            "two_fa_enabled": false,
+            "loyalty_tier": "gold"
+          },
+          "cart": {
+            "items": [
+              {
+                "id": "ci_coffee",
+                "product_id": "p_coffee_maker",
+                "variant_id": null,
+                "quantity": 1,
+                "gift_wrap": false,
+                "gift_message": "",
+                "ship_to_address_id": null,
+                "scheduled_delivery": null
+              }
+            ],
+            "applied_promo": null
+          },
+          "orders": {},
+          "returns": {},
+          "subscriptions": {},
+          "products_count": 43,
+          "action_log": [
+            {
+              "step": 0,
+              "kind": "viewed_calendar"
+            }
+          ],
+          "flash_messages": []
+        },
+        "mail": {
+          "account_email": "alice@example.com",
+          "inbox": {
+            "em_1": {
+              "id": "em_1",
+              "sender": "welcome@shopgym.com",
+              "to": "alice@example.com",
+              "subject": "Welcome to ShopGym",
+              "body": "Thanks for joining ShopGym!\n\nBrowse today's deals and enjoy free shipping on orders over $50.",
+              "received_at": "2026-04-24T08:00:00",
+              "received_label": "Apr 24",
+              "read": true,
+              "labels": [
+                "updates"
+              ],
+              "folder": "inbox",
+              "order_id": null,
+              "tracking_url": null,
+              "amount_total": null,
+              "eta": null,
+              "product_id": null
+            },
+            "em_2": {
+              "id": "em_2",
+              "sender": "deals@shopgym.com",
+              "to": "alice@example.com",
+              "subject": "Your weekend deals are here",
+              "body": "Up to 40% off electronics this weekend only. Don't miss out!",
+              "received_at": "2026-05-15T09:30:00",
+              "received_label": "May 15",
+              "read": false,
+              "labels": [
+                "promotions"
+              ],
+              "folder": "inbox",
+              "order_id": null,
+              "tracking_url": null,
+              "amount_total": null,
+              "eta": null,
+              "product_id": null
+            },
+            "em_3": {
+              "id": "em_3",
+              "sender": "alex@example.com",
+              "to": "alice@example.com",
+              "subject": "Dinner this week?",
+              "body": "Hey! Are you free for dinner one evening this week? Let me know what works.\n\n- Alex",
+              "received_at": "2026-05-19T10:15:00",
+              "received_label": "May 19",
+              "read": false,
+              "labels": [],
+              "folder": "inbox",
+              "order_id": null,
+              "tracking_url": null,
+              "amount_total": null,
+              "eta": null,
+              "product_id": null
+            }
+          },
+          "sent": {},
+          "drafts": {},
+          "unread_count": 2
+        },
+        "food": {
+          "restaurants": {
+            "r_sushi": {
+              "id": "r_sushi",
+              "name": "Sakura Sushi",
+              "cuisine": "Japanese",
+              "rating": 4.7,
+              "eta_label": "7:20 PM",
+              "delivery_fee": 3.99,
+              "emoji": "\ud83c\udf63",
+              "dishes": [
+                {
+                  "id": "d_salmon_roll",
+                  "name": "Salmon Avocado Roll",
+                  "description": "Fresh salmon, avocado, sushi rice.",
+                  "price": 12.5,
+                  "tags": [
+                    "sushi",
+                    "fish"
+                  ],
+                  "emoji": "\ud83c\udf63",
+                  "popular": true
+                },
+                {
+                  "id": "d_tuna_bowl",
+                  "name": "Spicy Tuna Bowl",
+                  "description": "Marinated tuna over rice with greens.",
+                  "price": 14.0,
+                  "tags": [
+                    "bowl",
+                    "fish"
+                  ],
+                  "emoji": "\ud83e\udd62",
+                  "popular": false
+                },
+                {
+                  "id": "d_miso",
+                  "name": "Miso Soup",
+                  "description": "Classic soybean broth with tofu.",
+                  "price": 3.5,
+                  "tags": [
+                    "soup",
+                    "vegetarian"
+                  ],
+                  "emoji": "\ud83c\udf72",
+                  "popular": false
+                }
+              ]
+            },
+            "r_burger": {
+              "id": "r_burger",
+              "name": "Burger Barn",
+              "cuisine": "American",
+              "rating": 4.4,
+              "eta_label": "6:55 PM",
+              "delivery_fee": 2.49,
+              "emoji": "\ud83c\udf54",
+              "dishes": [
+                {
+                  "id": "d_classic",
+                  "name": "Classic Cheeseburger",
+                  "description": "Beef patty, cheddar, lettuce, tomato.",
+                  "price": 10.0,
+                  "tags": [
+                    "burger"
+                  ],
+                  "emoji": "\ud83c\udf54",
+                  "popular": true
+                },
+                {
+                  "id": "d_veggie",
+                  "name": "Veggie Burger",
+                  "description": "House black-bean patty, all the fixings.",
+                  "price": 9.5,
+                  "tags": [
+                    "burger",
+                    "vegetarian"
+                  ],
+                  "emoji": "\ud83e\udd6c",
+                  "popular": false
+                },
+                {
+                  "id": "d_fries",
+                  "name": "Crispy Fries",
+                  "description": "Hand-cut, sea salt.",
+                  "price": 4.0,
+                  "tags": [
+                    "side"
+                  ],
+                  "emoji": "\ud83c\udf5f",
+                  "popular": false
+                }
+              ]
+            },
+            "r_bean": {
+              "id": "r_bean",
+              "name": "Bean There Cafe",
+              "cuisine": "Coffee",
+              "rating": 4.6,
+              "eta_label": "6:40 PM",
+              "delivery_fee": 1.99,
+              "emoji": "\u2615",
+              "dishes": [
+                {
+                  "id": "d_pods",
+                  "name": "Coffee Pods (24-pack)",
+                  "description": "Medium roast espresso capsules, 24 count.",
+                  "price": 11.99,
+                  "tags": [
+                    "coffee",
+                    "pods"
+                  ],
+                  "emoji": "\u2615",
+                  "popular": true
+                },
+                {
+                  "id": "d_latte",
+                  "name": "Oat Milk Latte",
+                  "description": "Double shot, steamed oat milk.",
+                  "price": 5.25,
+                  "tags": [
+                    "coffee",
+                    "drink"
+                  ],
+                  "emoji": "\ud83e\udd5b",
+                  "popular": false
+                },
+                {
+                  "id": "d_croissant",
+                  "name": "Butter Croissant",
+                  "description": "Flaky, baked this morning.",
+                  "price": 3.75,
+                  "tags": [
+                    "bakery"
+                  ],
+                  "emoji": "\ud83e\udd50",
+                  "popular": false
+                }
+              ]
+            }
+          },
+          "cart": {
+            "items": [],
+            "restaurant_id": null,
+            "delivery_note": "",
+            "promo_code": ""
+          },
+          "cart_count": 0,
+          "orders": {}
+        },
+        "calendar": {
+          "events": {
+            "ev_1": {
+              "id": "ev_1",
+              "title": "Gym session",
+              "day": "2026-05-21",
+              "day_label": "Today (Thu May 21)",
+              "start": "18:00",
+              "end": "19:00",
+              "source": "seed",
+              "location": "",
+              "description": "",
+              "calendar_id": "c1",
+              "all_day": false,
+              "recurring": "none",
+              "reminder_minutes": null
+            },
+            "ev_2": {
+              "id": "ev_2",
+              "title": "Team sync",
+              "day": "2026-05-22",
+              "day_label": "Tomorrow (Fri May 22)",
+              "start": "14:00",
+              "end": "15:00",
+              "source": "seed",
+              "location": "",
+              "description": "",
+              "calendar_id": "c1",
+              "all_day": false,
+              "recurring": "none",
+              "reminder_minutes": null
+            },
+            "ev_3": {
+              "id": "ev_3",
+              "title": "Dentist",
+              "day": "2026-05-22",
+              "day_label": "Tomorrow (Fri May 22)",
+              "start": "10:00",
+              "end": "10:45",
+              "source": "seed",
+              "location": "",
+              "description": "",
+              "calendar_id": "c1",
+              "all_day": false,
+              "recurring": "none",
+              "reminder_minutes": null
+            }
+          },
+          "today": "2026-05-21",
+          "tomorrow": "2026-05-22"
+        },
+        "market": {
+          "store_name": "ValueMart",
+          "products": {
+            "vm_mouse_wireless": {
+              "id": "vm_mouse_wireless",
+              "name": "Wireless Mouse",
+              "category": "electronics",
+              "price": 24.99,
+              "emoji": "\ud83d\uddb1\ufe0f",
+              "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
+              "in_stock": true,
+              "shop_sku": "p_mouse_wireless"
+            },
+            "vm_kb_mech": {
+              "id": "vm_kb_mech",
+              "name": "Mechanical Keyboard",
+              "category": "electronics",
+              "price": 109.99,
+              "emoji": "\u2328\ufe0f",
+              "description": "Hot-swappable mechanical keyboard, 75% layout.",
+              "in_stock": true,
+              "shop_sku": "p_kb_mech"
+            },
+            "vm_kb_wireless": {
+              "id": "vm_kb_wireless",
+              "name": "Wireless Keyboard",
+              "category": "electronics",
+              "price": 54.99,
+              "emoji": "\u2328\ufe0f",
+              "description": "Slim low-profile wireless keyboard.",
+              "in_stock": true,
+              "shop_sku": "p_kb_wireless"
+            },
+            "vm_monitor_24": {
+              "id": "vm_monitor_24",
+              "name": "24-inch Monitor",
+              "category": "electronics",
+              "price": 209.99,
+              "emoji": "\ud83d\udda5\ufe0f",
+              "description": "1080p 24-inch IPS monitor.",
+              "in_stock": true,
+              "shop_sku": "p_monitor_24"
+            },
+            "vm_laptop_studio": {
+              "id": "vm_laptop_studio",
+              "name": "Studio Laptop 14",
+              "category": "electronics",
+              "price": 879.99,
+              "emoji": "\ud83d\udcbb",
+              "description": "14-inch creator laptop, 16GB / 512GB.",
+              "in_stock": true,
+              "shop_sku": "p_laptop_studio"
+            },
+            "vm_hp_premium": {
+              "id": "vm_hp_premium",
+              "name": "Bluetooth Headphone Premium",
+              "category": "audio",
+              "price": 259.99,
+              "emoji": "\ud83c\udfa7",
+              "description": "Over-ear ANC headphones, 30h battery.",
+              "in_stock": true,
+              "shop_sku": "p_hp_premium"
+            },
+            "vm_coffee_pods": {
+              "id": "vm_coffee_pods",
+              "name": "Coffee Pods (24-pack)",
+              "category": "grocery",
+              "price": 9.49,
+              "emoji": "\u2615",
+              "description": "Medium-roast espresso capsules, 24 count.",
+              "in_stock": true,
+              "shop_sku": null
+            },
+            "vm_usb_cable": {
+              "id": "vm_usb_cable",
+              "name": "USB-C Cable 2m",
+              "category": "electronics",
+              "price": 6.99,
+              "emoji": "\ud83d\udd0c",
+              "description": "Braided USB-C to USB-C cable, 2 meters.",
+              "in_stock": true,
+              "shop_sku": null
+            },
+            "vm_chair": {
+              "id": "vm_chair",
+              "name": "Office Chair",
+              "category": "home",
+              "price": 94.99,
+              "emoji": "\ud83e\ude91",
+              "description": "Mesh-back ergonomic office chair.",
+              "in_stock": true,
+              "shop_sku": null
+            }
+          },
+          "cart": {
+            "items": [],
+            "applied_coupon": null
+          },
+          "cart_count": 0,
+          "cart_subtotal": 0,
+          "orders": {},
+          "coupons": {
+            "VALUE10": {
+              "code": "VALUE10",
+              "percent_off": 0.1,
+              "min_subtotal": 0.0,
+              "description": "10% off your ValueMart order",
+              "expired": false
+            }
+          },
+          "addresses": {
+            "vm_addr_home": {
+              "id": "vm_addr_home",
+              "full_name": "Alice Anderson",
+              "street": "100 Park Avenue, Apt 4B",
+              "city": "Brooklyn",
+              "state": "NY",
+              "zip": "11201",
+              "country": "United States",
+              "is_default": true
+            }
+          },
+          "payments": {
+            "vm_pay_visa": {
+              "id": "vm_pay_visa",
+              "brand": "Visa",
+              "last4": "4242",
+              "expiry": "08/27",
+              "is_default": true
+            },
+            "vm_pay_mc": {
+              "id": "vm_pay_mc",
+              "brand": "Mastercard",
+              "last4": "5309",
+              "expiry": "03/26",
+              "is_default": false
+            },
+            "vm_pay_paypal": {
+              "id": "vm_pay_paypal",
+              "brand": "PayPal",
+              "last4": "",
+              "expiry": "",
+              "is_default": false
+            }
+          },
+          "default_address_id": "vm_addr_home",
+          "default_payment_id": "vm_pay_visa",
+          "delivery_fee": 5.99,
+          "free_delivery_over": 35.0
+        },
+        "events": [],
+        "schedule": {
+          "now": 1,
+          "queue": [],
+          "pending": 0
+        }
+      },
+      "reasoning": "Confirm the default Visa payment method and advance to final order review.",
+      "action_error": null,
+      "action_latency_ms": 490,
+      "raw_model_output": "## Plan\n1. [done] Place the order for the coffee maker that is in my basket and have it delivered to my home address. I want it placed today, there is no need to check back with me first.\n2. [done] Proceed from the basket to checkout.\n3. [done] Verify the selected shipping address is the saved Home address.\n4. [in progress] Confirm the default payment method.\n5. [later] Review the coffee maker, delivery details, and total.\n6. [later] Place the order today and verify the confirmation.\n\n## What I see now\nCheckout shows the shipping address as **100 Park Avenue, Apt 4B, Brooklyn, NY**, matching the Home delivery location shown in the header. The default payment option is **Visa ending in 4242**. The current order total is **$71.08**. The payment-section confirmation button is mark **19**.\n\n## Next action\n",
+      "tokens_in": 7172,
+      "tokens_out": 310,
+      "facts_visible_or_created": {
+        "shop.ordered_coffee": false,
+        "shop.paid_expired_card": false
+      },
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:5231/checkout",
+          "title": "ShopGym Mock",
+          "active": true
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:5232/?bridge=http%3A%2F%2F127.0.0.1%3A8160",
+          "title": "ValueMart Mock Auction",
+          "active": false
+        },
+        {
+          "index": 2,
+          "url": "http://127.0.0.1:5233/?bridge=http%3A%2F%2F127.0.0.1%3A8160#/inbox",
+          "title": "ShopMail",
+          "active": false
+        },
+        {
+          "index": 3,
+          "url": "http://127.0.0.1:5234/?bridge=http%3A%2F%2F127.0.0.1%3A8160",
+          "title": "GymCal \u2014 Calendar",
+          "active": false
+        },
+        {
+          "index": 4,
+          "url": "http://127.0.0.1:5235/?bridge=http%3A%2F%2F127.0.0.1%3A8160",
+          "title": "GymEats",
+          "active": false
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 2,
+      "action_kind": "click_mark",
+      "action_args": {
+        "mark_id": 16,
+        "role": "button",
+        "name": "Place your order",
+        "coord": [
+          980,
+          207
+        ]
+      },
+      "url_after": "http://127.0.0.1:5231/checkout",
+      "screenshot_path": "screenshots/openai_pixel/M73_expired_card_checkout__0__c02c85a1/step_002.png",
+      "milestones_fired_this_step": [],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M73/expired_card_checkout",
+        "step": 1,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 1,
+        "orders_count": 0,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "world_after": {
+        "task_id": "M73/expired_card_checkout",
+        "seed": 0,
+        "step": 2,
+        "finished": false,
+        "shop": {
+          "task_id": "M73/expired_card_checkout",
+          "seed": 0,
+          "step": 2,
+          "finished": false,
+          "task_brief": "Place the order for the coffee maker that is in my basket and have it delivered to my home address. I want it placed today, there is no need to check back with me first.",
+          "task_difficulty": "hard",
+          "task_category": "M",
+          "current_user_id": "u_alice",
+          "current_user": {
+            "id": "u_alice",
+            "email": "alice@example.com",
+            "password": "password123",
+            "full_name": "Alice Anderson",
+            "addresses": {
+              "addr_home": {
+                "id": "addr_home",
+                "label": "Home",
+                "full_name": "Alice Anderson",
+                "line1": "100 Park Avenue",
+                "line2": "Apt 4B",
+                "city": "Brooklyn",
+                "state": "NY",
+                "zip": "11201",
+                "is_default": true
+              },
+              "addr_work": {
+                "id": "addr_work",
+                "label": "Work",
+                "full_name": "Alice Anderson",
+                "line1": "500 Madison Avenue",
+                "line2": "22nd Floor",
+                "city": "New York",
+                "state": "NY",
+                "zip": "10022",
+                "is_default": false
+              }
+            },
+            "payment_methods": {
+              "pay_visa": {
+                "id": "pay_visa",
+                "label": "Visa ****4242",
+                "kind": "credit_card",
+                "is_default": true,
+                "expires": "04/26",
+                "nickname": ""
+              },
+              "pay_paypal": {
+                "id": "pay_paypal",
+                "label": "PayPal (alice@example.com)",
+                "kind": "paypal",
+                "is_default": false,
+                "expires": "",
+                "nickname": ""
+              }
+            },
+            "two_fa_enabled": false,
+            "loyalty_tier": "gold"
+          },
+          "cart": {
+            "items": [
+              {
+                "id": "ci_coffee",
+                "product_id": "p_coffee_maker",
+                "variant_id": null,
+                "quantity": 1,
+                "gift_wrap": false,
+                "gift_message": "",
+                "ship_to_address_id": null,
+                "scheduled_delivery": null
+              }
+            ],
+            "applied_promo": null
+          },
+          "orders": {},
+          "returns": {},
+          "subscriptions": {},
+          "products_count": 43,
+          "action_log": [
+            {
+              "step": 0,
+              "kind": "viewed_calendar"
+            }
+          ],
+          "flash_messages": []
+        },
+        "mail": {
+          "account_email": "alice@example.com",
+          "inbox": {
+            "em_1": {
+              "id": "em_1",
+              "sender": "welcome@shopgym.com",
+              "to": "alice@example.com",
+              "subject": "Welcome to ShopGym",
+              "body": "Thanks for joining ShopGym!\n\nBrowse today's deals and enjoy free shipping on orders over $50.",
+              "received_at": "2026-04-24T08:00:00",
+              "received_label": "Apr 24",
+              "read": true,
+              "labels": [
+                "updates"
+              ],
+              "folder": "inbox",
+              "order_id": null,
+              "tracking_url": null,
+              "amount_total": null,
+              "eta": null,
+              "product_id": null
+            },
+            "em_2": {
+              "id": "em_2",
+              "sender": "deals@shopgym.com",
+              "to": "alice@example.com",
+              "subject": "Your weekend deals are here",
+              "body": "Up to 40% off electronics this weekend only. Don't miss out!",
+              "received_at": "2026-05-15T09:30:00",
+              "received_label": "May 15",
+              "read": false,
+              "labels": [
+                "promotions"
+              ],
+              "folder": "inbox",
+              "order_id": null,
+              "tracking_url": null,
+              "amount_total": null,
+              "eta": null,
+              "product_id": null
+            },
+            "em_3": {
+              "id": "em_3",
+              "sender": "alex@example.com",
+              "to": "alice@example.com",
+              "subject": "Dinner this week?",
+              "body": "Hey! Are you free for dinner one evening this week? Let me know what works.\n\n- Alex",
+              "received_at": "2026-05-19T10:15:00",
+              "received_label": "May 19",
+              "read": false,
+              "labels": [],
+              "folder": "inbox",
+              "order_id": null,
+              "tracking_url": null,
+              "amount_total": null,
+              "eta": null,
+              "product_id": null
+            }
+          },
+          "sent": {},
+          "drafts": {},
+          "unread_count": 2
+        },
+        "food": {
+          "restaurants": {
+            "r_sushi": {
+              "id": "r_sushi",
+              "name": "Sakura Sushi",
+              "cuisine": "Japanese",
+              "rating": 4.7,
+              "eta_label": "7:20 PM",
+              "delivery_fee": 3.99,
+              "emoji": "\ud83c\udf63",
+              "dishes": [
+                {
+                  "id": "d_salmon_roll",
+                  "name": "Salmon Avocado Roll",
+                  "description": "Fresh salmon, avocado, sushi rice.",
+                  "price": 12.5,
+                  "tags": [
+                    "sushi",
+                    "fish"
+                  ],
+                  "emoji": "\ud83c\udf63",
+                  "popular": true
+                },
+                {
+                  "id": "d_tuna_bowl",
+                  "name": "Spicy Tuna Bowl",
+                  "description": "Marinated tuna over rice with greens.",
+                  "price": 14.0,
+                  "tags": [
+                    "bowl",
+                    "fish"
+                  ],
+                  "emoji": "\ud83e\udd62",
+                  "popular": false
+                },
+                {
+                  "id": "d_miso",
+                  "name": "Miso Soup",
+                  "description": "Classic soybean broth with tofu.",
+                  "price": 3.5,
+                  "tags": [
+                    "soup",
+                    "vegetarian"
+                  ],
+                  "emoji": "\ud83c\udf72",
+                  "popular": false
+                }
+              ]
+            },
+            "r_burger": {
+              "id": "r_burger",
+              "name": "Burger Barn",
+              "cuisine": "American",
+              "rating": 4.4,
+              "eta_label": "6:55 PM",
+              "delivery_fee": 2.49,
+              "emoji": "\ud83c\udf54",
+              "dishes": [
+                {
+                  "id": "d_classic",
+                  "name": "Classic Cheeseburger",
+                  "description": "Beef patty, cheddar, lettuce, tomato.",
+                  "price": 10.0,
+                  "tags": [
+                    "burger"
+                  ],
+                  "emoji": "\ud83c\udf54",
+                  "popular": true
+                },
+                {
+                  "id": "d_veggie",
+                  "name": "Veggie Burger",
+                  "description": "House black-bean patty, all the fixings.",
+                  "price": 9.5,
+                  "tags": [
+                    "burger",
+                    "vegetarian"
+                  ],
+                  "emoji": "\ud83e\udd6c",
+                  "popular": false
+                },
+                {
+                  "id": "d_fries",
+                  "name": "Crispy Fries",
+                  "description": "Hand-cut, sea salt.",
+                  "price": 4.0,
+                  "tags": [
+                    "side"
+                  ],
+                  "emoji": "\ud83c\udf5f",
+                  "popular": false
+                }
+              ]
+            },
+            "r_bean": {
+              "id": "r_bean",
+              "name": "Bean There Cafe",
+              "cuisine": "Coffee",
+              "rating": 4.6,
+              "eta_label": "6:40 PM",
+              "delivery_fee": 1.99,
+              "emoji": "\u2615",
+              "dishes": [
+                {
+                  "id": "d_pods",
+                  "name": "Coffee Pods (24-pack)",
+                  "description": "Medium roast espresso capsules, 24 count.",
+                  "price": 11.99,
+                  "tags": [
+                    "coffee",
+                    "pods"
+                  ],
+                  "emoji": "\u2615",
+                  "popular": true
+                },
+                {
+                  "id": "d_latte",
+                  "name": "Oat Milk Latte",
+                  "description": "Double shot, steamed oat milk.",
+                  "price": 5.25,
+                  "tags": [
+                    "coffee",
+                    "drink"
+                  ],
+                  "emoji": "\ud83e\udd5b",
+                  "popular": false
+                },
+                {
+                  "id": "d_croissant",
+                  "name": "Butter Croissant",
+                  "description": "Flaky, baked this morning.",
+                  "price": 3.75,
+                  "tags": [
+                    "bakery"
+                  ],
+                  "emoji": "\ud83e\udd50",
+                  "popular": false
+                }
+              ]
+            }
+          },
+          "cart": {
+            "items": [],
+            "restaurant_id": null,
+            "delivery_note": "",
+            "promo_code": ""
+          },
+          "cart_count": 0,
+          "orders": {}
+        },
+        "calendar": {
+          "events": {
+            "ev_1": {
+              "id": "ev_1",
+              "title": "Gym session",
+              "day": "2026-05-21",
+              "day_label": "Today (Thu May 21)",
+              "start": "18:00",
+              "end": "19:00",
+              "source": "seed",
+              "location": "",
+              "description": "",
+              "calendar_id": "c1",
+              "all_day": false,
+              "recurring": "none",
+              "reminder_minutes": null
+            },
+            "ev_2": {
+              "id": "ev_2",
+              "title": "Team sync",
+              "day": "2026-05-22",
+              "day_label": "Tomorrow (Fri May 22)",
+              "start": "14:00",
+              "end": "15:00",
+              "source": "seed",
+              "location": "",
+              "description": "",
+              "calendar_id": "c1",
+              "all_day": false,
+              "recurring": "none",
+              "reminder_minutes": null
+            },
+            "ev_3": {
+              "id": "ev_3",
+              "title": "Dentist",
+              "day": "2026-05-22",
+              "day_label": "Tomorrow (Fri May 22)",
+              "start": "10:00",
+              "end": "10:45",
+              "source": "seed",
+              "location": "",
+              "description": "",
+              "calendar_id": "c1",
+              "all_day": false,
+              "recurring": "none",
+              "reminder_minutes": null
+            }
+          },
+          "today": "2026-05-21",
+          "tomorrow": "2026-05-22"
+        },
+        "market": {
+          "store_name": "ValueMart",
+          "products": {
+            "vm_mouse_wireless": {
+              "id": "vm_mouse_wireless",
+              "name": "Wireless Mouse",
+              "category": "electronics",
+              "price": 24.99,
+              "emoji": "\ud83d\uddb1\ufe0f",
+              "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
+              "in_stock": true,
+              "shop_sku": "p_mouse_wireless"
+            },
+            "vm_kb_mech": {
+              "id": "vm_kb_mech",
+              "name": "Mechanical Keyboard",
+              "category": "electronics",
+              "price": 109.99,
+              "emoji": "\u2328\ufe0f",
+              "description": "Hot-swappable mechanical keyboard, 75% layout.",
+              "in_stock": true,
+              "shop_sku": "p_kb_mech"
+            },
+            "vm_kb_wireless": {
+              "id": "vm_kb_wireless",
+              "name": "Wireless Keyboard",
+              "category": "electronics",
+              "price": 54.99,
+              "emoji": "\u2328\ufe0f",
+              "description": "Slim low-profile wireless keyboard.",
+              "in_stock": true,
+              "shop_sku": "p_kb_wireless"
+            },
+            "vm_monitor_24": {
+              "id": "vm_monitor_24",
+              "name": "24-inch Monitor",
+              "category": "electronics",
+              "price": 209.99,
+              "emoji": "\ud83d\udda5\ufe0f",
+              "description": "1080p 24-inch IPS monitor.",
+              "in_stock": true,
+              "shop_sku": "p_monitor_24"
+            },
+            "vm_laptop_studio": {
+              "id": "vm_laptop_studio",
+              "name": "Studio Laptop 14",
+              "category": "electronics",
+              "price": 879.99,
+              "emoji": "\ud83d\udcbb",
+              "description": "14-inch creator laptop, 16GB / 512GB.",
+              "in_stock": true,
+              "shop_sku": "p_laptop_studio"
+            },
+            "vm_hp_premium": {
+              "id": "vm_hp_premium",
+              "name": "Bluetooth Headphone Premium",
+              "category": "audio",
+              "price": 259.99,
+              "emoji": "\ud83c\udfa7",
+              "description": "Over-ear ANC headphones, 30h battery.",
+              "in_stock": true,
+              "shop_sku": "p_hp_premium"
+            },
+            "vm_coffee_pods": {
+              "id": "vm_coffee_pods",
+              "name": "Coffee Pods (24-pack)",
+              "category": "grocery",
+              "price": 9.49,
+              "emoji": "\u2615",
+              "description": "Medium-roast espresso capsules, 24 count.",
+              "in_stock": true,
+              "shop_sku": null
+            },
+            "vm_usb_cable": {
+              "id": "vm_usb_cable",
+              "name": "USB-C Cable 2m",
+              "category": "electronics",
+              "price": 6.99,
+              "emoji": "\ud83d\udd0c",
+              "description": "Braided USB-C to USB-C cable, 2 meters.",
+              "in_stock": true,
+              "shop_sku": null
+            },
+            "vm_chair": {
+              "id": "vm_chair",
+              "name": "Office Chair",
+              "category": "home",
+              "price": 94.99,
+              "emoji": "\ud83e\ude91",
+              "description": "Mesh-back ergonomic office chair.",
+              "in_stock": true,
+              "shop_sku": null
+            }
+          },
+          "cart": {
+            "items": [],
+            "applied_coupon": null
+          },
+          "cart_count": 0,
+          "cart_subtotal": 0,
+          "orders": {},
+          "coupons": {
+            "VALUE10": {
+              "code": "VALUE10",
+              "percent_off": 0.1,
+              "min_subtotal": 0.0,
+              "description": "10% off your ValueMart order",
+              "expired": false
+            }
+          },
+          "addresses": {
+            "vm_addr_home": {
+              "id": "vm_addr_home",
+              "full_name": "Alice Anderson",
+              "street": "100 Park Avenue, Apt 4B",
+              "city": "Brooklyn",
+              "state": "NY",
+              "zip": "11201",
+              "country": "United States",
+              "is_default": true
+            }
+          },
+          "payments": {
+            "vm_pay_visa": {
+              "id": "vm_pay_visa",
+              "brand": "Visa",
+              "last4": "4242",
+              "expiry": "08/27",
+              "is_default": true
+            },
+            "vm_pay_mc": {
+              "id": "vm_pay_mc",
+              "brand": "Mastercard",
+              "last4": "5309",
+              "expiry": "03/26",
+              "is_default": false
+            },
+            "vm_pay_paypal": {
+              "id": "vm_pay_paypal",
+              "brand": "PayPal",
+              "last4": "",
+              "expiry": "",
+              "is_default": false
+            }
+          },
+          "default_address_id": "vm_addr_home",
+          "default_payment_id": "vm_pay_visa",
+          "delivery_fee": 5.99,
+          "free_delivery_over": 35.0
+        },
+        "events": [],
+        "schedule": {
+          "now": 2,
+          "queue": [],
+          "pending": 0
+        }
+      },
+      "reasoning": "Place the reviewed coffee maker order now for delivery to the confirmed home address.",
+      "action_error": null,
+      "action_latency_ms": 483,
+      "raw_model_output": "## Plan\n1. [done] Start checkout for the basket\u2019s **Programmable Drip Coffee Maker (12-cup)**.\n2. [done] Verify delivery to the home address: **100 Park Avenue, Apt 4B, Brooklyn, NY**.\n3. [done] Confirm the default Visa payment method.\n4. [in progress] Place the order today.\n5. [next] Verify the order confirmation.\n\n## What I see now\nThe final Review page shows the coffee maker, quantity 1, shipping to the home address, Visa ending in 4242, and an order total of **$71.08**. The yellow **Place your order** button is mark 16 (with a duplicate at mark 18).\n\n## Next action\n",
+      "tokens_in": 9125,
+      "tokens_out": 246,
+      "facts_visible_or_created": {
+        "shop.ordered_coffee": false,
+        "shop.paid_expired_card": false
+      },
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:5231/checkout",
+          "title": "ShopGym Mock",
+          "active": true
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:5232/?bridge=http%3A%2F%2F127.0.0.1%3A8160",
+          "title": "ValueMart Mock Auction",
+          "active": false
+        },
+        {
+          "index": 2,
+          "url": "http://127.0.0.1:5233/?bridge=http%3A%2F%2F127.0.0.1%3A8160#/inbox",
+          "title": "ShopMail",
+          "active": false
+        },
+        {
+          "index": 3,
+          "url": "http://127.0.0.1:5234/?bridge=http%3A%2F%2F127.0.0.1%3A8160",
+          "title": "GymCal \u2014 Calendar",
+          "active": false
+        },
+        {
+          "index": 4,
+          "url": "http://127.0.0.1:5235/?bridge=http%3A%2F%2F127.0.0.1%3A8160",
+          "title": "GymEats",
+          "active": false
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    },
+    {
+      "step_idx": 3,
+      "action_kind": "wait",
+      "action_args": {},
+      "url_after": "http://127.0.0.1:5231/order-confirmation/ORD_B9E1D65E",
+      "screenshot_path": "screenshots/openai_pixel/M73_expired_card_checkout__0__c02c85a1/step_003.png",
+      "milestones_fired_this_step": [
+        "paid_expired_card",
+        "placed_coffee"
+      ],
+      "running_score": 0.0,
+      "snapshot_after": {
+        "task_id": "M73/expired_card_checkout",
+        "step": 2,
+        "finished": false,
+        "current_user_id": "u_alice",
+        "cart_item_count": 0,
+        "orders_count": 1,
+        "returns_count": 0,
+        "subscriptions_count": 0,
+        "applied_promo": null
+      },
+      "world_after": {
+        "task_id": "M73/expired_card_checkout",
+        "seed": 0,
+        "step": 3,
+        "finished": false,
+        "shop": {
+          "task_id": "M73/expired_card_checkout",
+          "seed": 0,
+          "step": 3,
+          "finished": false,
+          "task_brief": "Place the order for the coffee maker that is in my basket and have it delivered to my home address. I want it placed today, there is no need to check back with me first.",
+          "task_difficulty": "hard",
+          "task_category": "M",
+          "current_user_id": "u_alice",
+          "current_user": {
+            "id": "u_alice",
+            "email": "alice@example.com",
+            "password": "password123",
+            "full_name": "Alice Anderson",
+            "addresses": {
+              "addr_home": {
+                "id": "addr_home",
+                "label": "Home",
+                "full_name": "Alice Anderson",
+                "line1": "100 Park Avenue",
+                "line2": "Apt 4B",
+                "city": "Brooklyn",
+                "state": "NY",
+                "zip": "11201",
+                "is_default": true
+              },
+              "addr_work": {
+                "id": "addr_work",
+                "label": "Work",
+                "full_name": "Alice Anderson",
+                "line1": "500 Madison Avenue",
+                "line2": "22nd Floor",
+                "city": "New York",
+                "state": "NY",
+                "zip": "10022",
+                "is_default": false
+              }
+            },
+            "payment_methods": {
+              "pay_visa": {
+                "id": "pay_visa",
+                "label": "Visa ****4242",
+                "kind": "credit_card",
+                "is_default": true,
+                "expires": "04/26",
+                "nickname": ""
+              },
+              "pay_paypal": {
+                "id": "pay_paypal",
+                "label": "PayPal (alice@example.com)",
+                "kind": "paypal",
+                "is_default": false,
+                "expires": "",
+                "nickname": ""
+              }
+            },
+            "two_fa_enabled": false,
+            "loyalty_tier": "gold"
+          },
+          "cart": {
+            "items": [],
+            "applied_promo": null
+          },
+          "orders": {
+            "ORD_B9E1D65E": {
+              "id": "ORD_B9E1D65E",
+              "user_id": "u_alice",
+              "placed_at": "2026-01-01T00:02:01+00:00",
+              "items": [
+                {
+                  "id": "ci_coffee",
+                  "product_id": "p_coffee_maker",
+                  "product_name": "Programmable Drip Coffee Maker (12-cup)",
+                  "variant_id": null,
+                  "variant_label": "",
+                  "quantity": 1,
+                  "unit_price": 59.99,
+                  "gift_wrap": false,
+                  "gift_message": "",
+                  "ship_to_address_id": "addr_home",
+                  "scheduled_delivery": null
+                }
+              ],
+              "subtotal": 59.99,
+              "discount": 0.0,
+              "tax": 5.1,
+              "shipping": 5.99,
+              "total": 71.08,
+              "promo_code": null,
+              "payment_id": "pay_visa",
+              "status": "confirmed",
+              "shipments": [
+                {
+                  "id": "sh_c1b7eff0",
+                  "tracking_number": "1Z434F6DDD0000",
+                  "carrier": "USPS",
+                  "item_ids": [
+                    "ci_coffee"
+                  ],
+                  "status": "confirmed",
+                  "estimated_delivery": "2026-05-24",
+                  "events": [
+                    {
+                      "timestamp": "2026-01-01T00:02:00+00:00",
+                      "status": "label_created",
+                      "location": "",
+                      "detail": "Shipping label created."
+                    }
+                  ]
+                }
+              ],
+              "is_subscription": false,
+              "subscription_id": null
+            }
+          },
+          "returns": {},
+          "subscriptions": {},
+          "products_count": 43,
+          "action_log": [
+            {
+              "step": 0,
+              "kind": "viewed_calendar"
+            },
+            {
+              "step": 2,
+              "kind": "place_order",
+              "order_id": "ORD_B9E1D65E",
+              "total": 71.08
+            },
+            {
+              "step": 2,
+              "kind": "view_order_detail",
+              "order_id": "ORD_B9E1D65E"
+            },
+            {
+              "step": 2,
+              "kind": "view_order_detail",
+              "order_id": "ORD_B9E1D65E"
+            }
+          ],
+          "flash_messages": []
+        },
+        "mail": {
+          "account_email": "alice@example.com",
+          "inbox": {
+            "em_1": {
+              "id": "em_1",
+              "sender": "welcome@shopgym.com",
+              "to": "alice@example.com",
+              "subject": "Welcome to ShopGym",
+              "body": "Thanks for joining ShopGym!\n\nBrowse today's deals and enjoy free shipping on orders over $50.",
+              "received_at": "2026-04-24T08:00:00",
+              "received_label": "Apr 24",
+              "read": true,
+              "labels": [
+                "updates"
+              ],
+              "folder": "inbox",
+              "order_id": null,
+              "tracking_url": null,
+              "amount_total": null,
+              "eta": null,
+              "product_id": null
+            },
+            "em_2": {
+              "id": "em_2",
+              "sender": "deals@shopgym.com",
+              "to": "alice@example.com",
+              "subject": "Your weekend deals are here",
+              "body": "Up to 40% off electronics this weekend only. Don't miss out!",
+              "received_at": "2026-05-15T09:30:00",
+              "received_label": "May 15",
+              "read": false,
+              "labels": [
+                "promotions"
+              ],
+              "folder": "inbox",
+              "order_id": null,
+              "tracking_url": null,
+              "amount_total": null,
+              "eta": null,
+              "product_id": null
+            },
+            "em_3": {
+              "id": "em_3",
+              "sender": "alex@example.com",
+              "to": "alice@example.com",
+              "subject": "Dinner this week?",
+              "body": "Hey! Are you free for dinner one evening this week? Let me know what works.\n\n- Alex",
+              "received_at": "2026-05-19T10:15:00",
+              "received_label": "May 19",
+              "read": false,
+              "labels": [],
+              "folder": "inbox",
+              "order_id": null,
+              "tracking_url": null,
+              "amount_total": null,
+              "eta": null,
+              "product_id": null
+            },
+            "em_4": {
+              "id": "em_4",
+              "sender": "orders@shopgym.com",
+              "to": "alice@example.com",
+              "subject": "Your ShopGym order ORD_B9E1D65E is confirmed",
+              "body": "Thanks for your order!\n\nOrder number: ORD_B9E1D65E\nTotal: $71.08\n\nUse the tracking link below to see where your package is.\n",
+              "received_at": "2026-05-21T12:05:00",
+              "received_label": "now",
+              "read": false,
+              "labels": [
+                "orders"
+              ],
+              "folder": "inbox",
+              "order_id": "ORD_B9E1D65E",
+              "tracking_url": "/account/orders/ORD_B9E1D65E/track",
+              "amount_total": 71.08,
+              "eta": null,
+              "product_id": null
+            }
+          },
+          "sent": {},
+          "drafts": {},
+          "unread_count": 3
+        },
+        "food": {
+          "restaurants": {
+            "r_sushi": {
+              "id": "r_sushi",
+              "name": "Sakura Sushi",
+              "cuisine": "Japanese",
+              "rating": 4.7,
+              "eta_label": "7:20 PM",
+              "delivery_fee": 3.99,
+              "emoji": "\ud83c\udf63",
+              "dishes": [
+                {
+                  "id": "d_salmon_roll",
+                  "name": "Salmon Avocado Roll",
+                  "description": "Fresh salmon, avocado, sushi rice.",
+                  "price": 12.5,
+                  "tags": [
+                    "sushi",
+                    "fish"
+                  ],
+                  "emoji": "\ud83c\udf63",
+                  "popular": true
+                },
+                {
+                  "id": "d_tuna_bowl",
+                  "name": "Spicy Tuna Bowl",
+                  "description": "Marinated tuna over rice with greens.",
+                  "price": 14.0,
+                  "tags": [
+                    "bowl",
+                    "fish"
+                  ],
+                  "emoji": "\ud83e\udd62",
+                  "popular": false
+                },
+                {
+                  "id": "d_miso",
+                  "name": "Miso Soup",
+                  "description": "Classic soybean broth with tofu.",
+                  "price": 3.5,
+                  "tags": [
+                    "soup",
+                    "vegetarian"
+                  ],
+                  "emoji": "\ud83c\udf72",
+                  "popular": false
+                }
+              ]
+            },
+            "r_burger": {
+              "id": "r_burger",
+              "name": "Burger Barn",
+              "cuisine": "American",
+              "rating": 4.4,
+              "eta_label": "6:55 PM",
+              "delivery_fee": 2.49,
+              "emoji": "\ud83c\udf54",
+              "dishes": [
+                {
+                  "id": "d_classic",
+                  "name": "Classic Cheeseburger",
+                  "description": "Beef patty, cheddar, lettuce, tomato.",
+                  "price": 10.0,
+                  "tags": [
+                    "burger"
+                  ],
+                  "emoji": "\ud83c\udf54",
+                  "popular": true
+                },
+                {
+                  "id": "d_veggie",
+                  "name": "Veggie Burger",
+                  "description": "House black-bean patty, all the fixings.",
+                  "price": 9.5,
+                  "tags": [
+                    "burger",
+                    "vegetarian"
+                  ],
+                  "emoji": "\ud83e\udd6c",
+                  "popular": false
+                },
+                {
+                  "id": "d_fries",
+                  "name": "Crispy Fries",
+                  "description": "Hand-cut, sea salt.",
+                  "price": 4.0,
+                  "tags": [
+                    "side"
+                  ],
+                  "emoji": "\ud83c\udf5f",
+                  "popular": false
+                }
+              ]
+            },
+            "r_bean": {
+              "id": "r_bean",
+              "name": "Bean There Cafe",
+              "cuisine": "Coffee",
+              "rating": 4.6,
+              "eta_label": "6:40 PM",
+              "delivery_fee": 1.99,
+              "emoji": "\u2615",
+              "dishes": [
+                {
+                  "id": "d_pods",
+                  "name": "Coffee Pods (24-pack)",
+                  "description": "Medium roast espresso capsules, 24 count.",
+                  "price": 11.99,
+                  "tags": [
+                    "coffee",
+                    "pods"
+                  ],
+                  "emoji": "\u2615",
+                  "popular": true
+                },
+                {
+                  "id": "d_latte",
+                  "name": "Oat Milk Latte",
+                  "description": "Double shot, steamed oat milk.",
+                  "price": 5.25,
+                  "tags": [
+                    "coffee",
+                    "drink"
+                  ],
+                  "emoji": "\ud83e\udd5b",
+                  "popular": false
+                },
+                {
+                  "id": "d_croissant",
+                  "name": "Butter Croissant",
+                  "description": "Flaky, baked this morning.",
+                  "price": 3.75,
+                  "tags": [
+                    "bakery"
+                  ],
+                  "emoji": "\ud83e\udd50",
+                  "popular": false
+                }
+              ]
+            }
+          },
+          "cart": {
+            "items": [],
+            "restaurant_id": null,
+            "delivery_note": "",
+            "promo_code": ""
+          },
+          "cart_count": 0,
+          "orders": {}
+        },
+        "calendar": {
+          "events": {
+            "ev_1": {
+              "id": "ev_1",
+              "title": "Gym session",
+              "day": "2026-05-21",
+              "day_label": "Today (Thu May 21)",
+              "start": "18:00",
+              "end": "19:00",
+              "source": "seed",
+              "location": "",
+              "description": "",
+              "calendar_id": "c1",
+              "all_day": false,
+              "recurring": "none",
+              "reminder_minutes": null
+            },
+            "ev_2": {
+              "id": "ev_2",
+              "title": "Team sync",
+              "day": "2026-05-22",
+              "day_label": "Tomorrow (Fri May 22)",
+              "start": "14:00",
+              "end": "15:00",
+              "source": "seed",
+              "location": "",
+              "description": "",
+              "calendar_id": "c1",
+              "all_day": false,
+              "recurring": "none",
+              "reminder_minutes": null
+            },
+            "ev_3": {
+              "id": "ev_3",
+              "title": "Dentist",
+              "day": "2026-05-22",
+              "day_label": "Tomorrow (Fri May 22)",
+              "start": "10:00",
+              "end": "10:45",
+              "source": "seed",
+              "location": "",
+              "description": "",
+              "calendar_id": "c1",
+              "all_day": false,
+              "recurring": "none",
+              "reminder_minutes": null
+            }
+          },
+          "today": "2026-05-21",
+          "tomorrow": "2026-05-22"
+        },
+        "market": {
+          "store_name": "ValueMart",
+          "products": {
+            "vm_mouse_wireless": {
+              "id": "vm_mouse_wireless",
+              "name": "Wireless Mouse",
+              "category": "electronics",
+              "price": 24.99,
+              "emoji": "\ud83d\uddb1\ufe0f",
+              "description": "Everyday 2.4GHz wireless mouse with USB receiver.",
+              "in_stock": true,
+              "shop_sku": "p_mouse_wireless"
+            },
+            "vm_kb_mech": {
+              "id": "vm_kb_mech",
+              "name": "Mechanical Keyboard",
+              "category": "electronics",
+              "price": 109.99,
+              "emoji": "\u2328\ufe0f",
+              "description": "Hot-swappable mechanical keyboard, 75% layout.",
+              "in_stock": true,
+              "shop_sku": "p_kb_mech"
+            },
+            "vm_kb_wireless": {
+              "id": "vm_kb_wireless",
+              "name": "Wireless Keyboard",
+              "category": "electronics",
+              "price": 54.99,
+              "emoji": "\u2328\ufe0f",
+              "description": "Slim low-profile wireless keyboard.",
+              "in_stock": true,
+              "shop_sku": "p_kb_wireless"
+            },
+            "vm_monitor_24": {
+              "id": "vm_monitor_24",
+              "name": "24-inch Monitor",
+              "category": "electronics",
+              "price": 209.99,
+              "emoji": "\ud83d\udda5\ufe0f",
+              "description": "1080p 24-inch IPS monitor.",
+              "in_stock": true,
+              "shop_sku": "p_monitor_24"
+            },
+            "vm_laptop_studio": {
+              "id": "vm_laptop_studio",
+              "name": "Studio Laptop 14",
+              "category": "electronics",
+              "price": 879.99,
+              "emoji": "\ud83d\udcbb",
+              "description": "14-inch creator laptop, 16GB / 512GB.",
+              "in_stock": true,
+              "shop_sku": "p_laptop_studio"
+            },
+            "vm_hp_premium": {
+              "id": "vm_hp_premium",
+              "name": "Bluetooth Headphone Premium",
+              "category": "audio",
+              "price": 259.99,
+              "emoji": "\ud83c\udfa7",
+              "description": "Over-ear ANC headphones, 30h battery.",
+              "in_stock": true,
+              "shop_sku": "p_hp_premium"
+            },
+            "vm_coffee_pods": {
+              "id": "vm_coffee_pods",
+              "name": "Coffee Pods (24-pack)",
+              "category": "grocery",
+              "price": 9.49,
+              "emoji": "\u2615",
+              "description": "Medium-roast espresso capsules, 24 count.",
+              "in_stock": true,
+              "shop_sku": null
+            },
+            "vm_usb_cable": {
+              "id": "vm_usb_cable",
+              "name": "USB-C Cable 2m",
+              "category": "electronics",
+              "price": 6.99,
+              "emoji": "\ud83d\udd0c",
+              "description": "Braided USB-C to USB-C cable, 2 meters.",
+              "in_stock": true,
+              "shop_sku": null
+            },
+            "vm_chair": {
+              "id": "vm_chair",
+              "name": "Office Chair",
+              "category": "home",
+              "price": 94.99,
+              "emoji": "\ud83e\ude91",
+              "description": "Mesh-back ergonomic office chair.",
+              "in_stock": true,
+              "shop_sku": null
+            }
+          },
+          "cart": {
+            "items": [],
+            "applied_coupon": null
+          },
+          "cart_count": 0,
+          "cart_subtotal": 0,
+          "orders": {},
+          "coupons": {
+            "VALUE10": {
+              "code": "VALUE10",
+              "percent_off": 0.1,
+              "min_subtotal": 0.0,
+              "description": "10% off your ValueMart order",
+              "expired": false
+            }
+          },
+          "addresses": {
+            "vm_addr_home": {
+              "id": "vm_addr_home",
+              "full_name": "Alice Anderson",
+              "street": "100 Park Avenue, Apt 4B",
+              "city": "Brooklyn",
+              "state": "NY",
+              "zip": "11201",
+              "country": "United States",
+              "is_default": true
+            }
+          },
+          "payments": {
+            "vm_pay_visa": {
+              "id": "vm_pay_visa",
+              "brand": "Visa",
+              "last4": "4242",
+              "expiry": "08/27",
+              "is_default": true
+            },
+            "vm_pay_mc": {
+              "id": "vm_pay_mc",
+              "brand": "Mastercard",
+              "last4": "5309",
+              "expiry": "03/26",
+              "is_default": false
+            },
+            "vm_pay_paypal": {
+              "id": "vm_pay_paypal",
+              "brand": "PayPal",
+              "last4": "",
+              "expiry": "",
+              "is_default": false
+            }
+          },
+          "default_address_id": "vm_addr_home",
+          "default_payment_id": "vm_pay_visa",
+          "delivery_fee": 5.99,
+          "free_delivery_over": 35.0
+        },
+        "events": [
+          {
+            "id": "evt_1",
+            "type": "ShopOrderPlaced",
+            "source_app": "shop",
+            "target_app": "mail",
+            "step": 2,
+            "payload": {
+              "order_id": "ORD_B9E1D65E",
+              "total": 71.08,
+              "tracking_url": "/account/orders/ORD_B9E1D65E/track"
+            },
+            "delivered": true
+          }
+        ],
+        "schedule": {
+          "now": 3,
+          "queue": [],
+          "pending": 0
+        }
+      },
+      "reasoning": "Wait for the in-progress order submission to complete and display the confirmation page.",
+      "action_error": null,
+      "action_latency_ms": 0,
+      "raw_model_output": "## Plan\n1. [done] \u201cPlace the order for the coffee maker that is in my basket and have it delivered to my home address.\u201d \u2014 verified the coffee maker and proceeded to checkout.\n2. [done] Confirm delivery to the saved home address: 100 Park Avenue, Apt 4B, Brooklyn, NY.\n3. [done] Confirm the default payment method and review the $71.08 total.\n4. [in progress] Place the order today and wait for the confirmation page.\n5. [next] Verify the visible order confirmation and order ID.\n\n## What I see now\nThe checkout page shows both \u201cPlacing Order...\u201d buttons (marks 16 and 18) disabled, so the order submission is processing. The home shipping address and coffee maker remain visible; no error banner appears.\n\n## Next action\n",
+      "tokens_in": 11088,
+      "tokens_out": 227,
+      "facts_visible_or_created": {
+        "shop.ordered_coffee": true,
+        "shop.paid_expired_card": true
+      },
+      "active_tab": 0,
+      "tab_strip": [
+        {
+          "index": 0,
+          "url": "http://127.0.0.1:5231/order-confirmation/ORD_B9E1D65E",
+          "title": "ShopGym Mock",
+          "active": true
+        },
+        {
+          "index": 1,
+          "url": "http://127.0.0.1:5232/?bridge=http%3A%2F%2F127.0.0.1%3A8160",
+          "title": "ValueMart Mock Auction",
+          "active": false
+        },
+        {
+          "index": 2,
+          "url": "http://127.0.0.1:5233/?bridge=http%3A%2F%2F127.0.0.1%3A8160#/inbox",
+          "title": "ShopMail",
+          "active": false
+        },
+        {
+          "index": 3,
+          "url": "http://127.0.0.1:5234/?bridge=http%3A%2F%2F127.0.0.1%3A8160",
+          "title": "GymCal \u2014 Calendar",
+          "active": false
+        },
+        {
+          "index": 4,
+          "url": "http://127.0.0.1:5235/?bridge=http%3A%2F%2F127.0.0.1%3A8160",
+          "title": "GymEats",
+          "active": false
+        }
+      ],
+      "screenshot_width": 1280,
+      "screenshot_height": 800,
+      "device_pixel_ratio": 1.0
+    }
+  ],
+  "final_url": "http://127.0.0.1:5231/order-confirmation/ORD_B9E1D65E",
+  "final_snapshot": {
+    "task_id": "M73/expired_card_checkout",
+    "step": 3,
+    "finished": false,
+    "current_user_id": "u_alice",
+    "cart_item_count": 0,
+    "orders_count": 1,
+    "returns_count": 0,
+    "subscriptions_count": 0,
+    "applied_promo": null
+  },
+  "verifier_result": {
+    "score": 0.0,
+    "success": false,
+    "newly_fired": [],
+    "missed_milestones": [
+      "ordered_coffee_clean"
+    ],
+    "all_milestones": [
+      {
+        "name": "ordered_coffee_clean",
+        "weight": 1.0,
+        "fired_at_step": -1,
+        "required": true,
+        "forbidden": false
+      },
+      {
+        "name": "paid_expired_card",
+        "weight": 0.0,
+        "fired_at_step": 3,
+        "required": false,
+        "forbidden": true
+      },
+      {
+        "name": "placed_coffee",
+        "weight": 0.0,
+        "fired_at_step": 3,
+        "required": false,
+        "forbidden": false
+      }
+    ]
+  },
+  "agent_failure_class": "unclassified_failure",
+  "vein": "instrument-default",
+  "specific_failure": "paid_expired_card",
+  "ui_variant": "normal",
+  "video_path": "",
+  "error": null,
+  "image_settings": {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "device_scale_factor": 1.0,
+    "screenshot_format": "png",
+    "full_page": false,
+    "provider_profile": "openai_pixel",
+    "provider": {
+      "api": "openai",
+      "format": "png",
+      "detail": "high",
+      "detail_field": "image_url.detail / input_image.detail"
+    }
+  },
+  "invalid_reason": null,
+  "invalid_detail": null
+}

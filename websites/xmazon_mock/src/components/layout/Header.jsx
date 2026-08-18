@@ -7,7 +7,7 @@ import { CATEGORIES } from '../../lib/mockData';
 const NAV_ITEMS = [
   { label: "Today's Deals", to: '/search?deals=true' },
   { label: 'Customer Service', to: '/customer-service' },
-  { label: 'Registry', to: '/wishlist' },
+  { label: 'Registry', to: '/registry' },
   { label: 'Gift Cards', to: '/gift-cards' },
   { label: 'Sell', to: '/sell' },
 ];
@@ -219,7 +219,7 @@ export const Header = () => {
                     <Link to="/wishlist" onClick={() => setShowAccountMenu(false)} className="block py-1 text-sm text-gray-700 hover:text-xmazon-orange hover:underline">
                       Create a List
                     </Link>
-                    <Link to="/wishlist" onClick={() => setShowAccountMenu(false)} className="block py-1 text-sm text-gray-700 hover:text-xmazon-orange hover:underline">
+                    <Link to="/registry" onClick={() => setShowAccountMenu(false)} className="block py-1 text-sm text-gray-700 hover:text-xmazon-orange hover:underline">
                       Find a List or Registry
                     </Link>
                   </div>

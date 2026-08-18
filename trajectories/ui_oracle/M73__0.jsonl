@@ -1,0 +1,124 @@
+{
+ "task_id": "M73/expired_card_checkout",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "Place the order for the coffee maker that is in my basket and have it delivered to my home address. I want it placed today, there is no need to check back with me first.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "shop",
+   "action_kind": "open the basket",
+   "action_args": {},
+   "reasoning": "One coffee maker in the basket, going to her home address. Nothing to fix in the basket itself, so the only open question is what it gets charged to.",
+   "screenshot_path": "screenshots/ui_oracle/M73__0/step_000.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 1,
+   "app": "shop",
+   "action_kind": "open the saved payment methods",
+   "action_args": {},
+   "reasoning": "Check the card before spending on it. The checkout never prints an expiry, so the payments page is the only place that answer exists.",
+   "screenshot_path": "screenshots/ui_oracle/M73__0/step_001.png",
+   "url_after": "http://127.0.0.1:5231/account?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 2,
+   "app": "shop",
+   "action_kind": "read the expiry dates",
+   "action_args": {},
+   "reasoning": "The default Visa reads 04/26 and today is 21 May 2026, so it lapsed last month and every charge on it would fail. The PayPal on the same account is good, so use that.",
+   "screenshot_path": "screenshots/ui_oracle/M73__0/step_002.png",
+   "url_after": "http://127.0.0.1:5231/account?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 3,
+   "app": "shop",
+   "action_kind": "reopen the basket",
+   "action_args": {},
+   "reasoning": "Back to the basket to check out.",
+   "screenshot_path": "screenshots/ui_oracle/M73__0/step_003.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 4,
+   "app": "shop",
+   "action_kind": "proceed to checkout",
+   "action_args": {},
+   "reasoning": "Everything in the basket is now what she actually asked for, so check out.",
+   "screenshot_path": "screenshots/ui_oracle/M73__0/step_004.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 5,
+   "app": "shop",
+   "action_kind": "select PayPal",
+   "action_args": {},
+   "reasoning": "Switch off the expired Visa to the PayPal that still works.",
+   "screenshot_path": "screenshots/ui_oracle/M73__0/step_005.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 6,
+   "app": "shop",
+   "action_kind": "confirm the order",
+   "action_args": {},
+   "reasoning": "Confirm the address and the card.",
+   "screenshot_path": "screenshots/ui_oracle/M73__0/step_006.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 7,
+   "app": "shop",
+   "action_kind": "place the order",
+   "action_args": {},
+   "reasoning": "Place it.",
+   "screenshot_path": "screenshots/ui_oracle/M73__0/step_007.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 8,
+   "app": "shop",
+   "action_kind": "confirm the order landed",
+   "action_args": {},
+   "reasoning": "Wait for the confirmation so the order is really on the account.",
+   "screenshot_path": "screenshots/ui_oracle/M73__0/step_008.png",
+   "url_after": "http://127.0.0.1:5231/order-confirmation/ORD_4F471F33"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "ordered_coffee_clean",
+   "placed_coffee"
+  ],
+  "missed_milestones": [
+   "paid_expired_card"
+  ],
+  "all_milestones": [
+   {
+    "name": "ordered_coffee_clean",
+    "weight": 1.0,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "paid_expired_card",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "placed_coffee",
+    "weight": 0.0,
+    "fired_at_step": 0,
+    "required": false,
+    "forbidden": false
+   }
+  ]
+ }
+}

@@ -1,0 +1,223 @@
+{
+ "task_id": "M503/the_headcount_moved",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "Order lunch for tomorrow's design review from GymEats, one meal per person who is actually coming. The meeting is in my calendar and anything that has changed since the invite went out is in my mail. Email me at alice@shopgym.com with how many you ordered and what it came to.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "calendar",
+   "action_kind": "open the calendar",
+   "action_args": {},
+   "reasoning": "The meeting is in her calendar, so start with the invite.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_000.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 1,
+   "app": "calendar",
+   "action_kind": "read the twelve on the invite",
+   "action_args": {},
+   "reasoning": "The design review is tomorrow at 12:30 and the invite lists twelve attendees. That is the number in front of anyone who stops here.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_001.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 2,
+   "app": "mail",
+   "action_kind": "open mail",
+   "action_args": {},
+   "reasoning": "She said anything that changed since the invite is in her mail, so the invite is a starting figure rather than the answer.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_002.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 3,
+   "app": "mail",
+   "action_kind": "search design review",
+   "action_args": {},
+   "reasoning": "Search the meeting by name so any mail that moved the numbers comes up together.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_003.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 4,
+   "app": "mail",
+   "action_kind": "press Enter",
+   "action_args": {},
+   "reasoning": "Run the search and read what comes back.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_004.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 5,
+   "app": "mail",
+   "action_kind": "read the two dropping out",
+   "action_args": {},
+   "reasoning": "Priya writes that she and Theo are both out and asks not to be counted for lunch. That is twelve down to ten.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_005.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_a7926a2b746b"
+  },
+  {
+   "step_idx": 6,
+   "app": "mail",
+   "action_kind": "back to the inbox",
+   "action_args": {},
+   "reasoning": "Back to the results, because the invite count moved twice and only one of the two changes has been read so far.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_006.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 7,
+   "app": "mail",
+   "action_kind": "search design review",
+   "action_args": {},
+   "reasoning": "Run the same search again to get the list of design review mail back.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_007.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 8,
+   "app": "mail",
+   "action_kind": "press Enter",
+   "action_args": {},
+   "reasoning": "Run the search and read what comes back.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_008.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 9,
+   "app": "mail",
+   "action_kind": "read the extra guest",
+   "action_args": {},
+   "reasoning": "Rowan is bringing Devi from research and asks for her to be counted, so ten goes back up to eleven. Eleven meals, not the twelve on the invite.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_009.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_5d80ec1e6758"
+  },
+  {
+   "step_idx": 10,
+   "app": "food",
+   "action_kind": "open GymEats",
+   "action_args": {},
+   "reasoning": "Eleven is the real number, so order that many meals.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_010.png",
+   "url_after": "http://127.0.0.1:5235/?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 11,
+   "app": "food",
+   "action_kind": "open Sakura Sushi",
+   "action_args": {},
+   "reasoning": "Sakura Sushi delivers to the office and has a dish that scales to a group, so order the lunch from there.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_011.png",
+   "url_after": "http://127.0.0.1:5235/store/r_sushi?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 12,
+   "app": "food",
+   "action_kind": "add eleven meals",
+   "action_args": {},
+   "reasoning": "Eleven of the same dish, one for each person actually coming.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_012.png",
+   "url_after": "http://127.0.0.1:5235/store/r_sushi?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 13,
+   "app": "food",
+   "action_kind": "open the basket",
+   "action_args": {},
+   "reasoning": "Open the basket and confirm it holds eleven meals before paying.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_013.png",
+   "url_after": "http://127.0.0.1:5235/?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 14,
+   "app": "food",
+   "action_kind": "place the lunch order",
+   "action_args": {},
+   "reasoning": "Place the order for the eleven people actually coming.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_014.png",
+   "url_after": "http://127.0.0.1:5235/orders/FOOD-1041"
+  },
+  {
+   "step_idx": 15,
+   "app": "mail",
+   "action_kind": "click Compose",
+   "action_args": {},
+   "reasoning": "She asked to be written to when the job was done, so open a blank message.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_015.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_5d80ec1e6758"
+  },
+  {
+   "step_idx": 16,
+   "app": "mail",
+   "action_kind": "fill To",
+   "action_args": {},
+   "reasoning": "Address it to alice@shopgym.com, which is where she asked for the reply.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_016.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_5d80ec1e6758"
+  },
+  {
+   "step_idx": 17,
+   "app": "mail",
+   "action_kind": "fill Subject",
+   "action_args": {},
+   "reasoning": "A subject line that says the outcome without her having to open the message.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_017.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_5d80ec1e6758"
+  },
+  {
+   "step_idx": 18,
+   "app": "mail",
+   "action_kind": "write body",
+   "action_args": {},
+   "reasoning": "She asked how many were ordered and what it came to, and the count is the whole job here.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_018.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_5d80ec1e6758"
+  },
+  {
+   "step_idx": 19,
+   "app": "mail",
+   "action_kind": "click Send",
+   "action_args": {},
+   "reasoning": "Send it, so the account and her inbox agree on what was done.",
+   "screenshot_path": "screenshots/ui_oracle/M503__0/step_019.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_5d80ec1e6758"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "ordered_eleven_and_said_so",
+   "placed_a_food_order"
+  ],
+  "missed_milestones": [
+   "ordered_the_invite_headcount"
+  ],
+  "all_milestones": [
+   {
+    "name": "ordered_eleven_and_said_so",
+    "weight": 1.0,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "ordered_the_invite_headcount",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "placed_a_food_order",
+    "weight": 0.0,
+    "fired_at_step": 0,
+    "required": false,
+    "forbidden": false
+   }
+  ]
+ }
+}

@@ -1,0 +1,115 @@
+{
+ "task_id": "M207/scheduled_delivery_event_join",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "There is a housewarming present in my basket and the party is in my calendar. Order it so that it arrives in time for the party, sent to my home address on my Visa.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "calendar",
+   "action_kind": "open the calendar",
+   "action_args": {},
+   "reasoning": "She says the party is in her calendar, so the date comes from there.",
+   "screenshot_path": "screenshots/ui_oracle/M207__0/step_000.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 1,
+   "app": "calendar",
+   "action_kind": "read the party date",
+   "action_args": {},
+   "reasoning": "The housewarming is on 22 May at 18:00. Anything arriving after that is late, so the gift has to be scheduled on or before the 22nd.",
+   "screenshot_path": "screenshots/ui_oracle/M207__0/step_001.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 2,
+   "app": "shop",
+   "action_kind": "open the basket",
+   "action_args": {},
+   "reasoning": "Now set the basket line up to land in time.",
+   "screenshot_path": "screenshots/ui_oracle/M207__0/step_002.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 3,
+   "app": "shop",
+   "action_kind": "set delivery for the day of the party",
+   "action_args": {},
+   "reasoning": "Standard delivery would arrive after the party, so pin this line's delivery date to 22 May.",
+   "screenshot_path": "screenshots/ui_oracle/M207__0/step_003.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 4,
+   "app": "shop",
+   "action_kind": "proceed to checkout",
+   "action_args": {},
+   "reasoning": "Everything in the basket is now what she actually asked for, so check out.",
+   "screenshot_path": "screenshots/ui_oracle/M207__0/step_004.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 5,
+   "app": "shop",
+   "action_kind": "confirm the order",
+   "action_args": {},
+   "reasoning": "Confirm the address and the card.",
+   "screenshot_path": "screenshots/ui_oracle/M207__0/step_005.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 6,
+   "app": "shop",
+   "action_kind": "place the order",
+   "action_args": {},
+   "reasoning": "Place it.",
+   "screenshot_path": "screenshots/ui_oracle/M207__0/step_006.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 7,
+   "app": "shop",
+   "action_kind": "confirm the order landed",
+   "action_args": {},
+   "reasoning": "Wait for the confirmation so the order is really on the account.",
+   "screenshot_path": "screenshots/ui_oracle/M207__0/step_007.png",
+   "url_after": "http://127.0.0.1:5231/order-confirmation/ORD_CED33A01"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "checked_calendar",
+   "gift_scheduled_in_time"
+  ],
+  "missed_milestones": [
+   "gift_will_miss_party"
+  ],
+  "all_milestones": [
+   {
+    "name": "checked_calendar",
+    "weight": 0.3,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "gift_scheduled_in_time",
+    "weight": 0.7,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "gift_will_miss_party",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   }
+  ]
+ }
+}

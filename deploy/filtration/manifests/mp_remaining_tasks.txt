@@ -1,0 +1,13 @@
+# Remaining mp prompts — Sol seed 0 (2026-08-07)
+# RUNNABLE leftovers + honest PARTIAL adaptations (NOT_RUNNABLE skipped)
+mp_002/ps5_controller_cap_infeasible_ask
+mp_003/game_night_pizza_plates_by_7
+mp_004/blender_return_and_ebay_seller_check
+mp_005/reorder_korean_usual
+mp_010/wishlist_vacuum_price_drop_buy
+mp_012/moving_desk_chair_food
+mp_013/return_wrong_color_case_order_black
+mp_016/watch_party_snacks_wings_projector
+mp_019/cancel_preparing_reorder_elsewhere
+mp_021/cart_qty_plus_coffee_pods
+mp_026/school_supplies_and_dinner

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { CheckCircle, Clock, Truck, MapPin, Phone, Star, ArrowLeft, Package, HelpCircle, X, Download } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import { bridged } from '../lib/bridge';
 import { formatCurrency } from '../utils/dataManager';
 import './OrderTracking.css';
 
@@ -11,16 +10,6 @@ const STEPS = [
   { key: 'preparing', label: 'Preparing', icon: Clock },
   { key: 'out_for_delivery', label: 'Out for Delivery', icon: Truck },
   { key: 'delivered', label: 'Delivered', icon: Package }
-];
-
-// Pickup orders have no courier and no delivery leg, so they get their own step
-// copy. Positions map 1:1 onto the same STATUS_ORDER indices (0-3) the delivery
-// flow uses, so the engine-owned status still drives the stepper in both modes.
-const PICKUP_STEPS = [
-  { key: 'placed', label: 'Order Received', icon: CheckCircle },
-  { key: 'preparing', label: 'Preparing', icon: Clock },
-  { key: 'ready', label: 'Ready for Pickup', icon: Package },
-  { key: 'picked_up', label: 'Picked Up', icon: CheckCircle }
 ];
 
 const STATUS_ORDER = {
@@ -47,9 +36,6 @@ export default function OrderTracking() {
   // Simulate order status progression for newly placed orders
   useEffect(() => {
     if (!order) return;
-    // In bridged mode the engine owns order status and the 2.5s poll re-adopts
-    // it, so a local timer-driven progression just flip-flops the UI.
-    if (bridged()) return;
     if (order.status === 'delivered' || order.status === 'cancelled') return;
 
     const statusProgression = [
@@ -86,8 +72,6 @@ export default function OrderTracking() {
   const isActive = !['delivered', 'cancelled'].includes(order.status);
   const currentStepIndex = STATUS_ORDER[order.status] ?? -1;
   const restaurant = state.restaurants.find(r => r.id === order.restaurantId);
-  const isPickup = order.deliveryMode === 'pickup';
-  const steps = isPickup ? PICKUP_STEPS : STEPS;
 
   const estimatedArrivalMin = order.estimatedDeliveryMin ? new Date(order.estimatedDeliveryMin) : null;
   const estimatedArrivalMax = order.estimatedDeliveryMax ? new Date(order.estimatedDeliveryMax) : null;
@@ -99,7 +83,7 @@ export default function OrderTracking() {
 
   const downloadReceipt = () => {
     const receipt = [
-      `GymEats receipt ${order.id}`,
+      `Xber Eats receipt ${order.id}`,
       `Restaurant: ${order.restaurantName}`,
       `Placed: ${new Date(order.placedAt).toLocaleString()}`,
       '',
@@ -119,7 +103,7 @@ export default function OrderTracking() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `gymeats-receipt-${order.id}.txt`;
+    link.download = `uber-eats-receipt-${order.id}.txt`;
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -127,17 +111,14 @@ export default function OrderTracking() {
   };
 
   const handleHelpOption = (label) => {
-    // "Cancel my order" now really cancels — it used to just print a sentence,
-    // so an agent told to cancel had no way to actually do it. The rest are
-    // genuinely informational and say so rather than implying a support ticket
-    // was filed somewhere.
     if (label === 'Cancel my order') {
       if (order && order.status === 'delivered') {
         setHelpMessage('This order has already been delivered, so it can no longer be cancelled.');
         return;
       }
-      cancelOrder(order.id);
+      if (order) cancelOrder(order.id);
       setHelpMessage('Your order has been cancelled.');
+      setShowHelpModal(false);
       return;
     }
     if (label === 'Where is my order?') {
@@ -165,7 +146,7 @@ export default function OrderTracking() {
       {order.status !== 'cancelled' && (
         <div className="tracking-stepper">
           <div className="tracking-stepper__bar">
-            {steps.map((step, index) => {
+            {STEPS.map((step, index) => {
               const isCompleted = index <= currentStepIndex;
               const isCurrent = index === currentStepIndex;
               const StepIcon = step.icon;
@@ -178,7 +159,7 @@ export default function OrderTracking() {
                   <span className={`tracking-step__label ${isCompleted ? 'tracking-step__label--done' : ''} ${isCurrent ? 'tracking-step__label--current' : ''}`}>
                     {step.label}
                   </span>
-                  {index < steps.length - 1 && (
+                  {index < STEPS.length - 1 && (
                     <div className={`tracking-step__line ${index < currentStepIndex ? 'tracking-step__line--done' : ''}`} />
                   )}
                 </div>
@@ -188,13 +169,13 @@ export default function OrderTracking() {
 
           {isActive && estimatedArrivalMin && estimatedArrivalMax && (
             <p className="tracking-stepper__eta">
-              {isPickup ? 'Estimated pickup' : 'Estimated arrival'}: <strong>{formatTime(estimatedArrivalMin)} - {formatTime(estimatedArrivalMax)}</strong>
+              Estimated arrival: <strong>{formatTime(estimatedArrivalMin)} - {formatTime(estimatedArrivalMax)}</strong>
             </p>
           )}
 
           {order.status === 'delivered' && order.deliveredAt && (
             <p className="tracking-stepper__eta">
-              {isPickup ? 'Picked up at' : 'Delivered at'} <strong>{formatTime(new Date(order.deliveredAt))}</strong>
+              Delivered at <strong>{formatTime(new Date(order.deliveredAt))}</strong>
             </p>
           )}
         </div>
@@ -207,8 +188,37 @@ export default function OrderTracking() {
         </div>
       )}
 
-      {/* Delivery person card (delivery orders only) */}
-      {!isPickup && order.deliveryPerson && (currentStepIndex >= 2 || order.status === 'delivered') && (
+      {isActive && (
+        <div className="tracking-help" style={{ marginBottom: 12 }}>
+          <button
+            type="button"
+            className="tracking-help__btn"
+            data-test-id="btn-cancel-food-order"
+            onClick={() => cancelOrder(order.id)}
+          >
+            Cancel order
+          </button>
+        </div>
+      )}
+
+      {/* Local live tracking map */}
+      {isActive && (
+        <div className="tracking-map">
+          <div className="tracking-map__route">
+            <div className="tracking-map__pin tracking-map__pin--restaurant">R</div>
+            <div className="tracking-map__road" />
+            <div className="tracking-map__courier" style={{ left: `${Math.max(12, Math.min(82, currentStepIndex * 26 + 14))}%` }}>
+              <Truck size={18} />
+            </div>
+            <div className="tracking-map__pin tracking-map__pin--home"><MapPin size={16} /></div>
+          </div>
+          <p className="tracking-map__text">{restaurant?.name || 'Restaurant'} to {order.deliveryAddress?.label || 'delivery address'}</p>
+          <p className="tracking-map__sub">{order.status === 'placed' ? 'Waiting for restaurant confirmation' : order.status === 'preparing' ? 'Restaurant is preparing your order' : 'Courier is heading your way'}</p>
+        </div>
+      )}
+
+      {/* Delivery person card */}
+      {order.deliveryPerson && (currentStepIndex >= 2 || order.status === 'delivered') && (
         <div className="tracking-driver">
           <div className="tracking-driver__avatar">
             {order.deliveryPerson.name.charAt(0)}
@@ -247,39 +257,6 @@ export default function OrderTracking() {
           <div>
             <strong>{order.restaurantName}</strong>
             {restaurant && <p className="tracking-details__rest-addr">{restaurant.address}</p>}
-          </div>
-        </div>
-
-        {/* Delivery / pickup address — always visible, independent of map or status */}
-        <div className="tracking-details__restaurant" data-testid="tracking-address">
-          <div className="tracking-details__rest-avatar">
-            <MapPin size={18} />
-          </div>
-          <div>
-            <strong>{isPickup ? 'Pickup Location' : 'Delivery Address'}</strong>
-            {isPickup ? (
-              <p className="tracking-details__rest-addr">
-                {restaurant?.address || order.restaurantName || 'Pick up at the restaurant'}
-              </p>
-            ) : order.deliveryAddress ? (
-              <>
-                {order.deliveryAddress.label && (
-                  <p className="tracking-details__rest-addr">{order.deliveryAddress.label}</p>
-                )}
-                <p className="tracking-details__rest-addr">
-                  {[order.deliveryAddress.street, order.deliveryAddress.apt].filter(Boolean).join(', ')}
-                </p>
-                <p className="tracking-details__rest-addr">
-                  {[order.deliveryAddress.city, order.deliveryAddress.state].filter(Boolean).join(', ')}
-                  {order.deliveryAddress.zip ? ` ${order.deliveryAddress.zip}` : ''}
-                </p>
-                {order.deliveryAddress.instructions && (
-                  <p className="tracking-details__rest-addr">{order.deliveryAddress.instructions}</p>
-                )}
-              </>
-            ) : (
-              <p className="tracking-details__rest-addr">Address not available</p>
-            )}
           </div>
         </div>
 
@@ -373,9 +350,9 @@ export default function OrderTracking() {
               <strong>{order.deliveryPerson.name}</strong>
               <span>{order.deliveryPerson.vehicleType === 'car' ? 'Car' : 'Bicycle'} &bull; {order.deliveryPerson.rating} ★</span>
             </div>
-            <p className="tracking-modal__body">Contacting or messaging your courier isn't available in this demo — nothing is sent.</p>
+            <p className="tracking-modal__body">Your delivery person is on the way. For safety, messages are handled through the Xber Eats app.</p>
             <button className="tracking-modal__btn" onClick={() => setShowContactModal(false)}>
-              Close
+              <Phone size={16} /> Send message
             </button>
           </div>
         </div>

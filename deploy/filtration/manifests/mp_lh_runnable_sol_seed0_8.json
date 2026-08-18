@@ -1,0 +1,77 @@
+{
+  "mode": "mp_lh_runnable_sol_seed0",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_tasks": 8,
+  "n_seeds": 1,
+  "n_episodes": 8,
+  "tasks": [
+    "mp_001/ship_earbuds_to_mom_from_mail",
+    "mp_006/nephew_party_gift_budget_eta",
+    "mp_008/dinner_plus_frozen_pizza_cart_only",
+    "mp_014/clear_food_cart_buy_meal_prep",
+    "mp_018/amazon_turntable_this_week_not_ebay",
+    "mp_024/water_shutoff_amazon_water_dinner_tomorrow",
+    "mp_028/split_ubereats_email_roommate",
+    "mp_030/ebay_lamp_shipping_false_premise_abstain"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_001/ship_earbuds_to_mom_from_mail",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "mp_006/nephew_party_gift_budget_eta",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "mp_008/dinner_plus_frozen_pizza_cart_only",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "mp_014/clear_food_cart_buy_meal_prep",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 4,
+      "task_id": "mp_018/amazon_turntable_this_week_not_ebay",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 5,
+      "task_id": "mp_024/water_shutoff_amazon_water_dinner_tomorrow",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 6,
+      "task_id": "mp_028/split_ubereats_email_roommate",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 7,
+      "task_id": "mp_030/ebay_lamp_shipping_false_premise_abstain",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ]
+}

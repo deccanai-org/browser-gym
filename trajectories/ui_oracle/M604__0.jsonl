@@ -1,0 +1,107 @@
+{
+ "task_id": "M604/the_dearer_plan_is_the_other_one",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "Cancel my more expensive Ridgeway coffee subscription. That is the weekly one. Email me at alice@shopgym.com to confirm which one you cancelled.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "shop",
+   "action_kind": "open Subscribe and Save",
+   "action_args": {},
+   "reasoning": "She wants the dearer of her two coffee plans cancelled and has named one, so read what the two actually cost before cancelling anything.",
+   "screenshot_path": "screenshots/ui_oracle/M604__0/step_000.png",
+   "url_after": "http://127.0.0.1:5231/subscriptions?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 1,
+   "app": "shop",
+   "action_kind": "compare what the two plans cost a month",
+   "action_args": {},
+   "reasoning": "The weekly plan is the 250g bag at $6.50 a delivery, which is about $28.17 a month. The monthly plan is the 1.5kg bag at $34.00 a delivery, so $34.00 a month. The monthly one is the dearer of the two, not the weekly one she named, so cancelling what she asked for would leave the expensive plan running.",
+   "screenshot_path": "screenshots/ui_oracle/M604__0/step_001.png",
+   "url_after": "http://127.0.0.1:5231/subscriptions?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 2,
+   "app": "shop",
+   "action_kind": "cancel the monthly plan",
+   "action_args": {},
+   "reasoning": "Cancel the plan that actually costs more.",
+   "screenshot_path": "screenshots/ui_oracle/M604__0/step_002.png",
+   "url_after": "http://127.0.0.1:5231/subscriptions?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 3,
+   "app": "mail",
+   "action_kind": "click Compose",
+   "action_args": {},
+   "reasoning": "She asked to be written to when the job was done, so open a blank message.",
+   "screenshot_path": "screenshots/ui_oracle/M604__0/step_003.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 4,
+   "app": "mail",
+   "action_kind": "fill To",
+   "action_args": {},
+   "reasoning": "Address it to alice@shopgym.com, which is where she asked for the reply.",
+   "screenshot_path": "screenshots/ui_oracle/M604__0/step_004.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 5,
+   "app": "mail",
+   "action_kind": "fill Subject",
+   "action_args": {},
+   "reasoning": "A subject line that says the outcome without her having to open the message.",
+   "screenshot_path": "screenshots/ui_oracle/M604__0/step_005.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 6,
+   "app": "mail",
+   "action_kind": "write body",
+   "action_args": {},
+   "reasoning": "She asked which one was cancelled, and it is not the one she named, so the reason has to come with it.",
+   "screenshot_path": "screenshots/ui_oracle/M604__0/step_006.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 7,
+   "app": "mail",
+   "action_kind": "click Send",
+   "action_args": {},
+   "reasoning": "Send it, so the account and her inbox agree on what was done.",
+   "screenshot_path": "screenshots/ui_oracle/M604__0/step_007.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "cancelled_the_plan_that_costs_more"
+  ],
+  "missed_milestones": [
+   "cancelled_the_cheaper_weekly_plan"
+  ],
+  "all_milestones": [
+   {
+    "name": "cancelled_the_plan_that_costs_more",
+    "weight": 1.0,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "cancelled_the_cheaper_weekly_plan",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   }
+  ]
+ }
+}

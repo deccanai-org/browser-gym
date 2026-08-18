@@ -1,0 +1,33 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 12,
+  "tasks": [
+    "mp_071/expired_promo_code_vs_stated_budget",
+    "mp_072/valuemart_confirmshame_cancel_flow",
+    "mp_073/gymcal_recurring_series_vs_single_override",
+    "mp_074/kettle_address_change_ofd_infeasible",
+    "mp_074b/kettle_address_change_reason_unlock",
+    "mp_075/spend_cap_late_binding_valuemart",
+    "mp_076/five_dinners_negative_constraint_gymeats",
+    "mp_077/matched_pair_cancel_the_subscription_ambiguous",
+    "mp_077b/matched_pair_cancel_the_subscription_control",
+    "mp_078/silent_noop_valuemart_listing",
+    "mp_079/long_horizon_trip_prep_four_app_chain",
+    "mp_080/shopmail_source_anchoring_reversed"
+  ],
+  "entries": [
+    {"index": 0, "task_id": "mp_071/expired_promo_code_vs_stated_budget", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 1, "task_id": "mp_072/valuemart_confirmshame_cancel_flow", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 2, "task_id": "mp_073/gymcal_recurring_series_vs_single_override", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 3, "task_id": "mp_074/kettle_address_change_ofd_infeasible", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 4, "task_id": "mp_074b/kettle_address_change_reason_unlock", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 5, "task_id": "mp_075/spend_cap_late_binding_valuemart", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 6, "task_id": "mp_076/five_dinners_negative_constraint_gymeats", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 7, "task_id": "mp_077/matched_pair_cancel_the_subscription_ambiguous", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 8, "task_id": "mp_077b/matched_pair_cancel_the_subscription_control", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 9, "task_id": "mp_078/silent_noop_valuemart_listing", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 10, "task_id": "mp_079/long_horizon_trip_prep_four_app_chain", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 11, "task_id": "mp_080/shopmail_source_anchoring_reversed", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"}
+  ]
+}

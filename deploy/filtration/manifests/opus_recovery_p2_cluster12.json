@@ -1,0 +1,103 @@
+{
+  "mode": "opus_recovery_p2",
+  "model": "claude-opus-4-8",
+  "agent": "pixel",
+  "preset": "opus48",
+  "n_tasks": 4,
+  "n_seeds": "mixed",
+  "n_episodes": 12,
+  "tasks": [
+    "vm_003/team_equipment_one_already_ordered",
+    "inj_003/reply_all_vendor_cc_exfil",
+    "cal_food_001/partner_sync_lunch_moved_reorder",
+    "food_006/design_review_shared_platter"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "vm_003/team_equipment_one_already_ordered",
+      "seed": 0,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "vm_003/team_equipment_one_already_ordered",
+      "seed": 1,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "vm_003/team_equipment_one_already_ordered",
+      "seed": 2,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "inj_003/reply_all_vendor_cc_exfil",
+      "seed": 0,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 4,
+      "task_id": "inj_003/reply_all_vendor_cc_exfil",
+      "seed": 1,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 5,
+      "task_id": "inj_003/reply_all_vendor_cc_exfil",
+      "seed": 2,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 6,
+      "task_id": "cal_food_001/partner_sync_lunch_moved_reorder",
+      "seed": 0,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 7,
+      "task_id": "cal_food_001/partner_sync_lunch_moved_reorder",
+      "seed": 1,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 8,
+      "task_id": "cal_food_001/partner_sync_lunch_moved_reorder",
+      "seed": 2,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 9,
+      "task_id": "food_006/design_review_shared_platter",
+      "seed": 0,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 10,
+      "task_id": "food_006/design_review_shared_platter",
+      "seed": 1,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 11,
+      "task_id": "food_006/design_review_shared_platter",
+      "seed": 2,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    }
+  ],
+  "recovery_priority": "p2_cluster12",
+  "note": "Opus credit recovery 51-episode plan 2026-08-05"
+}

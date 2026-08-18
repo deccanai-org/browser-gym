@@ -124,6 +124,14 @@ export default function RestaurantCard({ restaurant }) {
           <span className="rest-card__reviews">({restaurant.reviewCount}+)</span>
           <span className="rest-card__dot">&bull;</span>
           <span className="rest-card__time">{isPickup ? 'Pickup ' : ''}{timeMin}-{timeMax} min</span>
+          {restaurant.etaLabel ? (
+            <>
+              <span className="rest-card__dot">&bull;</span>
+              <span className="rest-card__eta" title="Estimated ready time (gym clock)">
+                ~{restaurant.etaLabel}
+              </span>
+            </>
+          ) : null}
         </div>
       </Link>
     </div>

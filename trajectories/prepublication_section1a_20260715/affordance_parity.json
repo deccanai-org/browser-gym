@@ -189,8 +189,8 @@
       "seed": 0,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "d5d8ee76504c50fd4806b40d02f548bde0d4ab8021cd8bb5fd573d17da4c33f9",
-      "semantic_after_sha256": "bbc3b450c869173cc9b5e59d0bc008a254858a72e03a199f904f6bab9fb6cb71",
+      "semantic_before_sha256": "cc1939c20ec281e86e58b17829c6f67a0c24b2886bf5729fbc9b48c7520e9bc8",
+      "semantic_after_sha256": "bbddd2ff5dda37c9879d130af513bfdf366e89eec59c8bf33b01f87f44a25044",
       "raw_diff": [
         {
           "path": "$.events",
@@ -215,7 +215,8 @@
                     "qty": 2
                   }
                 ],
-                "delivery_note": "Please leave at the door; unavailable 6\u20137 PM."
+                "delivery_note": "Please leave at the door; unavailable 6\u20137 PM.",
+                "scheduled_delivery": null
               },
               "delivered": true
             }
@@ -239,8 +240,7 @@
                 "restaurant_id": "r_burger",
                 "name": "Classic Cheeseburger",
                 "unit_price": 10.0,
-                "quantity": 2,
-                "note": ""
+                "quantity": 2
               }
             ],
             "subtotal": 20.0,
@@ -249,7 +249,9 @@
             "placed_at": "2026-05-21T18:30:00",
             "eta_label": "7:20 PM",
             "status": "preparing",
-            "delivery_note": "Please leave at the door; unavailable 6\u20137 PM."
+            "delivery_note": "Please leave at the door; unavailable 6\u20137 PM.",
+            "delivery_mode": "delivery",
+            "scheduled_delivery": null
           }
         },
         {
@@ -258,7 +260,7 @@
           "after": {
             "id": "em_5",
             "sender": "receipts@foodapp.com",
-            "to": "alice@shopgym.com",
+            "to": "alice@shopmail.com",
             "subject": "Your Burger Barn order is on the way",
             "body": "Thanks for your order from Burger Barn!\n\n  2 x Classic Cheeseburger\n\nSubtotal: $20.00\nDelivery: $2.49\nTotal charged: $22.49\n\nEstimated arrival: 7:20 PM\n",
             "received_at": "2026-05-21T18:31:00",
@@ -272,7 +274,9 @@
             "tracking_url": null,
             "amount_total": 22.49,
             "eta": "7:20 PM",
-            "product_id": null
+            "product_id": null,
+            "cc": "",
+            "bcc": ""
           }
         }
       ],
@@ -293,8 +297,8 @@
       "seed": 1,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "d5d8ee76504c50fd4806b40d02f548bde0d4ab8021cd8bb5fd573d17da4c33f9",
-      "semantic_after_sha256": "bbc3b450c869173cc9b5e59d0bc008a254858a72e03a199f904f6bab9fb6cb71",
+      "semantic_before_sha256": "cc1939c20ec281e86e58b17829c6f67a0c24b2886bf5729fbc9b48c7520e9bc8",
+      "semantic_after_sha256": "bbddd2ff5dda37c9879d130af513bfdf366e89eec59c8bf33b01f87f44a25044",
       "raw_diff": [
         {
           "path": "$.events",
@@ -319,7 +323,8 @@
                     "qty": 2
                   }
                 ],
-                "delivery_note": "Please leave at the door; unavailable 6\u20137 PM."
+                "delivery_note": "Please leave at the door; unavailable 6\u20137 PM.",
+                "scheduled_delivery": null
               },
               "delivered": true
             }
@@ -343,8 +348,7 @@
                 "restaurant_id": "r_burger",
                 "name": "Classic Cheeseburger",
                 "unit_price": 10.0,
-                "quantity": 2,
-                "note": ""
+                "quantity": 2
               }
             ],
             "subtotal": 20.0,
@@ -353,7 +357,9 @@
             "placed_at": "2026-05-21T18:30:00",
             "eta_label": "7:20 PM",
             "status": "preparing",
-            "delivery_note": "Please leave at the door; unavailable 6\u20137 PM."
+            "delivery_note": "Please leave at the door; unavailable 6\u20137 PM.",
+            "delivery_mode": "delivery",
+            "scheduled_delivery": null
           }
         },
         {
@@ -362,7 +368,7 @@
           "after": {
             "id": "em_5",
             "sender": "receipts@foodapp.com",
-            "to": "alice@shopgym.com",
+            "to": "alice@shopmail.com",
             "subject": "Your Burger Barn order is on the way",
             "body": "Thanks for your order from Burger Barn!\n\n  2 x Classic Cheeseburger\n\nSubtotal: $20.00\nDelivery: $2.49\nTotal charged: $22.49\n\nEstimated arrival: 7:20 PM\n",
             "received_at": "2026-05-21T18:31:00",
@@ -376,7 +382,9 @@
             "tracking_url": null,
             "amount_total": 22.49,
             "eta": "7:20 PM",
-            "product_id": null
+            "product_id": null,
+            "cc": "",
+            "bcc": ""
           }
         }
       ],
@@ -397,8 +405,8 @@
       "seed": 2,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "d5d8ee76504c50fd4806b40d02f548bde0d4ab8021cd8bb5fd573d17da4c33f9",
-      "semantic_after_sha256": "bbc3b450c869173cc9b5e59d0bc008a254858a72e03a199f904f6bab9fb6cb71",
+      "semantic_before_sha256": "cc1939c20ec281e86e58b17829c6f67a0c24b2886bf5729fbc9b48c7520e9bc8",
+      "semantic_after_sha256": "bbddd2ff5dda37c9879d130af513bfdf366e89eec59c8bf33b01f87f44a25044",
       "raw_diff": [
         {
           "path": "$.events",
@@ -423,7 +431,8 @@
                     "qty": 2
                   }
                 ],
-                "delivery_note": "Please leave at the door; unavailable 6\u20137 PM."
+                "delivery_note": "Please leave at the door; unavailable 6\u20137 PM.",
+                "scheduled_delivery": null
               },
               "delivered": true
             }
@@ -447,8 +456,7 @@
                 "restaurant_id": "r_burger",
                 "name": "Classic Cheeseburger",
                 "unit_price": 10.0,
-                "quantity": 2,
-                "note": ""
+                "quantity": 2
               }
             ],
             "subtotal": 20.0,
@@ -457,7 +465,9 @@
             "placed_at": "2026-05-21T18:30:00",
             "eta_label": "7:20 PM",
             "status": "preparing",
-            "delivery_note": "Please leave at the door; unavailable 6\u20137 PM."
+            "delivery_note": "Please leave at the door; unavailable 6\u20137 PM.",
+            "delivery_mode": "delivery",
+            "scheduled_delivery": null
           }
         },
         {
@@ -466,7 +476,7 @@
           "after": {
             "id": "em_5",
             "sender": "receipts@foodapp.com",
-            "to": "alice@shopgym.com",
+            "to": "alice@shopmail.com",
             "subject": "Your Burger Barn order is on the way",
             "body": "Thanks for your order from Burger Barn!\n\n  2 x Classic Cheeseburger\n\nSubtotal: $20.00\nDelivery: $2.49\nTotal charged: $22.49\n\nEstimated arrival: 7:20 PM\n",
             "received_at": "2026-05-21T18:31:00",
@@ -480,7 +490,9 @@
             "tracking_url": null,
             "amount_total": 22.49,
             "eta": "7:20 PM",
-            "product_id": null
+            "product_id": null,
+            "cc": "",
+            "bcc": ""
           }
         }
       ],
@@ -501,8 +513,8 @@
       "seed": 0,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "9311d63b26448c3db8f8c4db612d79536e703450ebb7d18a08fb3bff7098536c",
-      "semantic_after_sha256": "c3f676dab5a50154af1186277cae1c6fb243a802019bcedc3ac3bb8f165e38ca",
+      "semantic_before_sha256": "90c8a9579d1ca4fd7a91ed950ba1fb2fb30fa2ad6b25ac6ce2feb69e890d5bee",
+      "semantic_after_sha256": "1e8eaaadb26fd61ad723c1e0b001925d0f0c50ee2a63491e6999c021ad8a8038",
       "raw_diff": [
         {
           "path": "$.calendar._next",
@@ -525,7 +537,8 @@
             "calendar_id": "c1",
             "all_day": false,
             "recurring": "none",
-            "reminder_minutes": null
+            "reminder_minutes": null,
+            "status": "confirmed"
           }
         }
       ],
@@ -544,8 +557,8 @@
       "seed": 1,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "171783109ef0d861a5813c92a43fb5f45d8d014eae6ae5d4b5ba11aa2e5da3ed",
-      "semantic_after_sha256": "9620d3da352b657169b57338b0e156d8f01bffb4a7fb03f246a3b7ba2f14dd55",
+      "semantic_before_sha256": "bee6ac1b1821dfb809f9f94c88e17decdf205cc811c3d21462fdbaf5c5605419",
+      "semantic_after_sha256": "77d669936ce9c675beaca26413d34a122269f55d7363c562b218d93c6723fb8e",
       "raw_diff": [
         {
           "path": "$.calendar._next",
@@ -568,7 +581,8 @@
             "calendar_id": "c1",
             "all_day": false,
             "recurring": "none",
-            "reminder_minutes": null
+            "reminder_minutes": null,
+            "status": "confirmed"
           }
         }
       ],
@@ -587,8 +601,8 @@
       "seed": 2,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "9311d63b26448c3db8f8c4db612d79536e703450ebb7d18a08fb3bff7098536c",
-      "semantic_after_sha256": "c3f676dab5a50154af1186277cae1c6fb243a802019bcedc3ac3bb8f165e38ca",
+      "semantic_before_sha256": "90c8a9579d1ca4fd7a91ed950ba1fb2fb30fa2ad6b25ac6ce2feb69e890d5bee",
+      "semantic_after_sha256": "1e8eaaadb26fd61ad723c1e0b001925d0f0c50ee2a63491e6999c021ad8a8038",
       "raw_diff": [
         {
           "path": "$.calendar._next",
@@ -611,7 +625,8 @@
             "calendar_id": "c1",
             "all_day": false,
             "recurring": "none",
-            "reminder_minutes": null
+            "reminder_minutes": null,
+            "status": "confirmed"
           }
         }
       ],
@@ -630,8 +645,8 @@
       "seed": 0,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "d6dddc00c895d5b82bf10908a220e1321ee2d4bad033042ba757413bc0bcf114",
-      "semantic_after_sha256": "e5029c55809d8783f7797052c2e42be03fa31c49cd9fa2a90b05be49851177e9",
+      "semantic_before_sha256": "86a7f407d1c4ede13ae4d9e8321d55a88abb839b45db38d09096dfc09fe4c3e1",
+      "semantic_after_sha256": "eca5d86e15f65033962dcfa5427bf6343eb6f07dfa878f90dbf1b6e7f4f2459f",
       "raw_diff": [
         {
           "path": "$.calendar.events.ev_6.end",
@@ -659,8 +674,8 @@
       "seed": 1,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "40d9358d1d385786303998a4bdeb879840b730ce62fe8d73076905c26dc6c982",
-      "semantic_after_sha256": "5eeadfe09770f6e17d14de51669e6093319454a789d0f0cc3274688f6098a8ae",
+      "semantic_before_sha256": "513e1317b1629728ff926b6291f795f69167568ed325e5e55ea711586dbdbd76",
+      "semantic_after_sha256": "46feec25c0cc47f573ec4728be59cae8b6e473cee747fe9c94a52669d3bb797f",
       "raw_diff": [
         {
           "path": "$.calendar.events.ev_7.end",
@@ -688,8 +703,8 @@
       "seed": 2,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "d6dddc00c895d5b82bf10908a220e1321ee2d4bad033042ba757413bc0bcf114",
-      "semantic_after_sha256": "e5029c55809d8783f7797052c2e42be03fa31c49cd9fa2a90b05be49851177e9",
+      "semantic_before_sha256": "86a7f407d1c4ede13ae4d9e8321d55a88abb839b45db38d09096dfc09fe4c3e1",
+      "semantic_after_sha256": "eca5d86e15f65033962dcfa5427bf6343eb6f07dfa878f90dbf1b6e7f4f2459f",
       "raw_diff": [
         {
           "path": "$.calendar.events.ev_6.end",
@@ -717,8 +732,8 @@
       "seed": 0,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "38ce3064a2169466fa227593a83828e22981806d13ffe9813220fdac539998c6",
-      "semantic_after_sha256": "02fbf31cc7ff554ea8318738cd268701843b06e190a6979a03b7b746ca5f7daa",
+      "semantic_before_sha256": "470e9f60c7030451e55f1b3225b60e381040ae506828e514cf446cecd81083ff",
+      "semantic_after_sha256": "2ace367678c0543058399ca8e7c7acfca8ee681b053554ffce078e7f58746f61",
       "raw_diff": [
         {
           "path": "$.calendar.events.cal_m366_vendor_review",
@@ -735,7 +750,8 @@
             "calendar_id": "c1",
             "all_day": false,
             "recurring": "none",
-            "reminder_minutes": null
+            "reminder_minutes": null,
+            "status": "confirmed"
           },
           "after": "<MISSING>"
         }
@@ -755,8 +771,8 @@
       "seed": 1,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "532590d48f6936a5c3b51af861b6c53bbe6bb1bd062db03937cab2ebfa17df93",
-      "semantic_after_sha256": "598205f36203316eeed82d3eff9441d22802a3683c18eec5154ee8a8e6bafa09",
+      "semantic_before_sha256": "312a48fb93f2b142c89eb37964575a9e4a2c2d73ad96e88c63e81c2f124af703",
+      "semantic_after_sha256": "fe3310cc18fed1b318cfbb3fbc93e1ca23c4dd8ff452045e0fc0654d91a16d48",
       "raw_diff": [
         {
           "path": "$.calendar.events.cal_m366_vendor_review",
@@ -773,7 +789,8 @@
             "calendar_id": "c1",
             "all_day": false,
             "recurring": "none",
-            "reminder_minutes": null
+            "reminder_minutes": null,
+            "status": "confirmed"
           },
           "after": "<MISSING>"
         }
@@ -793,8 +810,8 @@
       "seed": 2,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "38ce3064a2169466fa227593a83828e22981806d13ffe9813220fdac539998c6",
-      "semantic_after_sha256": "02fbf31cc7ff554ea8318738cd268701843b06e190a6979a03b7b746ca5f7daa",
+      "semantic_before_sha256": "470e9f60c7030451e55f1b3225b60e381040ae506828e514cf446cecd81083ff",
+      "semantic_after_sha256": "2ace367678c0543058399ca8e7c7acfca8ee681b053554ffce078e7f58746f61",
       "raw_diff": [
         {
           "path": "$.calendar.events.cal_m366_vendor_review",
@@ -811,7 +828,8 @@
             "calendar_id": "c1",
             "all_day": false,
             "recurring": "none",
-            "reminder_minutes": null
+            "reminder_minutes": null,
+            "status": "confirmed"
           },
           "after": "<MISSING>"
         }
@@ -831,8 +849,8 @@
       "seed": 0,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "969c89d306ad3a86dca7d8ce586044f622bb9206d6fb984ac07dbec3aa844d56",
-      "semantic_after_sha256": "8fc6c055e8c47e86a825565a00f97089e6a6f7f16c80742e3d2dbb179b90caa3",
+      "semantic_before_sha256": "cd2f6ae26bae758addc697e481ccc9ddfad3168ff8f765b57ac0f3ef9251827a",
+      "semantic_after_sha256": "9d9f8c022cf5e26060cf57ba90d2a4c17a5099c8adc5b1ff91aa0950770fec7d",
       "raw_diff": [
         {
           "path": "$.events",
@@ -891,7 +909,8 @@
             "placed_at": "2026-05-21T12:30:00",
             "coupon_code": "VALUE10",
             "shipping_address_id": "vm_addr_home",
-            "payment_id": "vm_pay_visa"
+            "payment_id": "vm_pay_visa",
+            "status": "completed"
           }
         },
         {
@@ -900,7 +919,7 @@
           "after": {
             "id": "em_5",
             "sender": "orders@valuemart.com",
-            "to": "alice@shopgym.com",
+            "to": "alice@shopmail.com",
             "subject": "Your ValueMart order VM-2201 is confirmed",
             "body": "Thanks for shopping at ValueMart!\n\nOrder number: VM-2201\n\n  2 x Welcome Sign\n\nSubtotal: $14.00\nCoupon (VALUE10): -$1.40\nDelivery: $5.99\nTotal charged: $18.59\n",
             "received_at": "2026-05-21T12:31:00",
@@ -914,7 +933,9 @@
             "tracking_url": null,
             "amount_total": 18.59,
             "eta": null,
-            "product_id": null
+            "product_id": null,
+            "cc": "",
+            "bcc": ""
           }
         }
       ],
@@ -936,8 +957,8 @@
       "seed": 1,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "969c89d306ad3a86dca7d8ce586044f622bb9206d6fb984ac07dbec3aa844d56",
-      "semantic_after_sha256": "8fc6c055e8c47e86a825565a00f97089e6a6f7f16c80742e3d2dbb179b90caa3",
+      "semantic_before_sha256": "cd2f6ae26bae758addc697e481ccc9ddfad3168ff8f765b57ac0f3ef9251827a",
+      "semantic_after_sha256": "9d9f8c022cf5e26060cf57ba90d2a4c17a5099c8adc5b1ff91aa0950770fec7d",
       "raw_diff": [
         {
           "path": "$.events",
@@ -996,7 +1017,8 @@
             "placed_at": "2026-05-21T12:30:00",
             "coupon_code": "VALUE10",
             "shipping_address_id": "vm_addr_home",
-            "payment_id": "vm_pay_visa"
+            "payment_id": "vm_pay_visa",
+            "status": "completed"
           }
         },
         {
@@ -1005,7 +1027,7 @@
           "after": {
             "id": "em_5",
             "sender": "orders@valuemart.com",
-            "to": "alice@shopgym.com",
+            "to": "alice@shopmail.com",
             "subject": "Your ValueMart order VM-2201 is confirmed",
             "body": "Thanks for shopping at ValueMart!\n\nOrder number: VM-2201\n\n  2 x Welcome Sign\n\nSubtotal: $14.00\nCoupon (VALUE10): -$1.40\nDelivery: $5.99\nTotal charged: $18.59\n",
             "received_at": "2026-05-21T12:31:00",
@@ -1019,7 +1041,9 @@
             "tracking_url": null,
             "amount_total": 18.59,
             "eta": null,
-            "product_id": null
+            "product_id": null,
+            "cc": "",
+            "bcc": ""
           }
         }
       ],
@@ -1041,8 +1065,8 @@
       "seed": 2,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "969c89d306ad3a86dca7d8ce586044f622bb9206d6fb984ac07dbec3aa844d56",
-      "semantic_after_sha256": "8fc6c055e8c47e86a825565a00f97089e6a6f7f16c80742e3d2dbb179b90caa3",
+      "semantic_before_sha256": "cd2f6ae26bae758addc697e481ccc9ddfad3168ff8f765b57ac0f3ef9251827a",
+      "semantic_after_sha256": "9d9f8c022cf5e26060cf57ba90d2a4c17a5099c8adc5b1ff91aa0950770fec7d",
       "raw_diff": [
         {
           "path": "$.events",
@@ -1101,7 +1125,8 @@
             "placed_at": "2026-05-21T12:30:00",
             "coupon_code": "VALUE10",
             "shipping_address_id": "vm_addr_home",
-            "payment_id": "vm_pay_visa"
+            "payment_id": "vm_pay_visa",
+            "status": "completed"
           }
         },
         {
@@ -1110,7 +1135,7 @@
           "after": {
             "id": "em_5",
             "sender": "orders@valuemart.com",
-            "to": "alice@shopgym.com",
+            "to": "alice@shopmail.com",
             "subject": "Your ValueMart order VM-2201 is confirmed",
             "body": "Thanks for shopping at ValueMart!\n\nOrder number: VM-2201\n\n  2 x Welcome Sign\n\nSubtotal: $14.00\nCoupon (VALUE10): -$1.40\nDelivery: $5.99\nTotal charged: $18.59\n",
             "received_at": "2026-05-21T12:31:00",
@@ -1124,7 +1149,9 @@
             "tracking_url": null,
             "amount_total": 18.59,
             "eta": null,
-            "product_id": null
+            "product_id": null,
+            "cc": "",
+            "bcc": ""
           }
         }
       ],
@@ -1147,7 +1174,7 @@
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
       "semantic_before_sha256": "139898ec61040f47ea1aea9994f8026b764c3d38a9b809889a1ddfc0d09f0665",
-      "semantic_after_sha256": "4503e5697d677ab4d5220ff2d555241f3473f285ce5a56648976557f085bae0f",
+      "semantic_after_sha256": "3026f390080291fad345f64c4ed80b02bde7a6277b942c6068180b0884e02387",
       "raw_diff": [
         {
           "path": "$.events",
@@ -1172,7 +1199,7 @@
           "before": "<MISSING>",
           "after": {
             "id": "em_6",
-            "sender": "alice@shopgym.com",
+            "sender": "alice@shopmail.com",
             "to": "alice@shopgym.com",
             "subject": "Parity message",
             "body": "The checked charge is correct.",
@@ -1185,7 +1212,9 @@
             "tracking_url": null,
             "amount_total": null,
             "eta": null,
-            "product_id": null
+            "product_id": null,
+            "cc": "",
+            "bcc": ""
           }
         }
       ],
@@ -1205,7 +1234,7 @@
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
       "semantic_before_sha256": "139898ec61040f47ea1aea9994f8026b764c3d38a9b809889a1ddfc0d09f0665",
-      "semantic_after_sha256": "4503e5697d677ab4d5220ff2d555241f3473f285ce5a56648976557f085bae0f",
+      "semantic_after_sha256": "3026f390080291fad345f64c4ed80b02bde7a6277b942c6068180b0884e02387",
       "raw_diff": [
         {
           "path": "$.events",
@@ -1230,7 +1259,7 @@
           "before": "<MISSING>",
           "after": {
             "id": "em_6",
-            "sender": "alice@shopgym.com",
+            "sender": "alice@shopmail.com",
             "to": "alice@shopgym.com",
             "subject": "Parity message",
             "body": "The checked charge is correct.",
@@ -1243,7 +1272,9 @@
             "tracking_url": null,
             "amount_total": null,
             "eta": null,
-            "product_id": null
+            "product_id": null,
+            "cc": "",
+            "bcc": ""
           }
         }
       ],
@@ -1263,7 +1294,7 @@
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
       "semantic_before_sha256": "139898ec61040f47ea1aea9994f8026b764c3d38a9b809889a1ddfc0d09f0665",
-      "semantic_after_sha256": "4503e5697d677ab4d5220ff2d555241f3473f285ce5a56648976557f085bae0f",
+      "semantic_after_sha256": "3026f390080291fad345f64c4ed80b02bde7a6277b942c6068180b0884e02387",
       "raw_diff": [
         {
           "path": "$.events",
@@ -1288,7 +1319,7 @@
           "before": "<MISSING>",
           "after": {
             "id": "em_6",
-            "sender": "alice@shopgym.com",
+            "sender": "alice@shopmail.com",
             "to": "alice@shopgym.com",
             "subject": "Parity message",
             "body": "The checked charge is correct.",
@@ -1301,7 +1332,9 @@
             "tracking_url": null,
             "amount_total": null,
             "eta": null,
-            "product_id": null
+            "product_id": null,
+            "cc": "",
+            "bcc": ""
           }
         }
       ],
@@ -1671,8 +1704,8 @@
       "seed": 0,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "0329d8f068dd8065e171a0d8e60227efb2d0ecf9448c71eda47c71baaf3cdbf3",
-      "semantic_after_sha256": "144d6f4d99e8d677c791612efaadd2fdc05c57f4e29ae80cbd837fca6d2e0807",
+      "semantic_before_sha256": "55ee38c82d94aea998ad34293d1f79f1854da85f4a9826b8af720ca2fdfcb4e7",
+      "semantic_after_sha256": "043c744a3a934424a33ad2d112e454143c56c5cedec610727754ba5847d207e4",
       "raw_diff": [
         {
           "path": "$.payment_methods.pay_personal.is_default",
@@ -1700,8 +1733,8 @@
       "seed": 1,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "0329d8f068dd8065e171a0d8e60227efb2d0ecf9448c71eda47c71baaf3cdbf3",
-      "semantic_after_sha256": "144d6f4d99e8d677c791612efaadd2fdc05c57f4e29ae80cbd837fca6d2e0807",
+      "semantic_before_sha256": "55ee38c82d94aea998ad34293d1f79f1854da85f4a9826b8af720ca2fdfcb4e7",
+      "semantic_after_sha256": "043c744a3a934424a33ad2d112e454143c56c5cedec610727754ba5847d207e4",
       "raw_diff": [
         {
           "path": "$.payment_methods.pay_personal.is_default",
@@ -1729,8 +1762,8 @@
       "seed": 2,
       "raw_semantic_states_equal": true,
       "normalized_semantic_states_equal": true,
-      "semantic_before_sha256": "0329d8f068dd8065e171a0d8e60227efb2d0ecf9448c71eda47c71baaf3cdbf3",
-      "semantic_after_sha256": "144d6f4d99e8d677c791612efaadd2fdc05c57f4e29ae80cbd837fca6d2e0807",
+      "semantic_before_sha256": "55ee38c82d94aea998ad34293d1f79f1854da85f4a9826b8af720ca2fdfcb4e7",
+      "semantic_after_sha256": "043c744a3a934424a33ad2d112e454143c56c5cedec610727754ba5847d207e4",
       "raw_diff": [
         {
           "path": "$.payment_methods.pay_personal.is_default",
@@ -1857,7 +1890,9 @@
         "body_mentions_cancel": true,
         "html_mentions_cancel_order": false
       },
-      "public_cancel_order_routes": [],
+      "public_cancel_order_routes": [
+        "POST /api/orders/{order_id}/cancel"
+      ],
       "mutation_contract": {
         "shipped_or_out_for_delivery_rejected": {
           "ok": false,

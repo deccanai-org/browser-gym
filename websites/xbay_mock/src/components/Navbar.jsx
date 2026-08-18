@@ -125,7 +125,8 @@ export default function Navbar() {
           >
             Ship to
           </button>
-          {!bridged() && <Link to="/sell" className="hover:underline">Sell</Link>}
+          {(!bridged() || state.enableSellerCreate) && <Link to="/sell" className="hover:underline" data-testid="nav-sell">Sell</Link>}
+          {state.enableMembershipCancel && <Link to="/membership" className="hover:underline" data-testid="nav-membership">Membership</Link>}
           <Link to="/dashboard?tab=watchlist" className="hover:underline">Watchlist</Link>
           <Link to="/dashboard" className="hover:underline">My ValueMart</Link>
         </div>

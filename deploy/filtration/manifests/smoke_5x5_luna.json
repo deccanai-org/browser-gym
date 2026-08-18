@@ -1,0 +1,193 @@
+{
+  "mode": "smoke",
+  "model": "gpt-5.6-luna",
+  "agent": "openai_pixel",
+  "preset": null,
+  "n_tasks": 5,
+  "n_seeds": 5,
+  "n_episodes": 25,
+  "tasks": [
+    "M75/stale_gift_message",
+    "M39/phantom_replacement",
+    "M80/ambiguous_calendar_reschedule",
+    "M142/no_monitor_in_stock_high_rating",
+    "M41/ambiguous_return"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "M75/stale_gift_message",
+      "seed": 0,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "M75/stale_gift_message",
+      "seed": 1,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "M75/stale_gift_message",
+      "seed": 2,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "M75/stale_gift_message",
+      "seed": 3,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 4,
+      "task_id": "M75/stale_gift_message",
+      "seed": 4,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 5,
+      "task_id": "M39/phantom_replacement",
+      "seed": 0,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 6,
+      "task_id": "M39/phantom_replacement",
+      "seed": 1,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 7,
+      "task_id": "M39/phantom_replacement",
+      "seed": 2,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 8,
+      "task_id": "M39/phantom_replacement",
+      "seed": 3,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 9,
+      "task_id": "M39/phantom_replacement",
+      "seed": 4,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 10,
+      "task_id": "M80/ambiguous_calendar_reschedule",
+      "seed": 0,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 11,
+      "task_id": "M80/ambiguous_calendar_reschedule",
+      "seed": 1,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 12,
+      "task_id": "M80/ambiguous_calendar_reschedule",
+      "seed": 2,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 13,
+      "task_id": "M80/ambiguous_calendar_reschedule",
+      "seed": 3,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 14,
+      "task_id": "M80/ambiguous_calendar_reschedule",
+      "seed": 4,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 15,
+      "task_id": "M142/no_monitor_in_stock_high_rating",
+      "seed": 0,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 16,
+      "task_id": "M142/no_monitor_in_stock_high_rating",
+      "seed": 1,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 17,
+      "task_id": "M142/no_monitor_in_stock_high_rating",
+      "seed": 2,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 18,
+      "task_id": "M142/no_monitor_in_stock_high_rating",
+      "seed": 3,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 19,
+      "task_id": "M142/no_monitor_in_stock_high_rating",
+      "seed": 4,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 20,
+      "task_id": "M41/ambiguous_return",
+      "seed": 0,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 21,
+      "task_id": "M41/ambiguous_return",
+      "seed": 1,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 22,
+      "task_id": "M41/ambiguous_return",
+      "seed": 2,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 23,
+      "task_id": "M41/ambiguous_return",
+      "seed": 3,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 24,
+      "task_id": "M41/ambiguous_return",
+      "seed": 4,
+      "model": "gpt-5.6-luna",
+      "agent": "openai_pixel"
+    }
+  ]
+}

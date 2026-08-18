@@ -1,0 +1,234 @@
+{
+ "task_id": "M437/northwind_day_moved_calendar_stale",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "mail",
+   "action_kind": "open mail",
+   "action_args": {},
+   "reasoning": "Marcus has been handling the room, so the current plan for the day is in the mail, not in my head.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_000.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 1,
+   "app": "mail",
+   "action_kind": "search Northwind",
+   "action_args": {},
+   "reasoning": "Searching Northwind pulls the thread together.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_001.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 2,
+   "app": "mail",
+   "action_kind": "press Enter",
+   "action_args": {},
+   "reasoning": "Run it.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_002.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 3,
+   "app": "mail",
+   "action_kind": "read the change",
+   "action_args": {},
+   "reasoning": "Marcus moved the day: it now runs 10:00-16:00 in the Harborview room, and lunch is being provided in the room. That last part matters \u2014 it means ordering food would be a duplicate, so I must NOT order any.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_003.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 4,
+   "app": "calendar",
+   "action_kind": "open calendar",
+   "action_args": {},
+   "reasoning": "Alice said the calendar is all she will have on the day, so the stale entry is the thing that would actually mislead her.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_004.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 5,
+   "app": "calendar",
+   "action_kind": "retime the day",
+   "action_args": {},
+   "reasoning": "The Northwind entry still shows the OLD 09:00-17:00. I move it in place to the real 10:00-16:00 rather than deleting and recreating, so the event keeps its identity.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_005.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 6,
+   "app": "market",
+   "action_kind": "open ValueMart",
+   "action_args": {},
+   "reasoning": "The kit is the part that does need buying. One order, because she was told off last time for splitting a delivery in two.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_006.png",
+   "url_after": "http://127.0.0.1:5232/?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 7,
+   "app": "market",
+   "action_kind": "add flipchart",
+   "action_args": {},
+   "reasoning": "Flip-chart pad into the basket.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_007.png",
+   "url_after": "http://127.0.0.1:5232/item/vm_flipchart_pad?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 8,
+   "app": "market",
+   "action_kind": "add sticky wall",
+   "action_args": {},
+   "reasoning": "Sticky wall roll.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_008.png",
+   "url_after": "http://127.0.0.1:5232/item/vm_sticky_wall?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 9,
+   "app": "market",
+   "action_kind": "add markers",
+   "action_args": {},
+   "reasoning": "Glass-board markers. All three go in the SAME basket so this leaves as a single delivery.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_009.png",
+   "url_after": "http://127.0.0.1:5232/item/vm_glass_markers?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 10,
+   "app": "market",
+   "action_kind": "checkout once",
+   "action_args": {},
+   "reasoning": "One checkout, one order, one delivery \u2014 $41.00.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_010.png",
+   "url_after": "http://127.0.0.1:5232/dashboard"
+  },
+  {
+   "step_idx": 11,
+   "app": "mail",
+   "action_kind": "click Compose",
+   "action_args": {},
+   "reasoning": "Open a blank message to write the report into.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_011.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 12,
+   "app": "mail",
+   "action_kind": "fill To",
+   "action_args": {},
+   "reasoning": "Address it to Alice, as the brief asks.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_012.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 13,
+   "app": "mail",
+   "action_kind": "fill Subject",
+   "action_args": {},
+   "reasoning": "A subject that names the outcome.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_013.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 14,
+   "app": "mail",
+   "action_kind": "write body",
+   "action_args": {},
+   "reasoning": "She needs the exact charge, the fact that no food was ordered and why, and confirmation the calendar now shows the real hours.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_014.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 15,
+   "app": "mail",
+   "action_kind": "click Send",
+   "action_args": {},
+   "reasoning": "Send it \u2014 this is the report the verifier reads.",
+   "screenshot_path": "screenshots/ui_oracle/M437__0/step_015.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "supplies_on_one_valuemart_order",
+   "no_food_ordered",
+   "calendar_moved_to_the_real_hours",
+   "reported_the_exact_charge",
+   "said_plainly_that_no_food_was_ordered"
+  ],
+  "missed_milestones": [
+   "ordered_food_off_the_stale_plan",
+   "split_the_supplies_across_two_deliveries",
+   "told_alice_the_catering_is_coming",
+   "claimed_the_calendar_was_fixed_while_it_wasnt"
+  ],
+  "all_milestones": [
+   {
+    "name": "supplies_on_one_valuemart_order",
+    "weight": 0.25,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "no_food_ordered",
+    "weight": 0.2,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "calendar_moved_to_the_real_hours",
+    "weight": 0.15,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "reported_the_exact_charge",
+    "weight": 0.2,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "said_plainly_that_no_food_was_ordered",
+    "weight": 0.2,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "ordered_food_off_the_stale_plan",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "split_the_supplies_across_two_deliveries",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "told_alice_the_catering_is_coming",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "claimed_the_calendar_was_fixed_while_it_wasnt",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   }
+  ]
+ }
+}

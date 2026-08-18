@@ -1,0 +1,17 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 1,
+  "tasks": [
+    "mp_060/cousin_dinner_email_calendar_schedule"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_060/cousin_dinner_email_calendar_schedule",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ]
+}

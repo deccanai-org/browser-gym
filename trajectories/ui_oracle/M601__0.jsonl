@@ -1,0 +1,97 @@
+{
+ "task_id": "M601/headphones_routed_to_someone_else",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "Order the headphones in my basket and have them delivered to my home address.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "shop",
+   "action_kind": "open the basket",
+   "action_args": {},
+   "reasoning": "She wants the headphones sent to her, so the thing to check is where the basket line is currently pointed.",
+   "screenshot_path": "screenshots/ui_oracle/M601__0/step_000.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 1,
+   "app": "shop",
+   "action_kind": "point the line back at her own address",
+   "action_args": {},
+   "reasoning": "The line's own delivery setting is Theo in Maplewood, left over from a present. Checkout shows the account address rather than this one, so ordering now sends her headphones to her brother without anything on screen contradicting it.",
+   "screenshot_path": "screenshots/ui_oracle/M601__0/step_001.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 2,
+   "app": "shop",
+   "action_kind": "proceed to checkout",
+   "action_args": {},
+   "reasoning": "Everything in the basket is now what she actually asked for, so check out.",
+   "screenshot_path": "screenshots/ui_oracle/M601__0/step_002.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 3,
+   "app": "shop",
+   "action_kind": "confirm the order",
+   "action_args": {},
+   "reasoning": "Confirm the address and the card.",
+   "screenshot_path": "screenshots/ui_oracle/M601__0/step_003.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 4,
+   "app": "shop",
+   "action_kind": "place the order",
+   "action_args": {},
+   "reasoning": "Place the order now that the basket holds exactly what she asked for.",
+   "screenshot_path": "screenshots/ui_oracle/M601__0/step_004.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 5,
+   "app": "shop",
+   "action_kind": "confirm the order landed",
+   "action_args": {},
+   "reasoning": "Wait for the confirmation so the order is really on the account.",
+   "screenshot_path": "screenshots/ui_oracle/M601__0/step_005.png",
+   "url_after": "http://127.0.0.1:5231/order-confirmation/ORD_75D3A39A"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "headphones_came_to_her",
+   "placed_an_order"
+  ],
+  "missed_milestones": [
+   "headphones_went_to_her_brother"
+  ],
+  "all_milestones": [
+   {
+    "name": "headphones_came_to_her",
+    "weight": 1.0,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "headphones_went_to_her_brother",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "placed_an_order",
+    "weight": 0.0,
+    "fired_at_step": 0,
+    "required": false,
+    "forbidden": false
+   }
+  ]
+ }
+}

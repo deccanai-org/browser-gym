@@ -1,0 +1,234 @@
+{
+  "mode": "sol_breakers10_opus48",
+  "model": "claude-opus-4-8",
+  "agent": "pixel",
+  "preset": "opus48",
+  "n_tasks": 10,
+  "n_seeds": 3,
+  "n_episodes": 30,
+  "tasks": [
+    "food_003/team_dinner_named_restaurants",
+    "vm_003/team_equipment_one_already_ordered",
+    "inj_003/reply_all_vendor_cc_exfil",
+    "cal_food_001/partner_sync_lunch_moved_reorder",
+    "vm_007/desk_pad_false_cancel_reorder",
+    "food_006/design_review_shared_platter",
+    "inj_004/bounce_resend_phishing",
+    "inj_005/invoice_wire_redirect",
+    "cal_food_002/sprint_review_lunch_headcount_resync",
+    "vm_008/it_approved_vendor_cable_rating"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "food_003/team_dinner_named_restaurants",
+      "seed": 0,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "food_003/team_dinner_named_restaurants",
+      "seed": 1,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "food_003/team_dinner_named_restaurants",
+      "seed": 2,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "vm_003/team_equipment_one_already_ordered",
+      "seed": 0,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 4,
+      "task_id": "vm_003/team_equipment_one_already_ordered",
+      "seed": 1,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 5,
+      "task_id": "vm_003/team_equipment_one_already_ordered",
+      "seed": 2,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 6,
+      "task_id": "inj_003/reply_all_vendor_cc_exfil",
+      "seed": 0,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 7,
+      "task_id": "inj_003/reply_all_vendor_cc_exfil",
+      "seed": 1,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 8,
+      "task_id": "inj_003/reply_all_vendor_cc_exfil",
+      "seed": 2,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 9,
+      "task_id": "cal_food_001/partner_sync_lunch_moved_reorder",
+      "seed": 0,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 10,
+      "task_id": "cal_food_001/partner_sync_lunch_moved_reorder",
+      "seed": 1,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 11,
+      "task_id": "cal_food_001/partner_sync_lunch_moved_reorder",
+      "seed": 2,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 12,
+      "task_id": "vm_007/desk_pad_false_cancel_reorder",
+      "seed": 0,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 13,
+      "task_id": "vm_007/desk_pad_false_cancel_reorder",
+      "seed": 1,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 14,
+      "task_id": "vm_007/desk_pad_false_cancel_reorder",
+      "seed": 2,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 15,
+      "task_id": "food_006/design_review_shared_platter",
+      "seed": 0,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 16,
+      "task_id": "food_006/design_review_shared_platter",
+      "seed": 1,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 17,
+      "task_id": "food_006/design_review_shared_platter",
+      "seed": 2,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 18,
+      "task_id": "inj_004/bounce_resend_phishing",
+      "seed": 0,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 19,
+      "task_id": "inj_004/bounce_resend_phishing",
+      "seed": 1,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 20,
+      "task_id": "inj_004/bounce_resend_phishing",
+      "seed": 2,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 21,
+      "task_id": "inj_005/invoice_wire_redirect",
+      "seed": 0,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 22,
+      "task_id": "inj_005/invoice_wire_redirect",
+      "seed": 1,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 23,
+      "task_id": "inj_005/invoice_wire_redirect",
+      "seed": 2,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 24,
+      "task_id": "cal_food_002/sprint_review_lunch_headcount_resync",
+      "seed": 0,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 25,
+      "task_id": "cal_food_002/sprint_review_lunch_headcount_resync",
+      "seed": 1,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 26,
+      "task_id": "cal_food_002/sprint_review_lunch_headcount_resync",
+      "seed": 2,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 27,
+      "task_id": "vm_008/it_approved_vendor_cable_rating",
+      "seed": 0,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 28,
+      "task_id": "vm_008/it_approved_vendor_cable_rating",
+      "seed": 1,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    },
+    {
+      "index": 29,
+      "task_id": "vm_008/it_approved_vendor_cable_rating",
+      "seed": 2,
+      "model": "claude-opus-4-8",
+      "agent": "pixel"
+    }
+  ],
+  "notes": "3 seeds \u00d7 10 tasks to mirror Sol confirmation (\u22652/3). Bridged multi-hub Sol-gen tasks."
+}

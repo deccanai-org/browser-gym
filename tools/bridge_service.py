@@ -494,6 +494,34 @@ def sessions() -> dict:
     return POOL.status()
 
 
+@app.get("/bridge/health")
+def health() -> dict:
+    """Pilot wiring check: hub_source must be explicit-env for isolated stacks."""
+    explicit = {
+        a: os.environ[f"CUA_HUB_URL_{a.upper()}"]
+        for a in ("shop", "mail", "market", "calendar", "food")
+        if os.environ.get(f"CUA_HUB_URL_{a.upper()}")
+    }
+    if explicit:
+        hub_source = "explicit-env"
+    elif os.environ.get("BRIDGE_NO_HUB"):
+        hub_source = "no-hub"
+    else:
+        hub_source = "cua-env-default"
+    # `hub_map` is what eval.run preflight reads (must be non-empty when
+    # --app-origins drives bridged hubs). Keep `explicit_apps` for older checks.
+    hub_map = dict(explicit) if explicit else _mock_map()
+    return {
+        "ok": True,
+        "hub_source": hub_source,
+        "explicit_apps": sorted(explicit.keys()),
+        "hub_map": hub_map,
+        "mock_map": hub_map,
+        "gym_pool": _gym_pool(),
+        "bridge_tick": _TICK,
+    }
+
+
 # ------------------------------------------------ single-episode (back-compat) --
 # These drive ONE shared world with no session id, so a multi-annotator deploy
 # leaves them off (BRIDGE_DEFAULT_SESSION=0, the default). The refusal shape is

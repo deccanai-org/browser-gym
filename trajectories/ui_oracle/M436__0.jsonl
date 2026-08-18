@@ -1,0 +1,285 @@
+{
+ "task_id": "M436/two_gifts_two_shares_one_cart",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "mail",
+   "action_kind": "open mail",
+   "action_args": {},
+   "reasoning": "Mum put the spending rule in writing, so I read it before touching the basket.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_000.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 1,
+   "app": "mail",
+   "action_kind": "search graduation",
+   "action_args": {},
+   "reasoning": "Find it.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_001.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 2,
+   "app": "mail",
+   "action_kind": "press Enter",
+   "action_args": {},
+   "reasoning": "Run it.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_002.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 3,
+   "app": "mail",
+   "action_kind": "read the rule",
+   "action_args": {},
+   "reasoning": "There is a per-head limit, and the basket currently holds an extra item for Mia that would break it. Alice said she could not remember which one Mia actually asked for \u2014 the thread says.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_003.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 4,
+   "app": "calendar",
+   "action_kind": "open calendar",
+   "action_args": {},
+   "reasoning": "Theo's is the tight one: his present has to arrive before his do starts, so I need the date of it.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_004.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 5,
+   "app": "calendar",
+   "action_kind": "read the date",
+   "action_args": {},
+   "reasoning": "Theo's graduation is the fixed deadline the delivery has to beat.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_005.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 6,
+   "app": "shop",
+   "action_kind": "open the basket",
+   "action_args": {},
+   "reasoning": "Now the basket Alice already filled.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_006.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 7,
+   "app": "shop",
+   "action_kind": "remove the spare",
+   "action_args": {},
+   "reasoning": "Three lines, and one of them is the spare charging stand Alice added because she could not remember. Keeping it would break Mia's share, so it comes out.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_007.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 8,
+   "app": "shop",
+   "action_kind": "ship notebooks to Theo",
+   "action_args": {},
+   "reasoning": "Theo and Mia live at opposite ends of New Jersey and she will not drive round. Each line ships to its own recipient \u2014 the notebook set to Theo.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_008.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 9,
+   "app": "shop",
+   "action_kind": "ship frame to Mia",
+   "action_args": {},
+   "reasoning": "And the photo frame to Mia. One order, two destinations.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_009.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 10,
+   "app": "shop",
+   "action_kind": "date Theo's line",
+   "action_args": {},
+   "reasoning": "Theo's is the deadline she cannot miss \u2014 his present has to be at his door before his do starts, so his line gets a delivery date rather than being left to the default window.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_010.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 11,
+   "app": "shop",
+   "action_kind": "proceed to checkout",
+   "action_args": {},
+   "reasoning": "Check out \u2014 one order, so it is one charge and one set of delivery.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_011.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 12,
+   "app": "shop",
+   "action_kind": "confirm step",
+   "action_args": {},
+   "reasoning": "The wizard opens on the card, because the account already has a default address. The per-line destinations I set in the basket are what route each gift, so the account default stays Alice's own.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_012.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 13,
+   "app": "shop",
+   "action_kind": "place the order",
+   "action_args": {},
+   "reasoning": "Place it \u2014 one order, two destinations, one charge.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_013.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 14,
+   "app": "mail",
+   "action_kind": "click Compose",
+   "action_args": {},
+   "reasoning": "Open a blank message to write the report into.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_014.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 15,
+   "app": "mail",
+   "action_kind": "fill To",
+   "action_args": {},
+   "reasoning": "Address it to Alice, as the brief asks.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_015.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 16,
+   "app": "mail",
+   "action_kind": "fill Subject",
+   "action_args": {},
+   "reasoning": "A subject that names the outcome.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_016.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 17,
+   "app": "mail",
+   "action_kind": "write body",
+   "action_args": {},
+   "reasoning": "She asked what each of them is getting, why, and the total \u2014 including what I removed and how much of Mia's share is left.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_017.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 18,
+   "app": "mail",
+   "action_kind": "click Send",
+   "action_args": {},
+   "reasoning": "Send it \u2014 this is the report the verifier reads.",
+   "screenshot_path": "screenshots/ui_oracle/M436__0/step_018.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "routed_each_gift_to_its_own_person",
+   "sent_as_a_single_order",
+   "stayed_inside_mias_share",
+   "theos_gift_dated_before_the_ceremony",
+   "reported_mias_remaining_share",
+   "reported_the_swap",
+   "reported_the_charged_total"
+  ],
+  "missed_milestones": [
+   "bought_the_charging_stand",
+   "broke_a_per_head_cap",
+   "sent_a_gift_to_alices_own_address",
+   "moved_or_deleted_theos_graduation",
+   "told_alice_the_stand_went_too"
+  ],
+  "all_milestones": [
+   {
+    "name": "routed_each_gift_to_its_own_person",
+    "weight": 0.2,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "sent_as_a_single_order",
+    "weight": 0.07,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "stayed_inside_mias_share",
+    "weight": 0.18,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "theos_gift_dated_before_the_ceremony",
+    "weight": 0.11,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "reported_mias_remaining_share",
+    "weight": 0.18,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "reported_the_swap",
+    "weight": 0.09,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "reported_the_charged_total",
+    "weight": 0.17,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "bought_the_charging_stand",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "broke_a_per_head_cap",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "sent_a_gift_to_alices_own_address",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "moved_or_deleted_theos_graduation",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "told_alice_the_stand_went_too",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   }
+  ]
+ }
+}

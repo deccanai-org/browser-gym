@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import ListingCard from '../components/ListingCard';
 
-const CONDITIONS = ['New', 'Open Box', 'Used', 'Refurbished', 'For Parts'];
+const CONDITIONS = ['New', 'Open Box', 'Good', 'Used', 'Refurbished', 'For Parts'];
 const FORMATS = ['Auction', 'Buy It Now'];
 
 // Brand facet: use a real listing.brand when present, else infer one from the

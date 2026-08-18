@@ -1,0 +1,26 @@
+{
+  "mode": "five_retune_sol_priority_gcp",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_episodes": 10,
+  "tasks": [
+    "M142/no_monitor_in_stock_high_rating",
+    "food_006/design_review_shared_platter",
+    "mp_002/ps5_controller_cap_infeasible_ask",
+    "mp_038/vireo_q7_cable_and_cheapest_case"
+  ],
+  "entries": [
+    {"index": 0, "task_id": "M142/no_monitor_in_stock_high_rating", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 1, "task_id": "M142/no_monitor_in_stock_high_rating", "seed": 1, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 2, "task_id": "M142/no_monitor_in_stock_high_rating", "seed": 2, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 3, "task_id": "food_006/design_review_shared_platter", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 4, "task_id": "food_006/design_review_shared_platter", "seed": 1, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 5, "task_id": "food_006/design_review_shared_platter", "seed": 2, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 6, "task_id": "mp_002/ps5_controller_cap_infeasible_ask", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 7, "task_id": "mp_002/ps5_controller_cap_infeasible_ask", "seed": 1, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 8, "task_id": "mp_002/ps5_controller_cap_infeasible_ask", "seed": 2, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 9, "task_id": "mp_038/vireo_q7_cable_and_cheapest_case", "seed": 2, "model": "gpt-5.6-sol", "agent": "openai_pixel"}
+  ],
+  "notes": "2026-08-10: GCP parallel for priority 3-seed confirms (M142, food_006, mp_002) + unfinished mp_038 seed2. md_002 local 3/3 done — omitted. Local mid-episodes left running (no kill)."
+}

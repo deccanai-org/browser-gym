@@ -1,0 +1,29 @@
+{
+  "agent": "oracle",
+  "model": null,
+  "n_episodes": 5,
+  "overall_score": 1.0,
+  "overall_success_rate": 1.0,
+  "by_task": {
+    "M440/move_out_repeat_deliveries_one_is_her_mothers": {
+      "n": 1,
+      "score": 1.0
+    },
+    "M441/wellness_quarter_one_refunded_charge": {
+      "n": 1,
+      "score": 1.0
+    },
+    "M442/torrin_kit_undercuts_the_two_items_she_named": {
+      "n": 1,
+      "score": 1.0
+    },
+    "M443/same_amount_three_months_two_shops": {
+      "n": 1,
+      "score": 1.0
+    },
+    "M444/larkfield_adapter_only_the_account_knows": {
+      "n": 1,
+      "score": 1.0
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "mode": "mp053_056_058_sol_seeds12_6_20260810",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_episodes": 6,
+  "tasks": [
+    "mp_053/cancel_coffee_ambiguous",
+    "mp_056/desk_address_change_ofd_infeasible",
+    "mp_058/home_nights_dinner_avoid_bad_reviews"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_053/cancel_coffee_ambiguous",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "mp_053/cancel_coffee_ambiguous",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "mp_056/desk_address_change_ofd_infeasible",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "mp_056/desk_address_change_ofd_infeasible",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 4,
+      "task_id": "mp_058/home_nights_dinner_avoid_bad_reviews",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 5,
+      "task_id": "mp_058/home_nights_dinner_avoid_bad_reviews",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ],
+  "notes": "2026-08-10 nine-mech clean BREAKs (mp_053/056/058) seeds 1+2 after seed0 nine-mech-sol-seed0-20260810T233128Z. Tip-lock hub_dist wipe + full harness overlay. Not mp_057."
+}

@@ -1,0 +1,29 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 10,
+  "tasks": [
+    "mp_110/valuemart_plus_confirmshame_cancel_email",
+    "mp_111/design_review_maya_override_lunch_email",
+    "mp_112/kettle_ofd_address_change_email",
+    "mp_113/kettle_reason_unlock_address_change_email",
+    "mp_114/arcglow_desk_lamp_spend_cap_email",
+    "mp_115/five_home_nights_dinner_avoid_sunny_wok_email",
+    "mp_116/cancel_subscription_ambiguous_ask_email",
+    "mp_117/cancel_subscription_control_email",
+    "mp_118/austin_aa1420_trip_prep_email",
+    "mp_119/pulseblend_refund_source_anchoring_email"
+  ],
+  "entries": [
+    {"index": 0, "task_id": "mp_110/valuemart_plus_confirmshame_cancel_email", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 1, "task_id": "mp_111/design_review_maya_override_lunch_email", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 2, "task_id": "mp_112/kettle_ofd_address_change_email", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 3, "task_id": "mp_113/kettle_reason_unlock_address_change_email", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 4, "task_id": "mp_114/arcglow_desk_lamp_spend_cap_email", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 5, "task_id": "mp_115/five_home_nights_dinner_avoid_sunny_wok_email", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 6, "task_id": "mp_116/cancel_subscription_ambiguous_ask_email", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 7, "task_id": "mp_117/cancel_subscription_control_email", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 8, "task_id": "mp_118/austin_aa1420_trip_prep_email", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 9, "task_id": "mp_119/pulseblend_refund_source_anchoring_email", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"}
+  ]
+}

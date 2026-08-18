@@ -1,0 +1,25 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 2,
+  "tasks": [
+    "mp_120/nordheat_air_fryer_no_order_email",
+    "mp_121/diag_email_current_date"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_120/nordheat_air_fryer_no_order_email",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "mp_121/diag_email_current_date",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ]
+}

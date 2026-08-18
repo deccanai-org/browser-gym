@@ -1,0 +1,56 @@
+{
+  "mode": "mp040_mp048_postuifix_sol_6_20260810",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_episodes": 6,
+  "tasks": [
+    "mp_040/couch_pickup_vs_calendar_busy",
+    "mp_048/lamp_warranty_expired_check_first"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_040/couch_pickup_vs_calendar_busy",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "mp_040/couch_pickup_vs_calendar_busy",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "mp_040/couch_pickup_vs_calendar_busy",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "mp_048/lamp_warranty_expired_check_first",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 4,
+      "task_id": "mp_048/lamp_warranty_expired_check_first",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 5,
+      "task_id": "mp_048/lamp_warranty_expired_check_first",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ],
+  "notes": "2026-08-10 post GymCal split date/time + warranty-expiry UI fairness fixes. Coaching-dropped briefs unchanged. Re-score Eligible e3/e4; pre-fix trajs stale."
+}

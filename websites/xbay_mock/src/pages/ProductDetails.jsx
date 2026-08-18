@@ -315,6 +315,7 @@ export default function ProductDetails() {
                       </div>
                     </div>
                     <button
+                      data-test-id="btn-buy-it-now"
                       onClick={handleBuyNow}
                       className="w-full bg-blue-100 text-xbay-blue border border-xbay-blue px-6 py-3 rounded-full font-bold hover:bg-blue-200 transition-colors mb-3"
                     >
@@ -369,8 +370,19 @@ export default function ProductDetails() {
               <div className="flex gap-3">
                 <Truck size={20} className="text-gray-400" />
                 <div>
-                  <div className="font-bold">Shipping: ${listing.shipping.toFixed(2)}</div>
-                  <div className="text-gray-500">Expedited Shipping available</div>
+                  {listing.pickupWindow ? (
+                    <div data-test-id="listing-pickup-window">
+                      <div className="font-bold">Local pickup</div>
+                      <div className="text-gray-500" data-test-id="listing-pickup-window-time">
+                        {listing.pickupWindow}
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="font-bold">Shipping: ${listing.shipping.toFixed(2)}</div>
+                      <div className="text-gray-500">Expedited Shipping available</div>
+                    </>
+                  )}
                 </div>
               </div>
               <div className="flex gap-3">
@@ -475,6 +487,7 @@ export default function ProductDetails() {
                 Cancel
               </button>
               <button
+                data-test-id="btn-confirm-purchase"
                 onClick={confirmBuyNow}
                 className="bg-xbay-blue text-white px-6 py-2 rounded-full font-bold hover:bg-blue-700"
               >

@@ -73,6 +73,8 @@ async def cart_add(
     restaurant_id: str = Form(...),
     dish_id: str = Form(...),
     quantity: int = Form(1),
+    # "no onions", "extra spicy" — the item modal has always collected this,
+    # and tools/bridge.py still posts it with food.add_to_cart.
     note: str = Form(""),
 ):
     world = _deps["get_world"]()
@@ -89,12 +91,11 @@ async def cart_add(
     return RedirectResponse(f"/food/restaurant/{restaurant_id}", 303)
 
 
-@router.post("/cart/set_qty")
-async def cart_set_qty(request: Request, dish_id: str = Form(...), quantity: int = Form(...)):
+@router.post("/cart/clear")
+async def cart_clear(request: Request):
     world = _deps["get_world"]()
-    r = F.set_dish_quantity(world.food, dish_id=dish_id, quantity=quantity)
-    if not r.get("ok"):
-        _deps["flash"](world.shop, "error", "Could not update that item.")
+    F.clear_cart(world.food)
+    _deps["flash"](world.shop, "success", "Food cart cleared.")
     return RedirectResponse("/food/cart", 303)
 
 
@@ -102,13 +103,49 @@ async def cart_set_qty(request: Request, dish_id: str = Form(...), quantity: int
 async def cart_remove(request: Request, dish_id: str = Form(...)):
     world = _deps["get_world"]()
     r = F.remove_dish(world.food, dish_id=dish_id)
-    if not r.get("ok"):
-        _deps["flash"](world.shop, "error", "Could not remove that item.")
+    if r.get("ok"):
+        _deps["flash"](world.shop, "success", "Removed from your food order.")
+    else:
+        _deps["flash"](world.shop, "error", r.get("error", "Could not remove that item."))
+    return RedirectResponse("/food/cart", 303)
+
+
+@router.post("/cart/set_qty")
+async def cart_set_qty(
+    request: Request,
+    dish_id: str = Form(...),
+    quantity: int = Form(...),
+):
+    world = _deps["get_world"]()
+    r = F.set_dish_qty(world.food, dish_id=dish_id, quantity=quantity)
+    if r.get("ok"):
+        _deps["flash"](world.shop, "success", "Updated your food order.")
+    else:
+        _deps["flash"](world.shop, "error", r.get("error", "Could not update that item."))
+    return RedirectResponse("/food/cart", 303)
+
+
+@router.post("/cart/schedule")
+async def cart_schedule(request: Request, scheduled_delivery: str = Form("")):
+    world = _deps["get_world"]()
+    if not getattr(world.food, "enable_schedule_ahead", False):
+        _deps["flash"](world.shop, "error", "Schedule-ahead is not available.")
+        return RedirectResponse("/food/cart", 303)
+    r = F.set_scheduled_delivery(world.food, scheduled_delivery)
+    if r.get("ok"):
+        day = r.get("scheduled_delivery")
+        msg = (f"Scheduled for {day}." if day else "Switched to deliver ASAP.")
+        _deps["flash"](world.shop, "success", msg)
+    else:
+        _deps["flash"](world.shop, "error", r.get("error", "Could not set schedule."))
     return RedirectResponse("/food/cart", 303)
 
 
 @router.post("/cart/promo")
 async def cart_promo(request: Request, code: str = Form("")):
+    # Backs the bridged mock's promo box and the tools/bridge.py
+    # "food.apply_promo" action; food.promos is what gives a wrong code
+    # something to be wrong against.
     world = _deps["get_world"]()
     r = F.apply_promo(world.food, code)
     if r.get("ok"):
@@ -119,35 +156,40 @@ async def cart_promo(request: Request, code: str = Form("")):
     return RedirectResponse("/food/cart", 303)
 
 
-@router.post("/order/{order_id}/cancel")
-async def order_cancel(request: Request, order_id: str):
-    world = _deps["get_world"]()
-    r = F.cancel_order(world.food, order_id)
-    if r.get("ok"):
-        _deps["flash"](world.shop, "success", "Order cancelled.")
-    else:
-        _deps["flash"](world.shop, "error", r.get("error", "Could not cancel."))
-    return RedirectResponse("/food", 303)
-
-
-@router.post("/cart/clear")
-async def cart_clear(request: Request):
-    world = _deps["get_world"]()
-    F.clear_cart(world.food)
-    _deps["flash"](world.shop, "success", "Food cart cleared.")
-    return RedirectResponse("/food/cart", 303)
-
-
 @router.post("/checkout")
-async def checkout(request: Request, delivery_note: str = Form("")):
+async def checkout(request: Request, delivery_note: str = Form(""),
+                   delivery_mode: str = Form("delivery"),
+                   scheduled_delivery: str = Form("")):
     world = _deps["get_world"]()
     # Only persist a note when the task opts into the delivery-instruction UI
     # (M362). Other tasks ignore the field even if somehow posted.
     note = delivery_note if getattr(world.food, "enable_delivery_notes", False) else None
-    r = F.place_food_order(world, delivery_note=note)
+    sched = None
+    if getattr(world.food, "enable_schedule_ahead", False):
+        sched = scheduled_delivery or world.food.cart.scheduled_delivery
+    r = F.place_food_order(
+        world, delivery_note=note, delivery_mode=delivery_mode,
+        scheduled_delivery=sched,
+    )
     if r.get("ok"):
-        _deps["flash"](world.shop, "success",
-                       f"Order placed! Arriving around {r['eta']}.")
+        when = r.get("scheduled_delivery")
+        msg = (f"Order placed for {when}! Arriving around {r['eta']}."
+               if when else f"Order placed! Arriving around {r['eta']}.")
+        _deps["flash"](world.shop, "success", msg)
         return RedirectResponse(f"/food/order/{r['order_id']}", 303)
     _deps["flash"](world.shop, "error", r.get("error", "Could not place order."))
     return RedirectResponse("/food/cart", 303)
+
+
+@router.post("/order/{order_id}/cancel")
+async def cancel_order(request: Request, order_id: str):
+    world = _deps["get_world"]()
+    r = F.cancel_food_order(world.food, order_id)
+    if r.get("ok"):
+        _deps["flash"](world.shop, "success", "Food order cancelled.")
+    else:
+        _deps["flash"](
+            world.shop, "error",
+            r.get("error", "Could not cancel that order."),
+        )
+    return RedirectResponse(f"/food/order/{order_id}", 303)

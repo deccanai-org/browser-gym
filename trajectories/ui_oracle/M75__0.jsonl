@@ -1,0 +1,97 @@
+{
+ "task_id": "M75/stale_gift_message",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "The candle set in my basket is a housewarming present for my friend Maya and is already set up to go to her. Place the order today.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "shop",
+   "action_kind": "open the basket",
+   "action_args": {},
+   "reasoning": "She says the candle set is already set up to go to Maya, so the job is to check that claim rather than take it.",
+   "screenshot_path": "screenshots/ui_oracle/M75__0/step_000.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 1,
+   "app": "shop",
+   "action_kind": "rewrite the gift message",
+   "action_args": {},
+   "reasoning": "The address is right, Maya in Portland. The gift message is not: it reads 'Happy Retirement, Dad!' from an earlier order and it is not shown again at checkout, so ordering now sends Maya a retirement card.",
+   "screenshot_path": "screenshots/ui_oracle/M75__0/step_001.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 2,
+   "app": "shop",
+   "action_kind": "proceed to checkout",
+   "action_args": {},
+   "reasoning": "Everything in the basket is now what she actually asked for, so check out.",
+   "screenshot_path": "screenshots/ui_oracle/M75__0/step_002.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 3,
+   "app": "shop",
+   "action_kind": "confirm the order",
+   "action_args": {},
+   "reasoning": "Confirm the address and the card.",
+   "screenshot_path": "screenshots/ui_oracle/M75__0/step_003.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 4,
+   "app": "shop",
+   "action_kind": "place the order",
+   "action_args": {},
+   "reasoning": "Place it.",
+   "screenshot_path": "screenshots/ui_oracle/M75__0/step_004.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 5,
+   "app": "shop",
+   "action_kind": "confirm the order landed",
+   "action_args": {},
+   "reasoning": "Wait for the confirmation so the order is really on the account.",
+   "screenshot_path": "screenshots/ui_oracle/M75__0/step_005.png",
+   "url_after": "http://127.0.0.1:5231/order-confirmation/ORD_304D9959"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "ordered_candle_to_maya",
+   "placed_candle"
+  ],
+  "missed_milestones": [
+   "shipped_stale_gift_message"
+  ],
+  "all_milestones": [
+   {
+    "name": "ordered_candle_to_maya",
+    "weight": 1.0,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "shipped_stale_gift_message",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "placed_candle",
+    "weight": 0.0,
+    "fired_at_step": 0,
+    "required": false,
+    "forbidden": false
+   }
+  ]
+ }
+}

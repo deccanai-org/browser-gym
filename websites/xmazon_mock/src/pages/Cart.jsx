@@ -25,31 +25,66 @@ const lineOpts = (item, patch) => ({
   ...patch,
 });
 
+// Shared settle window for free-text / date fields that must not commit
+// per-keystroke (engine round-trip + re-projection would fight the draft).
+const SETTLE_MS = 700;
+
 // The gift message is free text, so it needs a LOCAL draft: committing every
 // keystroke to the engine round-trips per character (dead-feeling box) and the
 // 2.5s re-projection would yank half-typed text back. Keep the draft here, and
-// only push to the engine on blur. Adopt engine updates only while unfocused so
-// the poll can't overwrite what the user is mid-typing.
+// push to the engine on blur, settle-timer, or explicit Save — agents often
+// type then click Checkout without a blur, which used to leave the stale note.
 const GiftMessageField = ({ item, onCommit }) => {
   const [draft, setDraft] = useState(item.gift_message || '');
   const editing = useRef(false);
+  const timer = useRef(null);
+  const engineValue = item.gift_message || '';
   useEffect(() => {
-    if (!editing.current) setDraft(item.gift_message || '');
-  }, [item.gift_message]);
+    if (!editing.current) setDraft(engineValue);
+  }, [engineValue]);
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  const commit = (val) => {
+    clearTimeout(timer.current);
+    if ((engineValue || '') !== val) onCommit(val);
+  };
+
   return (
-    <textarea
-      aria-label="Gift message"
-      value={draft}
-      placeholder="Add a gift message (optional)"
-      onFocus={() => { editing.current = true; }}
-      onChange={(e) => setDraft(e.target.value)}
-      onBlur={() => {
-        editing.current = false;
-        if ((item.gift_message || '') !== draft) onCommit(draft);
-      }}
-      rows={2}
-      className="w-full border rounded px-2 py-1 text-sm focus:outline-none focus:border-xmazon-orange"
-    />
+    <div className="space-y-1">
+      <textarea
+        aria-label="Gift message"
+        data-test-id={`input-gift-message-${item.productId}`}
+        value={draft}
+        placeholder="Add a gift message (optional)"
+        onFocus={() => { editing.current = true; }}
+        onChange={(e) => {
+          const val = e.target.value;
+          setDraft(val);
+          clearTimeout(timer.current);
+          timer.current = setTimeout(() => {
+            editing.current = false;
+            commit(val);
+          }, SETTLE_MS);
+        }}
+        onBlur={() => {
+          editing.current = false;
+          commit(draft);
+        }}
+        rows={2}
+        className="w-full border rounded px-2 py-1 text-sm focus:outline-none focus:border-xmazon-orange"
+      />
+      <button
+        type="button"
+        data-test-id={`btn-save-gift-message-${item.productId}`}
+        onClick={() => {
+          editing.current = false;
+          commit(draft);
+        }}
+        className="text-xs text-xmazon-blue hover:underline"
+      >
+        Save gift message
+      </button>
+    </div>
   );
 };
 
@@ -63,8 +98,8 @@ const GiftMessageField = ({ item, onCommit }) => {
 //
 // Committing on blur alone would strand the value for an agent that types and
 // never clicks away, so a settle timer commits too: one write per edit, from
-// either driver, without the per-segment churn.
-const SETTLE_MS = 700;
+// either driver, without the per-segment churn. SETTLE_MS is declared above and
+// shared with the other free-text fields.
 
 // A year out from the world's today. Long enough that no legitimate scheduled
 // delivery is ever refused, short enough that the year field cannot run away.
@@ -322,7 +357,11 @@ export const Cart = () => {
                             ))}
                           </select>
                           <span className="text-gray-300">|</span>
-                          <button onClick={() => removeFromCart(item.productId)} className="text-xmazon-blue hover:underline text-xs">Delete</button>
+                          <button
+                            data-test-id={`btn-remove-${item.productId}`}
+                            onClick={() => removeFromCart(item.productId)}
+                            className="text-xmazon-blue hover:underline text-xs"
+                          >Delete</button>
                           <span className="text-gray-300">|</span>
                           <button onClick={() => saveForLater(item.productId)} className="text-xmazon-blue hover:underline text-xs">Save for later</button>
                         </div>
@@ -355,6 +394,7 @@ export const Cart = () => {
                             <label className="block text-xs text-gray-600 mb-1">Ship this item to</label>
                             <select
                               aria-label="Ship this item to"
+                              data-test-id={`select-ship-address-${item.productId}`}
                               value={item.ship_to_address_id || ''}
                               onChange={(e) => setLineOptions(item.productId,
                                 lineOpts(item, { ship_to_address_id: e.target.value }))}
@@ -479,7 +519,7 @@ export const Cart = () => {
               )}
               <Button
                 className="w-full mb-4"
-                onClick={() => navigate('/checkout')}
+                data-test-id="btn-proceed-checkout" onClick={() => navigate('/checkout')}
               >
                 Proceed to checkout
               </Button>

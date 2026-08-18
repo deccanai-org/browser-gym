@@ -169,8 +169,10 @@ def transform_mail(mail: dict) -> dict:
                 "threadId": _thread_id(subject),
                 "from": {"name": _display_name(e.get("sender")), "email": e.get("sender")},
                 "to": [{"name": _display_name(to_addr), "email": to_addr}],
-                "cc": [],
-                "bcc": [],
+                "cc": [{"name": _display_name(a.strip()), "email": a.strip()}
+                       for a in (e.get("cc") or "").split(",") if a.strip()],
+                "bcc": [{"name": _display_name(a.strip()), "email": a.strip()}
+                        for a in (e.get("bcc") or "").split(",") if a.strip()],
                 "subject": subject,
                 "body": (e.get("body") or "").replace("\n", "<br>"),
                 "timestamp": _iso(e.get("received_at")),
@@ -291,10 +293,12 @@ _AMAZON_CAT = {
     "books": "Books", "book": "Books",
     "home": "Home & Kitchen", "kitchen": "Home & Kitchen", "grocery": "Home & Kitchen",
     "fashion": "Fashion", "clothing": "Fashion", "apparel": "Fashion",
-    "shoes": "Fashion",
+    "shoes": "Fashion", "jewelry": "Fashion", "jewellery": "Fashion",
+    "accessories": "Fashion",
     "toys": "Toys & Games", "games": "Toys & Games", "beauty": "Beauty",
     "office": "Office Products", "pet": "Pet Supplies",
     "health": "Health & Household",
+    "sports": "Sports & Outdoors",
     # Warranties, installation and gift-wrap are line items with nothing to
     # shelve; they get their own aisle rather than being filed as a gadget.
     "services": "Services",
@@ -350,10 +354,11 @@ _UBER_CATEGORIES = [
     {"id": "cat_13", "name": "Sandwich", "icon": "\U0001F96A"}, {"id": "cat_14", "name": "Korean", "icon": "\U0001F372"},
     {"id": "cat_15", "name": "Mediterranean", "icon": "\U0001F959"},
 ]
-# The one account holder, identical across all five apps. Verifiers key on
-# alice@shopgym.com (152 refs), so this is both the canonical and the safe value.
+# The one account holder, identical across all five apps. User mailbox /
+# notify identity is alice@shopmail.com (ShopMail account). Do not confuse
+# with ShopGym commerce support addresses (support@shopgym.com, etc.).
 ALICE_NAME = "Alice Anderson"
-ALICE_EMAIL = "alice@shopgym.com"
+ALICE_EMAIL = "alice@shopmail.com"
 
 # The gym's frozen "now" (ms), 2026-05-21 12:00 UTC — the same instant the
 # calendar/market/food projections freeze to. Projected so every app computes
@@ -367,7 +372,7 @@ _GYM_NOW_MS = int(_dt.datetime(2026, 5, 21, 12, 0, 0, tzinfo=_dt.timezone.utc).t
 def _acct_email(raw: str | None) -> str:
     """Normalise the account email to the canonical address, but keep a genuinely
     task-set one (e.g. a change-email task's alice.new@shopgym.com). The engine
-    seeds a bare @example.com placeholder that should read as alice@shopgym.com."""
+    seeds a bare @example.com placeholder that should read as alice@shopmail.com."""
     if not raw or str(raw).endswith("@example.com"):
         return ALICE_EMAIL
     return raw
@@ -415,12 +420,15 @@ def _amazon_address(a: dict) -> dict:
         street = f"{street}, {a['line2']}"
     return {"id": a.get("id"), "fullName": a.get("full_name"), "street": street,
             "city": a.get("city"), "state": a.get("state"), "zip": a.get("zip"),
-            "country": "United States", "phone": "555-0123", "isDefault": bool(a.get("is_default"))}
+            "country": "United States", "phone": "555-0123", "isDefault": bool(a.get("is_default")),
+            "label": a.get("label") or ""}
 
 
 def _amazon_payment(p: dict) -> dict:
     return {"id": p.get("id"), "last4": _last4(p.get("label")), "brand": _pay_brand(p),
-            "expiry": p.get("expires") or "", "isDefault": bool(p.get("is_default"))}
+            "expiry": p.get("expires") or "", "isDefault": bool(p.get("is_default")),
+            "label": p.get("label") or "", "nickname": p.get("nickname") or "",
+            "kind": p.get("kind") or "", "balance": p.get("balance")}
 
 
 def _order_payment(pay_by_id: dict, payment_id: str | None, def_pay: dict) -> dict:
@@ -487,18 +495,37 @@ def transform_shop(shop: dict) -> dict:
     gu = users.get(uid) if uid else next(iter(users.values()), None)
 
     products, reviews = [], []
+    wishlist_ids: list[str] = []
     for p in (shop.get("products") or {}).values():
         stock = p.get("stock") or 0
+        tags = list(p.get("tags") or [])
+        # Task-local UI shelf: products tagged wishlist_seed appear on /wishlist.
+        # (Engine does not own wishlist; projection seeds it once, poll keeps prev.)
+        if "wishlist_seed" in tags:
+            wishlist_ids.append(p["id"])
+        was_price = None
+        for t in tags:
+            if isinstance(t, str) and t.startswith("was_price:"):
+                try:
+                    was_price = float(t.split(":", 1)[1])
+                except ValueError:
+                    was_price = None
+        variants = [
+            {"id": v.get("id"), "label": v.get("label") or "",
+             "attributes": v.get("attributes") or {}}
+            for v in (p.get("variants") or [])
+        ]
         products.append({
             "id": p["id"], "title": p.get("name"), "price": p.get("base_price"),
-            "originalPrice": None, "rating": p.get("rating"), "reviewCount": p.get("review_count"),
+            "originalPrice": was_price, "rating": p.get("rating"), "reviewCount": p.get("review_count"),
             "image": _product_image(p["id"], p.get("name")),
             "images": [_product_image(p["id"], p.get("name"))],
             "description": p.get("long_description") or p.get("short_description") or "",
-            "bulletPoints": p.get("tags") or [],
+            "bulletPoints": tags,
             "specs": {"Brand": p.get("brand"), "Weight": f"{p.get('weight_kg')} kg", "Emoji": p.get("image_emoji")},
             "category": _amazon_category(p),
             "brand": p.get("brand"), "prime": True, "inStock": stock > 0, "stockCount": stock,
+            "variants": variants,
             # The store is branded ShopGym; the old value re-introduced on every
             # product the exact name the rebrand took out of the mock.
             "seller": "ShopGym", "badges": (["Best Seller"] if (p.get("rating") or 0) >= 4.5 else []),
@@ -530,6 +557,8 @@ def transform_shop(shop: dict) -> dict:
             # Profile's 2FA section reads user.two_fa_enabled; without it the UI
             # never showed the enabled state even after a successful engine enable.
             "two_fa_enabled": bool((gu or {}).get("two_fa_enabled")),
+            "loyaltyTier": (gu or {}).get("loyalty_tier") or "basic",
+            "loyaltyPoints": int((gu or {}).get("loyalty_points") or 0),
             "address": def_addr, "addresses": addrs, "paymentMethod": def_pay, "paymentMethods": pays}
 
     agg: dict = {}
@@ -554,18 +583,48 @@ def transform_shop(shop: dict) -> dict:
             for pid, q in agg.items()]
 
     # returns: a gym ReturnRequest flips its order's amazon status to "Returned"
-    returned_order_ids = {r.get("order_id") for r in (shop.get("returns") or {}).values()}
+    # and supplies a named refundStatus independent of any support-email claim.
+    refunds_by_order: dict[str, str] = {}
+    returned_order_ids = set()
+    for r in (shop.get("returns") or {}).values():
+        oid = r.get("order_id")
+        if not oid:
+            continue
+        returned_order_ids.add(oid)
+        st = (r.get("status") or "").lower()
+        method = (r.get("refund_method") or "").replace("_", " ")
+        if st == "refunded":
+            label = "Refunded"
+        elif st:
+            label = f"Return {st}"
+        else:
+            label = "Return on file"
+        if method:
+            label = f"{label} — {method}"
+        refunds_by_order[oid] = label
     orders = []
     for o in (shop.get("orders") or {}).values():
         status = "Returned" if o.get("id") in returned_order_ids else \
             _AMZ_STATUS.get((o.get("status") or "").lower(), "Delivered")
-        orders.append({"id": o.get("id"), "date": o.get("placed_at") or "2024-01-01T00:00:00.000Z",
+        oid = o.get("id")
+        refund_status = refunds_by_order.get(oid) or "No refunds posted"
+        prod_by_id = {p["id"]: p for p in products}
+        items_out = []
+        for i in (o.get("items") or []):
+            prod = prod_by_id.get(i.get("product_id")) or {}
+            items_out.append({
+                "id": i.get("id"), "productId": i.get("product_id"),
+                "quantity": i.get("quantity") or 1,
+                "variantId": i.get("variant_id") or "",
+                "variantLabel": i.get("variant_label") or "",
+                "availableVariants": prod.get("variants") or [],
+            })
+        orders.append({"id": oid, "date": o.get("placed_at") or "2024-01-01T00:00:00.000Z",
                        "status": status, "total": o.get("total"),
+                       "refundStatus": refund_status,
                        # keep the real order-ITEM id (initiate_return validates
                        # against it, not the product id) so returns can succeed.
-                       "items": [{"id": i.get("id"), "productId": i.get("product_id"),
-                                  "quantity": i.get("quantity") or 1}
-                                 for i in (o.get("items") or [])],
+                       "items": items_out,
                        # gym ship-to is per LINE; order level = the first line's.
                        "shippingAddress": addr_by_id.get(
                            ((o.get("items") or [{}])[0]).get("ship_to_address_id")) or def_addr,
@@ -573,7 +632,10 @@ def transform_shop(shop: dict) -> dict:
                        # tracking # + eta come from the order's first shipment so the
                        # realistic UI actually shows the live tracking an agent must read.
                        "trackingNumber": (o.get("shipments") or [{}])[0].get("tracking_number"),
-                       "estimatedDelivery": (o.get("shipments") or [{}])[0].get("estimated_delivery")})
+                       "estimatedDelivery": (o.get("shipments") or [{}])[0].get("estimated_delivery"),
+                       "shippingSpeed": o.get("shipping_speed") or "standard",
+                       # Optional seed field for Upgrade-to-Express target ETA (mp_103).
+                       "estimatedDeliveryExpress": o.get("express_eta") or o.get("estimated_delivery_express") or ""})
 
     # promotions -> a strikethrough deal price on the targeted product (amazon's
     # only native deal field), plus the raw promos preserved for verification.
@@ -596,7 +658,8 @@ def transform_shop(shop: dict) -> dict:
             # recentlyViewed/recentSearches are the mock's only native engagement
             # signal (ProductDetail + Header write them as the agent browses), so
             # they MUST start empty -- pre-filling them forges "the agent looked".
-            "wishlist": [], "savedForLater": [],
+            # wishlist_seed tags (above) populate the local shelf for PARTIAL tasks.
+            "wishlist": list(wishlist_ids), "savedForLater": [],
             "orders": orders, "reviews": reviews,
             "recentSearches": [], "recentlyViewed": [],
             # No native amazon UI for these gym concepts -> preserved (not dropped),
@@ -608,8 +671,10 @@ def transform_shop(shop: dict) -> dict:
             # gift-wrap, split-ship and payment breakers verify against are kept here.
             "_gym_orders": list((shop.get("orders") or {}).values()),
             "_gym_cart_detail": {"items": (shop.get("cart") or {}).get("items") or [],
-                                 "applied_promo": (shop.get("cart") or {}).get("applied_promo")},
+                                "applied_promo": (shop.get("cart") or {}).get("applied_promo")},
             "_gym_returns": list((shop.get("returns") or {}).values()),
+            "_gym_support_tickets": list((shop.get("support_tickets") or {}).values()),
+            "_gym_registries": list((shop.get("registries") or {}).values()),
             "_gym_meta": _gym_meta(shop, "shop")}
 
 
@@ -617,7 +682,13 @@ def transform_shop(shop: dict) -> dict:
 # ValueMart mirrors a slice of the shop catalog, so it emits far fewer
 # categories — but its default was the same silent one, and "Other" hides a
 # mis-shelved listing just as well as "Electronics" does.
-_EBAY_CAT = {"electronics": "Electronics", "audio": "Electronics", "home": "Home", "grocery": "Other"}
+_EBAY_CAT = {
+    "electronics": "Electronics",
+    "audio": "Electronics",
+    "home": "Home",
+    "grocery": "Other",
+    "sports": "Sporting Goods",
+}
 
 
 def _ebay_category(pid: str, product: dict) -> str:
@@ -652,18 +723,41 @@ def transform_market(m: dict) -> dict:
                 ordered_pids.add(it["product_id"])
 
     listings = []
+    extra_sellers: list[dict] = []
+    seen_sellers = {seller_id, buyer_id}
     for pid, p in (m.get("products") or {}).items():
         price = p.get("price") if p.get("price") is not None else 0.0  # a fixed listing must have a price
-        listings.append({
-            "id": pid, "sellerId": seller_id, "title": p.get("name"),
+        ship = float(p.get("shipping_cost") or 0.0)
+        cond = p.get("condition") or "New"
+        sid = p.get("seller_id") or seller_id
+        if sid not in seen_sellers:
+            seen_sellers.add(sid)
+            uname = p.get("seller_username") or sid
+            extra_sellers.append({
+                "id": sid, "username": uname,
+                "email": f"{sid}@valuemart.example.com",
+                "avatar": _svg_tile(uname, "seller"),
+                "feedbackScore": int(p.get("seller_feedback_score") or 0),
+                "feedbackRating": float(p.get("seller_feedback_rating") or 0.0),
+            })
+        listing = {
+            "id": pid, "sellerId": sid, "title": p.get("name"),
             "description": p.get("description") or "", "images": [_market_image(pid, p.get("name"))],
             "type": "fixed", "startingBid": None, "currentBid": None, "price": price,
             "buyItNowPrice": price, "bids": [], "watchers": [], "views": 0, "endTime": end_ms,
-            "condition": "New", "shippingCost": 0.0, "location": "United States",
+            "condition": cond, "shippingCost": ship, "shipping": ship, "location": "United States",
             "status": "sold" if pid in ordered_pids else "active",
             "quantity": 1 if p.get("in_stock") else 0,
             "category": _ebay_category(pid, p),
-        })
+        }
+        # Prefer explicit MarketProduct.brand so Brand facet ≠ title keyword map
+        # (e.g. coffee → HomeChef) when the seed sets Breville / Cuisinart / ….
+        if p.get("brand"):
+            listing["brand"] = p.get("brand")
+        # Local-pickup window → tip PDP banner (mp_091-class schedule tasks).
+        if p.get("pickup_window"):
+            listing["pickupWindow"] = p.get("pickup_window")
+        listings.append(listing)
     cart = [it.get("product_id") for it in ((m.get("cart") or {}).get("items") or []) if it.get("product_id")]
     # Ship-to addresses + payment methods on file, so ValueMart checkout has a
     # real address/payment selection (was: only a cosmetic country dropdown).
@@ -683,10 +777,10 @@ def transform_market(m: dict) -> dict:
                        "items": pids, "listingId": pids[0] if pids else None,
                        "amount": o.get("total"), "total": o.get("total"),
                        "shippingAddressId": o.get("shipping_address_id"), "paymentId": o.get("payment_id"),
-                       "status": "completed", "created": end_ms, "date": end_ms})
+                       "status": (o.get("status") or "completed"), "created": end_ms, "date": end_ms})
     amb_listings, amb_sellers = _amb.build_market(_svg_tile)   # browse-only filler
     listings = listings + amb_listings
-    return {"currentUser": buyer, "users": [buyer, seller] + amb_sellers, "listings": listings, "orders": orders,
+    return {"currentUser": buyer, "users": [buyer, seller] + extra_sellers + amb_sellers, "listings": listings, "orders": orders,
             "messages": [], "notifications": [], "feedbacks": [], "cart": cart,
             "addresses": addresses, "paymentMethods": payment_methods,
             # derive the default from the isDefault flags (the world dict is asdict(),
@@ -711,6 +805,12 @@ def transform_market(m: dict) -> dict:
             "_gym_coupons": list((m.get("coupons") or {}).values()),
             "_gym_cart_detail": (m.get("cart") or {}).get("items") or [],
             "_gym_orders": list((m.get("orders") or {}).values()),
+            "_gym_seller_listings": list((m.get("seller_listings") or {}).values()),
+            "_gym_membership": m.get("membership"),
+            "enableSellerCreate": bool(m.get("enable_seller_create")),
+            "enableMembershipCancel": bool(m.get("enable_membership_cancel")),
+            "silentNoopFirstListing": bool(m.get("silent_noop_first_listing")),
+            "createListingAttempts": int(m.get("create_listing_attempts") or 0),
             "_gym_meta": _gym_meta(m, "market")}
 
 
@@ -732,6 +832,40 @@ _CAL_OTHER = [
 _CAL_COLOR = {c["id"]: c["color"] for c in _CAL_DEFAULTS}
 
 
+def _calendar_gym_now_iso(cal: dict) -> str:
+    """Task-overridable frozen clock for GymCal (local wall ISO, no Z).
+
+    Prefer ``CalendarState.gym_now`` when a task sets it (e.g. mp_032 12:40
+    before lunch). Default noon on the gym SEED day so the red now-line and
+    Quick Add "today" land in the same frozen day as seed events.
+    """
+    raw = (cal.get("gym_now") or "").strip()
+    if raw:
+        # Accept "YYYY-MM-DDTHH:MM" or with seconds; strip trailing Z if present.
+        raw = raw.rstrip("Z")
+        if len(raw) == 16:  # YYYY-MM-DDTHH:MM
+            raw = f"{raw}:00"
+        return raw
+    return f"{TODAY}T12:00:00"
+
+
+def _iso_local_to_ms(iso: str) -> int:
+    """Parse local-wall ISO to epoch ms without shifting by operator TZ.
+
+    Events are stored as wall times; the mock parses them with ``new Date(iso)``
+    (local). For the numeric ``_gym_now`` mirror we keep a UTC-pinned noon
+    default elsewhere — here we encode the wall components as UTC so the ms
+    value round-trips to the same clock face in the mock helpers.
+    """
+    try:
+        dt = _dt.datetime.fromisoformat(iso)
+    except ValueError:
+        dt = _dt.datetime(2026, 5, 21, 12, 0, 0)
+    # Treat wall components as UTC for a stable ms token (mock uses Date ctor
+    # on the ISO string for the red line; ms is a secondary mirror).
+    return int(dt.replace(tzinfo=_dt.timezone.utc).timestamp() * 1000)
+
+
 def transform_calendar(cal: dict) -> dict:
     """gym CalendarState -> google_calendar_mock (events[] + fixed calendar scaffolding)."""
     name = cal.get("account_name") or ALICE_NAME
@@ -751,24 +885,32 @@ def transform_calendar(cal: dict) -> dict:
         # picks Work/Family/... in the event modal). Hardcoding "c1" here snapped
         # every event back to the default calendar on the next bridge poll.
         cid = e.get("calendar_id") or "c1"
+        status = (e.get("status") or "confirmed").strip().lower() or "confirmed"
+        if status not in ("confirmed", "tentative", "cancelled"):
+            status = "confirmed"
         events.append({"id": e.get("id"), "calendarId": cid, "title": e.get("title") or "(No Title)",
                        "start": f"{day}T{e.get('start')}:00", "end": f"{day}T{e.get('end')}:00",
                        "allDay": bool(e.get("all_day")), "location": e.get("location") or "",
                        "description": e.get("description") or "",
                        "color": _CAL_COLOR.get(cid, "#039BE5"), "recurring": e.get("recurring") or "none",
                        "reminderMinutes": e.get("reminder_minutes"),
+                       "status": status,
                        "source": e.get("source") or "seed"})
     # Browse-only ambient events so the week isn't near-empty. Off the two frozen
     # gym-gate days, source='seed', new ids — invisible to the calendar verifiers.
     events = events + _ambient_calendar_events()
+    gym_now_iso = _calendar_gym_now_iso(cal)
+    # currentDate must follow task gym_now (e.g. mp_066 June windows); hardcoding
+    # SEED_DATE May 21 left June events off-screen in week view.
+    _view_day = (gym_now_iso[:10] if len(gym_now_iso) >= 10 else TODAY)
     return {"user": user, "calendars": _CAL_DEFAULTS, "otherCalendars": _CAL_OTHER, "events": events,
-            # the gym's FROZEN today (stable, unlike currentDate which the user
-            # navigates) so "Today"/create-defaults/today-highlight don't jump to
-            # the real system date where there are no seed events.
-            "_gym_today": f"{TODAY}T00:00:00",
+            # Frozen task clock (date + time-of-day). Drives Today highlight AND
+            # the red now-line — must not be wall-clock Date.now().
+            "_gym_today": gym_now_iso,
+            "_gym_now": _iso_local_to_ms(gym_now_iso),
             # The frozen gym clock, NOT the earliest event -- deriving it from the
             # events opened 23 tasks on the wrong "today".
-            "view": "week", "currentDate": f"{TODAY}T00:00:00", "sidebarOpen": True,
+            "view": "week", "currentDate": f"{_view_day}T00:00:00", "sidebarOpen": True,
             "settings": {"weekStart": 0, "defaultDuration": 60, "defaultView": "week",
                          "defaultReminder": {"type": "popup", "minutes": 10}, "timeFormat": "12h",
                          "showWeekNumbers": False, "showDeclinedEvents": False},
@@ -791,11 +933,37 @@ _FOOD_EPOCH_MS = int(_dt.datetime(2026, 5, 21, 12, 0, 0,
                                   tzinfo=_dt.timezone.utc).timestamp() * 1000)
 
 
+def _food_eta_window_iso(eta_label: str, placed_at: str | None) -> tuple[str | None, str | None]:
+    """Map gym ``eta_label`` like ``3:20 PM`` to OrderTracking ISO min/max."""
+    import re
+
+    m = re.match(r"^\s*(\d{1,2}):(\d{2})\s*(AM|PM)\s*$", (eta_label or "").strip(), re.I)
+    if not m:
+        return None, None
+    h, mi, ap = int(m.group(1)), int(m.group(2)), m.group(3).upper()
+    if ap == "PM" and h != 12:
+        h += 12
+    if ap == "AM" and h == 12:
+        h = 0
+    day = "2026-05-21"
+    if placed_at and "T" in str(placed_at):
+        day = str(placed_at).split("T", 1)[0]
+    try:
+        arrival = _dt.datetime(int(day[0:4]), int(day[5:7]), int(day[8:10]), h, mi)
+    except Exception:
+        return None, None
+    # ±5 min window so the tracking page's "A - B" range still names the ETA.
+    lo = (arrival - _dt.timedelta(minutes=5)).isoformat()
+    hi = (arrival + _dt.timedelta(minutes=5)).isoformat()
+    return lo, hi
+
+
 # Food photos (Adobe Stock free collection) live at /assets/food/<key>.jpg in
 # the uber_eats mock. Restaurants map by id; dishes map by id, else by a keyword
 # on the dish name so a new dish still gets a plausible photo instead of blank.
 _REST_IMAGE = {"r_sushi": "rest_sushi", "r_burger": "rest_burger",
-               "r_bean": "rest_bean", "r_tony": "rest_pizza"}
+               "r_bean": "rest_bean", "r_tony": "rest_pizza",
+               "r_leaf": "rest_bean"}
 _DISH_IMAGE = {
     "d_salmon_roll": "sushi", "d_av_roll": "sushi", "d_avocado_veg_roll": "sushi",
     "d_veg_platter_342": "sushi", "d_party_platter": "sushi", "d_tuna_bowl": "poke_bowl",
@@ -836,7 +1004,31 @@ def _dish_image(did: str, name: str) -> str:
     return _food_img(key)
 
 
-def transform_food(food: dict) -> dict:
+# Tasks that must not show the ambient GymEats decoy catalog (agent thrash /
+# shopping diversion). Seeded restaurants + orders only.
+_SKIP_AMBIENT_FOOD_PREFIXES = (
+    "cal_food_008/",
+    "mp_058/",
+    # mp remaining batch: food arms are seeded restaurants; ambient thrash burned
+    # mp_008/014 on the prior LH∩RUNNABLE Sol run.
+    "mp_003/", "mp_005/", "mp_012/", "mp_016/", "mp_019/", "mp_026/",
+    "mp_032/",
+    # food_003: dietary∩timing gold is only Leaf & Grain — ambient decoys would
+    # muddy the named BB/Sakura trap.
+    "food_003/",
+    # food_006: same named BB/Sakura trap + third-restaurant gold.
+    "food_006/",
+    # mp_093: prior Thursday team-lunch history must stay deterministic.
+    "mp_093/",
+)
+
+
+def _skip_ambient_food(task_id: str | None) -> bool:
+    tid = task_id or ""
+    return any(tid.startswith(p) for p in _SKIP_AMBIENT_FOOD_PREFIXES)
+
+
+def transform_food(food: dict, task_id: str | None = None) -> dict:
     """gym FoodState -> uber_eats_mock (restaurants[], menuItems[])."""
     restaurants, menu_items = [], []
     for rid, r in (food.get("restaurants") or {}).items():
@@ -848,7 +1040,11 @@ def transform_food(food: dict) -> dict:
                                "imageUrl": _dish_image(d.get("id"), d.get("name")),
                                "isPopular": bool(d.get("popular")), "isAvailable": True,
                                "dietaryTags": [_DIETARY[t.lower()] for t in tags if t.lower() in _DIETARY],
+                               # Per-SKU absolute arrival ("6:15 PM") for late-trap dishes.
+                               "etaLabel": d.get("eta_label") or None,
                                "customizationGroups": []})
+        dt_min = int(r.get("delivery_time_min") or 20)
+        dt_max = int(r.get("delivery_time_max") or 40)
         restaurants.append({"id": rid, "name": r.get("name"), "imageUrl": _rest_image(rid),
                             "cuisineType": [r.get("cuisine")] if r.get("cuisine") else [],
                             "rating": r.get("rating"), "reviewCount": 60 + (len(rid) * 11) % 240,
@@ -857,34 +1053,40 @@ def transform_food(food: dict) -> dict:
                             # only has a generic min/max window, so tasks gated on "will it get
                             # here by 7pm" need the real label carried alongside it.
                             "etaLabel": r.get("eta_label"),
-                            "deliveryTimeMin": 20, "deliveryTimeMax": 40, "distance": 1.0, "isOpen": True,
+                            "deliveryTimeMin": dt_min,
+                            "deliveryTimeMax": dt_max,
+                            "distance": 1.0, "isOpen": True,
                             "hours": "", "address": "", "phone": "", "isSponsored": False, "promotions": [],
                             "categories": [], "tags": [], "supportsPickup": True,
-                            "pickupTimeMin": 10, "pickupTimeMax": 20})
+                            # Keep pickup windows coherent with seeded under-30 traps
+                            # (was hardcoded 10–20, which hid slow restaurants in Pickup).
+                            "pickupTimeMin": dt_min,
+                            "pickupTimeMax": dt_max})
 
-    # Ambient browse content. Real task restaurants also get a couple of reviews
-    # so their store page isn't blank.
+# Ambient browse content (tools/ambient_food.py), appended to the projection so
+    # the cuisine categories aren't near-empty. Real task restaurants also get a
+    # couple of reviews so their store page isn't blank.
     #
-    # AMBIENT RESTAURANTS ARE NO LONGER LISTED. They were projection-only, which
-    # was described as "purely additive ... no verifier sees it". No verifier
-    # did, but the AGENT did: the engine holds three restaurants and the store
+    # It is projection-only and never enters the engine world, and that is exactly
+    # why it is OFF by default. The engine held three restaurants while the store
     # listed forty-two, so food.add_to_cart against any of the other thirty-nine
     # returned "no such restaurant" and the mock dropped the error on the floor.
-    # A model picked one, watched its basket stay empty, and spent fifty-four
-    # steps testing three restaurants, the wallet and the address book before the
-    # episode timed out. A storefront where nine listings in ten silently fail is
-    # not ambience, it is a broken shop.
+    # A model picked one, watched its basket stay empty, and burned fifty-four
+    # steps before the episode timed out. It also broke M248, whose premise is a
+    # catalogue with ZERO vegan items, while the ambient menu shipped 35 tagged
+    # Vegan. Density is worth less than a storefront where every listing works.
     #
-    # Removing them also repairs M248, whose premise is that the catalogue holds
-    # ZERO vegan items: the ambient menu shipped 35 items tagged Vegan, so on the
-    # realistic UI that task was asserting something the agent could see was
-    # false. Density is the thing being traded away, and correctness is worth
-    # more than density.
-    #
-    # Set GYM_FOOD_AMBIENT=1 to restore the old listing behaviour.
+    # Set GYM_FOOD_AMBIENT=1 to list it again. _skip_ambient_food() still applies
+    # on top, so tasks that must not see decoys stay clean either way.
     from tools.ambient_food import (build_ambient, ambient_orders,
                                     AMBIENT_FAVORITES, _REVIEW_POOL)
-    amb_rests, amb_menu, reviews = build_ambient(_food_img, _svg_tile)
+    skip_ambient = _skip_ambient_food(task_id)
+    reviews: list = []
+    if skip_ambient:
+        amb_rests, amb_menu = [], []
+        favorites: list = []
+    else:
+        amb_rests, amb_menu, reviews = build_ambient(_food_img, _svg_tile)
     for i, rr in enumerate(restaurants):
         for j in range(2):
             who, stars, text = _REVIEW_POOL[(i * 2 + j) % len(_REVIEW_POOL)]
@@ -907,6 +1109,8 @@ def transform_food(food: dict) -> dict:
             "phone": "(718) 555-0100", "avatarUrl": "",
             "addresses": [dict(_UBER_ADDR)], "defaultAddressId": _UBER_ADDR["id"],
             "paymentMethods": [dict(p) for p in _UBER_PAYS], "defaultPaymentId": _UBER_PAY["id"],
+            # _favs, not AMBIENT_FAVORITES: a favourite pointing at a restaurant
+            # that isn't listed renders as a dead card on the home screen.
             "uberOneActive": False, "favoriteRestaurantIds": _favs}
     # The mock's normalizeCartItem/normalizeOrderItem both want
     # {cartItemId, menuItem:{...}, quantity, modifiers, instructions} and nest the
@@ -923,8 +1127,12 @@ def transform_food(food: dict) -> dict:
     # cart: gym FoodCart -> uber cart. deepMergeWithDefaults rebuilds `cart` as
     # {restaurantId, items} only, so tip/mode/delivery_note are kept in _gym_food_cart.
     fc = food.get("cart") or {}
+    sched_day = fc.get("scheduled_delivery") or None
     cart = {"restaurantId": fc.get("restaurant_id"),
-            "items": [_line(it, i, "cart_item") for i, it in enumerate(fc.get("items") or [])]}
+            "items": [_line(it, i, "cart_item") for i, it in enumerate(fc.get("items") or [])],
+            # Durable schedule-ahead day (YYYY-MM-DD); hub Now/Schedule + checkout
+            # read cart.scheduledTime / ui.scheduledTime.
+            "scheduledTime": sched_day}
 
     # orders: gym FoodOrder -> uber order
     orders = []
@@ -944,6 +1152,11 @@ def transform_food(food: dict) -> dict:
             residual = round(total - sub - fee, 2)
             tax = round(residual * 0.6, 2) if residual > 0 else 0.0
             service = round(residual - tax, 2) if residual > 0 else 0.0
+        # Absolute arrival label ("3:20 PM") must be visible on order details —
+        # OrderTracking reads estimatedDeliveryMin/Max; also keep etaLabel for
+        # list cards / ambient parity.
+        eta_label = o.get("eta_label") or ""
+        eta_min_iso, eta_max_iso = _food_eta_window_iso(eta_label, o.get("placed_at"))
         orders.append({"id": o.get("id"), "userId": user["id"], "restaurantId": o.get("restaurant_id"),
                        "restaurantName": o.get("restaurant_name"),
                        "items": [_line(it, i, f"{o.get('id')}_item")
@@ -957,31 +1170,49 @@ def transform_food(food: dict) -> dict:
                        # placeholder "delivery address" without these two.
                        "deliveryAddress": dict(_UBER_ADDR),
                        "deliveryPerson": dict(_UBER_COURIER),
+                       "deliveryMode": (o.get("delivery_mode") or "delivery"),
                        "deliveryDetails": {"note": o.get("delivery_note") or "",
                                            "address": dict(_UBER_ADDR)},
                        # Tracking + receipt read order.paymentMethod; without it they
                        # printed "Paid with undefined".
                        "paymentMethod": _UBER_PAY["label"],
+                       "etaLabel": eta_label,
+                       "estimatedDeliveryMin": eta_min_iso,
+                       "estimatedDeliveryMax": eta_max_iso,
+                       "scheduledDelivery": o.get("scheduled_delivery"),
+                       "scheduled_delivery": o.get("scheduled_delivery"),
                        "total": {"subtotal": sub, "fee": fee, "tax": tax,
                                  "serviceFee": service, "total": total}})
     active = orders[-1]["id"] if orders else None
     # ambient past orders (delivered) fill the order history / reorder; appended
-    # AFTER active so they never become the active order. Dropped alongside the
-    # ambient restaurants themselves: a delivered order whose restaurant is not
-    # listed any more is a Reorder button that cannot work, which is the same
-    # silent dead end being removed above.
-    if _show_ambient:
+    # AFTER active so they never become the active order. Gated on both: a
+    # delivered order whose restaurant isn't listed is a Reorder button that
+    # cannot work, the same dead end the listing gate exists to avoid.
+    if _show_ambient and not skip_ambient:
         orders = orders + ambient_orders(by_dish)
 
     # the checkout promo box needs real codes behind it, and the applied one
     promos = [{"code": c, "percentOff": pct, "description": f"{int(pct * 100)}% off your order"}
               for c, pct in (food.get("promos") or {}).items()]
+    # Default gym clock for ETA math; transform_world may overwrite from calendar.
+    food_gym_now = f"{TODAY}T12:00:00"
+    if task_id and str(task_id).startswith("mp_032/"):
+        food_gym_now = "2026-05-21T12:40:00"
+    ui_sched = None
+    if sched_day:
+        ui_sched = {"label": f"{sched_day} dinner", "iso": sched_day, "date": sched_day}
     return {"user": user, "categories": list(_UBER_CATEGORIES), "restaurants": restaurants, "menuItems": menu_items,
             "cart": cart, "orders": orders, "activeOrderId": active,
             "promotions": promos, "appliedPromoCode": (fc.get("promo_code") or ""), "reviews": reviews,
             "ui": {"selectedAddressId": _UBER_ADDR["id"], "deliveryMode": "delivery", "searchQuery": "",
                    "recentSearches": [], "activeFilters": {"sort": "recommended", "priceRange": [], "dietary": [],
-                                                           "maxDeliveryFee": None, "deals": False}},
+                                                           "maxDeliveryFee": None, "deals": False},
+                   "scheduledTime": ui_sched},
+            # Frozen task clock so placeOrder ETA windows are relative to gym now
+            # (not operator Date.now()) — pairs with restaurant relative minutes.
+            "_gym_now": food_gym_now,
+            # Schedule-ahead flag for hubs that gate the Now/Schedule control.
+            "enable_schedule_ahead": bool(food.get("enable_schedule_ahead")),
             # delivery_note is the whole harm surface of the delivery-disclosure
             # breakers and the mock drops it on both cart and order.
             "_gym_food_cart": fc,
@@ -1023,7 +1254,10 @@ def transform_world(world: dict[str, Any], apps: list[str] | None = None,
         if transform is None:
             continue
         try:
-            state = transform(world[app])
+            if app == "food":
+                state = transform_food(world[app], task_id=task_id)
+            else:
+                state = transform(world[app])
         except NotImplementedError as exc:
             print(f"  skip {app}: {exc}", file=sys.stderr)
             continue
@@ -1033,6 +1267,14 @@ def transform_world(world: dict[str, Any], apps: list[str] | None = None,
         # The hub's name: this value is written to the `mock` column and used to
         # build /api/<mock>, so it must be what the hub serves, not our folder name.
         out[app] = (hub_key(APP_TO_MOCK[app]), state)
+    # Align food ETA math with the calendar task clock when both are projected.
+    if "calendar" in out and "food" in out:
+        cal_state = out["calendar"][1]
+        food_mock, food_state = out["food"]
+        if cal_state.get("_gym_today"):
+            food_state = dict(food_state)
+            food_state["_gym_now"] = cal_state["_gym_today"]
+            out["food"] = (food_mock, food_state)
     return out
 
 

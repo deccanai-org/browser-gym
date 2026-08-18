@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { Headphones } from 'lucide-react';
+import { useStore } from '../context/StoreContext';
 
 const TOPICS = [
   ['Where is my order?', '/orders'],
@@ -12,11 +13,26 @@ const TOPICS = [
 
 // "Customer Service" in the top nav used to open the profile page. It now has a
 // real help page: quick links to the relevant flows plus a contact form that
-// confirms submission (no fake ticket routing).
+// persists a SupportTicket through the gym engine (bridged) so verifiers can
+// read the claim text.
 export const CustomerService = () => {
+  const { createSupportTicket } = useStore();
   const [subject, setSubject] = useState('');
   const [body, setBody] = useState('');
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
+    try {
+      await createSupportTicket({ subject, body });
+      setSent(true);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="bg-xmazon-bg min-h-screen">
@@ -41,14 +57,18 @@ export const CustomerService = () => {
               Thanks — your message was sent. Our team will reply to your account email.
             </div>
           ) : (
-            <form onSubmit={e => { e.preventDefault(); setSent(true); }} className="space-y-3">
+            <form onSubmit={onSubmit} className="space-y-3">
               <input value={subject} onChange={e => setSubject(e.target.value)} required
                 aria-label="Subject" placeholder="Subject"
+                data-testid="cs-subject"
                 className="border rounded px-3 py-2 text-sm w-full focus:outline-none focus:border-xmazon-orange" />
               <textarea value={body} onChange={e => setBody(e.target.value)} required rows={4}
                 aria-label="Message" placeholder="Describe your issue"
+                data-testid="cs-body"
                 className="border rounded px-3 py-2 text-sm w-full focus:outline-none focus:border-xmazon-orange" />
-              <Button type="submit" aria-label="Send message">Send message</Button>
+              <Button type="submit" aria-label="Send message" disabled={submitting}>
+                Send message
+              </Button>
             </form>
           )}
         </div>

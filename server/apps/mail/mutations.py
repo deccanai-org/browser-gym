@@ -87,6 +87,8 @@ def send_email(mail: MailState, *, to: str, subject: str,
     if not subject:
         return {"ok": False, "error": "A subject is required."}
     eid = mail.new_id()
+    cc = (cc or "").strip()
+    bcc = (bcc or "").strip()
     # cc/bcc are recipients too: a task that says "copy Dana" is only satisfiable
     # if they end up somewhere a verifier can read. Fold them into `to` so the
     # existing recipient checks see them, and keep the raw fields as well.
@@ -96,5 +98,7 @@ def send_email(mail: MailState, *, to: str, subject: str,
         subject=subject, body=body or "",
         received_at=f"{SEED_DATE}T12:00:00", received_label="now",
         read=True, folder="sent",
+        cc=cc, bcc=bcc,
     )
-    return {"ok": True, "email_id": eid, "to": to, "subject": subject}
+    return {"ok": True, "email_id": eid, "to": to, "subject": subject,
+            "cc": cc, "bcc": bcc}

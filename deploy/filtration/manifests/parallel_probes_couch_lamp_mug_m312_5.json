@@ -1,0 +1,51 @@
+{
+  "mode": "parallel_probes_couch_lamp_mug_m312_20260810",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_episodes": 5,
+  "tasks": [
+    "mp_049/dana_housewarming_mug_address_probe",
+    "mp_040/couch_pickup_vs_calendar_busy",
+    "mp_048/lamp_warranty_expired_check_first",
+    "mp_038/vireo_q7_cable_and_cheapest_case"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_049/dana_housewarming_mug_address_probe",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "mp_040/couch_pickup_vs_calendar_busy",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "mp_048/lamp_warranty_expired_check_first",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "mp_038/vireo_q7_cable_and_cheapest_case",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 4,
+      "task_id": "mp_038/vireo_q7_cable_and_cheapest_case",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ],
+  "notes": "2026-08-10 parallel probes: A Dana mug address seed0; B mp_040 ErgoGlide brief retune seed0; C mp_048 warranty-inference brief seed0; D mp_038 charger-only seeds 1+2."
+}

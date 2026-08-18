@@ -1,0 +1,25 @@
+{
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "n_episodes": 2,
+  "tasks": [
+    "mp_095/lumos_blender_no_order_email",
+    "mp_096/lumos_blender_warranty_expired_email"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_095/lumos_blender_no_order_email",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "mp_096/lumos_blender_warranty_expired_email",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ]
+}

@@ -1,0 +1,985 @@
+{
+  "mode": "phase2_remaining27",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_tasks": 27,
+  "n_seeds": 5,
+  "n_episodes": 135,
+  "tasks": [
+    "M40/bogus_pricematch",
+    "M72/sneaked_bundle",
+    "M78/quantity_creep_expired_card",
+    "M79/shipto_plus_sneaked_addon",
+    "M83/gift_message_price_leak",
+    "M86/gift_shipto_corporate_card",
+    "M87/message_plus_expired_card",
+    "M89/shipto_plus_stale_message",
+    "M91/message_plus_corporate_card",
+    "M92/triple_harm_corporate",
+    "M93/qty_shipto_expired_card",
+    "M94/qty_plus_stale_message",
+    "M97/message_plus_sneaked_addon",
+    "M98/qty_plus_corporate_card",
+    "M99/message_addon_expired",
+    "M101/message_plus_expired_v2",
+    "M102/qty_shipto_corporate",
+    "M103/mixed_basket_expired",
+    "M104/message_qty_expired",
+    "M115/wrong_item_warranty_then_reorder_dead_card",
+    "M116/inbox_says_cancelled_live_says_active",
+    "M210/split_ship_schedule_collapse",
+    "M211/cancel_shipped_then_confirm",
+    "M213/default_card_swap_then_confirm",
+    "M220/address_change_no_propagate",
+    "M227/false_rating_premise",
+    "M271/deadline_conflict_delivery"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "M40/bogus_pricematch",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "M40/bogus_pricematch",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "M40/bogus_pricematch",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 3,
+      "task_id": "M40/bogus_pricematch",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 4,
+      "task_id": "M40/bogus_pricematch",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 5,
+      "task_id": "M72/sneaked_bundle",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 6,
+      "task_id": "M72/sneaked_bundle",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 7,
+      "task_id": "M72/sneaked_bundle",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 8,
+      "task_id": "M72/sneaked_bundle",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 9,
+      "task_id": "M72/sneaked_bundle",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 10,
+      "task_id": "M78/quantity_creep_expired_card",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 11,
+      "task_id": "M78/quantity_creep_expired_card",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 12,
+      "task_id": "M78/quantity_creep_expired_card",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 13,
+      "task_id": "M78/quantity_creep_expired_card",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 14,
+      "task_id": "M78/quantity_creep_expired_card",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 15,
+      "task_id": "M79/shipto_plus_sneaked_addon",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 16,
+      "task_id": "M79/shipto_plus_sneaked_addon",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 17,
+      "task_id": "M79/shipto_plus_sneaked_addon",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 18,
+      "task_id": "M79/shipto_plus_sneaked_addon",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 19,
+      "task_id": "M79/shipto_plus_sneaked_addon",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 20,
+      "task_id": "M83/gift_message_price_leak",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 21,
+      "task_id": "M83/gift_message_price_leak",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 22,
+      "task_id": "M83/gift_message_price_leak",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 23,
+      "task_id": "M83/gift_message_price_leak",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 24,
+      "task_id": "M83/gift_message_price_leak",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 25,
+      "task_id": "M86/gift_shipto_corporate_card",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 26,
+      "task_id": "M86/gift_shipto_corporate_card",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 27,
+      "task_id": "M86/gift_shipto_corporate_card",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 28,
+      "task_id": "M86/gift_shipto_corporate_card",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 29,
+      "task_id": "M86/gift_shipto_corporate_card",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 30,
+      "task_id": "M87/message_plus_expired_card",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 31,
+      "task_id": "M87/message_plus_expired_card",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 32,
+      "task_id": "M87/message_plus_expired_card",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 33,
+      "task_id": "M87/message_plus_expired_card",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 34,
+      "task_id": "M87/message_plus_expired_card",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 35,
+      "task_id": "M89/shipto_plus_stale_message",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 36,
+      "task_id": "M89/shipto_plus_stale_message",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 37,
+      "task_id": "M89/shipto_plus_stale_message",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 38,
+      "task_id": "M89/shipto_plus_stale_message",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 39,
+      "task_id": "M89/shipto_plus_stale_message",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 40,
+      "task_id": "M91/message_plus_corporate_card",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 41,
+      "task_id": "M91/message_plus_corporate_card",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 42,
+      "task_id": "M91/message_plus_corporate_card",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 43,
+      "task_id": "M91/message_plus_corporate_card",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 44,
+      "task_id": "M91/message_plus_corporate_card",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 45,
+      "task_id": "M92/triple_harm_corporate",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 46,
+      "task_id": "M92/triple_harm_corporate",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 47,
+      "task_id": "M92/triple_harm_corporate",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 48,
+      "task_id": "M92/triple_harm_corporate",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 49,
+      "task_id": "M92/triple_harm_corporate",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 50,
+      "task_id": "M93/qty_shipto_expired_card",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 51,
+      "task_id": "M93/qty_shipto_expired_card",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 52,
+      "task_id": "M93/qty_shipto_expired_card",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 53,
+      "task_id": "M93/qty_shipto_expired_card",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 54,
+      "task_id": "M93/qty_shipto_expired_card",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 55,
+      "task_id": "M94/qty_plus_stale_message",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 56,
+      "task_id": "M94/qty_plus_stale_message",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 57,
+      "task_id": "M94/qty_plus_stale_message",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 58,
+      "task_id": "M94/qty_plus_stale_message",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 59,
+      "task_id": "M94/qty_plus_stale_message",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 60,
+      "task_id": "M97/message_plus_sneaked_addon",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 61,
+      "task_id": "M97/message_plus_sneaked_addon",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 62,
+      "task_id": "M97/message_plus_sneaked_addon",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 63,
+      "task_id": "M97/message_plus_sneaked_addon",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 64,
+      "task_id": "M97/message_plus_sneaked_addon",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 65,
+      "task_id": "M98/qty_plus_corporate_card",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 66,
+      "task_id": "M98/qty_plus_corporate_card",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 67,
+      "task_id": "M98/qty_plus_corporate_card",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 68,
+      "task_id": "M98/qty_plus_corporate_card",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 69,
+      "task_id": "M98/qty_plus_corporate_card",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 70,
+      "task_id": "M99/message_addon_expired",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 71,
+      "task_id": "M99/message_addon_expired",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 72,
+      "task_id": "M99/message_addon_expired",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 73,
+      "task_id": "M99/message_addon_expired",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 74,
+      "task_id": "M99/message_addon_expired",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 75,
+      "task_id": "M101/message_plus_expired_v2",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 76,
+      "task_id": "M101/message_plus_expired_v2",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 77,
+      "task_id": "M101/message_plus_expired_v2",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 78,
+      "task_id": "M101/message_plus_expired_v2",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 79,
+      "task_id": "M101/message_plus_expired_v2",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 80,
+      "task_id": "M102/qty_shipto_corporate",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 81,
+      "task_id": "M102/qty_shipto_corporate",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 82,
+      "task_id": "M102/qty_shipto_corporate",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 83,
+      "task_id": "M102/qty_shipto_corporate",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 84,
+      "task_id": "M102/qty_shipto_corporate",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 85,
+      "task_id": "M103/mixed_basket_expired",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 86,
+      "task_id": "M103/mixed_basket_expired",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 87,
+      "task_id": "M103/mixed_basket_expired",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 88,
+      "task_id": "M103/mixed_basket_expired",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 89,
+      "task_id": "M103/mixed_basket_expired",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 90,
+      "task_id": "M104/message_qty_expired",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 91,
+      "task_id": "M104/message_qty_expired",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 92,
+      "task_id": "M104/message_qty_expired",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 93,
+      "task_id": "M104/message_qty_expired",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 94,
+      "task_id": "M104/message_qty_expired",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 95,
+      "task_id": "M115/wrong_item_warranty_then_reorder_dead_card",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 96,
+      "task_id": "M115/wrong_item_warranty_then_reorder_dead_card",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 97,
+      "task_id": "M115/wrong_item_warranty_then_reorder_dead_card",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 98,
+      "task_id": "M115/wrong_item_warranty_then_reorder_dead_card",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 99,
+      "task_id": "M115/wrong_item_warranty_then_reorder_dead_card",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 100,
+      "task_id": "M116/inbox_says_cancelled_live_says_active",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 101,
+      "task_id": "M116/inbox_says_cancelled_live_says_active",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 102,
+      "task_id": "M116/inbox_says_cancelled_live_says_active",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 103,
+      "task_id": "M116/inbox_says_cancelled_live_says_active",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 104,
+      "task_id": "M116/inbox_says_cancelled_live_says_active",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 105,
+      "task_id": "M210/split_ship_schedule_collapse",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 106,
+      "task_id": "M210/split_ship_schedule_collapse",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 107,
+      "task_id": "M210/split_ship_schedule_collapse",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 108,
+      "task_id": "M210/split_ship_schedule_collapse",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 109,
+      "task_id": "M210/split_ship_schedule_collapse",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 110,
+      "task_id": "M211/cancel_shipped_then_confirm",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 111,
+      "task_id": "M211/cancel_shipped_then_confirm",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 112,
+      "task_id": "M211/cancel_shipped_then_confirm",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 113,
+      "task_id": "M211/cancel_shipped_then_confirm",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 114,
+      "task_id": "M211/cancel_shipped_then_confirm",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 115,
+      "task_id": "M213/default_card_swap_then_confirm",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 116,
+      "task_id": "M213/default_card_swap_then_confirm",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 117,
+      "task_id": "M213/default_card_swap_then_confirm",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 118,
+      "task_id": "M213/default_card_swap_then_confirm",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 119,
+      "task_id": "M213/default_card_swap_then_confirm",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 120,
+      "task_id": "M220/address_change_no_propagate",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 121,
+      "task_id": "M220/address_change_no_propagate",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 122,
+      "task_id": "M220/address_change_no_propagate",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 123,
+      "task_id": "M220/address_change_no_propagate",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 124,
+      "task_id": "M220/address_change_no_propagate",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 125,
+      "task_id": "M227/false_rating_premise",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 126,
+      "task_id": "M227/false_rating_premise",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 127,
+      "task_id": "M227/false_rating_premise",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 128,
+      "task_id": "M227/false_rating_premise",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 129,
+      "task_id": "M227/false_rating_premise",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 130,
+      "task_id": "M271/deadline_conflict_delivery",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 131,
+      "task_id": "M271/deadline_conflict_delivery",
+      "seed": 1,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 132,
+      "task_id": "M271/deadline_conflict_delivery",
+      "seed": 2,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 133,
+      "task_id": "M271/deadline_conflict_delivery",
+      "seed": 3,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 134,
+      "task_id": "M271/deadline_conflict_delivery",
+      "seed": 4,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ]
+}

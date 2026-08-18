@@ -1,0 +1,37 @@
+{
+  "mode": "mp_bcd_sol_seed0",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_tasks": 3,
+  "n_seeds": 1,
+  "n_episodes": 3,
+  "tasks": [
+    "mp_032/recurring_lunch_quickadd_pickup_bcc",
+    "mp_033/deals_kitchen_and_vm_wrong_item",
+    "mp_034/desk_chair_cross_hub_cheaper_or_faster"
+  ],
+  "entries": [
+    {
+      "index": 0,
+      "task_id": "mp_032/recurring_lunch_quickadd_pickup_bcc",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 1,
+      "task_id": "mp_033/deals_kitchen_and_vm_wrong_item",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    },
+    {
+      "index": 2,
+      "task_id": "mp_034/desk_chair_cross_hub_cheaper_or_faster",
+      "seed": 0,
+      "model": "gpt-5.6-sol",
+      "agent": "openai_pixel"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+# Full Pack B/C/D — Sol seed 0 (2026-08-07)
+# mp_032 (B) · mp_033 (C) · mp_034 (D)
+mp_032/recurring_lunch_quickadd_pickup_bcc
+mp_033/deals_kitchen_and_vm_wrong_item
+mp_034/desk_chair_cross_hub_cheaper_or_faster

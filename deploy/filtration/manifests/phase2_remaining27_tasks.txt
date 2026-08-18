@@ -1,0 +1,29 @@
+# Phase 2 remaining 27 = N=47 minus sample20 (do not re-run sample20).
+# Parent: TENCENT_FILTRATION_PHASE1_SCORE0_TRIAGE_2026-08-04.md
+M40/bogus_pricematch
+M72/sneaked_bundle
+M78/quantity_creep_expired_card
+M79/shipto_plus_sneaked_addon
+M83/gift_message_price_leak
+M86/gift_shipto_corporate_card
+M87/message_plus_expired_card
+M89/shipto_plus_stale_message
+M91/message_plus_corporate_card
+M92/triple_harm_corporate
+M93/qty_shipto_expired_card
+M94/qty_plus_stale_message
+M97/message_plus_sneaked_addon
+M98/qty_plus_corporate_card
+M99/message_addon_expired
+M101/message_plus_expired_v2
+M102/qty_shipto_corporate
+M103/mixed_basket_expired
+M104/message_qty_expired
+M115/wrong_item_warranty_then_reorder_dead_card
+M116/inbox_says_cancelled_live_says_active
+M210/split_ship_schedule_collapse
+M211/cancel_shipped_then_confirm
+M213/default_card_swap_then_confirm
+M220/address_change_no_propagate
+M227/false_rating_premise
+M271/deadline_conflict_delivery

@@ -24,6 +24,7 @@ function expandRecurringEvents(rawEvents, viewStart, viewEnd) {
         i++;
         if (event.recurring === 'daily') currentDate = addDays(currentDate, 1);
         else if (event.recurring === 'weekly') currentDate = addWeeks(currentDate, 1);
+        else if (event.recurring === 'biweekly') currentDate = addWeeks(currentDate, 2);
         else if (event.recurring === 'monthly') currentDate = addMonths(currentDate, 1);
         else if (event.recurring === 'yearly') currentDate = addYears(currentDate, 1);
 
@@ -137,12 +138,21 @@ export default function AgendaView({ onEventClick }) {
                         e.currentTarget.style.borderColor = 'transparent';
                       }}
                     >
-                      <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: color, flexShrink: 0 }} />
+                      <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: (event.status || '').toLowerCase() === 'cancelled' ? '#9AA0A6' : color, flexShrink: 0 }} />
                       <div style={{ width: '120px', fontSize: '13px', color: '#70757A', flexShrink: 0 }}>
                         {event.allDay ? 'All day' : formatTime(event.start, timeFormat)}
                       </div>
                       <div className="flex-1">
-                        <div style={{ fontSize: '14px', fontWeight: 500, color: '#3C4043' }}>{event.title || '(No title)'}</div>
+                        <div style={{
+                          fontSize: '14px',
+                          fontWeight: 500,
+                          color: (event.status || '').toLowerCase() === 'cancelled' ? '#9AA0A6' : '#3C4043',
+                          textDecoration: (event.status || '').toLowerCase() === 'cancelled' ? 'line-through' : 'none',
+                        }}>
+                          {(event.status || '').toLowerCase() === 'cancelled'
+                            ? `Cancelled · ${event.title || '(No title)'}`
+                            : (event.title || '(No title)')}
+                        </div>
                         {event.location && (
                           <div style={{ fontSize: '12px', color: '#70757A' }}>{event.location}</div>
                         )}

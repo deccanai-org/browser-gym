@@ -7,6 +7,7 @@ import Search from './pages/Search';
 import ProductDetails from './pages/ProductDetails';
 import Dashboard from './pages/Dashboard';
 import CreateListing from './pages/CreateListing';
+import Membership from './pages/Membership';
 import Cart from './pages/Cart';
 import Deals from './pages/Deals';
 import Go from './pages/Go';
@@ -44,6 +45,7 @@ function App() {
             <Route path="/item/:id" element={<ProductDetails />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/sell" element={<CreateListing />} />
+            <Route path="/membership" element={<Membership />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/deals" element={<Deals />} />
             <Route path="/go" element={<Go />} />

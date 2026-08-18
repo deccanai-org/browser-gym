@@ -1,0 +1,18 @@
+{
+  "mode": "food006_ready_when_meeting_starts_sol_3seed",
+  "model": "gpt-5.6-sol",
+  "agent": "openai_pixel",
+  "preset": "sol",
+  "n_tasks": 1,
+  "n_seeds": 3,
+  "n_episodes": 3,
+  "tasks": [
+    "food_006/design_review_shared_platter"
+  ],
+  "entries": [
+    {"index": 0, "task_id": "food_006/design_review_shared_platter", "seed": 0, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 1, "task_id": "food_006/design_review_shared_platter", "seed": 1, "model": "gpt-5.6-sol", "agent": "openai_pixel"},
+    {"index": 2, "task_id": "food_006/design_review_shared_platter", "seed": 2, "model": "gpt-5.6-sol", "agent": "openai_pixel"}
+  ],
+  "notes": "2026-08-10: ready-when-meeting-starts brief + Sakura wine/sake dietary decoy (fair BREAK axis) + clock ETA UI. Full step screenshots."
+}

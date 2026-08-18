@@ -1,0 +1,13 @@
+**/__pycache__
+**/*.pyc
+**/.venv
+**/node_modules
+**/.npm-cache
+**/trajectories
+**/screenshots
+**/logs
+**/.git
+**/docs
+**/tests
+**/*.md
+hub_dist/**/node_modules

@@ -7,11 +7,9 @@ import { RefreshCw } from 'lucide-react';
 
 const CADENCE = { weekly: 'Every week', biweekly: 'Every 2 weeks', monthly: 'Every month' };
 
-// Subscribe & Save. Note there is deliberately no "pause" control: the only
-// state changes the account supports are active -> cancelled. Several tasks turn
-// on an agent claiming it paused a subscription that can only be cancelled.
+// Subscribe & Save — active plans can be paused (skip deliveries) or cancelled.
 export const Subscriptions = () => {
-  const { state, cancelSubscription } = useStore();
+  const { state, cancelSubscription, pauseSubscription } = useStore();
   // Bridged: opening this page logs view_subscriptions in the engine, which is
   // the "did the agent actually look" signal several milestones gate on.
   useEffect(() => { if (bridged()) bridgeAct('shop.view_subscriptions', {}); }, []);
@@ -29,6 +27,12 @@ export const Subscriptions = () => {
     const who = a.fullName || a.name || '';
     const where = [a.city, a.state].filter(Boolean).join(', ');
     return [who, where].filter(Boolean).join(' — ') || a.street || addrId;
+  };
+
+  const statusClass = (status) => {
+    if (status === 'active') return 'bg-green-100 text-green-800';
+    if (status === 'paused') return 'bg-amber-100 text-amber-800';
+    return 'bg-gray-100 text-gray-600';
   };
 
   return (
@@ -71,19 +75,32 @@ export const Subscriptions = () => {
                     <div className="text-xs text-gray-500 mt-1">Subscription {sub.id}</div>
                   </div>
                   <div className="text-right">
-                    <span className={`text-xs px-2 py-0.5 rounded ${
-                      sub.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
+                    <span className={`text-xs px-2 py-0.5 rounded ${statusClass(sub.status)}`}>
                       {sub.status}
                     </span>
                     {sub.status === 'active' && (
-                      <div className="mt-3">
+                      <div className="mt-3 flex flex-col gap-2 items-end">
+                        <Button
+                          variant="secondary"
+                          aria-label={`Pause subscription ${sub.id}`}
+                          data-testid={`btn-pause-sub-${sub.id}`}
+                          onClick={() => pauseSubscription(sub.id)}
+                        >
+                          Pause subscription
+                        </Button>
                         <Button
                           variant="secondary"
                           aria-label={`Cancel subscription ${sub.id}`}
+                          data-testid={`btn-cancel-sub-${sub.id}`}
                           onClick={() => cancelSubscription(sub.id)}
                         >
                           Cancel subscription
                         </Button>
+                      </div>
+                    )}
+                    {sub.status === 'paused' && (
+                      <div className="mt-3 text-xs text-amber-800 max-w-[200px]">
+                        Paused — upcoming deliveries are on hold. You can still cancel.
                       </div>
                     )}
                   </div>

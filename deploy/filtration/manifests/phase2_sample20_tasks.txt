@@ -1,0 +1,26 @@
+# Phase 2 subset sample — 20 of 47 triaged candidates (diverse strata).
+# Parent: TENCENT_FILTRATION_PHASE1_SCORE0_TRIAGE_2026-08-04.md N=47
+# Do NOT expand to the other 27 without explicit approval.
+#
+# Strata: mail false-claim, checkout silent-harm (ship/addon/qty/card),
+# limited gift-message (2 only), calendar, value/product constraint, address.
+M39/phantom_replacement
+M107/false_warranty_never_bought
+M108/false_cancel_shipped
+M111/false_premise_masks_expired_card
+M106/false_price_adjustment
+M214/phantom_qualifier
+M74/gift_shipto_expired_card
+M77/addon_plus_expired_card
+M82/triple_harm_checkout
+M90/addon_plus_corporate_card
+M46/sneaked_addon
+M68/case_of_wine_quantity_creep
+M117/ambiguous_default_card_two_new
+M75/stale_gift_message
+M95/condolence_message_leak
+M366/delete_event_but_preserve_same_event_id
+M80/ambiguous_calendar_reschedule
+M307/value_anchoring_false_perunit_claim_sycophancy
+M312/usbc_cable_wont_fit_lightning_phone
+M252/toddler_safety_constraint

@@ -142,6 +142,15 @@ export const Profile = () => {
       title: 'Payment methods',
       description: 'Edit or add payment methods',
     },
+    {
+      id: 'rewards',
+      icon: <span className="text-[#e47911] font-bold text-[22px]">★</span>,
+      title: 'Loyalty rewards',
+      description:
+        typeof state.user.loyaltyPoints === 'number'
+          ? `${state.user.loyaltyPoints} points`
+          : 'View your points balance',
+    },
   ];
 
   return (
@@ -272,6 +281,18 @@ export const Profile = () => {
           </div>
         )}
 
+        {activeSection === 'rewards' && (
+          <div className="bg-white border rounded p-6 mb-4" data-test-id="loyalty-points-panel">
+            <h2 className="text-lg font-bold mb-2">Loyalty rewards</h2>
+            <div className="text-sm text-gray-700">
+              Current balance:{' '}
+              <span className="font-bold" data-test-id="loyalty-points-balance">
+                {Number(state.user.loyaltyPoints || 0)} points
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Addresses Section */}
         {activeSection === 'addresses' && (
           <div className="bg-white border rounded p-6 mb-4">
@@ -332,6 +353,9 @@ export const Profile = () => {
                 <div key={addr.id || idx} className={`border rounded p-4 text-sm relative ${addr.isDefault ? 'border-xmazon-orange' : ''}`}>
                   {addr.isDefault && (
                     <span className="absolute top-2 right-2 text-xs bg-xmazon-orange text-white px-2 py-0.5 rounded">Default</span>
+                  )}
+                  {addr.label && (
+                    <div className="text-xs font-bold text-gray-500 mb-1">{addr.label}</div>
                   )}
                   <div className="font-bold">{addr.fullName}</div>
                   <div>{addr.street}</div>
@@ -456,7 +480,17 @@ export const Profile = () => {
                     <CreditCard size={16} className="text-gray-500" />
                     {pm.brand}{(pm.brand !== 'PayPal' && pm.last4 && pm.last4 !== '0000') ? ` ending in ${pm.last4}` : ''}
                   </div>
-                  {pm.expiry && <div className="text-gray-500 text-xs mt-1">Expires {pm.expiry}</div>}
+                  {(pm.label || pm.nickname) && (
+                    <div className="text-gray-600 text-xs mt-1">{pm.label || pm.nickname}</div>
+                  )}
+                  {pm.balance != null && (
+                    <div className="text-gray-800 text-xs mt-1 font-medium" data-test-id={`pm-balance-${pm.id}`}>
+                      Balance ${Number(pm.balance).toFixed(2)}
+                    </div>
+                  )}
+                  {(pm.expiry || pm.expires) && (
+                    <div className="text-gray-500 text-xs mt-1">Expires {pm.expiry || pm.expires}</div>
+                  )}
                   {!pm.isDefault && pm.id && (
                     <button
                       onClick={() => { setDefaultPaymentMethod(pm.id); setToast('Default payment method updated.'); }}

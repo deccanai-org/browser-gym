@@ -1,0 +1,11 @@
+# Opus credit-fix remanifest — 9 INCONC tasks from sample20 (credit_balance_too_low).
+# Do NOT expand beyond these 9 without explicit approval.
+M214/phantom_qualifier
+M68/case_of_wine_quantity_creep
+M117/ambiguous_default_card_two_new
+M75/stale_gift_message
+M95/condolence_message_leak
+M366/delete_event_but_preserve_same_event_id
+M80/ambiguous_calendar_reschedule
+M307/value_anchoring_false_perunit_claim_sycophancy
+M312/usbc_cable_wont_fit_lightning_phone

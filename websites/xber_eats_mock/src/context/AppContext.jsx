@@ -5,6 +5,29 @@ import { bridged, bridgeState, bridgeAct, bridgePoll } from '../lib/bridge';
 
 const APP = 'food'; // bridge engine app key for this mock
 
+// Delivery/Pickup is client-owned until checkout. Full page navigations (and the
+// engine projection, which always defaults mode to "delivery") used to wipe a
+// Pickup click, so checkout silently placed a delivery order. Persist per-tab.
+const _MODE_KEY = 'gym_food_delivery_mode';
+const _readMode = () => {
+  try { return (sessionStorage.getItem(_MODE_KEY) || '').toLowerCase(); }
+  catch (_) { return ''; }
+};
+const _writeMode = (mode) => {
+  try {
+    const m = (mode || '').toLowerCase();
+    if (m === 'pickup' || m === 'delivery') sessionStorage.setItem(_MODE_KEY, m);
+  } catch (_) {}
+};
+const _applyStoredMode = (ui, cart) => {
+  const stored = _readMode();
+  if (stored !== 'pickup' && stored !== 'delivery') return { ui, cart };
+  return {
+    ui: { ...(ui || {}), deliveryMode: stored },
+    cart: cart ? { ...cart, deliveryMode: stored } : cart,
+  };
+};
+
 // The engine projects cart/order lines as {cartItemId, menuItem:{...}, quantity}
 // with NO flat name/totalPrice/selectedOptions, and order.total as an object.
 // The readers (CartPanel.jsx:15, Orders.jsx:37, OrderTracking.jsx:266/303) want
@@ -59,11 +82,16 @@ export function AppProvider({ children }) {
   // all of those on every add_to_cart / place_order.
   const mergeEngine = useCallback((prev, raw) => {
     const { ui, ...engineOwned } = normalizeEngineData(initializeData(sidRef.current, raw));
-    if (!prev) return { ...engineOwned, ui };
+    if (!prev) {
+      const seeded = _applyStoredMode(ui, engineOwned.cart);
+      return { ...engineOwned, cart: seeded.cart, ui: seeded.ui };
+    }
     const base = prev;
     const cart = engineOwned.cart
       ? { ...(base.cart || {}), ...engineOwned.cart,
-          deliveryInstructions: base.cart?.deliveryInstructions ?? engineOwned.cart.deliveryInstructions }
+          deliveryInstructions: base.cart?.deliveryInstructions ?? engineOwned.cart.deliveryInstructions,
+          // Engine cart always projects deliveryMode=delivery; keep the user's toggle.
+          deliveryMode: base.cart?.deliveryMode ?? engineOwned.cart.deliveryMode }
       : base.cart;
     const user = base.user || engineOwned.user;
     const orders = engineOwned.orders
@@ -74,7 +102,9 @@ export function AppProvider({ children }) {
             : o;
         })
       : base.orders;
-    return { ...base, ...engineOwned, cart, user, orders, ui: base.ui ?? ui };
+    const keptUi = base.ui ?? ui;
+    const seeded = _applyStoredMode(keptUi, cart);
+    return { ...base, ...engineOwned, cart: seeded.cart, user, orders, ui: seeded.ui };
   }, []);
 
   const applyEngine = useCallback((engineState) => {
@@ -94,8 +124,10 @@ export function AppProvider({ children }) {
       bridgeState(APP).then(s => {
         if (s) {
           const data = normalizeEngineData(initializeData(sid, s));
-          setState(data);
-          setInitialStateSnapshot(JSON.parse(JSON.stringify(data)));
+          const seeded = _applyStoredMode(data.ui, data.cart);
+          const next = { ...data, ui: seeded.ui, cart: seeded.cart };
+          setState(next);
+          setInitialStateSnapshot(JSON.parse(JSON.stringify(next)));
         }
         setLoading(false);
       });
@@ -114,7 +146,8 @@ export function AppProvider({ children }) {
           // engine-carried empty value.
           const cart = engineOwned.cart
             ? { ...(base.cart || {}), ...engineOwned.cart,
-                deliveryInstructions: base.cart?.deliveryInstructions ?? engineOwned.cart.deliveryInstructions }
+                deliveryInstructions: base.cart?.deliveryInstructions ?? engineOwned.cart.deliveryInstructions,
+                deliveryMode: base.cart?.deliveryMode ?? engineOwned.cart.deliveryMode }
             : base.cart;
           // The food engine owns none of the user profile -- addresses, favorite
           // restaurants, saved cards, name/phone, and membership are all seed +
@@ -133,7 +166,9 @@ export function AppProvider({ children }) {
                   : o;
               })
             : base.orders;
-          return { ...base, ...engineOwned, cart, user, orders, ui: base.ui ?? ui };
+          const keptUi = base.ui ?? ui;
+          const seeded = _applyStoredMode(keptUi, cart);
+          return { ...base, ...engineOwned, cart: seeded.cart, user, orders, ui: seeded.ui };
         });
       });
       return () => stop();
@@ -334,9 +369,27 @@ export function AppProvider({ children }) {
 
   const placeOrder = useCallback((orderData) => {
     if (bridged()) {
+      const mode = (
+        (orderData && (orderData.delivery_mode || orderData.deliveryMode)) ||
+        _readMode() ||
+        (state && ((state.ui && state.ui.deliveryMode) || (state.cart && state.cart.deliveryMode))) ||
+        'delivery'
+      );
+      const scheduled =
+        (orderData && (orderData.scheduled_delivery || orderData.scheduledDelivery)) ||
+        (state && state.ui && state.ui.scheduledTime && (
+          // Prefer ISO date (YYYY-MM-DD) for schedule-ahead dinner nights.
+          (typeof state.ui.scheduledTime.iso === 'string' && state.ui.scheduledTime.iso.length >= 10
+            ? state.ui.scheduledTime.iso.slice(0, 10)
+            : null)
+        )) ||
+        (state && state.cart && state.cart.scheduledTime) ||
+        '';
       return bridgeAct('food.checkout', {
         delivery_note: (orderData && (orderData.note || orderData.instructions || orderData.deliveryInstructions)) ||
           (state && state.cart && state.cart.deliveryInstructions) || '',
+        delivery_mode: mode,
+        scheduled_delivery: scheduled || '',
       }).then(r => {
         const es = r && r.apps && r.apps[APP];
         applyEngine(es);
@@ -357,7 +410,8 @@ export function AppProvider({ children }) {
       const tipAmount = cart.tipPercentage ? subtotal * (cart.tipPercentage / 100) : cart.tipAmount;
       const total = subtotal + serviceFee + deliveryFee + tax + tipAmount - cart.promoDiscount;
 
-      const now = new Date();
+      // Prefer task-frozen gym clock so ETA windows align with GymCal now-line.
+      const now = prev._gym_now ? new Date(prev._gym_now) : new Date();
       const delivTimeMin = restaurant ? restaurant.deliveryTimeMin : 25;
       const delivTimeMax = restaurant ? restaurant.deliveryTimeMax : 40;
 
@@ -438,6 +492,7 @@ export function AppProvider({ children }) {
   }, []);
 
   const setDeliveryMode = useCallback((mode) => {
+    _writeMode(mode);
     setState(prev => {
       if (!prev) return prev;
       return {
@@ -448,19 +503,27 @@ export function AppProvider({ children }) {
     });
   }, []);
 
-  // Schedule for later. `scheduled` is null (== "Now") or { label, iso }. Stored
-  // on ui (preserved across the 2.5s engine re-projection) + cart so a chosen
-  // time survives and is visible; null clears back to "Deliver now".
+  // Schedule for later. `scheduled` is null (== "Now") or { label, iso }.
+  // Bridged: also persist YYYY-MM-DD onto the gym cart via food.set_schedule so
+  // remounts / re-projection cannot drop the day before checkout.
   const setScheduledTime = useCallback((scheduled) => {
+    const iso = scheduled && scheduled.iso ? String(scheduled.iso) : '';
+    const day = iso.length >= 10 ? iso.slice(0, 10) : '';
+    // Prefer explicit dinner-date field when present (Header schedule-ahead slots).
+    const schedDay = (scheduled && scheduled.date) ? String(scheduled.date).slice(0, 10) : day;
     setState(prev => {
       if (!prev) return prev;
       return {
         ...prev,
         ui: { ...prev.ui, scheduledTime: scheduled },
-        cart: { ...prev.cart, scheduledTime: scheduled ? scheduled.iso : null },
+        cart: { ...prev.cart, scheduledTime: scheduled ? (schedDay || iso) : null },
       };
     });
-  }, []);
+    if (bridged()) {
+      bridgeAct('food.set_schedule', { scheduled_delivery: schedDay || '' })
+        .then(r => applyEngine(r && r.apps && r.apps[APP]));
+    }
+  }, [applyEngine]);
 
   const updateFilters = useCallback((filters) => {
     setState(prev => {

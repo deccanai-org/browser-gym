@@ -1,27 +1,37 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, Minus, Plus } from 'lucide-react';
-import { formatCurrency } from '../utils/dataManager';
-import './ItemModal.css';
+import { formatCurrency } from '../lib/utils';
 
-function getDefaultSelections(groups = []) {
-  const selected = {};
-  groups.forEach(group => {
-    const defaults = group.options.filter(o => o.isDefault && o.isAvailable);
-    if (group.maxSelections === 1) {
-      selected[group.id] = defaults[0] ? [defaults[0]] : [];
-    } else {
-      selected[group.id] = defaults;
-    }
-  });
-  return selected;
+/** Engine dishes use customizationGroups; seed demo uses modifiers. Never assume either. */
+function modifierGroups(item) {
+  if (Array.isArray(item?.modifiers)) return item.modifiers;
+  if (Array.isArray(item?.customizationGroups)) return item.customizationGroups;
+  return [];
 }
 
-export default function ItemModal({ item, restaurant, onClose, onAdd }) {
-  const groups = item?.customizationGroups || [];
+function selectedOptionsFromState(modifiersState) {
+  const out = [];
+  for (const [groupId, val] of Object.entries(modifiersState || {})) {
+    const opts = Array.isArray(val) ? val : [val];
+    for (const o of opts) {
+      if (!o) continue;
+      out.push({
+        groupId,
+        groupName: '',
+        optionId: o.id || '',
+        optionName: o.name || '',
+        priceModifier: o.price ?? o.priceModifier ?? 0,
+      });
+    }
+  }
+  return out;
+}
+
+export default function ItemModal({ item, isOpen, onClose, onAddToCart }) {
   const [quantity, setQuantity] = useState(1);
-  const [selections, setSelections] = useState(() => getDefaultSelections(groups));
+  const [modifiers, setModifiers] = useState({});
   const [instructions, setInstructions] = useState('');
-  const [error, setError] = useState('');
+  const [validationMessage, setValidationMessage] = useState('');
 
   // Reset the form ONLY when the dish changes. `onClose` is deliberately not a
   // dependency here: StorePage passes it as an inline arrow, so it has a new
@@ -31,178 +41,192 @@ export default function ItemModal({ item, restaurant, onClose, onAdd }) {
   // chosen — set 4 portions, read the menu for three seconds, and the modal was
   // back to 1 with the button quietly showing the single-item price.
   useEffect(() => {
-    if (!item) return;
+    if (!isOpen || !item) return;
     setQuantity(1);
-    setSelections(getDefaultSelections(item.customizationGroups || []));
+    setModifiers({});
     setInstructions('');
-    setError('');
-  }, [item]);
+    setValidationMessage('');
+  }, [isOpen, item?.id]);
 
+  // Escape closes the modal. This lives in its own effect so `onClose` (an inline
+  // arrow from StorePage, new identity on every poll-driven render) can stay a
+  // dependency here without re-running the reset effect above.
   useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === 'Escape') onClose();
+    if (!isOpen) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') onClose();
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
 
-  const selectedOptions = useMemo(() => {
-    const options = [];
-    groups.forEach(group => {
-      (selections[group.id] || []).forEach(opt => {
-        options.push({
-          groupId: group.id,
-          groupName: group.name,
-          optionId: opt.id,
-          optionName: opt.name,
-          priceModifier: opt.priceModifier || 0,
-        });
-      });
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  if (!isOpen || !item) return null;
+
+  const groups = modifierGroups(item);
+  const imageSrc = item.imageUrl || item.image || '';
+
+  const handleModifierChange = (modId, option, type) => {
+    setModifiers(prev => {
+      if (type === 'radio') {
+        return { ...prev, [modId]: option };
+      }
+      const current = Array.isArray(prev[modId]) ? prev[modId] : [];
+      const exists = current.some(selected => selected.name === option.name);
+      return {
+        ...prev,
+        [modId]: exists
+          ? current.filter(selected => selected.name !== option.name)
+          : [...current, option]
+      };
     });
-    return options;
-  }, [groups, selections]);
-
-  const unitPrice = useMemo(() => {
-    const mods = selectedOptions.reduce((s, o) => s + o.priceModifier, 0);
-    return (item?.price || 0) + mods;
-  }, [item, selectedOptions]);
-
-  if (!item) return null;
-
-  const toggleOption = (group, option) => {
-    setError('');
-    setSelections(prev => {
-      const current = prev[group.id] || [];
-      if (group.maxSelections === 1) {
-        return { ...prev, [group.id]: [option] };
-      }
-      const exists = current.some(o => o.id === option.id);
-      if (exists) {
-        return { ...prev, [group.id]: current.filter(o => o.id !== option.id) };
-      }
-      if (current.length >= group.maxSelections) {
-        return prev;
-      }
-      return { ...prev, [group.id]: [...current, option] };
-    });
+    setValidationMessage('');
   };
 
-  const isSelected = (groupId, optionId) =>
-    (selections[groupId] || []).some(o => o.id === optionId);
+  const calculateTotal = () => {
+    const modTotal = Object.values(modifiers)
+      .flatMap(mod => (Array.isArray(mod) ? mod : [mod]))
+      .reduce((sum, mod) => sum + (mod?.price || mod?.priceModifier || 0), 0);
+    return (item.price + modTotal) * quantity;
+  };
 
-  const handleAdd = () => {
-    for (const group of groups) {
-      const count = (selections[group.id] || []).length;
-      if (group.required && count < (group.minSelections || 1)) {
-        setError(`Please select: ${group.name}`);
-        return;
-      }
+  const handleSubmit = () => {
+    const missingRequired = groups.filter(m => m.required && !modifiers[m.id]);
+    if (missingRequired.length > 0) {
+      setValidationMessage(`Please select: ${missingRequired.map(m => m.name).join(', ')}`);
+      return;
     }
-    onAdd(item, quantity, selectedOptions, instructions);
+    onAddToCart(item, quantity, selectedOptionsFromState(modifiers), instructions);
+    onClose();
   };
 
   return (
-    <div className="item-modal-overlay" onClick={onClose}>
-      <div className="item-modal animate-fadeIn" onClick={(e) => e.stopPropagation()}>
-        <button className="item-modal__close" onClick={onClose} aria-label="Close">
-          <X size={18} />
-        </button>
-
-        <div className="item-modal__body">
-          {item.imageUrl && (
-            <img
-              src={item.imageUrl}
-              alt={item.name}
-              className="item-modal__photo"
-              style={{ width: '100%', height: 180, objectFit: 'cover', borderRadius: 12, marginBottom: 12, display: 'block' }}
-            />
-          )}
-          <div className="item-modal__header">
-            <h2 className="item-modal__name">{item.name}</h2>
-            {item.description && <p className="item-modal__desc">{item.description}</p>}
-            <div className="item-modal__price">{formatCurrency(item.price)}</div>
-            {item.dietaryTags?.length > 0 && (
-              <div className="item-modal__tags">
-                {item.dietaryTags.map(tag => (
-                  <span key={tag} className="item-modal__tag">{tag}</span>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {groups.map(group => (
-            <div key={group.id} className="item-modal__group">
-              <div className="item-modal__group-header">
-                <h3 className="item-modal__group-name">{group.name}</h3>
-                {group.required ? (
-                  <span className="item-modal__required">Required</span>
-                ) : (
-                  <span className="item-modal__optional">Optional</span>
-                )}
-              </div>
-              <div className="item-modal__options">
-                {group.options.filter(o => o.isAvailable !== false).map(option => (
-                  <label
-                    key={option.id}
-                    className={`item-modal__option ${isSelected(group.id, option.id) ? 'item-modal__option--selected' : ''}`}
-                  >
-                    <input
-                      className="item-modal__option-input"
-                      type={group.maxSelections === 1 ? 'radio' : 'checkbox'}
-                      name={group.id}
-                      checked={isSelected(group.id, option.id)}
-                      onChange={() => toggleOption(group, option)}
-                    />
-                    <span className="item-modal__option-name">{option.name}</span>
-                    {option.priceModifier > 0 && (
-                      <span className="item-modal__option-price">+{formatCurrency(option.priceModifier)}</span>
-                    )}
-                  </label>
-                ))}
-              </div>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      onClick={onClose}
+      role="presentation"
+    >
+      <div
+        className="bg-white w-full max-w-2xl max-h-[90vh] rounded-2xl overflow-hidden flex flex-col shadow-2xl animate-in fade-in zoom-in duration-200"
+        onClick={(event) => event.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label={item.name}
+      >
+        <div className="relative h-48 sm:h-64 shrink-0 bg-gray-100">
+          {imageSrc ? (
+            <img src={imageSrc} alt={item.name} className="w-full h-full object-cover" />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-5xl" aria-hidden>
+              {item.emoji || '🍽️'}
             </div>
-          ))}
+          )}
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="absolute top-4 right-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
 
-          <div className="item-modal__instructions">
-            <h3 className="item-modal__group-name">Special instructions</h3>
-            <textarea
-              className="item-modal__textarea"
-              rows={3}
-              placeholder="Add a note (e.g. allergies, spice level)"
-              value={instructions}
-              onChange={(e) => setInstructions(e.target.value)}
-            />
+        <div className="flex-1 overflow-y-auto p-6">
+          <h2 className="text-3xl font-bold mb-2">{item.name}</h2>
+          <p className="text-gray-500 mb-6">{item.description}</p>
+
+          <div className="space-y-8">
+            {groups.map(mod => (
+              <div key={mod.id} className="border-b border-gray-100 pb-6 last:border-0">
+                <div className="flex justify-between mb-4">
+                  <h3 className="font-bold text-lg">{mod.name}</h3>
+                  {mod.required && (
+                    <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded font-bold h-fit">
+                      Required
+                    </span>
+                  )}
+                </div>
+
+                <div className="space-y-3">
+                  {(mod.options || []).map((opt, idx) => (
+                    <label key={idx} className="flex items-center justify-between cursor-pointer group">
+                      <div className="flex items-center gap-3">
+                        <input
+                          type={mod.type || 'radio'}
+                          name={mod.id}
+                          className="w-5 h-5 accent-primary"
+                          onChange={() => handleModifierChange(mod.id, opt, mod.type || 'radio')}
+                          checked={
+                            (mod.type || 'radio') === 'checkbox'
+                              ? (Array.isArray(modifiers[mod.id])
+                                && modifiers[mod.id].some(selected => selected.name === opt.name))
+                              : modifiers[mod.id]?.name === opt.name
+                          }
+                        />
+                        <span className="text-gray-700 group-hover:text-black">{opt.name}</span>
+                      </div>
+                      {(opt.price || 0) > 0 && (
+                        <span className="text-gray-500">+{formatCurrency(opt.price)}</span>
+                      )}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            <div>
+              <h3 className="font-bold text-lg mb-2">Special Instructions</h3>
+              <textarea
+                className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-black focus:border-transparent outline-none resize-none"
+                rows="3"
+                placeholder="Add a note for the kitchen..."
+                value={instructions}
+                onChange={(e) => setInstructions(e.target.value)}
+              />
+            </div>
           </div>
         </div>
 
-        <div className="item-modal__footer" style={{ flexWrap: 'wrap' }}>
-          {error && (
-            <div style={{ width: '100%', color: 'var(--color-error)', fontSize: 13, marginBottom: 4 }}>
-              {error}
+        <div className="p-4 border-t border-gray-100 bg-white shrink-0 space-y-3">
+          {validationMessage && (
+            <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+              {validationMessage}
             </div>
           )}
-          <div className="item-modal__qty-controls">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 border border-gray-300 rounded-full px-4 py-2">
+              <button
+                type="button"
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                disabled={quantity <= 1}
+                className="disabled:opacity-30 hover:text-primary"
+                aria-label="Decrease quantity"
+              >
+                <Minus className="w-5 h-5" />
+              </button>
+              <span className="font-medium text-lg min-w-[20px] text-center">{quantity}</span>
+              <button
+                type="button"
+                onClick={() => setQuantity(quantity + 1)}
+                className="hover:text-primary"
+                aria-label="Increase quantity"
+              >
+                <Plus className="w-5 h-5" />
+              </button>
+            </div>
+
             <button
-              className="item-modal__qty-btn"
-              onClick={() => setQuantity(q => Math.max(1, q - 1))}
-              disabled={quantity <= 1}
-              aria-label="Decrease quantity"
+              type="button"
+              onClick={handleSubmit}
+              data-test-id="btn-add-to-cart"
+              aria-label={`Add ${item?.name || 'item'} to order`}
+              className="flex-1 bg-primary text-white font-bold text-lg py-3 rounded-lg hover:bg-green-600 transition-colors flex justify-between px-6"
             >
-              <Minus size={16} />
-            </button>
-            <span className="item-modal__qty">{quantity}</span>
-            <button
-              className="item-modal__qty-btn"
-              onClick={() => setQuantity(q => q + 1)}
-              aria-label="Increase quantity"
-            >
-              <Plus size={16} />
+              <span>Add to order</span>
+              <span>{formatCurrency(calculateTotal())}</span>
             </button>
           </div>
-          <button className="item-modal__add-btn" onClick={handleAdd}>
-            <span>Add to order{restaurant ? ` · ${restaurant.name}` : ''}</span>
-            <span>{formatCurrency(unitPrice * quantity)}</span>
-          </button>
         </div>
       </div>
     </div>

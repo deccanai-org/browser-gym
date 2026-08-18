@@ -32,6 +32,11 @@
   <div class="px-5 py-4 border-t border-slate-200 flex items-center gap-2">
     <span class="text-sm text-slate-600">Estimated arrival:</span>
     <span class="font-semibold" data-test-id="food-order-eta">{{ order.eta_label }}</span>
+    {% if order.scheduled_delivery %}
+    <span class="text-sm text-slate-600 ml-2">Scheduled day:
+      <span class="font-semibold" data-test-id="food-order-scheduled-day">{{ order.scheduled_delivery }}</span>
+    </span>
+    {% endif %}
     <span class="ml-auto text-xs uppercase tracking-wider bg-amber-100 text-amber-700 px-2 py-0.5 rounded" data-test-id="food-order-status">{{ order.status }}</span>
   </div>
 
@@ -39,6 +44,18 @@
   <div class="px-5 pb-3 border-t border-slate-100 pt-3" data-test-id="food-order-delivery-note">
     <div class="text-xs uppercase tracking-wider text-slate-500 mb-1">Delivery instructions</div>
     <p class="text-sm text-slate-700 whitespace-pre-wrap">{{ order.delivery_note }}</p>
+  </div>
+  {% endif %}
+
+  {% if order.status not in ('delivered', 'cancelled', 'canceled') %}
+  <div class="px-5 pb-4">
+    <form method="post" action="/food/order/{{ order.id }}/cancel">
+      <button type="submit"
+              class="w-full py-2.5 rounded-lg border border-red-300 text-red-700 font-semibold hover:bg-red-50"
+              data-test-id="btn-cancel-food-order">
+        Cancel order
+      </button>
+    </form>
   </div>
   {% endif %}
 

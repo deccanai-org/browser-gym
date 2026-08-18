@@ -84,6 +84,18 @@ export default function EventModal({ isOpen, onClose, event, selectedDate }) {
 
   if (!isOpen) return null;
 
+  const startDate = (formData.start || '').slice(0, 10);
+  const startTime = (formData.start || '').slice(11, 16) || '09:00';
+  const endDate = (formData.end || '').slice(0, 10);
+  const endTime = (formData.end || '').slice(11, 16) || '10:00';
+
+  const setStartPart = (date, time) => {
+    setFormData({ ...formData, start: `${date}T${time}` });
+  };
+  const setEndPart = (date, time) => {
+    setFormData({ ...formData, end: `${date}T${time}` });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const startMs = new Date(formData.start).getTime();
@@ -249,22 +261,55 @@ export default function EventModal({ isOpen, onClose, event, selectedDate }) {
           <div className="flex items-start gap-4">
             <Clock className="text-gray-400 mt-2" size={20} />
             <div className="flex-1 space-y-2">
-              <div className="flex items-center gap-2 flex-wrap">
-                <input
-                  type="datetime-local"
-                  required
-                  className="border rounded p-1 text-sm"
-                  value={formData.start}
-                  onChange={e => setFormData({ ...formData, start: e.target.value })}
-                />
-                <span>-</span>
-                <input
-                  type="datetime-local"
-                  required
-                  className="border rounded p-1 text-sm"
-                  value={formData.end}
-                  onChange={e => setFormData({ ...formData, end: e.target.value })}
-                />
+              {/* Split date + time so CUA agents can set HH:MM without fighting
+                  Chromium's segmented datetime-local control (random-looking times). */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <label className="text-xs text-gray-500 w-10">Start</label>
+                  <input
+                    type="date"
+                    required
+                    aria-label="Start date"
+                    data-test-id="input-edit-start-date"
+                    className="border rounded p-1 text-sm"
+                    value={startDate}
+                    onChange={e => setStartPart(e.target.value, startTime)}
+                  />
+                  {!formData.allDay && (
+                    <input
+                      type="time"
+                      required
+                      aria-label="Start time"
+                      data-test-id="input-edit-start"
+                      className="border rounded p-1 text-sm"
+                      value={startTime}
+                      onChange={e => setStartPart(startDate, e.target.value)}
+                    />
+                  )}
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <label className="text-xs text-gray-500 w-10">End</label>
+                  <input
+                    type="date"
+                    required
+                    aria-label="End date"
+                    data-test-id="input-edit-end-date"
+                    className="border rounded p-1 text-sm"
+                    value={endDate}
+                    onChange={e => setEndPart(e.target.value, endTime)}
+                  />
+                  {!formData.allDay && (
+                    <input
+                      type="time"
+                      required
+                      aria-label="End time"
+                      data-test-id="input-edit-end"
+                      className="border rounded p-1 text-sm"
+                      value={endTime}
+                      onChange={e => setEndPart(endDate, e.target.value)}
+                    />
+                  )}
+                </div>
               </div>
               <div className="flex items-center gap-4">
                 <label className="flex items-center gap-2 text-sm text-gray-600">
@@ -286,6 +331,7 @@ export default function EventModal({ isOpen, onClose, event, selectedDate }) {
                     <option value="none">Does not repeat</option>
                     <option value="daily">Daily</option>
                     <option value="weekly">Weekly</option>
+                    <option value="biweekly">Every 2 weeks</option>
                     <option value="monthly">Monthly</option>
                     <option value="yearly">Yearly</option>
                   </select>
@@ -392,6 +438,7 @@ export default function EventModal({ isOpen, onClose, event, selectedDate }) {
           <div className="flex justify-end pt-4">
             <button
               type="submit"
+              data-test-id={event ? 'btn-update-event' : 'btn-save-event'}
               className="px-6 py-2 bg-primary text-white rounded hover:bg-primary-hover font-medium"
             >
               Save

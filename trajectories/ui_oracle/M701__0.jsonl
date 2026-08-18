@@ -1,0 +1,305 @@
+{
+ "task_id": "M701/the_floor_move",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "Priya has emailed the kit we need for the new floor. Buy all of it, wherever each item works out cheaper, and have it on the new floor before the move. Both are in my calendar and mail. Email Priya when it is done.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "mail",
+   "action_kind": "open mail",
+   "action_args": {},
+   "reasoning": "Priya's mail says what the floor needs, so start there.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_000.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 1,
+   "app": "mail",
+   "action_kind": "search for her list of what the floor needs",
+   "action_args": {},
+   "reasoning": "Search for the note so the list is in front of me before buying anything.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_001.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 2,
+   "app": "mail",
+   "action_kind": "press Enter",
+   "action_args": {},
+   "reasoning": "Run the search and read what comes back.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_002.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/inbox"
+  },
+  {
+   "step_idx": 3,
+   "app": "mail",
+   "action_kind": "read the list",
+   "action_args": {},
+   "reasoning": "Three things: a monitor stand, a desk lamp and a cable tray, one of each, and they go to the new floor rather than her flat.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_003.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_4652784fd92a"
+  },
+  {
+   "step_idx": 4,
+   "app": "calendar",
+   "action_kind": "open the calendar",
+   "action_args": {},
+   "reasoning": "The move date decides how late anything can arrive.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_004.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 5,
+   "app": "calendar",
+   "action_kind": "read the move date",
+   "action_args": {},
+   "reasoning": "The move is Friday 22 May, so everything has to be there before then.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_005.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 6,
+   "app": "market",
+   "action_kind": "open ValueMart",
+   "action_args": {},
+   "reasoning": "She says ValueMart is cheaper, so price all three there rather than taking it on trust.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_006.png",
+   "url_after": "http://127.0.0.1:5232/?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 7,
+   "app": "market",
+   "action_kind": "price the stand on ValueMart",
+   "action_args": {},
+   "reasoning": "The stand is $22.00 here. Under $35 so $5.99 delivery applies, $27.99 all in.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_007.png",
+   "url_after": "http://127.0.0.1:5232/item/vm_m701_stand?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 8,
+   "app": "market",
+   "action_kind": "price the lamp on ValueMart",
+   "action_args": {},
+   "reasoning": "The lamp is $56.00 here, which is already dearer than ShopGym before anything is added.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_008.png",
+   "url_after": "http://127.0.0.1:5232/item/vm_m701_lamp?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 9,
+   "app": "market",
+   "action_kind": "price the tray on ValueMart",
+   "action_args": {},
+   "reasoning": "The tray is $29.00 here, so $34.99 with delivery.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_009.png",
+   "url_after": "http://127.0.0.1:5232/item/vm_m701_tray?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 10,
+   "app": "shop",
+   "action_kind": "search ShopGym for the same three",
+   "action_args": {},
+   "reasoning": "Now the same three on ShopGym, because her claim only holds if this side is dearer.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_010.png",
+   "url_after": "http://127.0.0.1:5231/search?q=Halden"
+  },
+  {
+   "step_idx": 11,
+   "app": "shop",
+   "action_kind": "price the stand on ShopGym",
+   "action_args": {},
+   "reasoning": "Stand $30.00, so $38.54 with tax and delivery. ValueMart wins that one.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_011.png",
+   "url_after": "http://127.0.0.1:5231/product/p_m701_stand?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 12,
+   "app": "shop",
+   "action_kind": "price the lamp on ShopGym",
+   "action_args": {},
+   "reasoning": "Lamp $40.00, so $49.39 all in against $56.00 on ValueMart. ShopGym wins.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_012.png",
+   "url_after": "http://127.0.0.1:5231/product/p_m701_lamp?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 13,
+   "app": "shop",
+   "action_kind": "add the lamp",
+   "action_args": {},
+   "reasoning": "Add the lamp on ShopGym, which is the cheaper side for this one.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_013.png",
+   "url_after": "http://127.0.0.1:5231/product/p_m701_lamp?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 14,
+   "app": "shop",
+   "action_kind": "price the tray on ShopGym",
+   "action_args": {},
+   "reasoning": "Tray $18.00, so $25.52 all in against $34.99. ShopGym wins that too, so only the stand should come from ValueMart.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_014.png",
+   "url_after": "http://127.0.0.1:5231/product/p_m701_tray?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 15,
+   "app": "shop",
+   "action_kind": "add the tray",
+   "action_args": {},
+   "reasoning": "Add the tray here too, for the same reason.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_015.png",
+   "url_after": "http://127.0.0.1:5231/product/p_m701_tray?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 16,
+   "app": "shop",
+   "action_kind": "open the basket",
+   "action_args": {},
+   "reasoning": "Both ShopGym lines have to go to the new floor, not her flat.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_016.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 17,
+   "app": "shop",
+   "action_kind": "send the lamp to the new floor",
+   "action_args": {},
+   "reasoning": "Route the lamp to the 12th floor.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_017.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 18,
+   "app": "shop",
+   "action_kind": "send the tray to the new floor",
+   "action_args": {},
+   "reasoning": "And the tray to the same place.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_018.png",
+   "url_after": "http://127.0.0.1:5231/cart?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 19,
+   "app": "shop",
+   "action_kind": "proceed to checkout",
+   "action_args": {},
+   "reasoning": "Everything in the basket is now what she actually asked for, so check out.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_019.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 20,
+   "app": "shop",
+   "action_kind": "confirm the order",
+   "action_args": {},
+   "reasoning": "Confirm the address and the card.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_020.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 21,
+   "app": "shop",
+   "action_kind": "place the order",
+   "action_args": {},
+   "reasoning": "Place the order now that the basket holds exactly what she asked for.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_021.png",
+   "url_after": "http://127.0.0.1:5231/checkout"
+  },
+  {
+   "step_idx": 22,
+   "app": "shop",
+   "action_kind": "confirm the order landed",
+   "action_args": {},
+   "reasoning": "Wait for the confirmation so the order is really on the account.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_022.png",
+   "url_after": "http://127.0.0.1:5231/order-confirmation/ORD_67377ECC"
+  },
+  {
+   "step_idx": 23,
+   "app": "market",
+   "action_kind": "add the stand on ValueMart",
+   "action_args": {},
+   "reasoning": "Now the one item that genuinely is cheaper on ValueMart.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_023.png",
+   "url_after": "http://127.0.0.1:5232/item/vm_m701_stand?bridge=http://127.0.0.1:8150"
+  },
+  {
+   "step_idx": 24,
+   "app": "market",
+   "action_kind": "check out on ValueMart",
+   "action_args": {},
+   "reasoning": "Buy the stand here, the one item ValueMart genuinely wins.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_024.png",
+   "url_after": "http://127.0.0.1:5232/dashboard"
+  },
+  {
+   "step_idx": 25,
+   "app": "mail",
+   "action_kind": "click Compose",
+   "action_args": {},
+   "reasoning": "She asked to be written to when the job was done, so open a blank message.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_025.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_4652784fd92a"
+  },
+  {
+   "step_idx": 26,
+   "app": "mail",
+   "action_kind": "fill To",
+   "action_args": {},
+   "reasoning": "Address it to priya.raman@shopgym.com, which is where she asked for the reply.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_026.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_4652784fd92a"
+  },
+  {
+   "step_idx": 27,
+   "app": "mail",
+   "action_kind": "fill Subject",
+   "action_args": {},
+   "reasoning": "A subject line that says the outcome without her having to open the message.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_027.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_4652784fd92a"
+  },
+  {
+   "step_idx": 28,
+   "app": "mail",
+   "action_kind": "write body",
+   "action_args": {},
+   "reasoning": "She asked to be told when it was done, and the split is worth explaining because it is not what Alice assumed.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_028.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_4652784fd92a"
+  },
+  {
+   "step_idx": 29,
+   "app": "mail",
+   "action_kind": "click Send",
+   "action_args": {},
+   "reasoning": "Send it, so the account and her inbox agree on what was done.",
+   "screenshot_path": "screenshots/ui_oracle/M701__0/step_029.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8150#/email/thread_4652784fd92a"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "success": true,
+  "newly_fired": [
+   "bought_each_where_it_is_cheaper_and_sent_to_the_floor"
+  ],
+  "missed_milestones": [
+   "bought_the_dearer_items_on_valuemart"
+  ],
+  "all_milestones": [
+   {
+    "name": "bought_each_where_it_is_cheaper_and_sent_to_the_floor",
+    "weight": 1.0,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "bought_the_dearer_items_on_valuemart",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   }
+  ]
+ }
+}

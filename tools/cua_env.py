@@ -46,12 +46,26 @@ DELTA_API_ROOT = "https://cua-gym-hub.delta.soulhq.ai"
 # the _mock suffix and with underscores hyphenated (xoogle_calendar_mock -> xoogle-calendar).
 DELTA_UI_TMPL = "https://cua-hub-{slug}.delta.deccanexperts.ai"
 
-# Renamed slugs are their own hostname (xmazon -> xmazon.delta...), so they must
-# NOT go through the cua-hub-<slug> template. Anything absent from this set is a
-# mock we never renamed and still resolves through the template untouched.
+# Hosted SPA hostnames.
+#
+# Our mock folders are x-named now, so _slug() already yields the hostname
+# (xmazon_mock -> xmazon). RENAMED_UI_SLUGS is that identity case. The old-slug
+# map is kept alongside it so any caller still holding a pre-rename slug
+# ("amazon") resolves to the live host instead of silently building a
+# cua-hub-amazon URL that no longer answers.
 RENAMED_UI_SLUGS = {
     "xmazon", "xbay", "xmail",
     "xoogle-calendar", "xoogle-docs", "xoogle-drive", "xber-eats",
+}
+
+DELTA_UI_HOSTS = {
+    "amazon": "xmazon",
+    "ebay": "xbay",
+    "gmail": "xmail",
+    "google-calendar": "xoogle-calendar",
+    "google-docs": "xoogle-docs",
+    "google-drive": "xoogle-drive",
+    "uber-eats": "xber-eats",
 }
 
 
@@ -59,6 +73,9 @@ def delta_ui_base(slug: str) -> str:
     """Hosted SPA origin for a mock slug, renamed hosts included."""
     if slug in RENAMED_UI_SLUGS:
         return f"https://{slug}.delta.deccanexperts.ai"
+    host = DELTA_UI_HOSTS.get(slug)
+    if host:
+        return f"https://{host}.delta.deccanexperts.ai"
     return DELTA_UI_TMPL.format(slug=slug)
 
 LOCAL_PORTS = {"shop": 5201, "mail": 5203, "market": 5202, "calendar": 5204, "food": 5205}
