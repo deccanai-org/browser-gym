@@ -335,7 +335,7 @@ def test_actions_cover_every_app(wired):
     for name, (_m, path, _f) in bridge.ACTIONS.items():
         for tok in re.findall(r"\{(\w+)\}", path):
             assert tok in ("address_id", "payment_id", "subscription_id", "order_id",
-                           "product_id", "email_id", "event_id"), (name, tok)
+                           "product_id", "email_id", "event_id", "registry_id"), (name, tok)
 
 
 def test_actions_are_journalled_to_the_hub(wired):

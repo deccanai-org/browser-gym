@@ -296,9 +296,16 @@ _AMAZON_CAT = {
     "shoes": "Fashion", "jewelry": "Fashion", "jewellery": "Fashion",
     "accessories": "Fashion",
     "toys": "Toys & Games", "games": "Toys & Games", "beauty": "Beauty",
-    "office": "Office Products", "pet": "Pet Supplies",
+    "office": "Office Products", "pet": "Pet Supplies", "pets": "Pet Supplies",
     "health": "Health & Household",
-    "sports": "Sports & Outdoors",
+    # Paper towels, meal-prep containers and the like are Amazon's real
+    # "Health & Household" aisle, not Home & Kitchen decor.
+    "household": "Health & Household",
+    "sports": "Sports & Outdoors", "outdoors": "Sports & Outdoors",
+    "footwear": "Fashion",
+    # Keepsake journals and gift baskets have no department of their own; file
+    # them under the home/lifestyle aisle, and travel pillows likewise.
+    "gifts": "Home & Kitchen", "travel": "Home & Kitchen",
     # Warranties, installation and gift-wrap are line items with nothing to
     # shelve; they get their own aisle rather than being filed as a gadget.
     "services": "Services",
@@ -686,8 +693,28 @@ _EBAY_CAT = {
     "electronics": "Electronics",
     "audio": "Electronics",
     "home": "Home",
+    "kitchen": "Home",
+    "household": "Home",
+    "gifts": "Home",
+    "travel": "Home",
     "grocery": "Other",
+    "produce": "Other", "dairy": "Other", "bakery": "Other",
+    "meat": "Other", "pantry": "Other", "frozen": "Other", "beverage": "Other", "beverages": "Other", "wine": "Other", "alcohol": "Other", "snacks": "Other",
     "sports": "Sporting Goods",
+    "outdoors": "Sporting Goods",
+    "books": "Books & Magazines", "book": "Books & Magazines",
+    "fashion": "Clothing, Shoes & Accessories",
+    "clothing": "Clothing, Shoes & Accessories",
+    "apparel": "Clothing, Shoes & Accessories",
+    "shoes": "Clothing, Shoes & Accessories",
+    "footwear": "Clothing, Shoes & Accessories",
+    "jewelry": "Clothing, Shoes & Accessories",
+    "accessories": "Clothing, Shoes & Accessories",
+    "toys": "Toys & Hobbies", "games": "Toys & Hobbies",
+    "beauty": "Health & Beauty", "health": "Health & Beauty",
+    "office": "Business & Industrial",
+    "pet": "Pet Supplies", "pets": "Pet Supplies",
+    "services": "Other",
 }
 
 

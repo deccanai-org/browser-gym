@@ -77,17 +77,20 @@ def test_every_category_the_engine_emits_has_a_storefront_mapping() -> None:
 
 
 def test_unmapped_shop_category_raises_naming_the_product() -> None:
+    # Uses a category that is deliberately NOT in _AMAZON_CAT. ("sports" and the
+    # other real categories are all mapped now, so the guard has to be tested
+    # with a token that will never be a real department.)
     with pytest.raises(UnmappedCategory) as exc:
-        _amazon_category({"id": "p_yoga_1", "name": "Yoga Mat", "category": "sports"})
+        _amazon_category({"id": "p_yoga_1", "name": "Yoga Mat", "category": "zzz_not_a_category"})
     msg = str(exc.value)
-    assert "p_yoga_1" in msg and "Yoga Mat" in msg and "sports" in msg
+    assert "p_yoga_1" in msg and "Yoga Mat" in msg and "zzz_not_a_category" in msg
 
 
 def test_unmapped_market_category_raises_naming_the_listing() -> None:
     with pytest.raises(UnmappedCategory) as exc:
-        _ebay_category("vm_yoga_1", {"name": "Yoga Mat", "category": "sports"})
+        _ebay_category("vm_yoga_1", {"name": "Yoga Mat", "category": "zzz_not_a_category"})
     msg = str(exc.value)
-    assert "vm_yoga_1" in msg and "Yoga Mat" in msg and "sports" in msg
+    assert "vm_yoga_1" in msg and "Yoga Mat" in msg and "zzz_not_a_category" in msg
 
 
 def test_pet_and_office_products_ship_under_their_own_category() -> None:

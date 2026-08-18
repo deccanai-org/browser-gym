@@ -75,7 +75,9 @@ _SEG_TO_APP = {
     "orders": "shop", "p": "shop", "product": "shop", "products": "shop",
     "profile": "shop", "returns": "shop", "search": "shop", "shop": "shop",
     "sign-in": "shop", "signin": "shop", "store": "shop", "subs": "shop",
-    "subscriptions": "shop",
+    "subscriptions": "shop", "wishlist": "shop", "registry": "shop",
+    # ValueMart's membership page (added with the Membership.jsx route).
+    "membership": "market",
 }
 _APP_START_PATH = {"shop": "/", "mail": "/#/inbox", "market": "/",
                    "calendar": "/", "food": "/"}

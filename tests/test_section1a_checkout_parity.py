@@ -244,7 +244,7 @@ def _assert_required_fields(state: dict[str, Any]) -> None:
     assert state["inventory"]["p_coffee_maker"] == 63
     assert state["cart"]["items"] == []
     assert state["receipt"]["order_id"] == order["id"]
-    assert state["receipt"]["to"] == "alice@example.com"
+    assert state["receipt"]["to"] == "alice@shopmail.com"
     assert state["receipt"]["amount_total"] == order["total"]
     assert order["id"] in state["receipt"]["subject"]
     placed = [e for e in state["events"] if e["type"] == "ShopOrderPlaced"]

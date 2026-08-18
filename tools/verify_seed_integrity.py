@@ -73,8 +73,11 @@ def check_task(task_id: str) -> tuple[dict, list[tuple[str, str, str]]]:
         # A gym seed's images must be self-contained: local /assets or inline
         # data: URIs, never a placeholder-image CDN (picsum is non-deterministic
         # and breaks offline). Everything renders from a real, stable asset.
-        for cdn in ("picsum.photos", "placekitten", "placehold", "loremflickr",
-                    "source.unsplash", "via.placeholder", "dummyimage"):
+        # Match the CDN *hosts* (with a dot), not bare words — "placeholder"
+        # and "unsplash" appear legitimately in email body prose.
+        for cdn in ("picsum.photos", "placekitten.com", "placehold.co", "placehold.it",
+                    "placeholder.com", "loremflickr.com", "source.unsplash.com",
+                    "via.placeholder.com", "dummyimage.com"):
             if cdn in blob:
                 problems.append((task_id, app, f"{blob.count(cdn)} {cdn} image URL(s) — no placeholder CDNs allowed"))
         if app == "shop":
