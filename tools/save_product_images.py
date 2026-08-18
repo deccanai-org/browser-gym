@@ -35,7 +35,7 @@ MANIFEST = REPO / "tools" / "product_images.json"
 HUBDEV = pathlib.Path(
     "/private/tmp/claude-501/-Users-dhiren-Deccan-AI-E-Commerce-Broswer-Gym/"
     "a606619c-c162-479f-8fd5-31923f720770/scratchpad/hubdev")
-LIVE_MOCKS = ("amazon_mock", "ebay_mock")
+LIVE_MOCKS = ("xmazon_mock", "xbay_mock")
 
 
 def _resize(src: pathlib.Path, dst: pathlib.Path, edge: int) -> bool:

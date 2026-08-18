@@ -19,26 +19,37 @@ set -euo pipefail
 
 HUB="${1:?usage: push_to_hub.sh <cua-gym-hub-clone> [hubdev-src-root]}"
 SRC="${2:-/private/tmp/claude-501/-Users-dhiren-Deccan-AI-E-Commerce-Broswer-Gym/a606619c-c162-479f-8fd5-31923f720770/scratchpad/hubdev}"
-MOCKS=(amazon_mock ebay_mock gmail_mock google_calendar_mock uber_eats_mock)
+# ours:theirs. We renamed our folders to x-forms; the hub did not, and its
+# checkout still has websites/amazon_mock. Syncing ours onto theirs by a single
+# name would create brand-new folders in the hub instead of updating the real
+# ones, so every path below has to pick the correct side of the pair.
+MOCKS=(
+  xmazon_mock:amazon_mock
+  xbay_mock:ebay_mock
+  xmail_mock:gmail_mock
+  xoogle_calendar_mock:google_calendar_mock
+  xber_eats_mock:uber_eats_mock
+)
 
 [ -d "$HUB/.git" ]     || { echo "!! $HUB is not a git clone" >&2; exit 1; }
 [ -d "$HUB/websites" ] || { echo "!! $HUB has no websites/ (not a cua-gym-hub checkout)" >&2; exit 1; }
 [ -d "$SRC/websites" ] || { echo "!! $SRC has no websites/ (final source tree missing)" >&2; exit 1; }
 
 echo "==> syncing final UI source into: $HUB"
-for m in "${MOCKS[@]}"; do
-  s="$SRC/websites/$m"; d="$HUB/websites/$m"
+for entry in "${MOCKS[@]}"; do
+  m="${entry%%:*}"; hm="${entry##*:}"
+  s="$SRC/websites/$m"; d="$HUB/websites/$hm"
   [ -d "$s/src" ] || { echo "!! source missing: $s/src" >&2; exit 1; }
   [ -d "$d" ]     || { echo "!! mock not in clone: $d (is this the right hub?)" >&2; exit 1; }
   # overwrite the UI source only. --delete keeps src an exact mirror (our changes
   # never remove upstream-only files, verified). index.html is a single file.
   rsync -a --delete "$s/src/" "$d/src/"
   cp "$s/index.html" "$d/index.html"
-  echo "   $m: src/ + index.html synced"
+  echo "   $m -> $hm: src/ + index.html synced"
 done
 
 cd "$HUB"
-for m in "${MOCKS[@]}"; do git add "websites/$m/src" "websites/$m/index.html"; done
+for entry in "${MOCKS[@]}"; do hm="${entry##*:}"; git add "websites/$hm/src" "websites/$hm/index.html"; done
 
 if git diff --cached --quiet; then
   echo "==> nothing changed — the clone already matches our final UI."

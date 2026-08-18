@@ -2,11 +2,11 @@
 # Each check is run by tools.qa_pipeline.runner against a live mock UI.
 
 apps:
-  shopgym: { folder: amazon_mock, port: 5201, path: / }
-  valuemart: { folder: ebay_mock, port: 5202, path: / }
-  shopmail: { folder: gmail_mock, port: 5203, path: / }
-  gymcal: { folder: google_calendar_mock, port: 5204, path: / }
-  gymeats: { folder: uber_eats_mock, port: 5205, path: / }
+  shopgym: { folder: xmazon_mock, port: 5201, path: / }
+  valuemart: { folder: xbay_mock, port: 5202, path: / }
+  shopmail: { folder: xmail_mock, port: 5203, path: / }
+  gymcal: { folder: xoogle_calendar_mock, port: 5204, path: / }
+  gymeats: { folder: xber_eats_mock, port: 5205, path: / }
 
 checks:
   # ---- ShopGym ----
@@ -93,7 +93,7 @@ checks:
     title: Payment form rejects expired / invalid expiry and long CVV
     kind: source
     files:
-      - websites/amazon_mock/src/pages/Profile.jsx
+      - websites/xmazon_mock/src/pages/Profile.jsx
     must_contain:
       - Expiry month must be between
       - Card expiry is in the past
@@ -105,7 +105,7 @@ checks:
     title: Gift card custom amount clamped to $2000
     kind: source
     files:
-      - websites/amazon_mock/src/pages/GiftCards.jsx
+      - websites/xmazon_mock/src/pages/GiftCards.jsx
     must_contain:
       - Math.min(2000
 
@@ -115,7 +115,7 @@ checks:
     title: Wishlist singular grammar
     kind: source
     files:
-      - websites/amazon_mock/src/pages/Wishlist.jsx
+      - websites/xmazon_mock/src/pages/Wishlist.jsx
     must_contain:
       - "item' : 'items'"
 
@@ -125,7 +125,7 @@ checks:
     title: Checkout totals round once from a single base
     kind: source
     files:
-      - websites/amazon_mock/src/pages/Checkout.jsx
+      - websites/xmazon_mock/src/pages/Checkout.jsx
     must_contain:
       - money(
 
@@ -135,7 +135,7 @@ checks:
     title: Address form rejects a non-numeric ZIP
     kind: source
     files:
-      - websites/amazon_mock/src/pages/Profile.jsx
+      - websites/xmazon_mock/src/pages/Profile.jsx
     must_contain:
       - Enter a valid ZIP code
 
@@ -146,7 +146,7 @@ checks:
     title: Placing a bid never lowers currentBid
     kind: source
     files:
-      - websites/ebay_mock/src/context/StoreContext.jsx
+      - websites/xbay_mock/src/context/StoreContext.jsx
     must_contain:
       - Math.max(newCurrentBid, listing.currentBid)
       - sortedByMax
@@ -157,8 +157,8 @@ checks:
     title: Min bid matches reducer gate (no silent dead zone)
     kind: source
     files:
-      - websites/ebay_mock/src/pages/ProductDetails.jsx
-      - websites/ebay_mock/src/context/StoreContext.jsx
+      - websites/xbay_mock/src/pages/ProductDetails.jsx
+      - websites/xbay_mock/src/context/StoreContext.jsx
     must_contain:
       - Math.max(listing.startingBid
       - Bid must be at least
@@ -169,7 +169,7 @@ checks:
     title: Buy It Now confirm shows shipping + total
     kind: source
     files:
-      - websites/ebay_mock/src/pages/ProductDetails.jsx
+      - websites/xbay_mock/src/pages/ProductDetails.jsx
     must_contain:
       - Total $
       - Shipping
@@ -180,8 +180,8 @@ checks:
     title: Countdown uses same clock as ended check
     kind: source
     files:
-      - websites/ebay_mock/src/components/ListingCard.jsx
-      - websites/ebay_mock/src/pages/ProductDetails.jsx
+      - websites/xbay_mock/src/components/ListingCard.jsx
+      - websites/xbay_mock/src/pages/ProductDetails.jsx
     must_contain:
       - formatDistance(
     must_not_contain:
@@ -193,7 +193,7 @@ checks:
     title: Empty cart delivery fee is $0
     kind: source
     files:
-      - websites/ebay_mock/src/lib/cart.js
+      - websites/xbay_mock/src/lib/cart.js
     must_contain:
       - if (s <= 0) return 0
 
@@ -203,7 +203,7 @@ checks:
     title: Home & Garden sell option value matches label
     kind: source
     files:
-      - websites/ebay_mock/src/pages/CreateListing.jsx
+      - websites/xbay_mock/src/pages/CreateListing.jsx
     must_contain:
       - 'value="Home & Garden"'
     must_not_contain:
@@ -244,7 +244,7 @@ checks:
         value: Canada
       - click: button:has-text("Save address")
       - assert_js: |
-          const s = JSON.parse(localStorage.getItem('ebay_mock_state') || '{}');
+          const s = JSON.parse(localStorage.getItem('xbay_mock_state') || '{}');
           return (s.addresses || []).some(a => a.city === 'Austin' && a.country === 'Canada');
         why: newly entered address was not persisted
 
@@ -265,7 +265,7 @@ checks:
     title: Checkout is blocked without an address and payment method
     kind: source
     files:
-      - websites/ebay_mock/src/pages/Cart.jsx
+      - websites/xbay_mock/src/pages/Cart.jsx
     must_contain:
       - "!!selectedAddressId && !!selectedPaymentId"
       - Choose a shipping address and a payment method
@@ -277,7 +277,7 @@ checks:
     title: Compose caret placed before signature
     kind: source
     files:
-      - websites/gmail_mock/src/components/ComposeModal.jsx
+      - websites/xmail_mock/src/components/ComposeModal.jsx
     must_contain:
       - Place caret BEFORE the signature
 
@@ -287,7 +287,7 @@ checks:
     title: Seed labels normalized to label ids
     kind: source
     files:
-      - websites/gmail_mock/src/data/seedDefault.json
+      - websites/xmail_mock/src/data/seedDefault.json
     json_path_contains:
       path: emails
       any_labels_include: l1
@@ -298,7 +298,7 @@ checks:
     title: Sent/Drafts show recipients
     kind: source
     files:
-      - websites/gmail_mock/src/components/EmailList.jsx
+      - websites/xmail_mock/src/components/EmailList.jsx
     must_contain:
       - folder === 'sent' || email.folder === 'drafts'
 
@@ -308,7 +308,7 @@ checks:
     title: Primary unread badge folds hidden tabs
     kind: source
     files:
-      - websites/gmail_mock/src/components/EmailList.jsx
+      - websites/xmail_mock/src/components/EmailList.jsx
     must_contain:
       - fold hidden tabs into Primary
 
@@ -318,7 +318,7 @@ checks:
     title: Spam toast offers Undo
     kind: source
     files:
-      - websites/gmail_mock/src/components/EmailList.jsx
+      - websites/xmail_mock/src/components/EmailList.jsx
     must_contain:
       - "Marked as spam', () =>"
 
@@ -328,7 +328,7 @@ checks:
     title: Compose validates the recipient and defaults a blank subject
     kind: source
     files:
-      - websites/gmail_mock/src/components/ComposeModal.jsx
+      - websites/xmail_mock/src/components/ComposeModal.jsx
     must_contain:
       - Enter a valid email address
       - "subject.trim() || '(no subject)'"
@@ -353,7 +353,7 @@ checks:
     title: Importance marker is a chevron, not a second star
     kind: source
     files:
-      - websites/gmail_mock/src/components/EmailList.jsx
+      - websites/xmail_mock/src/components/EmailList.jsx
     must_contain:
       - M4 4 L13 12 L4 20 Z
 
@@ -377,7 +377,7 @@ checks:
     title: Marking an open thread unread returns to the folder list
     kind: source
     files:
-      - websites/gmail_mock/src/components/ThreadView.jsx
+      - websites/xmail_mock/src/components/ThreadView.jsx
     must_contain:
       - if (allRead) navigate(-1)
 
@@ -399,7 +399,7 @@ checks:
     title: Unread badges count conversations, not messages
     kind: source
     files:
-      - websites/gmail_mock/src/components/EmailList.jsx
+      - websites/xmail_mock/src/components/EmailList.jsx
     must_contain:
       - count each CONVERSATION once
 
@@ -420,7 +420,7 @@ checks:
     title: Cmd/Ctrl chords are not swallowed as single-key shortcuts
     kind: source
     files:
-      - websites/gmail_mock/src/App.jsx
+      - websites/xmail_mock/src/App.jsx
     must_contain:
       - if (e.metaKey || e.ctrlKey || e.altKey) return
 
@@ -445,7 +445,7 @@ checks:
     title: Archive has an inverse action in the store
     kind: source
     files:
-      - websites/gmail_mock/src/context/StoreContext.jsx
+      - websites/xmail_mock/src/context/StoreContext.jsx
     must_contain:
       - const unarchiveEmails
 
@@ -455,7 +455,7 @@ checks:
     title: Archived mail exposes Move to Inbox in All Mail
     kind: source
     files:
-      - websites/gmail_mock/src/components/EmailList.jsx
+      - websites/xmail_mock/src/components/EmailList.jsx
     must_contain:
       - unarchiveEmails
       - Move to Inbox
@@ -466,7 +466,7 @@ checks:
     title: Permanent delete from Trash offers no Undo
     kind: source
     files:
-      - websites/gmail_mock/src/context/StoreContext.jsx
+      - websites/xmail_mock/src/context/StoreContext.jsx
     must_contain:
       - "showToast('Conversation deleted forever', null)"
 
@@ -476,7 +476,7 @@ checks:
     title: Product name and favicon are branded ShopMail
     kind: source
     files:
-      - websites/gmail_mock/index.html
+      - websites/xmail_mock/index.html
     must_contain:
       - <title>ShopMail</title>
     must_not_contain:
@@ -502,8 +502,8 @@ checks:
     title: Tips clamped to >= 0
     kind: source
     files:
-      - websites/uber_eats_mock/src/context/AppContext.jsx
-      - websites/uber_eats_mock/src/pages/Checkout.jsx
+      - websites/xber_eats_mock/src/context/AppContext.jsx
+      - websites/xber_eats_mock/src/pages/Checkout.jsx
     must_contain:
       - Math.max(0
 
@@ -513,7 +513,7 @@ checks:
     title: Checkout money rounded consistently
     kind: source
     files:
-      - websites/uber_eats_mock/src/pages/Checkout.jsx
+      - websites/xber_eats_mock/src/pages/Checkout.jsx
     must_contain:
       - const money = (n) => Math.round
 
@@ -523,7 +523,7 @@ checks:
     title: Order list falls back to menuItem.name
     kind: source
     files:
-      - websites/uber_eats_mock/src/pages/Orders.jsx
+      - websites/xber_eats_mock/src/pages/Orders.jsx
     must_contain:
       - menuItem?.name
 
@@ -533,7 +533,7 @@ checks:
     title: Cross-restaurant cart replace confirms
     kind: source
     files:
-      - websites/uber_eats_mock/src/context/AppContext.jsx
+      - websites/xber_eats_mock/src/context/AppContext.jsx
     must_contain:
       - window.confirm
 
@@ -543,7 +543,7 @@ checks:
     title: Custom tip has an upper bound
     kind: source
     files:
-      - websites/uber_eats_mock/src/pages/Checkout.jsx
+      - websites/xber_eats_mock/src/pages/Checkout.jsx
     must_contain:
       - Math.min(500
 
@@ -553,7 +553,7 @@ checks:
     title: Tip pills wrap on mobile
     kind: source
     files:
-      - websites/uber_eats_mock/src/pages/Checkout.css
+      - websites/xber_eats_mock/src/pages/Checkout.css
     must_contain:
       - flex-wrap
 
@@ -564,7 +564,7 @@ checks:
     title: Quick Add tomorrow uses gym clock
     kind: source
     files:
-      - websites/google_calendar_mock/src/components/Header.jsx
+      - websites/xoogle_calendar_mock/src/components/Header.jsx
     must_contain:
       - new Date(gymNow())
     must_not_contain:
@@ -576,7 +576,7 @@ checks:
     title: Deleting recurring instance uses exceptions
     kind: source
     files:
-      - websites/google_calendar_mock/src/context/StoreContext.jsx
+      - websites/xoogle_calendar_mock/src/context/StoreContext.jsx
     must_contain:
       - exceptions
       - _recur_
@@ -587,7 +587,7 @@ checks:
     title: Current-time line uses gymNow
     kind: source
     files:
-      - websites/google_calendar_mock/src/components/WeekView.jsx
+      - websites/xoogle_calendar_mock/src/components/WeekView.jsx
     must_contain:
       - useState(() => gymNow())
 
@@ -597,8 +597,8 @@ checks:
     title: Monthly recurrence expands from original start
     kind: source
     files:
-      - websites/google_calendar_mock/src/components/WeekView.jsx
-      - websites/google_calendar_mock/src/components/MonthView.jsx
+      - websites/xoogle_calendar_mock/src/components/WeekView.jsx
+      - websites/xoogle_calendar_mock/src/components/MonthView.jsx
     must_contain:
       - addMonths(originalStart
 
@@ -608,7 +608,7 @@ checks:
     title: Reject end <= start on save
     kind: source
     files:
-      - websites/google_calendar_mock/src/components/EventModal.jsx
+      - websites/xoogle_calendar_mock/src/components/EventModal.jsx
     must_contain:
       - End time must be after start time
 
@@ -618,7 +618,7 @@ checks:
     title: Settings defaultView applied on save
     kind: source
     files:
-      - websites/google_calendar_mock/src/components/SettingsModal.jsx
+      - websites/xoogle_calendar_mock/src/components/SettingsModal.jsx
     must_contain:
       - SET_VIEW
 
@@ -628,7 +628,7 @@ checks:
     title: Guests input exists on event form
     kind: source
     files:
-      - websites/google_calendar_mock/src/components/EventModal.jsx
+      - websites/xoogle_calendar_mock/src/components/EventModal.jsx
     must_contain:
       - guestsText
 
@@ -638,8 +638,8 @@ checks:
     title: Other calendars visibility actually filters events
     kind: source
     files:
-      - websites/google_calendar_mock/src/components/WeekView.jsx
-      - websites/google_calendar_mock/src/components/MonthView.jsx
+      - websites/xoogle_calendar_mock/src/components/WeekView.jsx
+      - websites/xoogle_calendar_mock/src/components/MonthView.jsx
     must_contain:
       - state.otherCalendars || []).filter(c => c.visible)
 
@@ -649,8 +649,8 @@ checks:
     title: An event crossing midnight renders on the day it ends
     kind: source
     files:
-      - websites/google_calendar_mock/src/components/WeekView.jsx
-      - websites/google_calendar_mock/src/components/MonthView.jsx
+      - websites/xoogle_calendar_mock/src/components/WeekView.jsx
+      - websites/xoogle_calendar_mock/src/components/MonthView.jsx
     must_contain:
       - overlapsDay(
     must_not_contain:
@@ -708,7 +708,7 @@ checks:
     title: Event times round-trip in local time (no UTC shift)
     kind: source
     files:
-      - websites/google_calendar_mock/src/components/EventModal.jsx
+      - websites/xoogle_calendar_mock/src/components/EventModal.jsx
     must_contain:
       - toLocalInput(event.start)
     must_not_contain:
@@ -720,8 +720,8 @@ checks:
     title: Debug-mode affordances removed from the UI
     kind: source
     files:
-      - websites/google_calendar_mock/src/components/Header.jsx
-      - websites/google_calendar_mock/src/components/Sidebar.jsx
+      - websites/xoogle_calendar_mock/src/components/Header.jsx
+      - websites/xoogle_calendar_mock/src/components/Sidebar.jsx
     must_not_contain:
       - Debug API
       - Debug State
@@ -732,9 +732,9 @@ checks:
     title: Week starts on setting drives every grid
     kind: source
     files:
-      - websites/google_calendar_mock/src/components/WeekView.jsx
-      - websites/google_calendar_mock/src/components/MonthView.jsx
-      - websites/google_calendar_mock/src/components/Sidebar.jsx
+      - websites/xoogle_calendar_mock/src/components/WeekView.jsx
+      - websites/xoogle_calendar_mock/src/components/MonthView.jsx
+      - websites/xoogle_calendar_mock/src/components/Sidebar.jsx
     must_contain:
       - state.settings?.weekStart
     must_not_contain:
@@ -746,7 +746,7 @@ checks:
     title: Default view setting is applied on load
     kind: source
     files:
-      - websites/google_calendar_mock/src/context/StoreContext.jsx
+      - websites/xoogle_calendar_mock/src/context/StoreContext.jsx
     must_contain:
       - withDefaultView
 
@@ -756,10 +756,10 @@ checks:
     title: Time format setting drives rendered times
     kind: source
     files:
-      - websites/google_calendar_mock/src/components/WeekView.jsx
-      - websites/google_calendar_mock/src/components/MonthView.jsx
-      - websites/google_calendar_mock/src/components/AgendaView.jsx
-      - websites/google_calendar_mock/src/components/EventPopover.jsx
+      - websites/xoogle_calendar_mock/src/components/WeekView.jsx
+      - websites/xoogle_calendar_mock/src/components/MonthView.jsx
+      - websites/xoogle_calendar_mock/src/components/AgendaView.jsx
+      - websites/xoogle_calendar_mock/src/components/EventPopover.jsx
     must_contain:
       - timeFormat
     must_not_contain:
@@ -771,7 +771,7 @@ checks:
     title: Show week numbers renders ISO week numbers
     kind: source
     files:
-      - websites/google_calendar_mock/src/components/MonthView.jsx
+      - websites/xoogle_calendar_mock/src/components/MonthView.jsx
     must_contain:
       - getISOWeek(weekStart)
 
@@ -781,7 +781,7 @@ checks:
     title: Quick Add honors the default event duration
     kind: source
     files:
-      - websites/google_calendar_mock/src/components/Header.jsx
+      - websites/xoogle_calendar_mock/src/components/Header.jsx
     must_contain:
       - state.settings?.defaultDuration
     must_not_contain:
@@ -816,7 +816,7 @@ checks:
     title: Product name and favicon are branded GymCal
     kind: source
     files:
-      - websites/google_calendar_mock/index.html
+      - websites/xoogle_calendar_mock/index.html
     must_contain:
       - GymCal
     must_not_contain:

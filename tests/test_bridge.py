@@ -267,7 +267,7 @@ def test_deep_link_start_path_mapping():
     assert _mock_start_path("market", "/market/cart") == "/cart"
     assert _mock_start_path("food", "/food/cart") == "/cart"
     # A deep link to ONE order lands on the orders list. The mock has `/orders`
-    # but no order-detail route (see websites/amazon_mock/src/App.jsx), so the
+    # but no order-detail route (see websites/xmazon_mock/src/App.jsx), so the
     # nearest real page is the list the order is on — which is where the
     # annotator finds it. This used to return None and drop them on the
     # homepage instead, which is strictly further from the task.

@@ -12,7 +12,7 @@
 
 ## Current State Assessment
 
-The amazon_mock already has a working scaffold with:
+The xmazon_mock already has a working scaffold with:
 - ✅ Vite + React + Tailwind + react-router-dom
 - ✅ Basic routing (/, /search, /product/:id, /cart, /checkout, /orders, /wishlist, /go)
 - ✅ StoreContext with cart/wishlist/order/review actions

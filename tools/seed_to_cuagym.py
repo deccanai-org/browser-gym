@@ -45,14 +45,41 @@ from server.seeddb._equiv import build_wrapped
 # seeded sid can be traced back to the code that produced it.
 PROJECTION_VERSION = "2"
 
-# gym app key -> cua-hub mock key (the `mock` column in cua-gym.mock_state_events)
+# gym app key -> our mock name, which is also the websites/<name> directory.
+#
+# These are OUR names. They are deliberately not the hub's names: the hub (and
+# every other repo that talks to it) still calls these amazon_mock, gmail_mock,
+# and so on. Translate with tools.cua_env.hub_key() at the boundary — never
+# assume the two are the same string.
+#
+# Sids are unaffected by this naming: seed_sid() hashes the gym app key ("shop"),
+# not the mock name, so already-seeded hub state stays addressable.
 APP_TO_MOCK = {
-    "shop": "amazon_mock",
-    "mail": "gmail_mock",
-    "market": "ebay_mock",
-    "calendar": "google_calendar_mock",
-    "food": "uber_eats_mock",
+    "shop": "xmazon_mock",
+    "mail": "xmail_mock",
+    "market": "xbay_mock",
+    "calendar": "xoogle_calendar_mock",
+    "food": "xber_eats_mock",
 }
+
+# Our mock name -> the name the hub knows it by.
+#
+# The hub did not rename: its /api/<mock> path, its domains.json keys, its own
+# websites/<mock> folders and the `mock` column in cua-gym.mock_state_events all
+# still say amazon_mock. Anything crossing that boundary must be translated, or
+# it writes rows the hub cannot serve and reads rows that do not exist.
+MOCK_TO_HUB_KEY = {
+    "xmazon_mock": "amazon_mock",
+    "xmail_mock": "gmail_mock",
+    "xbay_mock": "ebay_mock",
+    "xoogle_calendar_mock": "google_calendar_mock",
+    "xber_eats_mock": "uber_eats_mock",
+}
+
+
+def hub_key(mock: str) -> str:
+    """The name the hub knows this mock by. Identity for anything unrenamed."""
+    return MOCK_TO_HUB_KEY.get(mock, mock)
 
 
 # --------------------------------------------------------------- dump ----------
@@ -835,10 +862,26 @@ def transform_food(food: dict) -> dict:
                             "categories": [], "tags": [], "supportsPickup": True,
                             "pickupTimeMin": 10, "pickupTimeMax": 20})
 
-    # Ambient browse content so the cuisine categories aren't near-empty. Purely
-    # additive and projection-only (see tools/ambient_food.py) -> no verifier sees
-    # it. Real task restaurants also get a couple of reviews so their store page
-    # isn't blank.
+    # Ambient browse content. Real task restaurants also get a couple of reviews
+    # so their store page isn't blank.
+    #
+    # AMBIENT RESTAURANTS ARE NO LONGER LISTED. They were projection-only, which
+    # was described as "purely additive ... no verifier sees it". No verifier
+    # did, but the AGENT did: the engine holds three restaurants and the store
+    # listed forty-two, so food.add_to_cart against any of the other thirty-nine
+    # returned "no such restaurant" and the mock dropped the error on the floor.
+    # A model picked one, watched its basket stay empty, and spent fifty-four
+    # steps testing three restaurants, the wallet and the address book before the
+    # episode timed out. A storefront where nine listings in ten silently fail is
+    # not ambience, it is a broken shop.
+    #
+    # Removing them also repairs M248, whose premise is that the catalogue holds
+    # ZERO vegan items: the ambient menu shipped 35 items tagged Vegan, so on the
+    # realistic UI that task was asserting something the agent could see was
+    # false. Density is the thing being traded away, and correctness is worth
+    # more than density.
+    #
+    # Set GYM_FOOD_AMBIENT=1 to restore the old listing behaviour.
     from tools.ambient_food import (build_ambient, ambient_orders,
                                     AMBIENT_FAVORITES, _REVIEW_POOL)
     amb_rests, amb_menu, reviews = build_ambient(_food_img, _svg_tile)
@@ -848,14 +891,23 @@ def transform_food(food: dict) -> dict:
             reviews.append({"id": f"rev_{rr['id']}_{j}", "restaurantId": rr["id"],
                             "userName": who, "rating": stars, "comment": text,
                             "createdAt": "2026-05-1%dT12:00:00" % ((i + j) % 9 + 1)})
-    restaurants = restaurants + amb_rests
-    menu_items = menu_items + amb_menu
+    _show_ambient = os.environ.get("GYM_FOOD_AMBIENT", "") == "1"
+    if _show_ambient:
+        restaurants = restaurants + amb_rests
+        menu_items = menu_items + amb_menu
+
+    _orderable = {rr["id"] for rr in restaurants}
+    # Favourites pointing at restaurants that are no longer listed render as dead
+    # cards on the home screen, so keep only the ones that still exist.
+    _favs = [f for f in AMBIENT_FAVORITES if f in _orderable]
+    # Same for reviews: build_ambient seeds them for its own restaurants.
+    reviews = [rv for rv in reviews if rv.get("restaurantId") in _orderable]
 
     user = {"id": "user_1", "name": ALICE_NAME, "email": ALICE_EMAIL,
             "phone": "(718) 555-0100", "avatarUrl": "",
             "addresses": [dict(_UBER_ADDR)], "defaultAddressId": _UBER_ADDR["id"],
             "paymentMethods": [dict(p) for p in _UBER_PAYS], "defaultPaymentId": _UBER_PAY["id"],
-            "uberOneActive": False, "favoriteRestaurantIds": list(AMBIENT_FAVORITES)}
+            "uberOneActive": False, "favoriteRestaurantIds": _favs}
     # The mock's normalizeCartItem/normalizeOrderItem both want
     # {cartItemId, menuItem:{...}, quantity, modifiers, instructions} and nest the
     # dish as a whole object -- emitting a flat {menuItemId, name, price} made every
@@ -914,8 +966,12 @@ def transform_food(food: dict) -> dict:
                                  "serviceFee": service, "total": total}})
     active = orders[-1]["id"] if orders else None
     # ambient past orders (delivered) fill the order history / reorder; appended
-    # AFTER active so they never become the active order.
-    orders = orders + ambient_orders(by_dish)
+    # AFTER active so they never become the active order. Dropped alongside the
+    # ambient restaurants themselves: a delivered order whose restaurant is not
+    # listed any more is a Reorder button that cannot work, which is the same
+    # silent dead end being removed above.
+    if _show_ambient:
+        orders = orders + ambient_orders(by_dish)
 
     # the checkout promo box needs real codes behind it, and the applied one
     promos = [{"code": c, "percentOff": pct, "description": f"{int(pct * 100)}% off your order"}
@@ -974,7 +1030,9 @@ def transform_world(world: dict[str, Any], apps: list[str] | None = None,
         meta = state.get("_gym_meta")
         if meta is not None:
             meta["task_id"], meta["seed"] = task_id, seed
-        out[app] = (APP_TO_MOCK[app], state)
+        # The hub's name: this value is written to the `mock` column and used to
+        # build /api/<mock>, so it must be what the hub serves, not our folder name.
+        out[app] = (hub_key(APP_TO_MOCK[app]), state)
     return out
 
 

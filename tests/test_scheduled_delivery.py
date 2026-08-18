@@ -44,7 +44,7 @@ TASK = "M207/scheduled_delivery_event_join"
 PARTY = "2026-05-22"
 WORLD_TODAY = "2026-05-21"
 
-DIST = Path(__file__).resolve().parents[1] / "websites" / "amazon_mock" / "dist"
+DIST = Path(__file__).resolve().parents[1] / "websites" / "xmazon_mock" / "dist"
 
 
 @pytest.fixture(autouse=True)
@@ -223,7 +223,7 @@ def cart_page(monkeypatch):
     """The built ShopGym cart, in a real browser, bridged to a fake engine that
     is seeded with the REAL M207 projection (so the world clock is authentic)."""
     if not (DIST / "index.html").exists():
-        pytest.skip("amazon_mock/dist not built (tools/build_hub_mocks.sh . \"\")")
+        pytest.skip("xmazon_mock/dist not built (tools/build_hub_mocks.sh . \"\")")
     sync_playwright = pytest.importorskip(
         "playwright.sync_api", reason="playwright not installed").sync_playwright
 

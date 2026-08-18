@@ -36,7 +36,7 @@ import sys
 import server.verifiers as V
 from server.apps.calendar.state import TODAY
 from server.main import START_PATHS, TASKS
-from tools.cua_env import APP_TO_MOCK, SEED_REV, seed_sid
+from tools.cua_env import APP_TO_MOCK, SEED_REV, hub_key, seed_sid
 from tools.seed_to_cuagym import transformed_states
 
 MAP = pathlib.Path(__file__).resolve().parent / "cua_task_sid_map.json"
@@ -176,7 +176,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"   {t:52s} {app:9s} {msg}")
 
     MAP.write_text(json.dumps(
-        {"rev": SEED_REV, "today": TODAY, "app_to_mock": APP_TO_MOCK, "tasks": rows}, indent=1))
+        {"rev": SEED_REV, "today": TODAY, "app_to_mock": {a: hub_key(m) for a, m in APP_TO_MOCK.items()}, "tasks": rows}, indent=1))
     print(f"wrote {MAP.name}")
 
     rc = 1 if problems else 0

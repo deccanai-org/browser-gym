@@ -39,8 +39,8 @@ echo "==> serving the mocks"
 for entry in "${PORTS[@]}"; do
   app="${entry%%:*}"; port="${entry##*:}"
   case "$app" in
-    shop) mock=amazon_mock;; mail) mock=gmail_mock;; market) mock=ebay_mock;;
-    calendar) mock=google_calendar_mock;; food) mock=uber_eats_mock;;
+    shop) mock=xmazon_mock;; mail) mock=xmail_mock;; market) mock=xbay_mock;;
+    calendar) mock=xoogle_calendar_mock;; food) mock=xber_eats_mock;;
   esac
   ( cd "$HUB/websites/$mock" && nohup npx vite preview --host 127.0.0.1 --port "$port" --strictPort \
       >"/tmp/vite_$mock.log" 2>&1 & disown )

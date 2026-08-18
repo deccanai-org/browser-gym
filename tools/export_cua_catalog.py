@@ -41,7 +41,7 @@ from server.apps.world import WorldState
 from server.seeddb.runtime import seed_source
 from server.tasks import TASKS
 from tools.cua_env import SEED_REV, seed_sid
-from tools.seed_to_cuagym import APP_TO_MOCK
+from tools.seed_to_cuagym import APP_TO_MOCK, hub_key
 
 HERE = pathlib.Path(__file__).resolve().parent
 SID_MAP = HERE / "cua_task_sid_map.json"
@@ -81,7 +81,8 @@ def build() -> dict:
         primary = _seg_to_app(gym_start)
 
         apps = {}
-        for app, mock in APP_TO_MOCK.items():
+        for app, our_name in APP_TO_MOCK.items():
+            mock = hub_key(our_name)   # the catalog names the hub's mock, not our folder
             got = seed_sid(task_id, 0, app)
             want = ((row.get("apps") or {}).get(app) or {}).get("sid")
             if want and got != want:
@@ -128,7 +129,7 @@ def build() -> dict:
         "seed_rev": SEED_REV,
         "seed": 0,
         "today": sid_map.get("today", ""),
-        "app_to_mock": APP_TO_MOCK,
+        "app_to_mock": {a: hub_key(m) for a, m in APP_TO_MOCK.items()},
         "tasks": tasks,
     }
 

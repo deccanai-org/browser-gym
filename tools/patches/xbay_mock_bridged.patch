@@ -1,6 +1,6 @@
-diff -ruN a/websites/ebay_mock/index.html b/websites/ebay_mock/index.html
---- a/websites/ebay_mock/index.html	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/index.html	2026-07-30 17:35:14
+diff -ruN a/websites/xbay_mock/index.html b/websites/xbay_mock/index.html
+--- a/websites/xbay_mock/index.html	2026-07-28 11:01:47
++++ b/websites/xbay_mock/index.html	2026-07-30 17:35:14
 @@ -4,7 +4,7 @@
      <meta charset="UTF-8" />
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -10,9 +10,9 @@ diff -ruN a/websites/ebay_mock/index.html b/websites/ebay_mock/index.html
    </head>
    <body>
      <div id="root"></div>
-diff -ruN a/websites/ebay_mock/src/App.jsx b/websites/ebay_mock/src/App.jsx
---- a/websites/ebay_mock/src/App.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/App.jsx	2026-07-30 17:35:14
+diff -ruN a/websites/xbay_mock/src/App.jsx b/websites/xbay_mock/src/App.jsx
+--- a/websites/xbay_mock/src/App.jsx	2026-07-28 11:01:47
++++ b/websites/xbay_mock/src/App.jsx	2026-07-30 17:35:14
 @@ -7,6 +7,7 @@
  import ProductDetails from './pages/ProductDetails';
  import Dashboard from './pages/Dashboard';
@@ -38,9 +38,9 @@ diff -ruN a/websites/ebay_mock/src/App.jsx b/websites/ebay_mock/src/App.jsx
              <Route path="/go" element={<Go />} />
            </Routes>
          </Layout>
-diff -ruN a/websites/ebay_mock/src/components/ListingCard.jsx b/websites/ebay_mock/src/components/ListingCard.jsx
---- a/websites/ebay_mock/src/components/ListingCard.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/components/ListingCard.jsx	2026-08-03 17:59:16
+diff -ruN a/websites/xbay_mock/src/components/ListingCard.jsx b/websites/xbay_mock/src/components/ListingCard.jsx
+--- a/websites/xbay_mock/src/components/ListingCard.jsx	2026-07-28 11:01:47
++++ b/websites/xbay_mock/src/components/ListingCard.jsx	2026-08-03 17:59:16
 @@ -2,27 +2,32 @@
  import { Link } from 'react-router-dom';
  import { Heart } from 'lucide-react';
@@ -95,9 +95,9 @@ diff -ruN a/websites/ebay_mock/src/components/ListingCard.jsx b/websites/ebay_mo
              </>
            ) : (
              <>
-diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/src/components/Navbar.jsx
---- a/websites/ebay_mock/src/components/Navbar.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/components/Navbar.jsx	2026-08-03 18:00:40
+diff -ruN a/websites/xbay_mock/src/components/Navbar.jsx b/websites/xbay_mock/src/components/Navbar.jsx
+--- a/websites/xbay_mock/src/components/Navbar.jsx	2026-07-28 11:01:47
++++ b/websites/xbay_mock/src/components/Navbar.jsx	2026-08-03 18:00:40
 @@ -2,10 +2,12 @@
  import { Link, useNavigate } from 'react-router-dom';
  import { Search, ShoppingCart, Bell, Menu, X, ChevronDown } from 'lucide-react';
@@ -244,9 +244,9 @@ diff -ruN a/websites/ebay_mock/src/components/Navbar.jsx b/websites/ebay_mock/sr
                )}
                <div className="flex justify-end gap-3">
                  <button type="button" onClick={() => setShowShippingDialog(false)} className="px-4 py-2 font-bold text-gray-600 hover:bg-gray-100 rounded">
-diff -ruN a/websites/ebay_mock/src/context/StoreContext.jsx b/websites/ebay_mock/src/context/StoreContext.jsx
---- a/websites/ebay_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/context/StoreContext.jsx	2026-08-03 08:19:59
+diff -ruN a/websites/xbay_mock/src/context/StoreContext.jsx b/websites/xbay_mock/src/context/StoreContext.jsx
+--- a/websites/xbay_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
++++ b/websites/xbay_mock/src/context/StoreContext.jsx	2026-08-03 08:19:59
 @@ -1,6 +1,15 @@
  import React, { createContext, useContext, useReducer, useEffect, useRef, useState } from 'react';
  import { INITIAL_STATE, getSessionId, fetchCustomState, saveState, initializeData } from '../data/mockData';
@@ -489,9 +489,9 @@ diff -ruN a/websites/ebay_mock/src/context/StoreContext.jsx b/websites/ebay_mock
        markNotificationRead,
        markAllNotificationsRead
      }}>
-diff -ruN a/websites/ebay_mock/src/data/mockData.js b/websites/ebay_mock/src/data/mockData.js
---- a/websites/ebay_mock/src/data/mockData.js	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/data/mockData.js	2026-08-03 17:59:47
+diff -ruN a/websites/xbay_mock/src/data/mockData.js b/websites/xbay_mock/src/data/mockData.js
+--- a/websites/xbay_mock/src/data/mockData.js	2026-07-28 11:01:47
++++ b/websites/xbay_mock/src/data/mockData.js	2026-08-03 17:59:47
 @@ -1,18 +1,29 @@
 +// Self-contained inline-SVG placeholder helpers (no external hosts / picsum).
 +const initialsAvatar = (initials, bg) =>
@@ -603,9 +603,9 @@ diff -ruN a/websites/ebay_mock/src/data/mockData.js b/websites/ebay_mock/src/dat
      category: listing.category || 'Other',
      status: listing.status || 'active',
    };
-diff -ruN a/websites/ebay_mock/src/lib/bridge.js b/websites/ebay_mock/src/lib/bridge.js
---- a/websites/ebay_mock/src/lib/bridge.js	1969-12-31 16:00:00
-+++ b/websites/ebay_mock/src/lib/bridge.js	2026-08-03 15:53:36
+diff -ruN a/websites/xbay_mock/src/lib/bridge.js b/websites/xbay_mock/src/lib/bridge.js
+--- a/websites/xbay_mock/src/lib/bridge.js	1969-12-31 16:00:00
++++ b/websites/xbay_mock/src/lib/bridge.js	2026-08-03 15:53:36
 @@ -0,0 +1,62 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
@@ -669,9 +669,9 @@ diff -ruN a/websites/ebay_mock/src/lib/bridge.js b/websites/ebay_mock/src/lib/br
 +  setTimeout(tick, ms);
 +  return () => { live = false; };
 +}
-diff -ruN a/websites/ebay_mock/src/pages/Cart.jsx b/websites/ebay_mock/src/pages/Cart.jsx
---- a/websites/ebay_mock/src/pages/Cart.jsx	1969-12-31 16:00:00
-+++ b/websites/ebay_mock/src/pages/Cart.jsx	2026-07-31 18:06:39
+diff -ruN a/websites/xbay_mock/src/pages/Cart.jsx b/websites/xbay_mock/src/pages/Cart.jsx
+--- a/websites/xbay_mock/src/pages/Cart.jsx	1969-12-31 16:00:00
++++ b/websites/xbay_mock/src/pages/Cart.jsx	2026-07-31 18:06:39
 @@ -0,0 +1,198 @@
 +import React, { useState } from 'react';
 +import { Link, useNavigate } from 'react-router-dom';
@@ -871,9 +871,9 @@ diff -ruN a/websites/ebay_mock/src/pages/Cart.jsx b/websites/ebay_mock/src/pages
 +    </div>
 +  );
 +}
-diff -ruN a/websites/ebay_mock/src/pages/CreateListing.jsx b/websites/ebay_mock/src/pages/CreateListing.jsx
---- a/websites/ebay_mock/src/pages/CreateListing.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/pages/CreateListing.jsx	2026-07-31 18:09:04
+diff -ruN a/websites/xbay_mock/src/pages/CreateListing.jsx b/websites/xbay_mock/src/pages/CreateListing.jsx
+--- a/websites/xbay_mock/src/pages/CreateListing.jsx	2026-07-28 11:01:47
++++ b/websites/xbay_mock/src/pages/CreateListing.jsx	2026-07-31 18:09:04
 @@ -1,10 +1,11 @@
  import React, { useState, useRef } from 'react';
  import { useNavigate } from 'react-router-dom';
@@ -908,9 +908,9 @@ diff -ruN a/websites/ebay_mock/src/pages/CreateListing.jsx b/websites/ebay_mock/
  
    return (
      <div className="container mx-auto px-4 py-8 max-w-2xl">
-diff -ruN a/websites/ebay_mock/src/pages/Dashboard.jsx b/websites/ebay_mock/src/pages/Dashboard.jsx
---- a/websites/ebay_mock/src/pages/Dashboard.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/pages/Dashboard.jsx	2026-07-31 18:08:50
+diff -ruN a/websites/xbay_mock/src/pages/Dashboard.jsx b/websites/xbay_mock/src/pages/Dashboard.jsx
+--- a/websites/xbay_mock/src/pages/Dashboard.jsx	2026-07-28 11:01:47
++++ b/websites/xbay_mock/src/pages/Dashboard.jsx	2026-07-31 18:08:50
 @@ -1,5 +1,6 @@
  import React, { useState, useEffect } from 'react';
  import { useStore } from '../context/StoreContext';
@@ -989,9 +989,9 @@ diff -ruN a/websites/ebay_mock/src/pages/Dashboard.jsx b/websites/ebay_mock/src/
          <div>
            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
              <MessageSquare size={20} /> Messages
-diff -ruN a/websites/ebay_mock/src/pages/Home.jsx b/websites/ebay_mock/src/pages/Home.jsx
---- a/websites/ebay_mock/src/pages/Home.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/pages/Home.jsx	2026-08-03 16:47:37
+diff -ruN a/websites/xbay_mock/src/pages/Home.jsx b/websites/xbay_mock/src/pages/Home.jsx
+--- a/websites/xbay_mock/src/pages/Home.jsx	2026-07-28 11:01:47
++++ b/websites/xbay_mock/src/pages/Home.jsx	2026-08-03 16:47:37
 @@ -1,37 +1,89 @@
 -import React from 'react';
 +import React, { useMemo } from 'react';
@@ -1113,9 +1113,9 @@ diff -ruN a/websites/ebay_mock/src/pages/Home.jsx b/websites/ebay_mock/src/pages
 -}
 \ No newline at end of file
 +}
-diff -ruN a/websites/ebay_mock/src/pages/ProductDetails.jsx b/websites/ebay_mock/src/pages/ProductDetails.jsx
---- a/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-07-28 11:01:47
-+++ b/websites/ebay_mock/src/pages/ProductDetails.jsx	2026-08-03 18:17:46
+diff -ruN a/websites/xbay_mock/src/pages/ProductDetails.jsx b/websites/xbay_mock/src/pages/ProductDetails.jsx
+--- a/websites/xbay_mock/src/pages/ProductDetails.jsx	2026-07-28 11:01:47
++++ b/websites/xbay_mock/src/pages/ProductDetails.jsx	2026-08-03 18:17:46
 @@ -1,13 +1,14 @@
  import React, { useState, useEffect } from 'react';
  import { useParams, useNavigate } from 'react-router-dom';

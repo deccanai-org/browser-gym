@@ -10,8 +10,8 @@
 # Requires: the CUA-Gym-Hub repo cloned (github.com/xlang-ai/CUA-Gym-Hub) with each
 # mock's deps installed (npm install per websites/<app>).
 #
-# NOTE: uber_eats_mock ships internally broken (two parallel context systems,
-# cross-wired) — apply tools/patches/uber_eats_mock_systemB.patch to the clone
+# NOTE: xber_eats_mock ships internally broken (two parallel context systems,
+# cross-wired) — apply tools/patches/xber_eats_mock_systemB.patch to the clone
 # first (see tools/PILOT_SETUP.md); then it renders like the other four.
 set -uo pipefail
 
@@ -23,11 +23,11 @@ PY="${PY:-$GYM/.venv/bin/python}"; [ -x "$PY" ] || PY=python3
 
 # gym-app : mock-dir : port
 apps=(
-  "shop:amazon_mock:5201"
-  "market:ebay_mock:5202"
-  "mail:gmail_mock:5203"
-  "calendar:google_calendar_mock:5204"
-  "food:uber_eats_mock:5205"
+  "shop:xmazon_mock:5201"
+  "market:xbay_mock:5202"
+  "mail:xmail_mock:5203"
+  "calendar:xoogle_calendar_mock:5204"
+  "food:xber_eats_mock:5205"
 )
 
 echo "Starting mocks from $HUB ..."

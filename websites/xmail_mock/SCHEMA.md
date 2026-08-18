@@ -1,4 +1,4 @@
-# gmail_mock Schema
+# xmail_mock Schema
 
 **Deploy order**: 18 (alphabetical among all *_mock dirs, BASE_PORT=8000 → port 8017)
 **Base URL**: `http://172.17.46.46:8017/`

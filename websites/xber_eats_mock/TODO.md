@@ -15,7 +15,7 @@
 
 <!-- Without these, the app cannot render. Dev implements these first. -->
 
-- [x] **Project scaffold**: `npm create vite@latest uber_eats_mock -- --template react`, install deps: `react-router-dom`. Do NOT install Tailwind — use plain CSS (consistent with other mocks in this repo). Create standard directory structure: `src/components/`, `src/pages/`, `src/context/`, `src/utils/`.
+- [x] **Project scaffold**: `npm create vite@latest xber_eats_mock -- --template react`, install deps: `react-router-dom`. Do NOT install Tailwind — use plain CSS (consistent with other mocks in this repo). Create standard directory structure: `src/components/`, `src/pages/`, `src/context/`, `src/utils/`.
 
 - [x] **Visual design system**: Create `src/styles/variables.css` with CSS custom properties extracted from Xber Eats branding. Study `assets/screenshots/` — the look is clean, minimal, lots of white space, black text, green (#06C167) accents. Exact tokens:
   - `--color-primary: #06C167` (Xber Eats green — CTAs, "Eats" wordmark, active states, badges)

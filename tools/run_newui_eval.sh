@@ -21,7 +21,7 @@ TOKEN="${HARNESS_TOKEN:-newui-$RANDOM}"
 GYM_PORT="${GYM_PORT:-8078}"; BRIDGE_PORT="${BRIDGE_PORT:-8091}"
 PY="${PY:-$HERE/.venv/bin/python}"
 # app:port:mock-dir — indexed strings, not associative arrays (works on macOS bash 3.2)
-APPS="shop:5203:amazon_mock market:5301:ebay_mock mail:5401:gmail_mock calendar:5402:google_calendar_mock food:5403:uber_eats_mock"
+APPS="shop:5203:xmazon_mock market:5301:xbay_mock mail:5401:xmail_mock calendar:5402:xoogle_calendar_mock food:5403:xber_eats_mock"
 
 pids=()
 cleanup(){ for p in "${pids[@]:-}"; do kill "$p" 2>/dev/null || true; done; }

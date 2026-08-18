@@ -1,7 +1,7 @@
-diff --git a/websites/uber_eats_mock/src/App.jsx b/websites/uber_eats_mock/src/App.jsx
+diff --git a/websites/xber_eats_mock/src/App.jsx b/websites/xber_eats_mock/src/App.jsx
 index 677f6ad..10b350b 100644
---- a/websites/uber_eats_mock/src/App.jsx
-+++ b/websites/uber_eats_mock/src/App.jsx
+--- a/websites/xber_eats_mock/src/App.jsx
++++ b/websites/xber_eats_mock/src/App.jsx
 @@ -1,57 +1,58 @@
 +import React, { useState } from 'react';
 +import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
@@ -116,11 +116,11 @@ index 677f6ad..10b350b 100644
 +    </AppProvider>
 +  );
 +}
-diff --git a/websites/uber_eats_mock/src/pages/CheckoutPage.jsx b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx
+diff --git a/websites/xber_eats_mock/src/pages/CheckoutPage.jsx b/websites/xber_eats_mock/src/pages/CheckoutPage.jsx
 new file mode 100644
 index 0000000..b70cc11
 --- /dev/null
-+++ b/websites/uber_eats_mock/src/pages/CheckoutPage.jsx
++++ b/websites/xber_eats_mock/src/pages/CheckoutPage.jsx
 @@ -0,0 +1,81 @@
 +import React from 'react';
 +import { useNavigate } from 'react-router-dom';

@@ -42,7 +42,7 @@ from datetime import datetime, timedelta, timezone
 
 from harness.runner import hosted_app_url
 from tools.cua_env import SEED_REV, api_map, seed_sid
-from tools.seed_to_cuagym import APP_TO_MOCK, transformed_states
+from tools.seed_to_cuagym import APP_TO_MOCK, hub_key, transformed_states
 
 DB = pathlib.Path(__file__).resolve().parent / ".pilot_sessions.sqlite"
 DEFAULT_TTL_MIN = int(os.environ.get("PILOT_TTL_MIN", "90"))
@@ -156,7 +156,7 @@ def start_session(task_id: str, seed: int, annotator: str, mock_map: dict[str, s
         open_url = hosted_app_url(app, attempt, bridge=bridge_url,
                                   session=session_id if bridge_url else None)
         conn.execute("INSERT INTO session_app VALUES (?,?,?,?,?)",
-                     (session_id, app, APP_TO_MOCK[app], attempt, url))
+                     (session_id, app, hub_key(APP_TO_MOCK[app]), attempt, url))
         apps.append({"app": app, "attempt_sid": attempt, "url": open_url})
     conn.commit()
     conn.close()

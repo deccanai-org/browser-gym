@@ -56,7 +56,7 @@ def test_no_shop_product_points_at_a_missing_or_broken_image(task_id):
         img = str(p.get("image") or "")
         if img.startswith("data:") or not img:
             continue                       # a tile is a deliberate answer
-        if not _resolves("amazon_mock", img):
+        if not _resolves("xmazon_mock", img):
             bad.append((p.get("id"), img))
     assert not bad, f"broken image paths: {bad[:6]}"
 
@@ -80,7 +80,7 @@ def test_every_aliased_photo_actually_exists():
     aliases = json.loads(manifest.read_text())
     assert aliases, "the alias map must not be empty"
     missing = {pid: base for pid, base in aliases.items()
-               if not _resolves("amazon_mock", f"/assets/products/{base}.jpg")}
+               if not _resolves("xmazon_mock", f"/assets/products/{base}.jpg")}
     assert not missing, f"aliases pointing at files that are not there: {missing}"
 
 
@@ -100,7 +100,7 @@ def test_the_dumbbell_photo_is_a_photo():
     """Regression: this file was an S3 AuthorizationQueryParametersError XML saved
     with a .jpg extension — 397 bytes that render as a blank grey box on a live
     ValueMart item page, and nothing anywhere checked."""
-    for app in ("amazon_mock", "ebay_mock", "uber_eats_mock"):
+    for app in ("xmazon_mock", "xbay_mock", "xber_eats_mock"):
         assert _resolves(app, "/assets/products/amb_bl_62.jpg"), app
 
 

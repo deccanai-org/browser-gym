@@ -20,7 +20,17 @@ set -euo pipefail
 HUB="${1:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 API_BASE="${2-https://cua-gym-hub.delta.soulhq.ai}"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MOCKS="amazon_mock gmail_mock ebay_mock google_calendar_mock uber_eats_mock"
+# ours:theirs. Our folders are x-forms; a pristine cua-gym-hub checkout still
+# uses amazon_mock etc., and this script builds either tree. The right-hand name
+# is also the hub's wire key, which is what VITE_MOCK_ID must carry no matter
+# which tree we are standing in.
+MOCKS=(
+  xmazon_mock:amazon_mock
+  xmail_mock:gmail_mock
+  xbay_mock:ebay_mock
+  xoogle_calendar_mock:google_calendar_mock
+  xber_eats_mock:uber_eats_mock
+)
 ROOT="$(cd "$HERE/.." && pwd)"
 # Vendored self-build (HUB == this repo root): websites/ is already the final
 # source, so skip the legacy pristine-hub *_bridged.patch step.
@@ -29,12 +39,16 @@ if [ "$(cd "$HUB" && pwd)" = "$ROOT" ]; then VENDORED=1; else VENDORED=0; fi
 [ -d "$HUB/websites" ] || { echo "!! $HUB is not a hub checkout (no websites/)" >&2; exit 1; }
 [ -d "$HUB/shared" ]   || { echo "!! $HUB/shared missing — vite.config.js imports it" >&2; exit 1; }
 
-for m in $MOCKS; do
+for entry in "${MOCKS[@]}"; do
+  ours="${entry%%:*}"; hub_key="${entry##*:}"
+  # Whichever naming this checkout actually uses.
+  if   [ -d "$HUB/websites/$ours"     ]; then m="$ours"
+  elif [ -d "$HUB/websites/$hub_key"  ]; then m="$hub_key"
+  else echo "!! missing $HUB/websites/{$ours,$hub_key}" >&2; exit 1; fi
   d="$HUB/websites/$m"
-  [ -d "$d" ] || { echo "!! missing $d" >&2; exit 1; }
   echo "==> $m"
 
-  p="$HERE/patches/${m}_bridged.patch"
+  p="$HERE/patches/${ours}_bridged.patch"
   if [ "$VENDORED" != 1 ] && [ -f "$p" ]; then
     # --forward alone is NOT idempotent here: these patches create new files, and
     # re-running appends a second copy of each. Reverse-dry-run first — if that
@@ -47,12 +61,15 @@ for m in $MOCKS; do
     fi
   fi
 
-  printf 'VITE_API_BASE=%s\nVITE_MOCK_ID=%s\n' "$API_BASE" "$m" > "$d/.env.production"
+  # VITE_MOCK_ID is the hub's key, NOT our folder name: the SPA builds /api/<id>
+  # against it, and the hub serves only its own names. Writing "$m" here would
+  # bake xmazon_mock into the bundle and every state call would 404.
+  printf 'VITE_API_BASE=%s\nVITE_MOCK_ID=%s\n' "$API_BASE" "$hub_key" > "$d/.env.production"
 
   # Ship our licensed realistic images (products for the storefronts, food for
   # GymEats). vite copies public/ into dist at build. Extra unused files in a
   # given mock are harmless.
-  if [ -d "$HERE/product_assets" ] && { [ "$m" = amazon_mock ] || [ "$m" = ebay_mock ] || [ "$m" = uber_eats_mock ]; }; then
+  if [ -d "$HERE/product_assets" ] && { [ "$hub_key" = amazon_mock ] || [ "$hub_key" = ebay_mock ] || [ "$hub_key" = uber_eats_mock ]; }; then
     mkdir -p "$d/public/assets"
     cp -R "$HERE/product_assets/." "$d/public/assets/"
   fi

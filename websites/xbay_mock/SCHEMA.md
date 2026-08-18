@@ -1,4 +1,4 @@
-# ebay_mock Schema
+# xbay_mock Schema
 
 **Deploy order**: 11 (alphabetical among all *_mock dirs, BASE_PORT=8000 → port 8011)
 **Base URL**: `http://172.17.46.46:8011/`
@@ -411,7 +411,7 @@ The following issues from the pre-delivery audit were resolved in this revision:
 | F-017/F-018 | Photo upload was decorative / used placeholder images | `<input type="file" multiple>` with `FileReader.readAsDataURL`; previews shown; data URLs stored in listing |
 | F-019 | Image thumbnails non-interactive (gallery) | Clicking thumbnail sets `selectedImage` local state; main image updates |
 | F-020 | Create listing form had no JS validation | `validate()` function: title (3–80 chars), description (min 10), price (>0), BIN (> starting bid), shipping (≥0) |
-| F-021 | Empty catch block in `fetchCustomState` | Changed to `console.warn('[ebay_mock] fetchCustomState error:', e)` |
+| F-021 | Empty catch block in `fetchCustomState` | Changed to `console.warn('[xbay_mock] fetchCustomState error:', e)` |
 | F-022 | Messages tab had no reply/detail UI | Clickable rows open message detail view with reply form; `markMessageRead` on open |
 | F-024 | Notification bell had no dropdown | Full notification dropdown with mark-read, mark-all-read, unread count badge |
 | F-027 | No sort on search results | Sort dropdown: Best Match, Price Low/High, Ending Soonest, Most Bids |

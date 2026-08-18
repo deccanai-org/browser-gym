@@ -1,6 +1,6 @@
-diff -ruN a/websites/amazon_mock/index.html b/websites/amazon_mock/index.html
---- a/websites/amazon_mock/index.html	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/index.html	2026-07-30 18:17:09
+diff -ruN a/websites/xmazon_mock/index.html b/websites/xmazon_mock/index.html
+--- a/websites/xmazon_mock/index.html	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/index.html	2026-07-30 18:17:09
 @@ -4,7 +4,7 @@
      <meta charset="UTF-8" />
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -10,9 +10,9 @@ diff -ruN a/websites/amazon_mock/index.html b/websites/amazon_mock/index.html
    </head>
    <body>
      <div id="root"></div>
-diff -ruN a/websites/amazon_mock/src/App.jsx b/websites/amazon_mock/src/App.jsx
---- a/websites/amazon_mock/src/App.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/App.jsx	2026-07-30 20:08:36
+diff -ruN a/websites/xmazon_mock/src/App.jsx b/websites/xmazon_mock/src/App.jsx
+--- a/websites/xmazon_mock/src/App.jsx	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/App.jsx	2026-07-30 20:08:36
 @@ -9,6 +9,8 @@
  import { Checkout } from './pages/Checkout';
  import { Orders } from './pages/Orders';
@@ -79,9 +79,9 @@ diff -ruN a/websites/amazon_mock/src/App.jsx b/websites/amazon_mock/src/App.jsx
              <Route path="wishlist" element={<Wishlist />} />
              <Route path="profile" element={<Profile />} />
            </Route>
-diff -ruN a/websites/amazon_mock/src/components/layout/Header.jsx b/websites/amazon_mock/src/components/layout/Header.jsx
---- a/websites/amazon_mock/src/components/layout/Header.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/components/layout/Header.jsx	2026-08-03 16:10:41
+diff -ruN a/websites/xmazon_mock/src/components/layout/Header.jsx b/websites/xmazon_mock/src/components/layout/Header.jsx
+--- a/websites/xmazon_mock/src/components/layout/Header.jsx	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/components/layout/Header.jsx	2026-08-03 16:10:41
 @@ -1,4 +1,4 @@
 -import React, { useState, useEffect, useRef } from 'react';
 +import React, { useState, useEffect, useRef, useMemo } from 'react';
@@ -223,9 +223,9 @@ diff -ruN a/websites/amazon_mock/src/components/layout/Header.jsx b/websites/ama
                    </li>
                    <li>
                      <Link to="/wishlist" onClick={() => setShowNavMenu(false)} className="text-sm text-xmazon-blue hover:underline block py-1">Your Wishlist</Link>
-diff -ruN a/websites/amazon_mock/src/components/product/ProductCard.jsx b/websites/amazon_mock/src/components/product/ProductCard.jsx
---- a/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/components/product/ProductCard.jsx	2026-07-30 18:17:09
+diff -ruN a/websites/xmazon_mock/src/components/product/ProductCard.jsx b/websites/xmazon_mock/src/components/product/ProductCard.jsx
+--- a/websites/xmazon_mock/src/components/product/ProductCard.jsx	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/components/product/ProductCard.jsx	2026-07-30 18:17:09
 @@ -72,9 +72,9 @@
        {product.badges && product.badges.includes('Best Seller') && (
          <span className="absolute top-0 left-0 bg-[#e47911] text-white text-[10px] font-bold px-1.5 py-0.5 z-10 rounded-br">Best Seller</span>
@@ -238,9 +238,9 @@ diff -ruN a/websites/amazon_mock/src/components/product/ProductCard.jsx b/websit
          </span>
        )}
  
-diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_mock/src/context/StoreContext.jsx
---- a/websites/amazon_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/context/StoreContext.jsx	2026-08-03 17:55:14
+diff -ruN a/websites/xmazon_mock/src/context/StoreContext.jsx b/websites/xmazon_mock/src/context/StoreContext.jsx
+--- a/websites/xmazon_mock/src/context/StoreContext.jsx	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/context/StoreContext.jsx	2026-08-03 17:55:14
 @@ -1,6 +1,16 @@
  import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
  import { INITIAL_DATA, getSessionId, fetchCustomState, saveState, initializeData } from '../lib/mockData';
@@ -647,9 +647,9 @@ diff -ruN a/websites/amazon_mock/src/context/StoreContext.jsx b/websites/amazon_
      }}>
        {children}
      </StoreContext.Provider>
-diff -ruN a/websites/amazon_mock/src/index.css b/websites/amazon_mock/src/index.css
---- a/websites/amazon_mock/src/index.css	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/index.css	2026-07-30 18:17:09
+diff -ruN a/websites/xmazon_mock/src/index.css b/websites/xmazon_mock/src/index.css
+--- a/websites/xmazon_mock/src/index.css	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/index.css	2026-07-30 18:17:09
 @@ -4,7 +4,7 @@
  
  body {
@@ -659,9 +659,9 @@ diff -ruN a/websites/amazon_mock/src/index.css b/websites/amazon_mock/src/index.
    color: #0F1111;
    margin: 0;
  }
-diff -ruN a/websites/amazon_mock/src/lib/bridge.js b/websites/amazon_mock/src/lib/bridge.js
---- a/websites/amazon_mock/src/lib/bridge.js	1969-12-31 16:00:00
-+++ b/websites/amazon_mock/src/lib/bridge.js	2026-08-03 15:53:36
+diff -ruN a/websites/xmazon_mock/src/lib/bridge.js b/websites/xmazon_mock/src/lib/bridge.js
+--- a/websites/xmazon_mock/src/lib/bridge.js	1969-12-31 16:00:00
++++ b/websites/xmazon_mock/src/lib/bridge.js	2026-08-03 15:53:36
 @@ -0,0 +1,62 @@
 +// Bridge client — puts a CUA-Gym-Hub mock into "bridged" mode, where every
 +// gym-backed interactable drives the REAL gym engine (cross-app bus, scheduler,
@@ -725,9 +725,9 @@ diff -ruN a/websites/amazon_mock/src/lib/bridge.js b/websites/amazon_mock/src/li
 +  setTimeout(tick, ms);
 +  return () => { live = false; };
 +}
-diff -ruN a/websites/amazon_mock/src/lib/mockData.js b/websites/amazon_mock/src/lib/mockData.js
---- a/websites/amazon_mock/src/lib/mockData.js	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/lib/mockData.js	2026-08-03 16:12:03
+diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/lib/mockData.js
+--- a/websites/xmazon_mock/src/lib/mockData.js	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/lib/mockData.js	2026-08-03 16:12:03
 @@ -7,7 +7,7 @@
    {
      id: "p1", category: "Electronics", brand: "Samsung", title: "Samsung Galaxy Buds Pro - True Wireless Bluetooth Noise Cancelling Earbuds",
@@ -1295,9 +1295,9 @@ diff -ruN a/websites/amazon_mock/src/lib/mockData.js b/websites/amazon_mock/src/
      rating: Math.min(Math.max(rating, 0), 5),
      title: r.title || r.headline || '',
      content: r.content || r.body || r.text || '',
-diff -ruN a/websites/amazon_mock/src/pages/BrowsingHistory.jsx b/websites/amazon_mock/src/pages/BrowsingHistory.jsx
---- a/websites/amazon_mock/src/pages/BrowsingHistory.jsx	1969-12-31 16:00:00
-+++ b/websites/amazon_mock/src/pages/BrowsingHistory.jsx	2026-07-30 20:08:20
+diff -ruN a/websites/xmazon_mock/src/pages/BrowsingHistory.jsx b/websites/xmazon_mock/src/pages/BrowsingHistory.jsx
+--- a/websites/xmazon_mock/src/pages/BrowsingHistory.jsx	1969-12-31 16:00:00
++++ b/websites/xmazon_mock/src/pages/BrowsingHistory.jsx	2026-07-30 20:08:20
 @@ -0,0 +1,59 @@
 +import React from 'react';
 +import { Link } from 'react-router-dom';
@@ -1358,9 +1358,9 @@ diff -ruN a/websites/amazon_mock/src/pages/BrowsingHistory.jsx b/websites/amazon
 +    </div>
 +  );
 +};
-diff -ruN a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/pages/Cart.jsx
---- a/websites/amazon_mock/src/pages/Cart.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Cart.jsx	2026-08-03 18:27:40
+diff -ruN a/websites/xmazon_mock/src/pages/Cart.jsx b/websites/xmazon_mock/src/pages/Cart.jsx
+--- a/websites/xmazon_mock/src/pages/Cart.jsx	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/pages/Cart.jsx	2026-08-03 18:27:40
 @@ -1,11 +1,50 @@
 -import React, { useState } from 'react';
 +import React, { useState, useEffect, useRef } from 'react';
@@ -1586,9 +1586,9 @@ diff -ruN a/websites/amazon_mock/src/pages/Cart.jsx b/websites/amazon_mock/src/p
                  )}
                </div>
              </div>
-diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/src/pages/Checkout.jsx
---- a/websites/amazon_mock/src/pages/Checkout.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Checkout.jsx	2026-08-03 18:25:16
+diff -ruN a/websites/xmazon_mock/src/pages/Checkout.jsx b/websites/xmazon_mock/src/pages/Checkout.jsx
+--- a/websites/xmazon_mock/src/pages/Checkout.jsx	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/pages/Checkout.jsx	2026-08-03 18:25:16
 @@ -3,6 +3,7 @@
  import { useStore } from '../context/StoreContext';
  import { Button } from '../components/ui/Button';
@@ -1766,9 +1766,9 @@ diff -ruN a/websites/amazon_mock/src/pages/Checkout.jsx b/websites/amazon_mock/s
                <div className="flex justify-between"><span>Tax:</span> <span>${tax.toFixed(2)}</span></div>
                <div className="flex justify-between border-t pt-1 font-bold text-red-700 text-lg">
                  <span>Order Total:</span> <span>${total.toFixed(2)}</span>
-diff -ruN a/websites/amazon_mock/src/pages/Home.jsx b/websites/amazon_mock/src/pages/Home.jsx
---- a/websites/amazon_mock/src/pages/Home.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Home.jsx	2026-07-31 15:08:05
+diff -ruN a/websites/xmazon_mock/src/pages/Home.jsx b/websites/xmazon_mock/src/pages/Home.jsx
+--- a/websites/xmazon_mock/src/pages/Home.jsx	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/pages/Home.jsx	2026-07-31 15:08:05
 @@ -5,10 +5,22 @@
  import { CATEGORIES } from '../lib/mockData';
  import { ChevronLeft, ChevronRight, Zap } from 'lucide-react';
@@ -1889,9 +1889,9 @@ diff -ruN a/websites/amazon_mock/src/pages/Home.jsx b/websites/amazon_mock/src/p
              </Link>
              <Link to="/search?category=Home+%26+Kitchen" className="text-[13px] text-xmazon-blue hover:text-xmazon-orange hover:underline">Explore now</Link>
            </div>
-diff -ruN a/websites/amazon_mock/src/pages/OrderConfirmation.jsx b/websites/amazon_mock/src/pages/OrderConfirmation.jsx
---- a/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/OrderConfirmation.jsx	2026-07-30 18:17:09
+diff -ruN a/websites/xmazon_mock/src/pages/OrderConfirmation.jsx b/websites/xmazon_mock/src/pages/OrderConfirmation.jsx
+--- a/websites/xmazon_mock/src/pages/OrderConfirmation.jsx	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/pages/OrderConfirmation.jsx	2026-07-30 18:17:09
 @@ -1,13 +1,16 @@
 -import React from 'react';
 +import React, { useEffect } from 'react';
@@ -1910,9 +1910,9 @@ diff -ruN a/websites/amazon_mock/src/pages/OrderConfirmation.jsx b/websites/amaz
  
    if (!order) {
      return (
-diff -ruN a/websites/amazon_mock/src/pages/Orders.jsx b/websites/amazon_mock/src/pages/Orders.jsx
---- a/websites/amazon_mock/src/pages/Orders.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Orders.jsx	2026-07-31 17:31:05
+diff -ruN a/websites/xmazon_mock/src/pages/Orders.jsx b/websites/xmazon_mock/src/pages/Orders.jsx
+--- a/websites/xmazon_mock/src/pages/Orders.jsx	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/pages/Orders.jsx	2026-07-31 17:31:05
 @@ -1,5 +1,6 @@
 -import React, { useState } from 'react';
 +import React, { useState, useEffect } from 'react';
@@ -2036,9 +2036,9 @@ diff -ruN a/websites/amazon_mock/src/pages/Orders.jsx b/websites/amazon_mock/src
                </div>
                <div className="flex gap-2">
                  <Button type="submit" className="flex-1">Submit Return Request</Button>
-diff -ruN a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_mock/src/pages/ProductDetail.jsx
---- a/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/ProductDetail.jsx	2026-08-03 18:27:21
+diff -ruN a/websites/xmazon_mock/src/pages/ProductDetail.jsx b/websites/xmazon_mock/src/pages/ProductDetail.jsx
+--- a/websites/xmazon_mock/src/pages/ProductDetail.jsx	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/pages/ProductDetail.jsx	2026-08-03 18:27:21
 @@ -1,6 +1,7 @@
  import React, { useEffect, useState, useRef } from 'react';
  import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
@@ -2214,9 +2214,9 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductDetail.jsx b/websites/amazon_m
                        </div>
                      </div>
                    );
-diff -ruN a/websites/amazon_mock/src/pages/ProductListing.jsx b/websites/amazon_mock/src/pages/ProductListing.jsx
---- a/websites/amazon_mock/src/pages/ProductListing.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/ProductListing.jsx	2026-08-03 17:54:20
+diff -ruN a/websites/xmazon_mock/src/pages/ProductListing.jsx b/websites/xmazon_mock/src/pages/ProductListing.jsx
+--- a/websites/xmazon_mock/src/pages/ProductListing.jsx	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/pages/ProductListing.jsx	2026-08-03 17:54:20
 @@ -1,6 +1,7 @@
 -import React, { useState, useMemo } from 'react';
 +import React, { useState, useMemo, useEffect } from 'react';
@@ -2279,9 +2279,9 @@ diff -ruN a/websites/amazon_mock/src/pages/ProductListing.jsx b/websites/amazon_
            <span className="text-[#565959] mx-1">›</span>
            {categoryParam ? (
              <span className="text-gray-700">{categoryParam}</span>
-diff -ruN a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/src/pages/Profile.jsx
---- a/websites/amazon_mock/src/pages/Profile.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Profile.jsx	2026-08-03 18:25:27
+diff -ruN a/websites/xmazon_mock/src/pages/Profile.jsx b/websites/xmazon_mock/src/pages/Profile.jsx
+--- a/websites/xmazon_mock/src/pages/Profile.jsx	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/pages/Profile.jsx	2026-08-03 18:25:27
 @@ -1,8 +1,9 @@
 -import React, { useState } from 'react';
 +import React, { useState, useEffect } from 'react';
@@ -2456,9 +2456,9 @@ diff -ruN a/websites/amazon_mock/src/pages/Profile.jsx b/websites/amazon_mock/sr
                    {!pm.isDefault && pm.id && (
                      <button
                        onClick={() => { setDefaultPaymentMethod(pm.id); setToast('Default payment method updated.'); }}
-diff -ruN a/websites/amazon_mock/src/pages/Subscriptions.jsx b/websites/amazon_mock/src/pages/Subscriptions.jsx
---- a/websites/amazon_mock/src/pages/Subscriptions.jsx	1969-12-31 16:00:00
-+++ b/websites/amazon_mock/src/pages/Subscriptions.jsx	2026-07-30 18:17:09
+diff -ruN a/websites/xmazon_mock/src/pages/Subscriptions.jsx b/websites/xmazon_mock/src/pages/Subscriptions.jsx
+--- a/websites/xmazon_mock/src/pages/Subscriptions.jsx	1969-12-31 16:00:00
++++ b/websites/xmazon_mock/src/pages/Subscriptions.jsx	2026-07-30 18:17:09
 @@ -0,0 +1,77 @@
 +import React, { useEffect } from 'react';
 +import { Link } from 'react-router-dom';
@@ -2537,9 +2537,9 @@ diff -ruN a/websites/amazon_mock/src/pages/Subscriptions.jsx b/websites/amazon_m
 +    </div>
 +  );
 +};
-diff -ruN a/websites/amazon_mock/src/pages/Wishlist.jsx b/websites/amazon_mock/src/pages/Wishlist.jsx
---- a/websites/amazon_mock/src/pages/Wishlist.jsx	2026-07-28 11:01:47
-+++ b/websites/amazon_mock/src/pages/Wishlist.jsx	2026-07-30 18:17:09
+diff -ruN a/websites/xmazon_mock/src/pages/Wishlist.jsx b/websites/xmazon_mock/src/pages/Wishlist.jsx
+--- a/websites/xmazon_mock/src/pages/Wishlist.jsx	2026-07-28 11:01:47
++++ b/websites/xmazon_mock/src/pages/Wishlist.jsx	2026-07-30 18:17:09
 @@ -32,7 +32,7 @@
          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
            <div>

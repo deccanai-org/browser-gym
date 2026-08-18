@@ -41,7 +41,7 @@ const ACTIONS = {
   RESET: 'RESET'
 };
 
-const BASE_INITIAL_KEY = 'ebay_mock_state_initialState';
+const BASE_INITIAL_KEY = 'xbay_mock_state_initialState';
 
 function reducer(state, action) {
   switch (action.type) {

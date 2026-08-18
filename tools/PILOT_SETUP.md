@@ -9,11 +9,11 @@ world into them via their state API. No cua-gym DB or Kashyap dependency.
 
 | Gym app | Realistic UI | mock key | port |
 |---|---|---|---|
-| shop (ShopGym) | Amazon | amazon_mock | 5201 |
-| market (ValueMart) | eBay | ebay_mock | 5202 |
-| mail (ShopMail) | Gmail | gmail_mock | 5203 |
-| calendar | Google Calendar | google_calendar_mock | 5204 |
-| food | Uber Eats | uber_eats_mock | 5205 |
+| shop (ShopGym) | Amazon | xmazon_mock | 5201 |
+| market (ValueMart) | eBay | xbay_mock | 5202 |
+| mail (ShopMail) | Gmail | xmail_mock | 5203 |
+| calendar | Google Calendar | xoogle_calendar_mock | 5204 |
+| food | Uber Eats | xber_eats_mock | 5205 |
 
 ## One-time setup
 
@@ -25,13 +25,13 @@ git clone https://github.com/xlang-ai/CUA-Gym-Hub.git
 #    interactables to the gym engine (see "Bridged mode" below) AND, for uber,
 #    include the systemB fix (that mock ships internally broken — two parallel
 #    context systems cross-wired). The 5 *_bridged.patch supersede the standalone
-#    uber_eats_mock_systemB.patch — apply the bridged set, not both.
-for a in amazon_mock ebay_mock gmail_mock google_calendar_mock uber_eats_mock; do
+#    xber_eats_mock_systemB.patch — apply the bridged set, not both.
+for a in xmazon_mock xbay_mock xmail_mock xoogle_calendar_mock xber_eats_mock; do
   git -C CUA-Gym-Hub apply "<gym>/tools/patches/${a}_bridged.patch"
 done
 
 # 3. install each mock's deps (npm cache must be writable; use a local one if ~/.npm is locked)
-for a in amazon_mock ebay_mock gmail_mock google_calendar_mock uber_eats_mock; do
+for a in xmazon_mock xbay_mock xmail_mock xoogle_calendar_mock xber_eats_mock; do
   npm --prefix CUA-Gym-Hub/websites/$a install --cache ./.npm-cache --no-audit --no-fund
 done
 ```

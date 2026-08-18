@@ -145,7 +145,7 @@ def report(entries: list[dict]) -> str:
 
 
 DEMO_SEED = (pathlib.Path(__file__).resolve().parents[1]
-             / "websites" / "gmail_mock" / "src" / "data" / "seedDefault.json")
+             / "websites" / "xmail_mock" / "src" / "data" / "seedDefault.json")
 
 
 def emit_demo_seed() -> int:
@@ -165,7 +165,7 @@ def main() -> int:
     ap.add_argument("authored", nargs="?", help="JSON file: a list of authored emails, or {emails:[...]}")
     ap.add_argument("--write", action="store_true", help="write into tools/ambient_bulk.json")
     ap.add_argument("--demo-seed", action="store_true",
-                    help="regenerate websites/gmail_mock/src/data/seedDefault.json and exit")
+                    help="regenerate websites/xmail_mock/src/data/seedDefault.json and exit")
     args = ap.parse_args()
 
     if args.demo_seed and not args.authored:

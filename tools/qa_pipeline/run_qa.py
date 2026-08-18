@@ -42,11 +42,11 @@ REPORTS = Path(__file__).resolve().parent / "reports"
 CHECKS_YAML = Path(__file__).resolve().parent / "checks" / "regression.yaml"
 
 APPS = {
-    "shopgym": ("amazon_mock", 5201),
-    "valuemart": ("ebay_mock", 5202),
-    "shopmail": ("gmail_mock", 5203),
-    "gymcal": ("google_calendar_mock", 5204),
-    "gymeats": ("uber_eats_mock", 5205),
+    "shopgym": ("xmazon_mock", 5201),
+    "valuemart": ("xbay_mock", 5202),
+    "shopmail": ("xmail_mock", 5203),
+    "gymcal": ("xoogle_calendar_mock", 5204),
+    "gymeats": ("xber_eats_mock", 5205),
 }
 
 
@@ -383,11 +383,11 @@ def run_static_pattern_scan() -> list[Finding]:
          "Home & Garden option value mismatch"),
     ]
     scan_roots = {
-        "shopgym": ROOT / "websites/amazon_mock/src",
-        "valuemart": ROOT / "websites/ebay_mock/src",
-        "gymcal": ROOT / "websites/google_calendar_mock/src",
-        "shopmail": ROOT / "websites/gmail_mock/src",
-        "gymeats": ROOT / "websites/uber_eats_mock/src",
+        "shopgym": ROOT / "websites/xmazon_mock/src",
+        "valuemart": ROOT / "websites/xbay_mock/src",
+        "gymcal": ROOT / "websites/xoogle_calendar_mock/src",
+        "shopmail": ROOT / "websites/xmail_mock/src",
+        "gymeats": ROOT / "websites/xber_eats_mock/src",
     }
     for needle, cid, app, sev, title in patterns:
         root = scan_roots.get(app)
@@ -473,13 +473,13 @@ def run_full_crawl(base_url: str, out_dir: Path) -> list[Finding]:
 # Mechanical, reviewed patches only — never invent product logic.
 AUTO_FIXES: list[tuple[str, str, str, str]] = [
     (
-        "websites/amazon_mock/src/components/product/ProductCard.jsx",
+        "websites/xmazon_mock/src/components/product/ProductCard.jsx",
         "product.stockCount && product.stockCount <= 10",
         "product.stockCount != null && product.stockCount <= 10",
         "ShopGym: fix React falsy-zero stockCount render",
     ),
     (
-        "websites/ebay_mock/src/pages/CreateListing.jsx",
+        "websites/xbay_mock/src/pages/CreateListing.jsx",
         'value="Home"',
         'value="Home & Garden"',
         "ValueMart: Home & Garden option value matches label",

@@ -22,7 +22,7 @@ import os
 import uuid
 from urllib.parse import quote
 
-from tools.seed_to_cuagym import APP_TO_MOCK
+from tools.seed_to_cuagym import APP_TO_MOCK, hub_key
 
 # The hub stores state in Postgres and rejects any sid that isn't a real UUID, so
 # seed sids are UUIDv5: deterministic (the same task resolves to the same sid on
@@ -42,9 +42,24 @@ def seed_sid(task_id: str, seed: int, app: str, rev: int = SEED_REV) -> str:
 # file-backed instance that records no events and writes to no database.
 DELTA_API_ROOT = "https://cua-gym-hub.delta.soulhq.ai"
 
-# Each mock is served from its own static host; the slug is the mock key without
-# the _mock suffix and with underscores hyphenated (google_calendar_mock -> google-calendar).
+# Each mock is served from its own static host; the slug is the mock name without
+# the _mock suffix and with underscores hyphenated (xoogle_calendar_mock -> xoogle-calendar).
 DELTA_UI_TMPL = "https://cua-hub-{slug}.delta.deccanexperts.ai"
+
+# Renamed slugs are their own hostname (xmazon -> xmazon.delta...), so they must
+# NOT go through the cua-hub-<slug> template. Anything absent from this set is a
+# mock we never renamed and still resolves through the template untouched.
+RENAMED_UI_SLUGS = {
+    "xmazon", "xbay", "xmail",
+    "xoogle-calendar", "xoogle-docs", "xoogle-drive", "xber-eats",
+}
+
+
+def delta_ui_base(slug: str) -> str:
+    """Hosted SPA origin for a mock slug, renamed hosts included."""
+    if slug in RENAMED_UI_SLUGS:
+        return f"https://{slug}.delta.deccanexperts.ai"
+    return DELTA_UI_TMPL.format(slug=slug)
 
 LOCAL_PORTS = {"shop": 5201, "mail": 5203, "market": 5202, "calendar": 5204, "food": 5205}
 
@@ -62,11 +77,11 @@ def api_base(app: str, env: str | None = None) -> str:
     override = os.environ.get(f"CUA_API_URL_{app.upper()}")
     if override:
         return override.rstrip("/")
-    mock = APP_TO_MOCK[app]
     if (env or env_name()) == "local":
         return f"http://127.0.0.1:{LOCAL_PORTS[app]}"
     root = os.environ.get("CUA_API_ROOT", DELTA_API_ROOT).rstrip("/")
-    return f"{root}/api/{mock}"
+    # The hub's name, not ours — this is the wire path it actually serves.
+    return f"{root}/api/{hub_key(APP_TO_MOCK[app])}"
 
 
 def ui_base(app: str, env: str | None = None) -> str:
@@ -76,7 +91,7 @@ def ui_base(app: str, env: str | None = None) -> str:
         return override.rstrip("/")
     if (env or env_name()) == "local":
         return f"http://127.0.0.1:{LOCAL_PORTS[app]}"
-    return DELTA_UI_TMPL.format(slug=_slug(APP_TO_MOCK[app]))
+    return delta_ui_base(_slug(APP_TO_MOCK[app]))
 
 
 def ui_url(app: str, sid: str, path: str = "/", env: str | None = None,

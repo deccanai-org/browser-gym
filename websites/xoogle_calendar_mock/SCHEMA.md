@@ -1,4 +1,4 @@
-# google_calendar_mock Schema
+# xoogle_calendar_mock Schema
 
 **Deploy order**: 17 (alphabetical among all *_mock dirs, BASE_PORT=8000 → port 8017)
 **Base URL**: `http://172.17.46.46:8017/`

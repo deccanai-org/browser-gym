@@ -1,4 +1,4 @@
-# amazon_mock Schema
+# xmazon_mock Schema
 
 **Deploy order**: 1 (alphabetical among all *_mock dirs, BASE_PORT=8000 → port 8001)
 **Base URL**: `http://172.17.46.46:8001/`

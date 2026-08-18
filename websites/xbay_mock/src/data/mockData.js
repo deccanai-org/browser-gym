@@ -172,8 +172,8 @@ export const INITIAL_STATE = {
 
 // --- Session-based state isolation ---
 
-const BASE_STORAGE_KEY = 'ebay_mock_state';
-const BASE_INITIAL_KEY = 'ebay_mock_state_initialState';
+const BASE_STORAGE_KEY = 'xbay_mock_state';
+const BASE_INITIAL_KEY = 'xbay_mock_state_initialState';
 
 function storageKey(sid) { return sid ? `${BASE_STORAGE_KEY}_${sid}` : BASE_STORAGE_KEY; }
 function initialKey(sid) { return sid ? `${BASE_INITIAL_KEY}_${sid}` : BASE_INITIAL_KEY; }
@@ -190,7 +190,7 @@ export const fetchCustomState = async (sid = null) => {
     const url = sid ? `/state?sid=${encodeURIComponent(sid)}` : '/state';
     const resp = await fetch(url);
     if (resp.ok) { const d = await resp.json(); if (d.has_custom_state && d.stored_state) return d.stored_state; }
-  } catch(e) { console.warn('[ebay_mock] fetchCustomState error:', e); }
+  } catch(e) { console.warn('[xbay_mock] fetchCustomState error:', e); }
   return null;
 };
 
@@ -201,7 +201,7 @@ export const saveState = (state, sid = null) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action: 'set_current', state }),
-  }).catch(e => console.warn('[ebay_mock] saveState server sync error:', e));
+  }).catch(e => console.warn('[xbay_mock] saveState server sync error:', e));
 };
 
 export const getInitialState = (sid = null) => {
