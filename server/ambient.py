@@ -107,8 +107,8 @@ def _mint_gift_card(product_id: str) -> Product | None:
         return None
     return Product(
         id=product_id,
-        name=f"ShopGym Gift Card — ${amount}",
-        brand="ShopGym",
+        name=f"xmazon Gift Card — ${amount}",
+        brand="xmazon",
         category="gift-cards",
         base_price=float(amount),
         rating=0.0,
@@ -117,10 +117,10 @@ def _mint_gift_card(product_id: str) -> Product | None:
         # compares quantity against this number, so it needs a real one.
         stock=999,
         image_emoji="🎁",
-        short_description=f"ShopGym gift card with a ${amount} stored value.",
+        short_description=f"xmazon gift card with a ${amount} stored value.",
         long_description=(
-            f"A ShopGym gift card worth ${amount}, delivered by email. "
-            "Redeemable against anything ShopGym sells."
+            f"An xmazon gift card worth ${amount}, delivered by email. "
+            "Redeemable against anything xmazon sells."
         ),
     )
 

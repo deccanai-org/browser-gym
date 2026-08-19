@@ -172,7 +172,7 @@ class MarketSellerListing:
 
 @dataclass
 class MarketState:
-    store_name: str = "ValueMart"
+    store_name: str = "xbay"
     products: dict[str, MarketProduct] = field(default_factory=dict)
     cart: MarketCart = field(default_factory=MarketCart)
     orders: dict[str, MarketOrder] = field(default_factory=dict)

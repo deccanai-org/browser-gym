@@ -113,9 +113,9 @@ def make_mailstate(seed: int = 0) -> MailState:
         # ambient corpus sits above them and the inbox reads like a real one.
         Email(
             id=m.new_id(), sender="welcome@shopgym.com", to=m.account_email,
-            subject="Welcome to ShopGym",
+            subject="Welcome to xmazon",
             body=(
-                "Thanks for joining ShopGym!\n\n"
+                "Thanks for joining xmazon!\n\n"
                 "Browse today's deals and enjoy free shipping on orders "
                 "over $50."
             ),
