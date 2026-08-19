@@ -134,7 +134,7 @@ export function createInitialData() {
     user: {
       id: 'user_1',
       name: 'Alice Anderson',
-      email: 'alice@shopgym.com',
+      email: 'alice@xmail.com',
       phone: '(718) 555-0100',
       avatarUrl: '',
       addresses: [

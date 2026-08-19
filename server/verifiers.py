@@ -21555,3 +21555,6 @@ def _suite_m432() -> TaskSuite:
 
 
 SUITE_FACTORIES['M432/valuemart_slot_nobody_can_sign_for'] = _suite_m432
+
+from server.verifier_four import suite_factories as _verifier_four_suite_factories
+SUITE_FACTORIES.update(_verifier_four_suite_factories())

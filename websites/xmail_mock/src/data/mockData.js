@@ -145,7 +145,7 @@ function deepMergeWithDefaults(defaults, custom) {
 export const CURRENT_USER = {
   userId: 'u1',
   username: 'Alice Anderson',
-  email: 'alice@shopmail.com',
+  email: 'alice@xmail.com',
   avatar: null
 };
 

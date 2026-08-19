@@ -98,7 +98,7 @@ const SettingsPage = () => {
 
   // General tab local state (pre-populated from persisted settings)
   const [density, setDensity] = useState(settings.density || 'default');
-  const [signature, setSignature] = useState(settings.signature || '--\nAlice Anderson\nalice@shopmail.com');
+  const [signature, setSignature] = useState(settings.signature || '--\nAlice Anderson\nalice@xmail.com');
 
   // Inbox tab local state
   const [categoryTabs, setCategoryTabs] = useState(() => ({

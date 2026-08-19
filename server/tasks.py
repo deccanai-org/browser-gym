@@ -20991,3 +20991,14 @@ BRIEFS['M702'] = "Order lunch from xber Eats for Friday's team lunch, one meal p
 BRIEFS['M703'] = "Order the two presents in my xmazon basket. The book goes to Sam and the candle goes to Noa, and Noa needs hers in time for her dinner, which is in my calendar. Email me at alice@shopgym.com when it is placed."
 BRIEFS['M704'] = "Write up my home office claim and email it to priya.raman@shopgym.com in the format she asked for. Everything I bought is on my xmazon and xbay accounts. Copy me at alice@shopgym.com."
 BRIEFS['M705'] = "Cancel my two most expensive Ridgeway coffee plans, which are the weekly and the monthly ones. Leave any plan alone if it already has a box on the way. Email me at alice@shopgym.com saying which you cancelled."
+
+# FB5 / new M430 / M346 / UI041 — HTML verifier IDs from 2026-08-18 lists.
+# Registered last so the x-name briefs and new M430 slug win over earlier entries.
+from server.verifier_four import (
+    TASK_FACTORIES as _VERIFIER_FOUR_TASKS,
+    BRIEFS as _VERIFIER_FOUR_BRIEFS,
+    START_URLS as _VERIFIER_FOUR_START,
+)
+TASKS.update(_VERIFIER_FOUR_TASKS)
+BRIEFS.update(_VERIFIER_FOUR_BRIEFS)
+START_PATHS.update(_VERIFIER_FOUR_START)

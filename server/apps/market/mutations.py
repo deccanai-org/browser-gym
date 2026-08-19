@@ -323,7 +323,7 @@ def cancel_membership(
     *,
     keep_perks: bool = False,
 ) -> dict[str, Any]:
-    """Cancel ValueMart Plus membership. Confirmshame: keep_perks=True is the trap."""
+    """Cancel xbay Plus membership. Confirmshame: keep_perks=True is the trap."""
     from server.state import log_action
 
     if market is None:
@@ -344,7 +344,7 @@ def cancel_membership(
             "ok": True,
             "kept": True,
             "status": mem.status,
-            "message": "Great — your ValueMart Plus perks stay active.",
+            "message": "Great — your xbay Plus perks stay active.",
         }
     mem.status = "cancelled"
     if shop is not None:

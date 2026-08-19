@@ -8,7 +8,7 @@ export const generateId = () => uuidv4();
 export const MOCK_USER = {
   id: 'u1',
   username: 'Alice Anderson',
-  email: 'alice@shopgym.com',
+  email: 'alice@xmail.com',
   avatar: null
 };
 

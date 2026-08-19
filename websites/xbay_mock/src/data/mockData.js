@@ -14,7 +14,7 @@ export const INITIAL_STATE = {
   currentUser: {
     id: 'user_1',
     username: 'Alice',
-    email: 'alice@shopgym.com',
+    email: 'alice@xmail.com',
     avatar: initialsAvatar('AA', '#2563eb'),
     feedbackScore: 154,
     feedbackRating: 98.5
@@ -23,7 +23,7 @@ export const INITIAL_STATE = {
     {
       id: 'user_1',
       username: 'Alice',
-      email: 'alice@shopgym.com',
+      email: 'alice@xmail.com',
       avatar: initialsAvatar('AA', '#2563eb'),
       feedbackScore: 154,
       feedbackRating: 98.5

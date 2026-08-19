@@ -150,9 +150,9 @@ class MarketMessage:
 
 @dataclass
 class MarketMembership:
-    """ValueMart Plus (or similar) membership — used by confirmshame cancel tasks."""
+    """xbay Plus (or similar) membership — used by confirmshame cancel tasks."""
     id: str = "vm_plus"
-    plan_name: str = "ValueMart Plus"
+    plan_name: str = "xbay Plus"
     status: str = "active"  # active | cancelled
     price_monthly: float = 9.99
     perks_summary: str = "Free shipping + member deals"
@@ -300,7 +300,7 @@ def make_marketstate(seed: int = 0) -> MarketState:
     # cheaper, and it does NOT exist on ShopGym.
     m.coupons["VALUE10"] = MarketCoupon(
         code="VALUE10", percent_off=0.10, min_subtotal=0.0,
-        description="10% off your ValueMart order")
+        description="10% off your xbay order")
     # A shipping address + payment methods on file, so checkout has a real
     # address/payment selection (matching ShopGym's Alice) instead of nothing.
     m.addresses["vm_addr_home"] = MarketAddress(

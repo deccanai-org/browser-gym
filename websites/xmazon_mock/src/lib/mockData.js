@@ -726,7 +726,7 @@ const HAND_CRAFTED_PRODUCTS = [
 export const INITIAL_USER = {
   id: "u1",
   name: "Alice Anderson",
-  email: "alice@shopgym.com",
+  email: "alice@xmail.com",
   address: {
     id: "addr1",
     fullName: "Alice Anderson",
