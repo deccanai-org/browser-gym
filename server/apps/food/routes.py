@@ -13,8 +13,21 @@ from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from server.apps.food import mutations as F
+from server.state import refused as _refused
 
 router = APIRouter(prefix="/food", tags=["food"])
+
+
+def _redir(path: str, r: dict):
+    """A 303 that also tells the bridge whether the mutation was REFUSED.
+
+    Every food form returns 303 whether the mutation took or not, and the
+    bridge reads a bare 303 as success. Without the X-Gym-Refused header a
+    rejected add (a dish from a second restaurant, an out-of-stock item, a bad
+    promo) came back ok=true, the mock flashed "added" and the cart never
+    changed — the silent failure this wraps. Success is unchanged."""
+    resp = RedirectResponse(path, 303)
+    return resp if r.get("ok") else _refused(resp, r)
 
 _deps: dict[str, Any] = {}
 
@@ -88,7 +101,7 @@ async def cart_add(
                        "Clear it first to order from here.")
     else:
         _deps["flash"](world.shop, "error", "Could not add that item.")
-    return RedirectResponse(f"/food/restaurant/{restaurant_id}", 303)
+    return _redir(f"/food/restaurant/{restaurant_id}", r)
 
 
 @router.post("/cart/clear")
@@ -107,7 +120,7 @@ async def cart_remove(request: Request, dish_id: str = Form(...)):
         _deps["flash"](world.shop, "success", "Removed from your food order.")
     else:
         _deps["flash"](world.shop, "error", r.get("error", "Could not remove that item."))
-    return RedirectResponse("/food/cart", 303)
+    return _redir("/food/cart", r)
 
 
 @router.post("/cart/set_qty")
@@ -122,7 +135,7 @@ async def cart_set_qty(
         _deps["flash"](world.shop, "success", "Updated your food order.")
     else:
         _deps["flash"](world.shop, "error", r.get("error", "Could not update that item."))
-    return RedirectResponse("/food/cart", 303)
+    return _redir("/food/cart", r)
 
 
 @router.post("/cart/schedule")
@@ -138,7 +151,7 @@ async def cart_schedule(request: Request, scheduled_delivery: str = Form("")):
         _deps["flash"](world.shop, "success", msg)
     else:
         _deps["flash"](world.shop, "error", r.get("error", "Could not set schedule."))
-    return RedirectResponse("/food/cart", 303)
+    return _redir("/food/cart", r)
 
 
 @router.post("/cart/promo")
@@ -153,7 +166,7 @@ async def cart_promo(request: Request, code: str = Form("")):
             _deps["flash"](world.shop, "success", f"Promo {r['promo_code']} applied.")
     else:
         _deps["flash"](world.shop, "error", r.get("error", "Could not apply that code."))
-    return RedirectResponse("/food/cart", 303)
+    return _redir("/food/cart", r)
 
 
 @router.post("/checkout")
@@ -178,7 +191,7 @@ async def checkout(request: Request, delivery_note: str = Form(""),
         _deps["flash"](world.shop, "success", msg)
         return RedirectResponse(f"/food/order/{r['order_id']}", 303)
     _deps["flash"](world.shop, "error", r.get("error", "Could not place order."))
-    return RedirectResponse("/food/cart", 303)
+    return _redir("/food/cart", r)
 
 
 @router.post("/order/{order_id}/cancel")
@@ -192,4 +205,4 @@ async def cancel_order(request: Request, order_id: str):
             world.shop, "error",
             r.get("error", "Could not cancel that order."),
         )
-    return RedirectResponse(f"/food/order/{order_id}", 303)
+    return _redir(f"/food/order/{order_id}", r)

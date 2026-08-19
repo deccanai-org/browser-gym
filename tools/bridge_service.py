@@ -408,7 +408,12 @@ def _act(bridge: Bridge, req: ActReq) -> dict:
         return {"ok": False, "error": f"unknown action {req.action!r}",
                 "known": sorted(ACTIONS)}
     r = bridge.act(req.action, **req.payload)
-    return {"ok": r["ok"], "status": r["status"], "apps": _all_state(bridge)}
+    out = {"ok": r["ok"], "status": r["status"], "apps": _all_state(bridge)}
+    # Pass the engine's refusal reason through so a mock can tell the user WHY an
+    # action did nothing, instead of silently applying an unchanged world.
+    if r.get("error"):
+        out["error"] = r["error"]
+    return out
 
 
 # ------------------------------------------------------------- session-scoped --
