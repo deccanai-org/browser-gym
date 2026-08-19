@@ -87,6 +87,16 @@ export function initializeData(sid = null, customState = null) {
   if (customState) {
     const defaults = createInitialData();
     const merged = deepMerge(defaults, customState);
+    // Gym projection is the only honest catalog. createInitialData() ships
+    // rest_* decoys (The Green Bowl, Bella Italia, …) the engine has never
+    // heard of; deepMerge keeps them whenever the gym omitted the key.
+    // Listing them makes add-to-cart refuse with no toast.
+    if (Array.isArray(customState.restaurants)) {
+      merged.restaurants = customState.restaurants;
+    }
+    if (Array.isArray(customState.menuItems)) {
+      merged.menuItems = customState.menuItems;
+    }
     localStorage.setItem(sk, JSON.stringify(merged));
     localStorage.setItem(ik, JSON.stringify(merged));
     syncInitialState(merged, sid);

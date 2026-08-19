@@ -1047,6 +1047,10 @@ _SKIP_AMBIENT_FOOD_PREFIXES = (
     "food_006/",
     # mp_093: prior Thursday team-lunch history must stay deterministic.
     "mp_093/",
+    # M346: interview-lunch gold is Burger Barn / d_interview_lunch_346. Ambient
+    # amb_r_* cards (Fresh & Fit, Smash Shack, …) are not in the engine, so
+    # add-to-cart refuses and the mock has no toast — Sol burned 0/5 on that.
+    "M346/",
 )
 
 
@@ -1103,8 +1107,9 @@ def transform_food(food: dict, task_id: str | None = None) -> dict:
     # catalogue with ZERO vegan items, while the ambient menu shipped 35 tagged
     # Vegan. Density is worth less than a storefront where every listing works.
     #
-    # Set GYM_FOOD_AMBIENT=1 to list it again. _skip_ambient_food() still applies
-    # on top, so tasks that must not see decoys stay clean either way.
+    # GYM_FOOD_AMBIENT=1 only lists ambient rows whose ids are already in the
+    # engine. Projection-only decoys are never shown. _skip_ambient_food()
+    # still applies on top.
     from tools.ambient_food import (build_ambient, ambient_orders,
                                     AMBIENT_FAVORITES, _REVIEW_POOL)
     skip_ambient = _skip_ambient_food(task_id)
@@ -1120,10 +1125,24 @@ def transform_food(food: dict, task_id: str | None = None) -> dict:
             reviews.append({"id": f"rev_{rr['id']}_{j}", "restaurantId": rr["id"],
                             "userName": who, "rating": stars, "comment": text,
                             "createdAt": "2026-05-1%dT12:00:00" % ((i + j) % 9 + 1)})
-    _show_ambient = os.environ.get("GYM_FOOD_AMBIENT", "") == "1"
+    # Catalog honesty: the storefront may only list restaurants the engine can
+    # fulfill. GYM_FOOD_AMBIENT used to append projection-only amb_r_* decoys
+    # (Fresh & Fit, Smash Shack, Green Bowl, Pasta Fresca, …). add_dish then
+    # returned "no such restaurant", the mock had no toast, and the agent
+    # looped on repeated_failed_actions. Ambient rows are included only when
+    # that same id is already in gym food.restaurants.
+    engine_ids = {rid for rid in (food.get("restaurants") or {})}
+    _show_ambient = (
+        os.environ.get("GYM_FOOD_AMBIENT", "") == "1"
+        and not skip_ambient
+    )
     if _show_ambient:
-        restaurants = restaurants + amb_rests
-        menu_items = menu_items + amb_menu
+        restaurants = restaurants + [r for r in amb_rests if r["id"] in engine_ids]
+        menu_items = menu_items + [
+            m for m in amb_menu if m.get("restaurantId") in engine_ids
+        ]
+    restaurants = [r for r in restaurants if r["id"] in engine_ids]
+    menu_items = [m for m in menu_items if m.get("restaurantId") in engine_ids]
 
     _orderable = {rr["id"] for rr in restaurants}
     # Favourites pointing at restaurants that are no longer listed render as dead
@@ -1215,8 +1234,11 @@ def transform_food(food: dict, task_id: str | None = None) -> dict:
     # AFTER active so they never become the active order. Gated on both: a
     # delivered order whose restaurant isn't listed is a Reorder button that
     # cannot work, the same dead end the listing gate exists to avoid.
-    if _show_ambient and not skip_ambient:
-        orders = orders + ambient_orders(by_dish)
+    if _show_ambient:
+        orders = orders + [
+            o for o in ambient_orders(by_dish)
+            if o.get("restaurantId") in engine_ids
+        ]
 
     # the checkout promo box needs real codes behind it, and the applied one
     promos = [{"code": c, "percentOff": pct, "description": f"{int(pct * 100)}% off your order"}
