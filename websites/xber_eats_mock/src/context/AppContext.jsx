@@ -68,6 +68,43 @@ export function AppProvider({ children }) {
   const [initialStateSnapshot, setInitialStateSnapshot] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
+  // Transient message surfaced when the engine refuses an action (e.g. adding a
+  // dish from a second restaurant). Without this the refusal was invisible: the
+  // bridge now reports ok:false, but nothing told the user why the cart did not
+  // change.
+  //
+  // Rendered by direct DOM rather than React state: this fires from inside an
+  // async bridge .then, and a state-driven toast did not survive the concurrent
+  // 2.5s engine-poll re-render. A plain appended node is immune to that.
+  const _toastTimer = useRef(null);
+  const showToast = useCallback((message, kind = 'error') => {
+    if (!message || typeof document === 'undefined') return;
+    let el = document.getElementById('gym-toast');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'gym-toast';
+      el.setAttribute('role', 'status');
+      el.setAttribute('aria-live', 'polite');
+      el.style.cssText =
+        'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:2000;' +
+        'max-width:90vw;padding:12px 18px;border-radius:10px;font-size:14px;font-weight:500;' +
+        'color:#fff;box-shadow:0 8px 24px rgba(0,0,0,0.25);';
+      document.body.appendChild(el);
+    }
+    el.style.background = kind === 'error' ? '#B42318' : '#111827';
+    el.textContent = message;
+    el.style.display = 'block';
+    if (_toastTimer.current) clearTimeout(_toastTimer.current);
+    _toastTimer.current = setTimeout(() => { el.style.display = 'none'; }, 4000);
+  }, []);
+  const _addToCartReason = (r) => {
+    const reason = ((r && r.error) || '').toString();
+    if (reason === 'cart_has_other_restaurant')
+      return 'Your cart has items from another restaurant. Clear it to order from here.';
+    if (reason === 'no such restaurant' || reason === 'no such dish')
+      return 'That item is not available.';
+    return reason ? ('Could not add that item: ' + reason) : 'Could not add that item.';
+  };
   const sidRef = useRef(getSessionId());
   const initDone = useRef(false);
 
@@ -221,7 +258,12 @@ export function AppProvider({ children }) {
         quantity: quantity || 1,
         // "no onions" was collected by the item modal and thrown away
         note: specialInstructions || '',
-      }).then(r => applyEngine(r && r.apps && r.apps[APP]));
+      }).then(r => {
+        applyEngine(r && r.apps && r.apps[APP]);
+        // The engine refused (a second restaurant, an unavailable dish): say so
+        // rather than let the click look like it did nothing.
+        if (r && r.ok === false) showToast(_addToCartReason(r));
+      });
       return;
     }
     setState(prev => {
@@ -810,7 +852,8 @@ export function AppProvider({ children }) {
       updateUser,
       updateDeliveryInstructions,
       activateUberOne,
-      addAddress
+      addAddress,
+      showToast
     }}>
       {children}
     </AppContext.Provider>
