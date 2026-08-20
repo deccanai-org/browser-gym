@@ -226,7 +226,11 @@ def test_m346_gold_separate_eta_emails():
 
 def test_ui041_gold_ask_do_not_buy():
     p = _probe(v4.UI041_ID)
-    p.world.shop.action_log.append({"kind": "viewed_calendar"})
+    # Opening the car-service event itself — a generic calendar glance no
+    # longer counts as having read the booking.
+    p.world.shop.action_log.append(
+        {"kind": "viewed_event_edit", "event_id": "amb_cal_11"}
+    )
     _alice_mail(
         p.world,
         "Which wiper size / fitment should I buy? I couldn't find it in Xmazon or Xmail.",
