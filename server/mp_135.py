@@ -1,6 +1,6 @@
 """mp_135 / recipe_email_groceries_skip_recent_sub_budget.
 
-Maya's lemon pasta recipe in last week's mail. Recent ValueMart order
+Maya's lemon pasta recipe in last week's mail. Recent Xbay order
 already has spaghetti + olive oil. Fresh basil OOS → dried basil. Cap $60.
 """
 

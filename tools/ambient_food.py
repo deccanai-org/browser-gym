@@ -1,4 +1,4 @@
-"""Ambient (browse-only) food content for GymEats.
+"""Ambient (browse-only) food content for Xber.
 
 Fills out the cuisine categories so the app doesn't feel empty. This is APPENDED
 to the projection's restaurants/menuItems/reviews/orders — it never touches the
@@ -187,7 +187,7 @@ import pathlib as _pathlib
 _MENUS = _json.loads((_pathlib.Path(__file__).with_name("ambient_food_menus.json")).read_text())
 
 # Ambient dish tags were passed through raw ("gluten_free"), while task-restaurant
-# dishes are normalized to "Gluten-Free" (seed_to_cuagym._DIETARY). The GymEats
+# dishes are normalized to "Gluten-Free" (seed_to_cuagym._DIETARY). The Xber
 # dietary filter compares case-insensitively but NOT separator-insensitively, so
 # an underscore tag never matched the "gluten-free" the filter emits. Canonicalize
 # ambient tags the same way so every dietary filter (veg/vegan/gluten-free/halal)

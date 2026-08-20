@@ -27,7 +27,7 @@ BRIEF = (
 USER_EMAIL = "alice@shopmail.com"
 EVENT_ID = "ev_food003_team_meeting"
 EVENT_TITLE = "Team Meeting"
-# Arrive-by meeting start (visible on Thu week view after GymCal scroll fix).
+# Arrive-by meeting start (visible on Thu week view after Xoogle scroll fix).
 EVENT_START, EVENT_END = "18:30", "20:30"
 # Mid-afternoon so week-view default scroll + now-line sit near evening hours.
 GYM_NOW = "2026-05-21T16:00:00"

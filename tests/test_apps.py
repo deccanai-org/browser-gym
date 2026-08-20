@@ -333,7 +333,7 @@ def test_place_food_order_empty_cart_fails():
 
 
 # --------------------------------------------------------------------------- #
-# ValueMart (2nd e-commerce store) — overlapping SKUs, coupon+delivery math,
+# Xbay (2nd e-commerce store) — overlapping SKUs, coupon+delivery math,
 # and the MarketOrderPlaced -> Mail cross-app chain
 # --------------------------------------------------------------------------- #
 
@@ -347,11 +347,11 @@ def _market_world() -> WorldState:
 def test_make_marketstate_overlaps_shop_and_is_deterministic():
     m = make_marketstate(0)
     assert len(m.products) >= 5
-    # At least one SKU overlaps the main ShopGym store (so price-compare works)
-    # and at least one is ValueMart-exclusive.
+    # At least one SKU overlaps the main Xmazon store (so price-compare works)
+    # and at least one is Xbay-exclusive.
     skus = [p.shop_sku for p in m.products.values()]
-    assert "p_mouse_wireless" in skus           # overlaps ShopGym
-    assert any(s is None for s in skus)          # a ValueMart exclusive
+    assert "p_mouse_wireless" in skus           # overlaps Xmazon
+    assert any(s is None for s in skus)          # a Xbay exclusive
     assert "VALUE10" in m.coupons                # the store-only coupon
     assert make_marketstate(0).to_json() == make_marketstate(0).to_json()
 

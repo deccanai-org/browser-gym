@@ -76,7 +76,7 @@ TOOLS_ANTHROPIC = [
 
 SYSTEM_PROMPT = """\
 You are operating a real web browser to complete an e-commerce task on
-the ShopGym site.
+the Xmazon site.
 
 For each step:
 1. Read the task brief carefully (shown in the amber banner at the top of every page)

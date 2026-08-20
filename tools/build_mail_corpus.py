@@ -1,4 +1,4 @@
-"""Turn an authored ShopMail corpus into the ambient mail block.
+"""Turn an authored Xmail corpus into the ambient mail block.
 
 The ambient mailbox used to be ~330 one-or-two-sentence notes, which read as
 obvious filler and — worse — all sat at or before May 20, so the three
@@ -31,9 +31,9 @@ GYM_NOW_HHMM = (12, 0)
 
 BULK_PATH = pathlib.Path(__file__).with_name("ambient_bulk.json")
 
-# Alice's mailbox is the ShopMail account, which is what the engine's
+# Alice's mailbox is the Xmail account, which is what the engine's
 # MailState.account_email and tools/seed_to_cuagym.ALICE_EMAIL both say. It is
-# NOT her employer's commerce domain: ShopGym is where she works and shops, and
+# NOT her employer's commerce domain: Xmazon is where she works and shops, and
 # mixing the two silently breaks reply-all, which filters recipients by
 # comparing against state.user.email.
 ALICE_EMAIL = "alice@shopmail.com"
@@ -141,7 +141,7 @@ def report(entries: list[dict]) -> str:
     # The three pre-seeded task emails sit at 08:00 / 09:30 / 10:15 on May 21.
     inbox = sorted((e for e in entries if e["folder"] == "inbox"),
                    key=lambda e: e["timestamp"], reverse=True)
-    for label, stamp in (("Welcome to ShopGym", "2026-05-21T08:00:00"),
+    for label, stamp in (("Welcome to Xmazon", "2026-05-21T08:00:00"),
                          ("Your weekend deals", "2026-05-21T09:30:00"),
                          ("Dinner this week?", "2026-05-21T10:15:00")):
         above = sum(1 for e in inbox if e["timestamp"] > stamp)

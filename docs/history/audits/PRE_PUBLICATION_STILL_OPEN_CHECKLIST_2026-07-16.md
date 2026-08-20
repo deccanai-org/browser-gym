@@ -41,7 +41,7 @@ AI fills (`independent_ai_rater` / `independent_ai_reviewer_b|c`) remain labeled
 | Item | Disposition |
 |---|---|
 | **§1C** screenshot `detail` Anthropic ≠ OpenAI/Qwen | Disclose; keep P0 open for “identical detail” only |
-| **§1C** SoM silent-omit (cap/IoU) | Structural risk; ValueMart qty scoped-closed |
+| **§1C** SoM silent-omit (cap/IoU) | Structural risk; Xbay qty scoped-closed |
 | **§1C** cross-modality action space | Intentionally unequal; disclose pixel≢DOM |
 | **§1C** native `<select>` motor | Corpus clean (32/32 reasoning); keep open for modality/incomplete confound |
 | **§2D** mutation survivors | Deliberate disclose (no further single-survivor fixes this pass): remove-recipient M37/M211/M200; AND→OR M200/M59; loosen-regex M37/M141/M164 |

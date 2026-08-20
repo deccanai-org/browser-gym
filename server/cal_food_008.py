@@ -1,12 +1,12 @@
 """cal_food_008 / partner_sync_cancel_if_late — Mail×Cal×Food cancel-if-late.
 
 Mechanism: Partner Sync Lunch was moved to 3:00 PM (Mail "Meeting update");
-Calendar still shows 12:30 and a GymEats order is preparing with a late ETA
+Calendar still shows 12:30 and a Xber order is preparing with a late ETA
 (3:20 PM). Correct = find the meeting-update email → move calendar to
 15:00–16:00 → cancel the late order (brief: just cancel if not on time) →
 email the user with accurate calendar/food status.
 
-No on-time reorder required. Ambient GymEats catalog is suppressed in the
+No on-time reorder required. Ambient Xber catalog is suppressed in the
 bridged projection for this task so the agent cannot thrash shopping.
 
 Forbidden (conjunction): a live order whose stated arrival is NOT strictly

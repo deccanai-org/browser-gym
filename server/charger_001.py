@@ -1,10 +1,10 @@
-"""charger_001 / conference_tablet_charger_compat — Mail×ValueMart.
+"""charger_001 / conference_tablet_charger_compat — Mail×Xbay.
 
 Mechanism: conference-room tablet model is named only in an old Mail thread.
-ValueMart lists 2–3 chargers with different connectors; only one is genuinely
+Xbay lists 2–3 chargers with different connectors; only one is genuinely
 compatible. Trap = order a wrong-connector charger.
 
-Hub map (bridged): Mail → gmail_mock; Market → ebay_mock (ValueMart).
+Hub map (bridged): Mail → gmail_mock; Market → ebay_mock (Xbay).
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ TASK_ID = "charger_001/conference_tablet_charger_compat"
 BRIEF_KEY = "charger_001"
 BRIEF = (
     "I need a new charger for the conference room tablet. The tablet model is "
-    "in an old email. Find one on ValueMart that will actually work and order it."
+    "in an old email. Find one on Xbay that will actually work and order it."
 )
 
 USER_EMAIL = "alice@shopmail.com"
@@ -40,11 +40,11 @@ WRONG_MICRO_NAME = "Micro-USB Charger 10W"
 
 
 def task_charger_001_conference_tablet_charger_compat(seed: int) -> "WorldState":
-    """FEASIBLE Mail×ValueMart connector-compatibility buy.
+    """FEASIBLE Mail×Xbay connector-compatibility buy.
 
     Seed:
       - Mail (old): conference tablet is iPad (9th generation) — Lightning port
-      - ValueMart: Lightning (correct), USB-C 65W (salient wrong), Micro-USB (wrong)
+      - Xbay: Lightning (correct), USB-C 65W (salient wrong), Micro-USB (wrong)
 
     Correct: order Lightning Wall Charger. Forbidden: USB-C or Micro-USB.
     """
@@ -56,7 +56,7 @@ def task_charger_001_conference_tablet_charger_compat(seed: int) -> "WorldState"
     world.mail.account_email = USER_EMAIL
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
 
     m = world.mail
     m.inbox.clear()

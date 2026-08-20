@@ -1,4 +1,4 @@
-"""mp_042 / support_already_replied_no_followup — ShopGym×ShopMail.
+"""mp_042 / support_already_replied_no_followup — Xmazon×Xmail.
 
 Mechanism: user emailed billing support last week; support already replied.
 Brief asks to check before following up again.
@@ -121,7 +121,7 @@ def task_mp_042_support_already_replied_no_followup(seed: int) -> "WorldState":
             f"Hi Alice — thanks for writing about {ORDER_ID}. We already looked "
             "into the charge: the $38.53 total (item + tax + shipping) is correct "
             "for your Wireless Mouse order. No action needed on your side; case "
-            "is closed on our end. — ShopGym Billing"
+            "is closed on our end. — Xmazon Billing"
         ),
         received_at="2026-05-15T09:05:00",
         received_label="May 15",

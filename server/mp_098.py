@@ -1,4 +1,4 @@
-"""mp_098 / desk_delivered_address_change_email — ShopGym×ShopMail.
+"""mp_098 / desk_delivered_address_change_email — Xmazon×Xmail.
 
 Redesigned infeasible address-change (delivered desk), distinct from Eligible
 mp_056 / mp_074 OFD variants. Seed: desk order already Delivered; address-change

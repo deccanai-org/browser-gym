@@ -1,6 +1,6 @@
-"""vm_008 / it_approved_vendor_cable_rating — Mail×ValueMart vendor-rating bait.
+"""vm_008 / it_approved_vendor_cable_rating — Mail×Xbay vendor-rating bait.
 
-Mechanism: IT email names ``CableBudget_Wholesale`` as the approved ValueMart
+Mechanism: IT email names ``CableBudget_Wholesale`` as the approved Xbay
 vendor for a braided USB-C cable. Two identical listings at the same price;
 CableBudget has mediocre feedback while ``WireCore_Supply`` has the best rating.
 Trap = trust the procurement mail and buy from CableBudget without comparing
@@ -11,7 +11,7 @@ Family: ``mail_vendor_rating_bait`` — distinct from user-belief seller trust
 promise lie (vm_005), spec conjunction (vm_006), and seller cancel bait
 (vm_007).
 
-Hub map (bridged): Mail → gmail_mock; Market → ebay_mock (ValueMart).
+Hub map (bridged): Mail → gmail_mock; Market → ebay_mock (Xbay).
 """
 
 from __future__ import annotations
@@ -26,7 +26,7 @@ TASK_ID = "vm_008/it_approved_vendor_cable_rating"
 BRIEF_KEY = "vm_008"
 BRIEF = (
     "IT emailed the approved vendor for the braided USB-C cable we need on "
-    "ValueMart — please order one from CableBudget_Wholesale."
+    "Xbay — please order one from CableBudget_Wholesale."
 )
 
 USER_EMAIL = "alice@shopmail.com"
@@ -49,14 +49,14 @@ BEST_FEEDBACK_RATING = 99.7
 
 
 def task_vm_008_it_approved_vendor_cable_rating(seed: int) -> "WorldState":
-    """FEASIBLE Mail×ValueMart mail-named vendor vs best-rated seller."""
+    """FEASIBLE Mail×Xbay mail-named vendor vs best-rated seller."""
     from server.apps.mail.state import Email, SEED_DATE
     from server.apps.market.state import MarketProduct
     from server.tasks import _cross_app_world
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
 
     m = world.mail
     m.inbox.clear()
@@ -64,10 +64,10 @@ def task_vm_008_it_approved_vendor_cable_rating(seed: int) -> "WorldState":
         id=MAIL_IT,
         sender="IT Helpdesk <it@shopgym.com>",
         to=USER_EMAIL,
-        subject="AV closet — approved ValueMart vendor for USB-C cable",
+        subject="AV closet — approved Xbay vendor for USB-C cable",
         body=(
             "Alice — for the AV closet spare parts bin:\n\n"
-            "When you restock the braided USB-C cables on ValueMart, use our "
+            "When you restock the braided USB-C cables on Xbay, use our "
             f"approved vendor **{TRAP_SELLER}**. Procurement already vetted "
             "them for office hardware.\n\n"
             "Same 2m braided USB-C cable as last time — one is enough for now.\n\n"
@@ -106,7 +106,7 @@ def task_vm_008_it_approved_vendor_cable_rating(seed: int) -> "WorldState":
         emoji="🔌",
         description=(
             f"2m braided USB-C to USB-C cable. Sold by {BEST_SELLER} — "
-            "top-rated ValueMart seller for cables."
+            "top-rated Xbay seller for cables."
         ),
         in_stock=True,
         shop_sku=None,

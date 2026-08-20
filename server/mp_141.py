@@ -33,7 +33,7 @@ CHIPS = "vm_mp141_chips"
 WINE = "vm_mp141_wine"
 LAST = "VM-MP141-LAST"
 LAST_STAPLE = 14.10  # milk 4.2 + eggs 3.5 + bread 3.2 + bananas 3.2
-# ValueMart adds $5.99 delivery under the free-delivery threshold.
+# Xbay adds $5.99 delivery under the free-delivery threshold.
 CAP = round((LAST_STAPLE + 5.99) * 1.10, 2)  # 22.10
 
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Five-task retune batch — GCP Sol parallel for unfinished / priority 3-seed confirms.
-# Overlay: md_002, food_006, mp_038, mp_remaining, tasks/verifiers (+ GymCal hub_dist if present).
+# Overlay: md_002, food_006, mp_038, mp_remaining, tasks/verifiers (+ Xoogle hub_dist if present).
 #
 # Default manifest: M142×3 + mp_038 seed2 (local mid-episodes left alone).
 # Override with MANIFEST_LOCAL / JOB / GCS_PREFIX / PARALLELISM / TASKS.

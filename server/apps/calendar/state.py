@@ -52,7 +52,7 @@ class CalendarState:
     events: dict[str, CalendarEvent] = field(default_factory=dict)
     account_name: str = "Alice Anderson"
     # Optional task-frozen wall clock (ISO local, no Z), e.g. "2026-05-21T12:40:00".
-    # Projected as `_gym_today` / `_gym_now` so GymCal's red now-line and
+    # Projected as `_gym_today` / `_gym_now` so Xoogle's red now-line and
     # create-defaults match the task seed — not operator Date.now().
     # None → projection default noon on TODAY.
     gym_now: str | None = None

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # food_006 ready-when-meeting-starts retune — GCP Sol seeds 0/1/2 in parallel.
 # Overlay: food_006 + food Dish.eta_label / place-order ETA + seed_to_cuagym
-# dish etaLabel + rebuilt GymEats hub_dist (clock ETA + imageUrl).
+# dish etaLabel + rebuilt Xber hub_dist (clock ETA + imageUrl).
 set -euo pipefail
 export PATH="/opt/homebrew/bin:/opt/homebrew/share/google-cloud-sdk/bin:$PATH"
 
@@ -122,7 +122,7 @@ cp "$RUNNER/server/apps/food/routes.py" "$CTX/server/apps/food/routes.py"
 cp "$RUNNER/tools/seed_to_cuagym.py" "$CTX/tools/seed_to_cuagym.py"
 cp "$RUNNER/tools/bridge.py" "$CTX/tools/bridge.py"
 cp "$MANIFEST_LOCAL" "$CTX/deploy/filtration/manifests/food006_ready_meeting_sol_3seed.json"
-# Fresh GymEats only (no stale index-*.js leftovers)
+# Fresh Xber only (no stale index-*.js leftovers)
 rm -rf "$CTX/hub_dist/uber_eats_mock"
 rsync -a "$HERE/hub_dist/uber_eats_mock/" "$CTX/hub_dist/uber_eats_mock/"
 if [ -d "$HERE/hub_dist/google_calendar_mock" ]; then

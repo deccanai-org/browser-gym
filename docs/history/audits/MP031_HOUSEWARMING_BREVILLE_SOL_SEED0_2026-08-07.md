@@ -1,7 +1,7 @@
 # mp_031 / housewarming_breville_free_ship_gift — Sol seed 0
 
 **Date:** 2026-08-07  
-**Constraint:** new task (ValueMart Brand∩Free∩New∩seller + GymCal deliver-by + ShopMail confirm/gift note) → fail-on-initial + bridged oracle → Sol seed 0 only.  
+**Constraint:** new task (Xbay Brand∩Free∩New∩seller + Xoogle deliver-by + Xmail confirm/gift note) → fail-on-initial + bridged oracle → Sol seed 0 only.  
 **Model:** `openai_pixel[gpt-5.6-sol]` · `AGENT_MAX_STEPS=80` · headless · `PYTHONUNBUFFERED=1`  
 **Stack:** `STACK_SLOT=53` · gym `:13378` · bridge `:13391` · market `:58301` · mail `:58401` · calendar `:58402`  
 **Env SHA:** `browser-gym-seed-to-cua-gym` `a9b8e2f` (+ local task/projection patches: `MarketProduct.brand`, address/payment-aware `MarketState`, `mp_031` seed/verifier/oracle)
@@ -12,7 +12,7 @@
 
 **BREAK** (score **0.60**, success **False**, **47** steps).
 
-Sol checked GymCal (found Cousin's Housewarming on **June 14**), searched ValueMart for Breville, and eventually checked out the **low-rated** free-ship New listing ($679, `DiscountBrew_Outlet` 81.4%) as `VM-2202` — firing `forbidden_low_rated_seller`. Gold SKU was also present as `VM-2201` (appeared mid-search thrash before the agent opened a listing). Gift note went to **ValueMart seller Messages** (no cart gift-wrap UI on ebay_mock); confirmation was **forwarded** to alice without gift-message tokens → `confirm_email_with_gift_message` missed.
+Sol checked Xoogle (found Cousin's Housewarming on **June 14**), searched Xbay for Breville, and eventually checked out the **low-rated** free-ship New listing ($679, `DiscountBrew_Outlet` 81.4%) as `VM-2202` — firing `forbidden_low_rated_seller`. Gold SKU was also present as `VM-2201` (appeared mid-search thrash before the agent opened a listing). Gift note went to **Xbay seller Messages** (no cart gift-wrap UI on ebay_mock); confirmation was **forwarded** to alice without gift-message tokens → `confirm_email_with_gift_message` missed.
 
 ---
 
@@ -26,7 +26,7 @@ Runner sync: `browser-gym-seed-to-cua-gym/server/mp_031.py` (+ tasks/verifiers/o
 **Brief (exact):**  
 > Put together a housewarming bundle for my cousin, a coffee maker from a brand she actually likes (she only drinks Breville, nothing else), has to ship free, and has to be new, not refurbished, ideally from a seller with decent ratings since it's a gift. Add a gift message but don't bother with gift wrap, she doesn't care about that. I need it to land by the 14th so check my calendar, I think there's a party that weekend. Email me the confirmation once it's placed.
 
-**Gold:** calendar party June 14 → order `mp031_breville_new_free_ontime` (Breville ∩ New ∩ free ship ∩ BrewGear_Official 99.6% ∩ arrives by June 14) → email alice with confirm + gift note (ValueMart has no gift-wrap affordance).
+**Gold:** calendar party June 14 → order `mp031_breville_new_free_ontime` (Breville ∩ New ∩ free ship ∩ BrewGear_Official 99.6% ∩ arrives by June 14) → email alice with confirm + gift note (Xbay has no gift-wrap affordance).
 
 **Forbidden:** wrong brand (Cuisinart), Refurbished, paid shipping, low-rated seller, late ETA (arrives after the 14th).
 
@@ -36,14 +36,14 @@ Runner sync: `browser-gym-seed-to-cua-gym/server/mp_031.py` (+ tasks/verifiers/o
 
 | Surface | Contents |
 |---|---|
-| **GymCal** | `Cousin's Housewarming` **2026-06-14** 15:00–18:00; decoys: Monday standup (Jun 15), Dentist (Jun 10) |
-| **ValueMart gold** | Breville Barista Express · New · `$0` ship · BrewGear_Official **99.6%** · ETA by June 14 · `$699.95` |
+| **Xoogle** | `Cousin's Housewarming` **2026-06-14** 15:00–18:00; decoys: Monday standup (Jun 15), Dentist (Jun 10) |
+| **Xbay gold** | Breville Barista Express · New · `$0` ship · BrewGear_Official **99.6%** · ETA by June 14 · `$699.95` |
 | **Decoy brand** | Cuisinart Barista Bar · New · free ship · high rating · on-time ETA |
 | **Decoy condition** | Breville · **Refurbished** · free ship · on-time |
 | **Decoy shipping** | Breville · New · **`$24.99` ship** · on-time |
 | **Decoy seller** | Breville · New · free ship · DiscountBrew_Outlet **81.4%** · on-time · `$679` |
 | **Decoy ETA** | Breville · New · free ship · high rating · arrives **June 20–25** |
-| **Gift rules** | Gift message required in agent-sent confirm email to alice (tokens: gift message/note, housewarming, cousin, congrats, …). No gift-wrap cart UI on ValueMart — wrap cannot be selected. |
+| **Gift rules** | Gift message required in agent-sent confirm email to alice (tokens: gift message/note, housewarming, cousin, congrats, …). No gift-wrap cart UI on Xbay — wrap cannot be selected. |
 | **Mail** | Agent must email confirmation to `alice@shopgym.com` after place (auto inbox confirm alone is insufficient). |
 
 ---
@@ -74,7 +74,7 @@ Runner sync: `browser-gym-seed-to-cua-gym/server/mp_031.py` (+ tasks/verifiers/o
 
 ### Trap?
 
-**Yes — low-rated seller.** Sol correctly used the calendar (June 14), filtered to Breville / New / free shipping, skipped the late-ETA listing, then chose the cheaper on-time free-ship New unit despite **81.4%** seller feedback. Also spent steps hunting cart gift-wrap/message (ValueMart has none), messaged the seller instead, and forwarded order confirms without an explicit gift note in the body.
+**Yes — low-rated seller.** Sol correctly used the calendar (June 14), filtered to Breville / New / free shipping, skipped the late-ETA listing, then chose the cheaper on-time free-ship New unit despite **81.4%** seller feedback. Also spent steps hunting cart gift-wrap/message (Xbay has none), messaged the seller instead, and forwarded order confirms without an explicit gift note in the body.
 
 **Note on early gold order:** `VM-2201` (gold) appears in `world_after` at step 16 during search-box Backspace, before any listing open — possible accidental Buy It Now / async checkout during search thrash. Agent later knowingly checked out the low-rated listing as `VM-2202`.
 
@@ -96,7 +96,7 @@ Oracle traj: `browser-gym-seed-to-cua-gym/trajectories/mp_031_oracle_bridged_see
 
 - Gym + market/mail/calendar hubs stayed up (HTTP 200) throughout.
 - Brand facet: explicit `listing.brand` projected (`Breville` / `Cuisinart`) so coffee titles do not collapse to HomeChef.
-- ValueMart checkout requires addresses/payments on `MarketState` (merged into runner from address-selection work + seller/condition/shipping/brand fields).
+- Xbay checkout requires addresses/payments on `MarketState` (merged into runner from address-selection work + seller/condition/shipping/brand fields).
 - Stack released: `STACK_SLOT=53 tools/stop_bridged_stack.sh`.
 
 ---

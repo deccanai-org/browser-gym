@@ -1,4 +1,4 @@
-"""mp_048 / lamp_warranty_expired_check_first — ShopGym×ShopMail.
+"""mp_048 / lamp_warranty_expired_check_first — Xmazon×Xmail.
 
 Mechanism: flickering lamp was purchased >12 months ago; product warranty is
 12 months from purchase. Brief does NOT tell the agent to check warranty —
@@ -124,7 +124,7 @@ def task_mp_048_lamp_warranty_expired_check_first(seed: int) -> "WorldState":
         id="em_mp048_confirm",
         sender="orders@shopgym.com",
         to=USER_EMAIL,
-        subject=f"Your ShopGym order {ORDER_ID} is confirmed",
+        subject=f"Your Xmazon order {ORDER_ID} is confirmed",
         body=(
             f"Thanks for your order!\n\nOrder {ORDER_ID}\n"
             f"Item: {PRODUCT_NAME}\n"

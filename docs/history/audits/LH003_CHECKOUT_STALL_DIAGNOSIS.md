@@ -4,7 +4,7 @@
 **Task:** `lh_003/bea_cy_birthday_gifts` · seed 0 · `openai_pixel[gpt-5.6-sol]`  
 **Source traj:** `trajectories/lh_003_shopmail_fix_rerun/lh_003_bea_cy_birthday_gifts__0__831f24c3.jsonl`  
 **Prior audit:** [`LH003_SOL_SEED0_AFTER_SHOPMAIL.md`](./LH003_SOL_SEED0_AFTER_SHOPMAIL.md)  
-**Constraint:** ShopMail §4 kept live; dedicated ports; no ledger/QA; no IDE; no broad pkill.
+**Constraint:** Xmail §4 kept live; dedicated ports; no ledger/QA; no IDE; no broad pkill.
 
 ## Verdict
 
@@ -56,14 +56,14 @@ So this is **not** “failed earlier in address-field entry.” It is **Visa con
 | Checkout payment path | **4** (43–46) | Address → Visa → Change |
 | Address nav | **3** (47–49) | Profile → Addresses → Add new |
 
-Mail verification was efficient once ShopMail §4 was live. The budget was consumed mainly by **calendar search + native date fields**, then checkout discovery that only home ship-to exists.
+Mail verification was efficient once Xmail §4 was live. The budget was consumed mainly by **calendar search + native date fields**, then checkout discovery that only home ship-to exists.
 
 ### Hub bug report check
 
 [`CUA_GYM_HUB_UI_BUG_REPORT.md`](../../CUA_GYM_HUB_UI_BUG_REPORT.md):
 
-- ShopMail inbox open/select (§4): **already fixed** — confirmed live (`index-CH0zBepB.js` / `mail-item-`).
-- ShopGym gift/ship-to/checkout: **already fixed**.
+- Xmail inbox open/select (§4): **already fixed** — confirmed live (`index-CH0zBepB.js` / `mail-item-`).
+- Xmazon gift/ship-to/checkout: **already fixed**.
 - **No** open Amazon “address-add form won’t accept input” / Gmail-row-class bug for Profile address fields.
 
 Address inputs in `amazon_mock` `Profile.jsx` are ordinary controlled `<input>`s (no missing SoM `role`/`data-test-id` pattern like the old mail rows). Cap-80 re-run (below) confirms they type and save.
@@ -77,7 +77,7 @@ No address-form env fix. Same experiment proposed for lh_004-style budget stalls
 | | Value |
 |---|---|
 | Cap | **80** (was 50) |
-| Ports | gym **9478** / bridge **9491** / Amazon **15203** / Gmail **15401** / Cal **15501** (`STACK_SLOT=14` + overrides; ShopMail live) |
+| Ports | gym **9478** / bridge **9491** / Amazon **15203** / Gmail **15401** / Cal **15501** (`STACK_SLOT=14` + overrides; Xmail live) |
 | Out | `trajectories/lh_003_checkout_stall_cap80/` |
 | Traj | `lh_003_bea_cy_birthday_gifts__0__31961833.jsonl` |
 | Wall / steps | ~715s / **80** |
@@ -110,7 +110,7 @@ Remaining failure mode under 80: agent assigns ship-to via native `<select>` key
 |---|---|
 | Original stall cause | **Step budget** after Visa select + pivot to add addresses |
 | Address-form env bug? | **No** (form works when given steps) |
-| Env fix shipped? | **None** (ShopMail §4 already live; left alone) |
+| Env fix shipped? | **None** (Xmail §4 already live; left alone) |
 | Cap-80 re-run | **INCOMPLETE** — addresses added; date-field stall; 0 orders |
 | Genuine BREAK? | **No** |
 

@@ -1,13 +1,13 @@
-"""mp_034 / desk_chair_cross_hub_cheaper_or_faster — ShopGym×ValueMart.
+"""mp_034 / desk_chair_cross_hub_cheaper_or_faster — Xmazon×Xbay.
 
 Mechanism: compare ErgoDesk office chair landed cost (price + shipping) on
-both hubs; totals within $5 → pick faster ship (ValueMart). Gaming decoy is
+both hubs; totals within $5 → pick faster ship (Xbay). Gaming decoy is
 cheaper but wrong style.
 
 UI-discoverability:
-  - ShopGym PDP: ErgoDesk Pro Office Chair $180 + FREE delivery (5-day note)
-  - ValueMart PDP: same model $175 + $18 ship (2-day ETA in description)
-  - ValueMart RaceSeat Pro gaming chair cheaper total but gaming-style
+  - Xmazon PDP: ErgoDesk Pro Office Chair $180 + FREE delivery (5-day note)
+  - Xbay PDP: same model $175 + $18 ship (2-day ETA in description)
+  - Xbay RaceSeat Pro gaming chair cheaper total but gaming-style
 """
 
 from __future__ import annotations
@@ -22,7 +22,7 @@ TASK_ID = "mp_034/desk_chair_cross_hub_cheaper_or_faster"
 BRIEF_KEY = "mp_034"
 BRIEF = (
     "I need a new desk chair, office-appropriate not gaming-style. Check both "
-    "ValueMart and ShopGym for the same or equivalent model, compare total "
+    "Xbay and Xmazon for the same or equivalent model, compare total "
     "cost including shipping, and get it from whichever is actually cheaper. "
     "If they're within $5 of each other, go with whichever ships faster."
 )
@@ -33,23 +33,23 @@ SG_CHAIR = "p_mp034_ergodesk"
 VM_CHAIR = "vm_mp034_ergodesk"
 VM_GAMING = "vm_mp034_raceseat"
 
-# ShopGym: $180 + $0 ship = $180, ships in ~5 days
-# ValueMart: $175 + $18 = $193… wait CAND had VM cheaper total within $5.
+# Xmazon: $180 + $0 ship = $180, ships in ~5 days
+# Xbay: $175 + $18 = $193… wait CAND had VM cheaper total within $5.
 # CAND: SG 180+15=195, VM 175+18=193 → within $5, VM faster (2 vs 5 days).
-# Use that: ShopGym shipping shown as $15 "standard" via non-prime? But ShopGym
-# projects all as FREE Prime delivery. Encode ShopGym landed as base_price that
+# Use that: Xmazon shipping shown as $15 "standard" via non-prime? But Xmazon
+# projects all as FREE Prime delivery. Encode Xmazon landed as base_price that
 # already reflects sticker, and put shipping fee in short_description as
 # "Standard shipping $15 (5 business days)" while still charging 180 at checkout
 # — that breaks compare honesty.
 #
-# Better: ShopGym price 195 with free ship (5 days); ValueMart 175+18=193 (2 days).
+# Better: Xmazon price 195 with free ship (5 days); Xbay 175+18=193 (2 days).
 # Or stick to CAND numbers with shop base 180 and a $15 shipping product note
 # that agents must add mentally — fragile.
 #
 # Practical bridge-honest design:
-#   ShopGym: base_price=195.00, Prime free ship, description "Ships in 5 business days"
-#   ValueMart: price=175, shipping_cost=18 → 193, description "Ships in 2 business days"
-#   Within $5 → ValueMart wins on speed.
+#   Xmazon: base_price=195.00, Prime free ship, description "Ships in 5 business days"
+#   Xbay: price=175, shipping_cost=18 → 193, description "Ships in 2 business days"
+#   Within $5 → Xbay wins on speed.
 #   Gaming: 160+0=160 cheaper but forbidden style.
 
 
@@ -60,7 +60,7 @@ def task_mp_034_desk_chair_cross_hub_cheaper_or_faster(seed: int) -> "WorldState
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
 
@@ -92,7 +92,7 @@ def task_mp_034_desk_chair_cross_hub_cheaper_or_faster(seed: int) -> "WorldState
         description=(
             "Same ErgoDesk Pro office chair. Shipping $18.00 "
             "(landed total $193.00). Estimated delivery: 2 business days — "
-            "faster than ShopGym's 5-day free delivery on the $195 listing."
+            "faster than Xmazon's 5-day free delivery on the $195 listing."
         ),
         in_stock=True,
         condition="New",
@@ -175,7 +175,7 @@ def suite_factories() -> dict[str, Callable[[], "TaskSuite"]]:
         return False
 
     def _ordered_correct(p: Probe) -> bool:
-        # Within-$5 + faster → ValueMart ErgoDesk.
+        # Within-$5 + faster → Xbay ErgoDesk.
         return _bought_vm_chair(p) and not _bought_shop_chair(p) and not _bought_gaming(p)
 
     def _office_not_gaming(p: Probe) -> bool:
@@ -187,7 +187,7 @@ def suite_factories() -> dict[str, Callable[[], "TaskSuite"]]:
         """Require agent-sent note OR both hubs inspected via action log.
 
         Durable compare signal: alice email mentioning both stores' totals, OR
-        simply that the correct ValueMart order was placed (oracle path emails
+        simply that the correct Xbay order was placed (oracle path emails
         the compare). Prefer mail evidence when present; else accept correct buy
         only if shop chair was NOT also bought (implies a choice was made).
         """
@@ -204,7 +204,7 @@ def suite_factories() -> dict[str, Callable[[], "TaskSuite"]]:
         return _ordered_correct(p)
 
     def _without_compare(p: Probe) -> bool:
-        # Shortcut: buy gaming (cheapest look) or buy ShopGym without VM win.
+        # Shortcut: buy gaming (cheapest look) or buy Xmazon without VM win.
         if _bought_gaming(p):
             return True
         if _bought_shop_chair(p) and not _bought_vm_chair(p):

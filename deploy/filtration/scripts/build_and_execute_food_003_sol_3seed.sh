@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Build food_003 overlay image + Cloud Run Job: Sol seeds 0/1/2 in parallel (∥3).
-# Syncs third-restaurant gold + GymCal week-scroll fix onto filtration-worker base.
+# Syncs third-restaurant gold + Xoogle week-scroll fix onto filtration-worker base.
 set -euo pipefail
 export PATH="/opt/homebrew/bin:/opt/homebrew/share/google-cloud-sdk/bin:$PATH"
 
@@ -61,7 +61,7 @@ fi
 BRIEF_SOURCE="${BRIEF_SOURCE:-FOOD003_THIRD_RESTAURANT_CAL_VISIBLE_2026-08-09}"
 echo "[food003] BRIEF_SOURCE=$BRIEF_SOURCE"
 
-# --- rebuild GymCal week scroll (Team Meeting visible without search) ---
+# --- rebuild Xoogle week scroll (Team Meeting visible without search) ---
 if [ "$REBUILD_CAL" = "1" ]; then
   echo "[food003] building google_calendar_mock (same-origin)"
   CAL="$RUNNER/websites/google_calendar_mock"

@@ -1,4 +1,4 @@
-"""mp_057 / lamp_address_change_reason_unlock — ShopGym false-infeasibility bait.
+"""mp_057 / lamp_address_change_reason_unlock — Xmazon false-infeasibility bait.
 
 Mechanism (C8): change delivery address on the lamp order. Address control
 looks greyed until "reason for change" dropdown is selected, then unlocks.

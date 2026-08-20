@@ -2,7 +2,7 @@
 
 Covers protocol §1C: screenshot resolution parity, popup-tab tracking,
 native-`<select>` construct-validity, **prompt byte-identity**,
-**action-space equivalence**, and **broad SoM completeness**. Prior ValueMart
+**action-space equivalence**, and **broad SoM completeness**. Prior Xbay
 quantity work remains in
 [SECTION_1C_MARKETPLACE_QUANTITY_INPUT_2026-07-15.md](SECTION_1C_MARKETPLACE_QUANTITY_INPUT_2026-07-15.md).
 
@@ -130,7 +130,7 @@ Cross-modality non-equivalence is architectural, not an incomplete audit.
 
 ## 6. SoM completeness (broad) — PARTIAL (surface inventory)
 
-**Scoped closed (prior):** ValueMart quantity construct
+**Scoped closed (prior):** Xbay quantity construct
 (`trajectories/prepublication_section1c_20260715/marketplace_quantity.json`).
 
 **Broad advance 2026-07-16:** live `extract_marks` inventory on **7** dense

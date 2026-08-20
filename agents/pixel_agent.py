@@ -129,7 +129,7 @@ TOOLS_PIXEL = [
         "description": (
             "Open an APP in a NEW browser tab and switch to it. `url` is an "
             "app root: '/' (Shop), '/mail' (Mail), '/food' (Food), "
-            "'/calendar' (Calendar), '/market' (ValueMart, a second store). "
+            "'/calendar' (Calendar), '/market' (Xbay, a second store). "
             "Your old tab stays exactly where it was — use this to keep one "
             "app open while you read another."
         ),
@@ -201,7 +201,7 @@ TOOLS_PIXEL = [
 
 SYSTEM_PROMPT = """\
 You are operating a web browser to complete an e-commerce task on the
-ShopGym site. You see the page through a SCREENSHOT — the same view
+Xmazon site. You see the page through a SCREENSHOT — the same view
 a human would see — annotated with numbered colored boxes around every
 interactable element (buttons, links, inputs, dropdowns).
 
@@ -367,7 +367,7 @@ check the Calendar for free/busy before booking something.
 You have THREE extra tools for tabs (in addition to the five above):
   open_tab(url)     open an app in a NEW tab and switch to it. `url` is an
                     app ROOT: "/" (Shop), "/mail" (Mail), "/food" (Food),
-                    "/calendar" (Calendar), "/market" (ValueMart, 2nd store).
+                    "/calendar" (Calendar), "/market" (Xbay, 2nd store).
   switch_tab(index) make an already-open tab active (see the open-tabs list).
   close_tab(index)  close a tab.
 

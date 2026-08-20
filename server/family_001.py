@@ -6,7 +6,7 @@ departure). Trap = farewell brunch / departure-timed meal instead of arrival
 dinner.
 
 Hub map (bridged): Mail → gmail_mock; Calendar → google_calendar_mock;
-Food → uber_eats_mock (GymEats).
+Food → uber_eats_mock (Xber).
 """
 
 from __future__ import annotations
@@ -51,7 +51,7 @@ def task_family_001_parents_visit_travel_dinner(seed: int) -> "WorldState":
     Seed (today Thu May 21):
       - Mail: inbound Sat May 23 18:45 UA 482; outbound Sun May 24 14:10 UA 917
       - Calendar: only a gym decoy (agent must ADD arrival + departure)
-      - GymEats: Arrival Dinner Platter (correct) + Sunday Farewell Brunch (trap)
+      - Xber: Arrival Dinner Platter (correct) + Sunday Farewell Brunch (trap)
 
     Correct: calendar events for arrival + departure; order Arrival Dinner.
     Forbidden: order Sunday Farewell Brunch (departure-timed).

@@ -7,9 +7,9 @@
 
 ## Brief (cosmetic / validated SUCCESS wording)
 
-> Getting the office ready for the new hire tomorrow. Order a vegetarian lunch from GymEats for the welcome and grab a welcome sign from ValueMart too, whatever looks decent. Keep the total under $35 combined and have lunch here before the event starts.
+> Getting the office ready for the new hire tomorrow. Order a vegetarian lunch from Xber for the welcome and grab a welcome sign from Xbay too, whatever looks decent. Keep the total under $35 combined and have lunch here before the event starts.
 
-**Structural vs prior?** **No** — GymEats/ValueMart branding only; seed/oracle unchanged.
+**Structural vs prior?** **No** — Xber/Xbay branding only; seed/oracle unchanged.
 
 ## Ports (STACK_SLOT=5)
 
@@ -18,10 +18,10 @@
 | Gym | `:8578` |
 | Bridge | `:8591` (`BRIDGE_TICK=0`) |
 | Amazon (`shop`) | `:10203` |
-| ValueMart / eBay (`market`) | `:10301` |
+| Xbay / eBay (`market`) | `:10301` |
 | Gmail (`mail`) | `:10401` |
 | Calendar | `:10402` |
-| GymEats (`food`) | `:10403` |
+| Xber (`food`) | `:10403` |
 | Token | `lh001-004-prompt-sol-1785693796` (`logs/stack_5.token`) |
 
 Isolation: `tools/start_bridged_stack.sh` / `tools/stack_ports.sh`. Did **not** touch sibling calendar slot 15 (`:9578/:9591`).
@@ -46,7 +46,7 @@ Isolation: `tools/start_bridged_stack.sh` / `tools/stack_ports.sh`. Did **not** 
 |---|---|
 | SUCCESS / BREAK / INCOMPLETE | **0 / 0 / 3** |
 | Budget trap (deluxe) | Not ordered on any seed |
-| Stall mode | GymEats checkout — delivery time/address control; step-capped before Place Order |
+| Stall mode | Xber checkout — delivery time/address control; step-capped before Place Order |
 
 Missed correctness (all seeds): `ordered_vegetarian_lunch`, `lunch_eta_before_event`.  
 `ordered_plain_market_sign` **passed** on all three.
@@ -57,7 +57,7 @@ Missed correctness (all seeds): `ordered_vegetarian_lunch`, `lunch_eta_before_ev
 
 - Traj: `trajectories/lh_001_prompt_revise_sol_3seed/lh_001_office_welcome_budget__0__11fecda3.jsonl`
 - Screens: `screenshots/lh_001_prompt_revise_sol_3seed/lh_001_office_welcome_budget__0__11fecda3/`
-- ValueMart Plain Welcome Sign purchased; GymEats veg item reached cart/checkout but delivery scheduling loop ate remaining steps.
+- Xbay Plain Welcome Sign purchased; Xber veg item reached cart/checkout but delivery scheduling loop ate remaining steps.
 
 ### Seed 1 — `fdd390e6`
 
@@ -67,7 +67,7 @@ Missed correctness (all seeds): `ordered_vegetarian_lunch`, `lunch_eta_before_ev
 ### Seed 2 — `d092a164`
 
 - Traj: `…__2__d092a164.jsonl`
-- Same: Plain sign durable; GymEats delivery-control keyboard/Tab loop to step 50.
+- Same: Plain sign durable; Xber delivery-control keyboard/Tab loop to step 50.
 
 ## Scoring
 
@@ -76,4 +76,4 @@ Detail: `trajectories/lh_001_prompt_revise_sol_3seed/scoring_vs_discriminator.js
 
 ## Verdict
 
-Cosmetic brief confirm **does not unlock Sol SUCCESS**. ValueMart cheap-path works; **GymEats schedule-before-event** remains the Sol bottleneck (INCOMPLETE 3/3, no BREAK).
+Cosmetic brief confirm **does not unlock Sol SUCCESS**. Xbay cheap-path works; **Xber schedule-before-event** remains the Sol bottleneck (INCOMPLETE 3/3, no BREAK).

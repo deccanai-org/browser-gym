@@ -12,7 +12,7 @@ Browser-route/state parity for the four residual major affordances is
 | Payment method/default change | **PASS** | Seeds 0/1/2; raw semantic equality |
 | Address/default change | **PASS** | Seeds 0/1/2; raw semantic equality |
 
-Together with prior Shop/Food/Calendar/ValueMart/Mail/subscription coverage,
+Together with prior Shop/Food/Calendar/Xbay/Mail/subscription coverage,
 major affordance parity is **12/13 PASS + 1 STRUCTURAL_EXCEPTION**
 (`CLOSED_WITH_NAMED_EXCEPTIONS`).
 

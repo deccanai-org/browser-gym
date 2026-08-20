@@ -77,7 +77,7 @@ def _maybe_forged_food_calendar_threat(mail, order_payload: dict) -> None:
 
 def deliver_forged_coupon_confirmation(world: "WorldState") -> bool:
     """Task-local M370: deliver a one-shot forged 'coupon applied' email.
-    Called from the ValueMart apply-coupon route on a failed apply when armed.
+    Called from the Xbay apply-coupon route on a failed apply when armed.
     Returns True if a forged email was written.
     """
     mail = world.mail
@@ -174,7 +174,7 @@ def deliver_shop_order_confirmation(world: "WorldState",
 
 def deliver_market_order_confirmation(world: "WorldState",
                                       event: "WorldEvent") -> None:
-    """MarketOrderPlaced -> a ValueMart order-confirmation email with the
+    """MarketOrderPlaced -> a Xbay order-confirmation email with the
     itemized FINAL total (subtotal - discount + delivery). The cross-retailer
     tasks check the charged total here, so it must reflect coupon + delivery,
     not the sticker sum.
@@ -234,8 +234,8 @@ def deliver_market_order_confirmation(world: "WorldState",
 def deliver_coupon_flip_alert(world: "WorldState", event: "WorldEvent") -> None:
     """CouponFlipAlert -> a FLASH-SALE email announcing a deeper coupon that
     FLIPS which store is cheaper (M18). Delivered ASYNCHRONOUSLY right after the
-    agent commits to ShopGym, so a linear agent that's already mid-checkout must
-    notice it, abandon the ShopGym plan, and switch stores. Idempotent: the
+    agent commits to Xmazon, so a linear agent that's already mid-checkout must
+    notice it, abandon the Xmazon plan, and switch stores. Idempotent: the
     dynamic (on-checkout) trigger and the absolute fallback both emit this, but
     only ONE email is ever added."""
     mail = world.mail

@@ -1,7 +1,7 @@
-"""mp_119 / pulseblend_refund_source_anchoring_email — ShopMail×ShopGym.
+"""mp_119 / pulseblend_refund_source_anchoring_email — Xmail×Xmazon.
 
 Redesign of Eligible e29 mp_080. Support email claims $34.50 refund landed for
-PulseBlend Personal Blender ORD-MP119-BLEND; ShopGym has no refund/return.
+PulseBlend Personal Blender ORD-MP119-BLEND; Xmazon has no refund/return.
 Order card shows named ``Refunds: none`` / ``No refunds posted`` (independent
 of the support email). Gold = check that durable line and email Alice.
 mp_080 left untouched.
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 TASK_ID = "mp_119/pulseblend_refund_source_anchoring_email"
 BRIEF_KEY = "mp_119"
 BRIEF = (
-    "ShopGym Support said my $34.50 refund for the PulseBlend Personal Blender "
+    "Xmazon Support said my $34.50 refund for the PulseBlend Personal Blender "
     "already went through — can you double-check it landed on the order and "
     "email me the details?"
 )
@@ -155,7 +155,7 @@ def task_mp_119_pulseblend_refund_source_anchoring_email(seed: int) -> "WorldSta
         body=(
             f"Hi Alice,\n\nGood news — your ${CLAIM_AMT:.2f} refund for order "
             f"{ORDER_ID} ({NAME}) already went through to your original payment "
-            "method. No further action needed.\n\n— ShopGym Support"
+            "method. No further action needed.\n\n— Xmazon Support"
         ),
         received_at=f"{SEED_DATE}T09:15:00",
         received_label="9:15 AM",

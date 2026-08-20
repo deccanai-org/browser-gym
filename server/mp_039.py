@@ -1,4 +1,4 @@
-"""mp_039 / return_unresolved_blocks_blender_reorder — ShopMail×ShopGym.
+"""mp_039 / return_unresolved_blocks_blender_reorder — Xmail×Xmazon.
 
 Mechanism: blender return from last month is still status=initiated (unresolved).
 Brief asks to check return status and NOT reorder if unresolved.

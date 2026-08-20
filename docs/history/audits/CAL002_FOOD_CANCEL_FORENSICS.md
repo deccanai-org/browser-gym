@@ -1,11 +1,11 @@
 # CAL002 Food-cancel / hold-delete forensics (post-Today-fix Sol)
 
 **Date:** 2026-08-02  
-**Question:** Where should Sol transition to canceling the GymEats order and deleting the Client lunch hold — what does it actually attempt on Food, and where does it stall?  
+**Question:** Where should Sol transition to canceling the Xber order and deleting the Client lunch hold — what does it actually attempt on Food, and where does it stall?  
 **Primary traj:** `trajectories/cal_002_today_fix_sol_seed0/cal_002_conditional_lunch_hold_cancel__0__31d08b6b.jsonl`  
 **Screenshots:** `browser-gym-seed-to-cua-gym/screenshots/cal_002_today_fix_sol_seed0/cal_002_conditional_lunch_hold_cancel__0__31d08b6b/`  
 **Model:** `openai_pixel[gpt-5.6-sol]` · **steps 80 / cap 80** · wall≈730s · failure=`repeated_failed_actions`  
-**Priors:** `CAL002_TODAY_SEED_DATE_FIX.md`, `CAL002_BRIDGED_SOL_SEED0.md`, GymEats bug report §3, CAL003 delete-confirm race.
+**Priors:** `CAL002_TODAY_SEED_DATE_FIX.md`, `CAL002_BRIDGED_SOL_SEED0.md`, Xber bug report §3, CAL003 delete-confirm race.
 
 Parsed with `.venv/bin/python` from the pretty-printed episode JSON (`steps[]`).
 
@@ -15,7 +15,7 @@ Parsed with `.venv/bin/python` from the pretty-printed episode JSON (`steps[]`).
 
 **Dual env stall — not a clean reasoning abandon.**
 
-1. **Food (primary):** Sol correctly gates on Client lunch at step 0, then immediately opens GymEats → menu → **Orders**. That lands on `/orders` which mounts `OrderTracking` **without** an order id → permanent **“Order not found”**. “View all orders” links back to the same dead route. Sol **never** reaches `/orders/<id>`, **never** clicks `btn-cancel-food-order` / “Cancel order” (0 clicks). Active order stays `preparing`.
+1. **Food (primary):** Sol correctly gates on Client lunch at step 0, then immediately opens Xber → menu → **Orders**. That lands on `/orders` which mounts `OrderTracking` **without** an order id → permanent **“Order not found”**. “View all orders” links back to the same dead route. Sol **never** reaches `/orders/<id>`, **never** clicks `btn-cancel-food-order` / “Cancel order” (0 clicks). Active order stays `preparing`.
 2. **Calendar (secondary):** Sol *does* open Client lunch and runs the trash→confirm delete pair **twice** (steps 46–47, 58–59) at the same coords as CAL003 (`[446,142]` → `[758,441]`). After each “confirm,” the editor stays open / event remains — same confirm-race shape. Hold never deletes.
 
 Prior scoring that called this “(b) agent miss on working env” understates both failures. Seed UI already proved cancel works when tracking is opened with an order id (`seed_ui_evidence.json`).
@@ -26,18 +26,18 @@ Prior scoring that called this “(b) agent miss on working env” understates b
 
 | Moment | Evidence |
 |---|---|
-| **Step 0 observation (pre-action)** | Raw plan: *“GymCal is showing today, Thursday May 21, in week view. A **Client lunch** event is visibly scheduled from **12:30 PM–1:30 PM**”* |
-| Reasoning | *“The Client lunch block is present today, so I need to cancel the GymEats order first.”* |
+| **Step 0 observation (pre-action)** | Raw plan: *“Xoogle is showing today, Thursday May 21, in week view. A **Client lunch** event is visibly scheduled from **12:30 PM–1:30 PM**”* |
+| Reasoning | *“The Client lunch block is present today, so I need to cancel the Xber order first.”* |
 | Facts | `calendar.event_titles=['Client lunch','Team lunch']`; `food.active_order_ids=['FOOD-CAL002-ACTIVE']` |
-| Action | `switch_tab` → GymEats (`11811`) |
+| Action | `switch_tab` → Xber (`11811`) |
 
 Contrast with pre-Today-fix cap-80 (`…b6f64e5d`, 1 step): clicked hub **Today** → blank August → false abstain. That nav bug is closed; this forensics starts *after* correct May 21 recognition.
 
-Screenshot note: `step_000.png` is **after** the switch (GymEats home). Calendar evidence for “saw Client lunch” is the step-0 model observation + facts, not that PNG.
+Screenshot note: `step_000.png` is **after** the switch (Xber home). Calendar evidence for “saw Client lunch” is the step-0 model observation + facts, not that PNG.
 
 ---
 
-## 2. Steps attempting GymEats cancel / Orders / preparing order
+## 2. Steps attempting Xber cancel / Orders / preparing order
 
 Expected path (seed UI): open tracking for `FOOD-CAL002-ACTIVE` → **Cancel order** (`btn-cancel-food-order`) while status=`preparing`.
 
@@ -45,13 +45,13 @@ Expected path (seed UI): open tracking for `FOOD-CAL002-ACTIVE` → **Cancel ord
 
 | Steps | Action | Result |
 |---|---|---|
-| **0** | `switch_tab` GymEats | Home (no active-order chrome in header) |
+| **0** | `switch_tab` Xber | Home (no active-order chrome in header) |
 | **1** | `Open menu` `[84,32]` | Sidebar opens |
 | **2–3** | `Orders` (mark often at **negative x** then `[140,114]`) | Navigates to **`/orders`** |
 | **3–4 after** | — | Page: **“Order not found / We could not find an order with this ID.”** (`step_003.png`, `step_004.png`) |
 | **4, 34, 51** | `View all orders` `[639,196]` | Stays on `/orders` (self-link) |
 | **5–12, 30–39, 50–51, 61–66, 74–77** | Menu Orders / AA→Account→`Orders\n4` / Help / Cart / reload / new tabs | Same `/orders` dead end; never `/orders/<id>` |
-| **15–21, 40–44** | Mail search “GymEats” / “order” | No confirmation mail; abandon |
+| **15–21, 40–44** | Mail search “Xber” / “order” | No confirmation mail; abandon |
 | — | **Cancel order** | **Never attempted** |
 
 World state every step: `FOOD-CAL002-ACTIVE.status=preparing`, `FOOD-CAL002-OLD=delivered`.
@@ -66,7 +66,7 @@ World state every step: `FOOD-CAL002-ACTIVE.status=preparing`, `FOOD-CAL002-OLD=
 
 `OrderTracking` does `state.orders.find(o => o.id === orderId)`. With no `:orderId`, `order` is undefined → empty/error page. Legacy `Orders.jsx` list exists but is **StoreContext-only and unmounted**. Account “Orders (4)” and sidebar Orders both hit this hole.
 
-Documented: `docs/CUA_GYM_HUB_UI_BUG_REPORT.md` **GymEats §3** (was “not yet fixed”).
+Documented: `docs/CUA_GYM_HUB_UI_BUG_REPORT.md` **Xber §3** (was “not yet fixed”).
 
 Bridged cap-50 twin (`…70b12ce5`) shows the **same** Orders→Order-not-found thrash (steps 2–27) before calendar thrash — Food path was already broken before the Today fix.
 
@@ -92,7 +92,7 @@ Identical click geometry to CAL003 Ben-delete race (`CAL003_BEN_DELETE_FORENSICS
 ## 4. Exact stall point and why
 
 ```
-step 0:  see Client lunch (May 21) ✓ → switch GymEats
+step 0:  see Client lunch (May 21) ✓ → switch Xber
 step 1–3: menu → Orders → /orders
 step 3+:  STALL A — Order not found loop (env route)
           (never opens /orders/FOOD-CAL002-ACTIVE; never Cancel order)
@@ -115,7 +115,7 @@ step 80:  repeated_failed_actions; both durable goals unmet
 | Axis | Disposition |
 |---|---|
 | Today / May 21 visibility | **Fixed** (see `CAL002_TODAY_SEED_DATE_FIX.md`) — not the remaining miss |
-| GymEats `/orders` list → Order not found | **Env bug** — blocks cancel; Sol’s nav intent is correct |
+| Xber `/orders` list → Order not found | **Env bug** — blocks cancel; Sol’s nav intent is correct |
 | Never deep-linking `/orders/<id>` | Agent alternative not required once list works; seed gate used direct tracking |
 | Calendar delete confirm non-commit | **Env bug class** (CAL003); verify calendar `dist` on next re-run |
 | Mail / Help / Debug detours | Agent recovery thrash **after** env dead-ends — secondary |
@@ -133,7 +133,7 @@ step 80:  repeated_failed_actions; both durable goals unmet
 - `App.jsx`: comment clarifying legacy `Orders.jsx` stays unmounted.
 - Rebuild `dist` (`npm run build`).
 
-Bug report GymEats §3 → **fixed** (list via OrderTracking).
+Bug report Xber §3 → **fixed** (list via OrderTracking).
 
 **Re-run policy:** After Food dist is what the stack serves, one Sol seed-0 re-run is appropriate. Calendar side: ensure stack serves post-CAL003 `Confirm delete` dist before attributing another delete miss to the agent.
 
@@ -166,11 +166,11 @@ Bug report GymEats §3 → **fixed** (list via OrderTracking).
 ### Path (clean)
 
 ```
-step 0:  see Client lunch (May 21) → switch GymEats
+step 0:  see Client lunch (May 21) → switch Xber
 step 1–2: menu → Orders → /orders list (orders-list)
 step 3:   open preparing Bean There Cafe tracking
 step 4:   Cancel order → active cancelled
-step 5–6: GymCal → open Client lunch
+step 5–6: Xoogle → open Client lunch
 step 7–8: Delete event → Confirm delete → hold gone
 finish:  SUCCESS
 ```

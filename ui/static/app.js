@@ -1,4 +1,4 @@
-// ShopGym client-side enhancements via Alpine.js.
+// Xmazon client-side enhancements via Alpine.js.
 // The pages are server-rendered (Jinja). This file just adds the
 // interactive bits that make the site feel like real e-commerce:
 //   - Toast notifications (transient)

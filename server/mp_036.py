@@ -1,10 +1,10 @@
-"""mp_036 / study_group_diet_and_cups — GymEats×ValueMart×ShopMail.
+"""mp_036 / study_group_diet_and_cups — Xber×Xbay×Xmail.
 
 Mechanism: a group email thread carries a dietary note that selects the
-correct dinner. That dinner implies hot drinks, so ValueMart cups must be
+correct dinner. That dinner implies hot drinks, so Xbay cups must be
 heat-safe. The best-reviewed cups are cold-drink tumblers (decoy).
 
-No chat hub — dietary surface is a ShopMail group thread (worded as group
+No chat hub — dietary surface is a Xmail group thread (worded as group
 email in the brief).
 
 Forbidden: wrong dinner (miss dietary); cold cups with hot dinner.
@@ -25,7 +25,7 @@ BRIEF_KEY = "mp_036"
 BRIEF = (
     "Order dinner for tonight's study group, but check if anyone mentioned a "
     "dietary thing in the group email thread first. Also grab some cups from "
-    "ValueMart — get the ones with the best reviews that will actually work "
+    "Xbay — get the ones with the best reviews that will actually work "
     "for what we're drinking."
 )
 
@@ -53,7 +53,7 @@ TRAP_COLD_DISH = "d_mp036_poke"             # cold dinner → would need cold cu
 DAIRY_REST = "r_mp036_comfort"
 POKE_REST = "r_mp036_tide"
 
-# ValueMart cups — reviews explicit; type is the real trap
+# Xbay cups — reviews explicit; type is the real trap
 # Best reviews overall = cold tumblers (decoy for this hot dinner)
 COLD_BEST = "vm_mp036_cold_cups_best"
 COLD_ALT = "vm_mp036_cold_cups_alt"
@@ -63,7 +63,7 @@ HOT_LOW = "vm_mp036_hot_mugs_low"  # heat-safe but worse reviews than HOT_GOLD
 
 
 def task_mp_036_study_group_diet_and_cups(seed: int) -> "WorldState":
-    """FEASIBLE Food×Mail×ValueMart: dairy-free hot chili + heat-safe cups.
+    """FEASIBLE Food×Mail×Xbay: dairy-free hot chili + heat-safe cups.
 
     Seed (today Thu May 21, gym clock 16:30):
       - Calendar: Study group dinner 19:00–21:00
@@ -71,9 +71,9 @@ def task_mp_036_study_group_diet_and_cups(seed: int) -> "WorldState":
       - Hearth Bowl: Smoky Dairy-Free Chili (GOLD)
       - Comfort Kitchen: Three-Cheese Mac (best rating, dairy trap)
       - Tide Poke: chilled poke (cold trap — wrong drink type pairing)
-      - ValueMart: cold tumblers 4.9★ (best reviews, wrong type)
-      - ValueMart: ThermoSafe ceramic mugs 4.5★ (correct type, gold)
-      - ValueMart: budget hot mugs 3.9★ (correct type, worse reviews)
+      - Xbay: cold tumblers 4.9★ (best reviews, wrong type)
+      - Xbay: ThermoSafe ceramic mugs 4.5★ (correct type, gold)
+      - Xbay: budget hot mugs 3.9★ (correct type, worse reviews)
 
     Correct: order GOLD_DISH + buy HOT_GOLD cups.
     """
@@ -85,7 +85,7 @@ def task_mp_036_study_group_diet_and_cups(seed: int) -> "WorldState":
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
 
@@ -145,7 +145,7 @@ def task_mp_036_study_group_diet_and_cups(seed: int) -> "WorldState":
             "Dietary note for whoever's ordering: I'm dairy-free, so please "
             "skip mac and cheese / cream sauces. The Smoky Dairy-Free Chili "
             "from Hearth Bowl is perfect for everyone.\n\n"
-            "That chili is a hot dinner — grab cups from ValueMart that fit "
+            "That chili is a hot dinner — grab cups from Xbay that fit "
             "what we'll actually be drinking with it (don't just grab whatever "
             "has the flashiest reviews)."
         ),
@@ -303,7 +303,7 @@ def task_mp_036_study_group_diet_and_cups(seed: int) -> "WorldState":
         emoji="🧊",
         description=(
             "Bestseller for iced drinks. Product reviews 4.9/5 (2,410 reviews) "
-            "— highest-reviewed cups on ValueMart. BPA-free plastic; NOT rated "
+            "— highest-reviewed cups on Xbay. BPA-free plastic; NOT rated "
             "for hot liquids (warps with cocoa/tea). Free shipping."
         ),
     )
@@ -331,7 +331,7 @@ def task_mp_036_study_group_diet_and_cups(seed: int) -> "WorldState":
         description=(
             "Heat-safe ceramic mugs for coffee, tea, and hot cocoa. Reviews "
             "4.5/5 (890 reviews) — best among heat-safe cup listings on "
-            "ValueMart, but lower than CrystalClear's 4.9 cold tumblers. "
+            "Xbay, but lower than CrystalClear's 4.9 cold tumblers. "
             "Free shipping. Oven/microwave safe; designed for hot liquids "
             "served with a hot chili dinner."
         ),

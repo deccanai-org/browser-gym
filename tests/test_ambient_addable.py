@@ -1,11 +1,11 @@
 """The browse-only catalog is addable, and still invisible to verifiers.
 
-Four fifths of what a ShopGym annotator can see is ambient filler, and
-nineteen twentieths of ValueMart. The mocks render all of it with an
+Four fifths of what a Xmazon annotator can see is ambient filler, and
+nineteen twentieths of Xbay. The mocks render all of it with an
 Add-to-cart button on every item, but the engine only knew the task's own
 products — so clicking any of the rest was rejected as "unknown product" and the
-cart silently stayed empty. Measured across seven tasks: 188 of 231 ShopGym
-products and 158 of 167 ValueMart listings were dead buttons.
+cart silently stayed empty. Measured across seven tasks: 188 of 231 Xmazon
+products and 158 of 167 Xbay listings were dead buttons.
 
 The fix has to hold two things at once, and this file exists to keep them from
 drifting apart:
@@ -81,7 +81,7 @@ def test_an_ambient_line_prices_correctly(world):
 
 
 def test_valuemart_ambient_listings_are_addable_too(world):
-    """ValueMart is the worse case — 158 of 167 listings are ambient."""
+    """Xbay is the worse case — 158 of 167 listings are ambient."""
     lid = _amb_market_id()
     assert world.market.products.get(lid) is None
 

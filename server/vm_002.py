@@ -1,6 +1,6 @@
 """vm_002 / valuemart_list_desk_lamp_fair_price — seller fair-price listing.
 
-Mechanism: ValueMart already has 2–3 comparable used desk-lamp listings at
+Mechanism: Xbay already has 2–3 comparable used desk-lamp listings at
 varying prices (including a high outlier). User asks to list their old desk
 lamp at a fair price based on comps. Trap = list at an arbitrary/unfair price
 (or never complete the Sell flow). Correct = check comps, list complete with
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 TASK_ID = "vm_002/valuemart_list_desk_lamp_fair_price"
 BRIEF_KEY = "vm_002"
 BRIEF = (
-    "List my old desk lamp on ValueMart, price it fairly based on what "
+    "List my old desk lamp on Xbay, price it fairly based on what "
     "similar ones are going for."
 )
 
@@ -83,7 +83,7 @@ COMPS = (
 
 
 def task_vm_002_valuemart_list_desk_lamp_fair_price(seed: int) -> "WorldState":
-    """FEASIBLE ValueMart seller fair-price listing.
+    """FEASIBLE Xbay seller fair-price listing.
 
     Seed: three desk-lamp comps (two realistic + one high outlier). Correct =
     complete Alice listing with price in [FAIR_MIN, FAIR_MAX].
@@ -93,7 +93,7 @@ def task_vm_002_valuemart_list_desk_lamp_fair_price(seed: int) -> "WorldState":
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
 
     for row in COMPS:
         world.market.products[row["id"]] = MarketProduct(

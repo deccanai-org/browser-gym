@@ -86,7 +86,7 @@ def task_intern_001_intern_care_packages_by_office(seed: int) -> "WorldState":
     alice.addresses[PRIYA_STALE_ADDR] = Address(
         id=PRIYA_STALE_ADDR,
         label="SF Office (old)",
-        full_name="ShopGym SF Office",
+        full_name="Xmazon SF Office",
         line1=PRIYA_STALE_LINE,
         city=PRIYA_STALE_CITY,
         state="CA",
@@ -96,7 +96,7 @@ def task_intern_001_intern_care_packages_by_office(seed: int) -> "WorldState":
     alice.addresses[PRIYA_CUR_ADDR] = Address(
         id=PRIYA_CUR_ADDR,
         label="Austin Office",
-        full_name="ShopGym Austin Office",
+        full_name="Xmazon Austin Office",
         line1=PRIYA_CUR_LINE,
         city=PRIYA_CUR_CITY,
         state="TX",
@@ -106,7 +106,7 @@ def task_intern_001_intern_care_packages_by_office(seed: int) -> "WorldState":
     alice.addresses[MARCUS_ADDR] = Address(
         id=MARCUS_ADDR,
         label="Chicago Office",
-        full_name="ShopGym Chicago Office",
+        full_name="Xmazon Chicago Office",
         line1=MARCUS_LINE,
         city=MARCUS_CITY,
         state="IL",
@@ -116,7 +116,7 @@ def task_intern_001_intern_care_packages_by_office(seed: int) -> "WorldState":
     alice.addresses[ELENA_ADDR] = Address(
         id=ELENA_ADDR,
         label="NYC Office",
-        full_name="ShopGym NYC Office",
+        full_name="Xmazon NYC Office",
         line1=ELENA_LINE,
         city=ELENA_CITY,
         state="NY",
@@ -127,7 +127,7 @@ def task_intern_001_intern_care_packages_by_office(seed: int) -> "WorldState":
     shop.products[CARE_KIT] = Product(
         id=CARE_KIT,
         name=CARE_KIT_NAME,
-        brand="ShopGym Care",
+        brand="Xmazon Care",
         category="home",
         base_price=CARE_KIT_PRICE,
         rating=4.6,

@@ -621,7 +621,7 @@ state (`server/main.py:100-118`). Reset calls the registered factory, wraps a
 single-app `GymState` in a five-app `WorldState`, deep-copies the initial shop
 and world, and creates a fresh verifier suite (`server/main.py:171-199`).
 
-`WorldState` contains ShopGym, Mail, Food, Calendar, ValueMart, an append-only
+`WorldState` contains Xmazon, Mail, Food, Calendar, Xbay, an append-only
 cross-app event list, and a deterministic schedule (`server/apps/world.py:34-48`).
 The scheduler advances only on monotonically increasing harness step numbers;
 it uses no wall clock or background thread (`server/apps/scheduler.py:1-23`,

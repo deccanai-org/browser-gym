@@ -15,7 +15,7 @@
 
 ## Veg / for-two scoring decision
 
-1. **Vegetarian:** GymEats `Dish.tags` is a real scorable field. Gold + veggie bowl carry `vegetarian`; steak trap carries `meat`. Milestone `ordered_vegetarian_dinner_for_two` resolves tags via restaurant menu lookup on durable order line `dish_id`. **No dish-name-only fallback needed** (name fallback retained only if dish missing from menu).
+1. **Vegetarian:** Xber `Dish.tags` is a real scorable field. Gold + veggie bowl carry `vegetarian`; steak trap carries `meat`. Milestone `ordered_vegetarian_dinner_for_two` resolves tags via restaurant menu lookup on durable order line `dish_id`. **No dish-name-only fallback needed** (name fallback retained only if dish missing from menu).
 2. **For two:** Durable on `FoodCartItem.quantity` / order lines — **qty ≥ 2**, or named portion (`for two` / `for 2` / `serves 2`), or total veg qty across lines ≥ 2. Gold path uses named **Vegetarian Dinner for Two** at $26.50 + $2.49 fee = **$28.99 < $30**. Alternate: 2× Harvest Veggie Bowl = $26.49.
 
 ## Milestones

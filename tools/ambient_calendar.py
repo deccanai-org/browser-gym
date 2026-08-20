@@ -1,4 +1,4 @@
-"""Ambient (browse-only) calendar events so GymCal isn't a near-empty week.
+"""Ambient (browse-only) calendar events so Xoogle isn't a near-empty week.
 
 Appended in transform_calendar; the gym engine never sees them (verifiers read
 p.world.calendar.events, filtered by source=='user'). All ids are amb_cal_*,

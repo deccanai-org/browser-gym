@@ -54,7 +54,7 @@ Sol opened the birthday invite email first (June 11), ordered gold `mp031_brevil
 
 - Step 0–1: switched to Mail and opened Cousin Maya’s birthday invite (email authority, not calendar).
 - Skipped late-for-party decoy after inspecting listings; selected BrewGear_Official best-rated free-ship New unit.
-- Gift message went via ValueMart seller Messages (no cart gift-wrap affordance); confirm still carried gift-message tokens for the verifier.
+- Gift message went via Xbay seller Messages (no cart gift-wrap affordance); confirm still carried gift-message tokens for the verifier.
 - Finish reason cited June 11 delivery and order `VM-2201`.
 
 ---

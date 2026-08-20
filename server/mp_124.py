@@ -1,4 +1,4 @@
-"""mp_124 / two_person_calendar_named_conflict — GymCal×ShopMail.
+"""mp_124 / two_person_calendar_named_conflict — Xoogle×Xmail.
 
 Alice has two plausible open slots this week; Priya's email names Tue after 2
 or Thu morning. Tue 2:30 overlaps Alice's own block. Gold = Thu morning call,

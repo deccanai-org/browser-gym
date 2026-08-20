@@ -1,4 +1,4 @@
-"""mp_129 / named_stock_threshold_reorder — ShopGym×ShopMail.
+"""mp_129 / named_stock_threshold_reorder — Xmazon×Xmail.
 
 Three prior dog-food orders. Consumption ~1 bag / 21 days. Last bag May 14;
 today May 21 → ~14 days of stock left, not less than 2 weeks. Gold = do not

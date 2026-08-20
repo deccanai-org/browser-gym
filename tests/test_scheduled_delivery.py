@@ -1,4 +1,4 @@
-"""The ShopGym cart's "Scheduled delivery date" field, end to end.
+"""The Xmazon cart's "Scheduled delivery date" field, end to end.
 
 The field spans four links and it was broken at two of them:
 
@@ -220,7 +220,7 @@ def _serve(handler):
 
 @pytest.fixture()
 def cart_page(monkeypatch):
-    """The built ShopGym cart, in a real browser, bridged to a fake engine that
+    """The built Xmazon cart, in a real browser, bridged to a fake engine that
     is seeded with the REAL M207 projection (so the world clock is authentic)."""
     if not (DIST / "index.html").exists():
         pytest.skip("xmazon_mock/dist not built (tools/build_hub_mocks.sh . \"\")")

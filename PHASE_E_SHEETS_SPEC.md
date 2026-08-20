@@ -303,7 +303,7 @@ The live registry ceiling is **M374**, confirmed by `server/phase_d_wave.py`, `s
 **Failure mode:** insufficient multi-sheet inspection.  
 **Fairness:** **Bucket A** — the prompt explicitly says all regional tabs and the latest approved forecast control the order; no unstated policy is needed.
 
-**Brief/prompt:** “Order the approved launch kits from ValueMart for the region whose latest forecast exceeds 100 attendees. The workbook has one tab per region plus an Approval tab; use the latest approved figures, order exactly that region’s kit quantity, and email me the order number and region.”
+**Brief/prompt:** “Order the approved launch kits from Xbay for the region whose latest forecast exceeds 100 attendees. The workbook has one tab per region plus an Approval tab; use the latest approved figures, order exactly that region’s kit quantity, and email me the order number and region.”
 
 **Workbook seed:**
 
@@ -313,7 +313,7 @@ The live registry ceiling is **M374**, confirmed by `server/phase_d_wave.py`, `s
 * `Approval`: `B4="West"`, `C4=112`, `D4=4`, `E4="APPROVED"`, formulas cross-reference `'West Forecast'!E20`.
 * Style/merge details distinguish old/current blocks but do not encode the answer by color alone. Active tab is `Summary`.
 
-**Other app seed:** ValueMart has `East Launch Kit` and `West Launch Kit`, both in stock at the same price; empty cart and no new order. Mail has no sent confirmation.
+**Other app seed:** Xbay has `East Launch Kit` and `West Launch Kit`, both in stock at the same price; empty cart and no new order. Mail has no sent confirmation.
 
 **Correct behavior:** inspect Summary, both regional tabs including hidden-row effects, and Approval; order exactly 4 West Launch Kits once; email Alice with region and resulting order ID.
 
@@ -323,7 +323,7 @@ The live registry ceiling is **M374**, confirmed by `server/phase_d_wave.py`, `s
 
 **Seed observability:** all controlling facts are reachable through tabs and ordinary unhide/formula UI; the Summary itself warns it is cached; no answer exists only in hidden backend metadata.
 
-**Oracle path:** open Sheets; enumerate tabs; inspect Summary; read East `E20`; inspect West and unhide row 17/read formula and `E20`; inspect Approval `B4:E4`; switch to ValueMart, add West kit quantity 4, place once; read confirmation; send Mail; verify visible order/sent message.
+**Oracle path:** open Sheets; enumerate tabs; inspect Summary; read East `E20`; inspect West and unhide row 17/read formula and `E20`; inspect Approval `B4:E4`; switch to Xbay, add West kit quantity 4, place once; read confirmation; send Mail; verify visible order/sent message.
 
 **Second-reading analysis:** “region whose latest forecast exceeds 100” cannot reasonably mean cached East=120 because the prompt says latest and Approval names West. Both kits are equally available, so no price/substitution interpretation changes the branch.
 

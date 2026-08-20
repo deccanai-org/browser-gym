@@ -52,5 +52,5 @@
       "agent": "openai_pixel"
     }
   ],
-  "notes": "2026-08-10 post GymCal split date/time + warranty-expiry UI fairness fixes. Coaching-dropped briefs unchanged. Re-score Eligible e3/e4; pre-fix trajs stale."
+  "notes": "2026-08-10 post Xoogle split date/time + warranty-expiry UI fairness fixes. Coaching-dropped briefs unchanged. Re-score Eligible e3/e4; pre-fix trajs stale."
 }

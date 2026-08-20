@@ -4,12 +4,12 @@
 **Task:** `lh_001/office_welcome_budget` · seed 0  
 **Constraint:** lh_001 only; no ledger; no re-seed; no verifier regen.
 
-## Bug filed + fixed (distinct from GymEats §6 and prior ValueMart bugs)
+## Bug filed + fixed (distinct from Xber §6 and prior Xbay bugs)
 
-New UI bug-report entry: **ValueMart §4 — Active Buy-It-Now listing detail shows “ended”**  
+New UI bug-report entry: **Xbay §4 — Active Buy-It-Now listing detail shows “ended”**  
 Source: `browser-gym-seed-to-cua-gym/docs/CUA_GYM_HUB_UI_BUG_REPORT.md`
 
-| | GymEats §6 (prior) | ValueMart §4 (this fix) |
+| | Xber §6 (prior) | Xbay §4 (this fix) |
 |---|---|---|
 | Symptom | Menu add never lands | Search shows Plain $9 Buy It Now; detail says “listing has ended” |
 | Masked path | Food add-to-cart | eBay Buy It Now / Add to cart |
@@ -20,9 +20,9 @@ Source: `browser-gym-seed-to-cua-gym/docs/CUA_GYM_HUB_UI_BUG_REPORT.md`
 1. Bridged projection `tools/seed_to_cuagym.py` `transform_market` stamped every listing `endTime` to sim-world **2026-05-28 12:00**.
 2. `ebay_mock` `ProductDetails.jsx` treated listings as ended when `status !== 'active' || endTime < Date.now()`.
 3. Evaluation wall-clock is **2026-07-31+**, so every active fixed-price catalog item (including Plain `eb_lh001_plain_sign`) rendered **“This listing has ended.”** and hid Buy It Now / Add to cart.
-4. Search only filters `status === 'active'`, so cards still advertised Buy It Now — same UI/wiring class as GymEats §6 (chrome masking a correct, cheap path).
+4. Search only filters `status === 'active'`, so cards still advertised Buy It Now — same UI/wiring class as Xber §6 (chrome masking a correct, cheap path).
 
-Backend/engine state stayed purchasable (`in_stock=true`, `status=active`). Evidence: GPT-5.5 3-seed + Sol post-GymEats-§6 trajs treating Plain as ended.
+Backend/engine state stayed purchasable (`in_stock=true`, `status=active`). Evidence: GPT-5.5 3-seed + Sol post-Xber-§6 trajs treating Plain as ended.
 
 ### Fix
 
@@ -46,7 +46,7 @@ Suite: `browser-gym-seed-to-cua-gym/trajectories/lh_001_bridged_confirm/discrimi
 
 | Model | Traj | Disposition | Food checkout | eBay Plain checkout | Dual | Steps / wall | Notes |
 |---|---|---|---|---|---|---|---|
-| Sol `openai_pixel[gpt-5.6-sol]` | `trajectories/lh_001_sol_rerun_ebay_plain_fix/lh_001_office_welcome_budget__0__424e0963.jsonl` | **INCOMPLETE** | No | **Yes** (`VM-2201`, $14.99) | No | 50 / 423.7s | Opened Plain → Buy It Now → Confirm; no “ended”; step-capped in GymEats setup |
+| Sol `openai_pixel[gpt-5.6-sol]` | `trajectories/lh_001_sol_rerun_ebay_plain_fix/lh_001_office_welcome_budget__0__424e0963.jsonl` | **INCOMPLETE** | No | **Yes** (`VM-2201`, $14.99) | No | 50 / 423.7s | Opened Plain → Buy It Now → Confirm; no “ended”; step-capped in Xber setup |
 | GPT-5.5 `openai_pixel[gpt-5.5]` | `trajectories/lh_001_gpt55_rerun_ebay_plain_fix/lh_001_office_welcome_budget__0__faa8d0b3.jsonl` | **SUCCESS** | **Yes** (`FOOD-1041`, veg, ETA `11:20 AM`) | **Yes** (`VM-2201`, $14.99) | **Yes** | 26 / 215.9s | Isolated stack `:8178/:8191` (sibling agents were racing shared `:8078`) |
 
 Copies under `ecommerce-browser-gym/trajectories/lh_001_*_rerun_ebay_plain_fix/`.  

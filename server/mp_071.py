@@ -1,4 +1,4 @@
-"""mp_071 / expired_promo_code_vs_stated_budget — ShopGym×ShopMail.
+"""mp_071 / expired_promo_code_vs_stated_budget — Xmazon×Xmail.
 
 Mechanism: desk chair $79.99 under $70 budget. Inbox SAVE15 is expired
 (would be $67.99 if valid). Valid alternate SAVE10 ($10 flat) at checkout.
@@ -81,7 +81,7 @@ def task_mp_071_expired_promo_code_vs_stated_budget(seed: int) -> "WorldState":
         body=(
             "Hi Alice,\n\nUse promo code SAVE15 for 15% off — valid through May 18.\n"
             f"On the {CHAIR_NAME} (${CHAIR_PRICE:.2f}) that would bring you to $67.99 "
-            "before tax and shipping.\n\n— ShopGym Deals"
+            "before tax and shipping.\n\n— Xmazon Deals"
         ),
         received_at="2026-05-17T09:00:00",
         received_label="May 17",

@@ -1,4 +1,4 @@
-"""ValueMart routes — the ``/market`` route family.
+"""Xbay routes — the ``/market`` route family.
 
 Same injected-deps pattern as Mail/Food/Calendar (no circular import).
 Checkout calls ``place_order(world)`` so the MarketOrderPlaced event fires on
@@ -73,13 +73,13 @@ async def cart_add(request: Request, product_id: str = Form(...),
     r = M.add_to_cart(world.market, product_id=product_id, quantity=quantity)
     resp = RedirectResponse(f"/market/product/{product_id}", 303)
     if r.get("ok"):
-        _deps["flash"](world.shop, "success", "Added to your ValueMart cart.")
+        _deps["flash"](world.shop, "success", "Added to your Xbay cart.")
         return resp
     _deps["flash"](world.shop, "error", "Could not add that item.")
     # Same reason as the shop's /api/cart/add: this route 303s on BOTH outcomes,
     # because the browser agent drives real HTML forms and a redirect is what a
     # form does. The bridge reads only the status code, so without this a refusal
-    # answered {"ok": true} and ValueMart's cart silently stayed empty. Most of
+    # answered {"ok": true} and Xbay's cart silently stayed empty. Most of
     # what the storefront shows is ambient filler the engine has never heard of
     # — 158 of 167 listings — so this is the common path, not the edge.
     return _refused(resp, r)
@@ -109,7 +109,7 @@ async def cart_remove(request: Request, product_id: str = Form(...)):
 async def cart_clear(request: Request):
     world = _deps["get_world"]()
     M.clear_cart(world.market)
-    _deps["flash"](world.shop, "success", "ValueMart cart cleared.")
+    _deps["flash"](world.shop, "success", "Xbay cart cleared.")
     return RedirectResponse("/market/cart", 303)
 
 
@@ -152,7 +152,7 @@ async def checkout(request: Request, address_id: str = Form(""), payment_id: str
     r = M.place_order(world, address_id=address_id or None, payment_id=payment_id or None)
     if r.get("ok"):
         _deps["flash"](world.shop, "success",
-                       f"ValueMart order placed! Total ${r['total']:.2f}.")
+                       f"Xbay order placed! Total ${r['total']:.2f}.")
         return RedirectResponse(f"/market/order/{r['order_id']}", 303)
     _deps["flash"](world.shop, "error", r.get("error", "Could not place order."))
     return RedirectResponse("/market/cart", 303)

@@ -1,15 +1,15 @@
-# LH004 — ShopMail §4 open/select fix + Sol seed 0 re-run
+# LH004 — Xmail §4 open/select fix + Sol seed 0 re-run
 
 **Date:** 2026-07-31  
 **Task:** `lh_004/mom_watch_email_mismatch` · seed 0  
 **Constraint:** isolation + lh_004 only; no ledger; no QA; reuse Discriminator suite / oracle / seeds (no re-seed).
 
-## Bug filed + fixed (ShopMail §4)
+## Bug filed + fixed (Xmail §4)
 
-Source: `docs/CUA_GYM_HUB_UI_BUG_REPORT.md` § ShopMail 4  
+Source: `docs/CUA_GYM_HUB_UI_BUG_REPORT.md` § Xmail 4  
 Prior isolation confirmation: [`LH004_CLEAN_RERUN_ISOLATED.md`](./LH004_CLEAN_RERUN_ISOLATED.md) (3/3 INCOMPLETE; all 50 steps stuck in Mail).
 
-| | GymEats §6 (prior) | ShopMail §4 (this fix) |
+| | Xber §6 (prior) | Xmail §4 (this fix) |
 |---|---|---|
 | Symptom | Menu add never lands | Inbox row never opens under SoM |
 | Chrome | Tailwind-invisible modal + decorative `::after` + | Plain `<div onClick>` row; SoM only marks Select/Star/Important |
@@ -17,7 +17,7 @@ Prior isolation confirmation: [`LH004_CLEAN_RERUN_ISOLATED.md`](./LH004_CLEAN_RE
 
 ### Root cause
 
-1. **No SoM-markable open target.** Inbox rows were plain `<div onClick>` without `role` / `data-test-id="mail-item-<id>"`. Pixel agents only saw nested Select / Star / Important buttons (agent thoughts: “no direct row mark”). Native ShopGym Mail already uses `mail-item-<id>`; the bridged `gmail_mock` did not.
+1. **No SoM-markable open target.** Inbox rows were plain `<div onClick>` without `role` / `data-test-id="mail-item-<id>"`. Pixel agents only saw nested Select / Star / Important buttons (agent thoughts: “no direct row mark”). Native Xmazon Mail already uses `mail-item-<id>`; the bridged `gmail_mock` did not.
 2. **Keyboard focus list ≠ visible list.** App.jsx `visibleEmails` for `j`/`k`/`o`/`Enter` ignored `searchQuery` and inbox category, so after filtering to Mom the focus index still mapped onto the full inbox → wrong thread (Alex `thread_em_3`).
 
 ### Fix (CUA-Gym-Hub `websites/gmail_mock`, rebuilt `dist`)
@@ -52,7 +52,7 @@ Evidence: `trajectories/lh_004_shopmail_fix_smoke/smoke_evidence.json` (+ screen
 | Steps / wall | 43 / 308.2s |
 | Suite (reused) | `trajectories/lh_004_bridged_confirm/discriminator_suite.json` |
 
-### ShopMail friction gone?
+### Xmail friction gone?
 
 **Yes.** Step 1 click mark: `Open email from Mom <Carol Anderson: For my birthday — please don't get me a gad` → harness milestone `read_mom_email` fired at step 1. No search/select/Tab/`j`/`o` open loop. Agent immediately returned to cart cleanup.
 
@@ -80,11 +80,11 @@ Harness: `success=False` / `specific_failure=paid_expired_visa` (same expired-ca
 
 ## Takeaway
 
-ShopMail §4 env friction is fixed and smoke-confirmed. Sol seed 0 now **reads Mom’s email immediately** and completes a scarf order path; episode ends **BREAK** on the designed expired-Visa forbidden (not Gmail open/select).
+Xmail §4 env friction is fixed and smoke-confirmed. Sol seed 0 now **reads Mom’s email immediately** and completes a scarf order path; episode ends **BREAK** on the designed expired-Visa forbidden (not Gmail open/select).
 
 ## Follow-up: seeds 1–2 (repeatability)
 
-Seeds **1** and **2** re-run on the same isolated slot 9 with the live ShopMail fix also **BREAK** on `forbidden_paid_expired_card` / harness `paid_expired_visa`, with `read_mom_email` at step 1 both times. See [`LH004_SOL_SEEDS12_AFTER_SHOPMAIL.md`](./LH004_SOL_SEEDS12_AFTER_SHOPMAIL.md) — **3/3 BREAK**, not seed-specific.
+Seeds **1** and **2** re-run on the same isolated slot 9 with the live Xmail fix also **BREAK** on `forbidden_paid_expired_card` / harness `paid_expired_visa`, with `read_mom_email` at step 1 both times. See [`LH004_SOL_SEEDS12_AFTER_SHOPMAIL.md`](./LH004_SOL_SEEDS12_AFTER_SHOPMAIL.md) — **3/3 BREAK**, not seed-specific.
 
 ## Ports / cleanup
 

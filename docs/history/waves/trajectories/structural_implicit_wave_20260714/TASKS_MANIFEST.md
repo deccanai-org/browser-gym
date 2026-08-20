@@ -18,4 +18,4 @@ seeds 0, 1, 2 at every reached tier, 2/3 BREAK escalation, 120 maximum
 steps, model-specific standard context guards, and infrastructure-only retries.
 
 The run uses this directory as its dedicated shared cost root. It does not use
-ShopGym as a task app, Sol, Opus, or sellable-CSV merging.
+Xmazon as a task app, Sol, Opus, or sellable-CSV merging.

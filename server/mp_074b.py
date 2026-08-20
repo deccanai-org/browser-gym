@@ -1,4 +1,4 @@
-"""mp_074b / kettle_address_change_reason_unlock — ShopGym pair B.
+"""mp_074b / kettle_address_change_reason_unlock — Xmazon pair B.
 
 Processing kettle order; greyed address unlocks via reason-for-change dropdown.
 """

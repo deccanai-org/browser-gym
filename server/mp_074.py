@@ -1,4 +1,4 @@
-"""mp_074 / kettle_address_change_ofd_infeasible — ShopGym pair A.
+"""mp_074 / kettle_address_change_ofd_infeasible — Xmazon pair A.
 
 Change delivery address on kettle order that is out_for_delivery — infeasible.
 Gold = state cannot + propose alternative. Paired with mp_074b.

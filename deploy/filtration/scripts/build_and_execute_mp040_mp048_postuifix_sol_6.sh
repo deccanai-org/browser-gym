@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# mp_040 + mp_048 Sol seeds 0–2 — 6 episodes ∥6 after GymCal/warranty UI fixes.
+# mp_040 + mp_048 Sol seeds 0–2 — 6 episodes ∥6 after Xoogle/warranty UI fixes.
 # Overlays full hub_dist (calendar split date/time + amazon warranty banners).
 set -euo pipefail
 export PATH="/opt/homebrew/bin:/opt/homebrew/share/google-cloud-sdk/bin:$PATH"
@@ -211,7 +211,7 @@ cat >"$META_DIR/run_meta_${JOB}.json" <<EOF
     "calendar": "index-8e84e2c6.js"
   },
   "git_head": "3d7362d06772b58a2fccded8abdfdc8b5ea9451a",
-  "notes": "tip-lock hub_dist wipe; GymCal split date/time + warranty UI; coaching-dropped briefs"
+  "notes": "tip-lock hub_dist wipe; Xoogle split date/time + warranty UI; coaching-dropped briefs"
 }
 EOF
 echo "[postui] wrote $META_DIR/run_meta_${JOB}.json"

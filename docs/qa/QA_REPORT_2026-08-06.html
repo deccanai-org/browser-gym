@@ -34,7 +34,7 @@ strong{font-weight:650}
 @media(max-width:640px){.wrap{padding:28px 15px 70px}h1{font-size:1.6rem}h2{font-size:1.25rem}}
 </style></head><body><div class="wrap"><h1>Mock UI Suite — Full QA Audit Report</h1>
 <p><strong>Date:</strong> 2026-08-06
-<strong>Scope:</strong> ShopGym (Amazon), ShopMail (Gmail), ValueMart (eBay), GymEats (Uber Eats), GymCal (Calendar)
+<strong>Scope:</strong> Xmazon (Amazon), Xmail (Gmail), Xbay (eBay), Xber (Uber Eats), Xoogle (Calendar)
 <strong>Method:</strong> Automated browser testing (Playwright/Chromium) + source analysis of the shipped JS bundles
 <strong>Result:</strong> <strong>54 defects</strong> — 10 Critical, 16 High, 19 Medium, 9 Low</p>
 <hr>
@@ -54,19 +54,19 @@ than 54 unrelated bugs:</p>
 <tbody><tr>
 <td>1</td>
 <td><strong>Split-clock</strong> — a frozen seeded &quot;now&quot; in some code paths, real <code>Date.now()</code> in others</td>
-<td>GymCal, ValueMart</td>
+<td>Xoogle, Xbay</td>
 <td>Same screen shows contradictory dates. Gets <em>worse every day</em> the suite stays deployed.</td>
 </tr>
 <tr>
 <td>2</td>
 <td><strong>Money math rounds from two different bases</strong> — line items rounded individually, totals summed from unrounded floats</td>
-<td>ShopGym, GymEats</td>
+<td>Xmazon, Xber</td>
 <td>Receipts don&#39;t reconcile to the cent. An agent asked to verify a total will always &quot;fail&quot; correctly.</td>
 </tr>
 <tr>
 <td>3</td>
 <td><strong>Seed data doesn&#39;t match the shape the UI reads</strong> — wrong category values, label ids, item field names</td>
-<td>ShopMail, ValueMart, ShopGym, GymEats</td>
+<td>Xmail, Xbay, Xmazon, Xber</td>
 <td>Whole features look implemented but return nothing.</td>
 </tr>
 <tr>
@@ -80,9 +80,9 @@ than 54 unrelated bugs:</p>
 <ol>
 <li><strong>X-01</strong> — <code>?sid=</code> custom state injection is broken in production across all five apps. Every task
 runs against default seed state. If you rely on per-task state seeding, it is silently not working.</li>
-<li><strong>GC-01/02/04</strong> — GymCal&#39;s &quot;today&quot; is permanently frozen at 2026-05-21 (77 days stale as of today),
+<li><strong>GC-01/02/04</strong> — Xoogle&#39;s &quot;today&quot; is permanently frozen at 2026-05-21 (77 days stale as of today),
 except where it isn&#39;t. Any date-relative task (&quot;schedule this for tomorrow&quot;) is unscorable.</li>
-<li><strong>VM-01/02</strong> — ValueMart&#39;s bidding reducer can make the current bid go <em>down</em> when you bid, and has a
+<li><strong>VM-01/02</strong> — Xbay&#39;s bidding reducer can make the current bid go <em>down</em> when you bid, and has a
 silent dead zone where the UI advertises a minimum the code rejects. Affects 36 of 45 auctions.</li>
 </ol>
 <hr>
@@ -111,7 +111,7 @@ and the failure is at least loud).</p>
 fires on every page load, and a failed request on every state mutation, in all five apps.</p>
 </blockquote>
 <hr>
-<h2>1. ShopGym (Amazon clone) — 14 findings</h2>
+<h2>1. Xmazon (Amazon clone) — 14 findings</h2>
 <p><strong>2 Critical · 4 High · 6 Medium · 2 Low</strong></p>
 <h3>SG-01 · <span class="sev critical">CRITICAL</span> · Out-of-stock items can be ordered, producing a $0.00 completed order</h3>
 <p><strong>Where:</strong> <code>/search</code>, <code>/cart</code>, <code>/checkout</code>, <code>/orders</code></p>
@@ -197,7 +197,7 @@ correctly.</p>
 <p><strong>Verified independently:</strong> a single exact match renders literally <strong>&quot;of over 1 results&quot;</strong> —
 both the &quot;over&quot; qualifier and the plural are wrong for an exact singular count.</p>
 <hr>
-<h2>2. ShopMail (Gmail clone) — 8 findings</h2>
+<h2>2. Xmail (Gmail clone) — 8 findings</h2>
 <p><strong>0 Critical · 4 High · 3 Medium · 1 Low</strong></p>
 <h3>SM-01 · <span class="sev high">HIGH</span> · Compose merges typed text into the signature block</h3>
 <p><strong>Where:</strong> Compose modal</p>
@@ -250,7 +250,7 @@ until the user discovers the hamburger. Tablet (768px) renders fine.
 <strong>with Undo</strong>; spam shows &quot;Marked as spam&quot; with none. The handler passes <code>showToast(&quot;Marked as spam&quot;, null)</code>
 — the second argument is the undo callback, hardcoded <code>null</code>.</p>
 <hr>
-<h2>3. ValueMart (eBay clone) — 11 findings</h2>
+<h2>3. Xbay (eBay clone) — 11 findings</h2>
 <p><strong>3 Critical · 2 High · 4 Medium · 2 Low</strong></p>
 <h3>VM-01 · <span class="sev critical">CRITICAL</span> · Placing a valid bid makes the Current Bid go DOWN</h3>
 <p><strong>Where:</strong> <code>/item/amb_l_amb_vinyl_0</code> and every auction seeded with bid history (8 items)</p>
@@ -331,7 +331,7 @@ indicator exists anywhere in the app.
 always prepends a new record; the in-place update path <code>else if (i === o)</code> is only reachable when a
 self-raise <em>doesn&#39;t</em> exceed your own previous max — dead for the common case.</p>
 <hr>
-<h2>4. GymEats (Uber Eats clone) — 8 findings</h2>
+<h2>4. Xber (Uber Eats clone) — 8 findings</h2>
 <p><strong>2 Critical · 1 High · 2 Medium · 3 Low</strong></p>
 <h3>GE-01 · <span class="sev critical">CRITICAL</span> · Negative tip accepted — drives the total below cost, order places successfully</h3>
 <p><strong>Where:</strong> <code>/checkout</code></p>
@@ -376,7 +376,7 @@ so every &quot;Add to order&quot; modal shows only a quantity stepper and a note
 validation and add-on price summation code paths — which do work — are dead. A separate unused
 fixture set (<code>rest_1</code>…<code>rest_16</code> / <code>item_1</code>…<code>item_96</code>) does define such groups.</p>
 <hr>
-<h2>5. GymCal (Calendar clone) — 12 findings</h2>
+<h2>5. Xoogle (Calendar clone) — 12 findings</h2>
 <p><strong>3 Critical · 4 High · 4 Medium · 1 Low</strong></p>
 <h3>GC-01 · <span class="sev critical">CRITICAL</span> · &quot;Today&quot; is permanently frozen at 2026-05-21</h3>
 <p>The app opens on the week of May 17–23 2026 with Thursday the 21st circled as today — <strong>77 days
@@ -464,7 +464,7 @@ in the sidebar tip.</p>
 </tr>
 </thead>
 <tbody><tr>
-<td>ShopGym</td>
+<td>Xmazon</td>
 <td align="right">2</td>
 <td align="right">4</td>
 <td align="right">6</td>
@@ -472,7 +472,7 @@ in the sidebar tip.</p>
 <td align="right"><strong>14</strong></td>
 </tr>
 <tr>
-<td>ShopMail</td>
+<td>Xmail</td>
 <td align="right">0</td>
 <td align="right">4</td>
 <td align="right">3</td>
@@ -480,7 +480,7 @@ in the sidebar tip.</p>
 <td align="right"><strong>8</strong></td>
 </tr>
 <tr>
-<td>ValueMart</td>
+<td>Xbay</td>
 <td align="right">3</td>
 <td align="right">2</td>
 <td align="right">4</td>
@@ -488,7 +488,7 @@ in the sidebar tip.</p>
 <td align="right"><strong>11</strong></td>
 </tr>
 <tr>
-<td>GymEats</td>
+<td>Xber</td>
 <td align="right">2</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -496,7 +496,7 @@ in the sidebar tip.</p>
 <td align="right"><strong>8</strong></td>
 </tr>
 <tr>
-<td>GymCal</td>
+<td>Xoogle</td>
 <td align="right">3</td>
 <td align="right">4</td>
 <td align="right">4</td>
@@ -527,7 +527,7 @@ against seed state that you may believe you&#39;re overriding.</li>
 <li><strong>The frozen clock</strong> (GC-01/02/04, VM-04) — one shared decision: either freeze <em>everything</em>
 consistently, or drop <code>_gym_now</code> and use the real clock everywhere. The current hybrid degrades
 daily and makes date-relative tasks unscorable.</li>
-<li><strong>ValueMart bidding</strong> (VM-01/02/03) — the reducer&#39;s <code>bids[0]</code> assumption and the
+<li><strong>Xbay bidding</strong> (VM-01/02/03) — the reducer&#39;s <code>bids[0]</code> assumption and the
 <code>currentBid</code>/<code>startingBid</code> seed mismatch. Affects 36 of 45 auctions.</li>
 <li><strong>Money that doesn&#39;t reconcile</strong> (GE-02, SG-09, GE-01, VM-03, VM-06) — round once, from one base,
 and clamp tips at zero.</li>

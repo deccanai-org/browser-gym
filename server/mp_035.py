@@ -1,4 +1,4 @@
-"""mp_035 / conflicting_invites_stale_cleanup — ShopMail×GymCal.
+"""mp_035 / conflicting_invites_stale_cleanup — Xmail×Xoogle.
 
 Mechanism: two overlapping calendar holds at the same slot this week. Mail
 timestamps show one invite was cancelled and replaced by the other. Agent must

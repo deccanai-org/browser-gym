@@ -28,12 +28,12 @@ Two surfaces render that world:
 | Surface | What it is | Who uses it |
 |---|---|---|
 | **Gym HTML** | Jinja templates served by the gym itself, `data-test-id` everywhere | agent evals (`eval.run`), the oracle |
-| **Realistic mocks** | Five separate React SPAs (ShopGym, ValueMart, ShopMail, GymCal, GymEats) that *look* like Amazon/eBay/Gmail/Calendar/UberEats | human annotation, RL rollouts |
+| **Realistic mocks** | Five separate React SPAs (Xmazon, Xbay, Xmail, Xoogle, Xber) that *look* like Amazon/eBay/Gmail/Calendar/UberEats | human annotation, RL rollouts |
 
 The mocks do not have their own logic. A click in a mock is posted to the **bridge**,
 which drives the gym's *own public endpoints* — the same routes the gym's own HTML
 posts to — and then re-projects the resulting world into all five tabs. So an order
-placed in ShopGym produces an email in the untouched ShopMail tab, because the engine
+placed in Xmazon produces an email in the untouched Xmail tab, because the engine
 that produced it is the same engine either way.
 
 ---
@@ -55,11 +55,11 @@ flowchart TB
         G1["gym :8077"]
         G2["gym :8078"]
         GN["grown gyms :8300+"]
-        M1["ShopGym :5201"]
-        M2["ValueMart :5202"]
-        M3["ShopMail :5203"]
-        M4["GymCal :5204"]
-        M5["GymEats :5205"]
+        M1["Xmazon :5201"]
+        M2["Xbay :5202"]
+        M3["Xmail :5203"]
+        M4["Xoogle :5204"]
+        M5["Xber :5205"]
     end
     subgraph ann["Annotation platform"]
         BE["backend :8090"]
@@ -353,7 +353,7 @@ The cross-retailer tasks ("which store is actually cheaper") turn on the fact th
 the two storefronts use **incompatible models**. This is deliberate and it is easy to
 get wrong when authoring a task.
 
-| | ShopGym (`shop`) | ValueMart (`market`) |
+| | Xmazon (`shop`) | Xbay (`market`) |
 |---|---|---|
 | Tax | 8.5% (`mutations.py:532`) | **none at all** — `total = subtotal - discount + delivery` (`market/state.py:154`) |
 | Shipping | flat $5.99, no free threshold (`mutations.py:533`) | free over `free_delivery_over` ($35) (`market/state.py:140`) |
@@ -361,9 +361,9 @@ get wrong when authoring a task.
 | Discount scope | computed over **eligible lines only** (`mutations.py:459-481`) | always the whole subtotal |
 | Order timestamp | derived from the step clock, `_now(state)` (`mutations.py:571`) | **the constant** `f"{SEED_DATE}T12:30:00"` (`market/mutations.py:119`) |
 
-That last row has a mechanical consequence: **ValueMart orders cannot be ordered by
+That last row has a mechanical consequence: **Xbay orders cannot be ordered by
 time.** Every market order in every episode carries the same timestamp, which is why
-"the newest ValueMart order" can only be answered by diffing against `initial_world`
+"the newest Xbay order" can only be answered by diffing against `initial_world`
 — exactly what `_new_orders` (`server/verifiers.py:271-283`) does.
 
 Calendar has its own boundary rule worth knowing: `create_event`'s overlap guard is
@@ -858,7 +858,7 @@ screencast, `:735-738`).
   picture to 85% — the floor was reintroducing the exact letterboxing the negotiation
   removes (`:60-64`).
 - `fit_page` is **iterative** (`_FIT_PAGE_PASSES = 4`) because narrowing reflows the
-  page taller: measured on the ShopGym cart, 1280→1128 wide took content from 1378 px
+  page taller: measured on the Xmazon cart, 1280→1128 wide took content from 1378 px
   to 1956 px (`:699-703`).
 
 ### 14.5 Locator resolution

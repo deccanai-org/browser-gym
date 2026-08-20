@@ -1,7 +1,7 @@
 """cal_food_002 / sprint_review_lunch_headcount_resync — Mail×Cal×Food headcount resync.
 
 Mechanism: Sprint review lunch headcount dropped from 8 to 5 (Mail latest);
-an 8-person GymEats platter is already preparing. Correct = cancel the
+an 8-person Xber platter is already preparing. Correct = cancel the
 oversized order → place a 5-person lunch that arrives **before** the
 12:00 PM review start. Sakura's 5-person set at 12:20 PM is the late trap;
 re-ordering the 8-person platter is the over-order trap.
@@ -22,7 +22,7 @@ TASK_ID = "cal_food_002/sprint_review_lunch_headcount_resync"
 BRIEF_KEY = "cal_food_002"
 BRIEF = (
     "Check how many people are actually coming to Friday's sprint review lunch "
-    "and fix the GymEats order if the headcount's off."
+    "and fix the Xber order if the headcount's off."
 )
 
 USER_EMAIL = "alice@shopmail.com"

@@ -1,4 +1,4 @@
-"""mp_112 / kettle_ofd_address_change_email — ShopGym×ShopMail.
+"""mp_112 / kettle_ofd_address_change_email — Xmazon×Xmail.
 
 Redesign of Eligible e21 mp_074 (OFD kettle address change). Distinct from
 mp_098 (delivered FlexRise desk). Seed: QuickBoil kettle is out for delivery;

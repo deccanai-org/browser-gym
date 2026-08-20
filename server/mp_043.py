@@ -1,6 +1,6 @@
-"""mp_043 / auction_ends_before_call_check_result — GymCal×ValueMart.
+"""mp_043 / auction_ends_before_call_check_result — Xoogle×Xbay.
 
-Mechanism: ValueMart auction ended before the 3pm call. After it wraps and
+Mechanism: Xbay auction ended before the 3pm call. After it wraps and
 before/around the call, agent should check the result and report it.
 If the auction were still open past 3pm, the brief says to let it ride —
 here it already ended, so checking is required.
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 TASK_ID = "mp_043/auction_ends_before_call_check_result"
 BRIEF_KEY = "mp_043"
 BRIEF = (
-    "I'm watching an auction on ValueMart that's ending sometime today. If "
+    "I'm watching an auction on Xbay that's ending sometime today. If "
     "it wraps up before my 3pm call, I want to check the result right after, "
     "otherwise just let it ride and I'll deal with it later."
 )
@@ -39,7 +39,7 @@ def task_mp_043_auction_ends_before_call_check_result(seed: int) -> "WorldState"
 
     Seed (gym clock 2:50 PM):
       - Calendar: 3:00–3:30 PM call today
-      - ValueMart listing: auction ENDED 2:40 PM — you were outbid
+      - Xbay listing: auction ENDED 2:40 PM — you were outbid
     Correct: report outbid/result to alice; do not buy/rebid.
     """
     from server.apps.calendar.state import CalendarEvent, TODAY
@@ -49,7 +49,7 @@ def task_mp_043_auction_ends_before_call_check_result(seed: int) -> "WorldState"
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
 

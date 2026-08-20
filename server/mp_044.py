@@ -1,4 +1,4 @@
-"""mp_044 / cousin_dinner_after_flight_settle — ShopMail×GymCal×GymEats.
+"""mp_044 / cousin_dinner_after_flight_settle — Xmail×Xoogle×Xber.
 
 Mechanism: cousin flight info in inbox — lands ~5:10 PM, settled ~6:30 PM.
 Dinner should arrive after settle, not at landing.

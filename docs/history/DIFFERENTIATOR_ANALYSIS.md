@@ -199,7 +199,7 @@ Example: a "Gift wrap visually shown on cart line" verifier sends Claude the fin
 A 3-bullet pitch slide:
 
 ```
-ShopGym: a browser-agent benchmark with three novel contributions
+Xmazon: a browser-agent benchmark with three novel contributions
 
 1. FAILURE-MODE-INDEXED TRAJECTORIES — 16 categorical labels per
    episode; queryable training-data slices by failure type.

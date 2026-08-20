@@ -1,4 +1,4 @@
-# mp_066–070 non-ShopGym primary — Sol seed0 pack
+# mp_066–070 non-Xmazon primary — Sol seed0 pack
 
 **Date:** 2026-08-11  
 **Model (Sol):** `openai_pixel[gpt-5.6-sol]` · `AGENT_MAX_STEPS=80` · headless GCP ∥5 (launch prepared)  
@@ -13,10 +13,10 @@
 
 | ID | Brief |
 |---|---|
-| mp_066 | The ValueMart seller says my desk is ready for pickup, but I think that's the wrong week, can you sort it out. |
+| mp_066 | The Xbay seller says my desk is ready for pickup, but I think that's the wrong week, can you sort it out. |
 | mp_067 | Can you sort dinner for game night, check who's coming and what they can eat. |
-| mp_068 | I've had my eye on a couch on ValueMart, grab it whenever it's actually the best time to buy. |
-| mp_069 | My neighbor's selling her bike stand on ValueMart, she said she'd throw in the helmet too, can you grab it and confirm with her. |
+| mp_068 | I've had my eye on a couch on Xbay, grab it whenever it's actually the best time to buy. |
+| mp_069 | My neighbor's selling her bike stand on Xbay, she said she'd throw in the helmet too, can you grab it and confirm with her. |
 | mp_070 | Order lunch for Thursday's team meeting like usual. |
 
 ---
@@ -24,10 +24,10 @@
 ## Mechanisms
 
 ### mp_066 / valuemart_seller_dispute_and_calendar_pickup_reschedule
-ValueMart Purchases banner **June 14–16** vs ShopMail seller thread **June 21–23**. GymCal conflict **June 22** only inside the true window. Gym clock `2026-06-11`. Gold: report conflict on true window.
+Xbay Purchases banner **June 14–16** vs Xmail seller thread **June 21–23**. Xoogle conflict **June 22** only inside the true window. Gym clock `2026-06-11`. Gold: report conflict on true window.
 
 ### mp_067 / gymeats_group_order_dietary_conflict_reschedule
-Mail RSVP thread: Dan cancels, Carol dairy correction, Sunday reschedule. GymCal stale on Saturday. Gold: dairy-free serves-3 pack with `scheduled_delivery=2026-05-24`. `enable_schedule_ahead=True`.
+Mail RSVP thread: Dan cancels, Carol dairy correction, Sunday reschedule. Xoogle stale on Saturday. Gold: dairy-free serves-3 pack with `scheduled_delivery=2026-05-24`. `enable_schedule_ahead=True`.
 
 ### mp_068 / valuemart_price_watch_vs_gymcal_deadline
 Couch $380 (was $450, “may drop further end of month”) vs Move-in **May 26**. Gold: buy now at $380.
@@ -44,7 +44,7 @@ This-Thu one-off **CANCELLED** + weekly series master next Thu (cal_007 pattern)
 
 - `tools/seed_to_cuagym.py`: `currentDate` now follows `calendar.gym_now` (needed for June windows on mp_066).
 - ebay_mock: added `data-test-id="btn-buy-it-now"` + `btn-confirm-purchase` (oracle Buy It Now path).
-- Bridged ebay Messages tab remains hidden — mp_066 banner uses order `status`; mp_069 follow-up uses ShopMail (durable).
+- Bridged ebay Messages tab remains hidden — mp_066 banner uses order `status`; mp_069 follow-up uses Xmail (durable).
 
 ---
 

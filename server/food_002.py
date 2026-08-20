@@ -6,7 +6,7 @@ SEED_DATE May 21) one restaurant has the highest order count with a consistent
 reorder the most-recent restaurant. Correct = reorder from the highest-count
 last-month restaurant with the same usual items.
 
-Hub map (bridged): Food → uber_eats_mock (GymEats). Orders list shows placed
+Hub map (bridged): Food → uber_eats_mock (Xber). Orders list shows placed
 dates after the /orders list fix.
 """
 
@@ -99,7 +99,7 @@ def task_food_002_reorder_most_frequent_last_month(seed: int) -> "WorldState":
     sushi = food.restaurants[OTHER_REST]
     bean = food.restaurants[TRAP_REST]
 
-    # Most-recent first so it tops the GymEats Orders list (recency trap).
+    # Most-recent first so it tops the Xber Orders list (recency trap).
     food.orders[RECENT_ORDER_ID] = FoodOrder(
         id=RECENT_ORDER_ID,
         restaurant_id=bean.id,

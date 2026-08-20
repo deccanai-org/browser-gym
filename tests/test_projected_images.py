@@ -99,7 +99,7 @@ def test_a_real_photo_beats_an_alias_which_beats_a_tile():
 def test_the_dumbbell_photo_is_a_photo():
     """Regression: this file was an S3 AuthorizationQueryParametersError XML saved
     with a .jpg extension — 397 bytes that render as a blank grey box on a live
-    ValueMart item page, and nothing anywhere checked."""
+    Xbay item page, and nothing anywhere checked."""
     for app in ("xmazon_mock", "xbay_mock", "xber_eats_mock"):
         assert _resolves(app, "/assets/products/amb_bl_62.jpg"), app
 

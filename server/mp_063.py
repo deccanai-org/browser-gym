@@ -1,7 +1,7 @@
-"""mp_063 / subscription_renewal_vs_upcoming_travel — ShopMail×GymCal×ShopGym.
+"""mp_063 / subscription_renewal_vs_upcoming_travel — Xmail×Xoogle×Xmazon.
 
 Extended: two billing notices (different renewal dates), one travel window on
-GymCal. Only coffee sub overlaps travel; that sub's Visa is expired. Dog-treats
+Xoogle. Only coffee sub overlaps travel; that sub's Visa is expired. Dog-treats
 sub renews after travel — must not be touched. Early action = cancel conflicted
 sub and recreate on a valid payment (or durable report + fix) before departure.
 """
@@ -136,7 +136,7 @@ def task_mp_063_subscription_renewal_vs_upcoming_travel(seed: int) -> "WorldStat
             f"Coffee Pods renews on {COFFEE_RENEW}. We'll charge the card on "
             f"file (Visa ****4242) that morning.\n\n"
             "If your payment method needs an update, please fix it before the "
-            "renewal date.\n\n— ShopGym Billing"
+            "renewal date.\n\n— Xmazon Billing"
         ),
         received_at=f"{SEED_DATE}T07:30:00",
         received_label="7:30 AM",
@@ -151,7 +151,7 @@ def task_mp_063_subscription_renewal_vs_upcoming_travel(seed: int) -> "WorldStat
         body=(
             f"Hi Alice,\n\nYour subscription {TREATS_SUB} for Crunchy Dog "
             f"Treats renews on {TREATS_RENEW}. Payment method on file: PayPal.\n\n"
-            "— ShopGym Billing"
+            "— Xmazon Billing"
         ),
         received_at="2026-05-20T07:35:00",
         received_label="May 20",

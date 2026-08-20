@@ -1,4 +1,4 @@
-"""mp_090 / reactivate_subscription_and_update_default_address — ShopGym only.
+"""mp_090 / reactivate_subscription_and_update_default_address — Xmazon only.
 
 Flat work-ticket: cancel existing coffee-pod Subscribe & Save, recreate same
 product+cadence, then add Bellwood Ave address and set it as default shipping.

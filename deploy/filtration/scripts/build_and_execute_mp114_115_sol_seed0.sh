@@ -2,7 +2,7 @@
 # mp_114 + mp_115 fairness retune — Sol seed0 (one job, two tasks).
 # Tip-lock hub_dist + full harness overlay. Does NOT touch Eligible Suite.
 # mp_114: $60 cap now in the user-facing prompt (pref mail corroborates).
-# mp_115: named home/out ShopMail + prompt pointer (calendar corroborates).
+# mp_115: named home/out Xmail + prompt pointer (calendar corroborates).
 set -euo pipefail
 export PATH="/opt/homebrew/bin:/opt/homebrew/share/google-cloud-sdk/bin:$PATH"
 

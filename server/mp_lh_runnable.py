@@ -3,7 +3,7 @@
 Eight long-horizon prompts that the 2026-08-06 validity assessment marked
 RUNNABLE on the bridged five-hub stack. Goal-only briefs; durable-state
 verifiers. Delivery ETA cues live in product short_description / tags when
-ShopGym UI ETA is prime-only. ValueMart shipping_cost projects via transform.
+Xmazon UI ETA is prime-only. Xbay shipping_cost projects via transform.
 """
 
 from __future__ import annotations
@@ -490,8 +490,8 @@ def task_mp_018(seed: int) -> "WorldState":
         category="electronics", price=95.00, emoji="📻",
         description=(
             "Watchlist decoy: you have been outbid 3 times (your max $68; "
-            "current high $95). Bidding is not available on ValueMart — do not "
-            "chase this listing; buy new on ShopGym instead."
+            "current high $95). Bidding is not available on Xbay — do not "
+            "chase this listing; buy new on Xmazon instead."
         ),
         in_stock=True, condition="Used", shipping_cost=12.00,
     )
@@ -531,7 +531,7 @@ def _suite_mp_018():
 
 
 # =========================================================================== #
-# mp_024 — mail water shutoff → Amazon water + GymEats dinner tomorrow
+# mp_024 — mail water shutoff → Amazon water + Xber dinner tomorrow
 # =========================================================================== #
 
 MP024_ID = "mp_024/water_shutoff_amazon_water_dinner_tomorrow"
@@ -616,7 +616,7 @@ def _suite_mp_024():
     def _dinner(p: Probe) -> bool:
         return len(new_food_orders(p)) > 0
 
-    # Schedule-ahead is UI-local on bridged GymEats (not durable on FoodOrder).
+    # Schedule-ahead is UI-local on bridged Xber (not durable on FoodOrder).
     # Score water + any dinner order; note schedule gap in audit.
     return TaskSuite(
         task_id=MP024_ID,
@@ -811,7 +811,7 @@ def task_mp_030(seed: int) -> "WorldState":
         category="home", price=52.00, emoji="💡",
         description=(
             "Brand new sealed Brightech Sparq. Item $52.00 + shipping $14.00 "
-            "= $66.00 total — MORE than ShopGym's $64.99."
+            "= $66.00 total — MORE than Xmazon's $64.99."
         ),
         in_stock=True, condition="New", shipping_cost=14.00,
         shop_sku=MP030_LAMP,

@@ -1,12 +1,12 @@
-"""mp_050 / spoon_refund_amount_mismatch — ValueMart×ShopMail refund check.
+"""mp_050 / spoon_refund_amount_mismatch — Xbay×Xmail refund check.
 
-Mechanism: ValueMart wooden-spoon return was refunded $5.00, but the paid order
+Mechanism: Xbay wooden-spoon return was refunded $5.00, but the paid order
 total was $18.50. Brief asks to check the order and email support if the refund
 is off. Correct = mail support@valuemart naming the shortfall. Trap = treat the
 $5 refund as fine, or email support about wrong item/damage instead of amount.
 
-mp_033-adjacent (spoon/ValueMart/support mail) but amount-mismatch only — no
-ShopGym deals leg, so oracle can score a clean 1.0 on the support mail alone.
+mp_033-adjacent (spoon/Xbay/support mail) but amount-mismatch only — no
+Xmazon deals leg, so oracle can score a clean 1.0 on the support mail alone.
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ TASK_ID = "mp_050/spoon_refund_amount_mismatch"
 BRIEF_KEY = "mp_050"
 BRIEF = (
     "I think I got refunded the wrong amount for that spoon I returned on "
-    "ValueMart, check the order and email support if it's off."
+    "Xbay, check the order and email support if it's off."
 )
 
 USER_EMAIL = "alice@shopmail.com"
@@ -45,7 +45,7 @@ def task_mp_050_spoon_refund_amount_mismatch(seed: int) -> "WorldState":
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
 
@@ -86,7 +86,7 @@ def task_mp_050_spoon_refund_amount_mismatch(seed: int) -> "WorldState":
         id=MAIL_ORDER,
         sender="orders@valuemart.example.com",
         to=USER_EMAIL,
-        subject=f"Your ValueMart order {VM_ORDER}",
+        subject=f"Your Xbay order {VM_ORDER}",
         body=(
             f"Thanks for your order {VM_ORDER}.\n\n"
             f"Item: {SPOON_NAME}\n"

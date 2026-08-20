@@ -2,7 +2,7 @@
 
 Mechanism: team dinner for tonight's calendar meeting must satisfy TWO
 independent dietary constraints from separate Mail notes (vegan ∩ nut-free)
-AND arrive before the meeting starts. No single GymEats dish clears all three
+AND arrive before the meeting starts. No single Xber dish clears all three
 — near-misses satisfy vegan+time (but contain nuts), nut-free+time (but meat),
 or vegan+nut-free (but late ETA). Correct = place NO food order; email alice
 flagging the conflict.
@@ -143,7 +143,7 @@ def task_food_001_group_order_dietary_conflict(seed: int) -> "WorldState":
         emoji="🍔",
         dishes=[
             # On-time + vegan, but CONTAINS NUTS — fails Jordan.
-            # Clock ETA in description: GymEats store UI shows relative mins only.
+            # Clock ETA in description: Xber store UI shows relative mins only.
             Dish(
                 id=VEGAN_NUTS_DISH,
                 name="Thai Peanut Buddha Bowl",

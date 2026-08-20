@@ -476,13 +476,13 @@ AUTO_FIXES: list[tuple[str, str, str, str]] = [
         "websites/xmazon_mock/src/components/product/ProductCard.jsx",
         "product.stockCount && product.stockCount <= 10",
         "product.stockCount != null && product.stockCount <= 10",
-        "ShopGym: fix React falsy-zero stockCount render",
+        "Xmazon: fix React falsy-zero stockCount render",
     ),
     (
         "websites/xbay_mock/src/pages/CreateListing.jsx",
         'value="Home"',
         'value="Home & Garden"',
-        "ValueMart: Home & Garden option value matches label",
+        "Xbay: Home & Garden option value matches label",
     ),
 ]
 

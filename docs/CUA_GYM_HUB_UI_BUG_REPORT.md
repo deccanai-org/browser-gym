@@ -1,6 +1,6 @@
 # CUA-Gym-Hub UI bug report
 
-**Audience:** UI / product builders for the ShopGym, ShopMail, ValueMart, GymEats, and GymCal mocks.  
+**Audience:** UI / product builders for the Xmazon, Xmail, Xbay, Xber, and Xoogle mocks.  
 **Scope:** Issues that block correct data display or make controls look wired when they are not.  
 **Status values:** **already fixed** · **not yet fixed** · **needs product decision**
 
@@ -8,7 +8,7 @@ Brand names below match what the mocks show in the browser chrome (not the folde
 
 ---
 
-## ShopGym (Amazon-style store)
+## Xmazon (Amazon-style store)
 
 ### 1. Gift message and ship-to on cart / checkout
 - **Description:** Cart line gift message, gift wrap, ship-to address, and scheduled delivery now round-trip into the cart and checkout review. Ship-to is a real cart control; checkout address selection updates the default address.
@@ -29,13 +29,13 @@ Brand names below match what the mocks show in the browser chrome (not the folde
 - **Status:** **not yet fixed**
 
 ### 4. Subscriptions have no storefront surface
-- **Description:** Subscription objects can exist in session state but there is no ShopGym page to view, pause, or cancel subscriptions.
+- **Description:** Subscription objects can exist in session state but there is no Xmazon page to view, pause, or cancel subscriptions.
 - **Where:** Account / orders navigation — no subscriptions route or components.
 - **Status:** **needs product decision** — add a subscriptions area, or formally mark out of scope for this mock.
 
 ---
 
-## ShopMail (Gmail-style)
+## Xmail (Gmail-style)
 
 ### 1. Multi-message conversations split into single-message threads
 - **Description:** Each message is given its own `threadId` (`thread_<messageId>`). Related replies (same subject, conversational chain) appear as separate inbox rows. Opening one shows only that message, not the full conversation. **Confirmed via live reproduction (M338)**, not only code inspection.
@@ -58,12 +58,12 @@ Brand names below match what the mocks show in the browser chrome (not the folde
 - **Description:** Opening a clearly visible inbox message often fails under mark-id click + keyboard (Enter / `o` / Tab / `j`). Agents loop on search → select checkbox → More options → wrong thread (e.g. Alex) without durable `read=true` on the target message. Burns an entire 50-step episode before any shop action.
 - **Where:** Inbox list / thread open path (`EmailList` row click target vs checkbox / SoM marks); bridged Gmail mock.
 - **Repro:** Bridged `lh_004/mom_watch_email_mismatch` on isolated Amazon+Gmail stack (no port contention) → Sol (`openai_pixel[gpt-5.6-sol]`) seed 0 spends steps 0–49 on Mail open/select; harness `read_mom_email` never fires; cart unchanged. Evidence: `trajectories/lh_004_isolated_3seed/lh_004_mom_watch_email_mismatch__0__2fe6acc6.jsonl`, prior contended pass `LH004_BRIDGED_E2E.md`.
-- **Root cause:** Same class as GymEats §6 — openable inbox rows were plain `<div onClick>` with no `role` / `data-test-id="mail-item-<id>"`, so SoM only marked nested Select / Star / Important buttons. Keyboard `j`/`o`/`Enter` also used an unfiltered `visibleEmails` list (ignored search + inbox category), so focus opened the wrong thread (e.g. Alex).
+- **Root cause:** Same class as Xber §6 — openable inbox rows were plain `<div onClick>` with no `role` / `data-test-id="mail-item-<id>"`, so SoM only marked nested Select / Star / Important buttons. Keyboard `j`/`o`/`Enter` also used an unfiltered `visibleEmails` list (ignored search + inbox category), so focus opened the wrong thread (e.g. Alex).
 - **Status:** **already fixed** — `gmail_mock` `EmailList` rows are `role="button"` with `data-test-id="mail-item-<id>"` + aria-label; Select/Star stopPropagation; keyboard focus list mirrors EmailList search/category. Rebuild `dist` after source change. Smoke: `trajectories/lh_004_shopmail_fix_smoke/`. Sol re-run: `docs/history/audits/LH004_SHOPMAIL_FIX_RERUN.md`.
 
 ---
 
-## ValueMart (eBay-style)
+## Xbay (eBay-style)
 
 ### 1. Coupon “applied” banner does not change the total
 - **Description:** Cart has Apply coupon / Remove coupon. After applying a valid code (e.g. `VALUE10`), the green “Coupon … applied” banner appears, but Order Summary **Total stays at the undiscounted subtotal** — the banner is not tied to a discounted price.
@@ -73,27 +73,27 @@ Brand names below match what the mocks show in the browser chrome (not the folde
 
 ### 2. Seeded / catalog coupons not shown as selectable offers
 - **Description:** Session state can include coupon definitions (and optionally an already-applied code), but the cart only offers a free-text field. Available codes are not listed as selectable offers, and an already-applied coupon on the cart is not projected into the banner unless the client sets `state.coupon`.
-- **Where:** Cart coupon panel; market → ValueMart state transform (`coupon` vs hidden `_gym_coupons`).
+- **Where:** Cart coupon panel; market → Xbay state transform (`coupon` vs hidden `_gym_coupons`).
 - **Repro:** Seed a cart with a known coupon catalog → Cart shows input only, no offer list; applied flag from seed does not appear until the user types a code.
 - **Status:** **needs product decision** — list available coupons vs keep code-entry only; also wire seed `applied_coupon` → banner + discounted total.
 
 ### 3. Major browse surfaces are consistent
-- **Description:** Home, Search, Dashboard (“My ValueMart”), Sell, and Cart all share the same listings/cart state; Buy It Now confirm is a modal on the listing, not a second empty page.
+- **Description:** Home, Search, Dashboard (“My Xbay”), Sell, and Cart all share the same listings/cart state; Buy It Now confirm is a modal on the listing, not a second empty page.
 - **Status:** **already fixed** / no bug (baseline OK for listing ↔ cart).
 
 ### 4. Active Buy-It-Now listing detail shows “ended” (masks purchase)
-- **Description:** Search/home cards show active fixed-price listings (e.g. Plain Welcome Sign $9, `eb_lh001_plain_sign`) with **Buy It Now**, but opening the listing detail replaces purchase controls with **“This listing has ended.”** Agents (Sol + GPT-5.5 on lh_001) correctly open the cheap Plain path, then abandon it as unpurchasable and often chase Deluxe. **Distinct from §1–§2** (coupon UI) and from ValueMart §3 (browse consistency). Same class as GymEats §6: UI chrome masking a correct, wired purchase path.
+- **Description:** Search/home cards show active fixed-price listings (e.g. Plain Welcome Sign $9, `eb_lh001_plain_sign`) with **Buy It Now**, but opening the listing detail replaces purchase controls with **“This listing has ended.”** Agents (Sol + GPT-5.5 on lh_001) correctly open the cheap Plain path, then abandon it as unpurchasable and often chase Deluxe. **Distinct from §1–§2** (coupon UI) and from Xbay §3 (browse consistency). Same class as Xber §6: UI chrome masking a correct, wired purchase path.
 - **Where:** `ebay_mock` `ProductDetails.jsx` (`isEnded = status !== 'active' || endTime < Date.now()`); bridged projection `tools/seed_to_cuagym.py` `transform_market` previously stamped every listing `endTime` to sim-world **2026-05-28**, which is already past evaluation wall-clock (2026-07+). Search only filters `status === 'active'`, so cards stay visible while detail hides Buy It Now / Add to cart.
 - **Repro:** Bridged lh_001 → eBay search “Welcome Sign” → open Plain $9 → detail says listing ended; engine `market.products.eb_lh001_plain_sign.in_stock=true` and listing `status=active`. Evidence: `docs/history/audits/LH001_GPT55_3SEED.md`, `LH001_SOL_RERUN_AFTER_GYMEATS_FIX.md`, trajs under `trajectories/lh_001_gpt55_3seed/` / `lh_001_sol_rerun_gymeats_fix/`.
 - **Status:** **already fixed** — fixed-price / Buy It Now listings use `status` as purchasability source of truth (wall-clock `endTime` only ends auctions); SoM `data-test-id`s on Buy It Now / Add to cart / Confirm Purchase; bridge `transform_market` endTime = now+30d. Rebuild `ebay_mock` `dist` after source change.
 
 ---
 
-## GymEats (Uber Eats-style)
+## Xber (Uber Eats-style)
 
 ### 1. Seeded cart lines lack stable line ids
 - **Description:** Cart items added by the user get an `id`. Items loaded from seed often have only `menuItemId` / name / qty — no `id` or `cartItemId`. Quantity buttons key off `item.id`, so seeded multi-item carts mis-update (every line with a missing id can change together).
-- **Where:** Cart panel (`CartPanel.jsx` + `AppContext`); food → GymEats seed transform.
+- **Where:** Cart panel (`CartPanel.jsx` + `AppContext`); food → Xber seed transform.
 - **Repro:** Seed a cart with two dishes → open Cart → press + on one line → quantities for multiple lines can jump together; remove may no-op or clear the wrong set.
 - **Status:** **not yet fixed**
 
@@ -110,7 +110,7 @@ Brand names below match what the mocks show in the browser chrome (not the folde
 
 ### 4. Order tracking missing delivery address and courier
 - **Description:** Seeded (and transformed) orders omit `deliveryAddress` and `deliveryPerson`. Tracking therefore skips the driver card and cannot show a real delivery label (active map copy falls back to “delivery address”).
-- **Where:** Order tracking detail; food → GymEats order transform / seed shape.
+- **Where:** Order tracking detail; food → Xber order transform / seed shape.
 - **Repro:** Open `/orders/<seededOrderId>` for a delivered order → restaurant and line items show; no courier block; no concrete address label.
 - **Status:** **not yet fixed**
 
@@ -128,7 +128,7 @@ Brand names below match what the mocks show in the browser chrome (not the folde
 
 ---
 
-## GymCal (Google Calendar-style)
+## Xoogle (Google Calendar-style)
 
 ### 1. Day view does not show events that appear in Week / Month
 - **Description:** Seeded events appear on Week (and Month) for the intended calendar day, but Day view is empty or pinned to the wrong local calendar day. Root cause: `currentDate` / event starts are encoded as UTC midnight / wall-clock-as-Zulu, then compared with local `isSameDay`.
@@ -146,7 +146,7 @@ Brand names below match what the mocks show in the browser chrome (not the folde
 - **Description:** Header **Today** (and “is today” blue highlights) used `new Date()` / `Date.now()`, so under evaluation wall-clock (e.g. Aug 2026) the view jumped to a blank real-world week/month while seeded events remain on the frozen gym day (**2026-05-21**). Agents (cal_002 Sol cap-80) clicked Today → saw empty August → falsely concluded the Client lunch hold was already gone and `finish`ed in 1 step.
 - **Where:** `google_calendar_mock` `Header.jsx` `handleToday`; Week/Month/Sidebar/Agenda `isSameDay(..., new Date())`; bridge `transform_calendar` now stamps `referenceToday`.
 - **Repro:** Bridged cal_002 (hold on Thu May 21) → open Calendar → click **Today** → before fix: August 2026 blank week; after fix: May 2026 week with Client lunch visible.
-- **Root cause:** Same class as GymCal §1 / ValueMart wall-clock `endTime` — UI clock not bound to gym seeded today (`_gym_meta.today` / `referenceToday`).
+- **Root cause:** Same class as Xoogle §1 / Xbay wall-clock `endTime` — UI clock not bound to gym seeded today (`_gym_meta.today` / `referenceToday`).
 - **Status:** **already fixed** — `referenceToday` locked from bridge/`_gym_meta.today`; Today button + isToday highlights use `getReferenceTodayISO` / `getReferenceTodayDate`. Rebuild `google_calendar_mock` `dist` after source change. Evidence: `docs/history/audits/CAL002_TODAY_SEED_DATE_FIX.md`.
 
 ---
@@ -155,23 +155,23 @@ Brand names below match what the mocks show in the browser chrome (not the folde
 
 | App | Issue | Status |
 |---|---|---|
-| ShopGym | Gift / ship-to on cart & checkout | already fixed |
-| ShopGym | Express / Standard shipping options | needs product decision |
-| ShopGym | Return submit local-only | not yet fixed |
-| ShopGym | Subscriptions UI missing | needs product decision |
-| ShopMail | Flattened conversation threads | not yet fixed |
-| ShopMail | Inbox row open/select unreliable for SoM agents | already fixed |
-| ShopMail | Archive / delete / star local-only | not yet fixed |
-| ShopMail | Starred / Important empty after seed | not yet fixed |
-| ValueMart | Coupon banner without discounted total | not yet fixed (bridged: engine applies; banner cleared on re-project) |
-| ValueMart | Coupon catalog / seeded applied state | needs product decision |
-| ValueMart | Active BIN detail shows “ended” (masks buy) | already fixed |
-| GymEats | Seeded cart missing line ids | not yet fixed |
-| GymEats | Qty/remove not backend-wired | not yet fixed |
-| GymEats | `/orders` list → “Order not found” | not yet fixed |
-| GymEats | Missing delivery address / courier on orders | not yet fixed |
-| GymEats | Service Fee / Tax `$NaN` on seeded orders | not yet fixed |
-| GymEats | Menu add never lands (modal/Tailwind + decorative +) | already fixed |
-| GymCal | Day view empty / TZ mismatch | root cause open; entry path mitigated |
-| GymCal | Click-to-create on grid broken | not yet fixed |
-| GymCal | Today → wall-clock date (not seeded) | already fixed |
+| Xmazon | Gift / ship-to on cart & checkout | already fixed |
+| Xmazon | Express / Standard shipping options | needs product decision |
+| Xmazon | Return submit local-only | not yet fixed |
+| Xmazon | Subscriptions UI missing | needs product decision |
+| Xmail | Flattened conversation threads | not yet fixed |
+| Xmail | Inbox row open/select unreliable for SoM agents | already fixed |
+| Xmail | Archive / delete / star local-only | not yet fixed |
+| Xmail | Starred / Important empty after seed | not yet fixed |
+| Xbay | Coupon banner without discounted total | not yet fixed (bridged: engine applies; banner cleared on re-project) |
+| Xbay | Coupon catalog / seeded applied state | needs product decision |
+| Xbay | Active BIN detail shows “ended” (masks buy) | already fixed |
+| Xber | Seeded cart missing line ids | not yet fixed |
+| Xber | Qty/remove not backend-wired | not yet fixed |
+| Xber | `/orders` list → “Order not found” | not yet fixed |
+| Xber | Missing delivery address / courier on orders | not yet fixed |
+| Xber | Service Fee / Tax `$NaN` on seeded orders | not yet fixed |
+| Xber | Menu add never lands (modal/Tailwind + decorative +) | already fixed |
+| Xoogle | Day view empty / TZ mismatch | root cause open; entry path mitigated |
+| Xoogle | Click-to-create on grid broken | not yet fixed |
+| Xoogle | Today → wall-clock date (not seeded) | already fixed |

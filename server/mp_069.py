@@ -1,6 +1,6 @@
 """mp_069 / mail_thread_promise_vs_valuemart_listing_reality.
 
-Mechanism: neighbor's ShopMail promise includes a helmet; live ValueMart
+Mechanism: neighbor's Xmail promise includes a helmet; live Xbay
 listing is bike stand only. Correct = buy what's listed + follow up about
 the helmet discrepancy (do not invent a bundled helmet).
 """
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 TASK_ID = "mp_069/mail_thread_promise_vs_valuemart_listing_reality"
 BRIEF_KEY = "mp_069"
 BRIEF = (
-    "My neighbor's selling her bike stand on ValueMart, she said she'd throw "
+    "My neighbor's selling her bike stand on Xbay, she said she'd throw "
     "in the helmet too, can you grab it and confirm with her."
 )
 
@@ -43,7 +43,7 @@ def task_mp_069_mail_thread_promise_vs_valuemart_listing_reality(
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
 
@@ -104,9 +104,9 @@ def task_mp_069_mail_thread_promise_vs_valuemart_listing_reality(
         id=EM_PROMISE,
         sender=NEIGHBOR_EMAIL,
         to=USER_EMAIL,
-        subject="bike stand on ValueMart",
+        subject="bike stand on Xbay",
         body=(
-            "hey! I listed my wall-mount bike stand on ValueMart under "
+            "hey! I listed my wall-mount bike stand on Xbay under "
             "jordan_apt4b. If you grab it I'll throw in my old helmet too — "
             "it's in the closet, I just haven't added it to the listing yet. "
             "Ping me once you've bought it so I know to leave the helmet out."

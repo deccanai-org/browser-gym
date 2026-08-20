@@ -1,7 +1,7 @@
 """mp_067 / gymeats_group_order_dietary_conflict_reschedule.
 
-Mechanism: ShopMail RSVP thread revises headcount, diet, and date mid-thread.
-GymCal still shows the *old* game-night date (stale). Mail is fresher — order
+Mechanism: Xmail RSVP thread revises headcount, diet, and date mid-thread.
+Xoogle still shows the *old* game-night date (stale). Mail is fresher — order
 must use final Sunday date + dairy-free + cancelled guest removed.
 """
 

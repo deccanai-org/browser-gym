@@ -7,7 +7,7 @@
 
 ## Verdict
 
-**Genuine GymEats env bug (bridged cart shape crash), not seed-specific cart state.**
+**Genuine Xber env bug (bridged cart shape crash), not seed-specific cart state.**
 
 After flattening bridged cart lines for `CartPanel` / checkout, Sol seed 0 placed the correct Burger Barn usual (`FOOD-1041`) in **11 steps**, harness **success=True score=1.00**.
 
@@ -29,7 +29,7 @@ After flattening bridged cart lines for `CartPanel` / checkout, Sol seed 0 place
 4. `CartPanel.jsx` assumed flat AppContext lines and did `item.selectedOptions.length` → **TypeError**.
 5. No error boundary → React tree white-screens → SoM sees a **blank page with zero marks** (prior Sol burned remaining budget on “blank cart overlay”).
 
-Same class as OrderTracking’s nested `menuItem.name` fix, but for **live agent-built cart** after bridged add (not seeded orders). Distinct from GymEats bug-report §1–§2 (seeded id / qty wiring) and §6 (Tailwind ItemModal).
+Same class as OrderTracking’s nested `menuItem.name` fix, but for **live agent-built cart** after bridged add (not seeded orders). Distinct from Xber bug-report §1–§2 (seeded id / qty wiring) and §6 (Tailwind ItemModal).
 
 ## Fix (CUA-Gym-Hub `websites/uber_eats_mock`)
 
@@ -68,7 +68,7 @@ Path: Account → Orders → April Burger Barn → View Store → add Classic + 
 
 ## Explicit answers
 
-1. **Bug class:** GymEats bridged cart-line shape crash (env), not seed cart state, not Tailwind-invisible modal.
+1. **Bug class:** Xber bridged cart-line shape crash (env), not seed cart state, not Tailwind-invisible modal.
 2. **Fixable?** Yes — fixed + dist rebuilt + smoke + Sol confirm.
 3. **Does correct Burger Barn reasoning complete into a real order after fix?** **Yes** — `FOOD-1041` placed; episode success.
 

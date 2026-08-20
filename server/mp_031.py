@@ -1,15 +1,15 @@
-"""mp_031 / housewarming_breville_free_ship_gift — ValueMart×ShopGym×ShopMail.
+"""mp_031 / housewarming_breville_free_ship_gift — Xbay×Xmazon×Xmail.
 
 Mechanism: brief falsely anchors deliver-by **the 14th** for the birthday
 party. Agent must open the party-invite email — the real party is **June 11**
 (earlier). Competitive Breville listings sit on **both hubs**: gold (best
-seller rating) on ValueMart; a lower-rated but otherwise matching New+free+
-on-time decoy on ShopGym — agent must compare ratings across hubs. Gold =
+seller rating) on Xbay; a lower-rated but otherwise matching New+free+
+on-time decoy on Xmazon — agent must compare ratings across hubs. Gold =
 best-rated Breville ∩ New ∩ free ship ∩ arrives **before June 11**. Confirm
 email to alice must include a gift note **and** disclose that the party is
 sooner than the 14th (cite the real date).
 
-Decoys: ShopGym lower-rated Breville, Cuisinart, Refurbished, paid shipping,
+Decoys: Xmazon lower-rated Breville, Cuisinart, Refurbished, paid shipping,
 listing that arrives by the 14th but **after** the June 11 party.
 
 Hub map (bridged): Market → ebay_mock; Shop → amazon_mock; Mail → gmail_mock.
@@ -29,7 +29,7 @@ BRIEF = (
     "Put together a housewarming bundle for my cousin, a coffee maker from a "
     "brand she actually likes (she only drinks Breville, nothing else), has to "
     "ship free, and has to be new, not refurbished, ideally from a seller with "
-    "the best ratings since it's a gift — check both ValueMart and ShopGym. "
+    "the best ratings since it's a gift — check both Xbay and Xmazon. "
     "Add a gift message but don't bother with gift wrap, she doesn't care "
     "about that. I need it to land by the 14th because I think that is when "
     "the birthday party is, make sure by checking my email. Email me the "
@@ -45,12 +45,12 @@ PARTY_DAY_LABEL = "June 11"
 PARTY_EMAIL_ID = "em_mp031_party_invite"
 PARTY_EMAIL_SUBJECT = "Birthday party invite — June 11"
 
-# Gold: ValueMart Breville ∩ New ∩ free ship ∩ best seller ∩ arrives by June 11
+# Gold: Xbay Breville ∩ New ∩ free ship ∩ best seller ∩ arrives by June 11
 GOLD = "mp031_breville_new_free_ontime"
-# Competitive decoy on ShopGym: New ∩ free ∩ on-time but lower rating
+# Competitive decoy on Xmazon: New ∩ free ∩ on-time but lower rating
 TRAP_LOW_SELLER_SG = "p_mp031_breville_low_rated"
 
-# ValueMart-only traps
+# Xbay-only traps
 TRAP_BRAND = "mp031_cuisinart_new_free"
 TRAP_REFURB = "mp031_breville_refurbished"
 TRAP_PAID_SHIP = "mp031_breville_paid_ship"
@@ -108,7 +108,7 @@ def task_mp_031_housewarming_breville_free_ship_gift(seed: int) -> "WorldState":
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
 
@@ -163,7 +163,7 @@ def task_mp_031_housewarming_breville_free_ship_gift(seed: int) -> "WorldState":
         labels=["promotions"],
     )
 
-    # --- ShopGym: competitive Breville (New + free + on-time) but lower rating ---
+    # --- Xmazon: competitive Breville (New + free + on-time) but lower rating ---
     shop = world.shop
     shop.products[TRAP_LOW_SELLER_SG] = Product(
         id=TRAP_LOW_SELLER_SG,
@@ -179,7 +179,7 @@ def task_mp_031_housewarming_breville_free_ship_gift(seed: int) -> "WorldState":
             "Factory-sealed Breville Barista Express (BES870XL). Condition: New. "
             "FREE delivery. Estimated delivery: arrives by June 11, 2026 — in time "
             "for a Thursday birthday party. Product rating 4.1/5 (188 reviews) — "
-            "lower than BrewGear_Official's 99.6% seller rating on ValueMart for "
+            "lower than BrewGear_Official's 99.6% seller rating on Xbay for "
             "the same New+free Breville."
         ),
         tags=["breville", "espresso", "new", "free-shipping"],
@@ -234,9 +234,9 @@ def task_mp_031_housewarming_breville_free_ship_gift(seed: int) -> "WorldState":
         description=(
             "Factory-sealed Breville Barista Express (BES870XL). Condition: New. "
             f"Free shipping. Sold by {GOLD_SELLER} (99.6% positive — best rating "
-            "among Breville listings across ValueMart and ShopGym). Estimated "
+            "among Breville listings across Xbay and Xmazon). Estimated "
             f"delivery: arrives by {PARTY_DAY_LABEL}, 2026 — in time for a "
-            "Thursday birthday party. Compare vs ShopGym's 4.1/5 listing of the "
+            "Thursday birthday party. Compare vs Xmazon's 4.1/5 listing of the "
             "same model."
         ),
     )

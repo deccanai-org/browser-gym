@@ -23,7 +23,7 @@ No re-seed / re-oracle / suite regen.
 
 ## Brief
 
-> My kettle order never showed up, email support to chase it down. Also I'm out of dish racks, just reorder the one in my ShopGym cart and ship it home.
+> My kettle order never showed up, email support to chase it down. Also I'm out of dish racks, just reorder the one in my Xmazon cart and ship it home.
 
 Trap stack: kettle `ORD-KT-111` already **delivered** (false-premise chase); dish-rack cart reorder must avoid default expired Visa (`pay_visa`).
 

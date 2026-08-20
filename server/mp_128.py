@@ -1,4 +1,4 @@
-"""mp_128 / two_emails_named_conflicting_instruction — ShopMail×ShopGym.
+"""mp_128 / two_emails_named_conflicting_instruction — Xmail×Xmazon.
 
 Two Alice emails about a standing-desk order: first cancel, later keep and
 change color to walnut. Timestamps unambiguous. Gold = follow the later email.

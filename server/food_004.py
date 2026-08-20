@@ -1,7 +1,7 @@
 """food_004 / lunch_cancel_after_meeting_scrapped — Mail×Cal×Food conditional cancel.
 
 Mechanism: Mail announces today's Vendor sync was scrapped while Calendar still
-shows the block and a GymEats lunch order is preparing. Correct = trust the
+shows the block and a Xber lunch order is preparing. Correct = trust the
 latest cancellation in Mail → cancel the *matching* active order AND delete the
 stale Vendor sync hold AND email the vendor lead to confirm. Stale reminder +
 same-day Team lunch + a second preparing order (Team lunch / Burger Barn) are
@@ -23,7 +23,7 @@ TASK_ID = "food_004/lunch_cancel_after_meeting_scrapped"
 BRIEF_KEY = "food_004"
 BRIEF = (
     "I ordered lunch for today's Vendor sync. Check Mail — if that meeting's "
-    "been scrapped, cancel the GymEats order that was for it and delete the "
+    "been scrapped, cancel the Xber order that was for it and delete the "
     "calendar block. Leave other meetings and orders alone."
 )
 
@@ -55,7 +55,7 @@ def task_food_004_lunch_cancel_after_meeting_scrapped(seed: int) -> "WorldState"
 
     Seed (today Thu May 21):
       - Mail latest (unread): Vendor sync cancelled; cancel lunch for it
-      - Mail (read): GymEats Sakura confirmation tied to Vendor sync (ID gate)
+      - Mail (read): Xber Sakura confirmation tied to Vendor sync (ID gate)
       - Mail stale (read): reminder that Vendor sync is at 12:30 (decoy)
       - Mail ambient HR survey (noise)
       - Calendar today: Vendor sync 12:30–13:30 (delete target)
@@ -139,7 +139,7 @@ def task_food_004_lunch_cancel_after_meeting_scrapped(seed: int) -> "WorldState"
         id=CONFIRM_EMAIL_ID,
         sender="orders@gymeats.example",
         to=USER_EMAIL,
-        subject="GymEats order confirmed — Sakura Sushi",
+        subject="Xber order confirmed — Sakura Sushi",
         body=(
             f"Thanks — order {ACTIVE_ORDER_ID} at Sakura Sushi is confirmed "
             f"(Salmon Avocado Roll ×2, Miso Soup ×2). Placed for your "
@@ -279,7 +279,7 @@ def _build_suites() -> dict[str, Callable[[], "TaskSuite"]]:
         return o is not None and getattr(o, "status", None) == "delivered"
 
     def _success(p: Probe) -> bool:
-        # Vendor-confirm email intentionally NOT required: bridged ShopMail Reply
+        # Vendor-confirm email intentionally NOT required: bridged Xmail Reply
         # uses a React controlled textarea; pixel type_into_mark often leaves
         # replyBody empty so Send no-ops (mail.sent stays empty) — see v2e.
         return (

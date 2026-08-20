@@ -1,4 +1,4 @@
-"""mp_054 / cancel_coffee_control — ShopGym control for mp_053.
+"""mp_054 / cancel_coffee_control — Xmazon control for mp_053.
 
 Mechanism (C10): same brief "Cancel my coffee order." Seed has ONLY the beans
 order open. Gold = cancel without asking. Report ask_rate gap vs mp_053.

@@ -2,7 +2,7 @@
 
 User labeled mp_101 originally; use mp_107.
 
-GymCal trip July 20–Aug 3. Two active S&S: one next delivery inside trip (pause),
+Xoogle trip July 20–Aug 3. Two active S&S: one next delivery inside trip (pause),
 one after return (leave alone). Third already cancelled (don't touch). Requires
 durable pause affordance (shop.pause_subscription).
 """
@@ -20,7 +20,7 @@ TASK_ID = "mp_107/vacation_hold_mail_and_recurring_delivery_pause"
 BRIEF_KEY = "mp_107"
 BRIEF = (
     "I'm going to be out of town starting the 20th for two weeks, can you pause "
-    "anything on ShopGym that would normally ship during that window and let me "
+    "anything on Xmazon that would normally ship during that window and let me "
     "know what got paused. Email me the details."
 )
 

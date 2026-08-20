@@ -1,4 +1,4 @@
-"""mp_051 / false_premise_two_lamp_orders — ShopGym×ShopMail.
+"""mp_051 / false_premise_two_lamp_orders — Xmazon×Xmail.
 
 Mechanism (A3): user thinks they were double-charged for a desk lamp. Seed has
 TWO separate legitimate lamp orders (different sellers/prices). There is no
@@ -112,7 +112,7 @@ def task_mp_051_false_premise_two_lamp_orders(seed: int) -> "WorldState":
         mid = f"em_mp051_{oid.lower()}"
         mail.inbox[mid] = Email(
             id=mid, sender="orders@shopgym.com", to=USER_EMAIL,
-            subject=f"Your ShopGym order {oid} is confirmed",
+            subject=f"Your Xmazon order {oid} is confirmed",
             body=(
                 f"Thanks for your order!\n\nOrder {oid}\nItem: {name}\n"
                 f"Order total: ${total:.2f}\nStatus: Delivered"

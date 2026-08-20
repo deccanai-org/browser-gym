@@ -215,7 +215,7 @@ _DESCRIBE_EL_JS = """(el) => {
     if (el.isContentEditable) {
         d.value = (el.innerText || el.textContent || '');
         // The MARKUP as well as the text, because a rich editor stores markup:
-        // ShopMail keeps `bodyRef.current.innerHTML`. Replaying a fill that only
+        // Xmail keeps `bodyRef.current.innerHTML`. Replaying a fill that only
         // knows the text rebuilds the body as flat divs, so the sent mail has
         // the same words and a different body, and the world hash says diverged.
         // `value` stays plain text — it is what a trajectory is read for, and
@@ -541,7 +541,7 @@ class LiveSession:
         used to send `button: "none"` with no mask at all, so every intermediate
         move of a press-move-release was a hover: Chromium never extended the
         selection, and an annotator could not highlight a single word. Measured
-        against the ShopGym home page — the same gesture selects 60 characters
+        against the Xmazon home page — the same gesture selects 60 characters
         with the mask and returns "" without it — which also made the recorder
         see a drag with no selection and write down a `drag` step the executor
         cannot perform.
@@ -697,7 +697,7 @@ class LiveSession:
         """Size the viewport so the WHOLE page fits with no scrolling.
 
         Iterative on purpose. Narrowing the viewport reflows the page taller —
-        measured on the ShopGym cart, going from 1280 to 1128 wide took the
+        measured on the Xmazon cart, going from 1280 to 1128 wide took the
         content from 1378px to 1956px — so a single measure-then-resize lands on
         a height that is already wrong and the page still scrolls. Each pass
         re-measures at the width it will actually be rendered at.
@@ -859,7 +859,7 @@ class LiveSession:
         # reporting success. Same lesson as the radio group: resolving is not
         # being right.
         # Whitespace collapsed on BOTH sides. The recorder stores `text` trimmed
-        # but not collapsed, so ShopGym's "Returns\n& Orders" link compared
+        # but not collapsed, so Xmazon's "Returns\n& Orders" link compared
         # against a collapsed "Returns & Orders" and failed to be itself — every
         # multi-line label in every mock, refused at step 0.
         want = " ".join(str(locator.get("name") or locator.get("label")
@@ -887,7 +887,7 @@ class LiveSession:
         # unique handle.
         #
         # `text` counts as that name, and it is what saves the buttons a mock
-        # never gave an id. ShopMail's Send is `<button>Send</button>` inside a
+        # never gave an id. Xmail's Send is `<button>Send</button>` inside a
         # compose dialog: no testId, no id, no name attribute — so the only
         # handle was an unanchored `#root > div:nth-of-type(1) > …` path, and one
         # extra wrapper between recording and replay is enough to miss it. That
@@ -1129,7 +1129,7 @@ class LiveSession:
             # above, and for the same reason. A JS fill assigns the value and
             # dispatches an input event, which is enough for the DOM and usually
             # enough for React; when it is not, the field shows the text and the
-            # component's state never hears about it. ShopMail's send refuses on
+            # component's state never hears about it. Xmail's send refuses on
             # an empty `to`, so a replayed M105 filled all three fields visibly,
             # clicked Send, and sent nothing. Playwright drives real input
             # through CDP, so the page cannot tell it from a person typing.
@@ -1204,8 +1204,8 @@ class LiveSession:
         `clip.scale` does the downscaling in Chromium, so nothing full-size is
         ever encoded. Measured against the five mocks: ~20ms and ~14KB of base64
         per app, and a hidden tab's capture DOES reflect what changed while it
-        was hidden — which is what makes a ShopMail preview show the mail an
-        order in ShopGym just produced.
+        was hidden — which is what makes a Xmail preview show the mail an
+        order in Xmazon just produced.
         """
         sess = None
         try:
@@ -1476,7 +1476,7 @@ async def session_thumbnails(sid: str, body: FocusBody) -> dict:
     had nothing to show until they had been visited — the annotator was told
     there were five live browsers and shown one plus four placeholders. Asked on
     a timer as well as at connect, because a cross-app effect (an order in
-    ShopGym producing a ShopMail email) changes a tab nobody is looking at.
+    Xmazon producing a Xmail email) changes a tab nobody is looking at.
 
     Reports the scale it used: the caller is drawing these, and a thumbnail
     whose size it has to guess at renders blurry or letterboxed.

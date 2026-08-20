@@ -5,8 +5,8 @@
 The 85 active sellables exercise **13 distinct mutation archetypes**. Nine
 have representative rendered-Chromium/direct-mutation parity on independently
 reset seeds 0/1/2: Shop checkout, Food order, Calendar create, Calendar update,
-Calendar delete, ValueMart order, Mail send, subscription create, and
-subscription cancel. Calendar/Mail/Food/ValueMart comparisons use raw semantic
+Calendar delete, Xbay order, Mail send, subscription create, and
+subscription cancel. Calendar/Mail/Food/Xbay comparisons use raw semantic
 equality; subscription create normalizes random IDs and clock-based
 `next_delivery_date`.
 
@@ -18,8 +18,8 @@ were closed 2026-07-16
 
 Cross-app propagation is **CLOSED for the active set**. The active sellables
 use three source-to-destination order-event archetypes:
-ShopGym→Mail (`ShopOrderPlaced`), Food→Mail (`FoodOrderPlaced`), and
-ValueMart→Mail (`MarketOrderPlaced`). Checkout previously covered the first;
+Xmazon→Mail (`ShopOrderPlaced`), Food→Mail (`FoodOrderPlaced`), and
+Xbay→Mail (`MarketOrderPlaced`). Checkout previously covered the first;
 this pass covers the latter two on seeds 0/1/2. There is no Food→Calendar
 subscriber in current production wiring, so claiming that path would invent a
 contract. Each source action produced one `evt_1` at step 0, one matching
@@ -57,7 +57,7 @@ The machine-readable mapping is in `affordance_parity.json`.
 4. **Calendar update/reschedule (tested 2026-07-16):** M80, M200.
 5. **Calendar delete (tested 2026-07-16):** M366.
 6. **Food order (tested):** M248, M343, M346, M348, M349, M354, M362.
-7. **ValueMart order (tested):** M354.
+7. **Xbay order (tested):** M354.
 8. **Subscription create (tested 2026-07-16):** M61.
 9. **Subscription cancel (tested 2026-07-16):** M76, M164, M212, M217.
 10. **Return initiation (tested 2026-07-16):** M41, M47, M109.
@@ -82,9 +82,9 @@ Focused test:
   10:15–11:00 via `/calendar/update`; same event id preserved.
 - **Calendar delete (M366 fixture, 2026-07-16):** `cal_m366_vendor_review`
   removed via `/calendar/delete`.
-- **ValueMart order (M354 fixture):** two Welcome Signs, VALUE10,
+- **Xbay order (M354 fixture):** two Welcome Signs, VALUE10,
   item/quantity/subtotal/discount/delivery/total, cart and coupon clear,
-  matching ValueMart receipt and `MarketOrderPlaced`.
+  matching Xbay receipt and `MarketOrderPlaced`.
 - **Mail send (M37 fixture):** exact recipient, subject, body, Sent-folder
   state, and one `MailSent` trigger. The current Mail model has no cc/bcc,
   thread, or reply mutation fields, so none were silently normalized away.
@@ -122,7 +122,7 @@ PASS through rendered UI and current route/mutation boundary:
 
 - Calendar overlap: names `Team sync` and its 14:00–15:00 window; no event
   created; owned by `calendar.create_event`.
-- Invalid ValueMart coupon: visible “isn't valid” reason; coupon/cart unchanged;
+- Invalid Xbay coupon: visible “isn't valid” reason; coupon/cart unchanged;
   owned by `market.apply_coupon`.
 - Cross-restaurant Food cart: tells the user to clear the other restaurant;
   original cart unchanged; owned by `food.add_dish`.

@@ -22,7 +22,7 @@ Sol correctly counted April order history (Burger Barn ×3), ignored the May Bea
 | **Seed** | Today = May 21, 2026. **April:** Burger Barn ×3 (Classic Cheeseburger + Fries); Sakura ×1. **May 20:** Bean There Oat Milk Latte — most-recent decoy (tops Orders list). |
 | **Trap** | Reorder most-recent restaurant (Bean There) instead of last-month most-frequent. |
 | **Correct** | New order from Burger Barn with the usual items (`d_classic` + `d_fries`). Predicted id `FOOD-1041`. |
-| **Apps** | Food (GymEats) only. |
+| **Apps** | Food (Xber) only. |
 
 ## Env / ports
 
@@ -32,7 +32,7 @@ Sol correctly counted April order history (Burger Barn ×3), ignored the May Bea
 |---|---|
 | Gym | `:12278` |
 | Bridge | `:12291` |
-| Food (`uber_eats_mock` / GymEats) | `:47403` |
+| Food (`uber_eats_mock` / Xber) | `:47403` |
 
 Cleanup: `STACK_SLOT=42 STACK_APPS="food" tools/stop_bridged_stack.sh` (owned PIDs/ports only).
 

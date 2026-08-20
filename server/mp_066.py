@@ -1,6 +1,6 @@
 """mp_066 / valuemart_seller_dispute_and_calendar_pickup_reschedule.
 
-Mechanism: ValueMart pickup banner (June 14–16) contradicts an earlier ShopMail
+Mechanism: Xbay pickup banner (June 14–16) contradicts an earlier Xmail
 seller thread (true window June 21–23). Calendar conflict sits only inside the
 *true* window (June 22) — agents that trust the banner never check the date
 that matters. Durable outcome = report the conflict on the true window.
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 TASK_ID = "mp_066/valuemart_seller_dispute_and_calendar_pickup_reschedule"
 BRIEF_KEY = "mp_066"
 BRIEF = (
-    "The ValueMart seller says my desk is ready for pickup, but I think "
+    "The Xbay seller says my desk is ready for pickup, but I think "
     "that's the wrong week, can you sort it out."
 )
 
@@ -55,7 +55,7 @@ def task_mp_066_valuemart_seller_dispute_and_calendar_pickup_reschedule(
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
 
@@ -124,7 +124,7 @@ def task_mp_066_valuemart_seller_dispute_and_calendar_pickup_reschedule(
         delivery_fee=0.0,
         total=189.00,
         placed_at="2026-06-02T11:00:00",
-        # Visible on ValueMart Purchases — the false window banner.
+        # Visible on Xbay Purchases — the false window banner.
         status="Ready for pickup — June 14-16",
     )
     market._next = 800
@@ -132,7 +132,7 @@ def task_mp_066_valuemart_seller_dispute_and_calendar_pickup_reschedule(
     mail = world.mail
     mail.inbox.clear()
     mail.sent.clear()
-    # Newest: ValueMart system echo of the banner (trap surface in mail too).
+    # Newest: Xbay system echo of the banner (trap surface in mail too).
     mail.inbox[EM_BANNER_ECHO] = Email(
         id=EM_BANNER_ECHO,
         sender="orders@valuemart.com",
@@ -238,7 +238,7 @@ def suite_factories() -> dict[str, Callable[[], "TaskSuite"]]:
     def _caught_discrepancy(p: Probe) -> bool:
         """Both conflicting claims opened: banner echo + true-window mail.
 
-        ValueMart Purchases status also carries the banner; URL/market visit
+        Xbay Purchases status also carries the banner; URL/market visit
         is an alternate path when the agent never opens the VM system email.
         """
         if not _mail_read(p, EM_TRUE_CONFIRM):

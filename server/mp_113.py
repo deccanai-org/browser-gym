@@ -1,4 +1,4 @@
-"""mp_113 / kettle_reason_unlock_address_change_email — ShopGym×ShopMail.
+"""mp_113 / kettle_reason_unlock_address_change_email — Xmazon×Xmail.
 
 Solvable twin of mp_112 (Eligible e22 mp_074b redesign). Same brief/target
 address; kettle order is still processing so reason-for-change dropdown unlocks

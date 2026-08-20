@@ -1,4 +1,4 @@
-"""Section 1C construct-validity checks for ValueMart quantity actions."""
+"""Section 1C construct-validity checks for Xbay quantity actions."""
 
 from __future__ import annotations
 

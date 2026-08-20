@@ -1,6 +1,6 @@
 """mp_131 / laptop_charger_before_trip_abstain.
 
-Laptop identity is in a ShopMail order receipt (NovaBook 14). Trip leaves
+Laptop identity is in a Xmail order receipt (NovaBook 14). Trip leaves
 tomorrow 6:40 AM; charger ETA is May 23 — after departure. Gold = abstain.
 """
 

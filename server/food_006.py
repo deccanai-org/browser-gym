@@ -34,7 +34,7 @@ USER_EMAIL = "alice@shopmail.com"
 EVENT_ID = "ev_f006_design_review"
 EVENT_TITLE = "Design Review"
 EVENT_START, EVENT_END = "18:00", "19:00"
-# Mid-afternoon so GymCal week view scrolls near the evening Design Review.
+# Mid-afternoon so Xoogle week view scrolls near the evening Design Review.
 GYM_NOW = "2026-05-21T16:00:00"
 
 AMIR_EMAIL_ID = "em_f006_amir_halal"

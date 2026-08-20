@@ -1,4 +1,4 @@
-"""mp_122 / return_window_named_in_email — ShopGym×ShopMail.
+"""mp_122 / return_window_named_in_email — Xmazon×Xmail.
 
 Trailhead Boots delivered >30 days ago. Gym_now is just past the window.
 Gold = read the delivery date, refuse the return, email Alice.

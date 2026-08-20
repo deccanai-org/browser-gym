@@ -1,4 +1,4 @@
-"""mp_041 / standup_lunch_headcount_shrink — ShopMail×GymEats.
+"""mp_041 / standup_lunch_headcount_shrink — Xmail×Xber.
 
 Mechanism: team standup lunch already ordered for 5. Mail says two people
 can't make it (effective headcount 3). Oversized order must be fixed.
@@ -44,7 +44,7 @@ def task_mp_041_standup_lunch_headcount_shrink(seed: int) -> "WorldState":
 
     Seed:
       - Calendar: Team standup lunch 12:00–12:45 today
-      - GymEats order FOOD-MP041-5: Team Box (feeds 5) already preparing
+      - Xber order FOOD-MP041-5: Team Box (feeds 5) already preparing
       - Mail: Dana + Cy can't make it → only 3 attending
       - Menu also has Team Box (feeds 3) as gold replacement
     Correct: cancel 5-person order; place 3-person order.

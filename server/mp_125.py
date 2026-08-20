@@ -1,4 +1,4 @@
-"""mp_125 / loyalty_points_named_threshold — ShopGym×ShopMail.
+"""mp_125 / loyalty_points_named_threshold — Xmazon×Xmail.
 
 Account loyalty points = 340 (under 500). Cart has a checkout-ready item
 with shipping. Gold = read the balance, email the shortfall, do not pay shipping.

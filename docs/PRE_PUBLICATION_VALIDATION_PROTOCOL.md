@@ -166,7 +166,7 @@ representative real human use.
   and `trajectories/prepublication_section1a_20260715/checkout_parity.json`.
 - [ ] **P1 —** Confirm failed actions fail for a plausible in-world reason
   (declined card, OOS, policy) rather than an arbitrary harness quirk.
-  **PARTIAL 2026-07-15:** rendered Calendar-overlap, invalid-ValueMart-coupon,
+  **PARTIAL 2026-07-15:** rendered Calendar-overlap, invalid-Xbay-coupon,
   cross-restaurant-Food-cart, Shop-OOS, and invalid-Mail-recipient paths give
   visible in-world reasons and make no partial durable mutation. Card
   expiry/decline is not a current checkout contract, checkout has no commit-time
@@ -175,10 +175,10 @@ representative real human use.
   [Section 1A affordance audit](history/audits/SECTION_1A_AFFORDANCE_PARITY_2026-07-15.md)
   and `trajectories/prepublication_section1a_20260715/failed_action_plausibility.json`.
 - [x] **P0 —** Confirm cross-app events propagate correctly end-to-end (Food →
-  Calendar reminder, ValueMart → Mail receipt, etc.) — spot-check the
+  Calendar reminder, Xbay → Mail receipt, etc.) — spot-check the
   event bus on a handful of multi-app tasks.
-  **CLOSED 2026-07-15:** the active set uses ShopGym→Mail, Food→Mail, and
-  ValueMart→Mail order-event archetypes; rendered and direct paths cover all
+  **CLOSED 2026-07-15:** the active set uses Xmazon→Mail, Food→Mail, and
+  Xbay→Mail order-event archetypes; rendered and direct paths cover all
   three on seeds 0/1/2 with exact source/receipt binding, one delivered event,
   no preexisting receipt, and no duplicate. Current wiring has no
   Food→Calendar subscriber. Evidence:
@@ -188,7 +188,7 @@ representative real human use.
 - [x] **P0 —** Confirm the browser interacts through rendered UI only — no
   agent-visible privileged internal API in the intended action path.
   **CLOSED 2026-07-15:** captured rendered traffic for Shop, Food, Calendar,
-  ValueMart, and Mail contains no harness URL/control header; forms use public
+  Xbay, and Mail contains no harness URL/control header; forms use public
   app contracts; browser fetch/navigation to world/reset is 401 without a
   token; DOM/source/storage/cookies/traffic contain no token. Evidence:
   [Section 1A affordance audit](history/audits/SECTION_1A_AFFORDANCE_PARITY_2026-07-15.md)
@@ -199,7 +199,7 @@ representative real human use.
   the direct mutation function used in pure-logic tests. Confirm that both paths
   produce equivalent state transitions and verifier outcomes.
   **CLOSED 2026-07-16 (12/13 PASS + 1 STRUCTURAL_EXCEPTION):** Shop checkout,
-  Food order, Calendar create, Calendar update, Calendar delete, ValueMart order,
+  Food order, Calendar create, Calendar update, Calendar delete, Xbay order,
   Mail send, subscription create, subscription cancel, return initiation,
   payment/default change, and address/default change pass seeds 0/1/2
   (subscription create and return initiation normalize minted IDs/timestamps;
@@ -274,7 +274,7 @@ the 5 questions below and record the answer in this doc:
 - [ ] **P0 —** Confirm interactive-element marks (SoM) are generated
   consistently and no interactive element is silently omitted from the
   mark set.
-  **PARTIAL 2026-07-16 — KEEP P0 OPEN.** ValueMart quantity construct remains
+  **PARTIAL 2026-07-16 — KEEP P0 OPEN.** Xbay quantity construct remains
   scoped-closed (hidden qty correctly unmarked; Add-to-cart mark stable;
   36/36 / 12/12). Broad advance: live `extract_marks` on 7 dense surfaces +
   omission taxonomy (hidden / minDim / offscreen / role / IoU-or-cap-80).
@@ -316,7 +316,7 @@ the 5 questions below and record the answer in this doc:
   checked and resolved clean**, tied to the five-question / agent-interface
   motor-vs-reasoning concern (`PROJECT_INFO.md` §9). DOM-vs-pixel select
   asymmetry still disclosed; incompletes may confound. No paid model
-  rescreen. ValueMart quantity remains verdict D. Evidence:
+  rescreen. Xbay quantity remains verdict D. Evidence:
   [Section 1C agent-interface audit](history/audits/SECTION_1C_AGENT_INTERFACE_2026-07-16.md),
   [native-select motor-vs-reasoning](history/audits/SECTION_1C_NATIVE_SELECT_MOTOR_VS_REASONING_2026-07-16.md),
   [Section 1C Marketplace quantity audit](history/audits/SECTION_1C_MARKETPLACE_QUANTITY_INPUT_2026-07-15.md),

@@ -10,22 +10,22 @@
 ### Before
 | Listing | Hub | Ratings signal |
 |---|---|---|
-| Gold `mp031_breville_new_free_ontime` (BrewGear_Official) | **ValueMart only** | 99.6% seller |
-| Low-rated decoy `mp031_breville_low_seller` (DiscountBrew_Outlet) | **ValueMart only** | 81.4% seller |
-| Other traps (Cuisinart / refurb / paid / late-for-party) | ValueMart | — |
+| Gold `mp031_breville_new_free_ontime` (BrewGear_Official) | **Xbay only** | 99.6% seller |
+| Low-rated decoy `mp031_breville_low_seller` (DiscountBrew_Outlet) | **Xbay only** | 81.4% seller |
+| Other traps (Cuisinart / refurb / paid / late-for-party) | Xbay | — |
 
-Both competitive Brevilles were on ValueMart; no ShopGym compare.
+Both competitive Brevilles were on Xbay; no Xmazon compare.
 
 ### After
 | Listing | Hub | Ratings / constraints |
 |---|---|---|
-| Gold `mp031_breville_new_free_ontime` (BrewGear_Official) | **ValueMart** | 99.6% seller · New · free · arrives by **June 11** |
-| Competitive decoy `p_mp031_breville_low_rated` | **ShopGym** | **4.1/5** (188) · New · free Prime · arrives by June 11 |
-| Other traps | ValueMart | unchanged |
+| Gold `mp031_breville_new_free_ontime` (BrewGear_Official) | **Xbay** | 99.6% seller · New · free · arrives by **June 11** |
+| Competitive decoy `p_mp031_breville_low_rated` | **Xmazon** | **4.1/5** (188) · New · free Prime · arrives by June 11 |
+| Other traps | Xbay | unchanged |
 
-**Brief** now requires checking both ValueMart and ShopGym for best ratings.  
+**Brief** now requires checking both Xbay and Xmazon for best ratings.  
 **Email party-date earlier-than-14th** mechanism unchanged (invite → June 11).  
-**Forbidden:** `forbidden_low_rated_cross_hub` (ordering the ShopGym 4.1/5 listing).
+**Forbidden:** `forbidden_low_rated_cross_hub` (ordering the Xmazon 4.1/5 listing).
 
 ### Gates (mp_031)
 | Gate | Result |
@@ -69,12 +69,12 @@ Kept: biweekly from today, collision check, veg, pickup, BCC / forbidden reply-a
 
 Bridge session `probe1` on mp_032 seed 0; hubs opened with `?bridge=&session=probe1`.
 
-### Calendar (GymCal)
+### Calendar (Xoogle)
 - Projection: `_gym_today = 2026-05-21T12:40:00`, `_gym_now` ms pinned
 - UI: Week view **May 2026**, **Budget Sync** Thu May 21 noon, red now-line element at **`top: 760px`** (= 12×60+40)
 - Screenshot: `docs/history/audits/_screenshots_agent_sees_2026-08-07/mp032_probe_gymcal_now_1240.png`
 
-### Food ETA (GymEats)
+### Food ETA (Xber)
 - Projection: food `_gym_now = 2026-05-21T12:40:00`; Green Bowl `etaLabel=12:55 PM`, `pickupTimeMin/Max=10/18`
 - List UI strings: **Green Bowl Kitchen · 10-18 min**; **Slow Feast Garden · 40-55 min**; Pickup selected
 - PDP UI strings: **Earliest arrival 10 min**; **Harvest Veggie Bowl** + Vegetarian tag

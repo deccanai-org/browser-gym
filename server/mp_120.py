@@ -1,4 +1,4 @@
-"""mp_120 / nordheat_air_fryer_no_order_email — ShopGym×ShopMail.
+"""mp_120 / nordheat_air_fryer_no_order_email — Xmazon×Xmail.
 
 Reworded no-order false-warranty mechanism (same as mp_095 / mail_002 lineage).
 Prior id: ``mp_095/lumos_blender_no_order_email`` (Lumos blender wording retired
@@ -137,7 +137,7 @@ def task_mp_120_nordheat_air_fryer_no_order_email(seed: int) -> "WorldState":
         id="em_mp120_noise_mouse",
         sender="orders@shopgym.com",
         to=USER_EMAIL,
-        subject="Your ShopGym order ORD-MP120-MOUSE is confirmed",
+        subject="Your Xmazon order ORD-MP120-MOUSE is confirmed",
         body=(
             "Thanks for your order!\n\nOrder ORD-MP120-MOUSE\n"
             "Item: Northwind Wireless Mouse\nOrder total: $27.11\n"

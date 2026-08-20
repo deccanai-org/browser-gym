@@ -1,7 +1,7 @@
 """cal_food_001 / partner_sync_lunch_moved_reorder — Mail×Cal×Food schedule resync.
 
 Mechanism: Partner sync lunch was moved from 12:30 to 3:00 PM (Mail latest);
-Calendar still shows the old block and a GymEats order is preparing for the
+Calendar still shows the old block and a Xber order is preparing for the
 old slot. Correct = cancel stale order → update calendar to 15:00–16:00 →
 place a new lunch that arrives **before** 3:00 PM. Sakura's 3:20 PM ETA is
 the late safe-roll trap (food_003 family but on reschedule, not dietary).
@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 TASK_ID = "cal_food_001/partner_sync_lunch_moved_reorder"
 BRIEF_KEY = "cal_food_001"
 BRIEF = (
-    "I ordered GymEats for today's Partner sync lunch. Check Mail — if the "
+    "I ordered Xber for today's Partner sync lunch. Check Mail — if the "
     "meeting moved, update my calendar and make sure lunch still arrives "
     "before the new start time."
 )

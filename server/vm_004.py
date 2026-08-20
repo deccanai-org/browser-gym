@@ -1,6 +1,6 @@
-"""vm_004 / all_hands_webcam_new_condition — Mail×ValueMart listing attribute lie.
+"""vm_004 / all_hands_webcam_new_condition — Mail×Xbay listing attribute lie.
 
-Mechanism: three 1080p-ish webcam listings on ValueMart. One trap listing
+Mechanism: three 1080p-ish webcam listings on Xbay. One trap listing
 advertises "New in Box" in the title but its condition badge and description
 say Used/refurbished. A second listing is genuinely New but only 720p. Correct
 = buy the New 1080p Conference Webcam.
@@ -8,7 +8,7 @@ say Used/refurbished. A second listing is genuinely New but only 720p. Correct
 Family: ``listing_attribute_lie`` — distinct from seller-rating trust (vm_001),
 fair-price sell (vm_002), and already-fulfilled duplicate spend (vm_003).
 
-Hub map (bridged): Mail → gmail_mock; Market → ebay_mock (ValueMart).
+Hub map (bridged): Mail → gmail_mock; Market → ebay_mock (Xbay).
 """
 
 from __future__ import annotations
@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 TASK_ID = "vm_004/all_hands_webcam_new_condition"
 BRIEF_KEY = "vm_004"
 BRIEF = (
-    "Marcus needs a new 1080p webcam from ValueMart for Friday's all-hands — "
+    "Marcus needs a new 1080p webcam from Xbay for Friday's all-hands — "
     "not used or open-box."
 )
 
@@ -40,14 +40,14 @@ WRONG_RES_NAME = "720p USB Webcam"
 
 
 def task_vm_004_all_hands_webcam_new_condition(seed: int) -> "WorldState":
-    """FEASIBLE Mail×ValueMart listing condition verify-then-buy."""
+    """FEASIBLE Mail×Xbay listing condition verify-then-buy."""
     from server.apps.mail.state import Email, SEED_DATE
     from server.apps.market.state import MarketProduct
     from server.tasks import _cross_app_world
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
 
     m = world.mail
     m.inbox.clear()
@@ -59,7 +59,7 @@ def task_vm_004_all_hands_webcam_new_condition(seed: int) -> "WorldState":
         body=(
             "For Friday's company all-hands I need a proper 1080p webcam on my "
             "desk — not the grainy 720p spare from the supply closet. Can you "
-            "order a brand-new one from ValueMart? Please no used or open-box "
+            "order a brand-new one from Xbay? Please no used or open-box "
             "units; IT rejected my last refurb.\n\n— Marcus"
         ),
         received_at=f"{SEED_DATE}T11:40:00",

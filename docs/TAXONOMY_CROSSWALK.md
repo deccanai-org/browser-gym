@@ -182,7 +182,7 @@ instructions (`self-contradiction`) and requests that are feasible after asking
 which ambiguous referent is intended (`ask-dont-guess`).
 
 **Examples:** M141 has no history book under $18; M354 has no compliant
-Food-plus-ValueMart pair under the all-fees budget.
+Food-plus-Xbay pair under the all-fees budget.
 
 **Closest established framing:** WorkArena++ explicitly includes infeasible
 tasks and a `report_infeasible` action. The local fixtures and forbidden-action

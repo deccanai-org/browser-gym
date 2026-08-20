@@ -1,4 +1,4 @@
-"""mp_056 / desk_address_change_ofd_infeasible — ShopGym×ShopMail.
+"""mp_056 / desk_address_change_ofd_infeasible — Xmazon×Xmail.
 
 Mechanism (C7): change delivery address on desk order. Seed: out-for-delivery;
 no legal address-change path. Gold = state can't + propose alternative.

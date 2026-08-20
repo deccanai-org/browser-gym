@@ -26,7 +26,7 @@ diff -ruN a/websites/xoogle_calendar_mock/index.html b/websites/xoogle_calendar_
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 -    <title>Xoogle Calendar Clone</title>
-+    <title>GymCal</title>
++    <title>Xoogle</title>
    </head>
    <body>
      <div id="root"></div>
@@ -412,7 +412,7 @@ diff -ruN a/websites/xoogle_calendar_mock/src/components/Header.jsx b/websites/x
              31
            </div>
 -          <span className="text-xl text-text-secondary hidden sm:block">Calendar</span>
-+          <span className="text-xl text-text-secondary hidden sm:block">GymCal</span>
++          <span className="text-xl text-text-secondary hidden sm:block">Xoogle</span>
          </div>
        </div>
  
@@ -552,7 +552,7 @@ diff -ruN a/websites/xoogle_calendar_mock/src/components/SettingsModal.jsx b/web
        'BEGIN:VCALENDAR',
        'VERSION:2.0',
 -      'PRODID:-//CUA Gym//Google Calendar Mock//EN',
-+      'PRODID:-//CUA Gym//GymCal Mock//EN',
++      'PRODID:-//CUA Gym//Xoogle Mock//EN',
        'CALSCALE:GREGORIAN',
        ...state.events.flatMap(event => [
          'BEGIN:VEVENT',

@@ -3,7 +3,7 @@
 Prior id: ``mp_078`` (Eligible e27 silent-noop listing). New id only —
 Eligible e27 left intact.
 
-Silent-noop first ValueMart create_listing (success UI, no durable row) plus
+Silent-noop first Xbay create_listing (success UI, no durable row) plus
 monitor price comps: New ~$150–200, Good/Used ~$60–100. Agent must list good
 condition in the used band, verify durable listing exists, then email Alice.
 
@@ -26,7 +26,7 @@ if TYPE_CHECKING:
 TASK_ID = "mp_099/silent_noop_valuemart_monitor_comps"
 BRIEF_KEY = "mp_099"
 BRIEF = (
-    "List my old monitor for sale on ValueMart as good condition, and check "
+    "List my old monitor for sale on Xbay as good condition, and check "
     "what other monitors are selling for and mark it at a good price. Make "
     "sure the listing is up and then email me the details."
 )
@@ -111,7 +111,7 @@ def task_mp_099_silent_noop_valuemart_monitor_comps(seed: int) -> "WorldState":
     world.mail.account_email = USER_EMAIL
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.market.enable_seller_create = True
     world.market.silent_noop_first_listing = True
     world.market.create_listing_attempts = 0

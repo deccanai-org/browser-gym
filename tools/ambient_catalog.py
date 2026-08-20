@@ -1,4 +1,4 @@
-"""Ambient (browse-only) content for ShopGym, ValueMart and ShopMail.
+"""Ambient (browse-only) content for Xmazon, Xbay and Xmail.
 
 Same idea as tools/ambient_food.py: purely additive data appended to the
 projection so the apps look full. It never touches the gym engine world, so no
@@ -31,7 +31,7 @@ def _uimg(unique_key: str, type_key: str) -> str:
     return _img(unique_key if unique_key in _IMG_SET else type_key)
 
 
-# ---------------------------------------------------------------- ShopGym ------
+# ---------------------------------------------------------------- Xmazon ------
 # (title, price, original_price|None, image_key, brand)
 _SHOP: dict[str, list] = {
     "Electronics": [
@@ -101,11 +101,11 @@ def build_shop():
                 "specs": {"Brand": brand, "Weight": "0.8 kg", "Emoji": ""},
                 "category": cat, "brand": brand, "prime": True,
                 "inStock": True, "stockCount": 25 + i * 3,
-                "seller": "ShopGym", "badges": (["Best Seller"] if orig else []),
+                "seller": "Xmazon", "badges": (["Best Seller"] if orig else []),
                 "createdAt": "2024-01-01T00:00:00.000Z",
             })
     for j, p in enumerate(_BULK.get("shop", [])):
-        key, title, brand = p["image_key"], p["title"], p.get("brand", "ShopGym")
+        key, title, brand = p["image_key"], p["title"], p.get("brand", "Xmazon")
         orig = p.get("originalPrice")
         pimg = _uimg(f"amb_bp_{j}", key)
         out.append({
@@ -118,13 +118,13 @@ def build_shop():
             "specs": {"Brand": brand, "Weight": "0.8 kg", "Emoji": ""},
             "category": p.get("category", "Electronics"), "brand": brand, "prime": True,
             "inStock": True, "stockCount": 20 + (j * 7) % 80,
-            "seller": "ShopGym", "badges": (["Best Seller"] if orig else []),
+            "seller": "Xmazon", "badges": (["Best Seller"] if orig else []),
             "createdAt": "2024-01-01T00:00:00.000Z",
         })
     return out
 
 
-# ---------------------------------------------------------------- ValueMart ----
+# ---------------------------------------------------------------- Xbay ----
 # (title, price, image_key, category, condition, is_auction)
 _MARKET: list = [
     ("Vintage Vinyl Record - Jazz Classics", 24.99, "amb_vinyl", "Collectibles", "Used", True),
@@ -212,7 +212,7 @@ def build_market(svg_tile):
     return listings, sellers
 
 
-# ---------------------------------------------------------------- ShopMail -----
+# ---------------------------------------------------------------- Xmail -----
 # Ambient mail so Sent / Drafts / Snoozed / Inbox aren't empty. To/From are
 # obviously-filler people; subjects can't collide with any task's mail.
 def _person(name, email):

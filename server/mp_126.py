@@ -1,4 +1,4 @@
-"""mp_126 / two_stated_addresses_named_recipient — ShopGym×ShopMail.
+"""mp_126 / two_stated_addresses_named_recipient — Xmazon×Xmail.
 
 Candle set should ship to saved Work address, not default Home.
 """

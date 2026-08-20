@@ -1,7 +1,7 @@
 """mp_068 / valuemart_price_watch_vs_gymcal_deadline.
 
-Mechanism: ValueMart couch mid-range with "may drop further end of month"
-speculation. GymCal move-in is 5 days out — hard buy-by. Correct = buy now
+Mechanism: Xbay couch mid-range with "may drop further end of month"
+speculation. Xoogle move-in is 5 days out — hard buy-by. Correct = buy now
 at $380 before the deadline, not wait for a hypothetical further drop.
 """
 
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 TASK_ID = "mp_068/valuemart_price_watch_vs_gymcal_deadline"
 BRIEF_KEY = "mp_068"
 BRIEF = (
-    "I've had my eye on a couch on ValueMart, grab it whenever it's actually "
+    "I've had my eye on a couch on Xbay, grab it whenever it's actually "
     "the best time to buy."
 )
 
@@ -42,7 +42,7 @@ def task_mp_068_valuemart_price_watch_vs_gymcal_deadline(seed: int) -> "WorldSta
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
 

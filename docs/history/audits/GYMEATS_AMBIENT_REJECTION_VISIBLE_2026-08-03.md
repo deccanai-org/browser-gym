@@ -1,7 +1,7 @@
-# GymEats — the ambient-decoy rejection is now visible, announced and SoM-reachable
+# Xber — the ambient-decoy rejection is now visible, announced and SoM-reachable
 
 **Date:** 2026-08-03
-**Surface:** GymEats `uber_eats_mock` add-to-cart / checkout, over `tools/bridge_service.py`
+**Surface:** Xber `uber_eats_mock` add-to-cart / checkout, over `tools/bridge_service.py`
 **Stack:** `STACK_SLOT=52` · gym `:13278` · bridge `:13291` · food hub `:57403` · token `gymeats-flash-52` (stopped; all ports confirmed free)
 **Constraint:** decoy set and decoy ratio unchanged; no `sellable_breakers_v2.csv`, no Annotation-site change, no `honesty_confirmations_match_state` edit, no evals run.
 
@@ -63,7 +63,7 @@ could have recovered it. That is the gap this fixes.
 **Why not change the 303.** Returning a 4xx from those two routes is the "correct" E8 fix, but the
 gym's own server-rendered food pages post those same forms and rely on the redirect, and E8 is
 systemic across all five apps — changing it here would be a cross-app behaviour change smuggled in
-under a GymEats fairness fix. Carrying the flash alongside the status is strictly additive: `ok`
+under a Xber fairness fix. Carrying the flash alongside the status is strictly additive: `ok`
 and `status` keep their exact previous values, and nothing that ignores the new field changes
 behaviour.
 
@@ -154,7 +154,7 @@ Measured this run on `FOOD-1041` (`subtotal 10.00`, `delivery_fee 2.49`):
 | M348 seed 1 (`subtotal 42.00`, `fee 2.49`) | `$54.57` | `$44.49` | `$10.08` = service `6.30` + tax `3.78` |
 
 Both reproduce to the cent, so this is the whole of the discrepancy. It is a **display-model
-mismatch, present on every GymEats checkout including a perfectly clean one**, not a cart-hygiene
+mismatch, present on every Xber checkout including a perfectly clean one**, not a cart-hygiene
 bug — and therefore neither caused nor cured by this fix. Reported rather than changed: the
 displayed total is what every prior Food run was calibrated against, and silently re-pricing
 checkout mid-flight would move the goalposts for tasks that are already packaged. Recorded as
@@ -186,7 +186,7 @@ they were left in place for their owner to reap.
 
 ## Related
 
-- [`ENV_ISSUES_TRACKER_2026-08-03.md`](./ENV_ISSUES_TRACKER_2026-08-03.md) — E8, E15 (GymEats) + its resolution, E16-GYMEATS-CORRECTION, E17
+- [`ENV_ISSUES_TRACKER_2026-08-03.md`](./ENV_ISSUES_TRACKER_2026-08-03.md) — E8, E15 (Xber) + its resolution, E16-GYMEATS-CORRECTION, E17
 - [`M348_CLEAN_RERUN_FIXED_DISTS_2026-08-03.md`](./M348_CLEAN_RERUN_FIXED_DISTS_2026-08-03.md) §4 — the two env-fairness non-completions this closes
 - [`GYMEATS_ORDER_DURABILITY_CHECK_2026-08-03.md`](./GYMEATS_ORDER_DURABILITY_CHECK_2026-08-03.md) §7.1 — the owner call this implements, §8 — M343 / M354
 - [`CROSS_HUB_SOM_ARIA_AUDIT_2026-08-02.md`](./CROSS_HUB_SOM_ARIA_AUDIT_2026-08-02.md) — the SoM-reachability pattern reused here

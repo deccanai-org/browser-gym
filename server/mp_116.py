@@ -1,4 +1,4 @@
-"""mp_116 / cancel_subscription_ambiguous_ask_email — ShopGym×ShopMail.
+"""mp_116 / cancel_subscription_ambiguous_ask_email — Xmazon×Xmail.
 
 Matched-pair A (Eligible e25 mp_077 redesign). Two active subscriptions:
 GreenPlate Meal Kit + StreamBox Media Pass. Brief is ambiguous. Gold = email

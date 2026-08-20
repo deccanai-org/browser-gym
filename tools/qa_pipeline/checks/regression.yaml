@@ -9,7 +9,7 @@ apps:
   gymeats: { folder: xber_eats_mock, port: 5205, path: / }
 
 checks:
-  # ---- ShopGym ----
+  # ---- Xmazon ----
   - id: SG-01
     app: shopgym
     severity: critical
@@ -32,7 +32,7 @@ checks:
       - click: button[aria-label="Add gift card to cart"]
       - wait: text=Added to cart
       - click: a[href="/cart"]
-      - wait: text=ShopGym Gift Card
+      - wait: text=Xmazon Gift Card
       - assert_text: "$50.00"
       - assert_text_not: "Subtotal (1 item): $0.00"
 
@@ -139,7 +139,7 @@ checks:
     must_contain:
       - Enter a valid ZIP code
 
-  # ---- ValueMart ----
+  # ---- Xbay ----
   - id: VM-01
     app: valuemart
     severity: critical
@@ -270,7 +270,7 @@ checks:
       - "!!selectedAddressId && !!selectedPaymentId"
       - Choose a shipping address and a payment method
 
-  # ---- ShopMail ----
+  # ---- Xmail ----
   - id: SM-01
     app: shopmail
     severity: high
@@ -473,29 +473,29 @@ checks:
   - id: SM-19
     app: shopmail
     severity: low
-    title: Product name and favicon are branded ShopMail
+    title: Product name and favicon are branded Xmail
     kind: source
     files:
       - websites/xmail_mock/index.html
     must_contain:
-      - <title>ShopMail</title>
+      - <title>Xmail</title>
     must_not_contain:
-      - ShopMail Clone
+      - Xmail Clone
 
   - id: SM-19b
     app: shopmail
     severity: low
-    title: Masthead shows a ShopMail logo that links home
+    title: Masthead shows a Xmail logo that links home
     kind: browser
     steps:
       - goto: /#/starred
-      - assert_present: button[aria-label="ShopMail home"] svg
-      - click: button[aria-label="ShopMail home"]
+      - assert_present: button[aria-label="Xmail home"] svg
+      - click: button[aria-label="Xmail home"]
       - assert_js: |
           return location.hash.includes('/inbox');
         why: logo does not navigate back to the inbox
 
-  # ---- GymEats ----
+  # ---- Xber ----
   - id: GE-01
     app: gymeats
     severity: critical
@@ -557,7 +557,7 @@ checks:
     must_contain:
       - flex-wrap
 
-  # ---- GymCal ----
+  # ---- Xoogle ----
   - id: GC-02
     app: gymcal
     severity: critical
@@ -813,11 +813,11 @@ checks:
   - id: GC-23
     app: gymcal
     severity: low
-    title: Product name and favicon are branded GymCal
+    title: Product name and favicon are branded Xoogle
     kind: source
     files:
       - websites/xoogle_calendar_mock/index.html
     must_contain:
-      - GymCal
+      - Xoogle
     must_not_contain:
       - /vite.svg

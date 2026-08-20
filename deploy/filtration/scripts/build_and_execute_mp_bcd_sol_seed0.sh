@@ -97,7 +97,7 @@ if [ "$PREPARE_HUB" = "1" ]; then
   N_JPG="$(find "$OUT/amazon_mock" -name '*.jpg' -print | wc -l | tr -d ' ')"
   echo "[mp-bcd] amazon JPGs=$N_JPG"
   if [ "$N_JPG" -lt 100 ]; then
-    echo "FATAL: expected >=100 ShopGym JPGs in hub_dist/amazon_mock" >&2
+    echo "FATAL: expected >=100 Xmazon JPGs in hub_dist/amazon_mock" >&2
     exit 1
   fi
 fi

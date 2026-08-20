@@ -6,7 +6,7 @@ diff -ruN a/websites/xmazon_mock/index.html b/websites/xmazon_mock/index.html
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 -    <title>Xmazon Mock</title>
-+    <title>ShopGym Mock</title>
++    <title>Xmazon Mock</title>
    </head>
    <body>
      <div id="root"></div>
@@ -29,9 +29,9 @@ diff -ruN a/websites/xmazon_mock/src/App.jsx b/websites/xmazon_mock/src/App.jsx
 -    company: ['Careers', 'Blog', 'About Xmazon', 'Investor Relations', 'Xmazon Devices', 'Xmazon Science'],
 -    seller: ['Sell products on Xmazon', 'Sell on Xmazon Business', 'Sell apps on Xmazon', 'Become an Affiliate', 'Advertise Your Products', 'Self-Publish with Us'],
 -    payments: ['Xmazon Business Card', 'Shop with Points', 'Reload Your Balance', 'Xmazon Currency Converter'],
-+    company: ['Careers', 'Blog', 'About ShopGym', 'Investor Relations', 'ShopGym Devices', 'ShopGym Science'],
-+    seller: ['Sell products on ShopGym', 'Sell on ShopGym Business', 'Sell apps on ShopGym', 'Become an Affiliate', 'Advertise Your Products', 'Self-Publish with Us'],
-+    payments: ['ShopGym Business Card', 'Shop with Points', 'Reload Your Balance', 'ShopGym Currency Converter'],
++    company: ['Careers', 'Blog', 'About Xmazon', 'Investor Relations', 'Xmazon Devices', 'Xmazon Science'],
++    seller: ['Sell products on Xmazon', 'Sell on Xmazon Business', 'Sell apps on Xmazon', 'Become an Affiliate', 'Advertise Your Products', 'Self-Publish with Us'],
++    payments: ['Xmazon Business Card', 'Shop with Points', 'Reload Your Balance', 'Xmazon Currency Converter'],
      help: ['Shipping Rates & Policies', 'Returns & Replacements', 'Manage Your Content and Devices', 'Help'],
      legal: ['Conditions of Use', 'Privacy Notice', 'Consumer Health Data Privacy Disclosure', 'Your Ads Privacy Choices'],
    };
@@ -40,7 +40,7 @@ diff -ruN a/websites/xmazon_mock/src/App.jsx b/websites/xmazon_mock/src/App.jsx
            </div>
            <div>
 -            <h4 className="font-bold text-[14px] mb-3">Xmazon Payment Products</h4>
-+            <h4 className="font-bold text-[14px] mb-3">ShopGym Payment Products</h4>
++            <h4 className="font-bold text-[14px] mb-3">Xmazon Payment Products</h4>
              <ul className="space-y-2 text-[#ddd] text-[13px]">
                {footerLinks.payments.map(label => <li key={label}><FooterButton>{label}</FooterButton></li>)}
              </ul>
@@ -50,14 +50,14 @@ diff -ruN a/websites/xmazon_mock/src/App.jsx b/websites/xmazon_mock/src/App.jsx
          <div className="flex items-center justify-center gap-2 mb-3">
 -          <span className="text-[20px] font-bold tracking-tight">xmazon</span>
 -          <span className="text-[10px] text-xmazon-orange font-medium">.mock</span>
-+          <span className="text-[20px] font-bold tracking-tight">ShopGym</span>
++          <span className="text-[20px] font-bold tracking-tight">Xmazon</span>
 +          <span className="text-[10px] text-xmazon-orange font-medium"></span>
          </div>
          <div className="flex flex-wrap justify-center gap-6 text-[12px] text-[#999] mb-2">
            {footerLinks.legal.map(label => <FooterButton key={label}>{label}</FooterButton>)}
          </div>
 -        <div className="text-[12px] text-[#999]">&copy; 1996-{year}, Xmazon.mock, Inc. or its affiliates</div>
-+        <div className="text-[12px] text-[#999]">&copy; 1996-{year}, ShopGym, Inc. or its affiliates</div>
++        <div className="text-[12px] text-[#999]">&copy; 1996-{year}, Xmazon, Inc. or its affiliates</div>
        </div>
  
        {footerPanel && (
@@ -66,7 +66,7 @@ diff -ruN a/websites/xmazon_mock/src/App.jsx b/websites/xmazon_mock/src/App.jsx
              </div>
              <p className="text-sm text-gray-700 leading-6">
 -              This local Xmazon.mock sandbox keeps external company pages inside the training environment. Use the account, orders, wishlist, search, and cart links for task-relevant workflows.
-+              This local ShopGym sandbox keeps external company pages inside the training environment. Use the account, orders, wishlist, search, and cart links for task-relevant workflows.
++              This local Xmazon sandbox keeps external company pages inside the training environment. Use the account, orders, wishlist, search, and cart links for task-relevant workflows.
              </p>
              <div className="flex justify-end mt-5">
                <button type="button" onClick={() => setFooterPanel(null)} className="bg-xmazon-yellow hover:bg-xmazon-darkYellow px-5 py-2 rounded text-sm font-bold">Done</button>
@@ -162,7 +162,7 @@ diff -ruN a/websites/xmazon_mock/src/components/layout/Header.jsx b/websites/xma
        <div className="bg-xmazon text-white px-4 py-2 flex items-center gap-4 h-[60px]">
          <Link to="/" className="flex items-center border border-transparent hover:border-white p-2 rounded-sm focus:outline-none focus:ring-2 focus:ring-white">
 -          <span className="text-2xl font-bold tracking-tighter">xmazon<span className="text-xmazon-orange">.mock</span></span>
-+          <span className="text-2xl font-bold tracking-tighter">ShopGym<span className="text-xmazon-orange"></span></span>
++          <span className="text-2xl font-bold tracking-tighter">Xmazon<span className="text-xmazon-orange"></span></span>
          </Link>
  
          <Link to="/profile" className="hidden md:flex flex-col text-xs border border-transparent hover:border-white p-2 rounded-sm leading-tight">
@@ -188,7 +188,7 @@ diff -ruN a/websites/xmazon_mock/src/components/layout/Header.jsx b/websites/xma
                onFocus={() => searchTerm.length > 1 && setShowSuggestions(true)}
                className="flex-1 px-3 text-black outline-none h-full"
 -              placeholder="Search Xmazon Mock"
-+              placeholder="Search ShopGym Mock"
++              placeholder="Search Xmazon Mock"
              />
              <button type="submit" className="bg-xmazon-yellow hover:bg-xmazon-darkYellow px-4 text-black h-full flex items-center justify-center">
                <Search size={20} />
@@ -231,10 +231,10 @@ diff -ruN a/websites/xmazon_mock/src/components/product/ProductCard.jsx b/websit
          <span className="absolute top-0 left-0 bg-[#e47911] text-white text-[10px] font-bold px-1.5 py-0.5 z-10 rounded-br">Best Seller</span>
        )}
 -      {product.badges && product.badges.includes("Xmazon's Choice") && !product.badges.includes('Best Seller') && (
-+      {product.badges && product.badges.includes("ShopGym's Choice") && !product.badges.includes('Best Seller') && (
++      {product.badges && product.badges.includes("Xmazon's Choice") && !product.badges.includes('Best Seller') && (
          <span className="absolute top-0 left-0 bg-[#232f3e] text-white text-[10px] font-bold px-1.5 py-0.5 z-10 rounded-br">
 -          <span className="text-[#f5a623]">Xmazon's</span> <span>Choice</span>
-+          <span className="text-[#f5a623]">ShopGym's</span> <span>Choice</span>
++          <span className="text-[#f5a623]">Xmazon's</span> <span>Choice</span>
          </span>
        )}
  
@@ -733,7 +733,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p1", category: "Electronics", brand: "Samsung", title: "Samsung Galaxy Buds Pro - True Wireless Bluetooth Noise Cancelling Earbuds",
      price: 149.99, originalPrice: 199.99, rating: 4.5, reviewCount: 12847, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller"],
-+    seller: "ShopGym", badges: ["Best Seller"],
++    seller: "Xmazon", badges: ["Best Seller"],
      image: "https://picsum.photos/seed/p1/400/400",
      images: ["https://picsum.photos/seed/p1/400/400","https://picsum.photos/seed/p1b/400/400","https://picsum.photos/seed/p1c/400/400","https://picsum.photos/seed/p1d/400/400"],
      description: "Experience premium sound with Samsung Galaxy Buds Pro featuring Intelligent Active Noise Cancellation and immersive 360 Audio.",
@@ -742,7 +742,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p2", category: "Electronics", brand: "Apple", title: "Apple MacBook Air 13-inch with M2 chip - 8GB RAM, 256GB SSD",
      price: 999.00, originalPrice: null, rating: 4.8, reviewCount: 8342, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller", "Xmazon's Choice"],
-+    seller: "ShopGym", badges: ["Best Seller", "ShopGym's Choice"],
++    seller: "Xmazon", badges: ["Best Seller", "Xmazon's Choice"],
      image: "https://picsum.photos/seed/p2/400/400",
      images: ["https://picsum.photos/seed/p2/400/400","https://picsum.photos/seed/p2b/400/400","https://picsum.photos/seed/p2c/400/400"],
      description: "The redesigned MacBook Air with the blazing-fast M2 chip delivers up to 18 hours of battery life in a strikingly thin design.",
@@ -751,7 +751,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p3", category: "Electronics", brand: "Sony", title: "Sony WH-1000XM5 Wireless Industry Leading Noise Canceling Headphones",
      price: 348.00, originalPrice: 399.99, rating: 4.7, reviewCount: 21634, prime: true, inStock: true, stockCount: null,
 -    seller: "Sony", badges: ["Xmazon's Choice"],
-+    seller: "Sony", badges: ["ShopGym's Choice"],
++    seller: "Sony", badges: ["Xmazon's Choice"],
      image: "https://picsum.photos/seed/p3/400/400",
      images: ["https://picsum.photos/seed/p3/400/400","https://picsum.photos/seed/p3b/400/400","https://picsum.photos/seed/p3c/400/400","https://picsum.photos/seed/p3d/400/400"],
      description: "Industry-leading noise canceling with two processors and 8 microphones for unparalleled sound quality and crystal-clear calls.",
@@ -760,7 +760,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p5", category: "Electronics", brand: "Logitech", title: "Logitech MX Master 3S Wireless Performance Mouse with Ultra-fast Scrolling",
      price: 89.99, originalPrice: null, rating: 4.7, reviewCount: 18923, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p5/400/400",
      images: ["https://picsum.photos/seed/p5/400/400","https://picsum.photos/seed/p5b/400/400","https://picsum.photos/seed/p5c/400/400"],
      description: "The MX Master 3S features near-silent clicks, an 8K DPI sensor for pixel-precise tracking, and MagSpeed electromagnetic scrolling.",
@@ -769,7 +769,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p7", category: "Electronics", brand: "Apple", title: "Apple iPad 10th Generation 10.9-inch Wi-Fi 64GB",
      price: 349.00, originalPrice: null, rating: 4.6, reviewCount: 14521, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller"],
-+    seller: "ShopGym", badges: ["Best Seller"],
++    seller: "Xmazon", badges: ["Best Seller"],
      image: "https://picsum.photos/seed/p7/400/400",
      images: ["https://picsum.photos/seed/p7/400/400","https://picsum.photos/seed/p7b/400/400","https://picsum.photos/seed/p7c/400/400","https://picsum.photos/seed/p7d/400/400"],
      description: "The all-new iPad with a beautiful 10.9-inch Liquid Retina display, A14 Bionic chip, and the versatility of USB-C.",
@@ -778,25 +778,25 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
    },
    {
 -    id: "p9", category: "Electronics", brand: "Xmazon", title: "Fire TV Stick 4K Max Streaming Device with Alexa Voice Remote",
-+    id: "p9", category: "Electronics", brand: "ShopGym", title: "Fire TV Stick 4K Max Streaming Device with voice assistant Voice Remote",
++    id: "p9", category: "Electronics", brand: "Xmazon", title: "Fire TV Stick 4K Max Streaming Device with voice assistant Voice Remote",
      price: 39.99, originalPrice: 59.99, rating: 4.5, reviewCount: 45123, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller"],
-+    seller: "ShopGym", badges: ["Best Seller"],
++    seller: "Xmazon", badges: ["Best Seller"],
      image: "https://picsum.photos/seed/p9/400/400",
      images: ["https://picsum.photos/seed/p9/400/400","https://picsum.photos/seed/p9b/400/400","https://picsum.photos/seed/p9c/400/400"],
 -    description: "The most powerful 4K Max streaming stick from Xmazon with Wi-Fi 6E support and an Alexa Voice Remote with live TV controls.",
 -    bulletPoints: ["Supports 4K Ultra HD, HDR10+, Dolby Vision, and Dolby Atmos audio","40% more powerful than Fire TV Stick 4K with Wi-Fi 6E support","Alexa Voice Remote with live TV and app buttons","Find, launch, and control content with your voice","Works with popular streaming services Netflix, Prime Video, Disney+","Picture-in-Picture mode for multitasking","Parental controls to set content restrictions"],
 -    specs: {"Brand":"Xmazon","Resolution":"4K Ultra HD","HDR":"HDR10+, Dolby Vision","Audio":"Dolby Atmos","Wi-Fi":"Wi-Fi 6E (802.11ax)","Processor":"Octa-core 1.8GHz"},
-+    description: "The most powerful 4K Max streaming stick from ShopGym with Wi-Fi 6E support and an voice assistant Voice Remote with live TV controls.",
++    description: "The most powerful 4K Max streaming stick from Xmazon with Wi-Fi 6E support and an voice assistant Voice Remote with live TV controls.",
 +    bulletPoints: ["Supports 4K Ultra HD, HDR10+, Dolby Vision, and Dolby Atmos audio","40% more powerful than Fire TV Stick 4K with Wi-Fi 6E support","voice assistant Voice Remote with live TV and app buttons","Find, launch, and control content with your voice","Works with popular streaming services Netflix, Prime Video, Disney+","Picture-in-Picture mode for multitasking","Parental controls to set content restrictions"],
-+    specs: {"Brand":"ShopGym","Resolution":"4K Ultra HD","HDR":"HDR10+, Dolby Vision","Audio":"Dolby Atmos","Wi-Fi":"Wi-Fi 6E (802.11ax)","Processor":"Octa-core 1.8GHz"},
++    specs: {"Brand":"Xmazon","Resolution":"4K Ultra HD","HDR":"HDR10+, Dolby Vision","Audio":"Dolby Atmos","Wi-Fi":"Wi-Fi 6E (802.11ax)","Processor":"Octa-core 1.8GHz"},
      createdAt: "2024-01-12T00:00:00.000Z"
    },
    {
      id: "p10", category: "Electronics", brand: "Ring", title: "Ring Video Doorbell (2nd Gen) - 1080p HD Video, motion-activated alerts",
      price: 99.99, originalPrice: null, rating: 4.4, reviewCount: 28764, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p10/400/400",
      images: ["https://picsum.photos/seed/p10/400/400","https://picsum.photos/seed/p10b/400/400","https://picsum.photos/seed/p10c/400/400"],
      description: "See, hear, and speak to visitors from your phone, tablet, or PC with crisp 1080p HD video and two-way talk.",
@@ -810,7 +810,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p11", category: "Books", brand: "Penguin Random House", title: "Atomic Habits: An Easy & Proven Way to Build Good Habits by James Clear",
      price: 16.99, originalPrice: 27.00, rating: 4.8, reviewCount: 94312, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller", "Xmazon's Choice"],
-+    seller: "ShopGym", badges: ["Best Seller", "ShopGym's Choice"],
++    seller: "Xmazon", badges: ["Best Seller", "Xmazon's Choice"],
      image: "https://picsum.photos/seed/p11/400/400",
      images: ["https://picsum.photos/seed/p11/400/400","https://picsum.photos/seed/p11b/400/400","https://picsum.photos/seed/p11c/400/400"],
      description: "The #1 New York Times bestseller. Over 15 million copies sold. Transform your life with tiny changes in behavior.",
@@ -819,7 +819,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p12", category: "Books", brand: "Ballantine Books", title: "Project Hail Mary: A Novel by Andy Weir",
      price: 14.99, originalPrice: 28.00, rating: 4.9, reviewCount: 62145, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller"],
-+    seller: "ShopGym", badges: ["Best Seller"],
++    seller: "Xmazon", badges: ["Best Seller"],
      image: "https://picsum.photos/seed/p12/400/400",
      images: ["https://picsum.photos/seed/p12/400/400","https://picsum.photos/seed/p12b/400/400","https://picsum.photos/seed/p12c/400/400"],
      description: "A lone astronaut must save the earth from disaster in this propulsive, near-future thriller from the #1 bestselling author of The Martian.",
@@ -828,7 +828,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p13", category: "Books", brand: "Viking", title: "The Midnight Library: A Novel by Matt Haig",
      price: 13.99, originalPrice: 26.00, rating: 4.5, reviewCount: 41237, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p13/400/400",
      images: ["https://picsum.photos/seed/p13/400/400","https://picsum.photos/seed/p13b/400/400"],
      description: "Between life and death there is a library. Nora Seed discovers a library that contains books of lives she could have lived.",
@@ -837,7 +837,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p14", category: "Books", brand: "Random House", title: "Educated: A Memoir by Tara Westover",
      price: 15.99, originalPrice: 18.00, rating: 4.7, reviewCount: 78432, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Xmazon's Choice"],
-+    seller: "ShopGym", badges: ["ShopGym's Choice"],
++    seller: "Xmazon", badges: ["Xmazon's Choice"],
      image: "https://picsum.photos/seed/p14/400/400",
      images: ["https://picsum.photos/seed/p14/400/400","https://picsum.photos/seed/p14b/400/400"],
      description: "A memoir about a young girl who grows up in the mountains of Idaho, goes on to earn a PhD from Cambridge, and builds a life of her own.",
@@ -846,7 +846,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p15", category: "Books", brand: "Ace", title: "Dune by Frank Herbert - The Sci-Fi Classic (Deluxe Edition)",
      price: 10.99, originalPrice: null, rating: 4.7, reviewCount: 103456, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p15/400/400",
      images: ["https://picsum.photos/seed/p15/400/400","https://picsum.photos/seed/p15b/400/400","https://picsum.photos/seed/p15c/400/400"],
      description: "The greatest science fiction novel of all time. Set in the far future amidst a feudal interstellar society, Dune tells the story of young Paul Atreides.",
@@ -855,7 +855,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p16", category: "Books", brand: "O'Reilly Media", title: "JavaScript: The Good Parts by Douglas Crockford",
      price: 29.99, originalPrice: 34.99, rating: 4.5, reviewCount: 18743, prime: true, inStock: true, stockCount: 4,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p16/400/400",
      images: ["https://picsum.photos/seed/p16/400/400","https://picsum.photos/seed/p16b/400/400"],
      description: "Most programming languages contain good and bad parts, but JavaScript has more than its share of the bad. This book shows you the best.",
@@ -864,7 +864,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p17", category: "Books", brand: "Harper Perennial", title: "Sapiens: A Brief History of Humankind by Yuval Noah Harari",
      price: 17.99, originalPrice: 26.99, rating: 4.6, reviewCount: 67234, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p17/400/400",
      images: ["https://picsum.photos/seed/p17/400/400","https://picsum.photos/seed/p17b/400/400"],
      description: "A groundbreaking narrative of humanity's creation and evolution that explores how biology and history have defined us.",
@@ -873,7 +873,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p18", category: "Books", brand: "G.P. Putnam's Sons", title: "Where the Crawdads Sing by Delia Owens",
      price: 12.99, originalPrice: null, rating: 4.8, reviewCount: 221456, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller"],
-+    seller: "ShopGym", badges: ["Best Seller"],
++    seller: "Xmazon", badges: ["Best Seller"],
      image: "https://picsum.photos/seed/p18/400/400",
      images: ["https://picsum.photos/seed/p18/400/400","https://picsum.photos/seed/p18b/400/400"],
      description: "The stunning coming-of-age story of Kya Clark, abandoned by her family in the wild marshes of North Carolina, becomes the center of a murder investigation.",
@@ -882,7 +882,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p19", category: "Books", brand: "HarperOne", title: "The Alchemist by Paulo Coelho - 25th Anniversary Edition",
      price: 11.99, originalPrice: 17.99, rating: 4.7, reviewCount: 189234, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p19/400/400",
      images: ["https://picsum.photos/seed/p19/400/400","https://picsum.photos/seed/p19b/400/400"],
      description: "Paulo Coelho's masterpiece tells the mystical story of Santiago, an Andalusian shepherd boy who yearns to travel in search of a worldly treasure.",
@@ -891,7 +891,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p20", category: "Books", brand: "Pearson Education", title: "Clean Code: A Handbook of Agile Software Craftsmanship by Robert C. Martin",
      price: 39.99, originalPrice: 49.99, rating: 4.6, reviewCount: 24567, prime: true, inStock: true, stockCount: 6,
 -    seller: "Amazon.com", badges: ["Xmazon's Choice"],
-+    seller: "ShopGym", badges: ["ShopGym's Choice"],
++    seller: "Xmazon", badges: ["Xmazon's Choice"],
      image: "https://picsum.photos/seed/p20/400/400",
      images: ["https://picsum.photos/seed/p20/400/400","https://picsum.photos/seed/p20b/400/400"],
      description: "Even bad code can function. But if code isn't clean, it can bring a development organization to its knees.",
@@ -900,7 +900,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p21", category: "Home & Kitchen", brand: "Ninja", title: "Ninja AF101 Air Fryer that Cooks, Crisps and Dehydrates, 4 Quart",
      price: 89.99, originalPrice: 109.99, rating: 4.8, reviewCount: 67234, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller", "Xmazon's Choice"],
-+    seller: "ShopGym", badges: ["Best Seller", "ShopGym's Choice"],
++    seller: "Xmazon", badges: ["Best Seller", "Xmazon's Choice"],
      image: "https://picsum.photos/seed/p21/400/400",
      images: ["https://picsum.photos/seed/p21/400/400","https://picsum.photos/seed/p21b/400/400","https://picsum.photos/seed/p21c/400/400","https://picsum.photos/seed/p21d/400/400"],
      description: "Air fry, roast, reheat, and dehydrate with Ninja's 4-quart ceramic coated basket that holds up to 2 lbs of fries.",
@@ -909,7 +909,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p22", category: "Home & Kitchen", brand: "Keurig", title: "Keurig K-Classic Coffee Maker K-Cup Pod, Single Serve, Programmable",
      price: 79.99, originalPrice: 109.99, rating: 4.5, reviewCount: 45678, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller"],
-+    seller: "ShopGym", badges: ["Best Seller"],
++    seller: "Xmazon", badges: ["Best Seller"],
      image: "https://picsum.photos/seed/p22/400/400",
      images: ["https://picsum.photos/seed/p22/400/400","https://picsum.photos/seed/p22b/400/400","https://picsum.photos/seed/p22c/400/400"],
      description: "Brew the perfect cup with Keurig's K-Classic coffee maker. Compatible with all K-Cup pods for over 400 varieties of coffee, tea, hot cocoa, and more.",
@@ -918,7 +918,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p23", category: "Home & Kitchen", brand: "Instant Pot", title: "Instant Pot Duo 7-in-1 Electric Pressure Cooker, 6 Quart",
      price: 69.99, originalPrice: 99.95, rating: 4.7, reviewCount: 123456, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller"],
-+    seller: "ShopGym", badges: ["Best Seller"],
++    seller: "Xmazon", badges: ["Best Seller"],
      image: "https://picsum.photos/seed/p23/400/400",
      images: ["https://picsum.photos/seed/p23/400/400","https://picsum.photos/seed/p23b/400/400","https://picsum.photos/seed/p23c/400/400","https://picsum.photos/seed/p23d/400/400"],
      description: "The Instant Pot Duo is the #1 selling multi-cooker. 7-in-1 functionality: Pressure Cooker, Slow Cooker, Rice Cooker, Steamer, Saute, Yogurt Maker, Warmer.",
@@ -927,7 +927,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p24", category: "Home & Kitchen", brand: "iRobot", title: "iRobot Roomba 694 Robot Vacuum with Wi-Fi Connectivity",
      price: 179.99, originalPrice: 274.99, rating: 4.4, reviewCount: 34521, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p24/400/400",
      images: ["https://picsum.photos/seed/p24/400/400","https://picsum.photos/seed/p24b/400/400","https://picsum.photos/seed/p24c/400/400"],
      description: "The Roomba 694 robot vacuum picks up pet hair, dust, and debris on all floor types with its 3-Stage Cleaning System.",
@@ -940,7 +940,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p25", category: "Home & Kitchen", brand: "Crock-Pot", title: "Crock-Pot 7 Quart Oval Manual Slow Cooker, Stainless Steel",
      price: 39.99, originalPrice: null, rating: 4.7, reviewCount: 28934, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p25/400/400",
      images: ["https://picsum.photos/seed/p25/400/400","https://picsum.photos/seed/p25b/400/400"],
      description: "Cook hearty, flavorful meals with the Crock-Pot 7-Quart slow cooker. Large enough to feed a crowd with three heat settings.",
@@ -949,7 +949,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p26", category: "Home & Kitchen", brand: "Mellanni", title: "Mellanni Queen Bed Sheet Set - 4 PC Brushed Microfiber 1800 Bedding",
      price: 49.99, originalPrice: null, rating: 4.5, reviewCount: 41235, prime: true, inStock: true, stockCount: null,
 -    seller: "Mellanni", badges: ["Xmazon's Choice"],
-+    seller: "Mellanni", badges: ["ShopGym's Choice"],
++    seller: "Mellanni", badges: ["Xmazon's Choice"],
      image: "https://picsum.photos/seed/p26/400/400",
      images: ["https://picsum.photos/seed/p26/400/400","https://picsum.photos/seed/p26b/400/400","https://picsum.photos/seed/p26c/400/400"],
      description: "Ultra-soft luxury bed sheets made from premium 1800 thread count microfiber that resist wrinkles, stains, and fading.",
@@ -958,7 +958,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p29", category: "Home & Kitchen", brand: "Lodge", title: "Lodge 10.25 Inch Cast Iron Pre-Seasoned Skillet",
      price: 34.99, originalPrice: null, rating: 4.8, reviewCount: 89234, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller"],
-+    seller: "ShopGym", badges: ["Best Seller"],
++    seller: "Xmazon", badges: ["Best Seller"],
      image: "https://picsum.photos/seed/p29/400/400",
      images: ["https://picsum.photos/seed/p29/400/400","https://picsum.photos/seed/p29b/400/400","https://picsum.photos/seed/p29c/400/400"],
      description: "Lodge cast iron cookware has been made in South Pittsburg, Tennessee since 1896. Pre-seasoned with natural vegetable oil.",
@@ -967,7 +967,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p31", category: "Fashion", brand: "Nike", title: "Nike Air Force 1 '07 Men's Shoe - Classic White Leather",
      price: 110.00, originalPrice: null, rating: 4.7, reviewCount: 34521, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller", "Xmazon's Choice"],
-+    seller: "ShopGym", badges: ["Best Seller", "ShopGym's Choice"],
++    seller: "Xmazon", badges: ["Best Seller", "Xmazon's Choice"],
      image: "https://picsum.photos/seed/p31/400/400",
      images: ["https://picsum.photos/seed/p31/400/400","https://picsum.photos/seed/p31b/400/400","https://picsum.photos/seed/p31c/400/400","https://picsum.photos/seed/p31d/400/400"],
      description: "Letting you ride in comfort every day, the Nike Air Force 1 '07 is a modern take on the iconic AF1 silhouette.",
@@ -976,7 +976,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p32", category: "Fashion", brand: "Levi's", title: "Levi's Men's 501 Original Fit Jeans - Classic Straight Leg",
      price: 69.50, originalPrice: 79.50, rating: 4.5, reviewCount: 28765, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller"],
-+    seller: "ShopGym", badges: ["Best Seller"],
++    seller: "Xmazon", badges: ["Best Seller"],
      image: "https://picsum.photos/seed/p32/400/400",
      images: ["https://picsum.photos/seed/p32/400/400","https://picsum.photos/seed/p32b/400/400","https://picsum.photos/seed/p32c/400/400"],
      description: "The original Levi's jean. Button fly, straight through the hip and thigh, with the original Levi's fit that's been around since 1873.",
@@ -985,7 +985,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p33", category: "Fashion", brand: "Ray-Ban", title: "Ray-Ban RB3025 Aviator Classic Sunglasses",
      price: 161.00, originalPrice: null, rating: 4.7, reviewCount: 12345, prime: true, inStock: true, stockCount: null,
 -    seller: "Luxottica", badges: ["Xmazon's Choice"],
-+    seller: "Luxottica", badges: ["ShopGym's Choice"],
++    seller: "Luxottica", badges: ["Xmazon's Choice"],
      image: "https://picsum.photos/seed/p33/400/400",
      images: ["https://picsum.photos/seed/p33/400/400","https://picsum.photos/seed/p33b/400/400","https://picsum.photos/seed/p33c/400/400"],
      description: "The original Ray-Ban Aviator Classic sunglasses, first introduced in 1937 for American military pilots. An icon of style.",
@@ -994,7 +994,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p34", category: "Fashion", brand: "Champion", title: "Champion Men's Powerblend Fleece Pullover Hoodie",
      price: 45.00, originalPrice: 55.00, rating: 4.6, reviewCount: 23456, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p34/400/400",
      images: ["https://picsum.photos/seed/p34/400/400","https://picsum.photos/seed/p34b/400/400","https://picsum.photos/seed/p34c/400/400"],
      description: "Champion Powerblend fleece is pill-resistant and the logo won't crack or peel. A classic athletic look that's built to last.",
@@ -1003,7 +1003,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p38", category: "Fashion", brand: "Timex", title: "Timex Men's Weekender 40mm Watch with Stainless Steel Expansion Band",
      price: 35.00, originalPrice: null, rating: 4.5, reviewCount: 21345, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p38/400/400",
      images: ["https://picsum.photos/seed/p38/400/400","https://picsum.photos/seed/p38b/400/400"],
      description: "Timex Weekender with 40mm brass case, white dial, and Timex's iconic INDIGLO night-light for clear time-reading in low light.",
@@ -1012,7 +1012,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p39", category: "Fashion", brand: "The North Face", title: "The North Face Men's Aconcagua 2 Puffer Jacket",
      price: 199.00, originalPrice: null, rating: 4.7, reviewCount: 8765, prime: true, inStock: true, stockCount: null,
 -    seller: "The North Face", badges: ["Xmazon's Choice"],
-+    seller: "The North Face", badges: ["ShopGym's Choice"],
++    seller: "The North Face", badges: ["Xmazon's Choice"],
      image: "https://picsum.photos/seed/p39/400/400",
      images: ["https://picsum.photos/seed/p39/400/400","https://picsum.photos/seed/p39b/400/400","https://picsum.photos/seed/p39c/400/400"],
      description: "Lofty comfort meets environmental responsibility in The North Face Aconcagua 2 jacket made with recycled down insulation.",
@@ -1021,7 +1021,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p40", category: "Fashion", brand: "New Balance", title: "New Balance Men's 574 V2 Evergreen Sneaker",
      price: 79.99, originalPrice: 89.99, rating: 4.6, reviewCount: 15678, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p40/400/400",
      images: ["https://picsum.photos/seed/p40/400/400","https://picsum.photos/seed/p40b/400/400","https://picsum.photos/seed/p40c/400/400"],
      description: "The New Balance 574 is a classic sneaker that's been in the lineup since 1988. The ENCAP midsole provides exceptional support and durability.",
@@ -1030,7 +1030,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p41", category: "Toys & Games", brand: "LEGO", title: "LEGO Star Wars Millennium Falcon 75257 Building Kit (1353 Pieces)",
      price: 159.99, originalPrice: 169.99, rating: 4.9, reviewCount: 23456, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller", "Xmazon's Choice"],
-+    seller: "ShopGym", badges: ["Best Seller", "ShopGym's Choice"],
++    seller: "Xmazon", badges: ["Best Seller", "Xmazon's Choice"],
      image: "https://picsum.photos/seed/p41/400/400",
      images: ["https://picsum.photos/seed/p41/400/400","https://picsum.photos/seed/p41b/400/400","https://picsum.photos/seed/p41c/400/400","https://picsum.photos/seed/p41d/400/400"],
      description: "Build and display the iconic Millennium Falcon, the fastest ship in the galaxy, with this 1353-piece LEGO Star Wars set.",
@@ -1039,7 +1039,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p42", category: "Toys & Games", brand: "Hasbro", title: "Monopoly Classic Board Game for 2-6 Players",
      price: 19.99, originalPrice: null, rating: 4.7, reviewCount: 54321, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller"],
-+    seller: "ShopGym", badges: ["Best Seller"],
++    seller: "Xmazon", badges: ["Best Seller"],
      image: "https://picsum.photos/seed/p42/400/400",
      images: ["https://picsum.photos/seed/p42/400/400","https://picsum.photos/seed/p42b/400/400","https://picsum.photos/seed/p42c/400/400"],
      description: "The world's most popular board game! Buy, sell, and scheme your way to becoming the wealthiest player in classic Monopoly.",
@@ -1048,7 +1048,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p43", category: "Toys & Games", brand: "Nintendo", title: "Nintendo Switch Joy-Con (L/R) - Neon Blue and Neon Red",
      price: 79.99, originalPrice: null, rating: 4.6, reviewCount: 18923, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p43/400/400",
      images: ["https://picsum.photos/seed/p43/400/400","https://picsum.photos/seed/p43b/400/400","https://picsum.photos/seed/p43c/400/400"],
      description: "Official Nintendo Switch Joy-Con controllers with HD Rumble, IR motion camera, and built-in motion sensors.",
@@ -1057,7 +1057,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p44", category: "Toys & Games", brand: "Barbie", title: "Barbie Dreamhouse (2023) Dollhouse with Pool, Slide, and 75+ Accessories",
      price: 179.99, originalPrice: 209.99, rating: 4.6, reviewCount: 12456, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p44/400/400",
      images: ["https://picsum.photos/seed/p44/400/400","https://picsum.photos/seed/p44b/400/400","https://picsum.photos/seed/p44c/400/400"],
      description: "The ultimate Barbie Dreamhouse with 3 floors, 10 rooms, a working elevator, and over 75 pieces including furniture and accessories.",
@@ -1066,7 +1066,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p45", category: "Toys & Games", brand: "Rubik's", title: "Rubik's Cube, The Original 3x3 Cube Classic Color Matching Puzzle",
      price: 9.99, originalPrice: null, rating: 4.7, reviewCount: 34521, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p45/400/400",
      images: ["https://picsum.photos/seed/p45/400/400","https://picsum.photos/seed/p45b/400/400"],
      description: "The Original Rubik's Cube — the classic 3x3 color-matching puzzle that has sold over 450 million units worldwide.",
@@ -1075,7 +1075,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p46", category: "Toys & Games", brand: "Nerf", title: "Nerf N-Strike Elite AccuStrike AlphaHawk Blaster",
      price: 24.99, originalPrice: 34.99, rating: 4.5, reviewCount: 8765, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p46/400/400",
      images: ["https://picsum.photos/seed/p46/400/400","https://picsum.photos/seed/p46b/400/400"],
      description: "Fire AccuStrike darts for the most accurate Nerf shooting ever. Barrel-fed blaster fires darts one at a time.",
@@ -1084,7 +1084,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p47", category: "Toys & Games", brand: "Play-Doh", title: "Play-Doh Modeling Compound 36-Pack Case of Colors Non-Toxic",
      price: 19.99, originalPrice: null, rating: 4.8, reviewCount: 21345, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Xmazon's Choice"],
-+    seller: "ShopGym", badges: ["ShopGym's Choice"],
++    seller: "Xmazon", badges: ["Xmazon's Choice"],
      image: "https://picsum.photos/seed/p47/400/400",
      images: ["https://picsum.photos/seed/p47/400/400","https://picsum.photos/seed/p47b/400/400"],
      description: "36 cans of vibrant Play-Doh compound in a rainbow of colors for imaginative play and creative expression.",
@@ -1093,7 +1093,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p48", category: "Toys & Games", brand: "Hot Wheels", title: "Hot Wheels Track Builder Unlimited Rapid Crash Pack",
      price: 29.99, originalPrice: 39.99, rating: 4.5, reviewCount: 7654, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p48/400/400",
      images: ["https://picsum.photos/seed/p48/400/400","https://picsum.photos/seed/p48b/400/400"],
      description: "Build the ultimate crash course with the Hot Wheels Track Builder System. Includes a loop, launcher, and 2 Hot Wheels cars.",
@@ -1102,7 +1102,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p49", category: "Toys & Games", brand: "Catan Studio", title: "Catan Board Game (Base Game) for 3-4 Players",
      price: 44.99, originalPrice: null, rating: 4.7, reviewCount: 32456, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller"],
-+    seller: "ShopGym", badges: ["Best Seller"],
++    seller: "Xmazon", badges: ["Best Seller"],
      image: "https://picsum.photos/seed/p49/400/400",
      images: ["https://picsum.photos/seed/p49/400/400","https://picsum.photos/seed/p49b/400/400","https://picsum.photos/seed/p49c/400/400"],
      description: "Trade, build, and settle the island of Catan in this award-winning strategy board game that's been captivating players since 1995.",
@@ -1111,7 +1111,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p50", category: "Toys & Games", brand: "Melissa & Doug", title: "Melissa & Doug Wooden Farm Puzzle - 8-Piece Chunky",
      price: 12.99, originalPrice: null, rating: 4.8, reviewCount: 18765, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p50/400/400",
      images: ["https://picsum.photos/seed/p50/400/400","https://picsum.photos/seed/p50b/400/400"],
      description: "Chunky wooden puzzle with 8 farm-themed pieces sized perfectly for little hands. Features peg handles for easy lifting.",
@@ -1120,7 +1120,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p51", category: "Beauty", brand: "CeraVe", title: "CeraVe Moisturizing Cream - Daily Face and Body Moisturizer for Dry Skin",
      price: 16.99, originalPrice: null, rating: 4.8, reviewCount: 123456, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller", "Xmazon's Choice"],
-+    seller: "ShopGym", badges: ["Best Seller", "ShopGym's Choice"],
++    seller: "Xmazon", badges: ["Best Seller", "Xmazon's Choice"],
      image: "https://picsum.photos/seed/p51/400/400",
      images: ["https://picsum.photos/seed/p51/400/400","https://picsum.photos/seed/p51b/400/400","https://picsum.photos/seed/p51c/400/400"],
      description: "Developed with dermatologists, CeraVe Moisturizing Cream has a unique formula that helps restore the protective skin barrier with three essential ceramides.",
@@ -1129,7 +1129,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p52", category: "Beauty", brand: "Maybelline", title: "Maybelline Lash Sensational Sky High Washable Mascara",
      price: 11.99, originalPrice: null, rating: 4.5, reviewCount: 67234, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller"],
-+    seller: "ShopGym", badges: ["Best Seller"],
++    seller: "Xmazon", badges: ["Best Seller"],
      image: "https://picsum.photos/seed/p52/400/400",
      images: ["https://picsum.photos/seed/p52/400/400","https://picsum.photos/seed/p52b/400/400"],
      description: "Sky High mascara with buildable volume and length for limitless lash looks. Flexible brush stretches lashes from root to tip.",
@@ -1138,7 +1138,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p53", category: "Beauty", brand: "Olaplex", title: "Olaplex No. 3 Hair Perfector - Reduces Breakage & Strengthens Hair",
      price: 30.00, originalPrice: null, rating: 4.6, reviewCount: 34521, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Xmazon's Choice"],
-+    seller: "ShopGym", badges: ["ShopGym's Choice"],
++    seller: "Xmazon", badges: ["Xmazon's Choice"],
      image: "https://picsum.photos/seed/p53/400/400",
      images: ["https://picsum.photos/seed/p53/400/400","https://picsum.photos/seed/p53b/400/400","https://picsum.photos/seed/p53c/400/400"],
      description: "The at-home treatment that reduces breakage and visibly strengthens hair, significantly improving hair's health from the inside out.",
@@ -1147,7 +1147,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p54", category: "Beauty", brand: "Neutrogena", title: "Neutrogena Ultra Sheer Dry-Touch Sunscreen SPF 70, 3 oz",
      price: 12.99, originalPrice: null, rating: 4.7, reviewCount: 45678, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p54/400/400",
      images: ["https://picsum.photos/seed/p54/400/400","https://picsum.photos/seed/p54b/400/400"],
      description: "Ultra Sheer Dry-Touch sunscreen with Helioplex technology provides superior sun protection that's light, clean, and non-greasy.",
@@ -1156,7 +1156,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p55", category: "Beauty", brand: "Revlon", title: "Revlon One-Step Volumizer Original 1.0 Hair Dryer and Hot Air Brush",
      price: 34.99, originalPrice: 49.99, rating: 4.5, reviewCount: 89234, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Best Seller"],
-+    seller: "ShopGym", badges: ["Best Seller"],
++    seller: "Xmazon", badges: ["Best Seller"],
      image: "https://picsum.photos/seed/p55/400/400",
      images: ["https://picsum.photos/seed/p55/400/400","https://picsum.photos/seed/p55b/400/400","https://picsum.photos/seed/p55c/400/400"],
      description: "Dry and style your hair in one step with this salon-style oval brush dryer that creates bouncy blowout volume.",
@@ -1165,7 +1165,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p56", category: "Beauty", brand: "The Ordinary", title: "The Ordinary Niacinamide 10% + Zinc 1% Face Serum, 30ml",
      price: 12.50, originalPrice: null, rating: 4.4, reviewCount: 56789, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p56/400/400",
      images: ["https://picsum.photos/seed/p56/400/400","https://picsum.photos/seed/p56b/400/400"],
      description: "High-strength vitamin and mineral blemish formula that reduces the appearance of skin blemishes and congestion.",
@@ -1174,7 +1174,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p57", category: "Beauty", brand: "NYX", title: "NYX Professional Makeup Lip Lingerie Push-Up Long-Lasting Lipstick",
      price: 9.99, originalPrice: null, rating: 4.4, reviewCount: 23456, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p57/400/400",
      images: ["https://picsum.photos/seed/p57/400/400","https://picsum.photos/seed/p57b/400/400"],
      description: "Slide on the NYX Lip Lingerie liquid lipstick for an ultra-matte finish in 20 seductive shades that lasts all day long.",
@@ -1183,7 +1183,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p58", category: "Beauty", brand: "Dove", title: "Dove Deep Moisture Body Wash with Skin Natural Nourishers, 22 oz (Pack of 3)",
      price: 14.99, originalPrice: 19.99, rating: 4.7, reviewCount: 78234, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p58/400/400",
      images: ["https://picsum.photos/seed/p58/400/400","https://picsum.photos/seed/p58b/400/400"],
      description: "Dove Deep Moisture body wash is formulated with 100% skin natural nourishers and Dove's signature 1/4 moisturizing cream.",
@@ -1192,7 +1192,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p59", category: "Beauty", brand: "Bioderma", title: "Bioderma Sensibio H2O Micellar Water Makeup Remover, 16.9 fl oz",
      price: 14.99, originalPrice: null, rating: 4.8, reviewCount: 32145, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: [],
-+    seller: "ShopGym", badges: [],
++    seller: "Xmazon", badges: [],
      image: "https://picsum.photos/seed/p59/400/400",
      images: ["https://picsum.photos/seed/p59/400/400","https://picsum.photos/seed/p59b/400/400"],
      description: "The #1 micellar water in France, Bioderma Sensibio H2O gently yet effectively cleanses, removes makeup, and soothes sensitive skin.",
@@ -1201,7 +1201,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      id: "p60", category: "Beauty", brand: "OPI", title: "OPI Nail Lacquer 10-pc Nail Polish Set - Most Popular Colors",
      price: 24.99, originalPrice: 39.90, rating: 4.6, reviewCount: 14523, prime: true, inStock: true, stockCount: null,
 -    seller: "Amazon.com", badges: ["Xmazon's Choice"],
-+    seller: "ShopGym", badges: ["ShopGym's Choice"],
++    seller: "Xmazon", badges: ["Xmazon's Choice"],
      image: "https://picsum.photos/seed/p60/400/400",
      images: ["https://picsum.photos/seed/p60/400/400","https://picsum.photos/seed/p60b/400/400","https://picsum.photos/seed/p60c/400/400"],
      description: "A curated set of 10 of OPI's most popular Nail Lacquer shades, featuring the iconic ProWide brush for a flawless, salon-perfect finish.",
@@ -1268,7 +1268,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      inStock: typeof p.inStock === 'boolean' ? p.inStock : true,
      stockCount: stockCount,
 -    seller: p.seller || 'Amazon.com',
-+    seller: p.seller || 'ShopGym',
++    seller: p.seller || 'Xmazon',
      badges: Array.isArray(p.badges) ? p.badges : [],
      createdAt: p.createdAt || new Date().toISOString(),
    };
@@ -1291,7 +1291,7 @@ diff -ruN a/websites/xmazon_mock/src/lib/mockData.js b/websites/xmazon_mock/src/
      productId: r.productId || r.product_id || '',
      userId: r.userId || r.user_id || 'anonymous',
 -    userName: r.userName || r.user_name || r.author || 'Xmazon Customer',
-+    userName: r.userName || r.user_name || r.author || 'ShopGym Customer',
++    userName: r.userName || r.user_name || r.author || 'Xmazon Customer',
      rating: Math.min(Math.max(rating, 0), 5),
      title: r.title || r.headline || '',
      content: r.content || r.body || r.text || '',
@@ -1473,7 +1473,7 @@ diff -ruN a/websites/xmazon_mock/src/pages/Cart.jsx b/websites/xmazon_mock/src/p
                <div className="py-8 text-center">
                  <div className="text-4xl mb-4">🛒</div>
 -                <h2 className="text-2xl font-medium mb-2">Your Xmazon Cart is empty</h2>
-+                <h2 className="text-2xl font-medium mb-2">Your ShopGym Cart is empty</h2>
++                <h2 className="text-2xl font-medium mb-2">Your Xmazon Cart is empty</h2>
                  <p className="text-sm text-gray-600 mb-4">Your shopping cart lives here. Add items you want to purchase.</p>
                  <Link to="/" className="text-xmazon-blue hover:underline text-sm font-bold">Shop today's deals</Link>
                </div>
@@ -1747,7 +1747,7 @@ diff -ruN a/websites/xmazon_mock/src/pages/Checkout.jsx b/websites/xmazon_mock/s
 +            </div>
 +            {step === 3 && (
 +              <p className="text-xs text-gray-500 mb-4">
-+                By placing your order, you agree to ShopGym's privacy notice and conditions of use.
++                By placing your order, you agree to Xmazon's privacy notice and conditions of use.
 +              </p>
 +            )}
              <h3 className="font-bold text-lg mb-2">Order Summary</h3>
@@ -2103,7 +2103,7 @@ diff -ruN a/websites/xmazon_mock/src/pages/ProductDetail.jsx b/websites/xmazon_m
        {/* Breadcrumb */}
        <div className="text-[12px] text-[#007185] px-4 pt-3 pb-1">
 -        <Link to="/" className="hover:underline hover:text-[#c7511f]">Xmazon.mock</Link>
-+        <Link to="/" className="hover:underline hover:text-[#c7511f]">ShopGym</Link>
++        <Link to="/" className="hover:underline hover:text-[#c7511f]">Xmazon</Link>
          <span className="text-[#565959] mx-1">›</span>
          <Link to={`/search?category=${encodeURIComponent(product.category)}`} className="hover:underline hover:text-[#c7511f]">{product.category}</Link>
          <span className="text-[#565959] mx-1">›</span>
@@ -2112,7 +2112,7 @@ diff -ruN a/websites/xmazon_mock/src/pages/ProductDetail.jsx b/websites/xmazon_m
                  {product.badges.map(badge => (
                    <span key={badge} className={`text-xs font-bold px-2 py-0.5 rounded ${badge === 'Best Seller' ? 'bg-xmazon-orange text-white' : 'bg-xmazon-blue text-white'}`}>
 -                    {badge === "Xmazon's Choice" ? "Xmazon's Choice" : badge}
-+                    {badge === "ShopGym's Choice" ? "ShopGym's Choice" : badge}
++                    {badge === "Xmazon's Choice" ? "Xmazon's Choice" : badge}
                    </span>
                  ))}
                </div>
@@ -2157,7 +2157,7 @@ diff -ruN a/websites/xmazon_mock/src/pages/ProductDetail.jsx b/websites/xmazon_m
  
                <div className="text-xs text-gray-500 space-y-1 mb-4">
 -                <div className="flex justify-between"><span>Ships from</span> <span>Xmazon</span></div>
-+                <div className="flex justify-between"><span>Ships from</span> <span>ShopGym</span></div>
++                <div className="flex justify-between"><span>Ships from</span> <span>Xmazon</span></div>
                  <div className="flex justify-between"><span>Sold by</span> <span>{product.seller || product.brand}</span></div>
                </div>
  
@@ -2189,7 +2189,7 @@ diff -ruN a/websites/xmazon_mock/src/pages/ProductDetail.jsx b/websites/xmazon_m
                            <User size={16} />
                          </div>
 -                        <span className="text-sm font-medium">{review.userName || 'Xmazon Customer'}</span>
-+                        <span className="text-sm font-medium">{review.userName || 'ShopGym Customer'}</span>
++                        <span className="text-sm font-medium">{review.userName || 'Xmazon Customer'}</span>
                        </div>
                        <div className="flex items-center gap-2 mb-1">
                          <Rating value={review.rating} size={14} />
@@ -2275,7 +2275,7 @@ diff -ruN a/websites/xmazon_mock/src/pages/ProductListing.jsx b/websites/xmazon_
          {/* Breadcrumb */}
          <div className="text-[12px] text-[#007185] mb-2">
 -          <span className="hover:underline hover:text-[#c7511f] cursor-pointer" onClick={() => navigate('/')}>Xmazon.mock</span>
-+          <span className="hover:underline hover:text-[#c7511f] cursor-pointer" onClick={() => navigate('/')}>ShopGym</span>
++          <span className="hover:underline hover:text-[#c7511f] cursor-pointer" onClick={() => navigate('/')}>Xmazon</span>
            <span className="text-[#565959] mx-1">›</span>
            {categoryParam ? (
              <span className="text-gray-700">{categoryParam}</span>
@@ -2404,7 +2404,7 @@ diff -ruN a/websites/xmazon_mock/src/pages/Profile.jsx b/websites/xmazon_mock/sr
                <span className="text-[#00a8e1] font-bold italic text-[28px]">prime</span>
                <div className="text-white">
 -                <div className="font-bold text-[14px]">{state.user.isPrime ? 'You are a Prime member' : 'Join Xmazon Prime'}</div>
-+                <div className="font-bold text-[14px]">{state.user.isPrime ? 'You are a Prime member' : 'Join ShopGym Prime'}</div>
++                <div className="font-bold text-[14px]">{state.user.isPrime ? 'You are a Prime member' : 'Join Xmazon Prime'}</div>
                  <div className="text-[12px] text-gray-300">
                    {state.user.isPrime
                      ? `Member since ${state.user.memberSince || '2019'} - Enjoy FREE same-day, one-day, and two-day delivery`
@@ -2545,7 +2545,7 @@ diff -ruN a/websites/xmazon_mock/src/pages/Wishlist.jsx b/websites/xmazon_mock/s
            <div>
              <div className="text-xs text-gray-500 mb-1">
 -              <Link to="/" className="text-xmazon-blue hover:underline">Xmazon.mock</Link>
-+              <Link to="/" className="text-xmazon-blue hover:underline">ShopGym</Link>
++              <Link to="/" className="text-xmazon-blue hover:underline">Xmazon</Link>
                <span className="mx-1">›</span>
                <span>Your Lists</span>
              </div>

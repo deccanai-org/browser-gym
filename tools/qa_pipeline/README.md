@@ -4,11 +4,11 @@ Automated discover → report → (optional) fix loop for the five mock UIs:
 
 | App | Folder | Port |
 |---|---|---|
-| ShopGym | `websites/xmazon_mock` | 5201 |
-| ValueMart | `websites/xbay_mock` | 5202 |
-| ShopMail | `websites/xmail_mock` | 5203 |
-| GymCal | `websites/xoogle_calendar_mock` | 5204 |
-| GymEats | `websites/xber_eats_mock` | 5205 |
+| Xmazon | `websites/xmazon_mock` | 5201 |
+| Xbay | `websites/xbay_mock` | 5202 |
+| Xmail | `websites/xmail_mock` | 5203 |
+| Xoogle | `websites/xoogle_calendar_mock` | 5204 |
+| Xber | `websites/xber_eats_mock` | 5205 |
 
 ## Quick start
 

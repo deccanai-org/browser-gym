@@ -1,7 +1,7 @@
 """food_005 / team_offsite_gluten_budget — Food×Mail infeasibility.
 
 Mechanism: team offsite lunch must satisfy Sam's celiac (strict gluten-free)
-AND Finance's $14/person cap including delivery. No GymEats dish clears both —
+AND Finance's $14/person cap including delivery. No Xber dish clears both —
 near-misses satisfy budget (but contain gluten), gluten-free (but over budget),
 or gluten-free+budget (but side salad, not a lunch entree). Correct = place NO
 food order; email alice flagging the conflict.

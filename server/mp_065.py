@@ -1,4 +1,4 @@
-"""mp_065 / price_drop_reorder_after_original_ships — ShopGym.
+"""mp_065 / price_drop_reorder_after_original_ships — Xmazon.
 
 Extended: two orders with price drops. Processing order is actionable
 (cancel + reorder at new price). Shipped order is not. Loyalty / gift-card
@@ -58,7 +58,7 @@ def task_mp_065_price_drop_reorder_after_original_ships(seed: int) -> "WorldStat
     alice = shop.users["u_alice"]
     alice.payment_methods[LOYALTY_PAY] = PaymentMethod(
         id=LOYALTY_PAY,
-        label="ShopGym Loyalty Credit ****9012",
+        label="Xmazon Loyalty Credit ****9012",
         kind="gift_card",
         is_default=False,
         expires="",
@@ -152,10 +152,10 @@ def task_mp_065_price_drop_reorder_after_original_ships(seed: int) -> "WorldStat
         id="em_mp065_loyalty",
         sender="loyalty@shopgym.com",
         to=USER_EMAIL,
-        subject="Your ShopGym loyalty credit is ready",
+        subject="Your Xmazon loyalty credit is ready",
         body=(
-            "You have $20 ShopGym Loyalty Credit on file (Payment method: "
-            "ShopGym Loyalty Credit ****9012). It can be applied at checkout "
+            "You have $20 Xmazon Loyalty Credit on file (Payment method: "
+            "Xmazon Loyalty Credit ****9012). It can be applied at checkout "
             "on eligible new orders. It cannot be applied to shipped orders "
             "or arbitrary price-match claims."
         ),

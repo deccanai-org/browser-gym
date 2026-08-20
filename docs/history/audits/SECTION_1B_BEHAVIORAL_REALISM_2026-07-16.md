@@ -205,7 +205,7 @@ does not decline expired cards.
 
 **Code paths:** `server/mutations.py::apply_promo` / `_promo_discount_on_eligible`
 — rejects unknown codes, `expired`, `min_purchase`, and category/product
-eligibility; flashes concrete errors; ValueMart has a parallel coupon path
+eligibility; flashes concrete errors; Xbay has a parallel coupon path
 (`server/apps/market/mutations.py`). Review form:
 `ui/pages/checkout_review.html` promo apply/remove. Fine print may appear when
 a promo is applied (`description_fineprint`).

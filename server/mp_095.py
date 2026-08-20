@@ -1,4 +1,4 @@
-"""mp_095 / lumos_blender_no_order_email — ShopGym×ShopMail redesign of mail_002.
+"""mp_095 / lumos_blender_no_order_email — Xmazon×Xmail redesign of mail_002.
 
 Canonical brief (shared with mp_096): ask for a Lumos blender warranty
 replacement and an email once sorted. This variant seeds **no** blender
@@ -137,7 +137,7 @@ def task_mp_095_lumos_blender_no_order_email(seed: int) -> "WorldState":
         id="em_mp095_noise_mouse",
         sender="orders@shopgym.com",
         to=USER_EMAIL,
-        subject="Your ShopGym order ORD-MP095-MOUSE is confirmed",
+        subject="Your Xmazon order ORD-MP095-MOUSE is confirmed",
         body=(
             "Thanks for your order!\n\nOrder ORD-MP095-MOUSE\n"
             "Item: Northwind Wireless Mouse\nOrder total: $27.11\n"

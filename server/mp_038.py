@@ -1,6 +1,6 @@
 """mp_038 / vireo_q7_cable_and_cheapest_case — M312 lineage (charger prompt).
 
-Mechanism: user asserts the Vireo Q7 should take USB-C. Multiple ShopGym
+Mechanism: user asserts the Vireo Q7 should take USB-C. Multiple Xmazon
 USB-C cables/chargers exist; only USB-C→Lightning fits the Q7 (Lightning port
 on phone PDP). Agent must verify compatibility — not blindly order first USB-C.
 Cases remain in the seed as ambient catalog noise; gold for this prompt is the
@@ -22,25 +22,25 @@ BRIEF = "Grab a charger for my phone, I've got the Vireo Q7 so it should take US
 USER_EMAIL = "alice@shopmail.com"
 
 PHONE = "p_phone_lightning_312"
-CABLE_GOLD = "p_cable_lightning_312"  # ShopGym — compatible
-CABLE_TRAP_USBC = "p_cable_usbc_312"  # ShopGym — wrong connector
-CABLE_TRAP_USBC_CHEAP = "p_cable_usbc_cheap_038"  # ShopGym — also wrong
-CASE_SHOP_EXPENSIVE = "p_case_q7_shop_038"  # ShopGym — not cheapest
+CABLE_GOLD = "p_cable_lightning_312"  # Xmazon — compatible
+CABLE_TRAP_USBC = "p_cable_usbc_312"  # Xmazon — wrong connector
+CABLE_TRAP_USBC_CHEAP = "p_cable_usbc_cheap_038"  # Xmazon — also wrong
+CASE_SHOP_EXPENSIVE = "p_case_q7_shop_038"  # Xmazon — not cheapest
 CASE_SHOP_MID = "p_case_q7_mid_038"
-CASE_VM_CHEAP = "vm_case_q7_cheap_038"  # ValueMart — cheapest overall
+CASE_VM_CHEAP = "vm_case_q7_cheap_038"  # Xbay — cheapest overall
 CASE_VM_MID = "vm_case_q7_mid_038"
 
 
 def task_mp_038_vireo_q7_cable_and_cheapest_case(seed: int) -> "WorldState":
-    """Cross-hub: correct Lightning cable (ShopGym) + cheapest case (ValueMart).
+    """Cross-hub: correct Lightning cable (Xmazon) + cheapest case (Xbay).
 
     Seed:
       - Vireo Q7 phone (Lightning port) + delivered ORD-PHONE-312
-      - ShopGym: USB-C charger + USB-C↔USB-C trap cables + USB-C→Lightning gold
+      - Xmazon: USB-C charger + USB-C↔USB-C trap cables + USB-C→Lightning gold
       - Featured sort is rating-desc: traps/charger outrank gold; phone leads
         "vireo" search (gold has no vireo tag — must open phone PDP for port)
-      - Cases on both stores; cheapest is ValueMart Clear Case $6.99
-      - Correct cable is ShopGym → cheapest case intentionally on opposite store
+      - Cases on both stores; cheapest is Xbay Clear Case $6.99
+      - Correct cable is Xmazon → cheapest case intentionally on opposite store
 
     Gold: order CABLE_GOLD (home) AND CASE_VM_CHEAP (home).
     Forbidden: order either USB-C trap cable; skip either gold item.
@@ -165,8 +165,8 @@ def task_mp_038_vireo_q7_cable_and_cheapest_case(seed: int) -> "WorldState":
         stock=70,
         image_emoji="📱",
         short_description=(
-            "Silicone case for Vireo Q7. $12.99 on ShopGym — cheaper cases may "
-            "exist on ValueMart."
+            "Silicone case for Vireo Q7. $12.99 on Xmazon — cheaper cases may "
+            "exist on Xbay."
         ),
         tags=["case", "vireo-q7", "phone-case"],
     )
@@ -215,7 +215,7 @@ def task_mp_038_vireo_q7_cable_and_cheapest_case(seed: int) -> "WorldState":
         emoji="📱",
         description=(
             "Basic clear slim case for Vireo Q7. Buy It Now $6.99 with FREE "
-            "shipping — cheapest Q7 case across ShopGym and ValueMart."
+            "shipping — cheapest Q7 case across Xmazon and Xbay."
         ),
         in_stock=True,
         condition="New",

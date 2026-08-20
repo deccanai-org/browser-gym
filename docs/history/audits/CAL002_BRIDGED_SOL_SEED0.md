@@ -3,7 +3,7 @@
 **Date:** 2026-08-02  
 **Task:** `cal_002/conditional_lunch_hold_cancel`  
 **Constraint:** seed → oracle → Disc ACCEPT + minimal-diff → Sol seed 0 only; diagnose before scale; no ledger/QA.  
-**Apps:** Calendar × GymEats (Food).
+**Apps:** Calendar × Xber (Food).
 
 ## Hub map (exclusive ports)
 
@@ -12,17 +12,17 @@
 | Gym / harness | — | **11778** |
 | Bridge | — | **11791** |
 | Calendar | `google_calendar_mock` | **11801** |
-| Food | `uber_eats_mock` (GymEats) | **11811** |
+| Food | `uber_eats_mock` (Xber) | **11811** |
 
 `STACK_SLOT=37` + `STACK_PORT_OVERRIDES=1`; `STACK_APPS="calendar food"`.
 
 ## Brief
 
-> My GymEats lunch is taking forever. If I still have a Client lunch block on my calendar today, cancel the food order and delete that hold so my afternoon's free. If the hold's already gone, leave the order alone.
+> My Xber lunch is taking forever. If I still have a Client lunch block on my calendar today, cancel the food order and delete that hold so my afternoon's free. If the hold's already gone, leave the order alone.
 
 ## Mechanism
 
-Conditional cancel (mp_019-style gate on Calendar): hold present → cancel preparing GymEats order **and** delete Client lunch; leave Team lunch decoy + delivered order intact.
+Conditional cancel (mp_019-style gate on Calendar): hold present → cancel preparing Xber order **and** delete Client lunch; leave Team lunch decoy + delivered order intact.
 
 ## 1. Seed + UI (env gate)
 
@@ -32,9 +32,9 @@ Conditional cancel (mp_019-style gate on Calendar): hold present → cancel prep
 | Surface | Result |
 |---|---|
 | calendar week | Client lunch **True**; Team lunch **True** |
-| GymEats order | active id **True**; `btn-cancel-food-order` / Cancel order **True**; preparing **True** |
+| Xber order | active id **True**; `btn-cancel-food-order` / Cancel order **True**; preparing **True** |
 
-**Env gate: PASS** (GymEats cancel affordance present).
+**Env gate: PASS** (Xber cancel affordance present).
 
 ## 2. Oracle / golden
 
@@ -64,7 +64,7 @@ Durable final: Client lunch still present; `FOOD-CAL002-ACTIVE` still `preparing
 
 - **Disposition: INCOMPLETE**
 - Disc on Sol final: correctness FAIL; forbidden_veto=False
-- Env vs agent: **(b) Sol lost on working env** — found Client lunch via search/Day thrash but never opened edit→delete and never navigated to GymEats cancel. Cancel button confirmed in seed UI.
+- Env vs agent: **(b) Sol lost on working env** — found Client lunch via search/Day thrash but never opened edit→delete and never navigated to Xber cancel. Cancel button confirmed in seed UI.
 - **STOP** — no scale.
 
 Detail: `trajectories/cal_002_bridged_confirm/scoring_report.json`

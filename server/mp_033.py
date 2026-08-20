@@ -1,18 +1,18 @@
-"""mp_033 / deals_kitchen_and_vm_wrong_item — ShopGym×ValueMart×ShopMail.
+"""mp_033 / deals_kitchen_and_vm_wrong_item — Xmazon×Xbay×Xmail.
 
 Mechanism: mom emailed a kitchen shopping list (knife set, spatula set, and
 ceramic mixing bowl) — agent must read that mail. Cover her requested items
-via ShopGym's deals surface (matching gold deals, including the bowl — not
-decoys). Separately, last week's ValueMart order arrived as a spoon (wrong
+via Xmazon's deals surface (matching gold deals, including the bowl — not
+decoys). Separately, last week's Xbay order arrived as a spoon (wrong
 item vs the Ceramic Mixing Bowl that was ordered) — email support for a
 refund/return naming the spoon. Notify alice once both are handled.
 
 UI-discoverability:
-  - ShopMail inbox: mom's request lists knife set + spatula + ceramic bowl
-  - ShopGym header /search?deals=true — gold deals match mom's list (incl bowl)
-  - ValueMart Dashboard purchase history (VM-4401 Ceramic Mixing Bowl)
-  - ShopMail: delivery note shows Wooden Spoon arrived
-  - ValueMart returns are decorative — durable path is mail to support
+  - Xmail inbox: mom's request lists knife set + spatula + ceramic bowl
+  - Xmazon header /search?deals=true — gold deals match mom's list (incl bowl)
+  - Xbay Dashboard purchase history (VM-4401 Ceramic Mixing Bowl)
+  - Xmail: delivery note shows Wooden Spoon arrived
+  - Xbay returns are decorative — durable path is mail to support
 """
 
 from __future__ import annotations
@@ -27,9 +27,9 @@ TASK_ID = "mp_033/deals_kitchen_and_vm_wrong_item"
 BRIEF_KEY = "mp_033"
 BRIEF = (
     "I got an email from my mom asking me to buy her some items but the "
-    "ValueMart order from last week was completely wrong so I need you to "
+    "Xbay order from last week was completely wrong so I need you to "
     "refund that because they gave me a spoon. Then look through the new "
-    "deal section of ShopGym and make sure the items she requested are "
+    "deal section of Xmazon and make sure the items she requested are "
     "covered including the bowl. Email me once its handled"
 )
 
@@ -38,7 +38,7 @@ MOM_EMAIL = "mom@family.example.com"
 MOM_EMAIL_ID = "em_mp033_mom_list"
 VM_SUPPORT = "support@valuemart.example.com"
 
-# Mom's list (discoverable only via her email) → matching ShopGym deals
+# Mom's list (discoverable only via her email) → matching Xmazon deals
 GOLD_KNIFE = "p_mp033_knife_set"
 GOLD_SPATULA = "p_mp033_spatula_set"
 GOLD_BOWL = "p_mp033_ceramic_bowl"
@@ -104,7 +104,7 @@ def task_mp_033_deals_kitchen_and_vm_wrong_item(seed: int) -> "WorldState":
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
 
@@ -245,7 +245,7 @@ def task_mp_033_deals_kitchen_and_vm_wrong_item(seed: int) -> "WorldState":
         to=USER_EMAIL,
         subject=f"Delivered: {VM_ORDER}",
         body=(
-            f"Your ValueMart order {VM_ORDER} was marked delivered yesterday.\n\n"
+            f"Your Xbay order {VM_ORDER} was marked delivered yesterday.\n\n"
             f"Ordered: {VM_ORDERED_NAME}\n"
             f"Carrier scan / photo label: {VM_WRONG_NAME}\n\n"
             "If this isn't what you ordered, contact support@valuemart.example.com "

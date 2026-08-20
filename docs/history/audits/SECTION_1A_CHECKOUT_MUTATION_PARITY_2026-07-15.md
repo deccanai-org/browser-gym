@@ -2,7 +2,7 @@
 
 ## Result
 
-PASS for the ShopGym checkout affordance represented by
+PASS for the Xmazon checkout affordance represented by
 `M73/expired_card_checkout`, on independently reset seeds 0, 1, and 2.
 The rendered Chromium path and the direct mutation/dispatch path produced
 identical normalized semantic transitions. This closes the checkout-specific

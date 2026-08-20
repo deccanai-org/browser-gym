@@ -1,4 +1,4 @@
-"""mp_064 / split_delivery_two_recipients_one_cart — ShopGym×ShopMail.
+"""mp_064 / split_delivery_two_recipients_one_cart — Xmazon×Xmail.
 
 Extended: three cart items. Brother email (vague steel-bottle description),
 friend email (cheapest leftover), self by elimination. Per-person spend cap

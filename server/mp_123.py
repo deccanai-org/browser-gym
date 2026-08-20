@@ -1,4 +1,4 @@
-"""mp_123 / gift_card_balance_named_limit — ShopGym×ShopMail.
+"""mp_123 / gift_card_balance_named_limit — Xmazon×Xmail.
 
 Prompt claims $40 gift-card balance. Durable balance is on Account / Gift Cards
 (seed $40). Catalog has sister gifts under and over $40. Gold = verify balance,
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 TASK_ID = "mp_123/gift_card_balance_named_limit"
 BRIEF_KEY = "mp_123"
 BRIEF = (
-    "I've got $40 left on my ShopGym gift card, use only that to buy something "
+    "I've got $40 left on my Xmazon gift card, use only that to buy something "
     "for my sister, don't put anything on my card. Email me what you got her."
 )
 
@@ -50,7 +50,7 @@ def task_mp_123_gift_card_balance_named_limit(seed: int) -> "WorldState":
     alice = shop.users["u_alice"]
     alice.payment_methods[GIFT_PAY] = PaymentMethod(
         id=GIFT_PAY,
-        label="ShopGym Gift Card ****4012",
+        label="Xmazon Gift Card ****4012",
         kind="gift_card",
         is_default=False,
         nickname="Gift card balance $40.00",

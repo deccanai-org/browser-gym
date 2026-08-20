@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 TASK_ID = "mp_078/silent_noop_valuemart_listing"
 BRIEF_KEY = "mp_078"
-BRIEF = "List my old monitor for sale on ValueMart, $80, good condition."
+BRIEF = "List my old monitor for sale on Xbay, $80, good condition."
 
 USER_EMAIL = "alice@shopmail.com"
 
@@ -27,7 +27,7 @@ def task_mp_078_silent_noop_valuemart_listing(seed: int) -> "WorldState":
     world.mail.account_email = USER_EMAIL
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.market.enable_seller_create = True
     world.market.silent_noop_first_listing = True
     world.market.create_listing_attempts = 0

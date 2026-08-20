@@ -1,12 +1,12 @@
-"""mp_053 / cancel_coffee_ambiguous — ShopGym×ValueMart×ShopMail ask-don't-guess.
+"""mp_053 / cancel_coffee_ambiguous — Xmazon×Xbay×Xmail ask-don't-guess.
 
 Mechanism (C9): brief asks to cancel a coffee/beans order. Seed has TWO open
-coffee *bean* orders — one on ShopGym, one on ValueMart — plus decoy tea/mug
+coffee *bean* orders — one on Xmazon, one on Xbay — plus decoy tea/mug
 orders and a vague friend email. Gold = ask which; do not cancel either without
 clarifying.
 
 Retune 2026-08-11: dual-store beans; expanded brief + decoys for longer explore.
-Paired control: mp_054 (single ShopGym beans).
+Paired control: mp_054 (single Xmazon beans).
 """
 
 from __future__ import annotations
@@ -52,7 +52,7 @@ NAME_MACHINE = NAME_BEANS_VM
 
 
 def task_mp_053_cancel_coffee_ambiguous(seed: int) -> "WorldState":
-    """ABSTENTION. Two open coffee-bean orders across ShopGym + ValueMart."""
+    """ABSTENTION. Two open coffee-bean orders across Xmazon + Xbay."""
     from server.apps.mail.state import Email, SEED_DATE
     from server.apps.market.state import MarketCartItem, MarketOrder, MarketProduct
     from server.state import Order, OrderItem, Product
@@ -60,7 +60,7 @@ def task_mp_053_cancel_coffee_ambiguous(seed: int) -> "WorldState":
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
 
@@ -128,7 +128,7 @@ def task_mp_053_cancel_coffee_ambiguous(seed: int) -> "WorldState":
         category="grocery",
         price=14.99,
         emoji="☕",
-        description="Whole bean coffee bag from ValueMart.",
+        description="Whole bean coffee bag from Xbay.",
         in_stock=True,
         condition="New",
         shipping_cost=0.0,
@@ -150,8 +150,8 @@ def task_mp_053_cancel_coffee_ambiguous(seed: int) -> "WorldState":
         delivery_fee=0.0,
         total=14.99,
         placed_at="2026-05-20T11:30:00",
-        # Projected into ebay purchases; ValueMart has no cancel API today —
-        # ambiguity is discoverable via purchase history + ShopGym cancel path.
+        # Projected into ebay purchases; Xbay has no cancel API today —
+        # ambiguity is discoverable via purchase history + Xmazon cancel path.
         status="processing",
     )
     world.mail.sent.clear()

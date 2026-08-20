@@ -273,7 +273,7 @@ class ReturnRequest:
 
 @dataclass
 class SupportTicket:
-    """Durable record of a ShopGym Customer Service Contact-us submission.
+    """Durable record of a Xmazon Customer Service Contact-us submission.
 
     The /customer-service form used to only flip local React ``sent`` state; claim
     text never reached the engine. Tickets are the omniscient verifier surface for

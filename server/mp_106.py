@@ -1,4 +1,4 @@
-"""mp_106 / insurance_claim_photo_evidence_deadline — ShopGym×Mail CS claim.
+"""mp_106 / insurance_claim_photo_evidence_deadline — Xmazon×Mail CS claim.
 
 User labeled mp_100 originally; use mp_106.
 
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 TASK_ID = "mp_106/insurance_claim_photo_evidence_deadline"
 BRIEF_KEY = "mp_106"
 BRIEF = (
-    "The package that showed up from ShopGym had a cracked speaker inside, I need "
+    "The package that showed up from Xmazon had a cracked speaker inside, I need "
     "to file a damage claim before the window closes. Check when it was delivered "
     "and get the claim in on time, referencing the actual order. Email me once "
     "it's filed."
@@ -144,7 +144,7 @@ def task_mp_106_insurance_claim_photo_evidence_deadline(
         id="em_mp106_policy",
         sender="care@shopgym.com",
         to=USER_EMAIL,
-        subject="ShopGym damage claim window reminder",
+        subject="Xmazon damage claim window reminder",
         body=(
             "Reminder: file shipping-damage claims within 14 days of delivery "
             "via Customer Service Contact Us. Include your order number. "

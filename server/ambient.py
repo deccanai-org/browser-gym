@@ -1,15 +1,15 @@
 """The browse-only catalog, made ADDABLE without making it visible to verifiers.
 
-Four fifths of what a ShopGym annotator can see, and nineteen twentieths of
-ValueMart, is ambient filler: products that exist only in the projection so the
+Four fifths of what a Xmazon annotator can see, and nineteen twentieths of
+Xbay, is ambient filler: products that exist only in the projection so the
 stores look like stores. `tools/ambient_catalog` says so in its own docstring —
 "It never touches the gym engine world, so no verifier sees it."
 
 That was true and it was also a trap. The mocks render the whole catalog and put
 an Add-to-cart button on every item, but the engine only knows the task's own 43
 products, so clicking any of the other 188 was rejected as "unknown product" and
-the cart silently stayed empty. Measured across seven tasks: 81% of ShopGym and
-95% of ValueMart were dead buttons.
+the cart silently stayed empty. Measured across seven tasks: 81% of Xmazon and
+95% of Xbay were dead buttons.
 
 The obvious fix — put them in `state.products` — is the wrong one, for two
 reasons that are easy to miss:
@@ -48,7 +48,7 @@ from server.state import Product
 #: does not own. Rebuilt on every reset so a stale task's filler cannot leak
 #: into the next one.
 _shop: dict[str, Product] = {}
-#: The same for ValueMart listings.
+#: The same for Xbay listings.
 _market: dict[str, MarketProduct] = {}
 
 # --------------------------------------------------------------------------- #
@@ -188,7 +188,7 @@ def shop(product_id: str) -> Product | None:
 
 
 def market(product_id: str) -> MarketProduct | None:
-    """The ambient ValueMart listing with this id, if any."""
+    """The ambient Xbay listing with this id, if any."""
     return _market.get(product_id)
 
 

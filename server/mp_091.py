@@ -1,10 +1,10 @@
-"""mp_091 / valuemart_burrow_pickup_calendar_conflict_email — ValueMart×GymCal×ShopMail.
+"""mp_091 / valuemart_burrow_pickup_calendar_conflict_email — Xbay×Xoogle×Xmail.
 
 New mechanism family (2026-08-11); no prior Eligible smash. See
 TASK_VERSION_HISTORY_2026-08-11.md.
 
-Mechanism: ValueMart lists several couches (decoys). The target is the brown
-leather Burrow couch with a clear local-pickup window on the PDP. GymCal has a
+Mechanism: Xbay lists several couches (decoys). The target is the brown
+leather Burrow couch with a clear local-pickup window on the PDP. Xoogle has a
 hard conflict across that entire window. Correct policy: do NOT buy; email Alice
 that pickup does not work with the schedule.
 """
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 TASK_ID = "mp_091/valuemart_burrow_pickup_calendar_conflict_email"
 BRIEF_KEY = "mp_091"
 BRIEF = (
-    "I have had my eye on this brown leather Burrow couch on ValueMart, "
+    "I have had my eye on this brown leather Burrow couch on Xbay, "
     "first make sure that the pickup time aligns with my current schedule "
     "then buy it, if not email me and let me know."
 )
@@ -55,7 +55,7 @@ def task_mp_091_valuemart_burrow_pickup_calendar_conflict_email(
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
 
@@ -179,7 +179,7 @@ def task_mp_091_valuemart_burrow_pickup_calendar_conflict_email(
         to=USER_EMAIL,
         subject="Saved search: Burrow brown leather couch still listed",
         body=(
-            f"Your saved ValueMart listing '{COUCH_NAME}' is still up. "
+            f"Your saved Xbay listing '{COUCH_NAME}' is still up. "
             "Open the product page for local pickup details."
         ),
         received_at=f"{SEED_DATE}T09:10:00",

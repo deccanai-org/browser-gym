@@ -140,7 +140,7 @@ MP002_BRIEF = (
 )
 MP002_VM = "vm_mp002_dualsense"
 MP002_AMZ = "p_mp002_dualsense"
-# ValueMart BIN $33.99 + $5 ship = $38.99 ≤ $40 → gold buy eBay/VM.
+# Xbay BIN $33.99 + $5 ship = $38.99 ≤ $40 → gold buy eBay/VM.
 # Amazon new DualSense ~$60 exists so the agent can check the fallback, but it
 # is NOT cheaper while the auction/BIN stays under $40.
 
@@ -154,7 +154,7 @@ def task_mp_002(seed: int) -> "WorldState":
     world.mail.account_email = USER_EMAIL
     world.shop.task_id = MP002_ID
     world.shop.task_brief = MP002_BRIEF
-    # Bridged ValueMart: bidding disabled. Seed as BIN with price+shipping so
+    # Bridged Xbay: bidding disabled. Seed as BIN with price+shipping so
     # the agent can still do shipping-inclusive arithmetic vs the $40 cap.
     world.market.products[MP002_VM] = MarketProduct(
         id=MP002_VM,
@@ -164,8 +164,8 @@ def task_mp_002(seed: int) -> "WorldState":
         emoji="🎮",
         description=(
             "Used DualSense, tested. Buy It Now $33.99 + shipping $5.00 = $38.99 "
-            "total (UNDER a $40 cap). Bidding is not available on ValueMart — "
-            "compare shipping-inclusive total to ShopGym's new ~$60 controller."
+            "total (UNDER a $40 cap). Bidding is not available on Xbay — "
+            "compare shipping-inclusive total to Xmazon's new ~$60 controller."
         ),
         in_stock=True,
         condition="Used",
@@ -241,7 +241,7 @@ def task_mp_003(seed: int) -> "WorldState":
     world = _cross_app_world(seed, MP003_ID, "hard")
     world.mail.account_email = USER_EMAIL
     shop = world.shop
-    # Explicit ETA copy (same-day cutoff clocks are weak on bridged ShopGym).
+    # Explicit ETA copy (same-day cutoff clocks are weak on bridged Xmazon).
     shop.products[MP003_PLATES] = Product(
         id=MP003_PLATES, name="Dixie Ultra Paper Plates, 50 count",
         brand="Dixie", category="household", base_price=8.99,
@@ -711,7 +711,7 @@ def task_mp_013(seed: int) -> "WorldState":
     shop = world.shop
     alice = shop.users["u_alice"]
     addr = alice.addresses["addr_home"]
-    # Bridged ShopGym does not project ProductVariant pickers — seed color as
+    # Bridged Xmazon does not project ProductVariant pickers — seed color as
     # separate products (honest adaptation of "variants" column).
     for pid, name, price in (
         (MP013_ROSE, "Spigen Rugged Armor Phone Case - Rose Gold", 19.99),

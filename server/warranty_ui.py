@@ -1,4 +1,4 @@
-"""Shared warranty status helpers for ShopGym order / return pages.
+"""Shared warranty status helpers for Xmazon order / return pages.
 
 Infers a limited-warranty window from product copy (e.g. "12 months from
 purchase date" or "90-day replace policy") plus the order's placed_at,

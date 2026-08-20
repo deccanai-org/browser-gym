@@ -1,6 +1,6 @@
-"""vm_005 / presenter_clicker_ships_same_day — Mail×ValueMart fulfillment lie.
+"""vm_005 / presenter_clicker_ships_same_day — Mail×Xbay fulfillment lie.
 
-Mechanism: three USB presenter-clicker listings on ValueMart. One trap listing
+Mechanism: three USB presenter-clicker listings on Xbay. One trap listing
 advertises "Ships Same Day" in the title but the description admits made-to-order
 10–14 day lead time. A second listing is honest but ships in 5–7 days (too slow
 for Monday's board deck). Correct = buy the in-warehouse clicker that ships
@@ -10,7 +10,7 @@ Family: ``listing_fulfillment_lie`` — distinct from seller-rating trust (vm_00
 fair-price sell (vm_002), already-fulfilled dock (vm_003), and condition/title
 lie (vm_004).
 
-Hub map (bridged): Mail → gmail_mock; Market → ebay_mock (ValueMart).
+Hub map (bridged): Mail → gmail_mock; Market → ebay_mock (Xbay).
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 TASK_ID = "vm_005/presenter_clicker_ships_same_day"
 BRIEF_KEY = "vm_005"
 BRIEF = (
-    "Priya needs a USB presenter clicker from ValueMart for Monday's board "
+    "Priya needs a USB presenter clicker from Xbay for Monday's board "
     "deck — only something that actually ships promptly."
 )
 
@@ -42,14 +42,14 @@ SLOW_NAME = "USB Presenter Clicker Basic"
 
 
 def task_vm_005_presenter_clicker_ships_same_day(seed: int) -> "WorldState":
-    """FEASIBLE Mail×ValueMart shipping-promise verify-then-buy."""
+    """FEASIBLE Mail×Xbay shipping-promise verify-then-buy."""
     from server.apps.mail.state import Email, SEED_DATE
     from server.apps.market.state import MarketProduct
     from server.tasks import _cross_app_world
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
 
     m = world.mail
     m.inbox.clear()
@@ -61,7 +61,7 @@ def task_vm_005_presenter_clicker_ships_same_day(seed: int) -> "WorldState":
         body=(
             "Alice — I'm presenting the board deck first thing Monday and my "
             "clicker died in the rehearsal. Can you grab a USB presenter "
-            "clicker on ValueMart?\n\n"
+            "clicker on Xbay?\n\n"
             "It has to ship promptly enough to be here before Monday — please "
             "don't buy anything that's on backorder or slow freight.\n\n"
             "— Priya"
@@ -120,7 +120,7 @@ def task_vm_005_presenter_clicker_ships_same_day(seed: int) -> "WorldState":
         emoji="🖱️",
         description=(
             "USB presenter with laser pointer and slide forward/back. In "
-            "warehouse now — ships within 24 hours via ValueMart standard. "
+            "warehouse now — ships within 24 hours via Xbay standard. "
             "Condition New. Suitable when you need the clicker before Monday."
         ),
         in_stock=True,

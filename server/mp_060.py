@@ -1,4 +1,4 @@
-"""mp_060 / cousin_dinner_email_calendar_schedule — ShopMail×GymCal×GymEats.
+"""mp_060 / cousin_dinner_email_calendar_schedule — Xmail×Xoogle×Xber.
 
 Same id (Eligible e9). 2026-08-11 **Friday rewrite** (v2): uniqueness is
 Friday-only dinner (Thu dentist distract; Sat pottery overlap; Sun departure)

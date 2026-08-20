@@ -1,17 +1,17 @@
-"""mp_032 / recurring_lunch_quickadd_pickup_bcc — GymCal×GymEats×ShopMail.
+"""mp_032 / recurring_lunch_quickadd_pickup_bcc — Xoogle×Xber×Xmail.
 
 Mechanism: create a biweekly team lunch starting TODAY (gym clock ~12:40,
 lunch 1–2pm), avoid colliding with a noon block later in the month on the
-biweekly cadence, order vegetarian pickup from GymEats that arrives **on time
+biweekly cadence, order vegetarian pickup from Xber that arrives **on time
 for lunch** (ETA before lunch start vs gym_now), then BCC the team the plan
 (not reply-all / To-blast).
 
 UI-discoverable facts:
-  - GymCal red now-line / Today = task `_gym_now` (~12:40 on Thu May 21)
-  - GymCal: Budget Sync today noon; Client Demo Jun 4 noon (biweekly trap)
-  - GymCal Quick Add (+): NL create with every other week / biweekly + today
-  - GymEats: Vegetarian filter; Delivery/Pickup toggle; ETA labels vs lunch
-  - ShopMail compose: Bcc field (Ctrl+Shift+B)
+  - Xoogle red now-line / Today = task `_gym_now` (~12:40 on Thu May 21)
+  - Xoogle: Budget Sync today noon; Client Demo Jun 4 noon (biweekly trap)
+  - Xoogle Quick Add (+): NL create with every other week / biweekly + today
+  - Xber: Vegetarian filter; Delivery/Pickup toggle; ETA labels vs lunch
+  - Xmail compose: Bcc field (Ctrl+Shift+B)
 """
 
 from __future__ import annotations

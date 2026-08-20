@@ -1,4 +1,4 @@
-"""mp_046 / dentist_triple_reschedule_latest_wins — GymCal×ShopMail.
+"""mp_046 / dentist_triple_reschedule_latest_wins — Xoogle×Xmail.
 
 Mechanism: dentist appointment shuffled across multiple emails; calendar still
 shows the oldest slot. Latest confirmation wins. Differentiated from cal_004:

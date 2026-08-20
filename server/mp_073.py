@@ -1,4 +1,4 @@
-"""mp_073 / gymcal_recurring_series_vs_single_override — GymCal×GymEats.
+"""mp_073 / gymcal_recurring_series_vs_single_override — Xoogle×Xber.
 
 Weekly Design Review noon series; tomorrow's instance overridden to 2pm
 ("moved for room conflict"). Order lunch ETA matching 2pm, not noon.

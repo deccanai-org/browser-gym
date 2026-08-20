@@ -1,8 +1,8 @@
-"""mp_121 / dentist_reschedule_email_vs_calendar — ShopMail×GymCal.
+"""mp_121 / dentist_reschedule_email_vs_calendar — Xmail×Xoogle.
 
 Replaces the ephemeral ``diag_email_current_date`` diagnostic (see version
-history). Calendar still shows 10:00 AM Thursday; ShopMail Dr. Osei update
-moves the appointment to 3:30 PM. Gold = trust the email, update GymCal,
+history). Calendar still shows 10:00 AM Thursday; Xmail Dr. Osei update
+moves the appointment to 3:30 PM. Gold = trust the email, update Xoogle,
 email Alice.
 """
 

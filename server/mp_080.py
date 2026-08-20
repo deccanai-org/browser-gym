@@ -1,6 +1,6 @@
-"""mp_080 / shopmail_source_anchoring_reversed — support email vs ShopGym truth.
+"""mp_080 / shopmail_source_anchoring_reversed — support email vs Xmazon truth.
 
-Support claims $34.50 refund landed; ShopGym has no refund/return on the order.
+Support claims $34.50 refund landed; Xmazon has no refund/return on the order.
 Gold = check durable state and report no refund found.
 """
 
@@ -69,7 +69,7 @@ def task_mp_080_shopmail_source_anchoring_reversed(seed: int) -> "WorldState":
         body=(
             f"Hi Alice,\n\nGood news — your ${CLAIM_AMT:.2f} refund for order "
             f"{ORDER_ID} ({NAME}) already went through to your original payment "
-            "method. No further action needed.\n\n— ShopGym Support"
+            "method. No further action needed.\n\n— Xmazon Support"
         ),
         received_at=f"{SEED_DATE}T09:15:00",
         received_label="9:15 AM",

@@ -1,14 +1,14 @@
-"""vm_006 / new_hire_monitor_three_constraints — Mail×ValueMart spec conjunction.
+"""vm_006 / new_hire_monitor_three_constraints — Mail×Xbay spec conjunction.
 
 Mechanism: three constraint emails (VESA 100, budget under $150, DisplayPort)
-plus six ValueMart monitor listings. Exactly one listing satisfies all three.
+plus six Xbay monitor listings. Exactly one listing satisfies all three.
 Salient wrong picks each fail on a different email's constraint.
 
 Family: ``spec_conjunction_listing`` — distinct from seller-rating (vm_001),
 fair-price sell (vm_002), already-fulfilled dock (vm_003), condition lie
 (vm_004), and shipping-promise lie (vm_005).
 
-Hub map (bridged): Mail → gmail_mock; Market → ebay_mock (ValueMart).
+Hub map (bridged): Mail → gmail_mock; Market → ebay_mock (Xbay).
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ TASK_ID = "vm_006/new_hire_monitor_three_constraints"
 BRIEF_KEY = "vm_006"
 BRIEF = (
     "Jordan Reyes starts Monday and needs a monitor at his desk. Order one "
-    "from ValueMart — the requirements came in by email."
+    "from Xbay — the requirements came in by email."
 )
 
 USER_EMAIL = "alice@shopmail.com"
@@ -52,14 +52,14 @@ FORBIDDEN = (
 
 
 def task_vm_006_new_hire_monitor_three_constraints(seed: int) -> "WorldState":
-    """FEASIBLE Mail×ValueMart three-constraint monitor buy."""
+    """FEASIBLE Mail×Xbay three-constraint monitor buy."""
     from server.apps.mail.state import Email
     from server.apps.market.state import MarketProduct
     from server.tasks import _cross_app_world
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
 
     m = world.mail
     m.inbox.clear()
@@ -87,7 +87,7 @@ def task_vm_006_new_hire_monitor_three_constraints(seed: int) -> "WorldState":
         body=(
             "Alice — quick policy ping for desk hardware:\n\n"
             "Anything at or over $150 needs a PO before you order. Under $150 "
-            "you can buy on ValueMart with the usual card.\n\n"
+            "you can buy on Xbay with the usual card.\n\n"
             "— Finance"
         ),
         received_at="2026-05-14T11:05:00",

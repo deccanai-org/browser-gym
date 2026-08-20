@@ -6,7 +6,7 @@ diff -ruN a/websites/xber_eats_mock/index.html b/websites/xber_eats_mock/index.h
      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 -    <title>Xber Eats</title>
-+    <title>GymEats</title>
++    <title>Xber</title>
    </head>
    <body>
      <div id="root"></div>
@@ -394,7 +394,7 @@ diff -ruN a/websites/xber_eats_mock/src/components/Footer.jsx b/websites/xber_ea
  
  const FOOTER_CONTENT = {
 -  help: { title: 'Xber Eats Help', body: 'Choose an order from Your Orders to get order-specific help, refunds, delivery updates, or contact options.' },
-+  help: { title: 'GymEats Help', body: 'Choose an order from Your Orders to get order-specific help, refunds, delivery updates, or contact options.' },
++  help: { title: 'Xber Help', body: 'Choose an order from Your Orders to get order-specific help, refunds, delivery updates, or contact options.' },
    gift: { title: 'Gift cards', body: 'Sandbox gift cards can be added at checkout with promo code SAVE5. No external purchase is required.' },
    restaurant: { title: 'Add your restaurant', body: 'Restaurant onboarding is simulated locally. Your draft is saved in this browser session for training tasks.' },
    deliver: { title: 'Sign up to deliver', body: 'Delivery partner signup opens a local information flow in this sandbox and never contacts external services.' },
@@ -404,7 +404,7 @@ diff -ruN a/websites/xber_eats_mock/src/components/Footer.jsx b/websites/xber_ea
 -  pickup: { title: 'Pickup near me', body: 'Use the Delivery/Pickup toggle in the header to switch the catalog and cart to pickup mode.' },
 -  about: { title: 'About Xber Eats', body: 'This is a self-contained Xber Eats training mock with local restaurants, orders, account settings, and file endpoints.' },
 +  pickup: { title: 'Pickup near me', body: 'This sandbox is delivery-only. Pickup ordering is not available and the catalog and cart always use delivery.' },
-+  about: { title: 'About GymEats', body: 'This is a self-contained GymEats training mock with local restaurants, orders, account settings, and file endpoints.' },
++  about: { title: 'About Xber', body: 'This is a self-contained Xber training mock with local restaurants, orders, account settings, and file endpoints.' },
    appStore: { title: 'App Store', body: 'App installation is represented locally. Continue using this browser sandbox for all training workflows.' },
 -  playStore: { title: 'Google Play', body: 'App installation is represented locally. Continue using this browser sandbox for all training workflows.' },
 +  playStore: { title: 'Play Store', body: 'App installation is represented locally. Continue using this browser sandbox for all training workflows.' },
@@ -427,7 +427,7 @@ diff -ruN a/websites/xber_eats_mock/src/components/Footer.jsx b/websites/xber_ea
            </div>
            <div className="ue-footer__col">
 -            <button className="ue-footer__link" onClick={() => setModalKey('about')}>About Xber Eats</button>
-+            <button className="ue-footer__link" onClick={() => setModalKey('about')}>About GymEats</button>
++            <button className="ue-footer__link" onClick={() => setModalKey('about')}>About Xber</button>
              <Link to="/" className="ue-footer__link">English</Link>
            </div>
          </div>
@@ -443,7 +443,7 @@ diff -ruN a/websites/xber_eats_mock/src/components/Footer.jsx b/websites/xber_ea
  
            <div className="ue-footer__legal">
 -            <span>&copy; {new Date().getFullYear()} Uber Technologies Inc.</span>
-+            <span>&copy; {new Date().getFullYear()} GymEats</span>
++            <span>&copy; {new Date().getFullYear()} Xber</span>
              <span className="ue-footer__dot">&bull;</span>
              <button className="ue-footer__legal-link" onClick={() => setModalKey('privacy')}>Privacy Policy</button>
              <span className="ue-footer__dot">&bull;</span>
@@ -613,7 +613,7 @@ diff -ruN a/websites/xber_eats_mock/src/components/Header.jsx b/websites/xber_ea
            <input
              type="text"
 -            placeholder="Search Xber Eats"
-+            placeholder="Search GymEats"
++            placeholder="Search Xber"
              className="ue-header__search-input"
              value={searchValue}
              onChange={(e) => setSearchValue(e.target.value)}
@@ -825,7 +825,7 @@ diff -ruN a/websites/xber_eats_mock/src/components/Sidebar.jsx b/websites/xber_e
              <span>Help</span>
            </button>
 -          <button className="sidebar__nav-item" onClick={() => handleNav('/')}>
-+          <button className="sidebar__nav-item" onClick={() => openLocalDialog('Get a ride', "Rides aren't available in this GymEats sandbox — there's no rides product to open.")}>
++          <button className="sidebar__nav-item" onClick={() => openLocalDialog('Get a ride', "Rides aren't available in this Xber sandbox — there's no rides product to open.")}>
              <ExternalLink size={20} />
              <span>Get a ride</span>
              <ExternalLink size={14} className="sidebar__ext-icon" />
@@ -833,7 +833,7 @@ diff -ruN a/websites/xber_eats_mock/src/components/Sidebar.jsx b/websites/xber_e
          </div>
  
 -        {/* Uber One */}
-+        {/* GymEats One */}
++        {/* Xber One */}
          {!user.uberOneActive && (
            <div className="sidebar__uber-one" onClick={() => handleNav('/account')}>
              <div className="sidebar__uber-one-icon">
@@ -842,7 +842,7 @@ diff -ruN a/websites/xber_eats_mock/src/components/Sidebar.jsx b/websites/xber_e
              </div>
              <div className="sidebar__uber-one-info">
 -              <strong>Uber One</strong>
-+              <strong>GymEats One</strong>
++              <strong>Xber One</strong>
                <span className="sidebar__uber-one-trial">Try free for 4 weeks</span>
              </div>
            </div>
@@ -851,7 +851,7 @@ diff -ruN a/websites/xber_eats_mock/src/components/Sidebar.jsx b/websites/xber_e
            <button className="sidebar__bottom-link" onClick={() => openLocalDialog('Business account draft', 'Business account setup is represented locally. Company orders and billing stay inside this browser session.')}>Create a business account</button>
            <button className="sidebar__bottom-link" onClick={() => openLocalDialog('Restaurant onboarding', 'Restaurant signup is simulated locally with no external submission.')}>Add your restaurant</button>
 -          <button className="sidebar__bottom-link" onClick={() => openLocalDialog('Delivery partner signup', 'Courier signup opens a local training flow and does not contact real Uber services.')}>Sign up to deliver</button>
-+          <button className="sidebar__bottom-link" onClick={() => openLocalDialog('Delivery partner signup', 'Courier signup opens a local training flow and does not contact real GymEats services.')}>Sign up to deliver</button>
++          <button className="sidebar__bottom-link" onClick={() => openLocalDialog('Delivery partner signup', 'Courier signup opens a local training flow and does not contact real Xber services.')}>Sign up to deliver</button>
          </div>
  
          {/* App download */}
@@ -1717,12 +1717,12 @@ diff -ruN a/websites/xber_eats_mock/src/pages/Account.jsx b/websites/xber_eats_m
        </div>
  
 -      {/* Uber One banner */}
-+      {/* GymEats One banner */}
++      {/* Xber One banner */}
        {!user.uberOneActive && (
          <div className="account-uber-one">
            <div className="account-uber-one__content">
 -            <strong>Uber One</strong>
-+            <strong>GymEats One</strong>
++            <strong>Xber One</strong>
              <p>$0 Delivery Fee and 5% off eligible orders</p>
            </div>
            <button className="account-uber-one__btn" onClick={() => setShowUberOneModal(true)}>Try free for 1 month</button>
@@ -1731,7 +1731,7 @@ diff -ruN a/websites/xber_eats_mock/src/pages/Account.jsx b/websites/xber_eats_m
          <div className="account-uber-one account-uber-one--active">
            <div className="account-uber-one__content">
 -            <strong>Uber One Member</strong>
-+            <strong>GymEats One Member</strong>
++            <strong>Xber One Member</strong>
              <p>Enjoy $0 delivery and 5% off eligible orders</p>
            </div>
            <Shield size={24} />
@@ -1782,7 +1782,7 @@ diff -ruN a/websites/xber_eats_mock/src/pages/Account.jsx b/websites/xber_eats_m
        </section>
  
 -      {/* Uber One Modal */}
-+      {/* GymEats One Modal */}
++      {/* Xber One Modal */}
        {showUberOneModal && (
          <div className="uber-one-modal-overlay" onClick={() => setShowUberOneModal(false)}>
            <div className="uber-one-modal" onClick={(e) => e.stopPropagation()}>
@@ -1791,7 +1791,7 @@ diff -ruN a/websites/xber_eats_mock/src/pages/Account.jsx b/websites/xber_eats_m
              </button>
              <div className="uber-one-modal__header">
 -              <strong>Uber One</strong>
-+              <strong>GymEats One</strong>
++              <strong>Xber One</strong>
              </div>
              <div className="uber-one-modal__benefits">
                <div className="uber-one-modal__benefit">
@@ -2581,7 +2581,7 @@ diff -ruN a/websites/xber_eats_mock/src/pages/Homepage.jsx b/websites/xber_eats_
          <section className="homepage__section">
            <div className="homepage__section-header">
 -            <h2 className="homepage__section-title">Featured on Xber Eats</h2>
-+            <h2 className="homepage__section-title">Featured on GymEats</h2>
++            <h2 className="homepage__section-title">Featured on Xber</h2>
              <Link to="/search?q=popular" className="homepage__see-all">See all</Link>
            </div>
            <div className="homepage__grid">
@@ -2590,12 +2590,12 @@ diff -ruN a/websites/xber_eats_mock/src/pages/Homepage.jsx b/websites/xber_eats_
        </section>
  
 -      {/* New on Xber Eats */}
-+      {/* New on GymEats */}
++      {/* New on Xber */}
        {newRestaurants.length > 0 && (
          <section className="homepage__section">
            <div className="homepage__section-header">
 -            <h2 className="homepage__section-title">New on Xber Eats</h2>
-+            <h2 className="homepage__section-title">New on GymEats</h2>
++            <h2 className="homepage__section-title">New on Xber</h2>
            </div>
            <div className="homepage__grid">
              {newRestaurants.map(r => (
@@ -2604,7 +2604,7 @@ diff -ruN a/websites/xber_eats_mock/src/pages/Homepage.jsx b/websites/xber_eats_
        )}
  
 -      {/* Uber One Banner */}
-+      {/* GymEats One Banner */}
++      {/* Xber One Banner */}
        {!state.user.uberOneActive && (
          <div className="homepage__uber-one-banner">
            <div className="homepage__uber-one-content">
@@ -2613,7 +2613,7 @@ diff -ruN a/websites/xber_eats_mock/src/pages/Homepage.jsx b/websites/xber_eats_
              </div>
              <div>
 -              <h3 className="homepage__uber-one-title">$0 Delivery Fee with Uber One</h3>
-+              <h3 className="homepage__uber-one-title">$0 Delivery Fee with GymEats One</h3>
++              <h3 className="homepage__uber-one-title">$0 Delivery Fee with Xber One</h3>
                <p className="homepage__uber-one-sub">Plus 5% off eligible orders. Cancel anytime.</p>
              </div>
            </div>
@@ -2652,7 +2652,7 @@ diff -ruN a/websites/xber_eats_mock/src/pages/OrderTracking.jsx b/websites/xber_
    const downloadReceipt = () => {
      const receipt = [
 -      `Xber Eats receipt ${order.id}`,
-+      `GymEats receipt ${order.id}`,
++      `Xber receipt ${order.id}`,
        `Restaurant: ${order.restaurantName}`,
        `Placed: ${new Date(order.placedAt).toLocaleString()}`,
        '',
@@ -3046,7 +3046,7 @@ diff -ruN a/websites/xber_eats_mock/src/utils/dataManager.js b/websites/xber_eat
        { id: 'promo_3', type: 'percentage', title: '20% off first order', description: '20% off your first order', code: 'FIRST20', minOrder: 15.00, discountAmount: 0, discountPercent: 20, expiresAt: '2026-12-31', restaurantId: null },
        { id: 'promo_4', type: 'discount', title: '$3 off Sushi', description: '$3 off at Tokyo Express', code: 'SUSHI3', minOrder: 15.00, discountAmount: 3.00, discountPercent: null, expiresAt: '2026-12-31', restaurantId: 'rest_2' },
 -      { id: 'promo_5', type: 'free_delivery', title: 'Uber One: $0 Delivery', description: '$0 Delivery Fee and 5% off eligible orders with Uber One', code: null, minOrder: 0, discountAmount: 0, discountPercent: 5, expiresAt: '2026-12-31', restaurantId: null },
-+      { id: 'promo_5', type: 'free_delivery', title: 'GymEats One: $0 Delivery', description: '$0 Delivery Fee and 5% off eligible orders with GymEats One', code: null, minOrder: 0, discountAmount: 0, discountPercent: 5, expiresAt: '2026-12-31', restaurantId: null },
++      { id: 'promo_5', type: 'free_delivery', title: 'Xber One: $0 Delivery', description: '$0 Delivery Fee and 5% off eligible orders with Xber One', code: null, minOrder: 0, discountAmount: 0, discountPercent: 5, expiresAt: '2026-12-31', restaurantId: null },
        { id: 'promo_6', type: 'discount', title: '$10 off $40+', description: 'Save $10 on orders over $40', code: 'DEAL10', minOrder: 40.00, discountAmount: 10.00, discountPercent: null, expiresAt: '2026-12-31', restaurantId: null },
        { id: 'promo_7', type: 'percentage', title: '15% off Korean', description: '15% off at Seoul Kitchen', code: 'KOREAN15', minOrder: 20.00, discountAmount: 0, discountPercent: 15, expiresAt: '2026-12-31', restaurantId: 'rest_11' }
      ],

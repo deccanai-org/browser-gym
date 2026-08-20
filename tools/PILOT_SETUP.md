@@ -9,9 +9,9 @@ world into them via their state API. No cua-gym DB or Kashyap dependency.
 
 | Gym app | Realistic UI | mock key | port |
 |---|---|---|---|
-| shop (ShopGym) | Amazon | xmazon_mock | 5201 |
-| market (ValueMart) | eBay | xbay_mock | 5202 |
-| mail (ShopMail) | Gmail | xmail_mock | 5203 |
+| shop (Xmazon) | Amazon | xmazon_mock | 5201 |
+| market (Xbay) | eBay | xbay_mock | 5202 |
+| mail (Xmail) | Gmail | xmail_mock | 5203 |
 | calendar | Google Calendar | xoogle_calendar_mock | 5204 |
 | food | Uber Eats | xber_eats_mock | 5205 |
 

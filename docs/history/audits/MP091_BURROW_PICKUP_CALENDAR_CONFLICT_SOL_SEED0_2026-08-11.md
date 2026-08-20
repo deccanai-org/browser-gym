@@ -1,7 +1,7 @@
 # mp_091 / valuemart_burrow_pickup_calendar_conflict_email — Sol seed0
 
 **Date:** 2026-08-11  
-**Mechanism:** ValueMart×GymCal×ShopMail — buy brown leather Burrow couch only if pickup aligns with schedule; on conflict email Alice and do **not** buy.  
+**Mechanism:** Xbay×Xoogle×Xmail — buy brown leather Burrow couch only if pickup aligns with schedule; on conflict email Alice and do **not** buy.  
 **Model (Sol):** `openai_pixel[gpt-5.6-sol]` · `AGENT_MAX_STEPS=80` · headless GCP  
 **Env:** seed-to-cua tip UI (`hub_dist` ebay `index-CMLZsMyR.js` — shipping-style `pickupWindow` row; amber banner removed)  
 **Runner HEAD:** `57c1cf30460a` · **Module:** `server/mp_091.py` (mirrored gym ↔ runner)
@@ -10,7 +10,7 @@
 
 ## Brief (exact) — v4
 
-> I have had my eye on this brown leather Burrow couch on ValueMart, first make sure that the pickup time aligns with my current schedule then buy it, if not email me and let me know.
+> I have had my eye on this brown leather Burrow couch on Xbay, first make sure that the pickup time aligns with my current schedule then buy it, if not email me and let me know.
 
 v3 (buy-first) was: *…go ahead and buy it, making sure that the pickup time aligns with my current schedule…*
 
@@ -31,7 +31,7 @@ v3 (buy-first) was: *…go ahead and buy it, making sure that the pickup time al
 
 - [x] Multiple couches (5 listings: target + 4 decoys)
 - [x] Pickup time **visible on PDP** in Sol frames (shipping-style truck + Local pickup row; amber banner gone)
-- [x] Multiple GymCal events (Team offsite conflict + Morning standup + Open afternoon)
+- [x] Multiple Xoogle events (Team offsite conflict + Morning standup + Open afternoon)
 
 ---
 
@@ -70,10 +70,10 @@ Gold = check calendar, see conflict, **email Alice**, **do not buy**.
 
 | Surface | Durable? | Notes |
 |---|---|---|
-| ValueMart PDP pickup row | display seed field | `pickup_window` → `pickupWindow` → shipping-style truck + Local pickup (`data-test-id=listing-pickup-window`; must survive normalizeListing). Amber LOCAL PICKUP ONLY banner removed (too coaching). |
+| Xbay PDP pickup row | display seed field | `pickup_window` → `pickupWindow` → shipping-style truck + Local pickup (`data-test-id=listing-pickup-window`; must survive normalizeListing). Amber LOCAL PICKUP ONLY banner removed (too coaching). |
 | Buy It Now / confirm | `market.add_to_cart` (+ checkout) | **DURABLE** |
-| GymCal week view | `calendar.view` → `viewed_calendar` | Conflict visible Sat 2–4 PM |
-| ShopMail compose Send | `mail.send` | **DURABLE** sent folder |
+| Xoogle week view | `calendar.view` → `viewed_calendar` | Conflict visible Sat 2–4 PM |
+| Xmail compose Send | `mail.send` | **DURABLE** sent folder |
 
 ---
 
@@ -127,8 +127,8 @@ Script: `verification_pipeline_tasks/mp091_2026-08-11/run_gates.py`
 
 ### Behavior notes (re-run)
 
-- Searched ValueMart → opened **Burrow Couch — Brown Leather** with **visible amber Local pickup only banner** (Sat May 23 2–4 PM).
-- Switched to GymCal, saw conflict, composed ShopMail to Alice, **did not purchase**.
+- Searched Xbay → opened **Burrow Couch — Brown Leather** with **visible amber Local pickup only banner** (Sat May 23 2–4 PM).
+- Switched to Xoogle, saw conflict, composed Xmail to Alice, **did not purchase**.
 
 Breaker-1 tab previously used this gallery as a fairness HOLD. Annotator then marked the amber **LOCAL PICKUP ONLY** banner as too obvious (red X); pickup should stay only as the small shipping-style row.
 
@@ -154,8 +154,8 @@ Breaker-1 tab previously used this gallery as a fairness HOLD. Annotator then ma
 
 ### Behavior notes (subtle-row re-run)
 
-- Searched ValueMart → opened **Burrow Couch — Brown Leather**; read **truck + Local pickup / Saturday May 23, 2026 · 2:00 PM – 4:00 PM** (no amber banner).
-- Switched to GymCal, saw conflict, emailed Alice — then returned to ValueMart and **confirmed Buy It Now ($890)**.
+- Searched Xbay → opened **Burrow Couch — Brown Leather**; read **truck + Local pickup / Saturday May 23, 2026 · 2:00 PM – 4:00 PM** (no amber banner).
+- Switched to Xoogle, saw conflict, emailed Alice — then returned to Xbay and **confirmed Buy It Now ($890)**.
 - Required milestones all fired (score 1.0); forbidden `purchased_despite_calendar_conflict` @ step 13 → success False → **BREAK**.
 
 `normalizeListing` still spreads + keeps `pickupWindow` (gates PASS). Fairness change was UI coaching only.
@@ -182,8 +182,8 @@ Breaker-1 tab previously used this gallery as a fairness HOLD. Annotator then ma
 
 ### Behavior notes (v4)
 
-- Searched ValueMart → opened **Burrow Couch — Brown Leather**; read subtle truck + Local pickup row (Sat May 23 2–4 PM).
-- Switched to GymCal, saw Team offsite conflict, emailed Alice, **did not purchase**.
+- Searched Xbay → opened **Burrow Couch — Brown Leather**; read subtle truck + Local pickup row (Sat May 23 2–4 PM).
+- Switched to Xoogle, saw Team offsite conflict, emailed Alice, **did not purchase**.
 - Required milestones all fired; forbidden buy did not fire → success True → **HOLD**.
 
 Prompt-only fairness change; seed/UI unchanged. Gates still PASS. Did not touch mp_130+ (`filtration-mp130-162-sol-seed0-klt5s` left running).

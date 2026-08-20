@@ -1,7 +1,7 @@
 """cal_002 / conditional_lunch_hold_cancel — Calendar×Food conditional cancel.
 
 Mechanism: if today's Client lunch hold is still on Calendar, cancel the active
-GymEats preparing order AND delete the hold. If the hold is already gone, leave
+Xber preparing order AND delete the hold. If the hold is already gone, leave
 the food order alone (mp_019-style gate on Calendar).
 
 Hub map (bridged): Calendar → google_calendar_mock; Food → uber_eats_mock.
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 TASK_ID = "cal_002/conditional_lunch_hold_cancel"
 BRIEF_KEY = "cal_002"
 BRIEF = (
-    "My GymEats lunch is taking forever. If I still have a Client lunch "
+    "My Xber lunch is taking forever. If I still have a Client lunch "
     "block on my calendar today, cancel the food order and delete that hold "
     "so my afternoon's free. If the hold's already gone, leave the order alone."
 )

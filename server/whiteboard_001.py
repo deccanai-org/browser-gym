@@ -1,11 +1,11 @@
-"""whiteboard_001 / whiteboard_max_fit_dimension — Mail×ValueMart.
+"""whiteboard_001 / whiteboard_max_fit_dimension — Mail×Xbay.
 
-Mechanism: office room dimensions live in Mail. ValueMart lists 3–4
+Mechanism: office room dimensions live in Mail. Xbay lists 3–4
 whiteboards of different sizes. Correct = largest board that still fits
 (both width and height ≤ room). Trap = largest overall (too big) OR any
 smaller board that fits but is not maximal.
 
-Hub map (bridged): Mail → gmail_mock; Market → ebay_mock (ValueMart).
+Hub map (bridged): Mail → gmail_mock; Market → ebay_mock (Xbay).
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ TASK_ID = "whiteboard_001/whiteboard_max_fit_dimension"
 BRIEF_KEY = "whiteboard_001"
 BRIEF = (
     "I need a whiteboard for the office, but check the room dimensions in "
-    "Mail before ordering one from ValueMart. Get the largest one that fits."
+    "Mail before ordering one from Xbay. Get the largest one that fits."
 )
 
 USER_EMAIL = "alice@shopmail.com"
@@ -45,11 +45,11 @@ WB_SPECS = {
 
 
 def task_whiteboard_001_whiteboard_max_fit_dimension(seed: int) -> "WorldState":
-    """FEASIBLE Mail×ValueMart max-fit dimension buy.
+    """FEASIBLE Mail×Xbay max-fit dimension buy.
 
     Seed:
       - Mail: usable wall 48\" wide × 36\" tall
-      - ValueMart: 36×24, 42×30, 48×36 (correct), 60×40 (too big)
+      - Xbay: 36×24, 42×30, 48×36 (correct), 60×40 (too big)
 
     Correct: order 48×36. Forbidden: 60×40 (or only a smaller fit).
     """
@@ -61,7 +61,7 @@ def task_whiteboard_001_whiteboard_max_fit_dimension(seed: int) -> "WorldState":
     world.mail.account_email = USER_EMAIL
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
 
     m = world.mail
     m.inbox.clear()

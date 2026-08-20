@@ -66,7 +66,7 @@ _WORLD_TODAY_ISO = _WORLD_TODAY.date().isoformat()
 def _catalog(state: GymState, product_id: str):
     """A product by id, from the task's catalog or the ambient one.
 
-    The storefront shows both — four fifths of what a ShopGym annotator can see
+    The storefront shows both — four fifths of what a Xmazon annotator can see
     is ambient filler — but only the task's own products live in
     `state.products`, which is what the world hash and every verifier read. So
     the ambient half is looked up separately: addable, priceable, and

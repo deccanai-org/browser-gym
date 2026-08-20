@@ -700,7 +700,7 @@ def test_the_descriptor_gives_an_unnamed_element_a_path():
 
 @pytest.mark.asyncio
 async def test_a_label_that_wraps_onto_two_lines_still_matches_itself():
-    """ShopGym's "Returns\n& Orders" link, refused at step 0 of every run.
+    """Xmazon's "Returns\n& Orders" link, refused at step 0 of every run.
 
     The recorder stores `text` trimmed but NOT whitespace-collapsed, while the
     page is read collapsed — so the identity check compared "Returns\n& Orders"
@@ -756,7 +756,7 @@ async def test_a_path_onto_the_element_it_described_is_still_used():
 async def test_a_button_with_only_text_still_resolves_by_its_accessible_name():
     """The step that SENT the email, failing at the last action.
 
-    ShopMail's Send is `<button>Send</button>` in a compose dialog: no testId, no
+    Xmail's Send is `<button>Send</button>` in a compose dialog: no testId, no
     id, no name attribute. The only handle the recorder could give it was an
     unanchored `#root > div:nth-of-type(1) > …` path, and one extra wrapper
     between recording and replay is enough to miss it. For a button the visible
@@ -789,7 +789,7 @@ def test_a_contenteditable_reports_its_text_as_its_value():
     """The bug that emptied every email body out of the trajectory.
 
     A contenteditable is a text field that is not an <input>, so it has no
-    `value` property and `'value' in el` is false. Keystrokes into ShopMail's
+    `value` property and `'value' in el` is false. Keystrokes into Xmail's
     compose body therefore folded into a fill with value null: the step said the
     annotator typed SOMETHING and never what. Recorded on a real M105 run, where
     the wording of the reply IS the answer to the task.
@@ -803,7 +803,7 @@ def test_a_contenteditable_reports_its_text_as_its_value():
     editable_at = js.index("if (el.isContentEditable) {")
     value_at = js.index("else if ('value' in el) d.value = el.value;")
     assert editable_at < value_at, "a phantom .value must not outrank the real content"
-    # And the MARKUP alongside it: a rich editor stores markup (ShopMail keeps
+    # And the MARKUP alongside it: a rich editor stores markup (Xmail keeps
     # bodyRef.current.innerHTML), so a fill that only knows the text rebuilds the
     # body as flat divs — same words, different body, hash says diverged.
     assert "d.valueHtml = el.innerHTML;" in js
@@ -844,7 +844,7 @@ def test_a_named_element_still_gets_a_path_because_a_name_is_not_unique():
 
 def test_the_pane_can_operate_a_select_at_all():
     """A native dropdown is painted by the BROWSER, so the headless Chromium
-    behind the screencast never renders one. Measured against the real ShopGym
+    behind the screencast never renders one. Measured against the real Xmazon
     product page: clicking the Qty box moved its value from 'All' to 'All'.
 
     So the option list has to come back over the wire for the pane to draw, and
@@ -1041,7 +1041,7 @@ async def test_a_plain_hover_carries_no_button():
 async def test_the_whole_page_fit_re_measures_because_narrowing_reflows():
     """One measure-then-resize lands on a height that is already wrong.
 
-    Narrowing the viewport reflows the page TALLER — measured on the ShopGym
+    Narrowing the viewport reflows the page TALLER — measured on the Xmazon
     cart, 1280 to 1128 wide took the content from 1378px to 1956px — so the
     height measured at the old width does not fit the new one. Each pass has to
     re-measure at the width it will actually render at.
@@ -1071,7 +1071,7 @@ async def test_the_whole_page_fit_re_measures_because_narrowing_reflows():
 
 @pytest.mark.asyncio
 async def test_a_page_that_never_settles_is_reported_not_hidden():
-    """The ShopGym cart's carousels render more as the viewport grows, so the
+    """The Xmazon cart's carousels render more as the viewport grows, so the
     height chases itself. Claiming "no scrolling" there is a lie the annotator
     discovers by scrolling, and the pass cap must not turn into a hang."""
     class S(service.LiveSession):

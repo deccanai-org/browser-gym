@@ -1,7 +1,7 @@
-"""mp_061 / coworker_gift_pool_deadline_and_budget — ShopMail×GymCal×ShopGym.
+"""mp_061 / coworker_gift_pool_deadline_and_budget — Xmail×Xoogle×Xmazon.
 
 Extended: two gift-pool threads (Priya going-away + Sam birthday), shared $50
-cap, GymCal dates for both (not restated in mail), ShopGym gift SKUs with
+cap, Xoogle dates for both (not restated in mail), Xmazon gift SKUs with
 price-tier + shipping-ETA traps. Combined spend and both arrival windows must
 clear independently.
 """
@@ -96,7 +96,7 @@ def task_mp_061_coworker_gift_pool_deadline_and_budget(seed: int) -> "WorldState
 
     def _gift(pid, name, price, emoji, short, tags):
         shop.products[pid] = Product(
-            id=pid, name=name, brand="ShopGym Gifts", category="gifts",
+            id=pid, name=name, brand="Xmazon Gifts", category="gifts",
             base_price=price, rating=4.5, review_count=120, stock=40,
             image_emoji=emoji, short_description=short, long_description=short,
             tags=tags,

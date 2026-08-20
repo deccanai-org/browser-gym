@@ -1,4 +1,4 @@
-"""mp_058 / home_nights_dinner_avoid_bad_reviews — GymCal×GymEats.
+"""mp_058 / home_nights_dinner_avoid_bad_reviews — Xoogle×Xber.
 
 Mechanism (B4-lite): order dinner for the next five nights user is actually
 home; never order from the place with all the bad reviews. Seed mixes home

@@ -17,7 +17,7 @@ deliver-by on-or-before each birthday → pay with PayPal (Visa expires before
 Cy's delivery) → optional honest confirmation.
 
 Redesign 2026-08-04: brief names pre-seeded cart gifts; address emails carry
-birthday dates so calendar search thrash is optional; ShopGym cart deliver-by
+birthday dates so calendar search thrash is optional; Xmazon cart deliver-by
 moved to a text YYYY-MM-DD field (env) to kill native date-segment step burn.
 """
 
@@ -35,7 +35,7 @@ BRIEF_KEY = "lh_003"
 # confirmed lh_003 treated Visa-expiry→PayPal as an unprompted diligence trap.
 # Do not treat prompt-level fairness as ≡ pre-revision lh_003 without re-eval.
 BRIEF = (
-    "Socks and a mug are already in my ShopGym cart for my sisters Bea and Cy. "
+    "Socks and a mug are already in my Xmazon cart for my sisters Bea and Cy. "
     "Their current addresses are in recent emails — skip any outdated ones. "
     "Birthdays are on my calendar (and noted in those emails). Ship each gift "
     "to the right sister so it arrives in time for her birthday, and use "

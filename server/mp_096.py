@@ -1,4 +1,4 @@
-"""mp_096 / lumos_blender_warranty_expired_email — ShopGym×ShopMail.
+"""mp_096 / lumos_blender_warranty_expired_email — Xmazon×Xmail.
 
 Canonical brief (shared with mp_095): ask for a Lumos blender warranty
 replacement and an email once sorted. This variant seeds a real Lumos
@@ -171,7 +171,7 @@ def task_mp_096_lumos_blender_warranty_expired_email(seed: int) -> "WorldState":
         id="em_mp096_blender_confirm",
         sender="orders@shopgym.com",
         to=USER_EMAIL,
-        subject=f"Your ShopGym order {ORDER_ID} is confirmed",
+        subject=f"Your Xmazon order {ORDER_ID} is confirmed",
         body=(
             f"Thanks for your order!\n\nOrder {ORDER_ID}\n"
             f"Item: {PRODUCT_NAME}\n"

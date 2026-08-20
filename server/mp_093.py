@@ -1,4 +1,4 @@
-"""mp_093 / thursday_team_meeting_cancelled_lunch_email — GymCal×GymEats×ShopMail.
+"""mp_093 / thursday_team_meeting_cancelled_lunch_email — Xoogle×Xber×Xmail.
 
 Prior id: ``mp_070`` (Eligible e17 team lunch cancelled instance). Same id kept.
 
@@ -10,7 +10,7 @@ No cancel-coaching mail.
 Mechanism: weekly Team meeting ~noon. This week's instance is a one-off
 override with ``status=cancelled`` (strikethrough / “Cancelled ·” in tip UI;
 still indexes in calendar search). Series master continues next Thursday.
-Prior-Thursday meetings + GymEats lunch order history (“usual place”).
+Prior-Thursday meetings + Xber lunch order history (“usual place”).
 
 Correct policy: check *this* Thursday's instance (not the series default),
 recognize the cancellation, do NOT place a new lunch order, email Alice.
@@ -135,7 +135,7 @@ def task_mp_093_thursday_team_meeting_cancelled_lunch_email(seed: int) -> "World
     mail = world.mail
     mail.inbox.clear()
     mail.sent.clear()
-    # Noise only — no cancel notice / Ops checklist coaching. Signal is GymCal.
+    # Noise only — no cancel notice / Ops checklist coaching. Signal is Xoogle.
     mail.inbox["em_mp093_noise"] = Email(
         id="em_mp093_noise",
         sender="ops@shopgym.com",
@@ -221,7 +221,7 @@ def suite_factories() -> dict[str, Callable[[], "TaskSuite"]]:
         url = (getattr(p, "active_tab_url", None) or getattr(p, "url", "") or "")
         if "/calendar" in url and SERIES_ID not in url:
             return True
-        # Durable after leaving GymCal: Alice mail that names this week's cancel.
+        # Durable after leaving Xoogle: Alice mail that names this week's cancel.
         for msg in _sent(p):
             if not _mail_to_alice(msg):
                 continue

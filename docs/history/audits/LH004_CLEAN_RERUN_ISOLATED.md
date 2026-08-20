@@ -68,7 +68,7 @@ Isolation infra: `tools/stack_ports.sh`, `tools/start_bridged_stack.sh`, `tools/
 | ~45 steps Gmail open/select | Yes (then some Amazon) | **Yes — all 50** |
 | Cause | Partly contention + friction | **Friction alone** |
 
-**Verdict:** “~45 steps eaten by Gmail open/select” is **genuine env friction**, not only hub contention. UI bug report updated: ShopMail §4.
+**Verdict:** “~45 steps eaten by Gmail open/select” is **genuine env friction**, not only hub contention. UI bug report updated: Xmail §4.
 
 ## Artifacts
 

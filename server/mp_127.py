@@ -1,4 +1,4 @@
-"""mp_127 / return_reason_must_match_named_issue — ShopGym×ShopMail.
+"""mp_127 / return_reason_must_match_named_issue — Xmazon×Xmail.
 
 Delivered jacket, wrong color (not defective). Gold = file return with
 reason wrong-color / Wrong item/color, email Alice.

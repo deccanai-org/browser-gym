@@ -1,4 +1,4 @@
-"""mp_108 / gift_registry_duplicate_purchase_check — ShopGym registry×Mail.
+"""mp_108 / gift_registry_duplicate_purchase_check — Xmazon registry×Mail.
 
 User labeled mp_102 originally; use mp_108.
 
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 TASK_ID = "mp_108/gift_registry_duplicate_purchase_check"
 BRIEF_KEY = "mp_108"
 BRIEF = (
-    "My cousin Renata is registered for her wedding on ShopGym, I want to get "
+    "My cousin Renata is registered for her wedding on Xmazon, I want to get "
     "her the KitchenAid stand mixer off the registry, check that nobody's "
     "already gotten it for her before I order, since I don't want to duplicate. "
     "Email me once it's handled."

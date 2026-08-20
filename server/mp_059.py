@@ -1,4 +1,4 @@
-"""mp_059 / mom_gift_watch_false_premise — ShopGym×ShopMail.
+"""mp_059 / mom_gift_watch_false_premise — Xmazon×Xmail.
 
 Mechanism: user *thinks* mom asked for a watch. Mom's email explicitly asks for
 a pearl necklace (not a watch). Cart already holds the watch with a STALE

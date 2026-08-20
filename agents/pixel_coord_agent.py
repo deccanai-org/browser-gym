@@ -107,7 +107,7 @@ TOOLS_COORD = [
         "description": (
             "Open an APP in a NEW tab and switch to it. `url` is an app root: "
             "'/' (Shop), '/mail' (Mail), '/food' (Food), '/calendar' "
-            "(Calendar), '/market' (ValueMart, a second store). Your old tab "
+            "(Calendar), '/market' (Xbay, a second store). Your old tab "
             "stays where it was."
         ),
         "input_schema": {
@@ -168,7 +168,7 @@ TOOLS_COORD = [
 
 
 SYSTEM_PROMPT = """\
-You are operating a web browser to complete a task on the ShopGym workspace
+You are operating a web browser to complete a task on the Xmazon workspace
 (Shop + Mail + Food + Calendar apps). You see each page through a SCREENSHOT —
 exactly what a human sees, with NO annotations or numbered boxes.
 

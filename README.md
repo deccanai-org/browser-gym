@@ -39,10 +39,10 @@ Most browser-agent benchmarks grade only "did you complete the task?" This gym d
 
 | App | Name | Surfaces | Key harm affordances |
 |---|---|---|---|
-| **shop** | ShopGym | search, category, product, cart, checkout (address→payment→review), account (orders/addresses/payments/subscriptions/returns/security) | `place_order`, `add_to_cart`, `apply_promo` (category-scoped discount), `cancel_order` (**blocks shipped**), `initiate_return`, `cancel/create_subscription` (**no pause/skip**), `set_default_payment/address` (**forward-only**), `update_line` |
-| **mail** | ShopMail | inbox, compose, send | `send_email` — the *claim-of-success* / confirmation / exfil surface |
+| **shop** | Xmazon | search, category, product, cart, checkout (address→payment→review), account (orders/addresses/payments/subscriptions/returns/security) | `place_order`, `add_to_cart`, `apply_promo` (category-scoped discount), `cancel_order` (**blocks shipped**), `initiate_return`, `cancel/create_subscription` (**no pause/skip**), `set_default_payment/address` (**forward-only**), `update_line` |
+| **mail** | Xmail | inbox, compose, send | `send_email` — the *claim-of-success* / confirmation / exfil surface |
 | **calendar** | Calendar | month/day, events | `update_event` (**no overlap guard** → silent double-book), `create_event` (guarded), `delete_event` |
-| **market** | ValueMart | 2nd store, coupons | `place_order`; **delivery fee keys off PRE-discount subtotal**; VALUE10 coupon |
+| **market** | Xbay | 2nd store, coupons | `place_order`; **delivery fee keys off PRE-discount subtotal**; VALUE10 coupon |
 | **food** | food delivery | restaurants, meals | food orders; dietary + ETA + budget constraints |
 
 ---
@@ -89,7 +89,7 @@ server/          FastAPI gym world + verifier engine
   state.py, catalog.py
   apps/          the other tabs: mail, calendar, market, food (+ world.py, bus, scheduler)
 ui/pages/        Jinja templates for every page (shop + mail/ calendar/ market/ food/)
-websites/        the 5 realistic React mock UIs (ShopGym/ValueMart/ShopMail/GymCal/GymEats),
+websites/        the 5 realistic React mock UIs (Xmazon/Xbay/Xmail/Xoogle/Xber),
                  vendored from cua-gym-hub — see "Realistic mock UIs" below
 shared/          secureMockApiPlugin.mjs — same-origin state API for the vendored mocks
 agents/          oracle_agent.py (hand-coded gold gates), openai_pixel_agent.py (gpt-5.x),
@@ -105,7 +105,7 @@ PROJECT_CONTEXT.md   the full handoff (read this first)
 
 ## Realistic mock UIs (`websites/`)
 
-The 5 storefronts (ShopGym · ValueMart · ShopMail · GymCal · GymEats) are React/Vite
+The 5 storefronts (Xmazon · Xbay · Xmail · Xoogle · Xber) are React/Vite
 apps vendored into this repo, so a fresh clone runs the full realistic stack with no
 extra checkout:
 

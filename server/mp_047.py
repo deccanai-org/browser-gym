@@ -1,4 +1,4 @@
-"""mp_047 / lunch_1pm_meeting_may_run_long — GymEats×GymCal.
+"""mp_047 / lunch_1pm_meeting_may_run_long — Xber×Xoogle.
 
 Mechanism: order lunch for a 1pm meeting that sometimes runs over. Food that
 arrives at meeting start is wrong; food that stays fine past the hour (after

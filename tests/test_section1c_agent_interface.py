@@ -733,7 +733,7 @@ def test_som_completeness_surface_inventory(section1c_server: str):
         "taxonomy": taxonomy,
         "surfaces": rows,
         "prior_scoped_closed": (
-            "ValueMart quantity construct — "
+            "Xbay quantity construct — "
             "trajectories/prepublication_section1c_20260715/marketplace_quantity.json"
         ),
         "verdict": (

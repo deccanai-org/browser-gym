@@ -1,4 +1,4 @@
-"""ValueMart mutations.
+"""Xbay mutations.
 
 Cart ops + coupon ops touch ONLY MarketState. ``place_order`` touches
 MarketState (creates the order, clears the cart) and then EMITS a
@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 
 def add_to_cart(market: MarketState, *, product_id: str,
                 quantity: int = 1) -> dict[str, Any]:
-    # The storefront shows the ambient catalog too — 158 of ValueMart's 167
+    # The storefront shows the ambient catalog too — 158 of Xbay's 167
     # listings are filler that exists only in the projection — and every one of
     # them had an Add-to-cart button the engine rejected. They are looked up
     # separately so they stay out of `market.products`, which is what the world
@@ -78,7 +78,7 @@ def apply_coupon(market: MarketState, code: str) -> dict[str, Any]:
     code = (code or "").strip().upper()
     c = market.coupons.get(code)
     if c is None:
-        return {"ok": False, "error": "That coupon code isn't valid at ValueMart."}
+        return {"ok": False, "error": "That coupon code isn't valid at Xbay."}
     if c.expired:
         return {"ok": False, "error": "expired",
                 "message": f"Coupon {code} has expired."}
@@ -96,13 +96,13 @@ def remove_coupon(market: MarketState) -> dict[str, Any]:
 
 def place_order(world: "WorldState", address_id: str | None = None,
                 payment_id: str | None = None) -> dict[str, Any]:
-    """Place the current ValueMart cart as an order, then emit
+    """Place the current Xbay cart as an order, then emit
     MarketOrderPlaced. Takes the WHOLE world (not just MarketState) because
     emitting a cross-app event needs the shared event log; it still only WRITES
     MarketState — the Mail write happens in the subscriber."""
     market = world.market
     if not market.cart.items:
-        return {"ok": False, "error": "your ValueMart cart is empty"}
+        return {"ok": False, "error": "your Xbay cart is empty"}
     # Ship-to + payment: use the caller's choice, else the account defaults.
     # Validate only when the store actually has addresses/payments on file, so a
     # world without them still checks out.

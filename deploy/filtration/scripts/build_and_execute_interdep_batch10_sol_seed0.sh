@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Interdep batch10 (mp_039–mp_048) — Sol gpt-5.6-sol seed0 ×10 parallel on GCP.
-# Overlay: mp_039..mp_048 + tasks/verifiers/oracle (+ GymCal hub_dist if present).
+# Overlay: mp_039..mp_048 + tasks/verifiers/oracle (+ Xoogle hub_dist if present).
 set -euo pipefail
 export PATH="/opt/homebrew/bin:/opt/homebrew/share/google-cloud-sdk/bin:$PATH"
 

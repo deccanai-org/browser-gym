@@ -39,7 +39,7 @@ class WorldState:
     mail: Optional["MailState"] = None
     food: Optional["FoodState"] = None
     calendar: Optional["CalendarState"] = None
-    market: Optional["MarketState"] = None               # 2nd e-commerce store (ValueMart)
+    market: Optional["MarketState"] = None               # 2nd e-commerce store (Xbay)
     events: list[WorldEvent] = field(default_factory=list)   # append-only
     # Deterministic async event injector — scheduled future cross-app effects
     # (emails/price-changes/notifications) that fire on the step clock, not on

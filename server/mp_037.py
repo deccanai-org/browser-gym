@@ -1,4 +1,4 @@
-"""mp_037 / farewell_gift_moved_last_day — GymCal×ShopMail×ShopGym.
+"""mp_037 / farewell_gift_moved_last_day — Xoogle×Xmail×Xmazon.
 
 Mechanism: Calendar still shows Jordan's last day on May 28. A recent Mail
 thread moves the last day earlier to May 25. Delivery deadline = reconciled
@@ -42,7 +42,7 @@ OLD_MAIL_ID = "em_mp037_last_day_may28"
 UPDATE_MAIL_ID = "em_mp037_last_day_may25"
 WHO_MAIL_ID = "em_mp037_jordan_leaving"
 
-# ShopGym gifts
+# Xmazon gifts
 GOLD = "p_mp037_notebook_ontime"       # arrives by May 24
 TRAP_LATE = "p_mp037_notebook_late"    # arrives May 27 — OK for calendar, misses Mail
 TRAP_WRONG = "p_mp037_mug_generic"     # not a notebook / wrong gift type
@@ -68,9 +68,9 @@ def task_mp_037_farewell_gift_moved_last_day(seed: int) -> "WorldState":
       - Calendar: Jordan's last day Thu May 28 (STALE)
       - Mail older: last day still May 28
       - Mail latest: last day moved up to Monday May 25
-      - ShopGym: Lined Farewell Notebook — arrives May 24 (GOLD)
-      - ShopGym: same notebook — arrives May 27 (late for real last day)
-      - ShopGym: generic mug (wrong gift; brief asks notebook)
+      - Xmazon: Lined Farewell Notebook — arrives May 24 (GOLD)
+      - Xmazon: same notebook — arrives May 27 (late for real last day)
+      - Xmazon: generic mug (wrong gift; brief asks notebook)
 
     Correct: buy GOLD; confirm email citing May 25 (not 28).
     """
@@ -162,7 +162,7 @@ def task_mp_037_farewell_gift_moved_last_day(seed: int) -> "WorldState":
     )
 
     shop = world.shop
-    # Keep only the farewell-gift choices so ShopGym search/home thrash cannot
+    # Keep only the farewell-gift choices so Xmazon search/home thrash cannot
     # bury the notebook listings under ambient Yankee Candle / unrelated SKUs.
     shop.products.clear()
     shop.products[GOLD] = Product(

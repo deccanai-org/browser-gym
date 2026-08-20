@@ -175,7 +175,7 @@ The pixel agent's headline strength isn't success rate — it's
 - Apps that surface task-critical info in images, not text
 
 For a customer-service-agent deployment against a fixed app like
-ShopGym (which our DOM agent was authored for), pixel is strictly
+Xmazon (which our DOM agent was authored for), pixel is strictly
 worse. For a deployment that needs to work on a thousand different
 e-commerce sites, pixel is the only viable approach.
 

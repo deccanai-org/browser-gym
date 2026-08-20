@@ -176,7 +176,7 @@ supersedes it:
 Method: each task's **oracle solver's actual navigation calls** (not docstring tags) are the
 authoritative signal for which app surfaces a task touches — `/calendar`→Calendar, `/food`→Food,
 `/mail`→Mail, everything else (`/`, `/product`, `/search`, `/cart`, `/checkout`, `/account`,
-`/market`)→the Store (including ValueMart, treated as within-Store, not a separate "tab").
+`/market`)→the Store (including Xbay, treated as within-Store, not a separate "tab").
 
 | | count | share |
 |---|---|---|

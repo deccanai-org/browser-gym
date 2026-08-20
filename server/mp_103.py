@@ -2,8 +2,8 @@
 
 User labeled this mp_097 originally; that ID is coffee_roaster — use mp_103.
 
-Mechanism: Dr. Osei email has the NEW checkup date (June 19 9:00 AM). GymCal still
-shows a STALE older appointment. Vertane 30-Day Refill is an open ShopGym order on
+Mechanism: Dr. Osei email has the NEW checkup date (June 19 9:00 AM). Xoogle still
+shows a STALE older appointment. Vertane 30-Day Refill is an open Xmazon order on
 standard shipping with ETA AFTER June 19; Express upgrade lands BEFORE the appointment.
 Gold: trust email date (not calendar), upgrade shipping, email Alice.
 """
@@ -82,7 +82,7 @@ def task_mp_103_annual_checkup_reschedule_and_prescription_refill(
         end="09:45",
         source="seed",
         description=(
-            "STALE calendar copy — the appointment was moved. Check ShopMail "
+            "STALE calendar copy — the appointment was moved. Check Xmail "
             "from Dr. Osei for the new date."
         ),
         location="Clinic A",

@@ -1,8 +1,8 @@
 """lh_001 / office_welcome_budget — long-horizon bridged pilot task.
 
-Mechanism: combined Food+ValueMart budget cap ($35) + calendar-derived
+Mechanism: combined Food+Xbay budget cap ($35) + calendar-derived
 delivery-timing (lunch must arrive before noon New Hire Welcome) + vegetarian
-constraint. Two ValueMart signs create a budget fork: plain stays under cap with
+constraint. Two Xbay signs create a budget fork: plain stays under cap with
 veg lunch; deluxe pushes the pair over $35.
 
 Hub map (bridged five-hub):
@@ -10,8 +10,8 @@ Hub map (bridged five-hub):
   eBay     → ebay_mock       (:5301)  ← gym ``market`` app / engine MarketState
   Calendar → google_calendar_mock (:5402)
 
-Note: ebay_mock chrome still renders legacy "ValueMart" logo text; task brief,
-oracle, Discriminator, and this factory name the hub **ValueMart** to match
+Note: ebay_mock chrome still renders legacy "Xbay" logo text; task brief,
+oracle, Discriminator, and this factory name the hub **Xbay** to match
 what the agent sees.
 
 Redesign 2026-08-04: name Bean There Cafe in the brief (family_001 lesson) so
@@ -32,8 +32,8 @@ TASK_ID = "lh_001/office_welcome_budget"
 BRIEF_KEY = "lh_001"
 BRIEF = (
     "Getting the office ready for the new hire tomorrow. Order the "
-    "Vegetarian Welcome Lunch Box from Bean There Cafe on GymEats for the "
-    "welcome, and grab a welcome sign from ValueMart too — whatever looks "
+    "Vegetarian Welcome Lunch Box from Bean There Cafe on Xber for the "
+    "welcome, and grab a welcome sign from Xbay too — whatever looks "
     "decent. Keep the combined charged order totals under $35 (the amounts "
     "the system records after placing, not the checkout page displays), and "
     "have lunch here before the New Hire Welcome starts."
@@ -61,7 +61,7 @@ EVENT_START = "12:00"
 def task_lh_001_office_welcome_budget(seed: int) -> "WorldState":
     """FEASIBLE cross-store budget + timing + vegetarian lunch.
 
-    Correct path: order vegetarian lunch (ETA before noon) + plain ValueMart
+    Correct path: order vegetarian lunch (ETA before noon) + plain Xbay
     sign; combined all-in ≤ $35. Deluxe sign with veg lunch exceeds budget.
     Non-veg lunch fails the dietary constraint even if under budget.
     """
@@ -72,8 +72,8 @@ def task_lh_001_office_welcome_budget(seed: int) -> "WorldState":
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = "alice@shopmail.com"
-    # Chrome still says ValueMart; keep store_name aligned with brief/chrome.
-    world.market.store_name = "ValueMart"
+    # Chrome still says Xbay; keep store_name aligned with brief/chrome.
+    world.market.store_name = "Xbay"
 
     cal = world.calendar
     cal.events.clear()

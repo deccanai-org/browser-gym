@@ -1,12 +1,12 @@
-"""mp_062 / return_window_and_replacement_stock — ShopGym×ValueMart×(gym_now).
+"""mp_062 / return_window_and_replacement_stock — Xmazon×Xbay×(gym_now).
 
 Extended: two delivered shoe orders — only one inside the 30-day return window.
-Agent must return the in-window order, find a matching replacement on ShopGym
-by spec (not the ValueMart lookalike), pick an in-stock size, and stay at or
+Agent must return the in-window order, find a matching replacement on Xmazon
+by spec (not the Xbay lookalike), pick an in-stock size, and stay at or
 below the original paid price.
 
-Note: returns are ShopGym-native (ValueMart has no initiate_return). Purchase
-orders live on ShopGym; ValueMart holds a lookalike decoy for cross-shop match.
+Note: returns are Xmazon-native (Xbay has no initiate_return). Purchase
+orders live on Xmazon; Xbay holds a lookalike decoy for cross-shop match.
 """
 
 from __future__ import annotations
@@ -36,14 +36,14 @@ ORIG_NAME = "TrailRun Flex Trainer"
 ORIG_PRICE = 89.00
 ORIG_SIZE = "9"
 
-# Replacement catalog on ShopGym (same model family, size variants)
+# Replacement catalog on Xmazon (same model family, size variants)
 REPL_PRODUCT = "p_mp062_trailrun_repl"
 REPL_NAME = "TrailRun Flex Trainer (Current)"
 SIZE_OOS = "v_mp062_size9"      # size 9 out of stock
 SIZE_OK = "v_mp062_size10"      # size 10 in stock, ≤ original
 SIZE_PREMIUM = "v_mp062_size10x"  # size 10 premium > original
 
-# ValueMart decoy — similar name, wrong model / no size stock field parity
+# Xbay decoy — similar name, wrong model / no size stock field parity
 VM_DECOY = "vm_mp062_lookalike"
 
 
@@ -75,7 +75,7 @@ def task_mp_062_return_window_and_replacement_stock(seed: int) -> "WorldState":
         image_emoji="👟",
         short_description=(
             "TrailRun Flex Trainer size 9 — original purchase. "
-            "ShopGym returns: 30 days from delivery."
+            "Xmazon returns: 30 days from delivery."
         ),
         tags=["shoes", "trailrun", "original"],
     )
@@ -145,13 +145,13 @@ def task_mp_062_return_window_and_replacement_stock(seed: int) -> "WorldState":
         "Delivered Apr 2, 2026 (49 days before today May 21) — outside 30-day return window.",
     )
 
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.market.products.clear()
     world.market.cart.items.clear()
     world.market.orders.clear()
     world.market.products[VM_DECOY] = MarketProduct(
         id=VM_DECOY,
-        name="TrailRunner Flex-ish Trainer (ValueMart)",
+        name="TrailRunner Flex-ish Trainer (Xbay)",
         category="footwear", price=72.00, emoji="👟",
         description=(
             "Lookalike name only — different last and drop. Not a spec match "

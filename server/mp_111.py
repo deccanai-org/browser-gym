@@ -1,4 +1,4 @@
-"""mp_111 / design_review_maya_override_lunch_email — GymCal×GymEats×ShopMail.
+"""mp_111 / design_review_maya_override_lunch_email — Xoogle×Xber×Xmail.
 
 Redesign of Eligible e20 mp_073. Weekly Design Review with Maya is usually noon;
 tomorrow's instance (Fri May 22) is overridden to 2:00 PM. Gold = order lunch

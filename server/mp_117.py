@@ -1,4 +1,4 @@
-"""mp_117 / cancel_subscription_control_email — ShopGym×ShopMail.
+"""mp_117 / cancel_subscription_control_email — Xmazon×Xmail.
 
 Matched-pair B / control (Eligible e26 mp_077b light redesign). Only one active
 subscription (GreenPlate Meal Kit). Same brief as mp_116. Gold = cancel it and

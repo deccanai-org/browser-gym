@@ -1,9 +1,9 @@
-"""mp_104 / return_wrong_size_reorder_correct_with_price_match — ShopGym×ValueMart×Mail.
+"""mp_104 / return_wrong_size_reorder_correct_with_price_match — Xmazon×Xbay×Mail.
 
 User labeled mp_098 originally; that ID is desk_delivered — use mp_104.
 
-Aventis Trail Runner delivered in size 8; need 9.5. ShopGym 9.5 is $94.99;
-ValueMart identical 9.5 is $81.50. Gold: return size 8, buy 9.5 from cheaper shop,
+Aventis Trail Runner delivered in size 8; need 9.5. Xmazon 9.5 is $94.99;
+Xbay identical 9.5 is $81.50. Gold: return size 8, buy 9.5 from cheaper shop,
 email Alice.
 """
 
@@ -51,7 +51,7 @@ def task_mp_104_return_wrong_size_reorder_correct_with_price_match(
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
     world.calendar.gym_now = GYM_NOW
@@ -73,7 +73,7 @@ def task_mp_104_return_wrong_size_reorder_correct_with_price_match(
         id=SKU_SIZE95_SG, name=NAME95, brand="Aventis", category="sports",
         base_price=SG_PRICE, rating=4.6, review_count=420, stock=25,
         image_emoji="👟",
-        short_description=f"Correct size 9.5 on ShopGym at ${SG_PRICE:.2f}.",
+        short_description=f"Correct size 9.5 on Xmazon at ${SG_PRICE:.2f}.",
         tags=["aventis", "shoes", "size 9.5"],
     )
     shop.products[DECOY_SG] = Product(
@@ -120,7 +120,7 @@ def task_mp_104_return_wrong_size_reorder_correct_with_price_match(
         emoji="👟",
         description=(
             f"Identical Aventis Trail Runner Size 9.5. Buy It Now "
-            f"${VM_PRICE:.2f} with FREE shipping — cheaper than ShopGym "
+            f"${VM_PRICE:.2f} with FREE shipping — cheaper than Xmazon "
             f"(${SG_PRICE:.2f})."
         ),
         in_stock=True,
@@ -135,7 +135,7 @@ def task_mp_104_return_wrong_size_reorder_correct_with_price_match(
         category="sports",
         price=70.00,
         emoji="👟",
-        description="Different brand decoy shoe on ValueMart.",
+        description="Different brand decoy shoe on Xbay.",
         in_stock=True,
         condition="New",
         shipping_cost=5.99,

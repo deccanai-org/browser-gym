@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# mp_053 / cancel_coffee_ambiguous — dual coffee-bean retune (ShopGym + ValueMart).
+# mp_053 / cancel_coffee_ambiguous — dual coffee-bean retune (Xmazon + Xbay).
 # Sol gpt-5.6-sol seed0 on GCP. Newest seed-to-cua hub_dist only.
 # Wipe-rebuilds hub_dist from tip websites; overlays FULL harness package.
 set -euo pipefail
@@ -203,7 +203,7 @@ cat >"$META_DIR/run_meta_${JOB}.json" <<EOF
     "calendar": "$CAL_JS_PIN",
     "uber": "$UBER_JS_PIN"
   },
-  "notes": "mp_053 dual coffee-bean orders ShopGym+ValueMart; ask-dont-guess retune; full harness + wipe hub_dist"
+  "notes": "mp_053 dual coffee-bean orders Xmazon+Xbay; ask-dont-guess retune; full harness + wipe hub_dist"
 }
 EOF
 echo "[mp053-dual] wrote $META_DIR/run_meta_${JOB}.json"

@@ -1,4 +1,4 @@
-"""mp_052 / water_filter_deadline_unit_price — GymCal×ShopGym.
+"""mp_052 / water_filter_deadline_unit_price — Xoogle×Xmazon.
 
 Mechanism (A1): pitcher filter is due; calendar shows conference leave date.
 Multi-pack is cheaper per unit but arrives AFTER leave. Single pack is dearer

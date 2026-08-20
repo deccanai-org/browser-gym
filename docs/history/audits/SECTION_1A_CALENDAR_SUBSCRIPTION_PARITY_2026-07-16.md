@@ -10,7 +10,7 @@ on seeds 0/1/2:
 3. Subscription create (`M61/auto_refill_dead_card`)
 4. Subscription cancel (`M76/ambiguous_subscription_cancel`)
 
-Together with the prior Shop/Food/Calendar-create/ValueMart/Mail pass, this
+Together with the prior Shop/Food/Calendar-create/Xbay/Mail pass, this
 wave closed four archetypes and left four residual. Those residuals were
 closed 2026-07-16 (3 PASS + 1 STRUCTURAL_EXCEPTION for shop order-cancel);
 see [remaining affordance parity](SECTION_1A_REMAINING_AFFORDANCE_PARITY_2026-07-16.md).

@@ -1,7 +1,7 @@
-"""mp_115 / five_home_nights_dinner_avoid_sunny_wok_email — GymCal×GymEats×ShopMail.
+"""mp_115 / five_home_nights_dinner_avoid_sunny_wok_email — Xoogle×Xber×Xmail.
 
 Redesign of Eligible e24 mp_076. Five home vs out nights are stated in a
-named Alice ShopMail (prompt points at it); GymCal events corroborate.
+named Alice Xmail (prompt points at it); Xoogle events corroborate.
 Sunny Wok is cheap bait. Gold = order all five home nights from non-Sunny
 restaurants and email Alice the schedule/details. mp_076 left untouched.
 """
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 TASK_ID = "mp_115/five_home_nights_dinner_avoid_sunny_wok_email"
 BRIEF_KEY = "mp_115"
 BRIEF = (
-    "Looking at my GymCal for the next week — order dinner for the five nights "
+    "Looking at my Xoogle for the next week — order dinner for the five nights "
     "I'm actually home in Brooklyn. I emailed you which nights I'm in vs out "
     "(named dates). Don't order from Sunny Wok. Harbor Grill or Noodle Nest is "
     "fine. Email me the details."

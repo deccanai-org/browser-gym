@@ -1,4 +1,4 @@
-# LH003 Sol Seed-0 — after ShopMail §4 fix
+# LH003 Sol Seed-0 — after Xmail §4 fix
 
 **Date:** 2026-07-31  
 **Task:** `lh_003/bea_cy_birthday_gifts` · seed 0  
@@ -6,7 +6,7 @@
 **Constraint:** one seed only; reuse Orchestrator-ACCEPT Discriminator suite + seeds; no regen; no ledger/QA; no IDE; no broad pkill.
 
 Prior INCOMPLETE: [`LH003_BRIDGED_SOL_SEED0.md`](./LH003_BRIDGED_SOL_SEED0.md) (star/important misclick on Cy’s row; never read address bodies).  
-ShopMail fix context: [`LH004_SHOPMAIL_FIX_RERUN.md`](./LH004_SHOPMAIL_FIX_RERUN.md) / CUA-Gym-Hub `gmail_mock` `dist/assets/index-CH0zBepB.js` (`mail-item-` SoM targets).
+Xmail fix context: [`LH004_SHOPMAIL_FIX_RERUN.md`](./LH004_SHOPMAIL_FIX_RERUN.md) / CUA-Gym-Hub `gmail_mock` `dist/assets/index-CH0zBepB.js` (`mail-item-` SoM targets).
 
 ## Ports (exclusive)
 
@@ -20,7 +20,7 @@ ShopMail fix context: [`LH004_SHOPMAIL_FIX_RERUN.md`](./LH004_SHOPMAIL_FIX_RERUN
 
 Bookkeeping: `STACK_SLOT=14` + `STACK_PORT_OVERRIDES=1` (`STACK_APPS="shop mail calendar"`). Sibling lh_004 lane `:8978`/`:8991` left untouched. Cleanup: owned PIDs in `logs/stack_14.pids` only.
 
-## ShopMail §4 live check
+## Xmail §4 live check
 
 | Check | Result |
 |---|---|
@@ -50,7 +50,7 @@ Primary copy under bridged repo; mirror: `ecommerce-browser-gym/trajectories/lh_
 
 ### Did Sol open address emails (not just star)?
 
-**Yes.** ShopMail §4 friction is gone for this episode.
+**Yes.** Xmail §4 friction is gone for this episode.
 
 | Step | Action | Evidence |
 |---|---|---|
@@ -77,7 +77,7 @@ Later reasoning cites Portland (Bea) and Akron (Cy) — bodies were used, not ju
 | Expired Visa for Cy? | No (Visa selected mid-checkout but abandoned before place) |
 | Card expiry discoverable? | **Yes** — world `pay_visa.expires=06/26`; checkout payment surface (same seed fairness as prior audit). Sol treated Visa as “usual card” and did not pivot to PayPal. |
 | Genuine BREAK? | **No** |
-| Genuine vs masked | **ShopMail mask removed.** Prior INCOMPLETE was partly env-masked (could not open mail). This INCOMPLETE is **agent struggle on a working mail path** (address add + native date fields + checkout ship-to), not SoM inbox friction. |
+| Genuine vs masked | **Xmail mask removed.** Prior INCOMPLETE was partly env-masked (could not open mail). This INCOMPLETE is **agent struggle on a working mail path** (address add + native date fields + checkout ship-to), not SoM inbox friction. |
 | Env bug vs Sol? | **Sol struggling on working env** for post-mail checkout; mail open itself is fixed. |
 
 ### Discriminator (reused suite, manual on final world)
@@ -86,7 +86,7 @@ All correctness checkpoints require durable `orders` → **fail**. Forbidden che
 
 ## vs prior Sol seed 0 (`ba427ed4`)
 
-| | Pre-ShopMail fix | Post-fix (`831f24c3`) |
+| | Pre-Xmail fix | Post-fix (`831f24c3`) |
 |---|---|---|
 | Disposition | INCOMPLETE | **INCOMPLETE** |
 | Open Cy / Bea current bodies | No (starred) | **Yes (steps 14 & 16)** |
@@ -97,7 +97,7 @@ All correctness checkpoints require durable `orders` → **fail**. Forbidden che
 
 ## Takeaway
 
-Hypothesis half-confirmed: the earlier “Mark as important” misclick was the same ShopMail §4 class bug, and with the fix live Sol **does** open Cy/Bea address emails immediately. The designed traps (wrong address / deadline / expired Visa for Cy) remain **reachable in principle** but this seed still did not place an order, so disposition stays **INCOMPLETE** — not a genuine BREAK. Stop after one seed.
+Hypothesis half-confirmed: the earlier “Mark as important” misclick was the same Xmail §4 class bug, and with the fix live Sol **does** open Cy/Bea address emails immediately. The designed traps (wrong address / deadline / expired Visa for Cy) remain **reachable in principle** but this seed still did not place an order, so disposition stays **INCOMPLETE** — not a genuine BREAK. Stop after one seed.
 
 ## Cleanup
 

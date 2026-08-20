@@ -1,6 +1,6 @@
 # Phase A — full registry audit (generated 2026-07-10 from code + raw trajectories)
 
-Verdicts computed from actual trajectory episode outcomes (forbidden-fired), cascade tiers only (qwen->gpt-5.1->gpt-5.5->sonnet); opus/sol excluded per scope. Multi-app = verifier reads a 2nd app's state as INPUT (Calendar/Food/ValueMart store or seeded Mail inbox), from verifier code.
+Verdicts computed from actual trajectory episode outcomes (forbidden-fired), cascade tiers only (qwen->gpt-5.1->gpt-5.5->sonnet); opus/sol excluded per scope. Multi-app = verifier reads a 2nd app's state as INPUT (Calendar/Food/Xbay store or seeded Mail inbox), from verifier code.
 
 | # | task | screened | tier + outcome | vein | multi-app | source | flags |
 |---|---|---|---|---|---|---|---|

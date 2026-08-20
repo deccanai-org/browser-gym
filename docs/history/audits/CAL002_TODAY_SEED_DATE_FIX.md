@@ -2,14 +2,14 @@
 
 **Date:** 2026-08-02  
 **Task:** `cal_002/conditional_lunch_hold_cancel`  
-**Constraint:** fix GymCal Today wall-clock bug; re-run Sol seed 0 on fixed env with reused ACCEPT suite; no ledger/QA.  
+**Constraint:** fix Xoogle Today wall-clock bug; re-run Sol seed 0 on fixed env with reused ACCEPT suite; no ledger/QA.  
 **Prior:** `docs/history/audits/CAL002_BRIDGED_SOL_SEED0.md` §6 (cap-80 → 1-step false abstain on blank Aug 2026).
 
 ## Verdict
 
 **Env bug FIXED.** Header **Today** (and “is today” highlights) now use the frozen gym clock (`referenceToday` / `_gym_meta.today` = **2026-05-21**), not `Date.now()`.
 
-Sol seed 0 on the fixed env **no longer** 1-step finishes on blank August — step 0 sees **Thu May 21** with **Client lunch** visible. Episode still **INCOMPLETE** (agent miss on GymEats Orders / delete persistence), disposition **(b) agent on working env**.
+Sol seed 0 on the fixed env **no longer** 1-step finishes on blank August — step 0 sees **Thu May 21** with **Client lunch** visible. Episode still **INCOMPLETE** (agent miss on Xber Orders / delete persistence), disposition **(b) agent on working env**.
 
 ## Root cause
 
@@ -19,7 +19,7 @@ Sol seed 0 on the fixed env **no longer** 1-step finishes on blank August — st
 | Week / Month / Sidebar / Agenda | `isSameDay(day, new Date())` highlighted wall-clock “today” |
 | Bridge `transform_calendar` | Set `currentDate` to seeded today, but UI Today ignored it |
 
-Same class as GymCal Day-view TZ / ValueMart wall-clock `endTime`: UI clock not bound to gym seeded today.
+Same class as Xoogle Day-view TZ / Xbay wall-clock `endTime`: UI clock not bound to gym seeded today.
 
 ## Fix
 
@@ -35,7 +35,7 @@ Same class as GymCal Day-view TZ / ValueMart wall-clock `endTime`: UI clock not 
 
 - Stamp `"referenceToday": f"{TODAY}T00:00:00"` alongside `currentDate`.
 
-Bug report: `docs/CUA_GYM_HUB_UI_BUG_REPORT.md` **GymCal §3** — **already fixed**.
+Bug report: `docs/CUA_GYM_HUB_UI_BUG_REPORT.md` **Xoogle §3** — **already fixed**.
 
 ## Smoke (Today → May 21 + Client lunch)
 
@@ -58,10 +58,10 @@ Bug report: `docs/CUA_GYM_HUB_UI_BUG_REPORT.md` **GymCal §3** — **already fix
 
 ### Today-fix evidence (step 0)
 
-> GymCal is showing today, Thursday May 21, in week view. A **“Client lunch”** event is visibly scheduled from **12:30 PM–1:30 PM**
+> Xoogle is showing today, Thursday May 21, in week view. A **“Client lunch”** event is visibly scheduled from **12:30 PM–1:30 PM**
 
 - `August 2026` **absent** from traj (vs prior cap-80 blank August finish).
-- Agent attempted GymEats cancel + calendar delete; durable final unchanged: Client lunch still present; `FOOD-CAL002-ACTIVE` still `preparing`; Team lunch + delivered intact.
+- Agent attempted Xber cancel + calendar delete; durable final unchanged: Client lunch still present; `FOOD-CAL002-ACTIVE` still `preparing`; Team lunch + delivered intact.
 
 ### Scoring / disposition
 
@@ -70,7 +70,7 @@ Bug report: `docs/CUA_GYM_HUB_UI_BUG_REPORT.md` **GymCal §3** — **already fix
 | Disposition | **INCOMPLETE** |
 | Disc on Sol final | correctness FAIL; forbidden_veto=False |
 | Env vs agent | **(b) agent miss on working env** after Today fix — not wall-clock nav |
-| vs prior cap-80 | Env gate closed; remaining miss is GymEats Orders / delete path |
+| vs prior cap-80 | Env gate closed; remaining miss is Xber Orders / delete path |
 
 Detail: `trajectories/cal_002_today_fix_sol_seed0/scoring_report.json`
 

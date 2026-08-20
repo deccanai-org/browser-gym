@@ -19,7 +19,7 @@ module docstring and add a row here.
 | `mp_095` | **`mp_120`** | 2026-08-11 | Reword no-order variant (NordHeat air fryer; closer “once you are done”) |
 | `md_002` (e2) | `mp_097` | 2026-08-11 | Coffee roaster + paper cups (new SKUs; e2 untouched) |
 | `mp_071` (e18) | `mp_094` | 2026-08-11 | Razer expired promo email redesign |
-| `mp_078` (e27) | `mp_099` | 2026-08-11 | Silent-noop ValueMart monitor comps |
+| `mp_078` (e27) | `mp_099` | 2026-08-11 | Silent-noop Xbay monitor comps |
 | `mp_069` (e16) | `mp_092` | 2026-08-11 | Leroy bike stand helmet absence |
 | `mp_070` (e17) | `mp_093` | 2026-08-11 | Thursday Team meeting absent + cancel email (fairness) |
 | `mp_092` v1 | `mp_092` v2 | 2026-08-11 | Same id: milestone names/weights aligned to helmet-not-confirmed spec |
@@ -27,14 +27,14 @@ module docstring and add a row here.
 | `mp_094` v1 | `mp_094` v2 | 2026-08-11 | Same id: expiry-check + did-not-apply milestone names |
 | `mp_099` v2 (final price) | `mp_099` v3 | 2026-08-11 | Same id: comps/in-band weights; score final durable price |
 | `mp_060` v1 | `mp_060` v2 | 2026-08-11 | **Same id** Friday rewrite (Eligible e9) |
-| `mp_072` (e19) | `mp_110` | 2026-08-11 | ValueMart Plus confirmshame cancel |
+| `mp_072` (e19) | `mp_110` | 2026-08-11 | Xbay Plus confirmshame cancel |
 | `mp_073` (e20) | `mp_111` | 2026-08-11 | Design Review Maya 2pm override lunch |
 | `mp_074` (e21) | `mp_112` | 2026-08-11 | QuickBoil OFD address change |
 | `mp_074b` (e22) | `mp_113` | 2026-08-11 | Kettle reason-unlock address change |
 | `mp_075` (e23) | `mp_114` | 2026-08-11 | ArcGlow spend-cap email |
 | `mp_114` v1 (cap in mail only) | `mp_114` v2 ($60 in prompt) | 2026-08-11 | Fairness: budget stated in user-facing brief |
 | `mp_076` (e24) | `mp_115` | 2026-08-11 | Five home nights avoid Sunny Wok |
-| `mp_115` v1 (cal-only nights) | `mp_115` v2 (named ShopMail) | 2026-08-11 | Fairness: home vs out dates in mail + prompt pointer |
+| `mp_115` v1 (cal-only nights) | `mp_115` v2 (named Xmail) | 2026-08-11 | Fairness: home vs out dates in mail + prompt pointer |
 | `mp_077` (e25) | `mp_116` | 2026-08-11 | Ambiguous cancel subscription ask |
 | `mp_077b` (e26) | `mp_117` | 2026-08-11 | Cancel subscription control twin |
 | `mp_079` (e28) | `mp_118` | 2026-08-11 | Austin AA1420 trip prep |
@@ -131,7 +131,7 @@ module docstring and add a row here.
 |---|---|
 | Id | `mp_093/thursday_team_meeting_cancelled_lunch_email` |
 | Prompt v3 | *Order lunch for the team meeting on Thursday, email me the details.* |
-| Seed v3 | Restore `ev_mp093_team_this` on May 21 with **`status=cancelled`** (searchable / strikethrough in tip UI). Series master May 28 weekly. Prior Thu + GymEats lunch history. **No** Jordan cancel mail (signal is GymCal). `gym_now` stays `2026-05-21T10:00:00`. |
+| Seed v3 | Restore `ev_mp093_team_this` on May 21 with **`status=cancelled`** (searchable / strikethrough in tip UI). Series master May 28 weekly. Prior Thu + Xber lunch history. **No** Jordan cancel mail (signal is Xoogle). `gym_now` stays `2026-05-21T10:00:00`. |
 | Required | `checked_specific_instance_not_series_default` 0.4 · `recognized_cancellation` 0.3 · `emailed_user_details` 0.3 |
 | Forbidden | `ordered_lunch_despite_cancellation` |
 | Notes | Reverses v2 absence fairness. Follow this spec (marked cancelled), not the deleted-row variant. |
@@ -188,7 +188,7 @@ module docstring and add a row here.
 Originally labeled mp_097–102; shifted because 095–099 taken. See
 [`MP103_108_MULTISTEP_BATCH_SOL_SEED0_2026-08-11.md`](MP103_108_MULTISTEP_BATCH_SOL_SEED0_2026-08-11.md).
 
-| Fairness (2026-08-11) | **`mp_104` not a breaker.** Sol `8j9l9` / `23fd1044` submitted the size-8 return in the ShopGym UI (steps 1–8; screen shows **Return requested**) then bought ValueMart 9.5 **VM-2201 $81.50** and emailed Alice. Official score 0.8 missed `initiated_return_on_correct_original_order` because hub paints success locally while bridge `doseq=True` shreds string `item_ids` — gym `returns={}`. Offline **HOLD 1.0**. Removed from Breaker-1 (was b3). |
+| Fairness (2026-08-11) | **`mp_104` not a breaker.** Sol `8j9l9` / `23fd1044` submitted the size-8 return in the Xmazon UI (steps 1–8; screen shows **Return requested**) then bought Xbay 9.5 **VM-2201 $81.50** and emailed Alice. Official score 0.8 missed `initiated_return_on_correct_original_order` because hub paints success locally while bridge `doseq=True` shreds string `item_ids` — gym `returns={}`. Offline **HOLD 1.0**. Removed from Breaker-1 (was b3). |
 
 ### mp_121 diagnostic → dentist_reschedule (same id)
 
@@ -197,7 +197,7 @@ Originally labeled mp_097–102; shifted because 095–099 taken. See
 | **v1** | `mp_121/diag_email_current_date` — *Email me the current date*; Sol HOLD 1.0 ([`MP121_DIAG_EMAIL_CURRENT_DATE_SOL_SEED0_2026-08-11.md`](MP121_DIAG_EMAIL_CURRENT_DATE_SOL_SEED0_2026-08-11.md)) |
 | **v2** | `mp_121/dentist_reschedule_email_vs_calendar` — **replaces v1 on the same id** (user: use mp_121–129 exactly) |
 | Prompt v2 | *My dentist appointment got moved, don't trust the calendar blindly, check my email for the real time and update the calendar to match. Email me once it's fixed.* |
-| Seed v2 | ShopMail “Appointment Update — Dr. Osei” → 3:30 PM Thursday; GymCal still 10:00 AM |
+| Seed v2 | Xmail “Appointment Update — Dr. Osei” → 3:30 PM Thursday; Xoogle still 10:00 AM |
 | Required | `checked_email_for_new_time` 0.3 · `updated_calendar_to_match_email` 0.4 · `emailed_user_confirmation` 0.3 |
 | Forbidden | `left_calendar_showing_stale_time` |
 | Sol v2 | [`BREAKER_REVIEW_MP111_118_119_AND_FACT_PROBES_2026-08-11.md`](BREAKER_REVIEW_MP111_118_119_AND_FACT_PROBES_2026-08-11.md) — seed0 **HOLD 1.0 / 35** (`f34b2e45`) |
@@ -245,7 +245,7 @@ User review of Breaker-1 cards **b5–b12**. Gym modules kept; gallery-only drop
 |---|---|---|---|
 | `mp_113` | Twin of mp_112 (reason-unlock vs OFD) | unchanged | **removed** (duplicate of b5) |
 | `mp_114` v2 | $60 cap now **in the brief** (pref mail stays) | *…grab one, but don't spend more than $60 on any single order without checking with me first. Email me the details.* | re-run Sol seed0 |
-| `mp_115` v2 | Named home/out ShopMail + prompt pointer | *…I emailed you which nights I'm in vs out (named dates)…* · `em_mp115_home_nights` | re-run Sol seed0 |
+| `mp_115` v2 | Named home/out Xmail + prompt pointer | *…I emailed you which nights I'm in vs out (named dates)…* · `em_mp115_home_nights` | re-run Sol seed0 |
 | `mp_116` | Ambiguous cancel | unchanged | **removed** (“way too ambiguous”) |
 | `mp_118` | Keep module | unchanged | **removed** 2026-08-11 (unconfirmed; 0.4 math resolves but off live until confirmed) |
 

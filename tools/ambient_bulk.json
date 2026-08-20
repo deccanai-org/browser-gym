@@ -4126,7 +4126,7 @@
    "from_email": "statements@beaconretirement.com",
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",
-   "subject": "Q1 statement — ShopGym Inc. 401(k)",
+   "subject": "Q1 statement — Xmazon Inc. 401(k)",
    "body": "Your quarterly statement covering 1 January to 31 March 2026 is available under Documents.\n\nBeginning balance: $61,204.18\nYour contributions: $3,120.00\nEmployer match: $1,560.00\nChange in market value: -$1,842.66\nFees: -$14.72\nEnding balance: $64,026.80\n\nAllocation: 68% Beacon 2055 Target Date, 22% Total Market Index, 10% Stable Value. Your mix has drifted about four points toward equities since the last statement. Automatic rebalancing is switched off on this account, so nothing corrects that unless you do it.\n\nYou deferred 8% of eligible pay this quarter. The company matches 100% of the first 6%, so you are capturing the full match. Employer money vests at 20% per year of service — you are 60% vested, and the remaining $4,118 of match becomes yours over your next two years here.\n\nThis is the first negative quarter on the account since 2023. There is nothing to do about that number. The statement is mostly useful for watching the contributions line, which is the part you actually control.",
    "timestamp": "2026-04-06T07:45:00",
    "folder": "archive",
@@ -4207,7 +4207,7 @@
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",
    "subject": "Explanation of Benefits — this is not a bill",
-   "body": "Claim 8842-3319 has finished processing. Member: Alice Anderson. Group: ShopGym Inc.\n\nProvider: Atlantic Primary Care, Dr. R. Nkemdi\nDate of service: 21 April 2026\nBilled by provider: $410.00\nNetwork discount: -$186.50\nPlan paid: $178.50\nYour responsibility: $45.00, office visit copay\n\nDeductible progress: $612.00 of $1,500.00. Out-of-pocket maximum: $1,104.00 of $4,000.00.\n\nThe lab work drawn on the same day is billed by a separate vendor and comes through on its own claim, so expect a second EOB with a different number. That one is not a duplicate.\n\nYou may owe the provider up to $45.00. Wait for their bill before paying anything — offices routinely send statements before the claim finishes, and the amount on that first statement is often wrong in their favour. If you disagree with how this claim was processed you have 180 days to appeal in writing.",
+   "body": "Claim 8842-3319 has finished processing. Member: Alice Anderson. Group: Xmazon Inc.\n\nProvider: Atlantic Primary Care, Dr. R. Nkemdi\nDate of service: 21 April 2026\nBilled by provider: $410.00\nNetwork discount: -$186.50\nPlan paid: $178.50\nYour responsibility: $45.00, office visit copay\n\nDeductible progress: $612.00 of $1,500.00. Out-of-pocket maximum: $1,104.00 of $4,000.00.\n\nThe lab work drawn on the same day is billed by a separate vendor and comes through on its own claim, so expect a second EOB with a different number. That one is not a duplicate.\n\nYou may owe the provider up to $45.00. Wait for their bill before paying anything — offices routinely send statements before the claim finishes, and the amount on that first statement is often wrong in their favour. If you disagree with how this claim was processed you have 180 days to appeal in writing.",
    "timestamp": "2026-05-08T15:33:00",
    "folder": "inbox",
    "category": "updates",
@@ -5211,7 +5211,7 @@
   {
    "id": "amb_bmail_151",
    "threadId": "amb_bthread_104",
-   "from_name": "ShopGym Alerting",
+   "from_name": "Xmazon Alerting",
    "from_email": "alerts@shopgym.com",
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",
@@ -6230,7 +6230,7 @@
   {
    "id": "amb_bmail_204",
    "threadId": "amb_bthread_135",
-   "from_name": "ShopGym Payroll Services",
+   "from_name": "Xmazon Payroll Services",
    "from_email": "notice@shopgym-benefits-portal.com",
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",
@@ -6249,7 +6249,7 @@
    "threadId": "amb_bthread_135",
    "from_name": "Alice Anderson",
    "from_email": "alice@shopgym.com",
-   "to_name": "ShopGym IT Security",
+   "to_name": "Xmazon IT Security",
    "to_email": "it-security@shopgym.com",
    "subject": "Re: Action required before the May 22 pay run - direct deposit verification",
    "body": "Forwarding this because it landed in my inbox at 8:41 and it is not from us. The sending domain is shopgym-benefits-portal.com, and the page it points at asks for the network password and full bank details on the same screen. Payroll has never once asked me for a routing number by email.\n\nI did not click anything, nothing was typed anywhere, and I have moved it to spam on my end.\n\nProbably worth a heads up to the whole company before payday, especially the people who started this quarter. The May 22 date is correct, which is exactly what makes it land. Daniel said in standup last week that he got something similar about a benefits enrolment deadline, so it may be the same sender working down the directory alphabetically.\n\nI can pull the raw headers if that helps you block it.",
@@ -7579,7 +7579,7 @@
   {
    "id": "amb_bmail_279",
    "threadId": "amb_bthread_191",
-   "from_name": "ShopGym People Ops",
+   "from_name": "Xmazon People Ops",
    "from_email": "peopleops@shopgym.com",
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",
@@ -7598,7 +7598,7 @@
   {
    "id": "amb_bmail_280",
    "threadId": "amb_bthread_192",
-   "from_name": "ShopGym People Ops",
+   "from_name": "Xmazon People Ops",
    "from_email": "peopleops@shopgym.com",
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",
@@ -7822,7 +7822,7 @@
   {
    "id": "amb_bmail_292",
    "threadId": "amb_bthread_199",
-   "from_name": "ShopGym Standup Bot",
+   "from_name": "Xmazon Standup Bot",
    "from_email": "standup-bot@shopgym.com",
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",
@@ -8828,7 +8828,7 @@
   {
    "id": "amb_bmail_346",
    "threadId": "amb_bthread_241",
-   "from_name": "ShopGym Wiki",
+   "from_name": "Xmazon Wiki",
    "from_email": "no-reply@wiki.shopgym.com",
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",
@@ -8885,7 +8885,7 @@
   {
    "id": "amb_bmail_349",
    "threadId": "amb_bthread_243",
-   "from_name": "ShopGym Internal Comms",
+   "from_name": "Xmazon Internal Comms",
    "from_email": "comms@shopgym.com",
    "to_name": "All Staff",
    "to_email": "all-staff@shopgym.com",
@@ -8904,7 +8904,7 @@
   {
    "id": "amb_bmail_350",
    "threadId": "amb_bthread_244",
-   "from_name": "ShopGym Benefits",
+   "from_name": "Xmazon Benefits",
    "from_email": "benefits@peoplehub.shopgym.com",
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",
@@ -8926,7 +8926,7 @@
    "threadId": "amb_bthread_245",
    "from_name": "Alice Anderson",
    "from_email": "alice@shopgym.com",
-   "to_name": "ShopGym Benefits",
+   "to_name": "Xmazon Benefits",
    "to_email": "benefits@peoplehub.shopgym.com",
    "subject": "HSA plan — question about the deductible math before I switch",
    "body": "I'm looking at moving from Blue Select to the new high-deductible plan and I want to check my arithmetic with someone who does this for a living, because the comparison tool gives me a number and no reasoning.\n\nMy situation: individual coverage, no dependents. Last plan year I hit about $2,100 in medical spend, most of it physio for a shoulder thing in the autumn, plus the usual annual physical and one urgent care visit in February for what turned out to be a very ordinary virus.\n\nThe tool says I'd be $340 better off on the HDHP once the $750 seed is counted. What I can't tell from the interface is whether that projection assumes the physio continues. It probably shouldn't — I finished the course in March. And I can't tell whether the seed is deposited in one lump in July or spread per paycheck, which matters a lot if I have a big expense early in the year.\n\nOne more: if I switch to the HDHP, does my existing FSA balance have to be spent by 30 June or does it convert? I have about $215 sitting in it.",
@@ -9004,7 +9004,7 @@
   {
    "id": "amb_bmail_355",
    "threadId": "amb_bthread_247",
-   "from_name": "ShopGym Compensation",
+   "from_name": "Xmazon Compensation",
    "from_email": "comp@peoplehub.shopgym.com",
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",
@@ -9219,7 +9219,7 @@
   {
    "id": "amb_bmail_366",
    "threadId": "amb_bthread_253",
-   "from_name": "ShopGym People Ops",
+   "from_name": "Xmazon People Ops",
    "from_email": "peopleops@shopgym.com",
    "to_name": "All Staff",
    "to_email": "all-staff@shopgym.com",
@@ -9238,7 +9238,7 @@
   {
    "id": "amb_bmail_367",
    "threadId": "amb_bthread_254",
-   "from_name": "ShopGym Talent",
+   "from_name": "Xmazon Talent",
    "from_email": "talent@peoplehub.shopgym.com",
    "to_name": "All Staff",
    "to_email": "all-staff@shopgym.com",
@@ -9257,7 +9257,7 @@
   {
    "id": "amb_bmail_368",
    "threadId": "amb_bthread_255",
-   "from_name": "ShopGym People Analytics",
+   "from_name": "Xmazon People Analytics",
    "from_email": "insights@peoplehub.shopgym.com",
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",
@@ -9276,7 +9276,7 @@
   {
    "id": "amb_bmail_369",
    "threadId": "amb_bthread_256",
-   "from_name": "ShopGym Compliance",
+   "from_name": "Xmazon Compliance",
    "from_email": "compliance@peoplehub.shopgym.com",
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",
@@ -9333,7 +9333,7 @@
   {
    "id": "amb_bmail_372",
    "threadId": "amb_bthread_258",
-   "from_name": "ShopGym IT Security",
+   "from_name": "Xmazon IT Security",
    "from_email": "security-notices@shopgym.com",
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",
@@ -9352,7 +9352,7 @@
   {
    "id": "amb_bmail_373",
    "threadId": "amb_bthread_259",
-   "from_name": "ShopGym Learning",
+   "from_name": "Xmazon Learning",
    "from_email": "learning@peoplehub.shopgym.com",
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",
@@ -9505,7 +9505,7 @@
   {
    "id": "amb_bmail_381",
    "threadId": "amb_bthread_264",
-   "from_name": "ShopGym People Ops",
+   "from_name": "Xmazon People Ops",
    "from_email": "no-reply@peoplehub.shopgym.com",
    "to_name": "Alice Anderson",
    "to_email": "alice@shopgym.com",

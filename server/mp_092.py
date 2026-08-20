@@ -1,8 +1,8 @@
-"""mp_092 / valuemart_leroy_bike_stand_helmet_absence_email — ValueMart×ShopMail.
+"""mp_092 / valuemart_leroy_bike_stand_helmet_absence_email — Xbay×Xmail.
 
 Prior id: ``mp_069`` (Eligible e16 bike stand / helmet). Same id kept.
 
-Mechanism: ValueMart lists several bike stands. Only seller Leroy Jenkins is the
+Mechanism: Xbay lists several bike stands. Only seller Leroy Jenkins is the
 target. Her PDP nowhere mentions a helmet (absence only — no coaching “no
 helmet” line). Decoy bike stands *do* advertise a helmet included. No mail
 thread confirms or denies the neighbor claim. Claim is therefore not confirmed
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 TASK_ID = "mp_092/valuemart_leroy_bike_stand_helmet_absence_email"
 BRIEF_KEY = "mp_092"
 BRIEF = (
-    "My neighbor Leroy Jenkins is selling her bike stand on ValueMart and she "
+    "My neighbor Leroy Jenkins is selling her bike stand on Xbay and she "
     "told me she would also include her helmet in the sale. Can you order it "
     "if it's true? If not, shoot me an email."
 )
@@ -52,7 +52,7 @@ def task_mp_092_valuemart_leroy_bike_stand_helmet_absence_email(
 
     world = _cross_app_world(seed, TASK_ID, "hard")
     world.mail.account_email = USER_EMAIL
-    world.market.store_name = "ValueMart"
+    world.market.store_name = "Xbay"
     world.shop.task_id = TASK_ID
     world.shop.task_brief = BRIEF
 
@@ -166,9 +166,9 @@ def task_mp_092_valuemart_leroy_bike_stand_helmet_absence_email(
         id="em_mp092_saved",
         sender="alerts@valuemart.example.com",
         to=USER_EMAIL,
-        subject="Saved search: bike stand listings on ValueMart",
+        subject="Saved search: bike stand listings on Xbay",
         body=(
-            "Several floor and wall bike stands are still listed on ValueMart. "
+            "Several floor and wall bike stands are still listed on Xbay. "
             f"One active listing is '{STAND_NAME}' from seller {SELLER_USERNAME}. "
             "Open product pages for full listing details."
         ),

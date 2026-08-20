@@ -37,7 +37,7 @@ def emit_shop_checkout_reached(world: "WorldState") -> None:
     """Emit ShopCheckoutReached — a one-shot TRIGGER event (target_app=shop, no
     subscriber) fired the FIRST time the agent reaches the shop checkout. It
     lands in ``world.events`` so a scheduled relative event (M18's async coupon-
-    flip) can fire 'just after the agent commits to ShopGym' — the sunk-cost
+    flip) can fire 'just after the agent commits to Xmazon' — the sunk-cost
     moment. Idempotent: only the first checkout-entry emits it."""
     if any(e.type == "ShopCheckoutReached" for e in world.events):
         return

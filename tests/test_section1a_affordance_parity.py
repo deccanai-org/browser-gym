@@ -857,7 +857,7 @@ def test_rendered_major_affordances_match_direct_mutations(section1a_server) -> 
                 "return_initiation: return id + created_at + event payload return_id",
             ],
             "note": (
-                "Calendar/Mail/Food/ValueMart mint deterministic IDs for these "
+                "Calendar/Mail/Food/Xbay mint deterministic IDs for these "
                 "fixtures. Subscription create and return initiation mint "
                 "secrets.token_hex IDs and clock timestamps, so those "
                 "affordances compare normalized payloads."
@@ -1022,7 +1022,7 @@ def test_failed_actions_are_visible_atomic_and_route_owned(section1a_server) -> 
                 "verifier_result": verifier_result,
             })
 
-            # ValueMart's public form route exposes realistic coupon rejection.
+            # Xbay's public form route exposes realistic coupon rejection.
             world = _reset(
                 section1a_server, "M354/joint_food_market_welcome_budget_empty", 0,
             )
@@ -1040,7 +1040,7 @@ def test_failed_actions_are_visible_atomic_and_route_owned(section1a_server) -> 
             results.append({
                 "class": "invalid_coupon",
                 "result": "PASS",
-                "visible_reason": "That coupon code isn't valid at ValueMart.",
+                "visible_reason": "That coupon code isn't valid at Xbay.",
                 "atomic": True,
                 "owner": "market.apply_coupon mutation contract",
                 "adversarial": False,

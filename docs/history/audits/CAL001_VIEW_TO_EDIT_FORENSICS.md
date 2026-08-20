@@ -64,7 +64,7 @@ Final durable state (facts / scoring): party + hold + seed gym intact; BBQ intac
 
 ### Missing SoM on event openers (env — primary)
 
-`harness/som.py` only marks ARIA interactable roles (`button`, `link`, `textbox`, …). GymCal openers are plain clickable divs:
+`harness/som.py` only marks ARIA interactable roles (`button`, `link`, `textbox`, …). Xoogle openers are plain clickable divs:
 
 | Surface | Code | SoM? |
 |---|---|---|

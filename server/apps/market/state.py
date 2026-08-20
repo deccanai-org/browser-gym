@@ -1,12 +1,12 @@
-"""ValueMart store — MarketState (catalog, cart, orders, coupons).
+"""Xbay store — MarketState (catalog, cart, orders, coupons).
 
-Wholly separate from the main ShopGym store (``GymState``); nothing here
+Wholly separate from the main Xmazon store (``GymState``); nothing here
 references it. Prices/coupons/fees are FIXED so a reset for a given seed
 reproduces an identical store — the environment-correctness gate requires
 deterministic episodes.
 
-ValueMart is the discount-retailer foil to ShopGym. Several products OVERLAP
-ShopGym by name (so a cross-retailer price comparison is meaningful) but at
+Xbay is the discount-retailer foil to Xmazon. Several products OVERLAP
+Xmazon by name (so a cross-retailer price comparison is meaningful) but at
 DIFFERENT prices — cheaper on some, pricier on others — plus a flat delivery
 fee (free over a threshold) and a store-only coupon. So the cheaper store is
 only knowable after computing the FINAL total (price - coupon + delivery), not
@@ -30,11 +30,11 @@ class MarketProduct:
     emoji: str = "📦"
     description: str = ""
     in_stock: bool = True
-    # The ShopGym product_id this item overlaps (same physical product, other
-    # store), or None for a ValueMart exclusive. Lets a cross-retailer verifier
+    # The Xmazon product_id this item overlaps (same physical product, other
+    # store), or None for a Xbay exclusive. Lets a cross-retailer verifier
     # line up "the same SKU" across the two stores without fuzzy name matching.
     shop_sku: str | None = None
-    # Optional per-listing seller (ebay_mock / ValueMart). When set, transform
+    # Optional per-listing seller (ebay_mock / Xbay). When set, transform
     # projects a distinct user with this feedback score/rating instead of the
     # single store-wide seller. Used by seller-rating comparison tasks.
     seller_id: str | None = None
@@ -160,7 +160,7 @@ class MarketMembership:
 
 @dataclass
 class MarketSellerListing:
-    """Agent-created durable seller listing (ValueMart sell flow)."""
+    """Agent-created durable seller listing (Xbay sell flow)."""
     id: str
     title: str
     description: str
@@ -262,9 +262,9 @@ class MarketState:
         }
 
 
-# ShopGym overlaps: (vm_id, name, vm_price, shop_sku, shop_price_for_reference)
-# Neither store is uniformly cheaper — ValueMart wins on mouse/keyboard/laptop,
-# ShopGym wins on monitor/headphones — and ValueMart's $5.99 delivery (free over
+# Xmazon overlaps: (vm_id, name, vm_price, shop_sku, shop_price_for_reference)
+# Neither store is uniformly cheaper — Xbay wins on mouse/keyboard/laptop,
+# Xmazon wins on monitor/headphones — and Xbay's $5.99 delivery (free over
 # $35) + the VALUE10 coupon can flip the final-total comparison either way.
 def make_marketstate(seed: int = 0) -> MarketState:
     m = MarketState()
@@ -277,7 +277,7 @@ def make_marketstate(seed: int = 0) -> MarketState:
         ("vm_laptop_studio",  "Studio Laptop 14",           "electronics", 879.99, "💻", "p_laptop_studio"),
         ("vm_hp_premium",     "Bluetooth Headphone Premium","audio",       259.99, "🎧", "p_hp_premium"),
         ("vm_coffee_pods",    "Coffee Pods (24-pack)",      "grocery",     9.49,  "☕", None),
-        # ValueMart exclusives
+        # Xbay exclusives
         ("vm_usb_cable",      "USB-C Cable 2m",             "electronics", 6.99,  "🔌", None),
         ("vm_chair",          "Office Chair",               "home",        94.99, "🪑", None),
     ]
@@ -297,12 +297,12 @@ def make_marketstate(seed: int = 0) -> MarketState:
             id=pid, name=name, category=cat, price=price, emoji=emoji,
             description=descriptions.get(pid, ""), in_stock=True, shop_sku=sku)
     # A store-ONLY coupon — the cross-retailer trap: it can flip which store is
-    # cheaper, and it does NOT exist on ShopGym.
+    # cheaper, and it does NOT exist on Xmazon.
     m.coupons["VALUE10"] = MarketCoupon(
         code="VALUE10", percent_off=0.10, min_subtotal=0.0,
         description="10% off your xbay order")
     # A shipping address + payment methods on file, so checkout has a real
-    # address/payment selection (matching ShopGym's Alice) instead of nothing.
+    # address/payment selection (matching Xmazon's Alice) instead of nothing.
     m.addresses["vm_addr_home"] = MarketAddress(
         id="vm_addr_home", full_name="Alice Anderson", street="100 Park Avenue, Apt 4B",
         city="Brooklyn", state="NY", zip="11201", country="United States", is_default=True)

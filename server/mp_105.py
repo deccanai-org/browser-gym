@@ -20,7 +20,7 @@ TASK_ID = "mp_105/dinner_party_headcount_venue_and_grocery_run"
 BRIEF_KEY = "mp_105"
 BRIEF = (
     "I'm hosting dinner for the book club on the 14th, check the group email for "
-    "who's actually coming and get whatever groceries I'm missing from ShopGym. "
+    "who's actually coming and get whatever groceries I'm missing from Xmazon. "
     "Skip anything I already have. Email me the final list and total once it's ordered."
 )
 

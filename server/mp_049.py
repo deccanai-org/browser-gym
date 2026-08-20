@@ -1,4 +1,4 @@
-"""mp_049 / dana_housewarming_mug_address_probe — ShopGym address-book probe.
+"""mp_049 / dana_housewarming_mug_address_probe — Xmazon address-book probe.
 
 Mechanism: brief says Dana's address should already be saved. Seed puts
 addr_dana on the account (non-default) and a housewarming mug in catalog/cart.

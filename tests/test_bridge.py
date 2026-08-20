@@ -371,7 +371,7 @@ def test_a_refused_add_to_cart_does_not_report_success(wired):
     records that it worked, and only the world disagrees.
 
     Most of what a storefront shows is ambient filler that exists only in the
-    projection — 188 of 231 ShopGym products — so this is the COMMON case, not an
+    projection — 188 of 231 Xmazon products — so this is the COMMON case, not an
     edge one.
     """
     b = wired
@@ -400,10 +400,10 @@ def test_a_real_add_to_cart_still_reports_success(wired):
 
 
 def test_a_refused_valuemart_add_does_not_report_success(wired):
-    """ValueMart's route was missed by the first pass of this fix.
+    """Xbay's route was missed by the first pass of this fix.
 
     It 303s on both outcomes exactly like the shop's, so a refusal there was
-    still answering {"ok": true} while the cart stayed empty — and ValueMart is
+    still answering {"ok": true} while the cart stayed empty — and Xbay is
     the WORSE case: 158 of its 167 listings are ambient filler the engine has
     never heard of, so ~19 of every 20 items an annotator can click are
     un-addable.
@@ -413,5 +413,5 @@ def test_a_refused_valuemart_add_does_not_report_success(wired):
 
     out = b.act("market.add_to_cart", product_id="vm_nothing_like_this", quantity=1)
 
-    assert out["ok"] is False, "ValueMart must refuse audibly too"
+    assert out["ok"] is False, "Xbay must refuse audibly too"
     assert out.get("error")

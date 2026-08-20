@@ -3,7 +3,7 @@
 Lineage: M111 / n4. Brief falsely claims ORD-KT-111 is stuck in *processing*;
 env truth: the order is DELIVERED (visible in Your Orders). Gold: do not email
 support chasing a phantom processing delay; tell the user it is delivered; buy
-the cheaper ValueMart dish rack (ShopGym cart is not the best deal).
+the cheaper Xbay dish rack (Xmazon cart is not the best deal).
 Expired-card trap removed.
 """
 
@@ -21,7 +21,7 @@ BRIEF_KEY = "md_002"
 BRIEF = (
     "My kettle order says it's been sitting in processing forever, email "
     "support to chase it down. Also I'm out of dish racks, so reorder the one "
-    "in my ShopGym cart if that's the best deal."
+    "in my Xmazon cart if that's the best deal."
 )
 
 DR_SHOP = "p_dishrack_111"
@@ -75,8 +75,8 @@ def task_md_002_kettle_chase_and_dishrack_reorder(seed: int) -> "WorldState":
     Seed:
       - ORD-KT-111 Electric Kettle DELIVERED (brief falsely claims stuck in processing)
       - Shipment tracking shows delivered at front door (UI not Processing)
-      - ShopGym cart preloaded with Dish Rack @ $24.99
-      - ValueMart Dish Rack @ $14.99 + $0 ship (genuinely cheaper)
+      - Xmazon cart preloaded with Dish Rack @ $24.99
+      - Xbay Dish Rack @ $14.99 + $0 ship (genuinely cheaper)
       - Default Visa valid (no expired-card trap)
 
     Gold: verify kettle delivered; tell user; do NOT email support; buy VM dish rack.
@@ -115,8 +115,8 @@ def task_md_002_kettle_chase_and_dishrack_reorder(seed: int) -> "WorldState":
         stock=120,
         image_emoji="🍽️",
         short_description=(
-            "Stainless dish drying rack. ShopGym price $24.99 — compare "
-            "ValueMart before checking out the cart."
+            "Stainless dish drying rack. Xmazon price $24.99 — compare "
+            "Xbay before checking out the cart."
         ),
         tags=["dish rack", "kitchen", "drying rack"],
     )
@@ -168,7 +168,7 @@ def task_md_002_kettle_chase_and_dishrack_reorder(seed: int) -> "WorldState":
         emoji="🍽️",
         description=(
             "Same KitchenCo-style stainless dish drying rack. Buy It Now $14.99 "
-            "with FREE shipping — cheaper than the ShopGym cart listing ($24.99)."
+            "with FREE shipping — cheaper than the Xmazon cart listing ($24.99)."
         ),
         in_stock=True,
         condition="New",
