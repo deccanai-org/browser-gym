@@ -40,8 +40,13 @@ async def catalog(request: Request):
 
 @router.get("/product/{product_id}", response_class=HTMLResponse)
 async def product(request: Request, product_id: str):
+    from server.state import log_action
     world = _deps["get_world"]()
     p = world.market.products.get(product_id)
+    # Record the view, the way the calendar records an opened event. A task
+    # that turns on having looked at a comparable needs the look to leave a
+    # trace; without it "did you check the comps" is unanswerable.
+    log_action(world.shop, "view_market_product", product_id=product_id)
     if p is None:
         _deps["flash"](world.shop, "error", "That product could not be found.")
         return RedirectResponse("/market", 303)
@@ -167,8 +172,14 @@ async def listings_create(
     condition: str = Form("Used"),
     category: str = Form("Electronics"),
     shipping: str = Form("0"),
+    draft: str = Form(""),
 ):
-    """JSON-friendly create listing for bridged ebay_mock sell flow."""
+    """JSON-friendly create listing for bridged ebay_mock sell flow.
+
+    ``draft=1`` prepares the listing without offering it: it is saved and
+    visible to the seller, but it is not published and does not enter the
+    catalog. A task that says "stop before it goes live" needs that to exist.
+    """
     world = _deps["get_world"]()
     try:
         price_f = float(price)
@@ -187,6 +198,7 @@ async def listings_create(
         condition=condition,
         category=category,
         shipping=ship_f,
+        draft=str(draft).strip().lower() in ("1", "true", "yes", "on", "draft"),
     )
     if r.get("ok") and not r.get("noop"):
         _deps["flash"](world.shop, "success", r.get("message") or "Listing published.")

@@ -152,6 +152,7 @@ def create_listing(
     condition: str = "Used",
     category: str = "Electronics",
     shipping: float = 0.0,
+    draft: bool = False,
 ) -> dict[str, Any]:
     """Create a durable seller listing.
 
@@ -204,29 +205,33 @@ def create_listing(
         condition=condition or "Used",
         category=category or "Electronics",
         shipping=float(shipping or 0.0),
-        status="active",
+        status="draft" if draft else "active",
     )
     market.seller_listings[lid] = listing
-    # Also mirror into products so transform_market projects a searchable listing.
-    market.products[lid] = MarketProduct(
-        id=lid,
-        name=title,
-        category=(category or "electronics").lower().replace(" & ", "_").replace(" ", "_")[:32]
-        or "electronics",
-        price=price_f,
-        emoji="📦",
-        description=description,
-        in_stock=True,
-        condition=condition or "Used",
-        shipping_cost=float(shipping or 0.0),
-        seller_id="user_1",
-        seller_username="Alice Anderson",
-        seller_feedback_score=154,
-        seller_feedback_rating=98.5,
-    )
+    # Only a live listing belongs in the catalog. A draft is prepared but not
+    # offered, so it must not become searchable — that is the whole point of
+    # being able to stop before publishing.
+    if not draft:
+        market.products[lid] = MarketProduct(
+            id=lid,
+            name=title,
+            category=(category or "electronics").lower().replace(" & ", "_").replace(" ", "_")[:32]
+            or "electronics",
+            price=price_f,
+            emoji="📦",
+            description=description,
+            in_stock=True,
+            condition=condition or "Used",
+            shipping_cost=float(shipping or 0.0),
+            seller_id="user_1",
+            seller_username="Alice Anderson",
+            seller_feedback_score=154,
+            seller_feedback_rating=98.5,
+        )
     if shop is not None:
         log_action(shop, "market_create_listing",
-                   listing_id=lid, title=title, price=price_f, attempt=attempt)
+                   listing_id=lid, title=title, price=price_f, attempt=attempt,
+                   status=listing.status)
     return {
         "ok": True,
         "noop": False,
