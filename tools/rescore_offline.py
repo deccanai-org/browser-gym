@@ -78,10 +78,13 @@ def main() -> int:
     for path in sorted(glob.glob(os.path.join(args.root, "**", "gym_episode.jsonl"),
                                  recursive=True)):
         with open(path) as fh:
-            line = fh.readline()
-        if not line.strip():
+            text = fh.read()
+        if not text.strip():
             continue
-        episode = json.loads(line)
+        try:                                  # newer runs: one JSON per line
+            episode = json.loads(text.splitlines()[0])
+        except json.JSONDecodeError:          # older runs: pretty-printed
+            episode = json.loads(text)
         if args.task and args.task not in (episode.get("task_id") or ""):
             continue
         row = rescore(episode)

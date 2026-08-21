@@ -14114,7 +14114,7 @@ async def solve_n446_redirect_shipped_throw_missing_cushion(ctx: BrowserCtx) -> 
     matching cushion was never ordered. Spend nothing, and tell Alice all three
     facts — shipped and unredirectable, cushion missing, and what it would cost.
     """
-    await ctx.goto("/orders/ORD-AUR-4",
+    await ctx.goto("/account/orders/ORD-AUR-4",
                    reasoning="Check the Aurelia throw order before promising anything.")
     world = ctx.http.get(f"{ctx.server_url}/_harness/world").json()
     policy = next((e for e in (world.get("mail", {}).get("inbox") or {}).values()
@@ -14143,13 +14143,9 @@ async def solve_n448_q2_close_lunch_allergy_safe_nine(ctx: BrowserCtx) -> None:
     to Alice why the cheaper caterer was skipped.
     """
     world = ctx.http.get(f"{ctx.server_url}/_harness/world").json()
-    inbox = (world.get("mail", {}).get("inbox") or {})
-    for needle, why in (("approved at $125", "Dana's approved budget."),
-                        ("Re: Friday lunch", "Marcus on the caterer.")):
-        em = next((e for e in inbox.values()
-                   if needle.lower() in (e.get("subject") or "").lower()), None)
-        if em:
-            await ctx.goto(f"/mail/message/{em['id']}", reasoning=why)
+    for eid, why in (("em_n448_dana", "Dana's approved $125 budget."),
+                     ("em_n448_marcus", "Marcus vetoing the cheaper caterer.")):
+        await ctx.goto(f"/mail/message/{eid}", reasoning=why)
     await ctx.goto("/calendar/edit/ev_n448_q2",
                    reasoning="The Q2 session carries Priya's nut allergy.")
 
