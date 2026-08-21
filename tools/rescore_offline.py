@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from server.tasks import make_task                      # noqa: E402
 from server.apps import statecodec                      # noqa: E402
 from server.verifiers import Probe                      # noqa: E402
-from server import verifier_four as v4                  # noqa: E402
+from server.verifiers import SUITE_FACTORIES           # noqa: E402
 
 
 def final_world_snapshot(episode: dict) -> dict | None:
@@ -36,7 +36,7 @@ def final_world_snapshot(episode: dict) -> dict | None:
 
 def rescore(episode: dict) -> dict | None:
     task_id = episode.get("task_id")
-    factories = v4.suite_factories()
+    factories = SUITE_FACTORIES
     if task_id not in factories:
         return None                       # no runnable verifier for this task
     snap = final_world_snapshot(episode)
