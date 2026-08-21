@@ -36,7 +36,7 @@ BULK_PATH = pathlib.Path(__file__).with_name("ambient_bulk.json")
 # NOT her employer's commerce domain: Xmazon is where she works and shops, and
 # mixing the two silently breaks reply-all, which filters recipients by
 # comparing against state.user.email.
-ALICE_EMAIL = "alice@shopmail.com"
+ALICE_EMAIL = "alice@xmail.com"
 
 # An ambient email must never look like the mail a task turns on.
 FORBIDDEN_BRANDS = ("shopgym", "valuemart", "gymeats")

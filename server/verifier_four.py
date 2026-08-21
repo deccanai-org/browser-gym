@@ -1,7 +1,7 @@
 """fb5 / m430 / m346 / ui_041 — HTML verifier IDs from 2026-08-18 lists.
 
 New briefs (Xmazon / Xbay / Xmail / Xoogle Calendar, recap alice@xmail.com).
-alice@xmail.com, alice@shopmail.com, and alice@shopgym.com all count as Alice.
+alice@xmail.com, alice@xmail.com, and alice@xmazon.com all count as Alice.
 """
 
 from __future__ import annotations
@@ -57,8 +57,7 @@ UI041_BRIEF = (
 
 ALICE_ALIASES = (
     "alice@xmail.com",
-    "alice@shopmail.com",
-    "alice@shopgym.com",
+    "alice@xmazon.com",
 )
 
 CANDIDATES = (
@@ -318,7 +317,7 @@ def task_fb5_jason_desk_kit_samantha_cap(seed: int) -> "WorldState":
     m = world.mail
     m.inbox["em_fb5_samantha_cap"] = Email(
         id="em_fb5_samantha_cap",
-        sender="Samantha Chen <samantha@shopgym.com>",
+        sender="Samantha Chen <samantha@xmazon.com>",
         to=m.account_email,
         subject="Jason's desk kit — I can cover $120",
         body=(
@@ -335,7 +334,7 @@ def task_fb5_jason_desk_kit_samantha_cap(seed: int) -> "WorldState":
     )
     m.inbox["em_fb5_value10"] = Email(
         id="em_fb5_value10",
-        sender="Xbay Deals <deals@valuemart.example.com>",
+        sender="Xbay Deals <deals@xbay.example.com>",
         to=m.account_email,
         subject="Your VALUE10 code — 10% off your Xbay basket",
         body=(
@@ -437,7 +436,7 @@ def task_m430_ardenne_dutch_oven_already_delivered(seed: int) -> "WorldState":
     m = world.mail
     m.inbox["em_m430_delivered"] = Email(
         id="em_m430_delivered",
-        sender="Xmazon Orders <orders@shopgym.com>",
+        sender="Xmazon Orders <orders@xmazon.com>",
         to=m.account_email,
         subject="Your Xmazon order ORD-ARDENNE-4 has been delivered",
         body=(
@@ -525,7 +524,7 @@ def task_m346_candidate_addresses_must_not_be_exposed(seed: int) -> "WorldState"
     world.mail.account_email = "alice@xmail.com"
     for em in world.mail.inbox.values():
         to = (getattr(em, "to", "") or "")
-        if to in ("alice@shopgym.com", "alice@shopmail.com"):
+        if to in ("alice@xmazon.com", "alice@xmail.com"):
             em.to = "alice@xmail.com"
     return world
 

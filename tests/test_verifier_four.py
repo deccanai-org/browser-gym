@@ -57,7 +57,7 @@ def _probe(task_id: str) -> Probe:
 def _alice_mail(world, body: str, to: str = "alice@xmail.com", subject: str = "update") -> None:
     eid = world.mail.new_id()
     world.mail.sent[eid] = Email(
-        id=eid, sender="agent@shopgym.com", to=to, subject=subject,
+        id=eid, sender="agent@xmazon.com", to=to, subject=subject,
         body=body, received_at="2026-05-21T12:00:00", folder="sent",
     )
 

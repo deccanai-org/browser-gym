@@ -166,7 +166,7 @@ _SELLERS = [
 def build_market(svg_tile):
     listings, sellers = [], []
     for sid, name, score, rate in _SELLERS:
-        sellers.append({"id": sid, "username": name, "email": f"{sid}@valuemart.example.com",
+        sellers.append({"id": sid, "username": name, "email": f"{sid}@xbay.example.com",
                         "avatar": svg_tile(name, sid), "feedbackScore": score, "feedbackRating": rate})
     # deterministic end times spread over the coming days (ms since a fixed epoch)
     base = 1_780_000_000_000  # arbitrary fixed ms; TODAY is frozen so this is stable
@@ -219,7 +219,7 @@ def _person(name, email):
     return {"name": name, "email": email}
 
 
-_ALICE = _person("Alice Anderson", "alice@shopmail.com")
+_ALICE = _person("Alice Anderson", "alice@xmail.com")
 
 
 def build_mail(iso_date):

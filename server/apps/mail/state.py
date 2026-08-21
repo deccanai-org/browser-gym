@@ -112,7 +112,7 @@ def make_mailstate(seed: int = 0) -> MailState:
         # mailbox. Dated back to when each would plausibly have arrived, so the
         # ambient corpus sits above them and the inbox reads like a real one.
         Email(
-            id=m.new_id(), sender="welcome@shopgym.com", to=m.account_email,
+            id=m.new_id(), sender="welcome@xmazon.com", to=m.account_email,
             subject="Welcome to xmazon",
             body=(
                 "Thanks for joining xmazon!\n\n"
@@ -124,7 +124,7 @@ def make_mailstate(seed: int = 0) -> MailState:
             read=True, labels=["updates"],
         ),
         Email(
-            id=m.new_id(), sender="deals@shopgym.com", to=m.account_email,
+            id=m.new_id(), sender="deals@xmazon.com", to=m.account_email,
             subject="Your weekend deals are here",
             body=(
                 "Up to 40% off electronics this weekend only. "
