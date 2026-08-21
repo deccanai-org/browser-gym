@@ -32,8 +32,8 @@ import httpx
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
-GYM = os.environ.get("UIO_GYM", "http://127.0.0.1:8450")
-BRIDGE = os.environ.get("UIO_BRIDGE", "http://127.0.0.1:8150")
+GYM = os.environ.get("UIO_GYM", "http://127.0.0.1:8440")
+BRIDGE = os.environ.get("UIO_BRIDGE", "http://127.0.0.1:8140")
 TOKEN = os.environ.get("HARNESS_TOKEN", "bridged-e-sol")
 ORIGINS = {
     "shop": os.environ.get("CUA_HUB_URL_SHOP", "http://127.0.0.1:5231"),

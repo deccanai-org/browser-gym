@@ -21,6 +21,13 @@ for p in "$GP" "$BP" 5231 5232 5233 5234 5235; do
 done
 sleep 1
 
+# Build the 5 mocks from source first. dist/ is gitignored (built, not committed),
+# so on a fresh clone it does not exist yet — serving it would hand out an empty
+# page. build_hub_mocks.sh runs the vite build for each mock into its own dist/.
+echo "==> building the 5 mocks from source (dist/ is not committed)"
+"$ROOT/tools/build_hub_mocks.sh" "$ROOT" "" >/tmp/uio_build.log 2>&1 \
+  || { echo "mock build failed — see /tmp/uio_build.log"; exit 1; }
+
 # All five from THIS repo's dist. Previously :5201-5205 were served from a
 # different checkout, so the agent ran a build without the bridged-fee fix and
 # saw a checkout total the engine never charged.
@@ -55,4 +62,8 @@ done
 echo "  gym :$GP -> $(curl -s -o /dev/null -m 3 -w '%{http_code}' http://127.0.0.1:$GP/)"
 echo "  bridge :$BP pool $(curl -s -m 4 http://127.0.0.1:$BP/bridge/sessions | "$PY" -c 'import json,sys;print(",".join(json.load(sys.stdin)["pool"]))')"
 echo "STACK READY"
+echo ""
+echo "Run a task in another shell (ports already match ui_oracle.py defaults):"
+echo "  UIO_GYM=http://127.0.0.1:$GP UIO_BRIDGE=http://127.0.0.1:$BP \\"
+echo "    $PY tools/ui_oracle.py <TASK>     # e.g. FB5, N446, N448, UI041, UI051, mail_002, M430 ..."
 sleep 100000
