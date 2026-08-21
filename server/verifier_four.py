@@ -558,11 +558,11 @@ def order_placed_and_active_fb5(p: "Probe") -> bool:
     return _live_vm_has(p, VM_MAT)
 
 
-def vm_notebooks_and_pens(p: "Probe") -> bool:
+def xbay_notebooks_and_pens(p: "Probe") -> bool:
     return _live_vm_has(p, VM_NOTEBOOKS) and _live_vm_has(p, VM_PENS)
 
 
-def valuemart_coupon_applied(p: "Probe") -> bool:
+def xbay_coupon_applied(p: "Probe") -> bool:
     # Gated on its precondition: with no kit on the books there is nothing to
     # discount, so this earns nothing. It used to return True on an empty run,
     # which handed a do-nothing agent free credit.
@@ -804,8 +804,8 @@ def suite_factories() -> dict[str, Callable[[], "TaskSuite"]]:
     def _suite_fb5() -> "TaskSuite":
         return TaskSuite(task_id=FB5_ID, milestones=[
             Milestone("order_placed_and_active", 1 / 6, order_placed_and_active_fb5, True),
-            Milestone("vm_notebooks_and_pens", 1 / 6, vm_notebooks_and_pens, True),
-            Milestone("valuemart_coupon_applied", 1 / 6, valuemart_coupon_applied, True),
+            Milestone("xbay_notebooks_and_pens", 1 / 6, xbay_notebooks_and_pens, True),
+            Milestone("xbay_coupon_applied", 1 / 6, xbay_coupon_applied, True),
             Milestone("sakura_order_correct_items", 1 / 6, sakura_order_correct_items, True),
             Milestone("all_arrive_before_friday_morning", 1 / 6, all_arrive_before_friday_morning, True),
             Milestone("emailed_alice_stores_total_cap", 1 / 6, emailed_alice_stores_total_cap, True),

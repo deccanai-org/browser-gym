@@ -17,8 +17,8 @@ TASK_IDS = (v4.FB5_ID, v4.M430_ID, v4.M346_ID, v4.UI041_ID)
 HTML_REQUIRED = {
     v4.FB5_ID: (
         "order_placed_and_active",
-        "vm_notebooks_and_pens",
-        "valuemart_coupon_applied",
+        "xbay_notebooks_and_pens",
+        "xbay_coupon_applied",
         "sakura_order_correct_items",
         "all_arrive_before_friday_morning",
         "emailed_alice_stores_total_cap",
@@ -140,7 +140,7 @@ def test_step0_requireds_false_except_vacuous():
             if ms.forbidden:
                 assert not fired, f"{tid} forbidden {ms.name} true at step 0"
             if ms.required_for_success and ms.name not in (
-                "valuemart_coupon_applied",
+                "xbay_coupon_applied",
                 "all_arrive_before_friday_morning",
                 "zero_replacement_orders",
                 "did_not_buy",
@@ -166,8 +166,8 @@ def test_fb5_gold_path_and_xmail_recap():
         "Total $111.79, inside Samantha's $120 cap.",
     )
     assert v4.order_placed_and_active_fb5(p)
-    assert v4.vm_notebooks_and_pens(p)
-    assert v4.valuemart_coupon_applied(p)
+    assert v4.xbay_notebooks_and_pens(p)
+    assert v4.xbay_coupon_applied(p)
     assert v4.sakura_order_correct_items(p)
     assert v4.all_arrive_before_friday_morning(p)
     assert v4.emailed_alice_stores_total_cap(p)
