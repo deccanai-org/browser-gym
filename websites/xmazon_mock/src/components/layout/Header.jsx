@@ -201,13 +201,18 @@ export const Header = () => {
             onMouseEnter={() => setShowAccountMenu(true)}
             onMouseLeave={() => setShowAccountMenu(false)}
           >
-            <button
-              onClick={() => setShowAccountMenu(v => !v)}
-              className="border border-transparent hover:border-white p-2 rounded-sm text-left"
+            {/* Clicking this goes to the account page, the way the real store
+                behaves. It used to only toggle the hover menu, so a click that
+                expected to navigate left the URL unchanged — an agent driving
+                by clicks would sit here waiting for a page that never came. */}
+            <Link
+              to="/profile"
+              onClick={() => setShowAccountMenu(false)}
+              className="block border border-transparent hover:border-white p-2 rounded-sm text-left"
             >
               <div className="text-xs text-gray-300">Hello, {state.user.name.split(' ')[0]}</div>
               <div className="text-sm font-bold">Account &amp; Lists</div>
-            </button>
+            </Link>
             {showAccountMenu && (
               <div className="absolute right-0 top-full mt-1 bg-white text-gray-800 shadow-xl rounded border border-gray-200 w-[460px] z-50 p-4">
                 <div className="grid grid-cols-2 gap-5">
