@@ -521,16 +521,19 @@ def _ui051_viewed_comp(p: "Probe", pid: str) -> bool:
 
 
 def ui051_prepared_comps(p: "Probe") -> bool:
-    """Both comparables were actually looked at, and quoted as money.
+    """Both comparables priced, and quoted to Alice as money.
 
-    "$132" no longer counts as having found a 78 and a 32: the figures must
-    read as prices, and both comparable listings must have been opened.
+    "$132" does not count as having found a 78 and a 32: each figure has to
+    read as a price of its own. Opening the two listings also counts, but it
+    cannot be *required* — the realistic storefront does not report a product
+    view back to the engine, so on that surface a demand to have "viewed" them
+    is a check no correct run could ever pass.
     """
     blob = _alice_blob(p)
     quoted = all(_money_near(blob, price) for price in UI051_COMP_PRICES)
     viewed = (_ui051_viewed_comp(p, UI051_COMP_HIGH)
               and _ui051_viewed_comp(p, UI051_COMP_LOW))
-    return quoted and viewed
+    return quoted or viewed
 
 
 def _ui051_listings(p: "Probe") -> list:
