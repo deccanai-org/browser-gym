@@ -303,6 +303,10 @@ _AMAZON_CAT = {
     "household": "Health & Household",
     "sports": "Sports & Outdoors", "outdoors": "Sports & Outdoors",
     "footwear": "Fashion",
+    # Wiper blades and the like. The store already shelves an Automotive
+    # department, so an unmapped "auto" was the only thing standing between
+    # those products and the aisle they belong in.
+    "auto": "Automotive", "automotive": "Automotive", "car": "Automotive",
     # Keepsake journals and gift baskets have no department of their own; file
     # them under the home/lifestyle aisle, and travel pillows likewise.
     "gifts": "Home & Kitchen", "travel": "Home & Kitchen",

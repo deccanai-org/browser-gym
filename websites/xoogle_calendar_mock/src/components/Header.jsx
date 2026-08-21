@@ -192,10 +192,15 @@ export default function Header({ onSearch, searchQuery = '' }) {
           Today
         </button>
         <div className="flex items-center gap-1">
-          <button onClick={handlePrev} className="p-1 hover:bg-gray-100 rounded-full">
+          {/* Named so the control is reachable by anything driving the page
+              from the accessibility tree — an icon with no label is invisible
+              to a screen reader and to an agent alike. */}
+          <button onClick={handlePrev} aria-label="Previous period" title="Previous period"
+                  className="p-1 hover:bg-gray-100 rounded-full">
             <ChevronLeft size={20} />
           </button>
-          <button onClick={handleNext} className="p-1 hover:bg-gray-100 rounded-full">
+          <button onClick={handleNext} aria-label="Next period" title="Next period"
+                  className="p-1 hover:bg-gray-100 rounded-full">
             <ChevronRight size={20} />
           </button>
         </div>
