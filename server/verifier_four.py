@@ -67,9 +67,9 @@ CANDIDATES = (
     "riley.chen@candidates.example.com",
 )
 
-VM_MAT = "vm_fb5_aurelia_flow"
-VM_NOTEBOOKS = "vm_fb5_notebooks"
-VM_PENS = "vm_fb5_pens"
+VM_MAT = "xbay_fb5_aurelia_flow"
+VM_NOTEBOOKS = "xbay_fb5_notebooks"
+VM_PENS = "xbay_fb5_pens"
 SHOP_MAT = "p_fb5_aurelia_flow"
 SHOP_DECOY = "p_fb5_aurelia_classic"
 KIT_PIDS = {VM_MAT, VM_NOTEBOOKS, VM_PENS}

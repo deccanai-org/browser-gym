@@ -270,7 +270,7 @@ def _market_image(pid: str, name: str) -> str:
     photo when one matches, else a gradient tile. Never picsum."""
     if pid in _PRODUCT_IMAGES:
         return f"/assets/products/{pid}.jpg"
-    alt = "p_" + pid[3:] if pid.startswith("vm_") else pid
+    alt = ("p_" + pid.split("_", 1)[1]) if (pid.startswith("vm_") or pid.startswith("xbay_")) else pid
     if alt in _PRODUCT_IMAGES:
         return f"/assets/products/{alt}.jpg"
     # The same aliases the shop uses, under either id — xbay mirrors the

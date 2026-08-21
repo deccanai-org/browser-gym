@@ -14068,14 +14068,14 @@ async def solve_fb5_jason_desk_kit_samantha_cap(ctx: BrowserCtx) -> None:
     mail, order the Sakura lunch, and tell Alice what each store charged and
     whether it cleared her $120.
     """
-    await ctx.goto("/market/product/vm_fb5_aurelia_flow",
+    await ctx.goto("/market/product/xbay_fb5_aurelia_flow",
                    reasoning="The Aurelia Flow desk mat on Xbay — the Xmazon "
                              "listing of the same mat is the decoy.")
     await ctx.click("button[data-test-id='market-btn-add-to-cart']")
-    await ctx.goto("/market/product/vm_fb5_notebooks",
+    await ctx.goto("/market/product/xbay_fb5_notebooks",
                    reasoning="The ruled notebook 3-pack.")
     await ctx.click("button[data-test-id='market-btn-add-to-cart']")
-    await ctx.goto("/market/product/vm_fb5_pens", reasoning="The rollerball pens.")
+    await ctx.goto("/market/product/xbay_fb5_pens", reasoning="The rollerball pens.")
     await ctx.click("button[data-test-id='market-btn-add-to-cart']")
     await ctx.goto("/market/cart", reasoning="Apply the coupon from Alice's mail.")
     await ctx.fill("input[data-test-id='market-input-coupon']", "VALUE10")

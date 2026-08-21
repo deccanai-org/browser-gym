@@ -2786,11 +2786,11 @@ async def fb5(ui: UI) -> None:
                  ui.open_email("VALUE10"), "find the Xbay coupon")
     await ui.act("market", "The Aurelia Flow desk mat Samantha's budget covers is the Xbay "
                            "listing. Xmazon lists the same mat, but that is not this one.",
-                 ui.market_add("vm_fb5_aurelia_flow"), "add the desk mat")
+                 ui.market_add("xbay_fb5_aurelia_flow"), "add the desk mat")
     await ui.act("market", "The ruled notebook 3-pack.",
-                 ui.market_add("vm_fb5_notebooks"), "add the notebooks")
+                 ui.market_add("xbay_fb5_notebooks"), "add the notebooks")
     await ui.act("market", "The box of rollerball pens.",
-                 ui.market_add("vm_fb5_pens"), "add the pens")
+                 ui.market_add("xbay_fb5_pens"), "add the pens")
     await ui.act("market", "Apply the coupon from her mail before paying.",
                  ui.market_coupon("VALUE10"), "apply VALUE10")
     await ui.act("market", "Place the kit order.",
