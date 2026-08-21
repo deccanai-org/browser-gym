@@ -36,10 +36,13 @@ for _ in $(seq 1 90); do
   [ "$(curl -s -o /dev/null -m 3 -w '%{http_code}' "http://127.0.0.1:$GP/")" = "200" ] && break; sleep 1
 done
 
+# BRIDGE_NO_HUB=1: the mock tabs poll /bridge/state, so the bridge never needs to
+# PUSH state to them. Leaving push on made every action POST to a state endpoint
+# the static SPA servers don't have; against a remote hub those POSTs hit the 30s
+# default and froze the single worker, so a tab reloaded mid-run got no state and
+# fell back to demo data. No hub map -> no push -> no freeze.
 GYM_URLS="http://127.0.0.1:$GP" BRIDGE_TICK=0 BRIDGE_AUTOSCALE=0 BRIDGE_DEFAULT_SESSION=1 \
-CUA_HUB_URL_SHOP=http://127.0.0.1:5231 CUA_HUB_URL_MARKET=http://127.0.0.1:5232 \
-CUA_HUB_URL_MAIL=http://127.0.0.1:5233 CUA_HUB_URL_CALENDAR=http://127.0.0.1:5234 \
-CUA_HUB_URL_FOOD=http://127.0.0.1:5235 \
+BRIDGE_NO_HUB=1 \
 "$PY" -m uvicorn tools.bridge_service:app --host 127.0.0.1 --port "$BP" --log-level warning \
       >/tmp/uio_bridge.log 2>&1 & PIDS+=($!)
 for _ in $(seq 1 60); do

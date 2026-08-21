@@ -683,6 +683,9 @@ export const StoreProvider = ({ children }) => {
         condition: listing.condition || 'Used',
         category: listing.category || 'Electronics',
         shipping: listing.shipping != null ? listing.shipping : 0,
+        // A draft is prepared but not offered. Selling something is not always
+        // the next step: some of this is "show me before it goes live".
+        draft: listing.draft ? 1 : 0,
       }).then(r => {
         applyEngine(dispatch, r);
         return r;

@@ -116,7 +116,8 @@ ACTIONS: dict[str, tuple[str, str, tuple[str, ...]]] = {
     "market.remove_coupon":  ("POST", "/market/remove-coupon", ()),
     "market.checkout":       ("POST", "/market/checkout",    ("address_id", "payment_id")),
     "market.create_listing": ("POST", "/market/listings/create",
-                              ("title", "description", "price", "condition", "category", "shipping")),
+                              ("title", "description", "price", "condition", "category",
+                               "shipping", "draft")),
     "market.update_listing": ("POST", "/market/listings/update",
                               ("listing_id", "title", "description", "price", "condition", "category", "shipping")),
     "market.cancel_membership": ("POST", "/market/membership/cancel", ("keep_perks",)),
@@ -270,8 +271,13 @@ class Bridge:
             sid = self.session.get(app) or seed_sid(self.task_id or "", self.seed, app)
             self.session.setdefault(app, sid)
             try:
+                # Best-effort trajectory mirror: the gym write already succeeded
+                # and the mock tabs poll for state, so a slow or unreachable push
+                # target must not freeze the action. Cap it hard rather than wear
+                # the 30s default, which turned one dead endpoint into a stalled
+                # bridge and left every other tab's fetch hanging behind it.
                 _http("POST", f"{base.rstrip('/')}/post?sid={urllib.parse.quote(sid)}",
-                      json_body={"action": action, "state": state})
+                      json_body={"action": action, "state": state}, timeout=3)
                 pushed.append(app)
             except Exception as e:  # noqa: BLE001 — keep act alive if one mock is down
                 # A dead vite preview must not 500 the whole food.add_to_cart and

@@ -94,9 +94,15 @@ export default function CreateListing() {
     return newErrors;
   };
 
-  const handleSubmit = async (e) => {
+  // ``asDraft`` saves the listing without offering it, so a seller can get it
+  // ready and still decide later. Publishing stays the default action.
+  const handleSubmit = async (e, asDraft = false) => {
     e.preventDefault();
-    const validationErrors = validate();
+    // A draft is meant to be incomplete - saving one only needs a title so it
+    // can be found again. Publishing still runs the full validation.
+    const validationErrors = asDraft
+      ? (formData.title.trim() ? {} : { title: 'Title is required.' })
+      : validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
@@ -126,7 +132,7 @@ export default function CreateListing() {
       images
     };
 
-    await Promise.resolve(createListing(newListing));
+    await Promise.resolve(createListing({ ...newListing, draft: asDraft }));
     navigate('/dashboard?tab=selling');
   };
 
@@ -338,6 +344,10 @@ export default function CreateListing() {
         <div className="pt-4 flex justify-end gap-4">
           <button type="button" onClick={() => navigate('/dashboard')} className="px-6 py-2 font-bold text-gray-600 hover:bg-gray-100 rounded-full">
             Cancel
+          </button>
+          <button type="button" onClick={(e) => handleSubmit(e, true)}
+                  className="px-6 py-2 font-bold text-gray-700 border border-gray-400 rounded-full hover:bg-gray-100">
+            Save as draft
           </button>
           <button type="submit" className="btn-primary">
             List Item

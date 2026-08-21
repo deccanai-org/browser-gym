@@ -31,10 +31,20 @@ const _root = () => (SESSION ? `${BASE}/bridge/${encodeURIComponent(SESSION)}` :
 export const bridged = () => !!BASE;
 export const bridgeSession = () => SESSION;
 
-export async function bridgeState(app) {
-  const r = await fetch(`${_root()}/state?app=${encodeURIComponent(app)}`);
-  if (!r.ok) return null;
-  return (await r.json()).apps?.[app] || null;
+export async function bridgeState(app, tries = 6) {
+  // The bridge holds ONE world and serves it single-threaded, so while another
+  // app is mid-checkout a request to it can briefly fail or 503. A tab reloaded
+  // in that window used to give up after a single try and fall back to its
+  // bundled demo data, stranding it on a stale catalogue. Retry a few times so
+  // a transient hiccup self-heals instead — the block clears in ~1-2s.
+  for (let i = 0; i < tries; i++) {
+    try {
+      const r = await fetch(`${_root()}/state?app=${encodeURIComponent(app)}`);
+      if (r.ok) return (await r.json()).apps?.[app] || null;
+    } catch (_) { /* transient network failure — fall through and retry */ }
+    if (i < tries - 1) await new Promise(res => setTimeout(res, 300 + 200 * i));
+  }
+  return null;
 }
 
 export async function bridgeAct(action, payload = {}) {
@@ -57,6 +67,6 @@ export function bridgePoll(app, onState, ms = 2500) {
     try { const s = await bridgeState(app); if (s) onState(s); } catch (_) {}
     if (live) setTimeout(tick, ms);
   };
-  setTimeout(tick, ms);
+  tick();   // fire immediately so a failed mount fetch recovers within one cycle
   return () => { live = false; };
 }
