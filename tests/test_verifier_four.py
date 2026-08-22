@@ -35,7 +35,9 @@ HTML_REQUIRED = {
         "eta_email_riley",
     ),
     v4.UI041_ID: (
-        "read_service",
+        # read_service is an unweighted engagement note, not required-for-success:
+        # opening a calendar is not an outcome, and gating the verdict on it let a
+        # run miss required work and still be judged solved.
         "asked_size",
         "did_not_buy",
     ),

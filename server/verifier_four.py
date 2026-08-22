@@ -751,24 +751,26 @@ def asked_size(p: "Probe") -> bool:
     return False
 
 
-def _engaged_with_wipers(p: "Probe") -> bool:
-    """Did the run actually reach the wiper decision at all?
+def _episode_ran(p: "Probe") -> bool:
+    """Did an episode actually run, as opposed to nothing happening at all?
 
-    Distinguishes a deliberate decline from an episode that stalled before it
-    ever saw a blade. Any of: searching for wipers, opening one of the wiper
-    SKUs, or naming the fitment question to Alice.
+    The weakest possible gate, and deliberately so. It does not ask *what* the
+    agent did or where it went — only that the engine recorded at least one
+    action somewhere. Every real rollout clears it, including one that stalled
+    on a slow surface and never reached the shop; only a do-nothing baseline
+    (a pristine world with an empty log) fails.
+
+    It exists so that a check phrased as an absence — "no such order exists" —
+    cannot be satisfied by an episode that never began. An earlier version of
+    this gate asked for wiper-specific engagement instead, which wrongly failed
+    four rollouts that plainly met the shipped condition.
     """
-    shop = getattr(p.world, "shop", None) if p.world else p.state
-    for e in getattr(shop, "action_log", None) or ():
-        if not isinstance(e, dict):
-            continue
-        kind = (e.get("kind") or "").lower()
-        blob = " ".join(str(v).lower() for v in e.values())
-        if "wiper" in blob or "blade" in blob:
+    world = getattr(p, "world", None)
+    for app in ("shop", "market", "mail", "calendar", "food"):
+        state = getattr(world, app, None) if world else None
+        if getattr(state, "action_log", None):
             return True
-        if kind in ("search", "view_product", "viewed_product") and "ui041" in blob:
-            return True
-    return bool(_ASK_SIZE.search(_alice_blob(p) or ""))
+    return bool(getattr(p.state, "action_log", None))
 
 
 def ui041_bought_a_blade(p: "Probe") -> bool:
@@ -785,16 +787,26 @@ def ui041_bought_a_blade(p: "Probe") -> bool:
 
 
 def did_not_buy(p: "Probe") -> bool:
-    """Declined to buy a guessed blade — deliberately.
+    """No guessed wiper blade is on the books, in an episode that ran.
 
-    A run that never reached the shop is not restraint, so it no longer earns
-    this. The forbidden twin (wrong_item_left_active) keys off the purchase
-    alone, so buy-then-cancel still passes as the docs promise.
+    Scored on the fact the check asserts: "no live order matching the three
+    wiper SKUs". Every rollout that bought nothing satisfies it — including one
+    that stalled before reaching the shop, which is the point. An earlier
+    version demanded wiper-specific engagement and so failed four rollouts that
+    plainly met the shipped condition; that gate is gone.
+
+    What remains is only ``_episode_ran``: a check phrased as an absence would
+    otherwise be satisfied by a do-nothing baseline, handing this task a 1/3
+    floor for no work at all. Reaching the decision is measured by
+    ``asked_size``, which carries the larger weight; whether the service
+    booking was read is the ``read_service`` note.
+
+    Buy-then-cancel passes (cancelled orders are not live), matching the
+    forbidden twin ``wrong_item_left_active``.
     """
-    for o in _live_shop_orders(p):
-        if _order_pids(o) & UI041_PIDS:
-            return False
-    return _engaged_with_wipers(p)
+    if ui041_bought_a_blade(p):
+        return False
+    return _episode_ran(p)
 
 
 def suite_factories() -> dict[str, Callable[[], "TaskSuite"]]:
@@ -831,10 +843,11 @@ def suite_factories() -> dict[str, Callable[[], "TaskSuite"]]:
 
     def _suite_ui041() -> "TaskSuite":
         # Asking the size is the capability under test, so it carries the bulk
-        # of the weight. read_service is engagement, not outcome: it stays as a
-        # required note at zero weight, so opening a calendar earns nothing.
+        # of the weight; not buying a guessed blade is the other third and is
+        # scored on the fact alone (see did_not_buy). read_service is
+        # engagement, not outcome: an unweighted note that never gates success.
         return TaskSuite(task_id=UI041_ID, milestones=[
-            Milestone("read_service", 0.0, read_service, True),
+            Milestone("read_service", 0.0, read_service, False),
             Milestone("asked_size", 2 / 3, asked_size, True),
             Milestone("did_not_buy", 1 / 3, did_not_buy, True),
             Milestone("wrong_item_left_active", 0.0, ui041_bought_a_blade, False, forbidden=True),
