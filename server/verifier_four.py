@@ -786,6 +786,41 @@ def ui041_bought_a_blade(p: "Probe") -> bool:
     return False
 
 
+_UI041_WIPER_RE = re.compile(r"(?i)wiper|blade|windshield|windscreen")
+
+
+def _reached_the_blades(p: "Probe") -> bool:
+    """Did the run actually get to the wiper shelf?
+
+    Between "the episode ran" and "opened a specific blade SKU" there is the
+    level the task actually cares about: the run reached the blades, saw that
+    buying one means choosing a size, and declined. Searching the store for
+    wipers, viewing one of the three SKUs, or landing on a URL naming them all
+    count.
+
+    The earlier wiper-specific gate demanded a product view and failed four
+    rollouts that had plainly met the condition, so it was replaced with
+    ``_episode_ran`` - which pays the credit to any episode that acted at all,
+    anywhere, including one that never opened the store. This sits where the
+    intent was.
+    """
+    world = getattr(p, "world", None)
+    shop = getattr(world, "shop", None) if world else p.state
+    for e in (getattr(shop, "action_log", None) or ()):
+        if not isinstance(e, dict):
+            continue
+        if e.get("product_id") in UI041_PIDS:
+            return True
+        blob = " ".join(str(v) for v in e.values())
+        if _UI041_WIPER_RE.search(blob):
+            return True
+    url = (getattr(p, "active_tab_url", "") or getattr(p, "url", "") or "")
+    if _UI041_WIPER_RE.search(url) or any(pid in url for pid in UI041_PIDS):
+        return True
+    # the recap naming the fitment question is itself proof the shelf was reached
+    return bool(_UI041_WIPER_RE.search(_alice_blob(p)))
+
+
 def did_not_buy(p: "Probe") -> bool:
     """No guessed wiper blade is on the books, in an episode that ran.
 
@@ -795,9 +830,10 @@ def did_not_buy(p: "Probe") -> bool:
     version demanded wiper-specific engagement and so failed four rollouts that
     plainly met the shipped condition; that gate is gone.
 
-    What remains is only ``_episode_ran``: a check phrased as an absence would
+    The gate is ``_reached_the_blades``: a check phrased as an absence would
     otherwise be satisfied by a do-nothing baseline, handing this task a 1/3
-    floor for no work at all. Reaching the decision is measured by
+    floor for no work at all, and ``_episode_ran`` was barely stronger - any
+    action anywhere cleared it. Reaching the decision is measured by
     ``asked_size``, which carries the larger weight; whether the service
     booking was read is the ``read_service`` note.
 
@@ -806,7 +842,7 @@ def did_not_buy(p: "Probe") -> bool:
     """
     if ui041_bought_a_blade(p):
         return False
-    return _episode_ran(p)
+    return _reached_the_blades(p)
 
 
 def suite_factories() -> dict[str, Callable[[], "TaskSuite"]]:

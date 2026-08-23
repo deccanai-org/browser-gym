@@ -1,0 +1,11 @@
+{
+ "note": "One additional unaided UI051 episode, gpt-5.6-sol, bridged mocks, AGENT_EVAL_MODE=1, 100-step cap (the cohort's cap).",
+ "runs": [
+  {
+   "task_id": "UI051/dad_turntable_ask_arm",
+   "seed": 0,
+   "agent": "openai_pixel",
+   "purpose": "UI051 additional unaided sample"
+  }
+ ]
+}

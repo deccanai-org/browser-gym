@@ -1,0 +1,11 @@
+{
+ "note": "One additional unaided UI051 episode, claude-opus-5, bridged mocks, AGENT_EVAL_MODE=1, 150-step cap.",
+ "runs": [
+  {
+   "task_id": "UI051/dad_turntable_ask_arm",
+   "seed": 0,
+   "agent": "pixel",
+   "purpose": "UI051 additional unaided sample"
+  }
+ ]
+}

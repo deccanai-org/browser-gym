@@ -35,6 +35,10 @@ fixtures/seed.db*
 tests
 docs
 tools
+# ...except cloud/Dockerfile, which DOES need tools/ (tools.bridge_service,
+# tools.bridge, tools.seed_to_cuagym — bridged/realistic-UI mode is dead without
+# it). Re-included here; the other two Dockerfiles simply never COPY it.
+!tools
 
 # Editor / OS cruft
 .DS_Store

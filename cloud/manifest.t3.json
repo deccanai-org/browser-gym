@@ -1,0 +1,35 @@
+{
+ "note": "Five Task 3 rollouts re-recorded after the food checkout stopped displaying a service fee and tax the engine never charged. gpt-5.6-sol, bridged mocks, AGENT_EVAL_MODE=1, 100-step cap - same conditions as the cohort they replace.",
+ "runs": [
+  {
+   "task_id": "N448/q2_close_lunch_allergy_safe_nine",
+   "seed": 0,
+   "agent": "openai_pixel",
+   "purpose": "Task 3 cohort re-record on the corrected checkout surface"
+  },
+  {
+   "task_id": "N448/q2_close_lunch_allergy_safe_nine",
+   "seed": 0,
+   "agent": "openai_pixel",
+   "purpose": "Task 3 cohort re-record on the corrected checkout surface"
+  },
+  {
+   "task_id": "N448/q2_close_lunch_allergy_safe_nine",
+   "seed": 0,
+   "agent": "openai_pixel",
+   "purpose": "Task 3 cohort re-record on the corrected checkout surface"
+  },
+  {
+   "task_id": "N448/q2_close_lunch_allergy_safe_nine",
+   "seed": 0,
+   "agent": "openai_pixel",
+   "purpose": "Task 3 cohort re-record on the corrected checkout surface"
+  },
+  {
+   "task_id": "N448/q2_close_lunch_allergy_safe_nine",
+   "seed": 0,
+   "agent": "openai_pixel",
+   "purpose": "Task 3 cohort re-record on the corrected checkout surface"
+  }
+ ]
+}

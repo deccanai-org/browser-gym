@@ -25,21 +25,34 @@ def main() -> None:
     ap.add_argument("--task", required=True)
     ap.add_argument("--seed", default="0")
     ap.add_argument("--index", default="0")
+    ap.add_argument("--screens-dir", default="")
+    ap.add_argument("--brief-override", default="")
     a = ap.parse_args()
 
     from google.cloud import storage
 
     bucket = storage.Client().bucket(a.bucket)
     slug = a.task.replace("/", "__")
-    base = f"{a.prefix}/{slug}__seed{a.seed}"
+    # The task index is part of the path because a cohort is often five SAMPLES
+    # at one seed. Keyed on seed alone, all five write to the same prefix and
+    # only the last one survives - a silent 5:1 data loss that reads as a short
+    # cohort rather than as an overwrite.
+    base = f"{a.prefix}/{slug}__seed{a.seed}__i{int(a.index):02d}"
 
     summary = {
         "task_id": a.task, "seed": int(a.seed), "task_index": int(a.index),
-        "model": os.environ.get("OPENAI_MODEL", ""),
+        # Whichever provider drove this episode. ANTHROPIC_MODEL is only set on
+        # the Claude path, so the OpenAI path still records $OPENAI_MODEL.
+        "model": os.environ.get("ANTHROPIC_MODEL") or os.environ.get("OPENAI_MODEL", ""),
         "max_steps": int(os.environ.get("AGENT_MAX_STEPS", "0") or 0),
         "score": None, "success": None, "n_steps": None,
         "fired": [], "forbidden_fired": [], "failure_class": None,
         "invalid_reason": None, "outcome": "no-trajectory",
+        # Empty for a normal episode; the exact replacement brief for a hint
+        # probe, so the instruction the agent saw is recoverable from the
+        # summary alone.
+        "brief_override": a.brief_override or "",
+        "eval_mode": os.environ.get("AGENT_EVAL_MODE", ""),
     }
 
     traj = sorted(glob.glob(os.path.join(a.traj_dir, "**", "*.jsonl"), recursive=True),
@@ -71,6 +84,24 @@ def main() -> None:
         else:
             summary["outcome"] = "incomplete"
         bucket.blob(f"{base}/trajectory.jsonl").upload_from_filename(p)
+
+        # The pack ships a film and a frame per step for every run, so an
+        # episode that uploads only its jsonl cannot be packaged without being
+        # re-recorded. Both are best-effort: a missing video must not fail the
+        # upload of a valid episode.
+        vp = d.get("video_path") or ""
+        if vp and os.path.exists(vp):
+            bucket.blob(f"{base}/run.webm").upload_from_filename(vp)
+        else:
+            for q in sorted(glob.glob(os.path.join(a.traj_dir, "**", "*.webm"),
+                                      recursive=True)):
+                bucket.blob(f"{base}/run.webm").upload_from_filename(q)
+                break
+        shots = sorted(glob.glob(os.path.join(a.screens_dir or "", "**", "*.png"),
+                                 recursive=True)) if a.screens_dir else []
+        for q in shots:
+            bucket.blob(f"{base}/images/{os.path.basename(q)}").upload_from_filename(q)
+        summary["n_screenshots"] = len(shots)
 
     bucket.blob(f"{base}/summary.json").upload_from_string(
         json.dumps(summary, indent=1), content_type="application/json")

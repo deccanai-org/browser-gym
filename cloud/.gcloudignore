@@ -1,0 +1,63 @@
+# Build-context filter for `gcloud builds submit` (cloud/deploy.sh passes this
+# via --ignore-file).
+#
+# WHY THIS FILE EXISTS: with no .gcloudignore, gcloud falls back to .gitignore,
+# and .gitignore line 73 is `websites/*/dist/` — the five prebuilt mock SPA
+# bundles that cloud/Dockerfile's first stage is entirely made of. Uploading
+# under .gitignore silently ships a context with no mocks and the build dies on
+# `COPY websites/xmazon_mock/dist`. So the dist/ dirs are deliberately KEPT here.
+#
+# Everything cloud/Dockerfile COPYs must survive this filter:
+#   pyproject.toml, server/, harness/, agents/, eval/, ui/, tools/,
+#   websites/*/dist/, cloud/
+
+.git/
+.gitignore
+
+# Secrets must never enter the build context.
+.env
+.env.*
+
+# Virtualenvs / caches
+.venv/
+venv/
+env/
+**/__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Large local run output — regenerable, not built into the image.
+trajectories/
+screenshots/
+videos/
+demos/
+fixtures/*.sqlite
+fixtures/seed.db*
+
+# Mock-app source trees. Only each app's prebuilt dist/ is used; node_modules,
+# the un-bundled sources and the raw public/ image originals are ~900MB of
+# upload for nothing.
+websites/*/node_modules/
+websites/*/public/
+websites/*/src/
+websites/*/dist_fix/
+websites/*/assets/
+node_modules/
+
+# Not part of this image.
+deploy/
+live_browser/
+tests/
+ci/
+scripts/
+docs/
+*.docx
+*.log
+.DS_Store
+**/.DS_Store
+.idea/
+.vscode/

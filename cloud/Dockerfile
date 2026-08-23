@@ -65,7 +65,7 @@ COPY --from=mocks /m /app/mocks
 COPY cloud/entrypoint.sh /app/cloud/entrypoint.sh
 COPY cloud/upload.py     /app/cloud/upload.py
 COPY cloud/serve_spa.py  /app/cloud/serve_spa.py
-COPY cloud/manifest.json /app/cloud/manifest.json
+COPY cloud/manifest*.json /app/cloud/
 RUN chmod +x /app/cloud/entrypoint.sh
 
 # Cloud Run's filesystem is read-only apart from /tmp, and the harness writes
