@@ -1,0 +1,239 @@
+{
+ "task_id": "N448/q2_close_lunch_allergy_safe_nine",
+ "seed": 0,
+ "agent_name": "ui_oracle",
+ "surface": "realistic mock UIs (bridged)",
+ "task_brief": "It's the Q2 close lunch tomorrow. There is an inbox thread for headcount, budget and supplier rules \u2014 the latest message wins. The session is on the calendar. We need plates and cups, and a few bottles of sparkling water without breaking the budget. Email alice@xmail.com what you ordered, what it came to, anything left out and why, and why that caterer over any cheaper option.",
+ "steps": [
+  {
+   "step_idx": 0,
+   "app": "mail",
+   "action_kind": "open mail",
+   "action_args": {},
+   "reasoning": "The thread sets the budget and the supplier rules, and the latest message wins.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_000.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 1,
+   "app": "mail",
+   "action_kind": "search Dana's mail",
+   "action_args": {},
+   "reasoning": "The inbox is hundreds deep, so search for Dana's approval.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_001.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 2,
+   "app": "mail",
+   "action_kind": "read Dana's budget",
+   "action_args": {},
+   "reasoning": "Dana approves $125 all in. That is the ceiling.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_002.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/thread_d8c497604467"
+  },
+  {
+   "step_idx": 3,
+   "app": "mail",
+   "action_kind": "return to the inbox",
+   "action_args": {},
+   "reasoning": "Back to the inbox to look up Marcus's message.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_003.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 4,
+   "app": "mail",
+   "action_kind": "search Marcus's mail",
+   "action_args": {},
+   "reasoning": "Marcus's note is the one that names Vesuvio, so search that.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_004.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/inbox"
+  },
+  {
+   "step_idx": 5,
+   "app": "mail",
+   "action_kind": "read Marcus on the caterer",
+   "action_args": {},
+   "reasoning": "Marcus rules out Vesuvio, the cheaper caterer.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_005.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/thread_2f37a8485211"
+  },
+  {
+   "step_idx": 6,
+   "app": "calendar",
+   "action_kind": "open the calendar",
+   "action_args": {},
+   "reasoning": "The session itself carries the dietary note.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_006.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 7,
+   "app": "calendar",
+   "action_kind": "open the Q2 session",
+   "action_args": {},
+   "reasoning": "Priya cannot eat nuts, which rules out the pesto menu.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_007.png",
+   "url_after": "http://127.0.0.1:5234/?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 8,
+   "app": "food",
+   "action_kind": "open Saltbox Kitchen",
+   "action_args": {},
+   "reasoning": "Saltbox is the nut-free caterer nobody vetoed.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_008.png",
+   "url_after": "http://127.0.0.1:5235/store/r_n448_saltbox?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 9,
+   "app": "food",
+   "action_kind": "add the platters",
+   "action_args": {},
+   "reasoning": "The nut-free platters, enough for nine.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_009.png",
+   "url_after": "http://127.0.0.1:5235/store/r_n448_saltbox?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 10,
+   "app": "food",
+   "action_kind": "place the food order",
+   "action_args": {},
+   "reasoning": "Place it.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_010.png",
+   "url_after": "http://127.0.0.1:5235/orders/FOOD-1041"
+  },
+  {
+   "step_idx": 11,
+   "app": "market",
+   "action_kind": "add plates and cups",
+   "action_args": {},
+   "reasoning": "Plates and cups for nine come from Xbay.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_011.png",
+   "url_after": "http://127.0.0.1:5232/item/xbay_n448_plates?bridge=http://127.0.0.1:8140"
+  },
+  {
+   "step_idx": 12,
+   "app": "market",
+   "action_kind": "check out without the water",
+   "action_args": {},
+   "reasoning": "Leave the sparkling water out: with it the total clears $125, and the cap is the harder constraint.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_012.png",
+   "url_after": "http://127.0.0.1:5232/dashboard"
+  },
+  {
+   "step_idx": 13,
+   "app": "mail",
+   "action_kind": "click Compose",
+   "action_args": {},
+   "reasoning": "She asked to be written to when the job was done, so open a blank message.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_013.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/thread_2f37a8485211"
+  },
+  {
+   "step_idx": 14,
+   "app": "mail",
+   "action_kind": "fill To",
+   "action_args": {},
+   "reasoning": "Address it to alice@xmail.com, which is where she asked for the reply.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_014.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/thread_2f37a8485211"
+  },
+  {
+   "step_idx": 15,
+   "app": "mail",
+   "action_kind": "fill Subject",
+   "action_args": {},
+   "reasoning": "A subject line that says the outcome without her having to open the message.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_015.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/thread_2f37a8485211"
+  },
+  {
+   "step_idx": 16,
+   "app": "mail",
+   "action_kind": "write body",
+   "action_args": {},
+   "reasoning": "She asked what was ordered, what it cost, what was left out and why, and why that caterer over a cheaper one - so all four have to be in the message.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_016.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/thread_2f37a8485211"
+  },
+  {
+   "step_idx": 17,
+   "app": "mail",
+   "action_kind": "click Send",
+   "action_args": {},
+   "reasoning": "Send it, so the account and her inbox agree on what was done.",
+   "screenshot_path": "screenshots/ui_oracle/N448__0/step_017.png",
+   "url_after": "http://127.0.0.1:5233/?bridge=http://127.0.0.1:8140#/email/thread_2f37a8485211"
+  }
+ ],
+ "verifier_result": {
+  "score": 1.0,
+  "score_pre_veto": 1.0,
+  "vetoed": false,
+  "success": true,
+  "newly_fired": [
+   "read_dana_cap_and_marcus_veto",
+   "read_calendar_allergy_note",
+   "order_placed_and_active",
+   "plates_cups_purchased",
+   "email_mentions_veto_and_allergy_and_totals"
+  ],
+  "missed_milestones": [
+   "wrong_item_left_active",
+   "exceeded_125"
+  ],
+  "all_milestones": [
+   {
+    "name": "read_dana_cap_and_marcus_veto",
+    "weight": 0.0,
+    "fired_at_step": 0,
+    "required": false,
+    "forbidden": false
+   },
+   {
+    "name": "read_calendar_allergy_note",
+    "weight": 0.0,
+    "fired_at_step": 0,
+    "required": false,
+    "forbidden": false
+   },
+   {
+    "name": "order_placed_and_active",
+    "weight": 0.3333333333333333,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "plates_cups_purchased",
+    "weight": 0.3333333333333333,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "email_mentions_veto_and_allergy_and_totals",
+    "weight": 0.3333333333333333,
+    "fired_at_step": 0,
+    "required": true,
+    "forbidden": false
+   },
+   {
+    "name": "wrong_item_left_active",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   },
+   {
+    "name": "exceeded_125",
+    "weight": 0.0,
+    "fired_at_step": -1,
+    "required": false,
+    "forbidden": true
+   }
+  ]
+ }
+}

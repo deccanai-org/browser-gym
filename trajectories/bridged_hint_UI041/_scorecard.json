@@ -1,0 +1,13 @@
+{
+  "agent": "openai_pixel",
+  "model": "gpt-5.6-sol",
+  "n_episodes": 1,
+  "overall_score": 1.0,
+  "overall_success_rate": 1.0,
+  "by_task": {
+    "UI041/wiper_blades_ask_size": {
+      "n": 1,
+      "score": 1.0
+    }
+  }
+}

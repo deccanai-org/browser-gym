@@ -1,0 +1,13 @@
+{
+  "agent": "oracle",
+  "model": null,
+  "n_episodes": 3,
+  "overall_score": 1.0,
+  "overall_success_rate": 1.0,
+  "by_task": {
+    "N446/redirect_shipped_throw_missing_cushion": {
+      "n": 3,
+      "score": 1.0
+    }
+  }
+}

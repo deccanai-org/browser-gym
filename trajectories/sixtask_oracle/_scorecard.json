@@ -1,0 +1,33 @@
+{
+  "agent": "oracle",
+  "model": null,
+  "n_episodes": 18,
+  "overall_score": 1.0,
+  "overall_success_rate": 1.0,
+  "by_task": {
+    "FB5/jason_desk_kit_samantha_cap": {
+      "n": 3,
+      "score": 1.0
+    },
+    "N446/redirect_shipped_throw_missing_cushion": {
+      "n": 3,
+      "score": 1.0
+    },
+    "N448/q2_close_lunch_allergy_safe_nine": {
+      "n": 3,
+      "score": 1.0
+    },
+    "UI041/wiper_blades_ask_size": {
+      "n": 3,
+      "score": 1.0
+    },
+    "UI051/dad_turntable_ask_arm": {
+      "n": 3,
+      "score": 1.0
+    },
+    "mail_002/false_warranty_never_bought": {
+      "n": 3,
+      "score": 1.0
+    }
+  }
+}
